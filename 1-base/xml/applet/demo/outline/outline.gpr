@@ -1,0 +1,16 @@
+with
+     "xml",
+     "lace_shared";
+
+project Outline
+is
+   for Object_Dir use "build";
+   for Exec_Dir   use ".";
+   for Main       use ("launch_outline.adb");
+
+   package Ide      renames Lace_shared.Ide;
+   package Builder  renames Lace_shared.Builder;
+   package Compiler renames Lace_shared.Compiler;
+   package Binder   renames Lace_shared.Binder;
+
+end Outline;

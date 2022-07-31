@@ -1,0 +1,64 @@
+with
+     "opengl_core",
+     "../private/freetype/library/freetype", 
+     "collada",
+     "lace_shared";
+
+--library
+project Opengl
+is
+   type Profile is ("safe", "lean", "desk");
+   The_Profile : Profile := external ("opengl_profile", "lean");
+
+   for Create_Missing_Dirs use "True";
+
+   for Object_Dir   use "build";
+   for Library_Dir  use "lib";
+--   for Library_Name use "opengl";
+
+   case The_Profile is
+      when "safe" =>
+         for Source_Dirs use ("../source/safe");
+
+      when "lean" =>
+         for Source_Dirs use ("../source/lean", 
+                              "../source/lean/buffer",
+                              "../source/lean/geometry/**",
+                              "../source/lean/light",
+                              "../source/lean/model",
+                              "../source/lean/renderer",
+                              "../source/lean/shader",
+                              "../source/lean/support", 
+                              "../source/lean/text",
+                              "../source/lean/io",
+                              "../source/lean/text/private");
+      when "desk" =>
+         for Source_Dirs use ("../source/lean", 
+                              "../source/lean/buffer",
+                              "../source/lean/geometry/**",
+                              "../source/lean/light",
+                              "../source/lean/model",
+                              "../source/lean/renderer",
+                              "../source/lean/shader",
+                              "../source/lean/support", 
+                              "../source/lean/text",
+                              "../source/lean/io",
+                              "../source/lean/text/private",
+                              "../source/desk");
+   end case;
+
+
+   package Builder renames Lace_shared.Builder;
+   package Binder  renames Lace_shared.Binder;
+
+   package Compiler is
+      for Default_Switches ("ada")           use Lace_shared.Compiler_Options;
+      for         Switches ("opengl-io.adb") use ("-O0");
+   end Compiler;
+   
+   package Linker
+   is
+      for Linker_Options use ("-g", "-lEGL", "-lGLESv2", "-lSDL2");   
+   end Linker;
+
+end Opengl;

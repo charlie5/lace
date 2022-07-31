@@ -1,0 +1,30 @@
+with
+     "lace_shared";
+
+--library
+project Math
+is
+   for Create_Missing_Dirs use "True";
+
+   for Object_Dir      use "build";
+   for Exec_Dir        use ".";
+   for Library_Dir     use "lib";
+   for Library_Ali_Dir use "objects";
+--   for Library_Name    use "Math";
+
+   for Source_Dirs use ("../source/generic",
+                        "../source/generic/pure/algebra",
+                        "../source/generic/pure/analysis",
+                        "../source/generic/pure/arithmetic",
+                        "../source/generic/pure/geometry",
+                        "../source/generic/pure/geometry/trigonometry",
+                        "../source/generic/applied/statistics",
+                        "../source/generic/applied/computational",
+                        "../source/precision/short/**",
+                        "../source/precision/float/**",
+                        "../source/precision/long/**");
+
+   package Builder  renames Lace_shared.Builder;
+   package Compiler renames Lace_shared.Compiler;
+
+end Math;

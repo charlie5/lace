@@ -1,0 +1,22 @@
+with
+     "gel",
+     "../gel_demo",
+     "lace_shared";
+
+project GEL_fused
+is
+   for Source_Dirs use (".");
+   for Object_Dir  use "build";
+   for Exec_Dir    use ".";
+   for Main        use ("launch_gel_fused.adb");
+
+   package Ide      renames Lace_shared.Ide;
+   package Builder  renames Lace_shared.Builder;
+   package Compiler renames Lace_shared.Compiler;
+   package Binder   renames Lace_shared.Binder;
+
+   package Linker is
+      for Default_Switches ("ada") use ("-g", "-lexpat", "-lGL", "-lGLU", "-lX11", "-lm");
+   end Linker;
+
+end GEL_fused;

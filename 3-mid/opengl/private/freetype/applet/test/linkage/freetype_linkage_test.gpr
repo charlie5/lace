@@ -1,0 +1,16 @@
+with 
+     "../../../library/freetype",
+     "lace_shared";
+
+project freetype_linkage_Test
+is
+   for Object_Dir use "build";
+   for Exec_Dir   use ".";
+   for Main       use ("launch_freetype_linkage_test.adb");
+
+   package Ide      renames Lace_shared.Ide;
+   package Builder  renames Lace_shared.Builder;
+   package Compiler renames Lace_shared.Compiler;
+   package Binder   renames Lace_shared.Binder;
+
+end freetype_linkage_Test;

@@ -1,0 +1,21 @@
+with 
+     "gel",
+     "lace_shared";
+
+project gel_Demo
+is
+    for Create_Missing_Dirs use "True";
+
+    for Object_Dir  use "build";
+    for Source_Dirs use (".");
+
+    package Ide      renames Lace_shared.Ide;
+    package Builder  renames Lace_shared.Builder;
+    package Compiler renames Lace_shared.Compiler;
+    package Binder   renames Lace_shared.Binder;
+
+   package Linker is
+      for Default_Switches ("ada") use ("-g");
+   end Linker;
+
+end gel_Demo;

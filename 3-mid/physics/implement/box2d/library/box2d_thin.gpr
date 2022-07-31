@@ -1,0 +1,23 @@
+with 
+     "box2d_thin_cxx",
+     "c_math_thin",
+     "swig",
+     "math",
+     "lace_shared";
+
+--library
+project Box2d_thin
+is
+   for Languages       use ("Ada");
+   for Source_Dirs     use ("../source/thin");
+   for Object_Dir      use "build";
+   for Library_Dir     use "lib";
+   for Library_Ali_Dir use "objects";
+--   for Library_Name    use "Box2d_thin";
+
+   package Ide      renames Lace_shared.Ide;
+   package Builder  renames Lace_shared.Builder;
+   package Compiler renames Lace_shared.Compiler;
+   package Binder   renames Lace_shared.Binder;
+
+end Box2d_thin;

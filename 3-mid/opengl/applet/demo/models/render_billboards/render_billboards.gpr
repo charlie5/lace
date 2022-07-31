@@ -1,0 +1,21 @@
+with
+     "opengl_demo",
+     "lace_shared"; 
+
+project render_Billboards
+is
+
+   for Object_Dir use "build";
+   for Exec_Dir   use ".";
+   for Main       use ("launch_render_billboards.adb");
+
+   package Ide      renames Lace_shared.Ide;
+   package Builder  renames Lace_shared.Builder;
+   package Compiler renames Lace_shared.Compiler;
+   package Binder   renames Lace_shared.Binder;
+
+   package Linker is
+      for Default_Switches ("ada") use ("-g", "-lX11", "-lGL");
+   end Linker;
+
+end render_Billboards;

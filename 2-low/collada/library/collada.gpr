@@ -1,0 +1,23 @@
+with
+     "xml",
+     "math",
+     "lace_shared";
+
+--library
+project Collada
+is
+   for Create_Missing_Dirs use "True";
+
+   for Object_Dir      use "build";
+   for Library_Dir     use "lib";
+   for Library_Ali_Dir use "objects";
+--   for Library_Name    use "Collada";
+
+   for Source_Dirs     use ("../source");
+
+   package Ide      renames Lace_shared.Ide;
+   package Builder  renames Lace_shared.Builder;
+   package Compiler renames Lace_shared.Compiler;
+   package Binder   renames Lace_shared.Binder;
+
+end Collada;

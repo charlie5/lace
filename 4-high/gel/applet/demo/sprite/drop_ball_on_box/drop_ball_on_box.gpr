@@ -1,0 +1,22 @@
+with
+     "gel",
+     "lace_shared";
+
+project Drop_Ball_On_Box
+is
+   for Object_Dir use "build";
+   for Exec_Dir   use ".";
+   for Main       use ("launch_drop_ball_on_box.adb");
+   for Languages  use ("Ada");
+
+   package Ide      renames Lace_shared.Ide;
+   package Builder  renames Lace_shared.Builder;
+   package Compiler renames Lace_shared.Compiler;
+   package Binder   renames Lace_shared.Binder;
+
+   package Linker
+   is
+      for Linker_Options use ("-g", "-lGL", "-lGLU", "-lglut", "-lSDL2");   
+   end Linker;
+
+end Drop_Ball_On_Box;

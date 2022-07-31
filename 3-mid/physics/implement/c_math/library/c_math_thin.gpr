@@ -1,0 +1,22 @@
+with
+     "c_math_thin_cxx",
+     "swig",
+     "math",
+     "lace_shared";
+
+--library
+project c_Math_thin 
+is
+   for Languages       use ("Ada");
+   for Source_Dirs     use ("../source", "../source/thin");
+   for Object_Dir      use "build";
+   for Library_Dir     use "lib";
+   for Library_Ali_Dir use "objects";
+--   for Library_Name    use "c_Math_thin";
+
+   package Ide      renames Lace_shared.Ide;
+   package Builder  renames Lace_shared.Builder;
+   package Compiler renames Lace_shared.Compiler;
+   package Binder   renames Lace_shared.Binder;
+
+end c_Math_thin;

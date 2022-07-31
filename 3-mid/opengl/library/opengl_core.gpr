@@ -1,0 +1,44 @@
+with 
+     "../private/gl/library/gl",
+     "../private/gid/gid",
+     "math",
+     "lace_shared";
+     
+--library
+project Opengl_Core
+is
+   type Platform is ("egl", "glx", "osmesa");
+   The_Platform : Platform := external ("opengl_platform", "egl");
+
+   for Create_Missing_Dirs use "True";
+
+   for Object_Dir   use "build";
+   for Library_Dir  use "lib";
+--   for Library_Name use "opengl_core";
+
+
+   case The_Platform is 
+      when "egl"    =>   for Languages    use ("Ada");
+      when "glx"    =>   for Languages    use ("Ada", "C");
+      when "osmesa" =>   for Languages    use ("Ada", "C");
+   end case; 
+
+   
+   for Source_Dirs use ("../source",
+                        "../source/profile/"  & external ("opengl_profile",  "lean"), 
+                        "../source/platform/" & external ("opengl_platform", "egl"), 
+                        "../source/platform/" & external ("opengl_platform", "egl") & "/private", 
+                        "../source/platform/" & external ("opengl_platform", "egl") & "/private/thin");
+
+   
+   package Builder renames Lace_shared.Builder;
+
+
+   package Compiler is
+      for Default_Switches ("ada")               use Lace_shared.Compiler_Options;
+      for         Switches ("opengl-images.adb") use ("-O0");
+   end Compiler;
+
+   package Binder renames Lace_shared.Binder;
+
+end Opengl_Core;

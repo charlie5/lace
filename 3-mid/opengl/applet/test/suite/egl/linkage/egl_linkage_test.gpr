@@ -1,0 +1,16 @@
+with
+     "opengl",
+     "swig",
+     "lace_shared";
+
+project Egl_linkage_Test
+is
+   for Object_Dir use "build";
+   for Exec_Dir   use ".";
+   for Main       use ("launch_egl_linkage_test.adb");
+
+   package Linker is
+      for Default_Switches ("ada") use ("-g", "-lEGL");
+   end Linker;
+
+end Egl_linkage_Test;

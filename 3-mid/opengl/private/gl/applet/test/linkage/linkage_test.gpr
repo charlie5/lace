@@ -1,0 +1,24 @@
+with
+     "gl",
+     "lace_shared";
+
+project Linkage_Test
+is
+   for Object_Dir use "build";
+   for Exec_Dir   use ".";
+   for Main       use ("launch_gl_linkage_test.adb");
+
+   package Ide      renames Lace_shared.Ide;
+   package Builder  renames Lace_shared.Builder;
+   package Compiler renames Lace_shared.Compiler;
+   package Binder   renames Lace_shared.Binder;
+
+   package Linker is
+      for Default_Switches ("ada") use ("-g", "-lX11", "-lGL");
+   end Linker;
+
+   package Pretty_Printer is
+      for Default_Switches ("ada") use ("-A1");
+   end Pretty_Printer;
+
+end Linkage_Test;

@@ -1,0 +1,41 @@
+with
+     "c_math_thin_c",
+     "lace_shared";
+
+--library
+project Bullet_Thin_C
+is
+   for Languages       use ("c++");
+   for Source_Dirs     use ("../source/c");
+   for Object_Dir      use "build";
+   for Library_Dir     use "lib";
+   for Library_Ali_Dir use "objects";
+--   for Library_Name    use "Bullet_Thin_C";
+
+   package Ide      renames Lace_shared.Ide;
+   package Builder  renames Lace_shared.Builder;
+
+   package Naming is
+      for Spec_Suffix ("c++") use ".h";
+      for Body_Suffix ("c++") use ".cpp";
+   end Naming;
+
+   package Compiler is
+      for Default_Switches ("c++") use ("-g",
+                                        "-Wno-return-type-c-linkage",
+                                        "-I../../../c_math/source/c",
+                                        "-I/usr/include/bullet",
+                                        "-I" & External ("LIBRARY_PATH", "/usr/include") & "/../include/bullet");
+      --
+      -- TODO: Find out why Alires 'C_INCLUDE_PATH' append is not working on Windows, so that
+      --       the above  'External ("LIBRARY_PATH")'  workaround can be removed.
+   end Compiler;
+
+   package Linker is
+      for Linker_Options use ("-lBulletSoftBody",
+                              "-lBulletDynamics",
+                              "-lBulletCollision",
+                              "-lLinearMath");
+   end Linker;
+
+end Bullet_Thin_C;

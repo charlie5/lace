@@ -1,0 +1,22 @@
+#!/bin/bash
+
+set -e
+
+########
+## Clean 
+#
+rm -fr ./dsa
+gprclean -r -P ../gel_demo.gpr -Xrestrictions=xgc -Xopengl_platform=glx -Xopengl_profile=lean
+
+
+#########
+## Build
+#
+set +e
+po_gnatdist  -Xrestrictions=xgc -Xopengl_platform=glx -Xopengl_profile=lean -P demo_dsa.gpr  simple_dsa.cfg 
+set -e
+
+cp dsa/x86_64-unknown-linux-gnu/obj/*.o   dsa/x86_64-unknown-linux-gnu/partitions/simple_dsa/server_partition
+cp dsa/x86_64-unknown-linux-gnu/obj/*.o   dsa/x86_64-unknown-linux-gnu/partitions/simple_dsa/client_partition
+
+po_gnatdist  -Xrestrictions=xgc -Xopengl_platform=glx -Xopengl_profile=lean -P demo_dsa.gpr  simple_dsa.cfg 
