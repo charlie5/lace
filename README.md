@@ -1,11 +1,3 @@
-Status
-======
-
-This prototype project has been deprecated in favour of 'lace'.
-
-https://github.com/charlie5/lace
-
-
 Lace
 ====
 
