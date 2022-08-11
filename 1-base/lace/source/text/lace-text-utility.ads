@@ -3,7 +3,7 @@ package lace.Text.utility
 -- Provides utility subprograms.
 --
 is
-   function  Contains (Self : in     Text.item;   Pattern : in String) return Boolean;
+   function  contains (Self : in     Text.item;   Pattern : in String) return Boolean;
 
 
    function  replace  (Self : in     Text.item;   Pattern : in String;

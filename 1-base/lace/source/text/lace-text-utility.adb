@@ -6,12 +6,12 @@ with
 package body lace.Text.utility
 is
 
-   function Contains (Self : in Text.item;   Pattern : in String) return Boolean
+   function contains (Self : in Text.item;   Pattern : in String) return Boolean
    is
       use ada.Strings.fixed;
    begin
       return Index (+Self, Pattern) /= 0;
-   end Contains;
+   end contains;
 
 
 
