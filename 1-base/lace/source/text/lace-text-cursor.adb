@@ -161,9 +161,15 @@ is
    function next_Line (Self : in out item;   Trim : in Boolean := False) return String
    is
       use ada.Characters;
+      Token : constant String := next_Token (Self, Delimiter => latin_1.LF,
+                                                   Trim      => Trim);
    begin
-      return next_Token (Self, Delimiter => latin_1.LF,
-                               Trim      => Trim);
+      if Token (Token'Last) = latin_1.CR
+      then
+         return Token (Token'First .. Token'Last - 1);
+      else
+         return Token;
+      end if;
    end next_Line;
 
 
