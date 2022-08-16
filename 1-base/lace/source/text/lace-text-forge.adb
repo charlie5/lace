@@ -22,8 +22,17 @@ is
 
       while not end_of_File (the_File)
       loop
-         append (Pad,   get_Line (the_File)
-                      & ada.Characters.Latin_1.LF);
+         declare
+            use ada.Characters;
+            Line : constant String := get_Line (the_File);
+         begin
+            if Line (Line'Last) = latin_1.CR
+            then
+               append (Pad, Line (Line'First .. Line'Last - 1) & latin_1.LF);
+            else
+               append (Pad, Line & latin_1.LF);
+            end if;
+         end;
       end loop;
 
       close (the_File);
