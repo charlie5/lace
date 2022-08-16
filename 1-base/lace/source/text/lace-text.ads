@@ -124,6 +124,9 @@ is
    function  mono_Spaced  (Self : in Item) return Item;
 
 
+   function  Element (Self : in Item;   Index : in Positive) return Character;
+
+
    procedure append (Self : in out Item;   Extra : in String);
    --
    -- Raises an Error if capacity is exceeded.

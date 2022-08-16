@@ -155,6 +155,19 @@ is
 
 
 
+   function Element (Self : in Item;   Index : in Positive) return Character
+   is
+   begin
+      if Index > Self.Length
+      then
+         raise Error with "Index" & Index'Image & " exceeds length of" & Self.Length'Image;
+      end if;
+
+      return Self.Data (Index);
+   end Element;
+
+
+
    procedure append (Self : in out Item;   Extra : in String)
    is
       First : constant Positive := Self.Length + 1;
