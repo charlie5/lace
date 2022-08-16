@@ -2,7 +2,10 @@ with
      ada.Characters.latin_1,
      ada.Characters.handling,
      ada.Strings.fixed,
-     ada.Strings.Maps;
+     ada.Strings.Maps.Constants;
+
+--  with ada.text_IO; use ada.Text_IO;
+
 
 package body lace.text.Cursor
 is
@@ -46,7 +49,7 @@ is
    procedure advance (Self : in out Item;   Delimiter      : in String  := " ";
                                             Repeat         : in Natural := 0;
                                             skip_Delimiter : in Boolean := True;
-                                            Case_sensitive : in Boolean := True)
+                                            match_Case     : in Boolean := True)
    is
    begin
       for Count in 1 .. Repeat + 1
@@ -55,7 +58,7 @@ is
             use ada.Characters.handling;
             delimiter_Position : Natural;
          begin
-            if Case_sensitive
+            if match_Case
             then
                delimiter_Position := fixed.Index (Self.Target.Data (1 .. Self.Target.Length),
                                                   Delimiter,
@@ -98,7 +101,6 @@ is
    begin
       while      has_Element (Self)
         and then (    Self.Target.Data (Self.Current) = ' '
-                  or  Self.Target.Data (Self.Current) = ada.Characters.Latin_1.CR
                   or  Self.Target.Data (Self.Current) = ada.Characters.Latin_1.LF
                   or  Self.Target.Data (Self.Current) = ada.Characters.Latin_1.HT)
       loop
@@ -126,9 +128,12 @@ is
    end next_Token;
 
 
-   function  next_Token  (Self : in out item;   Delimiter : in String;
-                                                Trim      : in Boolean := False) return String
+
+   function next_Token (Self : in out item;   Delimiter  : in String;
+                                              match_Case : in Boolean := True;
+                                              Trim       : in Boolean := False) return String
    is
+      use ada.Characters.handling;
    begin
       if at_End (Self)
       then
@@ -136,9 +141,13 @@ is
       end if;
 
       declare
-         use ada.Strings.fixed;
-         delimiter_Position : constant Natural := Index (Self.Target.Data, Delimiter, from => Self.Current);
+         use ada.Strings.fixed,
+             ada.Strings.Maps.Constants;
+         delimiter_Position : constant Natural := (if match_Case then Index (Self.Target.Data,           Delimiter,  from => Self.Current)
+                                                                 else Index (Self.Target.Data, to_Lower (Delimiter), from => Self.Current, mapping => lower_case_Map));
       begin
+         --  put_Line ("delimiter_Position" & delimiter_Position'Image);
+
          if delimiter_Position = 0
          then
             return the_Token : constant String := (if Trim then fixed.Trim (Self.Target.Data (Self.Current .. Self.Target.Length), Both)
@@ -158,25 +167,25 @@ is
 
 
 
-   function next_Line (Self : in out item;   Trim : in Boolean := False) return String
+   function next_Line (Self : in out Item;   Trim : in Boolean := False) return String
    is
       use ada.Characters;
       Token : constant String := next_Token (Self, Delimiter => latin_1.LF,
                                                    Trim      => Trim);
+      Pad   : constant String := Token; --(if Token (Token'Last) = latin_1.CR then Token (Token'First .. Token'Last - 1)
+                                          --                           else Token);
    begin
-      if Token (Token'Last) = latin_1.CR
-      then
-         return Token (Token'First .. Token'Last - 1);
-      else
-         return Token;
+      if Trim then return fixed.Trim (Pad, Both);
+              else return Pad;
       end if;
    end next_Line;
 
 
 
-   procedure skip_Token (Self : in out Item;   Delimiter : in String := " ")
+   procedure skip_Token (Self : in out Item;   Delimiter  : in String    := " ";
+                                               match_Case : in Boolean   := True)
    is
-      ignored_Token : String := Self.next_Token (Delimiter);
+      ignored_Token : String := Self.next_Token (Delimiter, match_Case);
    begin
       null;
    end skip_Token;

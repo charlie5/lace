@@ -21,21 +21,24 @@ is
 
    function  has_Element (Self : in     Item) return Boolean;
 
-   function  next_Token  (Self : in out item;   Delimiter : in Character := ' ';
-                                                Trim      : in Boolean   := False) return String;
-   function  next_Token  (Self : in out item;   Delimiter : in String;
-                                                Trim      : in Boolean   := False) return String;
+   function  next_Token  (Self : in out item;   Delimiter  : in Character := ' ';
+                                                Trim       : in Boolean   := False) return String;
+   function  next_Token  (Self : in out item;   Delimiter  : in String;
+                                                match_Case : in Boolean   := True;
+                                                Trim       : in Boolean   := False) return String;
 
-   function  next_Line   (Self : in out item;   Trim      : in Boolean   := False) return String;
+   function  next_Line   (Self : in out item;   Trim       : in Boolean   := False) return String;
 
-   procedure skip_Token  (Self : in out Item;   Delimiter : in String := " ");
+   procedure skip_Token  (Self : in out Item;   Delimiter  : in String    := " ";
+                                                match_Case : in Boolean   := True);
+
    procedure skip_White  (Self : in out Item);
    procedure skip_Line   (Self : in out Item);
 
    procedure advance     (Self : in out Item;   Delimiter      : in String  := " ";
                                                 Repeat         : in Natural := 0;
                                                 skip_Delimiter : in Boolean := True;
-                                                Case_sensitive : in Boolean := True);
+                                                match_Case     : in Boolean := True);
    --
    -- Search begins at the cursors current position.
    -- Advances to the position immediately after Delimiter.
