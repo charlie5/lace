@@ -80,7 +80,7 @@ is
 
                elsif Count = Repeat + 1
                then
-                  Self.Current := delimiter_Position - 1;
+                  Self.Current := delimiter_Position;
 
                else
                   Self.Current := delimiter_Position + Delimiter'Length - 1;
@@ -143,8 +143,9 @@ is
       declare
          use ada.Strings.fixed,
              ada.Strings.Maps.Constants;
-         delimiter_Position : constant Natural := (if match_Case then Index (Self.Target.Data,           Delimiter,  from => Self.Current)
-                                                                 else Index (Self.Target.Data, to_Lower (Delimiter), from => Self.Current, mapping => lower_case_Map));
+         delimiter_Position : constant Natural := (if match_Case then Index (Self.Target.Data (Self.Current .. Self.Target.Length),           Delimiter,  from => Self.Current)
+                                                                 else Index (Self.Target.Data (Self.Current .. Self.Target.Length), to_Lower (Delimiter), from => Self.Current,
+                                                                                                                                    mapping => lower_case_Map));
       begin
          --  put_Line ("delimiter_Position" & delimiter_Position'Image);
 
