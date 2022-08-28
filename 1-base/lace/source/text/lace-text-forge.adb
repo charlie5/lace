@@ -26,12 +26,7 @@ is
             use ada.Characters;
             Line : constant String := get_Line (the_File);
          begin
-            if Line (Line'Last) = latin_1.CR
-            then
-               append (Pad, Line (Line'First .. Line'Last - 1) & latin_1.LF);
-            else
-               append (Pad, Line & latin_1.LF);
-            end if;
+            append (Pad, Line & latin_1.LF);
          end;
       end loop;
 
