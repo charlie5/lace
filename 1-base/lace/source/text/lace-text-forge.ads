@@ -14,6 +14,9 @@ is
    function to_Text   (Filename : in forge.Filename) return Item;       -- Converts 'CR & LF' to 'LF' at the end of a line.
 
 
+   procedure store (Filename : in forge.Filename;   the_String : in String);
+
+
    --------------
    -- Stock Items
    --

@@ -49,6 +49,20 @@ is
    end to_Text;
 
 
+
+   procedure store (Filename : in forge.Filename;   the_String : in String)
+   is
+      use ada.Text_IO;
+
+      File : File_type;
+   begin
+      create (File, out_File, String (Filename));
+      put    (File, the_String);
+      close  (File);
+   end store;
+
+
+
    --------------
    -- Stock Items
    --
