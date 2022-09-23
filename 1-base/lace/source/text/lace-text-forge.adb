@@ -1,6 +1,7 @@
 with
      ada.Characters.latin_1,
-     ada.Strings.unbounded,
+     ada.Directories,
+     ada.Direct_IO,
      ada.Text_IO;
 
 
@@ -12,27 +13,35 @@ is
 
    function to_String (Filename : in forge.Filename) return String
    is
-      use ada.Strings.unbounded,
-          ada.Text_IO;
+      use ada.Characters,
+          ada.Directories;
 
-      the_File : ada.Text_IO.File_type;
-      Pad      : unbounded_String;
+      Length : constant Natural := Natural (Size (String (Filename)));
+
+      subtype sized_String is String (1 .. Length);
+
+      package my_IO is new ada.Direct_IO (sized_String);
+      use my_IO;
+
+      the_File : my_IO.File_type;
+      Pad      : sized_String;
+      Result   : sized_String;
+      i        : Natural := 0;
    begin
-      open (the_File, in_File, String (Filename));
-
-      while not end_of_File (the_File)
-      loop
-         declare
-            use ada.Characters;
-            Line : constant String := get_Line (the_File);
-         begin
-            append (Pad, Line & latin_1.LF);
-         end;
-      end loop;
-
+      open  (the_File, in_File, String (Filename));
+      read  (the_File, Pad);
       close (the_File);
 
-      return to_String (Pad);
+      for Each of Pad
+      loop
+         if Each /= latin_1.CR
+         then
+            i          := i + 1;
+            Result (i) := Each;
+         end if;
+      end loop;
+
+      return Result (1 .. i);
    end to_String;
 
 
