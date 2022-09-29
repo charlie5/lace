@@ -141,28 +141,36 @@ is
       end if;
 
       declare
-         use ada.Strings.fixed,
-             ada.Strings.Maps.Constants;
-         delimiter_Position : constant Natural := (if match_Case then Index (Self.Target.Data (Self.Current .. Self.Target.Length),           Delimiter,  from => Self.Current)
-                                                                 else Index (Self.Target.Data (Self.Current .. Self.Target.Length), to_Lower (Delimiter), from => Self.Current,
-                                                                                                                                    mapping => lower_case_Map));
-      begin
-         --  put_Line ("delimiter_Position" & delimiter_Position'Image);
+         function get_String return String
+         is
+            use ada.Strings.fixed,
+                ada.Strings.Maps.Constants;
+            delimiter_Position : constant Natural := (if match_Case then Index (Self.Target.Data (Self.Current .. Self.Target.Length),           Delimiter,  from => Self.Current)
+                                                                    else Index (Self.Target.Data (Self.Current .. Self.Target.Length), to_Lower (Delimiter), from => Self.Current,
+                                                                                                                                       mapping => lower_case_Map));
+         begin
+            if delimiter_Position = 0
+            then
+               return the_Token : constant String := (if Trim then fixed.Trim (Self.Target.Data (Self.Current .. Self.Target.Length), Both)
+                                                              else             Self.Target.Data (Self.Current .. Self.Target.Length))
+               do
+                  Self.Current := 0;
+               end return;
+            end if;
 
-         if delimiter_Position = 0
-         then
-            return the_Token : constant String := (if Trim then fixed.Trim (Self.Target.Data (Self.Current .. Self.Target.Length), Both)
-                                                           else             Self.Target.Data (Self.Current .. Self.Target.Length))
+            return the_Token : constant String := (if Trim then fixed.Trim (Self.Target.Data (Self.Current .. delimiter_Position - 1), Both)
+                                                           else             Self.Target.Data (Self.Current .. delimiter_Position - 1))
             do
-               Self.Current := 0;
+               Self.Current := delimiter_Position + Delimiter'Length;
             end return;
-         end if;
+         end get_String;
 
-         return the_Token : constant String := (if Trim then fixed.Trim (Self.Target.Data (Self.Current .. delimiter_Position - 1), Both)
-                                                        else             Self.Target.Data (Self.Current .. delimiter_Position - 1))
-         do
-            Self.Current := delimiter_Position + Delimiter'Length;
-         end return;
+
+         unslid_String : constant String                             := get_String;
+         slid_String   : constant String (1 .. unslid_String'Length) := unslid_String;
+
+      begin
+         return slid_String;
       end;
    end next_Token;
 
@@ -258,6 +266,7 @@ is
    end get_Real;
 
 
+
    function Length (Self : in Item) return Natural
    is
    begin
@@ -268,13 +277,16 @@ is
 
    function peek (Self : in Item;   Length : in Natural := Remaining) return String
    is
-      Last : constant Natural := (if Length = Natural'Last then Self.Target.Length
-                                                           else Self.Current + Length - 1);
+      Last : Natural := (if Length = Remaining then Self.Target.Length
+                                               else Self.Current + Length - 1);
    begin
       if at_End (Self)
       then
          return "";
       end if;
+
+      Last := Natural'Min (Last,
+                           Self.Target.Length);
 
       return Self.Target.Data (Self.Current .. Last);
    end peek;
