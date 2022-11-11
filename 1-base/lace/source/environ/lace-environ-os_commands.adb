@@ -1,5 +1,5 @@
 with
-     shell.Commands,
+     shell.Commands.unsafe,
 
      gnat.OS_Lib,
 
@@ -26,7 +26,7 @@ is
    is
       use Shell;
    begin
-      Commands.run (command_Line, +Input);
+      Commands.unsafe.run (command_Line, +Input);
    exception
       when E : Commands.command_Error =>
          raise Error with Exception_Message (E);
@@ -38,7 +38,8 @@ is
                     add_Errors   : in Boolean := True) return String
    is
       use Shell,
-          Shell.Commands;
+          Shell.Commands,
+          Shell.Commands.unsafe;
 
       function trim_LF (Source : in String) return String
       is
@@ -71,8 +72,9 @@ is
                     Input        : in String := "") return Data
    is
       use Shell,
-          Shell.Commands;
-      the_Command : Command := Forge.to_Command (command_Line);
+          Shell.Commands,
+          Shell.Commands.unsafe;
+      the_Command : unsafe.Command := Forge.to_Command (command_Line);
    begin
       return Output_of (run (The_Command, +Input));
    exception
