@@ -63,6 +63,7 @@ is
          Binder_Options   := Binder_Options   & "-Es";
          Compiler_Options := Compiler_Options & "-O0"
                                               & "-gnato"
+                                              & "-gnateE"                -- Extra debug info in constraint_Error messages.
                                               & "-fstack-check"
                                               & "-g";
          case lace_OS
