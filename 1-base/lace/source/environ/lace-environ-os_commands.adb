@@ -8,6 +8,7 @@ with
      ada.Characters.latin_1,
      ada.Exceptions;
 
+
 package body lace.Environ.OS_Commands
 is
    use ada.Exceptions;
@@ -21,16 +22,19 @@ is
    end Path_to;
 
 
+
    procedure run_OS (command_Line : in String;
                      Input        : in String := "")
    is
       use Shell;
    begin
       Commands.unsafe.run (command_Line, +Input);
+
    exception
       when E : Commands.command_Error =>
          raise Error with Exception_Message (E);
    end run_OS;
+
 
 
    function run_OS (command_Line : in String;
@@ -40,6 +44,7 @@ is
       use Shell,
           Shell.Commands,
           Shell.Commands.unsafe;
+
 
       function trim_LF (Source : in String) return String
       is
@@ -52,8 +57,10 @@ is
          return trim (Source, LF_Set, LF_Set);
       end trim_LF;
 
+
       Results : constant Command_Results := run (command_Line, +Input);
       Output  : constant String          := +Output_of (Results);
+
    begin
       if add_Errors
       then
@@ -68,15 +75,19 @@ is
    end run_OS;
 
 
+
    function run_OS (command_Line : in String;
                     Input        : in String := "") return Data
    is
       use Shell,
           Shell.Commands,
           Shell.Commands.unsafe;
+
       the_Command : unsafe.Command := Forge.to_Command (command_Line);
+
    begin
       return Output_of (run (The_Command, +Input));
+
    exception
       when E : command_Error =>
          raise Error with Exception_Message (E);
@@ -89,8 +100,9 @@ is
       use Paths,
           gnat.OS_Lib;
 
-      File_Path :          String_Access := Locate_Exec_On_Path (+Executable);
+      File_Path :          String_Access := locate_Exec_on_Path (+Executable);
       Found     : constant Boolean       := File_Path /= null;
+
    begin
       free (File_Path);
       return Found;

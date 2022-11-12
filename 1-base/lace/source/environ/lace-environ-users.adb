@@ -4,8 +4,10 @@ with
      posix.user_Database,
      posix.process_Identification;
 
+
 package body lace.Environ.Users
 is
+
    function "+" (Source : in unbounded_String) return String
                  renames to_String;
 
@@ -18,6 +20,7 @@ is
    end to_User;
 
 
+
    function Name (Self : in User) return String
    is
    begin
@@ -25,8 +28,8 @@ is
    end Name;
 
 
-   procedure add_User (Self  : in User;
-                       Super : in Boolean := False)
+
+   procedure add_User (Self : in User;   Super : in Boolean := False)
    is
       use lace.Environ.OS_Commands;
    begin
@@ -40,6 +43,7 @@ is
                raise Error with Output;
             end if;
          end;
+
       else
          declare
             Output : constant String := run_OS ("useradd " & (+Self.Name) & " -m");
@@ -53,9 +57,11 @@ is
    end add_User;
 
 
+
    procedure rid_User (Self : in User)
    is
       use lace.Environ.OS_Commands;
+
       Output : constant String := run_OS ("userdel -r " & (+Self.Name));
    begin
       if Output /= ""
@@ -65,17 +71,19 @@ is
    end rid_User;
 
 
+
    procedure switch_to (Self : in User)
    is
       use Posix,
-          posix.User_Database,
-          posix.Process_Identification;
+          posix.user_Database,
+          posix.process_Identification;
 
-      User_in_DB : constant User_Database_Item := get_User_Database_Item (to_Posix_String (+Self.Name));
+      User_in_DB : constant User_Database_item := get_User_Database_item (to_Posix_String (+Self.Name));
       ID         : constant User_ID            := User_ID_of (User_in_DB);
    begin
       set_User_ID (ID);
    end switch_to;
+
 
 
    function current_User return User
@@ -87,13 +95,14 @@ is
    end current_User;
 
 
+
    function home_Folder (Self : in User := current_User) return Paths.Folder
    is
       use Paths,
           Posix,
-          posix.User_Database;
+          posix.user_Database;
 
-      User_in_DB : constant User_Database_Item := get_User_Database_Item (to_Posix_String (+Self.Name));
+      User_in_DB : constant User_Database_item := get_User_Database_item (to_Posix_String (+Self.Name));
    begin
       return to_Folder (to_String (initial_Directory_of (User_in_DB)));
    end home_Folder;

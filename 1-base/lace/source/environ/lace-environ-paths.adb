@@ -1,6 +1,7 @@
 with
      lace.Environ.OS_Commands,
      lace.Text.utility,
+
      posix.file_Status,
      posix.Calendar,
 
@@ -16,6 +17,7 @@ with
      ada.Text_IO,
      ada.IO_Exceptions;
 
+
 package body lace.Environ.Paths
 is
    -----------
@@ -24,6 +26,7 @@ is
 
    function "+" (Source : in unbounded_String) return String
                  renames to_String;
+
 
 
    function expand_GLOB (GLOB : in String) return String
@@ -61,6 +64,7 @@ is
    end to_String;
 
 
+
    procedure check (Self : in Path'Class)
    is
       use ada.Tags,
@@ -83,6 +87,7 @@ is
    end check;
 
 
+
    procedure link (Self, To : in Path)
    is
    begin
@@ -95,13 +100,13 @@ is
                                              & " "
                                              & (+To));
       begin
-
          if Output /= ""
          then
             raise Error with Output;
          end if;
       end;
    end link;
+
 
 
    procedure change_Mode (Self : in Path;
@@ -122,6 +127,7 @@ is
    end change_Mode;
 
 
+
    procedure change_Owner (Self : in Path;
                            To   : in String)
    is
@@ -140,6 +146,7 @@ is
    end change_Owner;
 
 
+
    function Exists (Self : in Path) return Boolean
    is
    begin
@@ -148,8 +155,9 @@ is
          raise Error with "No path specified.";
       end if;
 
-      return ada.Directories.Exists (+Self);
+      return ada.Directories.exists (+Self);
    end Exists;
+
 
 
    function is_Folder (Self : in Path) return Boolean
@@ -161,6 +169,7 @@ is
    end is_Folder;
 
 
+
    function is_File (Self : in Path) return Boolean
    is
       use ada.Directories;
@@ -170,6 +179,7 @@ is
    end is_File;
 
 
+
    function is_Special (Self : in Path) return Boolean
    is
       use ada.Directories;
@@ -177,6 +187,7 @@ is
       check (Self);
       return Kind (+Self) = Special_File;
    end is_Special;
+
 
 
    function is_Absolute (Self : in Path) return Boolean
@@ -191,11 +202,13 @@ is
    end is_Absolute;
 
 
+
    function is_Relative (Self : in Path) return Boolean
    is
    begin
       return not is_Absolute (Self);
    end is_Relative;
+
 
 
    function modify_Time (Self : in Path) return ada.Calendar.Time
@@ -204,16 +217,17 @@ is
       check (Self);
 
       declare
-         use POSIX,
-             POSIX.Calendar,
-             POSIX.File_Status;
+         use Posix,
+             posix.Calendar,
+             posix.File_Status;
 
-         the_Status : constant Status     := get_File_Status (pathname => to_POSIX_String (+Self));
+         the_Status : constant Status     := get_File_Status (Pathname => to_posix_String (+Self));
          Time       : constant POSIX_Time := last_modification_Time_of (the_Status);
       begin
          return to_Time (Time);
       end;
    end modify_Time;
+
 
 
    function Parent (Self : in Path'Class) return Folder
@@ -247,8 +261,9 @@ is
    function Name (Self : in Path) return String
    is
    begin
-   return +Self.Name;
+      return +Self.Name;
    end Name;
+
 
 
    function Simple (Self : in Path) return String
@@ -258,18 +273,19 @@ is
 
       declare
          use ada.Strings;
-         Idx  : constant Natural := Index  (Self.Name, "/", going => Backward);
+         i    : constant Natural := Index  (Self.Name, "/", going => Backward);
          Last : constant Natural := Length (Self.Name);
       begin
-         if Idx = 0
+         if i = 0
          then
             return +Self;
          else
-            return Slice (Self.Name, Low  => Idx + 1,
+            return Slice (Self.Name, Low  => i + 1,
                                      High => Last);
          end if;
       end;
    end Simple;
+
 
 
    -----------
@@ -279,15 +295,16 @@ is
    function to_Folder (Name : in String) return Folder
    is
    begin
-      return (Name => To_Unbounded_String (Name));
+      return (Name => to_unbounded_String (Name));
    end to_Folder;
+
 
 
    function "+" (Left : in Folder;   Right : in Folder) return Folder
    is
+      Result   :          Folder;
       R_Folder : constant String := (if Right.is_Absolute then  Right.Simple
                                                           else +Right);
-      Result   : Folder;
    begin
       Result.Name := Left.Name;
       append (Result.Name, "/" & R_Folder);
@@ -296,12 +313,13 @@ is
    end "+";
 
 
+
    function "+" (Left  : in Folder'Class;
                  Right : in File  'Class) return File
    is
+      Result :          File;
       R_File : constant String := (if Right.is_Absolute then  Right.Simple
                                                         else +Right);
-      Result : File;
    begin
       Result.Name := Left.Name;
       append (Result.Name, "/" & R_File);
@@ -310,11 +328,13 @@ is
    end "+";
 
 
+
    function current_Folder return Folder
    is
    begin
       return +ada.Directories.current_Directory;
    end current_Folder;
+
 
 
    protected folder_Lock
@@ -329,13 +349,14 @@ is
    protected body folder_Lock
    is
       entry change (To : in Folder)
-      when not Locked
+            when not Locked
       is
       begin
          check (To);
          ada.Directories.set_Directory (+To);
          Locked := True;
       end change;
+
 
       procedure clear
       is
@@ -345,19 +366,21 @@ is
    end folder_Lock;
 
 
-   procedure go_to_Folder (Self  : in Folder;
-                           Lock   : in Boolean := False)
+
+   procedure go_to_Folder (Self : in Folder;
+                           lock : in Boolean := False)
    is
    begin
       check (Self);
 
-      if Lock
+      if lock
       then
          folder_Lock.change (Self);
       else
          ada.Directories.set_Directory (+Self);
       end if;
    end go_to_Folder;
+
 
 
    procedure unlock_Folder
@@ -367,11 +390,12 @@ is
    end unlock_Folder;
 
 
-   function contents_Count (Self  : in Folder;
-                            Recurse : in Boolean := False) return Natural
+
+   function contents_Count (Self    : in Folder;
+                            recurse : in Boolean := False) return Natural
    is
-      use Shell.Directory_Iteration,
-          Ada.Directories;
+      use shell.Directory_Iteration,
+          ada.Directories;
 
       Count : Natural := 0;
    begin
@@ -382,7 +406,8 @@ is
          declare
             Name : constant String := Simple_Name (Each);
          begin
-            if not (Name = "." or Name = "..")
+            if not (   Name = "."
+                    or Name = "..")
             then
                Count := Count + 1;
             end if;
@@ -393,12 +418,14 @@ is
    end contents_Count;
 
 
+
    function is_Empty (Self : in Folder) return Boolean
    is
    begin
       check (Self);
       return contents_Count (Self) = 0;
    end is_Empty;
+
 
 
    procedure rid_Folder (Self : in Folder)
@@ -412,6 +439,7 @@ is
    end rid_Folder;
 
 
+
    procedure copy_Folder (Self : in Folder;   To : in Folder)
    is
       use lace.Environ.OS_Commands;
@@ -421,6 +449,7 @@ is
 
       run_OS ("cp -fr " & (+Self) & " " & (+To));
    end copy_Folder;
+
 
 
    procedure move_Folder (Self : in Folder;   To : in Folder)
@@ -434,6 +463,7 @@ is
    end move_Folder;
 
 
+
    procedure rename_Folder (Self  : in Folder;   To : in Folder)
    is
    begin
@@ -441,6 +471,7 @@ is
 
       ada.Directories.rename (+Self, +To);
    end rename_Folder;
+
 
 
    procedure ensure_Folder (Self  : in Folder)
@@ -455,16 +486,19 @@ is
    end ensure_Folder;
 
 
+
    function Relative (Self : in Folder;   To : in Folder'Class) return Folder
    is
       use lace.Text,
           lace.Text.utility;
+
       Filename        : constant lace.Text.item := to_Text (+Self);
       relative_Folder : constant lace.Text.item := replace (Filename, pattern => +To & "/",
                                                                       by      => "");
    begin
       return to_Folder (+relative_Folder);
    end Relative;
+
 
 
    -------------------
@@ -480,6 +514,7 @@ is
       Context.folder_Stack.append (current_Folder);
       go_to_Folder (goto_Folder);
    end push_Folder;
+
 
 
    procedure pop_Folder (Context : in out folder_Context)
@@ -499,6 +534,7 @@ is
    end pop_Folder;
 
 
+
    procedure pop_All (Context : in out folder_Context)
    is
    begin
@@ -510,6 +546,7 @@ is
       go_to_Folder (Context.folder_Stack.Element (1));
       Context.folder_Stack.clear;
    end pop_All;
+
 
 
    ---------
@@ -525,12 +562,14 @@ is
    end to_File;
 
 
+
    function "+" (Left  : in File'Class;
                  Right : in File_Extension) return File
    is
    begin
       return to_File (+Left & "." & String (Right));
    end "+";
+
 
 
    function Extension (Self : in File) return File_Extension
@@ -541,27 +580,30 @@ is
    end Extension;
 
 
-   procedure save (Self   : in File;
-                   Text   : in String;
-                   Binary : in Boolean := False)
+
+   procedure save (Self : in File;   Text   : in String;
+                                     Binary : in Boolean := False)
    is
    begin
       if Binary
       then
          declare
             type binary_String is new String (Text'Range);
+
             package Binary_IO  is new ada.Direct_IO (binary_String);
             use     Binary_IO;
-            File :  File_Type;
+
+            File :  File_type;
          begin
             create (File, out_File, +Self);
             write  (File, binary_String (Text));
             close  (File);
          end;
+
       else
          declare
             use ada.Text_IO;
-            File : File_Type;
+            File : File_type;
          begin
             create (File, out_File, +Self);
             put    (File, Text);
@@ -571,16 +613,19 @@ is
    end save;
 
 
-   procedure save (Self : in File;
-                   Data : in environ.Data)
+
+   procedure save (Self : in File;   Data : in environ.Data)
    is
    begin
       check (Self);
+
       declare
          type Element_Array is new environ.Data  (Data'Range);
+
          package Binary_IO  is new ada.Direct_IO (Element_Array);
          use     Binary_IO;
-         File :  File_Type;
+
+         File : File_type;
       begin
          create (File, out_File, +Self);
          write  (File, Element_Array (Data));
@@ -589,10 +634,11 @@ is
    end save;
 
 
+
    function load (Self : in File) return String
    is
       use type ada.Directories.File_Size;
-      Size : ada.Directories.File_Size;
+      Size :   ada.Directories.File_Size;
    begin
       check (Self);
       Size := ada.Directories.Size (+Self);
@@ -608,7 +654,7 @@ is
          package String_IO is new ada.Direct_IO (my_String);
          use     String_IO;
 
-         File   : File_Type;
+         File   : File_type;
          Result : my_String;
       begin
          open  (File, in_File, +Self);
@@ -619,15 +665,17 @@ is
       end;
 
    exception
-      when ada.IO_Exceptions.Name_Error =>
+      when ada.IO_Exceptions.name_Error =>
          raise Error with "Cannot load missing file: '" & (+Self) & "'";
    end load;
+
 
 
    function load (Self : in File) return Data
    is
    begin
       check (Self);
+
       declare
          use ada.Streams;
          Size : constant ada.Directories.File_Size := ada.Directories.Size (+Self);
@@ -637,7 +685,7 @@ is
          package Binary_IO  is new ada.Direct_IO (Element_Array);
          use     Binary_IO;
 
-         File   : Binary_IO.File_Type;
+         File   : Binary_IO.File_type;
          Result : Element_Array;
       begin
          open  (File, out_File, +Self);
@@ -648,9 +696,10 @@ is
       end;
 
    exception
-      when ada.IO_Exceptions.Name_Error =>
+      when ada.IO_Exceptions.name_Error =>
          raise Error with "Cannot load missing file: '" & (+Self) & "'";
    end load;
+
 
 
    procedure copy_File (Self : in File;   To : in File)
@@ -663,13 +712,14 @@ is
    end copy_File;
 
 
+
    procedure copy_Files (Named : in String;   To : in Folder)
    is
       use lace.Text,
           lace.Text.all_Tokens,
           ada.Strings.fixed;
 
-      all_Files : constant String        := (if Index (Named, "*") /= 0 then Expand_GLOB (Named)
+      all_Files : constant String        := (if Index (Named, "*") /= 0 then expand_GLOB (Named)
                                                                         else Named);
       file_List : constant Text.items_1k := Tokens (to_Text (all_Files));
    begin
@@ -694,6 +744,7 @@ is
    end copy_Files;
 
 
+
    procedure move_File (Self : in File;   To : in File)
    is
    begin
@@ -706,6 +757,7 @@ is
       ada.Directories.copy_File (+Self, +To);
       rid_File (Self);
    end move_File;
+
 
 
    procedure move_Files (Named : in String;   To : in Folder)
@@ -745,6 +797,7 @@ is
    end move_Files;
 
 
+
    procedure append (Self : in File;   Text : in String)
    is
    begin
@@ -759,6 +812,7 @@ is
          close (Target);
       end;
    end append;
+
 
 
    procedure append_File (Self : in File;   To : in File)
@@ -780,12 +834,14 @@ is
    end append_File;
 
 
+
    procedure rid_File (Self : in File)
    is
    begin
       check (Self);
       ada.Directories.delete_File (+Self);
    end rid_File;
+
 
 
    procedure rid_Files (Named : in String)
@@ -797,6 +853,7 @@ is
       all_Files : constant String        := (if Index (Named, "*") /= 0 then Expand_GLOB (Named)
                                                                         else Named);
       file_List : constant Text.items_1k := Tokens (to_Text (all_Files));
+
    begin
       for Each of file_List
       loop
@@ -804,6 +861,7 @@ is
          rid_File (to_File (+Each));
       end loop;
    end rid_Files;
+
 
 
    procedure touch (Self : in File)
@@ -818,16 +876,19 @@ is
    end touch;
 
 
+
    function Relative (Self : in File;   To : in Folder'Class) return File
    is
       use lace.Text,
           lace.Text.utility;
+
       Filename      : constant lace.Text.item := to_Text (+Self);
-      relative_File : constant lace.Text.item := replace (Filename, pattern => +To & "/",
-                                                                    by      => "");
+      relative_File : constant lace.Text.item := replace (Filename, Pattern => +To & "/",
+                                                                    By      => "");
    begin
       return to_File (+relative_File);
    end Relative;
+
 
 
    function rid_Extension (Self : in File) return File
@@ -852,6 +913,7 @@ is
    is
       use lace.Environ.OS_Commands;
 
+
       function level_Flag return String
       is
          use ada.Strings,
@@ -862,6 +924,7 @@ is
                       Left)
               & " ";
       end level_Flag;
+
 
    begin
       check (the_Path);
@@ -877,6 +940,7 @@ is
                                                 when Tar_Gz  => "-czf",
                                                 when Tar_Xz  => "-cJf",
                                                 when others  => raise program_Error);
+
                Output  : constant String := run_OS (  "tar " & Options
                                                     & " "    & (+the_Path) & format_Suffix (the_Format)
                                                     & " "    & (+the_Path));
@@ -922,6 +986,7 @@ is
             end;
       end case;
    end compress;
+
 
 
    procedure decompress (Name : in File)
@@ -995,6 +1060,7 @@ is
       end;
 
    end decompress;
+
 
 
    function format_Suffix (Format : compress_Format) return String
