@@ -23,12 +23,14 @@ is
    end to_Logger;
 
 
+
    overriding
    procedure destruct (Self : in out Item)
    is
    begin
       close (Self.File);
    end destruct;
+
 
 
    -------------
@@ -45,6 +47,7 @@ is
                            & From.Name & " observes " & To.Name
                            & " for event kind " & Name_of (for_Kind) & ".");
    end log_Connection;
+
 
 
    overriding
@@ -72,6 +75,7 @@ is
                            & To.Name
                            & " for event kind " & Name_of (for_Kind) & ".");
    end log_Disconnection;
+
 
 
    overriding
@@ -104,6 +108,7 @@ is
    end log_Emit;
 
 
+
    overriding
    procedure log_Relay (Self : in out Item;   From      : in Observer.view;
                                               To        : in Observer.view;
@@ -114,6 +119,7 @@ is
                            & From.Name & " relays " & Name_of (Kind_of (the_Event))
                            & " to "    & To.Name & ".");
    end log_Relay;
+
 
 
    overriding
@@ -131,6 +137,7 @@ is
    end log_new_Response;
 
 
+
    overriding
    procedure log_rid_Response (Self : in out Item;   the_Response : in Response.view;
                                                      of_Observer  : in Observer.item'Class;
@@ -144,6 +151,7 @@ is
                            & " from "                  & from_Subject
                            & " with "                  & the_Response.Name & ".");
    end log_rid_Response;
+
 
 
    overriding
@@ -166,12 +174,14 @@ is
    end log_Response;
 
 
+
    overriding
    procedure log (Self : in out Item;   Message : in String)
    is
    begin
       put_Line (Self.File, Message);
    end log;
+
 
 
    overriding
