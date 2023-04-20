@@ -5,7 +5,7 @@ with
      posix.file_Status,
      posix.Calendar,
 
-     shell.Directory_Iteration,
+     shell.Directories,
 
      lace.Text.all_Tokens,
 
@@ -394,7 +394,7 @@ is
    function contents_Count (Self    : in Folder;
                             recurse : in Boolean := False) return Natural
    is
-      use shell.Directory_Iteration,
+      use shell.Directories,
           ada.Directories;
 
       Count : Natural := 0;
