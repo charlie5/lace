@@ -35,10 +35,12 @@ begin
    declare
       use ada.Calendar;
 
-      the_Applet : constant gel.Applet.gui_world.view := gel.Forge.new_gui_Applet  ("mouse Selection",
+      the_Applet : constant gel.Applet.gui_world.view := gel.Forge.new_gui_Applet  ("mouse_Selection_Applet",
                                                                                     space_Kind => physics.Bullet);
       the_Ball   : constant gel.Sprite.view           := gel.Forge.new_ball_Sprite (the_Applet.World (1),
                                                                                     mass => 0.0);
+
+
 
       type retreat_Sprite is new lace.Response.item with
          record
@@ -51,10 +53,12 @@ begin
          use float_Math;
       begin
          put_Line ("retreat_Sprite");
-         Self.Sprite.Site_is (self.Sprite.Site - the_Applet.gui_Camera.Spin * [0.0, 0.0, 1.0]);
+         Self.Sprite.Site_is (Self.Sprite.Site - the_Applet.gui_Camera.Spin * [0.0, 0.0, 1.0]);
       end respond;
 
       retreat_Sprite_Response : aliased retreat_Sprite := (lace.Response.item with sprite => the_Ball);
+
+
 
 
       type advance_Sprite is new lace.Response.item with
@@ -68,20 +72,22 @@ begin
          use float_Math;
       begin
          put_Line ("advance_Sprite");
-         Self.Sprite.Site_is (self.Sprite.Site + the_Applet.gui_Camera.Spin * [0.0, 0.0, 1.0]);
+         Self.Sprite.Site_is (Self.Sprite.Site + the_Applet.gui_Camera.Spin * [0.0, 0.0, 1.0]);
       end respond;
 
       advance_Sprite_Response : aliased advance_Sprite := (lace.Response.Item with sprite => the_Ball);
 
 
+
+
       next_render_Time : ada.calendar.Time;
 
    begin
-      the_Ball.add (advance_Sprite_Response'unchecked_access,
+      the_Ball.add (advance_Sprite_Response'unchecked_Access,
                     to_Kind (gel.events.sprite_click_down_Event'Tag),
                     the_Applet.Name);
 
-      the_Ball.add (retreat_Sprite_Response'unchecked_access,
+      the_Ball.add (retreat_Sprite_Response'unchecked_Access,
                     to_Kind (gel.events.sprite_click_up_Event'Tag),
                     the_Applet.Name);
 
