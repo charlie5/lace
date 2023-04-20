@@ -235,6 +235,7 @@ is
 
 
 
+
    procedure add_new_World (Self : in out Item;   Name       : in String;
                                                   space_Kind : in physics.space_Kind)
    is
@@ -263,6 +264,7 @@ is
 
       Self.add (the_world_Info);
    end add_new_World;
+
 
 
 
@@ -389,6 +391,9 @@ is
    end last_Keypress;
 
 
+
+
+
    --------------
    --- Operations
    --
@@ -410,6 +415,8 @@ is
          next (world_Cursor);
       end loop;
    end evolve_all_Worlds;
+
+
 
 
 

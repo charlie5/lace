@@ -9,7 +9,7 @@ with
      gel.Window,
 
      openGL.Renderer.lean,
-     opengl.Font,
+     openGL.Font,
 
      lace.Event,
      lace.Response,
@@ -18,6 +18,7 @@ with
      lace.Subject_and_deferred_Observer,
 
      ada.Containers.Vectors;
+
 
 package gel.Applet
 --

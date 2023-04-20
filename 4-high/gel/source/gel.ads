@@ -1,10 +1,12 @@
 with
      openGL,
      Physics,
+
      float_Math.Geometry.D2,
      float_Math.Geometry.D3,
      float_Math.Algebra.linear.D2,
      float_Math.Algebra.linear.D3;
+
 
 package GEL
 --
@@ -14,6 +16,7 @@ is
    pragma Pure;
 
    Error : exception;
+
 
    --------
    --- Math
@@ -28,14 +31,16 @@ is
    package linear_Algebra_3D renames linear_Algebra.D3;
 
 
+
    ---------------
    --- Constraints
    --
-   max_Worlds          : constant := 1000;
-   max_Cameras         : constant := 1000;
+   max_Worlds          : constant := 1_000;
+   max_Cameras         : constant := 1_000;
    max_graphics_Models : constant := 2**32 - 1;
 --     max_physics_Models  : constant := 2**32 - 1;
    max_Sprites         : constant := 2**32 - 1;
+
 
 
    -------
