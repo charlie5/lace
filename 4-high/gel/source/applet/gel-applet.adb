@@ -31,11 +31,13 @@ is
    end my_context_Setter;
 
 
+
    procedure my_Swapper
    is
    begin
       global_Window.swap_GL;
    end my_Swapper;
+
 
 
    overriding
@@ -56,6 +58,7 @@ is
       when constraint_Error =>
          put_Line ("Exception in 'add_new_Sprite' response.");
    end respond;
+
 
 
    overriding
@@ -114,6 +117,7 @@ is
       the_add_new_sprite_Response.Applet := Self;
 
    end define;
+
 
 
    overriding
@@ -181,6 +185,7 @@ is
    end free;
 
 
+
    ---------
    --- Forge
    --
@@ -213,6 +218,7 @@ is
    end Forge;
 
 
+
    --------------
    --- Attributes
    --
@@ -232,7 +238,6 @@ is
       Self.add_new_World (Name, space_Kind);
       return Self.Worlds.last_Element.World;
    end new_World;
-
 
 
 
@@ -264,7 +269,6 @@ is
 
       Self.add (the_world_Info);
    end add_new_World;
-
 
 
 
@@ -393,7 +397,6 @@ is
 
 
 
-
    --------------
    --- Operations
    --
@@ -415,8 +418,6 @@ is
          next (world_Cursor);
       end loop;
    end evolve_all_Worlds;
-
-
 
 
 
@@ -625,6 +626,7 @@ is
    end respond;
 
 
+
    overriding
    procedure respond (Self : in out key_release_Response;   to_Event : in lace.Event.Item'Class)
    is
@@ -724,6 +726,7 @@ is
    end enable_following_Dolly;
 
 
+
    --------------------------
    --- Mouse Button Responses
    --
@@ -774,6 +777,7 @@ is
    end respond;
 
 
+
    type mouse_button_collision_Event is new gel.World.raycast_collision_Event with null record;
 
 
@@ -810,10 +814,10 @@ is
             the_Context.is_Press  := True;
             the_Context.button_Id := the_Event.Button;
 
-            the_world_Info.World.cast_Ray (From     => the_Camera.Site,
-                                           To       => Site_world_space,
-                                           Observer => lace.Observer.view (Self.Applet.local_Subject_and_Observer),
-                                           Context  => the_Context,
+            the_world_Info.World.cast_Ray (From       => the_Camera.Site,
+                                           To         => Site_world_space,
+                                           Observer   => lace.Observer.view (Self.Applet.local_Subject_and_Observer),
+                                           Context    => the_Context,
                                            event_Kind => event_Kind);
          end;
 
@@ -898,6 +902,7 @@ is
    end respond;
 
 
+
    --------------------------
    --- Window Resize Response
    --
@@ -925,6 +930,7 @@ is
          next (Cursor);
       end loop;
    end respond;
+
 
 
    ---------
@@ -975,6 +981,7 @@ is
    end enable_Mouse;
 
 
+
    ----------------
    --- Local Events
    --
@@ -986,11 +993,13 @@ is
    end local_Subject_and_Observer;
 
 
+
    function local_Subject (Self : access Item) return lace.Subject.view
    is
    begin
       return lace.Subject.view (Self.local_Subject_and_Observer);
    end local_Subject;
+
 
 
    function local_Observer (Self : access Item) return lace.Observer.view
