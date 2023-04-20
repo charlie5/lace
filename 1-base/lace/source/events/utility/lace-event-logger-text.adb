@@ -41,7 +41,7 @@ is
                                                    for_Kind : in Event.Kind)
    is
    begin
-      put_Line (Self.File,   "log Connection => "
+      put_Line (Self.File,   "new Connection => "
                            & From.Name & " observes " & To.Name
                            & " for event kind " & Name_of (for_Kind) & ".");
    end log_Connection;
@@ -66,7 +66,7 @@ is
       end from_Name;
 
    begin
-      put_Line (Self.File,   "log Disconnection => "
+      put_Line (Self.File,   "Disconnection => "
                            & from_Name
                            & " no longer observes "
                            & To.Name
@@ -97,8 +97,9 @@ is
          return;
       end if;
 
-      put_Line (Self.File,   "log Emit => "
-                           & From.Name & " sends " & Name_of (Kind_of (the_Event))
+      new_Line (Self.File);
+      put_Line (Self.File,   "Emit     => "
+                           & From.Name & "  sends       " & Name_of (Kind_of (the_Event))
                            & " to "    & to_Name & ".");
    end log_Emit;
 
@@ -109,7 +110,7 @@ is
                                               the_Event : in Event.item'Class)
    is
    begin
-      put_Line (Self.File,  "log Relay => "
+      put_Line (Self.File,  "Relay => "
                            & From.Name & " relays " & Name_of (Kind_of (the_Event))
                            & " to "    & To.Name & ".");
    end log_Relay;
@@ -122,7 +123,7 @@ is
                                                      from_Subject : in subject_Name)
    is
    begin
-      put_Line (Self.File,   "log new Response => "
+      put_Line (Self.File,   "new Response   => "
                            & of_Observer.Name
                            & " responds to " & Name_of (to_Kind)
                            & " from "        & from_Subject
@@ -137,7 +138,7 @@ is
                                                      from_Subject : in subject_Name)
    is
    begin
-      put_Line (Self.File,   "log rid Response => "
+      put_Line (Self.File,   "rid Response => "
                            & of_Observer.Name
                            & " no longer responds to " & Name_of (to_Kind)
                            & " from "                  & from_Subject
@@ -157,7 +158,7 @@ is
          return;
       end if;
 
-      put_Line (Self.File,   "log Response => "
+      put_Line (Self.File,   "Response => "
                            & of_Observer.Name
                            & " responds to " & Name_of (to_Kind (to_Event'Tag))
                            & " from "        & from_Subject
