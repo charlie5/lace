@@ -33,15 +33,11 @@ is
                           "-fno-strict-aliasing")
                         & Style_Options;
 
-   Fast_Options := ("-O2", 
+   Fast_Options := ("-O3", 
                     "-gnatn",
                     "-gnatp",
                     "-funroll-loops",
-                    "-fpeel-loops",
-                    "-ftracer",
-                    "-funswitch-loops",
-                    "-fweb",
-                    "-frename-registers"); 
+                    "-ftracer");
 
    Small_Options := ("-Os",
                      "-gnatp",
