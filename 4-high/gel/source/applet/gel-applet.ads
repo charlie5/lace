@@ -192,22 +192,12 @@ private
    procedure respond (Self : in out mouse_motion_Response;     to_Event : in lace.Event.item'Class);
 
 
-   type mouse_click_raycast_Response is new lace.Response.item with
-      record
-         Applet : gel.Applet.view;
-      end record;
-
-   overriding
-   procedure respond (Self : in out mouse_click_raycast_Response;   to_Event : in lace.Event.item'Class);
-
-   type mouse_click_raycast_Response_view is access all mouse_click_raycast_Response'Class;
-
-
    -- 'Screen' Resize Response
    --
    type resize_event_Response is new applet_event_Response with null record;
    overriding
    procedure respond (Self : in out resize_event_Response;   to_Event : in lace.Event.Item'Class);
+
 
 
    ----------------
@@ -238,7 +228,6 @@ private
          button_press_Response        : aliased applet.button_press_Response;
          button_release_Response      : aliased applet.button_release_Response;
          mouse_motion_Response        : aliased applet.mouse_motion_Response;
-         mouse_click_raycast_Response : aliased applet.mouse_click_raycast_Response;
 
          Renderer           : openGL.Renderer.lean.view;
          Font               : opengl.Font.font_Id := (openGL.to_Asset ("assets/opengl/font/LiberationMono-Regular.ttf"), 30);

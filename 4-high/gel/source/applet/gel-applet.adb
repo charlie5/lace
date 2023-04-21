@@ -9,7 +9,6 @@ with
      openGL.Palette,
      openGL.Renderer.lean.forge,
 
-     lace.Any,
      lace.Event.utility,
 
      ada.unchecked_Conversion,
@@ -731,61 +730,10 @@ is
    --- Mouse Button Responses
    --
 
-   type button_press_raycast_Context is new lace.Any.limited_item with
-      record
-         is_Motion : Boolean;
-         is_Press  : Boolean;
-         button_Id : gel.mouse.Button_Id;
-      end record;
-
-   type button_press_raycast_Context_view is access all button_press_raycast_Context'Class;
-
-
-   overriding
-   procedure respond (Self : in out mouse_click_raycast_Response;   to_Event : in lace.Event.item'Class)
-   is
-      use gel.World;
-
-      the_Event   :          raycast_collision_Event           := raycast_collision_Event (to_Event);
-      the_Context : constant button_press_raycast_Context_view := button_press_raycast_Context_view (the_Event.Context);
-   begin
-      if the_Context.is_Motion
-      then
-         null;
-
-      else
-         if the_Context.is_Press
-         then
-            declare
-               collide_Event : constant gel.events.sprite_click_down_Event := (mouse_Button => the_Context.button_Id,
-                                                                               world_Site   => the_Event.Site_world);
-            begin
-               the_Event.near_Sprite.receive (collide_Event, Self.Applet.Name);
-            end;
-
-         else   -- Is a button release.
-            declare
-               collide_Event : constant gel.events.sprite_click_up_Event := (mouse_Button => the_Context.button_Id,
-                                                                             world_Site   => the_Event.Site_world);
-            begin
-               the_Event.near_Sprite.receive (collide_Event, Self.Applet.Name);
-            end;
-         end if;
-      end if;
-
-      the_Event.destruct;
-   end respond;
-
-
-
-   type mouse_button_collision_Event is new gel.World.raycast_collision_Event with null record;
-
-
    overriding
    procedure respond (Self : in out button_press_Response;   to_Event : in lace.Event.item'Class)
    is
-      use world_Vectors,
-          gel.Mouse;
+      use world_Vectors;
 
       the_Event       : gel.mouse.button_press_Event renames gel.Mouse.button_press_Event (to_Event);
       Cursor          : world_Vectors.Cursor         :=      Self.Applet.Worlds.First;
@@ -799,26 +747,24 @@ is
          declare
             use gel.World;
 
-            the_Camera : constant gel.Camera.view := the_world_Info.Cameras.first_Element;
+            the_Camera        : constant gel.Camera.view   := the_world_Info.Cameras.first_Element;
 
-            Site_window_space : constant Vector_3 := [Real (the_Event.Site (1)),
-                                                      Real (the_Event.Site (2)),
-                                                      1.0];
-            Site_world_space  : constant Vector_3 := the_Camera.to_world_Site (Site_window_space);
+            Site_window_space : constant Vector_3          := [Real (the_Event.Site (1)),
+                                                               Real (the_Event.Site (2)),
+                                                               1.0];
 
-            the_Context : constant button_press_raycast_Context_view := new button_press_raycast_Context;
-            event_Kind  :          mouse_button_collision_Event;
+            Site_world_space  : constant Vector_3          := the_Camera.to_world_Site (Site_window_space);
 
+            Collision         :          ray_Collision := the_world_Info.World.cast_Ray (From => the_Camera.Site,
+                                                                                             To   => Site_world_space);
+
+            Event             : constant gel.Events.sprite_click_down_Event := (mouse_Button => the_Event.Button,
+                                                                                world_Site   => Site_world_space);
          begin
-            the_Context.is_Motion := False;
-            the_Context.is_Press  := True;
-            the_Context.button_Id := the_Event.Button;
-
-            the_world_Info.World.cast_Ray (From       => the_Camera.Site,
-                                           To         => Site_world_space,
-                                           Observer   => lace.Observer.view (Self.Applet.local_Subject_and_Observer),
-                                           Context    => the_Context,
-                                           event_Kind => event_Kind);
+            if Collision.near_Sprite /= null
+            then
+               Collision.near_Sprite.emit (Event);
+            end if;
          end;
 
          next (Cursor);
@@ -830,8 +776,7 @@ is
    overriding
    procedure respond (Self : in out button_release_Response;   to_Event : in lace.Event.item'Class)
    is
-      use world_Vectors,
-          gel.Mouse;
+      use world_Vectors;
 
       the_Event      : gel.Mouse.button_release_Event renames gel.Mouse.button_release_Event (to_Event);
       Cursor         : world_Vectors.Cursor           :=      Self.Applet.Worlds.First;
@@ -843,28 +788,31 @@ is
          the_world_Info := Element (Cursor);
 
          declare
-            the_Camera : constant gel.Camera.view := the_world_Info.Cameras.first_Element;
+            use gel.World;
 
-            Site_window_space : constant Vector_3 := [Real (the_Event.Site (1)),  Real (the_Event.Site (2)),  1.0];
-            Site_world_space  : constant Vector_3 := the_Camera.to_world_Site (Site_window_space);
+            the_Camera        : constant gel.Camera.view   := the_world_Info.Cameras.first_Element;
 
-            the_Context : constant button_press_raycast_Context_view := new button_press_raycast_Context;
-            event_Kind  :          mouse_button_collision_Event;
+            Site_window_space : constant Vector_3          := [Real (the_Event.Site (1)),
+                                                               Real (the_Event.Site (2)),
+                                                               1.0];
 
+            Site_world_space  : constant Vector_3          := the_Camera.to_world_Site (Site_window_space);
+
+            Collision         :          ray_Collision := the_world_Info.World.cast_Ray (From       => the_Camera.Site,
+                                                                                             To         => Site_world_space);
+
+            Event             : constant gel.Events.sprite_click_up_Event := (mouse_Button => the_Event.Button,
+                                                                              world_Site   => Site_world_space);
          begin
-            the_Context.is_Motion := False;
-            the_Context.is_Press  := False;
-            the_Context.button_Id := the_Event.Button;
-
-            the_world_Info.World.cast_Ray (From     => the_Camera.Site,
-                                           To       => Site_world_space,
-                                           Observer => lace.Observer.view (Self.Applet.local_Subject_and_Observer),
-                                           Context  => the_Context,
-                                           event_Kind => event_Kind);
+            if Collision.near_Sprite /= null
+            then
+               Collision.near_Sprite.emit (Event);
+            end if;
          end;
 
          next (Cursor);
       end loop;
+
    end respond;
 
 
@@ -879,26 +827,27 @@ is
       the_world_Info : world_Info_view;
 
    begin
-      while has_Element (Cursor)
-      loop
-         the_world_Info := Element (Cursor);
+      --  while has_Element (Cursor)
+      --  loop
+      --     the_world_Info := Element (Cursor);
+      --
+      --     declare
+      --        the_Camera : constant gel.Camera.view := the_world_Info.Cameras.first_Element;
+      --
+      --        Site_window_space : constant Vector_3 := [Real (the_Event.Site (1)),  Real (the_Event.Site (2)),  1.0];
+      --        Site_world_space  : constant Vector_3 := the_Camera.to_world_Site (Site_window_space);
+      --        pragma Unreferenced (Site_world_space);
+      --
+      --        the_Context : constant button_press_raycast_Context_view := new button_press_raycast_Context;
+      --
+      --     begin
+      --        the_Context.is_Motion := True;
+      --     end;
+      --
+      --     next (Cursor);
+      --  end loop;
 
-         declare
-            the_Camera : constant gel.Camera.view := the_world_Info.Cameras.first_Element;
-
-            Site_window_space : constant Vector_3 := [Real (the_Event.Site (1)),  Real (the_Event.Site (2)),  1.0];
-            Site_world_space  : constant Vector_3 := the_Camera.to_world_Site (Site_window_space);
-            pragma Unreferenced (Site_world_space);
-
-            the_Context : constant button_press_raycast_Context_view := new button_press_raycast_Context;
-
-         begin
-            the_Context.is_Motion := True;
-         end;
-
-         next (Cursor);
-      end loop;
-
+      null;
    end respond;
 
 
@@ -958,26 +907,6 @@ is
                                      Self.mouse_motion_Response'unchecked_Access,
                                      to_Kind (gel.Mouse.motion_Event'Tag));
       end if;
-
-      Self.mouse_click_raycast_Response.Applet := Self.all'unchecked_Access;
-
-      declare
-         use world_Vectors;
-
-         Cursor         : world_Vectors.Cursor := Self.Worlds.First;
-         the_world_Info : world_Info_view;
-      begin
-         while has_Element (Cursor)
-         loop
-            the_world_Info := Element (Cursor);
-
-            Self.local_Subject_and_Observer.add (the_Response => Self.mouse_click_raycast_Response'unchecked_Access,
-                                                 to_Kind      => lace.event.Utility.to_Kind (mouse_button_collision_Event'Tag),
-                                                 from_Subject => the_world_Info.World.Name);
-            next (Cursor);
-         end loop;
-      end;
-
    end enable_Mouse;
 
 

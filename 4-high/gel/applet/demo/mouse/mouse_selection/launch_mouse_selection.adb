@@ -28,18 +28,21 @@ procedure launch_mouse_Selection
 is
    use lace.Event.utility,
        ada.Text_IO;
+
+   the_Applet : gel.Applet.gui_world.view;
+
 begin
-   lace.Event.utility.use_text_Logger ("event.log");
+   lace.Event.utility.use_text_Logger ("events");
    lace.Event.utility.Logger.ignore (to_Kind (gel.Mouse.motion_Event'Tag));
+
+   the_Applet := gel.Forge.new_gui_Applet  ("mouse_Demo",
+                                            space_Kind => physics.Bullet);
 
    declare
       use ada.Calendar;
 
-      the_Applet : constant gel.Applet.gui_world.view := gel.Forge.new_gui_Applet  ("mouse_Selection_Applet",
-                                                                                    space_Kind => physics.Bullet);
       the_Ball   : constant gel.Sprite.view           := gel.Forge.new_ball_Sprite (the_Applet.World (1),
-                                                                                    mass => 0.0);
-
+                                                                                    mass => 1.0);
 
 
       type retreat_Sprite is new lace.Response.item with
@@ -52,7 +55,7 @@ begin
       is
          use float_Math;
       begin
-         put_Line ("retreat_Sprite");
+         put_Line ("*** retreat_Sprite ***");
          Self.Sprite.Site_is (Self.Sprite.Site - the_Applet.gui_Camera.Spin * [0.0, 0.0, 1.0]);
       end respond;
 
@@ -71,7 +74,7 @@ begin
       is
          use float_Math;
       begin
-         put_Line ("advance_Sprite");
+         put_Line ("*** advance_Sprite ***");
          Self.Sprite.Site_is (Self.Sprite.Site + the_Applet.gui_Camera.Spin * [0.0, 0.0, 1.0]);
       end respond;
 
@@ -83,13 +86,18 @@ begin
       next_render_Time : ada.calendar.Time;
 
    begin
-      the_Ball.add (advance_Sprite_Response'unchecked_Access,
-                    to_Kind (gel.events.sprite_click_down_Event'Tag),
-                    the_Applet.Name);
+      the_Applet.gui_World.Gravity_is ([0.0, 0.0, 0.0]);
 
-      the_Ball.add (retreat_Sprite_Response'unchecked_Access,
-                    to_Kind (gel.events.sprite_click_up_Event'Tag),
-                    the_Applet.Name);
+      connect (the_Observer  =>  the_Applet.local_Observer,
+               to_Subject    =>  the_Ball.all'Access,
+               with_Response =>  advance_Sprite_Response'unchecked_Access,
+               to_Event_Kind =>  to_Kind (gel.events.sprite_click_down_Event'Tag));
+
+      connect (the_Observer  =>  the_Applet.local_Observer,
+               to_Subject    =>  the_Ball.all'Access,
+               with_Response =>  retreat_Sprite_Response'unchecked_Access,
+               to_Event_Kind =>  to_Kind (gel.events.sprite_click_up_Event'Tag));
+
 
       the_Applet.gui_world .add      (the_Ball, and_Children => False);
       the_Applet.gui_Camera.Site_is  ([0.0, 0.0, 5.0]);
@@ -114,9 +122,11 @@ begin
 
    lace.Event.utility.close;
 
+
 exception
    when E : others =>
       lace.Event.utility.close;
+      the_Applet.destroy;
 
       put_Line ("Exception detected in 'launch_mouse_Selection' ...");
       put_Line (ada.Exceptions.Exception_Information (E));

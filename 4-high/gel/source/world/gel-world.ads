@@ -14,6 +14,7 @@ with
      lace.Subject_and_deferred_Observer,
      lace.Any,
 
+     ada.Streams,
      ada.Tags.generic_dispatching_Constructor,
      ada.unchecked_Conversion,
      ada.Containers.hashed_Maps;
@@ -36,6 +37,10 @@ is
    type Views is array (Positive range <>) of View;
 
    use Math;
+
+
+   type Any_limited_view is access all lace.Any.limited_item'Class;
+
 
 
    ---------
@@ -215,36 +220,9 @@ is
          Site_world   : Vector_3;
       end record;
 
-
-   type Any_limited_view is access all lace.Any.limited_item'Class;
-
-   type raycast_collision_Event is new lace.Event.item with
-      record
-         near_Sprite : gel.Sprite.view;
-         Context     : Any_limited_view;
-         Site_world  : Vector_3;
-      end record;
-
-   overriding
-   procedure destruct (Self : in out raycast_collision_Event);
+   function cast_Ray (Self : in Item;   From, To : in Vector_3) return ray_Collision;
 
 
-   type no_Parameters is null record;
-
-   function to_raycast_collision_Event (Params : not null access no_Parameters) return raycast_collision_Event;
-
-   function raycast_collision_Event_dispatching_Constructor is new ada.Tags.generic_dispatching_Constructor (raycast_collision_Event,
-                                                                                                             Parameters  => no_Parameters,
-                                                                                                             Constructor => to_raycast_collision_Event);
-   procedure cast_Ray (Self : in Item;   From, To   : in     Vector_3;
-                                         Observer   : in     lace.Observer.view;
-                                         Context    : access lace.Any.limited_Item'Class;
-                                         Event_Kind : in     raycast_collision_Event'Class);
-   --
-   -- Casts a ray between From and To.
-   -- The Observer is informed of the 1st collision with a Sprite via a raycast_collision_Event.
-   -- Context is optional and is passed back to the Observer within the Context field of the raycast_collision_Event
-   -- for use by the raycast_collision_Event response.
 
 
    --------------------

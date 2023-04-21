@@ -392,27 +392,27 @@ is
    end rid;
 
 
+
    overriding
    function cast_Ray (Self : access Item;    From, To : in Vector_3) return physics.Space.ray_Collision
    is
-      c_From : aliased c_math_c.Vector_3.item := +From;
-      c_To   : aliased c_math_c.Vector_3.item := +To;
-
-      the_Collision   :          physics.Space.ray_Collision;
+      c_From          : aliased  c_math_c.Vector_3.item      := +From;
+      c_To            : aliased  c_math_c.Vector_3.item      := +To;
       the_c_Collision : constant bullet_c.ray_Collision.item := b3d_Space_cast_Ray (Self.C, c_From'unchecked_Access,
                                                                                             c_To  'unchecked_Access);
+      the_Collision   :          physics.Space.ray_Collision;
    begin
       if the_c_Collision.near_Object /= null
       then
-         the_Collision.near_Object := to_Object_view (b3d_Object_user_Data (the_c_Collision.near_Object));
+         the_Collision.near_Object  :=  to_Object_view (b3d_Object_user_Data (the_c_Collision.near_Object));
+         the_Collision.hit_Fraction :=  Real (the_c_Collision.hit_Fraction);
+         the_Collision.Normal_world := +the_c_Collision.Normal_world;
+         the_Collision.Site_world   := +the_c_Collision.Site_world;
       end if;
-
-      the_Collision.hit_Fraction :=  Real (the_c_Collision.hit_Fraction);
-      the_Collision.Normal_world := +the_c_Collision.Normal_world;
-      the_Collision.Site_world   := +the_c_Collision.Site_world;
 
       return the_Collision;
    end cast_Ray;
+
 
 
    overriding

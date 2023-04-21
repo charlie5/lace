@@ -467,21 +467,27 @@ is
 
 
 
-   procedure cast_Ray (Self : in Item;   From, To   : in     Vector_3;
-                                         Observer   : in     lace.Observer.view;
-                                         Context    : access lace.Any.limited_item'Class;
-                                         event_Kind : in     raycast_collision_Event'Class)
+   function cast_Ray (Self : in Item;   From, To : in Vector_3) return ray_Collision
    is
+      use type physics.Object.view;
+
+      physics_Collision : constant physics.Space.ray_Collision := Self.physics_Space.cast_Ray (From, To);
+
    begin
-      null;
-      --  Self.Commands.add ((Kind     => cast_Ray,
-      --                      Sprite   => null,
-      --                      From     => From,
-      --                      To       => To,
-      --                      Observer => Observer,
-      --                      Context  => Context,
-      --                      event_Kind => event_Kind'Tag));
+      if physics_Collision.near_Object = null
+      then
+         return ray_Collision' (near_Sprite => null,
+                                others      => <>);
+      else
+         return ray_Collision' (to_GEL (physics_Collision.near_Object),
+                                    physics_Collision.hit_Fraction,
+                                    physics_Collision.Normal_world,
+                                    physics_Collision.  Site_world);
+      end if;
    end cast_Ray;
+
+
+
 
 
    --------------
@@ -1101,25 +1107,6 @@ is
 
    end impact_Responder;
 
-
-   ----------
-   --- Events
-   --
-
-   function to_raycast_collision_Event (Params : not null access no_Parameters) return raycast_collision_Event
-   is
-   begin
-      return raycast_collision_Event' (others => <>);
-   end to_raycast_collision_Event;
-
-
-
-   overriding
-   procedure destruct (Self : in out raycast_collision_Event)
-   is
-   begin
-      free (Self.Context);
-   end destruct;
 
 
    -----------
