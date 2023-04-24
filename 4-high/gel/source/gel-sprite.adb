@@ -107,7 +107,8 @@ is
                                            physics_Model  : access physics.Model.item'Class;
                                            owns_Graphics  : in     Boolean;
                                            owns_Physics   : in     Boolean;
-                                           is_Kinematic   : in     Boolean := False)
+                                           is_Kinematic   : in     Boolean            := False;
+                                           user_Data      : in     any_user_Data_view := null)
    is
       use type physics.Model.view;
    begin
@@ -120,6 +121,8 @@ is
       Self.owns_Physics   := owns_Physics;
 
       Self.is_Kinematic   := is_Kinematic;
+      Self.user_Data      := user_Data;
+
       --  set_Translation (Self.Transform, To => physics_Model.Site);
 
       --  Physics
@@ -128,7 +131,6 @@ is
       then
          Self.rebuild_Shape;
          Self.rebuild_Solid (at_Site);
-         null;
       end if;
    end define;
 
@@ -228,13 +230,14 @@ is
                           physics_Model  : access physics.Model.item'Class;
                           owns_Graphics  : in     Boolean;
                           owns_Physics   : in     Boolean;
-                          is_Kinematic   : in     Boolean := False) return Item
+                          is_Kinematic   : in     Boolean            := False;
+                          user_Data      : in     any_user_Data_view := null) return Item
       is
       begin
          return Self : Item := (lace.Subject_and_deferred_Observer.forge.to_Subject_and_Observer (Name)
                                 with others => <>)
          do
-            Self.define (World, at_Site, graphics_Model, physics_Model, owns_Graphics, owns_Physics, is_Kinematic);
+            Self.define (World, at_Site, graphics_Model, physics_Model, owns_Graphics, owns_Physics, is_Kinematic, user_Data);
          end return;
       end to_Sprite;
 
@@ -245,9 +248,10 @@ is
                            at_Site        : in     Vector_3;
                            graphics_Model : access openGL. Model.item'Class;
                            physics_Model  : access physics.Model.item'Class;
-                           owns_Graphics  : in     Boolean := True;
-                           owns_Physics   : in     Boolean := True;
-                           is_Kinematic   : in     Boolean := False) return View
+                           owns_Graphics  : in     Boolean            := True;
+                           owns_Physics   : in     Boolean            := True;
+                           is_Kinematic   : in     Boolean            := False;
+                           user_Data      : in     any_user_Data_view := null) return View
       is
          Self : constant View := new Item' (to_Sprite (Name,
                                                        World,
@@ -256,8 +260,10 @@ is
                                                        physics_Model,
                                                        owns_Graphics,
                                                        owns_Physics,
-                                                       is_Kinematic));
+                                                       is_Kinematic,
+                                                       user_Data => user_Data));
       begin
+
          return Self;
       end new_Sprite;
 
@@ -467,6 +473,24 @@ is
    begin
       return Self.Shape;
    end Shape;
+
+
+
+   function user_Data (Self : in Item) return any_user_Data_view
+   is
+   begin
+      return Self.user_Data;
+   end user_Data;
+
+
+
+   procedure user_Data_is (Self : in out Item;   Now : in any_user_Data_view)
+   is
+   begin
+      Self.user_Data := Now;
+   end user_Data_is;
+
+
 
 
    -------------

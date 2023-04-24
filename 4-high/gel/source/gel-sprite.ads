@@ -12,6 +12,7 @@ with
 
      lace.Subject_and_deferred_Observer,
      lace.Response,
+     lace.Any,
 
      ada.Containers.Vectors;
 
@@ -35,7 +36,10 @@ is
 
 
    type physics_Space_view is access all physics.Space.item'Class;
-   type World_view         is access all gel.World.item'Class;
+   type World_view         is access all gel.World    .item'Class;
+
+   type any_user_Data      is new        lace.Any.limited_item with null record;
+   type any_user_Data_view is access all any_user_Data'Class;
 
 
    use Math;
@@ -56,13 +60,14 @@ is
    --- Forge
    --
 
-   procedure define  (Self : access Item;   World          : in     World_view;
-                                            at_Site        : in     Vector_3;
-                                            graphics_Model : access openGL. Model.item'Class;
-                                            physics_Model  : access physics.Model.item'Class;
-                                            owns_Graphics  : in     Boolean;
-                                            owns_Physics   : in     Boolean;
-                                            is_Kinematic   : in     Boolean := False);
+   procedure define (Self : access Item;   World          : in     World_view;
+                                           at_Site        : in     Vector_3;
+                                           graphics_Model : access openGL. Model.item'Class;
+                                           physics_Model  : access physics.Model.item'Class;
+                                           owns_Graphics  : in     Boolean;
+                                           owns_Physics   : in     Boolean;
+                                           is_Kinematic   : in     Boolean := False;
+                                           user_Data      : in     any_user_Data_view := null);
 
    procedure destroy      (Self : access Item;   and_Children : in Boolean);
    function  is_Destroyed (Self : in     Item) return Boolean;
@@ -78,16 +83,18 @@ is
                            physics_Model  : access physics.Model.item'Class;
                            owns_Graphics  : in     Boolean;
                            owns_Physics   : in     Boolean;
-                           is_Kinematic   : in     Boolean := False) return Item;
+                           is_Kinematic   : in     Boolean            := False;
+                           user_Data      : in     any_user_Data_view := null) return Item;
 
       function new_Sprite (Name           : in     String;
                            World          : in     World_view;
                            at_Site        : in     Vector_3;
                            graphics_Model : access openGL. Model.item'Class;
                            physics_Model  : access physics.Model.item'Class;
-                           owns_Graphics  : in     Boolean := True;
-                           owns_Physics   : in     Boolean := True;
-                           is_Kinematic   : in     Boolean := False) return View;
+                           owns_Graphics  : in     Boolean            := True;
+                           owns_Physics   : in     Boolean            := True;
+                           is_Kinematic   : in     Boolean            := False;
+                           user_Data      : in     any_user_Data_view := null) return View;
    end Forge;
 
 
@@ -95,7 +102,7 @@ is
    --- Attributes
    --
 
-   function  World                 (Self : in     Item)     return  access gel.World.item'Class;
+   function  World                 (Self : in     Item)     return access gel.World.item'Class;
 
    function  Id                    (Self : in     Item)     return gel.sprite_Id;
    procedure Id_is                 (Self : in out Item;   Now : in gel.sprite_Id);
@@ -138,6 +145,10 @@ is
 
 
    function  to_GEL (the_Solid : in physics_Object_view) return gel.Sprite.view;
+
+
+   function  user_Data             (Self : in     Item) return any_user_Data_view;
+   procedure user_Data_is (Self : in out Item;   Now :      in any_user_Data_view);
 
 
    -------------
@@ -406,6 +417,7 @@ private
 
          is_Visible              : Boolean := True;
          key_Response            : lace.Response.view;
+         user_Data               : any_user_Data_view;
 
          is_Destroyed            : Boolean := False;
       end record;
