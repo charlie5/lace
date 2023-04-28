@@ -6,6 +6,8 @@ is
    type Item is abstract new Model.item with private;
 
 
+   -- Sites begin at middle right and proceed in an anti-clockwise direction.
+   --
    subtype site_Id is Integer range 1 .. 6;
    type    Sites   is array (site_Id) of Vector_3;
 
