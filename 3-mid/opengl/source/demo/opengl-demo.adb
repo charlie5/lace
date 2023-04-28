@@ -10,6 +10,7 @@ with
      openGL.Model.capsule  .lit_textured,
      openGL.Model.grid,
      openGL.Model.hexagon       .lit_colored,
+     openGL.Model.hexagon       .lit_textured,
      openGL.Model.hexagon_Column.lit_colored_faceted,
      openGL.Model.hexagon_Column.lit_colored_rounded,
      openGL.Model.line          .colored,
@@ -168,6 +169,10 @@ is
                                                   Face   => (center_Color => (Green, Opaque),
                                                              Colors       => [others => (Red, Opaque)]));
 
+      the_textured_hexagon_Model : constant Model.hexagon.lit_textured.view
+        := Model.hexagon.lit_textured.new_Hexagon (Radius => 0.5,
+                                                   Face   => (Texture => the_Texture));
+
       the_faceted_hexagon_column_Model : constant Model.hexagon_Column.lit_colored_faceted.view
         := Model.hexagon_Column.lit_colored_faceted.new_hexagon_Column
              (Radius => 0.25,
@@ -255,15 +260,17 @@ is
                         the_capsule_Model.all'Access,
                            the_grid_Model.all'Access,
 
-                             the_hexagon_Model.all'Access,
-              the_faceted_hexagon_column_Model.all'Access,
-              the_rounded_hexagon_column_Model.all'Access,
+                        the_hexagon_Model.all'Access,
+               the_textured_hexagon_Model.all'Access,
 
-                                the_line_Model.all'Access,
-                             the_collada_Model.all'Access,
-                           the_wavefront_Model.all'Access,
+         the_faceted_hexagon_column_Model.all'Access,
+         the_rounded_hexagon_column_Model.all'Access,
 
-                        the_segment_line_Model.all'Access];
+                           the_line_Model.all'Access,
+                        the_collada_Model.all'Access,
+                      the_wavefront_Model.all'Access,
+
+                   the_segment_line_Model.all'Access];
    end Models;
 
 
