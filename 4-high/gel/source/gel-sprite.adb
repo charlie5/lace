@@ -156,7 +156,7 @@ is
       while not Self.child_Joints.is_Empty
       loop
          declare
-            child_Sprite : constant Sprite.view := Self.child_Joints.Last_Element.Sprite_B.all'Access;
+            child_Sprite : constant Sprite.view := Self.child_Joints.last_Element.Sprite_B;
          begin
             Self.detach (child_Sprite);
 
