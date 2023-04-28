@@ -21,15 +21,26 @@ is
    end new_Hexagon;
 
 
+
+
    --------------
    --- Attributes
    --
+
+   procedure Texture_is (Self : in out Item;   Now : in openGL.asset_Name)
+   is
+   begin
+      Self.Face.Texture := Now;
+   end Texture_is;
+
+
+
 
    overriding
    function to_GL_Geometries (Self : access Item;   Textures : access Texture.name_Map_of_texture'Class;
                                                     Fonts    : in     Font.font_id_Map_of_font) return Geometry.views
    is
-      pragma unreferenced (Textures, Fonts);
+      pragma unreferenced (Fonts);
 
       use Geometry.lit_textured,
           Texture;
@@ -51,6 +62,14 @@ is
          the_Geometry.Vertices_are (Vertices);
          the_Geometry.add          (Primitive.view (the_Primitive));
 
+         if Self.Face.Texture /= null_Asset
+         then
+            the_Geometry.Texture_is (Textures.fetch (Self.Face.Texture));
+            the_Geometry.is_Transparent (now => the_Geometry.Texture.is_Transparent);
+         end if;
+
+         the_Geometry.is_Transparent (True);
+
          return the_Geometry;
       end new_Face;
 
@@ -62,20 +81,16 @@ is
       --
       declare
          the_Vertices : constant Geometry.lit_textured.Vertex_array
-           := (1 => (Site => (0.0, 0.0, 0.0),  Normal => Normal,  Coords => (0.0, 0.0),  Shine => default_Shine),
-               2 => (Site =>   the_Sites (1),  Normal => Normal,  Coords => (0.0, 0.0),  Shine => default_Shine),
-               3 => (Site =>   the_Sites (2),  Normal => Normal,  Coords => (1.0, 0.0),  Shine => default_Shine),
-               4 => (Site =>   the_Sites (3),  Normal => Normal,  Coords => (1.0, 1.0),  Shine => default_Shine),
-               5 => (Site =>   the_Sites (4),  Normal => Normal,  Coords => (0.0, 1.0),  Shine => default_Shine),
-               6 => (Site =>   the_Sites (5),  Normal => Normal,  Coords => (0.0, 1.0),  Shine => default_Shine),
-               7 => (Site =>   the_Sites (6),  Normal => Normal,  Coords => (0.0, 1.0),  Shine => default_Shine));
+           := (1 => (Site => (0.0, 0.0, 0.0),  Normal => Normal,  Coords => (0.50, 0.50),  Shine => default_Shine),     -- Center.
+
+               2 => (Site =>   the_Sites (1),  Normal => Normal,  Coords => (1.00, 0.50),  Shine => default_Shine),     -- Mid    right.
+               3 => (Site =>   the_Sites (2),  Normal => Normal,  Coords => (0.75, 1.00),  Shine => default_Shine),     -- Bottom right.
+               4 => (Site =>   the_Sites (3),  Normal => Normal,  Coords => (0.25, 1.00),  Shine => default_Shine),     -- Bottom left.
+               5 => (Site =>   the_Sites (4),  Normal => Normal,  Coords => (0.00, 0.50),  Shine => default_Shine),     -- Mid    left.
+               6 => (Site =>   the_Sites (5),  Normal => Normal,  Coords => (0.25, 0.00),  Shine => default_Shine),     -- Top    left.
+               7 => (Site =>   the_Sites (6),  Normal => Normal,  Coords => (0.75, 0.00),  Shine => default_Shine));    -- Top    right.
       begin
          upper_Face := new_Face (Vertices => the_Vertices);
-
-         if Self.Face.Texture /= null_Object
-         then
-            upper_Face.Texture_is (Self.Face.Texture);
-         end if;
       end;
 
       return (1 => upper_Face.all'Access);

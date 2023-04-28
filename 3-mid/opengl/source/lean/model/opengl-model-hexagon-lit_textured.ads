@@ -13,7 +13,7 @@ is
 
    type Face is
       record
-         Texture : openGL.Texture.Object := openGL.Texture.null_Object;   -- The texture to be applied to the hex.
+         Texture : openGL.asset_Name := null_Asset;     -- The texture to be applied to the hex.
       end record;
 
 
@@ -28,6 +28,9 @@ is
    --------------
    --- Attributes
    --
+
+   procedure Texture_is (Self : in out Item;   Now : in openGL.asset_Name);
+
 
    overriding
    function to_GL_Geometries (Self : access Item;   Textures : access Texture.name_Map_of_texture'Class;
