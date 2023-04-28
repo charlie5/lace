@@ -420,7 +420,7 @@ is
 
 
 
-   procedure freshen (Self : in out Item)
+   procedure freshen (Self : in out Item;   evolve_World : in Boolean := True)
    is
       use type gel.Dolly.view;
 
@@ -455,8 +455,11 @@ is
                the_world_Info : world_Info       renames Element (world_Cursor).all;
                camera_Cursor  : camera_Vectors.Cursor := the_world_Info.Cameras.First;
             begin
-               --  the_world_Info.World.wait_on_evolve;
-               the_world_Info.World.evolve;
+               if evolve_World
+               then
+                  --  the_world_Info.World.wait_on_evolve;
+                  the_world_Info.World.evolve;
+               end if;
 
                if Window_is_active
                then

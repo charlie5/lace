@@ -117,7 +117,7 @@ is
    procedure enable_Mouse (Self : access Item;   detect_Motion : in Boolean);
 
    procedure prepare (Self : access Item) is null;
-   procedure freshen (Self : in out Item);
+   procedure freshen (Self : in out Item;   evolve_World : in Boolean := True);
    --
    --  processes window events and then redraws the window.
 
