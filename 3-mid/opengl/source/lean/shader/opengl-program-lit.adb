@@ -1,6 +1,12 @@
 with
      openGL.Conversions,
-     ada.Strings.fixed;
+     GL.lean,
+     GL.Binding,
+     GL.Pointers,
+     ada.Strings.fixed,
+     Interfaces.C.Strings;
+
+with ada.text_io; use ada.text_io;
 
 
 package body openGL.Program.lit
@@ -93,6 +99,45 @@ is
             cone_direction_Uniform     .Value_is (             Light.cone_Direction);
          end;
       end loop;
+
+
+      --  declare
+      --     use GL,
+      --         GL.lean,
+      --         GL.Binding,
+      --         GL.Pointers,
+      --         Interfaces;
+      --
+      --     uniform_Name     : aliased          C.char_array        := C.to_C ("Texture_1[0]");
+      --     uniform_Name_ptr : aliased constant C.strings.chars_ptr := C.strings.to_chars_ptr (uniform_Name'unchecked_Access);
+      --     loc              :                  GL.GLint            := glGetUniformLocation (Self.gl_Program, +uniform_Name_ptr);
+      --  begin
+      --     put_Line ("1-openGL.Program.lit.set_Uniforms:" & loc'Image);
+      --
+      --     glUniform1i     (loc, 0);
+      --     glActiveTexture (GL_TEXTURE0);
+      --     glBindTexture   (GL_TEXTURE_2D, 4);
+      --  end;
+      --
+      --
+      --  declare
+      --     use GL,
+      --         GL.lean,
+      --         GL.Binding,
+      --         GL.Pointers,
+      --         Interfaces;
+      --
+      --     uniform_Name     : aliased          C.char_array        := C.to_C ("Texture_1[1]");
+      --     uniform_Name_ptr : aliased constant C.strings.chars_ptr := C.strings.to_chars_ptr (uniform_Name'unchecked_Access);
+      --     loc              :                  GL.GLint            := glGetUniformLocation (Self.gl_Program, +uniform_Name_ptr);
+      --  begin
+      --     put_Line ("2-openGL.Program.lit.set_Uniforms:" & loc'Image);
+      --
+      --     glUniform1i     (loc, 1);
+      --     glActiveTexture (GL_TEXTURE1);
+      --     glBindTexture   (GL_TEXTURE_2D, 5);
+      --  end;
+
    end set_Uniforms;
 
 

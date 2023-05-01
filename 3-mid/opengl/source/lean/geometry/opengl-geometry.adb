@@ -1,9 +1,19 @@
 with
      openGL.Primitive.indexed,
      openGL.Primitive.long_indexed,
+     openGL.Variable.uniform,
+     openGL.Tasks,
 
+     GL.Binding,
+     GL.lean,
+     GL.Pointers,
+
+     ada.Strings.fixed,
      ada.unchecked_Deallocation,
-     ada.unchecked_Conversion;
+     ada.unchecked_Conversion,
+
+     interfaces.C.Strings;
+
 
 package body openGL.Geometry
 is
@@ -93,20 +103,101 @@ is
 
 
 
-   function Texture (Self : in Item'Class) return openGL.Texture.Object
+
+
+
+
+
+   --  procedure Texture_is (Self : in out Item'Class;   Which : texture_ID;   Now : in openGL.Texture.Object)
+   --  is
+   --  begin
+   --     Self.Textures.Textures (Which) := (0.0, Now);
+   --     Self.is_Transparent   :=    Self.is_Transparent
+   --                              or Now .is_Transparent;
+   --
+   --     if Natural (Which) > Self.Textures.Count
+   --     then
+   --        Self.Textures.Count := Natural (Which);
+   --     end if;
+   --  end Texture_is;
+   --
+   --
+   --  function Texture (Self : in Item'Class;   Which : texture_ID) return openGL.Texture.Object
+   --  is
+   --  begin
+   --     return Self.Textures.Textures (Which).Object;
+   --  end Texture;
+
+
+
+
+   function Texture (Self : in Item) return openGL.Texture.Object
    is
    begin
-      return Self.Texture;
+      raise program_Error with "Geometry has no texture.";
+      return openGL.Texture.null_Object;
    end Texture;
 
 
-   procedure Texture_is (Self : in out Item'Class;   Now : in openGL.Texture.Object)
+   --  procedure Texture_is (Self : in out Item'Class;   Now : in openGL.Texture.Object)
+   --  is
+   --  begin
+   --     Self.Textures.Textures (1).Object := Now;
+   --     Self.is_Transparent :=    Self.is_Transparent
+   --                            or Now .is_Transparent;
+   --
+   --     if Self.Textures.Count = 0
+   --     then
+   --        Self.Textures.Count := 1;
+   --     end if;
+   --  end Texture_is;
+   --
+
+
+   procedure Texture_is (in_Set : in out texture_Set;   Which : texture_ID;   Now : in openGL.Texture.Object)
    is
    begin
-      Self.Texture        := Now;
-      Self.is_Transparent :=    Self.is_Transparent
-                             or Now .is_Transparent;
+      in_Set.Textures (Which) := (0.0, Now);
+      in_Set.is_Transparent   :=    in_Set.is_Transparent
+                                 or Now   .is_Transparent;
+
+      if Natural (Which) > in_Set.Count
+      then
+         in_Set.Count := Natural (Which);
+      end if;
    end Texture_is;
+
+
+   function Texture (in_Set : in  texture_Set;   Which : texture_ID) return openGL.Texture.Object
+   is
+   begin
+      return in_Set.Textures (Which).Object;
+   end Texture;
+
+
+
+
+   function Texture (in_Set : in texture_Set) return openGL.Texture.Object
+   is
+   begin
+      return in_Set.Textures (1).Object;
+   end Texture;
+
+
+   procedure Texture_is (in_Set : in out texture_Set;   Now : in openGL.Texture.Object)
+   is
+   begin
+      in_Set.Textures (1).Object := Now;
+      in_Set.is_Transparent      :=    in_Set.is_Transparent
+                                    or Now .is_Transparent;
+
+      if in_Set.Count = 0
+      then
+         in_Set.Count := 1;
+      end if;
+   end Texture_is;
+
+
 
 
 
@@ -143,8 +234,12 @@ is
    function is_Transparent (Self : in Item) return Boolean
    is
    begin
-      return    Self.is_Transparent
-             or Self.Texture.is_Transparent;
+      return    Self.is_Transparent;
+             --  or Self.Textures.Textures (1).Object.is_Transparent
+             --  or Self.Textures.Textures (2).Object.is_Transparent;     -- TODO: Loop over all textures.
+      --  --  return    Self.is_Transparent
+      --  --    or Self.Texture_1.is_Transparent
+      --  --    or Self.Texture_2.is_Transparent;
    end is_Transparent;
 
 
@@ -463,6 +558,110 @@ is
                             Indices,
                             Sites).all'unchecked_Access;
    end Normals_of;
+
+
+
+
+   -----------
+   -- Textures
+   --
+
+   procedure enable (the_Textures : in texture_Set;
+                     Program      : in openGL.Program.view)
+   is
+      use GL,
+          GL.Binding,
+          openGL.Texture;
+
+      --  check_is_OK : constant Boolean := openGL.Tasks.Check
+      --    with unreferenced;
+
+   begin
+      Tasks.check;
+
+      for i in 1 .. the_Textures.Count
+      loop
+         declare
+            use GL.lean,
+                GL.Pointers,
+                ada.Strings,
+                ada.Strings.fixed,
+                Interfaces;
+
+            use type GL.GLint;
+
+            type texture_Units is array (texture_Id) of GLenum;
+
+            all_texture_Units : constant texture_Units := (GL_TEXTURE0,
+                                                           GL_TEXTURE1,
+                                                           GL_TEXTURE2,
+                                                           GL_TEXTURE3,
+                                                           GL_TEXTURE4,
+                                                           GL_TEXTURE5,
+                                                           GL_TEXTURE6,
+                                                           GL_TEXTURE7,
+                                                           GL_TEXTURE8,
+                                                           GL_TEXTURE9,
+                                                           GL_TEXTURE10,
+                                                           GL_TEXTURE11,
+                                                           GL_TEXTURE12,
+                                                           GL_TEXTURE13,
+                                                           GL_TEXTURE14,
+                                                           GL_TEXTURE15,
+                                                           GL_TEXTURE16,
+                                                           GL_TEXTURE17,
+                                                           GL_TEXTURE18,
+                                                           GL_TEXTURE19,
+                                                           GL_TEXTURE20,
+                                                           GL_TEXTURE21,
+                                                           GL_TEXTURE22,
+                                                           GL_TEXTURE23,
+                                                           GL_TEXTURE24,
+                                                           GL_TEXTURE25,
+                                                           GL_TEXTURE26,
+                                                           GL_TEXTURE27,
+                                                           GL_TEXTURE28,
+                                                           GL_TEXTURE29,
+                                                           GL_TEXTURE30,
+                                                           GL_TEXTURE31);
+
+            uniform_Name     : aliased          C.char_array        := C.to_C ("Textures[" & Trim (Natural'Image (i - 1), Left) & "]");
+            uniform_Name_ptr : aliased constant C.strings.chars_ptr := C.strings.to_chars_ptr (uniform_Name'unchecked_Access);
+            loc              :         constant GL.GLint            := glGetUniformLocation (Program.gl_Program, +uniform_Name_ptr);
+            Id               : constant         texture_Id          := texture_Id (i);
+         begin
+            --  put_Line ("1-openGL.Program.lit.set_Uniforms:" & loc'Image);
+
+            glUniform1i (loc,
+                         GLint (i) - 1);
+
+            glActiveTexture (all_texture_Units (Id));
+            glBindTexture   (GL_TEXTURE_2D,
+                             the_Textures.Textures (Id).Object.Name);
+         end;
+
+
+         declare
+            use ada.Strings,
+                ada.Strings.fixed;
+
+            uniform_Name : constant String                        := "Fade[" & Trim (Natural'Image (i - 1), Left) & "]";
+            Uniform      : constant openGL.Variable.uniform.float := Program.uniform_Variable (uniform_Name);
+         begin
+            Uniform.Value_is (Real (the_Textures.Textures (texture_Id (i)).Fade));
+         end;
+      end loop;
+
+
+      declare
+         the_texture_count_Uniform : constant openGL.Variable.uniform.int := Program.uniform_Variable ("texture_Count");
+      begin
+         the_texture_count_Uniform.Value_is (the_Textures.Count);
+      end;
+   end enable;
+
+
+
 
 
    ---------
