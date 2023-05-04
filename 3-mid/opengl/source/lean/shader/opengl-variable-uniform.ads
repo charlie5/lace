@@ -25,13 +25,15 @@ is
    --  Actuals
    --
 
-   type bool  is new Variable.uniform.item with private;
-   type int   is new Variable.uniform.item with private;
-   type float is new Variable.uniform.item with private;
-   type vec3  is new Variable.uniform.item with private;
-   type vec4  is new Variable.uniform.item with private;
-   type mat3  is new Variable.uniform.item with private;
-   type mat4  is new Variable.uniform.item with private;
+   type bool      is new Variable.uniform.item with private;
+   type int       is new Variable.uniform.item with private;
+   type float     is new Variable.uniform.item with private;
+   type vec3      is new Variable.uniform.item with private;
+   type vec4      is new Variable.uniform.item with private;
+   type mat3      is new Variable.uniform.item with private;
+   type mat4      is new Variable.uniform.item with private;
+   type sampler2D is new Variable.uniform.item with private;
+
 
    procedure Value_is (Self : in bool;    Now : in Boolean);
    procedure Value_is (Self : in int;     Now : in Integer);
@@ -45,16 +47,22 @@ is
 
 private
 
-   type Item  is abstract new openGL.Variable.item with null record;
+   type Item is abstract new openGL.Variable.item with null record;
 
-   type bool  is new Variable.uniform.item with null record;
-   type int   is new Variable.uniform.item with null record;
-   type float is new Variable.uniform.item with null record;
+   type bool      is new Variable.uniform.item with null record;
+   type int       is new Variable.uniform.item with null record;
+   type float     is new Variable.uniform.item with null record;
 
-   type vec3  is new Variable.uniform.item with null record;
-   type vec4  is new Variable.uniform.item with null record;
+   type vec3      is new Variable.uniform.item with null record;
+   type vec4      is new Variable.uniform.item with null record;
 
-   type mat3  is new Variable.uniform.item with null record;
-   type mat4  is new Variable.uniform.item with null record;
+   type mat3      is new Variable.uniform.item with null record;
+   type mat4      is new Variable.uniform.item with null record;
+
+   type sampler2D is new Variable.uniform.item with null record;
+
+
+
+   null_Uniform : constant gl.GLint := gl.GLint'Last;     -- TODO: Use 'GL.GL_MAX_UNIFORM_LOCATIONS', when GL bindings is updated.
 
 end openGL.Variable.uniform;

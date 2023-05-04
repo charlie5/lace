@@ -65,6 +65,7 @@ is
    function uniform_Variable   (Self : access Item'Class;   Named : in String) return Variable.uniform.vec4;
    function uniform_Variable   (Self : access Item'Class;   Named : in String) return Variable.uniform.mat3;
    function uniform_Variable   (Self : access Item'Class;   Named : in String) return Variable.uniform.mat4;
+   function uniform_Variable   (Self : access Item'Class;   Named : in String) return Variable.uniform.sampler2D;
 
    function Attribute          (Self : access Item'Class;   Named : in String) return Attribute.view;
    function attribute_Location (Self : access Item'Class;   Named : in String) return gl.GLuint;

@@ -265,6 +265,15 @@ is
    end uniform_Variable;
 
 
+   function uniform_Variable (Self : access Item'Class;   Named : in String) return Variable.uniform.sampler2D
+   is
+      the_Variable : Variable.uniform.sampler2D;
+   begin
+      the_Variable.define (Self, Named);
+      return the_Variable;
+   end uniform_Variable;
+
+
    --------------
    --  Operations
    --
