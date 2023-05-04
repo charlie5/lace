@@ -110,6 +110,7 @@ launch_strings_demo
 launch_add_rid
 launch_add_rid_sprite_test
 launch_pong_tute
+launch_render_two_textures
 build_all_lace
 
 test_environ_paths
