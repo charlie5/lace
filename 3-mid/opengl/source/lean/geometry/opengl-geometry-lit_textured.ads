@@ -43,6 +43,6 @@ private
    type Item is new Geometry.item with null record;
 
    overriding
-   procedure enable_Texture (Self : in Item);
+   procedure enable_Texture (Self : in out Item);
 
 end openGL.Geometry.lit_textured;

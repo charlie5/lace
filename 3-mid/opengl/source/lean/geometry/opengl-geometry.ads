@@ -62,8 +62,9 @@ is
 
    type fadeable_Texture is
       record
-         Fade           : fade_Level            := 0.0;
-         Object         : openGL.Texture.Object := openGL.Texture.null_Object;
+         Fade             : fade_Level            := 0.0;
+         Object           : openGL.Texture.Object := openGL.Texture.null_Object;
+         uniform_Location : GL.GLint              := 0;
       end record;
 
    type fadeable_Textures is array (texture_Id range 1 .. max_Textures) of fadeable_Texture;
@@ -73,10 +74,11 @@ is
          Textures       : fadeable_Textures;
          Count          : Natural          := 0;
          is_Transparent : Boolean          := False;     -- Any of the textures contains lucid colors.
+         Initialised    : Boolean          := False;
       end record;
 
-   procedure enable (the_Textures : in texture_Set;
-                     Program      : in openGL.Program.view);
+   procedure enable (the_Textures : in out texture_Set;
+                     Program      : in     openGL.Program.view);
 
    procedure Texture_is      (in_Set : in out texture_Set;   Which : texture_ID;   Now : in openGL.Texture.Object);
    function  Texture         (in_Set : in     texture_Set;   Which : texture_ID)     return openGL.Texture.Object;
@@ -110,7 +112,7 @@ is
    --
 
    procedure render         (Self : in out Item'Class);
-   procedure enable_Texture (Self : in     Item) is null;
+   procedure enable_Texture (Self : in out Item) is null;
 
 
    -----------

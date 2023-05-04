@@ -157,7 +157,7 @@ is
    procedure Texture_is (in_Set : in out texture_Set;   Which : texture_ID;   Now : in openGL.Texture.Object)
    is
    begin
-      in_Set.Textures (Which) := (0.0, Now);
+      in_Set.Textures (Which) := (0.0, Now, 0);
       in_Set.is_Transparent   :=    in_Set.is_Transparent
                                  or Now   .is_Transparent;
 
@@ -566,27 +566,42 @@ is
    -- Textures
    --
 
-   procedure enable (the_Textures : in texture_Set;
-                     Program      : in openGL.Program.view)
+   procedure enable (the_Textures : in out texture_Set;
+                     Program      : in     openGL.Program.view)
    is
       use GL,
           GL.Binding,
           openGL.Texture;
 
-      --  check_is_OK : constant Boolean := openGL.Tasks.Check
-      --    with unreferenced;
-
    begin
       Tasks.check;
+
+      if not the_Textures.Initialised
+      then
+         for i in 1 .. the_Textures.Count
+         loop
+            declare
+               use GL.lean,
+                   GL.Pointers,
+                   ada.Strings,
+                   ada.Strings.fixed,
+                   Interfaces;
+
+               uniform_Name     : aliased          C.char_array        := C.to_C ("Textures[" & Trim (Natural'Image (i - 1), Left) & "]");
+               uniform_Name_ptr : aliased constant C.strings.chars_ptr := C.strings.to_chars_ptr (uniform_Name'unchecked_Access);
+               Id               : constant         texture_Id          := texture_Id (i);
+            begin
+               the_Textures.Textures (Id).uniform_Location := glGetUniformLocation (Program.gl_Program, +uniform_Name_ptr);
+            end;
+         end loop;
+
+         the_Textures.Initialised := True;
+      end if;
 
       for i in 1 .. the_Textures.Count
       loop
          declare
-            use GL.lean,
-                GL.Pointers,
-                ada.Strings,
-                ada.Strings.fixed,
-                Interfaces;
+            use GL.lean;
 
             use type GL.GLint;
 
@@ -625,14 +640,11 @@ is
                                                            GL_TEXTURE30,
                                                            GL_TEXTURE31);
 
-            uniform_Name     : aliased          C.char_array        := C.to_C ("Textures[" & Trim (Natural'Image (i - 1), Left) & "]");
-            uniform_Name_ptr : aliased constant C.strings.chars_ptr := C.strings.to_chars_ptr (uniform_Name'unchecked_Access);
-            loc              :         constant GL.GLint            := glGetUniformLocation (Program.gl_Program, +uniform_Name_ptr);
             Id               : constant         texture_Id          := texture_Id (i);
          begin
             --  put_Line ("1-openGL.Program.lit.set_Uniforms:" & loc'Image);
 
-            glUniform1i (loc,
+            glUniform1i (the_Textures.Textures (Id).uniform_Location,     -- loc,
                          GLint (i) - 1);
 
             glActiveTexture (all_texture_Units (Id));

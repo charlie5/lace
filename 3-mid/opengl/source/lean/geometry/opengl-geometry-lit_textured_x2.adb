@@ -3,21 +3,18 @@ with
      openGL.Shader,
      openGL.Program.lit,
      openGL.Attribute,
-     openGL.Variable.uniform,
      openGL.Texture,
      openGL.Palette,
      openGL.Tasks,
      openGL.Errors,
 
-     GL.Binding,
      GL.lean,
      GL.Pointers,
 
-     ada.Strings.fixed,
      Interfaces.C.Strings,
      System.storage_Elements;
 
-with ada.Text_IO; use ada.Text_IO;
+--  with ada.Text_IO; use ada.Text_IO;
 
 
 package body openGL.Geometry.lit_textured_x2
@@ -175,6 +172,7 @@ is
       end if;
 
       Self.Program_is (the_Program.all'Access);
+
       return Self;
    end new_Geometry;
 
@@ -324,7 +322,7 @@ is
 
 
    overriding
-   procedure enable_Texture (Self : in Item)
+   procedure enable_Texture (Self : in out Item)
    is
       --  check_is_OK : constant Boolean := openGL.Tasks.Check
       --    with unreferenced;

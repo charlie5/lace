@@ -246,7 +246,7 @@ is
 
 
    overriding
-   procedure enable_Texture (Self : in Item)
+   procedure enable_Texture (Self : in out Item)
    is
       use GL,
           GL.Binding,
