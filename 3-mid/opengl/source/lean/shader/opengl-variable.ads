@@ -20,9 +20,12 @@ is
 
 private
 
+   null_Variable : constant gl.GLint := gl.GLint'Last;
+
+
    type Item is abstract tagged
       record
-         gl_Variable : gl.GLint;
+         gl_Variable : gl.GLint := null_Variable;
       end record;
 
 end openGL.Variable;
