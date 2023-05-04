@@ -1,3 +1,7 @@
+with
+     openGL.Geometry.texturing;
+
+
 package openGL.Geometry.lit_textured_x2
 --
 --  Supports per-vertex site texture and lighting.
@@ -37,8 +41,8 @@ is
    procedure Indices_are  (Self : in out Item;   Now       : in Indices;
                                                  for_Facia : in Positive);
 
-   procedure Fade_is      (Self : in out Item;   Which : texture_ID;   Now : in fade_Level);
-   function  Fade         (Self : in     Item;   Which : texture_ID)     return fade_Level;
+   procedure Fade_is      (Self : in out Item;   Which : texture_ID;   Now : in Geometry.texturing.fade_Level);
+   function  Fade         (Self : in     Item;   Which : texture_ID)     return Geometry.texturing.fade_Level;
 
 
    procedure Texture_is   (Self : in out Item;   Which : texture_ID;   Now : in openGL.Texture.Object);
@@ -56,7 +60,7 @@ private
 
    type Item is new Geometry.item with
       record
-         Textures : texture_Set;
+         Textures : Geometry.texturing.texture_Set;
       end record;
 
 

@@ -267,14 +267,14 @@ is
 
 
 
-   procedure Fade_is      (Self : in out Item;   Which : texture_ID;   Now : in fade_Level)
+   procedure Fade_is (Self : in out Item;   Which : texture_ID;   Now : in Geometry.texturing.fade_Level)
    is
    begin
       Self.Textures.Textures (Which).Fade := Now;
    end Fade_is;
 
 
-   function  Fade         (Self : in     Item;   Which : texture_ID)     return fade_Level
+   function Fade (Self : in     Item;   Which : texture_ID)     return Geometry.texturing.fade_Level
    is
    begin
       return Self.Textures.Textures (Which).Fade;
@@ -284,8 +284,9 @@ is
 
 
 
-   procedure Texture_is   (Self : in out Item;   Which : texture_ID;   Now : in openGL.Texture.Object)
+   procedure Texture_is (Self : in out Item;   Which : texture_ID;   Now : in openGL.Texture.Object)
    is
+      use openGL.Geometry.texturing;
    begin
       Texture_is (in_Set => Self.Textures,
                   Which  => Which,
@@ -294,29 +295,31 @@ is
 
 
 
-   function  Texture      (Self : in     Item;   Which : texture_ID)     return openGL.Texture.Object
+   function Texture (Self : in     Item;   Which : texture_ID) return openGL.Texture.Object
    is
    begin
-      return Texture (in_Set => Self.Textures,
-                      Which  => Which);
+      return openGL.Geometry.texturing.Texture (in_Set => Self.Textures,
+                                                Which  => Which);
    end Texture;
 
 
 
    overriding
-   procedure Texture_is   (Self : in out Item;   Now : in openGL.Texture.Object)
+   procedure Texture_is (Self : in out Item;   Now : in openGL.Texture.Object)
    is
+      use openGL.Geometry.texturing;
    begin
       Texture_is (in_Set => Self.Textures,
                   Now    => Now);
    end Texture_is;
 
+
    overriding
-   function  Texture      (Self : in     Item)     return openGL.Texture.Object
+   function Texture (Self : in Item) return openGL.Texture.Object
    is
    begin
-      return Texture (in_Set => Self.Textures,
-                      Which  => 1);
+      return openGL.Geometry.texturing.Texture (in_Set => Self.Textures,
+                                                Which  => 1);
    end Texture;
 
 
@@ -324,80 +327,9 @@ is
    overriding
    procedure enable_Texture (Self : in out Item)
    is
-      --  check_is_OK : constant Boolean := openGL.Tasks.Check
-      --    with unreferenced;
-
+      use openGL.Geometry.texturing;
    begin
       enable (Self.Textures, Self.Program);
-
-      --  Tasks.check;
-
-      --  for i in 1 .. Self.Textures.Count
-      --  loop
-      --     declare
-      --        use ada.Strings,
-      --            ada.Strings.fixed;
-      --
-      --        use type GL.GLint;
-      --
-      --        --  "bone_Matrices[" & Trim (Integer'Image (i - 1), Left) & "]");
-      --
-      --        type texture_Units is array (texture_Id) of GLenum;
-      --        all_texture_Units : constant texture_Units := (GL_TEXTURE0,
-      --                                                       GL_TEXTURE1,
-      --                                                       GL_TEXTURE2,
-      --                                                       GL_TEXTURE3,
-      --                                                       GL_TEXTURE4,
-      --                                                       GL_TEXTURE5,
-      --                                                       GL_TEXTURE6,
-      --                                                       GL_TEXTURE7,
-      --                                                       GL_TEXTURE8,
-      --                                                       GL_TEXTURE9,
-      --                                                       GL_TEXTURE10,
-      --                                                       GL_TEXTURE11,
-      --                                                       GL_TEXTURE12,
-      --                                                       GL_TEXTURE13,
-      --                                                       GL_TEXTURE14,
-      --                                                       GL_TEXTURE15,
-      --                                                       GL_TEXTURE16,
-      --                                                       GL_TEXTURE17,
-      --                                                       GL_TEXTURE18,
-      --                                                       GL_TEXTURE19,
-      --                                                       GL_TEXTURE20,
-      --                                                       GL_TEXTURE21,
-      --                                                       GL_TEXTURE22,
-      --                                                       GL_TEXTURE23,
-      --                                                       GL_TEXTURE24,
-      --                                                       GL_TEXTURE25,
-      --                                                       GL_TEXTURE26,
-      --                                                       GL_TEXTURE27,
-      --                                                       GL_TEXTURE28,
-      --                                                       GL_TEXTURE29,
-      --                                                       GL_TEXTURE30,
-      --                                                       GL_TEXTURE31);
-      --
-      --        uniform_Name     : aliased          C.char_array        := C.to_C ("Textures[" & Trim (Integer'Image (i - 1), Left) & "]");
-      --        uniform_Name_ptr : aliased constant C.strings.chars_ptr := C.strings.to_chars_ptr (uniform_Name'unchecked_Access);
-      --        loc              :         constant GL.GLint            := glGetUniformLocation (Self.Program.gl_Program, +uniform_Name_ptr);
-      --     begin
-      --        --  put_Line ("1-openGL.Program.lit.set_Uniforms:" & loc'Image);
-      --
-      --        glUniform1i (loc,
-      --                     GLint (i) - 1);
-      --
-      --        glActiveTexture (all_texture_Units (texture_Id (i)));
-      --        glBindTexture   (GL_TEXTURE_2D,
-      --                         Self.Textures.Textures (texture_Id (i)).Object.Name);
-      --     end;
-      --
-      --
-      --     declare
-      --        the_texture_count_Uniform : constant openGL.Variable.uniform.int := Self.Program.uniform_Variable ("texture_Count");
-      --     begin
-      --        the_texture_count_Uniform.Value_is (Self.Textures.Count);
-      --     end;
-      --  end loop;
-
    end enable_Texture;
 
 

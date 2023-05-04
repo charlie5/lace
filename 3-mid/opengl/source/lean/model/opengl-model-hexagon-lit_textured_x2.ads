@@ -1,5 +1,5 @@
 with
-     openGL.Geometry,
+     openGL.Geometry.texturing,
      openGL.Texture;
 
 
@@ -13,10 +13,10 @@ is
 
    type Face is
       record
-         Texture_1 : openGL.asset_Name          := null_Asset;     -- The texture to be applied to the hex.
-         Texture_2 : openGL.asset_Name          := null_Asset;     -- The texture to be applied to the hex.
-         Fade_1    : openGL.Geometry.fade_Level := 0.5;
-         Fade_2    : openGL.Geometry.fade_Level := 0.5;
+         Texture_1 : openGL.asset_Name                    := null_Asset;     -- The texture to be applied to the hex.
+         Texture_2 : openGL.asset_Name                    := null_Asset;     -- The texture to be applied to the hex.
+         Fade_1    : openGL.Geometry.texturing.fade_Level := 0.5;
+         Fade_2    : openGL.Geometry.texturing.fade_Level := 0.5;
       end record;
 
 
