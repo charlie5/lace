@@ -135,26 +135,26 @@ is
       the_Quad : aliased constant Quad_t := (NW => (Site   => [dx,
                                                                dy,
                                                                0.0],
-                                                    Coords => [S => Self.UV (1).S,
-                                                               T => Self.UV (1).T]),
+                                                    Coords => (S => Self.UV (1).S,
+                                                               T => Self.UV (1).T)),
 
                                              SW => (Site   => [dx,
                                                                dy - Real (Self.destHeight),
                                                                0.0],
-                                                    Coords => [S => Self.UV (1).S,
-                                                               T => Self.UV (2).T]),
+                                                    Coords => (S => Self.UV (1).S,
+                                                               T => Self.UV (2).T)),
 
                                              SE => (Site   => [dx + Real (Self.destWidth),
                                                                dy - Real (Self.destHeight),
                                                                0.0],
-                                                    Coords => [S => Self.UV (2).S,
-                                                               T => Self.UV (2).T]),
+                                                    Coords => (S => Self.UV (2).S,
+                                                               T => Self.UV (2).T)),
 
                                              NE => (Site   => [dx + Real (Self.destWidth),
                                                                dy,
                                                                0.0],
-                                                    Coords => [S => Self.UV (2).S,
-                                                               T => Self.UV (1).T]),
+                                                    Coords => (S => Self.UV (2).S,
+                                                               T => Self.UV (1).T)),
 
                                              Advance => Self.Advance);
    begin
