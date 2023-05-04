@@ -1,18 +1,13 @@
 with
      openGL.Primitive.indexed,
      openGL.Primitive.long_indexed,
-     openGL.Variable.uniform,
      openGL.Tasks,
 
      GL.Binding,
      GL.lean,
-     GL.Pointers,
 
      ada.Strings.fixed,
-     ada.unchecked_Deallocation,
-     ada.unchecked_Conversion,
-
-     interfaces.C.Strings;
+     ada.unchecked_Deallocation;
 
 
 package body openGL.Geometry
@@ -157,7 +152,11 @@ is
    procedure Texture_is (in_Set : in out texture_Set;   Which : texture_ID;   Now : in openGL.Texture.Object)
    is
    begin
-      in_Set.Textures (Which) := (0.0, Now, 0);
+      in_Set.Textures (Which) := (0.0,
+                                  Now,
+                                  textures_Uniform => <>,
+                                  fade_Uniform     => <>);
+
       in_Set.is_Transparent   :=    in_Set.is_Transparent
                                  or Now   .is_Transparent;
 
@@ -576,27 +575,33 @@ is
    begin
       Tasks.check;
 
-      if not the_Textures.Initialised
+      if not the_Textures.initialised
       then
          for i in 1 .. the_Textures.Count
          loop
             declare
-               use GL.lean,
-                   GL.Pointers,
-                   ada.Strings,
-                   ada.Strings.fixed,
-                   Interfaces;
+               use ada.Strings,
+                   ada.Strings.fixed;
 
-               uniform_Name     : aliased          C.char_array        := C.to_C ("Textures[" & Trim (Natural'Image (i - 1), Left) & "]");
-               uniform_Name_ptr : aliased constant C.strings.chars_ptr := C.strings.to_chars_ptr (uniform_Name'unchecked_Access);
-               Id               : constant         texture_Id          := texture_Id (i);
+               Id : constant texture_Id := texture_Id (i);
             begin
-               the_Textures.Textures (Id).uniform_Location := glGetUniformLocation (Program.gl_Program, +uniform_Name_ptr);
+               declare
+                  uniform_Name : aliased constant String :="Textures[" & Trim (Natural'Image (i - 1), Left) & "]";
+               begin
+                  the_Textures.Textures (Id).textures_Uniform := Program.uniform_Variable (Named => uniform_Name);
+               end;
+
+               declare
+                  uniform_Name : constant String := "Fade[" & Trim (Natural'Image (i - 1), Left) & "]";
+               begin
+                  the_Textures.Textures (Id).fade_Uniform := Program.uniform_Variable (Named => uniform_Name);
+               end;
             end;
          end loop;
 
          the_Textures.Initialised := True;
       end if;
+
 
       for i in 1 .. the_Textures.Count
       loop
@@ -644,8 +649,11 @@ is
          begin
             --  put_Line ("1-openGL.Program.lit.set_Uniforms:" & loc'Image);
 
-            glUniform1i (the_Textures.Textures (Id).uniform_Location,     -- loc,
+            glUniform1i (the_Textures.Textures (Id).textures_Uniform.gl_Variable,     -- loc,
                          GLint (i) - 1);
+
+            --  glUniform1i (the_Textures.Textures (Id).textures_uniform_Location,     -- loc,
+            --               GLint (i) - 1);
 
             glActiveTexture (all_texture_Units (Id));
             glBindTexture   (GL_TEXTURE_2D,
