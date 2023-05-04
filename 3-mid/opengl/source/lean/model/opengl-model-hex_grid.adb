@@ -185,8 +185,8 @@ is
                   declare
                      use hexagon_Geometry;
                      Site       : constant Geometry_2d.Site := vertex_Site (the_Grid,
-                                                                            hex_Id => [Positive (Row),
-                                                                                       Positive (Col)],
+                                                                            hex_Id => (Positive (Row),
+                                                                                       Positive (Col)),
                                                                             Which  => Which);
 
                      vertex_Id  : constant Index_t    :=      fetch_Id (S => Site);
@@ -194,8 +194,8 @@ is
                      C          : constant Index_t    :=      the_Vertex.shared_Count + 1;
                   begin
                      the_Vertex.shared_Count     := C;
-                     the_Vertex.shared_Hexes (C) := [Positive (Row),
-                                                     Positive (Col)];
+                     the_Vertex.shared_Hexes (C) := (Positive (Row),
+                                                     Positive (Col));
                      the_Vertex.Site := [Site (1),
                                          0.0,
                                          Site (2)];
@@ -221,8 +221,8 @@ is
                   declare
                      use hexagon_Geometry;
                      Site       : constant Geometry_2d.Site := vertex_Site (the_Grid,
-                                                                            hex_Id => [Positive (Row),
-                                                                                       Positive (Col)],
+                                                                            hex_Id => (Positive (Row),
+                                                                                       Positive (Col)),
                                                                             Which  => Which);
                      Height     :          Real       :=      0.0;
                      vertex_Id  : constant Index_t    :=      fetch_Id (S => Site);
@@ -281,8 +281,8 @@ is
                use hexagon_Geometry;
 
                Site : Geometry_2d.Site := vertex_Site (the_Grid,
-                                                       hex_Id => [Row => Positive (row_Count),
-                                                                  Col => Positive (i)],
+                                                       hex_Id => (Row => Positive (row_Count),
+                                                                  Col => Positive (i)),
                                                        Which  => 3);
                hex_vertex_Id : Index_t := fetch_Id (Site);
             begin
@@ -292,8 +292,8 @@ is
                                                      Alpha   => 0));
 
                Site                    := vertex_Site (the_Grid,
-                                                       hex_Id => [Row => 1,
-                                                                  Col => Positive (i)],
+                                                       hex_Id => (Row => 1,
+                                                                  Col => Positive (i)),
                                                        Which  => 6);
 
                hex_vertex_Id           := fetch_Id (Site);
@@ -318,7 +318,7 @@ is
             use hexagon_Geometry;
 
             Site : constant Geometry_2d.Site := vertex_Site (the_Grid,
-                                                             hex_Id => [Row, Col],
+                                                             hex_Id => (Row, Col),
                                                              Which  => hex_Vertex);
          begin
             Cursor                   := Cursor + 1;
@@ -426,16 +426,16 @@ is
                declare
                   use hexagon_Geometry;
                   Site : Geometry_2d.Site := vertex_Site (the_Grid,
-                                                          hex_Id => [Positive (Row),
-                                                                     Positive (Col)],
+                                                          hex_Id => (Positive (Row),
+                                                                     Positive (Col)),
                                                           Which  => 5);
                begin
                   Cursor                := Cursor + 1;
                   tops_Indices (Cursor) := fetch_Id (Site);
 
                   Site := vertex_Site (the_Grid,
-                                       hex_Id => [Positive (Row),
-                                                  Positive (Col)],
+                                       hex_Id => (Positive (Row),
+                                                  Positive (Col)),
                                        Which  => 6);
 
                   Cursor                := Cursor + 1;
@@ -444,16 +444,16 @@ is
                   if Row = row_Count     -- Last row, so do bottoms.
                   then
                      Site := vertex_Site (the_Grid,
-                                          hex_Id => [Positive (Row),
-                                                     Positive (Col)],
+                                          hex_Id => (Positive (Row),
+                                                     Positive (Col)),
                                           Which  => 3);
 
                      Cursor                := Cursor + 1;
                      tops_Indices (Cursor) := fetch_Id (Site);
 
                      Site := vertex_Site (the_Grid,
-                                          hex_Id => [Positive (Row),
-                                                     Positive (Col)],
+                                          hex_Id => (Positive (Row),
+                                                     Positive (Col)),
                                           Which  => 2);
 
                      Cursor                := Cursor + 1;
