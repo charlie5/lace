@@ -8,7 +8,7 @@ package openGL.Variable.uniform
 --  Models a uniform variable for shaders.
 --
 is
-   type Item  is abstract new Variable.item with private;
+   type Item is abstract new Variable.item with private;
 
 
    ---------
@@ -19,6 +19,11 @@ is
                                             Name    : in     String);
    overriding
    procedure destroy (Self : in out Item);
+
+
+
+   function gl_Variable (Self : in Item) return GL.GLint;
+
 
 
    -----------

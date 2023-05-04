@@ -45,6 +45,16 @@ is
    end destroy;
 
 
+
+   function gl_Variable (Self : in Item) return GL.GLint
+   is
+   begin
+      return Self.gl_Variable;
+   end gl_Variable;
+
+
+
+
    -----------
    --  Actuals
    --
