@@ -108,8 +108,9 @@ main()
 //        surface_Color += texture (Textures [i],
 //                                  frag_Coords);
 
-        surface_Color.rgb += texture (Textures [i],
-                                      frag_Coords).rgb * (1.0 - Fade [i]);
+        surface_Color.rgb +=   texture (Textures [i],frag_Coords).rgb
+                             * texture (Textures [i],frag_Coords).a
+                             * (1.0 - Fade [i]);
                                       
         surface_Color.a    = max (surface_Color.a, texture (Textures [i],
                                                             frag_Coords).a);
