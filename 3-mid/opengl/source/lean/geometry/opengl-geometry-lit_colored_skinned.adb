@@ -258,7 +258,7 @@ is
 
 
    overriding
-   procedure enable_Texture (Self : in Item)
+   procedure enable_Texture (Self : in out Item)
    is
    begin
       null;

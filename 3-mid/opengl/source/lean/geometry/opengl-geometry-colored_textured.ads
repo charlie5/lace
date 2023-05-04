@@ -41,7 +41,8 @@ private
          null;
       end record;
 
+
    overriding
-   procedure enable_Texture (Self : in Item);
+   procedure enable_Texture (Self : in out Item);
 
 end openGL.Geometry.colored_textured;
