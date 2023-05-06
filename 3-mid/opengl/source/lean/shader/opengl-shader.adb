@@ -11,6 +11,9 @@ with
 
      interfaces.C.Strings;
 
+-- use ada.Text_IO;
+
+
 package body openGL.Shader
 is
    use GL.lean,
@@ -22,22 +25,70 @@ is
    function read_text_File (Filename : in String) return C.char_array;
 
 
+
+
    ---------
    --  Forge
    --
 
-   procedure define (Self : in out Item;   Kind            : in shader.Kind;
-                                           source_Filename : in String)
+   function to_C_char_array (shader_Filename : in String) return C.char_array
+   is
+      use type interfaces.C.char_array;
+   begin
+      return   read_text_File (shader_Filename)
+             & (1 => C.char (ada.Characters.Latin_1.NUL));
+   end to_C_char_array;
+
+
+
+
+   function to_C_char_array (shader_Snippets : in asset_Names) return C.char_array
+   is
+      use type interfaces.C.char_array;
+
+      snippet_Id : Natural := 0;
+
+      function combine_Snippets return C.char_array
+      is
+      begin
+         snippet_Id := snippet_Id + 1;
+
+         if snippet_Id < shader_Snippets'Last
+         then
+            return read_text_File (to_String (shader_Snippets (snippet_Id))) & combine_Snippets;
+         else
+            return read_text_File (to_String (shader_Snippets (snippet_Id)));
+         end if;
+      end combine_Snippets;
+
+   begin
+      return   combine_Snippets
+             & (1 => C.char (ada.Characters.Latin_1.NUL));
+   end to_C_char_array;
+
+
+
+
+   procedure create_Shader (Self : in out Item;   Kind   : in Shader.Kind;
+                                                  Source : in C.char_array)
    is
       use GL.Pointers,
           C.Strings;
 
-      the_Source       : aliased  C.char_array    := read_text_File (source_Filename);
-      the_Source_ptr   : aliased
-                         constant chars_ptr       := to_chars_ptr (the_Source'unchecked_Access);
-      the_Source_Array : aliased  chars_ptr_array := [1 => the_Source_ptr];
+      use type interfaces.C.char_array;
+
+      the_Source       : aliased          C.char_array    := Source;
+      the_Source_ptr   : aliased constant chars_ptr       := to_chars_ptr (the_Source'unchecked_Access);
+      the_Source_Array : aliased          chars_ptr_array := [1 => the_Source_ptr];
+
    begin
       Tasks.check;
+
+      --  for i in the_Source'Range
+      --  loop
+      --     put (Character (the_Source (i)));
+      --  end loop;
+
 
       Self.Kind := Kind;
 
@@ -58,7 +109,7 @@ is
       Errors.log;
 
       declare
-         use type C.int;
+         use interfaces.C;
          Status : aliased gl.glInt;
       begin
          glGetShaderiv (self.gl_Shader,
@@ -70,11 +121,34 @@ is
                compile_Log : constant String := Self.shader_info_Log;
             begin
                Self.destroy;
-               raise Error with "'" & source_Filename & "' compilation failed ~ " & compile_Log;
+               raise Error with "'" & to_Ada (the_Source) & "' compilation failed ~ " & compile_Log;
             end;
          end if;
       end;
+   end create_Shader;
+
+
+
+
+   procedure define (Self : in out Item;   Kind            : in Shader.Kind;
+                                           shader_Filename : in String)
+   is
+      the_Source : aliased constant C.char_array := to_C_char_array (shader_Filename);
+   begin
+      create_Shader (Self, Kind, the_Source);
    end define;
+
+
+
+
+   procedure define (Self : in out Item;   Kind            : in Shader.Kind;
+                                           shader_Snippets : in asset_Names)
+   is
+      the_Source : aliased constant C.char_array := to_C_char_array (shader_Snippets);
+   begin
+      create_Shader (Self, Kind, the_Source);
+   end define;
+
 
 
 
@@ -84,6 +158,7 @@ is
       Tasks.check;
       glDeleteShader (self.gl_Shader);
    end destroy;
+
 
 
    --------------
@@ -123,6 +198,8 @@ is
    end shader_info_Log;
 
 
+
+
    ----------
    --  Privvy
    --
@@ -134,44 +211,55 @@ is
    end gl_Shader;
 
 
+
+
    -----------
    --  Utility
    --
-   NL : constant String := "" & ada.characters.latin_1.LF;
-
 
    function read_text_File (Filename : in String) return C.char_array
    is
       use ada.Text_IO,
           ada.Strings.unbounded;
 
+      use type interfaces.C.size_t;
+
+      NL        : constant String      := "" & ada.characters.latin_1.LF;
       the_File  : ada.Text_IO.File_type;
       Pad       : unbounded_String;
 
    begin
-      open (the_File, in_File, Filename);
+      if Filename = ""
+      then
+         return C.char_array' (1 .. 0 => <>);
+      else
+         open (the_File, in_File, Filename);
 
-      while not end_of_File (the_File)
-      loop
-         append (Pad, get_Line (the_File) & NL);
-      end loop;
-
-      close (the_File);
-
-      declare
-         use type Interfaces.C.size_t;
-
-         the_Data : C.char_array (1 .. C.size_t (Length (Pad)) + 1);
-      begin
-         for i in 1 .. the_Data'Last - 1
+         while not end_of_File (the_File)
          loop
-            the_Data (i) := C.char (Element (Pad, Integer (i)));
+            append (Pad, get_Line (the_File) & NL);
          end loop;
 
-         the_Data (the_Data'Last) := C.char'Val (0);
+         close (the_File);
 
-         return the_Data;
-      end;
+         if Length (Pad) = 0
+         then
+            return C.char_array' (1 .. 0 => <>);
+         else
+            declare
+               the_Data : C.char_array (0 .. C.size_t (Length (Pad) - 1));
+            begin
+               for i in the_Data'Range
+               loop
+                  the_Data (i) := C.char (Element (Pad, Integer (i) + 1));
+               end loop;
+
+               --  the_Data (the_Data'Last) := C.char'Val (0);
+
+               return the_Data;
+            end;
+         end if;
+      end if;
 
    exception
       when ada.IO_Exceptions.name_Error =>

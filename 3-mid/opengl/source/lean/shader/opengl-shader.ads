@@ -19,7 +19,10 @@ is
    --  Forge
    --
    procedure define  (Self : in out Item;   Kind            : in Shader.Kind;
-                                            source_Filename : in String);
+                                            shader_Filename : in String);
+
+   procedure define  (Self : in out Item;   Kind            : in Shader.Kind;
+                                            shader_Snippets : in asset_Names);
    procedure destroy (Self : in out Item);
 
 

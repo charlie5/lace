@@ -87,8 +87,10 @@ is
             white_Texture := openGL.Texture.Forge.to_Texture (white_Image);
 
             vertex_Shader  .define (Shader.Vertex,   "assets/opengl/shader/lit_textured_x2.vert");
-            fragment_Shader.define (Shader.Fragment, "assets/opengl/shader/lit_textured_x2.frag");
 
+            fragment_Shader.define (Shader.Fragment, (asset_Names' (1 => to_Asset ("assets/opengl/shader/version.header"),
+                                                                    2 => to_Asset ("assets/opengl/shader/texturing.frag"),
+                                                                    3 => to_Asset ("assets/opengl/shader/lit_textured_x2.frag"))));
             the_Program := new openGL.Program.lit.item;
             the_Program.define (  vertex_Shader'Access,
                                 fragment_Shader'Access);
