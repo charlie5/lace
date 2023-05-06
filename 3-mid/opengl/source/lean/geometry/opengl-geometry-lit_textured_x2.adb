@@ -36,20 +36,17 @@ is
    Name_1 : constant String := "Site";
    Name_2 : constant String := "Normal";
    Name_3 : constant String := "Coords";
-   --  Name_4 : constant String := "Coords_2";
-   Name_5 : constant String := "Shine";
+   Name_4 : constant String := "Shine";
 
    Attribute_1_Name : aliased C.char_array := C.to_C (Name_1);
    Attribute_2_Name : aliased C.char_array := C.to_C (Name_2);
    Attribute_3_Name : aliased C.char_array := C.to_C (Name_3);
-   --  Attribute_4_Name : aliased C.char_array := C.to_C (Name_4);
-   Attribute_5_Name : aliased C.char_array := C.to_C (Name_5);
+   Attribute_4_Name : aliased C.char_array := C.to_C (Name_4);
 
    Attribute_1_Name_ptr : aliased constant C.strings.chars_ptr := C.strings.to_chars_ptr (Attribute_1_Name'Access);
    Attribute_2_Name_ptr : aliased constant C.strings.chars_ptr := C.strings.to_chars_ptr (Attribute_2_Name'Access);
    Attribute_3_Name_ptr : aliased constant C.strings.chars_ptr := C.strings.to_chars_ptr (Attribute_3_Name'Access);
-   --  Attribute_4_Name_ptr : aliased constant C.strings.chars_ptr := C.strings.to_chars_ptr (Attribute_4_Name'Access);
-   Attribute_5_Name_ptr : aliased constant C.strings.chars_ptr := C.strings.to_chars_ptr (Attribute_5_Name'Access);
+   Attribute_4_Name_ptr : aliased constant C.strings.chars_ptr := C.strings.to_chars_ptr (Attribute_4_Name'Access);
 
 
    ---------
@@ -78,8 +75,7 @@ is
             Attribute_1 : Attribute.view;
             Attribute_2 : Attribute.view;
             Attribute_3 : Attribute.view;
-            --  Attribute_4 : Attribute.view;
-            Attribute_5 : Attribute.view;
+            Attribute_4 : Attribute.view;
 
             white_Image : constant Image := [1 .. 2 => [1 .. 2 => +White]];
 
@@ -122,17 +118,8 @@ is
                                                          - Sample.Site (1)'Address,
                                           Normalized  => False);
 
-            --  Attribute_4 := new_Attribute (Name        => Name_4,
-            --                                gl_Location => the_Program.attribute_Location (Name_4),
-            --                                Size        => 2,
-            --                                data_Kind   => attribute.GL_FLOAT,
-            --                                Stride      => lit_textured_x2.Vertex'Size / 8,
-            --                                Offset      =>   Sample.Coords_2.S'Address
-            --                                               - Sample.Site (1)'Address,
-            --                                Normalized  => False);
-
-            Attribute_5 := new_Attribute (Name        => Name_5,
-                                          gl_Location => the_Program.attribute_Location (Name_5),
+            Attribute_4 := new_Attribute (Name        => Name_4,
+                                          gl_Location => the_Program.attribute_Location (Name_4),
                                           Size        => 1,
                                           data_Kind   => attribute.GL_FLOAT,
                                           Stride      => lit_textured_x2.Vertex'Size / 8,
@@ -143,8 +130,7 @@ is
             the_Program.add (Attribute_1);
             the_Program.add (Attribute_2);
             the_Program.add (Attribute_3);
-            --  the_Program.add (Attribute_4);
-            the_Program.add (Attribute_5);
+            the_Program.add (Attribute_4);
 
             glBindAttribLocation (program =>  the_Program.gl_Program,
                                   index   =>  the_Program.Attribute (named => Name_1).gl_Location,
@@ -161,14 +147,9 @@ is
                                   name    => +Attribute_3_Name_ptr);
             Errors.log;
 
-            --  glBindAttribLocation (program =>  the_Program.gl_Program,
-            --                        index   =>  the_Program.Attribute (named => Name_4).gl_Location,
-            --                        name    => +Attribute_4_Name_ptr);
-            --  Errors.log;
-
             glBindAttribLocation (program =>  the_Program.gl_Program,
-                                  index   =>  the_Program.Attribute (named => Name_5).gl_Location,
-                                  name    => +Attribute_5_Name_ptr);
+                                  index   =>  the_Program.Attribute (named => Name_4).gl_Location,
+                                  name    => +Attribute_4_Name_ptr);
             Errors.log;
          end;
       end if;
@@ -276,7 +257,7 @@ is
    end Fade_is;
 
 
-   function Fade (Self : in     Item;   Which : texture_ID)     return Geometry.texturing.fade_Level
+   function Fade (Self : in Item;   Which : texture_ID) return Geometry.texturing.fade_Level
    is
    begin
       return Self.Textures.Textures (Which).Fade;
@@ -297,7 +278,7 @@ is
 
 
 
-   function Texture (Self : in     Item;   Which : texture_ID) return openGL.Texture.Object
+   function Texture (Self : in Item;   Which : texture_ID) return openGL.Texture.Object
    is
    begin
       return openGL.Geometry.texturing.Texture (in_Set => Self.Textures,
