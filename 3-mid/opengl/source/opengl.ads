@@ -328,7 +328,10 @@ is
 
    type asset_Name is new String (1 .. 128);
    --
-   --  Name of a file containing textures, images, fonts or other resources.
+   --  Name of a file containing textures, images, fonts, shaders, shader_snippets or other resources.
+
+   type asset_Names is array (Positive range <>) of asset_Name;
+
 
    null_Asset : constant asset_Name;
 
