@@ -1,4 +1,6 @@
-#version 140
+// Include 'version.header'.
+// Include 'texturing.frag'.
+
 
 struct light
 {
@@ -15,7 +17,7 @@ uniform mat4        model_Transform;
 uniform mat3        inverse_model_Rotation;
 uniform vec3        camera_Site;
 uniform vec3        specular_Color;    // The materials specular color.
-uniform sampler2D   Texture;
+
 uniform int         light_Count;
 uniform light       Lights [10];
 
@@ -26,6 +28,8 @@ in  vec2   frag_Coords;
 in  float  frag_Shine;
 
 out vec4   final_Color;
+
+
 
 
 vec3
@@ -91,18 +95,16 @@ apply_Light (light   Light,
 
 
 
+
 void
 main()
 {
     vec3   surface_Site      = vec3 (  model_Transform
                                      * vec4 (frag_Site, 1));
-                                   
-    vec4   surface_Color     = texture (Texture, frag_Coords);
-
+    vec4   surface_Color     = apply_Texturing (frag_Coords);
     vec3   Surface_to_Camera = normalize (camera_Site - surface_Site);
     vec3   Normal            = normalize (  frag_Normal
                                           * inverse_model_Rotation);
-
     // Combine color from all the lights.
     //
     vec3   linear_Color = vec3 (0);
@@ -116,8 +118,7 @@ main()
                                      Surface_to_Camera);
     }
     
-    vec3   Gamma = vec3 (1.0 / 2.2);
-
+    vec3  Gamma = vec3 (1.0 / 2.2);
     final_Color = vec4 (pow (linear_Color,     // Final color (after gamma correction).
                              Gamma),
                         surface_Color.a);

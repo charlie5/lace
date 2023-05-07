@@ -1,5 +1,32 @@
 #version 140
 
+
+// Texturing snippet.
+//
+uniform int         texture_Count;
+uniform sampler2D   Textures [32];
+uniform float       Fade     [32];
+
+vec4
+apply_Texturing (vec2   Coords)
+{
+    vec4   Color = vec4 (0);
+    
+    for (int i = 0;   i < texture_Count;   ++i)
+    {
+        Color.rgb +=   texture (Textures [i], Coords).rgb
+                     * texture (Textures [i], Coords).a
+                     * (1.0 - Fade [i]);
+                                      
+        Color.a    = max (Color.a, texture (Textures [i],
+                                            Coords).a);
+    }
+    
+    return Color;
+}
+
+
+
 struct light
 {
    vec4    Site;
@@ -15,7 +42,7 @@ uniform mat4        model_Transform;
 uniform mat3        inverse_model_Rotation;
 uniform vec3        camera_Site;
 uniform vec3        specular_Color;    // The materials specular color.
-uniform sampler2D   Texture;
+//uniform sampler2D   Texture;
 uniform int         light_Count;
 uniform light       Lights [10];
 
@@ -27,6 +54,8 @@ in  vec2   frag_Coords;
 in  float  frag_Shine;
 
 out vec4   final_Color;
+
+
 
 
 vec3
@@ -92,16 +121,15 @@ apply_Light (light   Light,
 
 
 
+
 void
 main()
 {
     vec3   surface_Site      = vec3 (  model_Transform
                                      * vec4 (frag_Site, 1));
-                                   
-    vec4   surface_Color     = mix (texture (Texture, frag_Coords),
+    vec4   surface_Color     = mix (apply_Texturing (frag_Coords),
                                     frag_Color,
                                     0.5);
-
     vec3   Surface_to_Camera = normalize (camera_Site - surface_Site);
     vec3   Normal            = normalize (frag_Normal * inverse_model_Rotation);
 
@@ -118,8 +146,7 @@ main()
                                      Surface_to_Camera);
     }
     
-    vec3   Gamma = vec3 (1.0 / 2.2);
-
+    vec3  Gamma = vec3 (1.0 / 2.2);
     final_Color = vec4 (pow (linear_Color,     // Final color (after gamma correction).
                              Gamma),
                         surface_Color.a);

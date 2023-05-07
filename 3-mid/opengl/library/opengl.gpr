@@ -23,7 +23,7 @@ is
       when "lean" =>
          for Source_Dirs use ("../source/lean", 
                               "../source/lean/buffer",
-                              "../source/lean/geometry/**",
+                              "../source/lean/geometry",
                               "../source/lean/light",
                               "../source/lean/model",
                               "../source/lean/renderer",
@@ -35,7 +35,7 @@ is
       when "desk" =>
          for Source_Dirs use ("../source/lean", 
                               "../source/lean/buffer",
-                              "../source/lean/geometry/**",
+                              "../source/lean/geometry",
                               "../source/lean/light",
                               "../source/lean/model",
                               "../source/lean/renderer",
