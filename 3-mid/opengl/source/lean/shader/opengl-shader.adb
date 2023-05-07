@@ -74,7 +74,7 @@ is
    is
       use GL.Pointers,
           C.Strings;
-      use ada.Text_IO;
+      --  use ada.Text_IO;
 
       use type interfaces.C.char_array;
 
@@ -86,11 +86,11 @@ is
       Tasks.check;
 
 
-      new_Line (20);
-      for i in the_Source'Range
-      loop
-         put (Character (the_Source (i)));
-      end loop;
+      --  new_Line (20);
+      --  for i in the_Source'Range
+      --  loop
+      --     put (Character (the_Source (i)));
+      --  end loop;
 
 
       Self.Kind := Kind;
