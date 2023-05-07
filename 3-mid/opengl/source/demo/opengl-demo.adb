@@ -22,6 +22,7 @@ with
      openGL.Model.sphere        .lit_textured,
      openGL.Model.Text          .lit_colored,
      openGL.Model.terrain,
+     openGL.Light,
 
      SDL.Video.Windows.Makers,
      ada.Text_IO;
@@ -45,6 +46,8 @@ is
    begin
       swap (Window);
    end my_Swapper;
+
+
 
 
    procedure define (Name   : in String;
@@ -90,7 +93,19 @@ is
 
       Camera.Viewport_is (width  => Width,
                           height => Height);
+
+      declare
+         use openGL.Light;
+         the_Light : openGL.Light.item := Demo.Renderer.new_Light;
+      begin
+         the_Light. Site_is ([5_000.0, 2_000.0, 5_000.0]);
+         the_Light.Color_is (White);
+
+         Demo.Renderer.set (the_Light);
+      end;
+
    end define;
+
 
 
 
