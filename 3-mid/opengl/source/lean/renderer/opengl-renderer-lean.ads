@@ -120,7 +120,10 @@ private
 
    type Camera_view is access all openGL.Camera.item'Class;
 
-   max_Visuals : constant := 20_000;
+   max_Visuals    : constant := 20_000;
+   max_Geometries : constant := max_Visuals * 6;
+
+
 
    ----------
    -- Updates
@@ -275,8 +278,8 @@ private
          Textures           : aliased Texture.name_Map_of_texture;
          Fonts              :         Font.font_id_Map_of_font;
 
-         all_opaque_Couples :         visual_geometry_Couples_view := new visual_geometry_Couples (1 .. max_Visuals);
-         all_lucid_Couples  :         visual_geometry_Couples_view := new visual_geometry_Couples (1 .. max_Visuals);
+         all_opaque_Couples :         visual_geometry_Couples_view := new visual_geometry_Couples (1 .. max_Geometries);
+         all_lucid_Couples  :         visual_geometry_Couples_view := new visual_geometry_Couples (1 .. max_Geometries);
 
          obsolete_Models    :         safe_Models;
          obsolete_Impostors :         safe_Impostors;
