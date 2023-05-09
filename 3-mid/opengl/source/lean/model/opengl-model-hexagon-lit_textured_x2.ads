@@ -32,13 +32,32 @@ is
    --- Attributes
    --
 
+   overriding
+   function to_GL_Geometries (Self : access Item;   Textures : access Texture.name_Map_of_texture'Class;
+                                                    Fonts    : in     Font.font_id_Map_of_font) return Geometry.views;
+
+
+   ------------
+   -- Texturing
+   --
+
    procedure Texture_1_is (Self : in out Item;   Now : in openGL.asset_Name);
    procedure Texture_2_is (Self : in out Item;   Now : in openGL.asset_Name);
 
 
    overriding
-   function to_GL_Geometries (Self : access Item;   Textures : access Texture.name_Map_of_texture'Class;
-                                                    Fonts    : in     Font.font_id_Map_of_font) return Geometry.views;
+   procedure Fade_1_is (Self : in out Item;   Now : in openGL.Geometry.texturing.fade_Level);
+
+   overriding
+   procedure Fade_2_is (Self : in out Item;   Now : in openGL.Geometry.texturing.fade_Level);
+
+
+   overriding
+   function  Fade_1 (Self : in Item) return Geometry.Texturing.fade_Level;
+
+   overriding
+   function  Fade_2 (Self : in Item) return Geometry.Texturing.fade_Level;
+
 
 
 private

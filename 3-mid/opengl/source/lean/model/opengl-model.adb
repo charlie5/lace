@@ -211,4 +211,44 @@ is
       Self.needs_Rebuild := True;
    end needs_Rebuild;
 
+
+
+
+   ------------
+   -- Texturing
+   --
+
+   procedure Fade_1_is (Self : in out Item;   Now : in Geometry.Texturing.fade_Level)
+   is
+   begin
+      raise program_Error with "Model does not support texturing.";
+   end Fade_1_is;
+
+
+
+   procedure Fade_2_is (Self : in out Item;   Now : in Geometry.Texturing.fade_Level)
+   is
+   begin
+      raise program_Error with "Model does not support texturing.";
+   end Fade_2_is;
+
+
+
+   function Fade_1 (Self : in Item) return Geometry.Texturing.fade_Level
+   is
+   begin
+      raise program_Error with "Model does not support texturing.";
+      return 0.0;
+   end Fade_1;
+
+
+
+   function Fade_2 (Self : in Item) return Geometry.Texturing.fade_Level
+   is
+   begin
+      raise program_Error with "Model does not support texturing.";
+      return 0.0;
+   end Fade_2;
+
+
 end openGL.Model;

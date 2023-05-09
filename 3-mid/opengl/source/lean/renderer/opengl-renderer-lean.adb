@@ -549,6 +549,7 @@ is
                    and the_Visual.Model. lucid_Geometries = null)
             then
                the_Visual.Model.create_GL_Geometries (Self.Textures'Access, Self.Fonts);
+               --  put_Line ("Rebuild");
 
             elsif the_Visual.Model.is_Modified
             then

@@ -6,6 +6,8 @@ with
 
      ada.Strings.fixed;
 
+with ada.Text_IO;   use ada.Text_IO;
+
 
 package body openGL.Geometry.texturing
 is
@@ -156,6 +158,8 @@ is
             uniform_Name : constant String                        := "Fade[" & Trim (Natural'Image (i - 1), Left) & "]";
             Uniform      : constant openGL.Variable.uniform.float := Program.uniform_Variable (uniform_Name);
          begin
+            --  put_Line ("Fade:" & the_Textures.Textures (texture_Id (i)).Fade'Image);
+
             Uniform.Value_is (Real (the_Textures.Textures (texture_Id (i)).Fade));
          end;
       end loop;

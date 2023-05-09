@@ -27,23 +27,6 @@ is
    --- Attributes
    --
 
-   procedure Texture_1_is (Self : in out Item;   Now : in openGL.asset_Name)
-   is
-   begin
-      Self.Face.Texture_1 := Now;
-   end Texture_1_is;
-
-
-   procedure Texture_2_is (Self : in out Item;   Now : in openGL.asset_Name)
-   is
-   begin
-      Self.Face.Texture_2 := Now;
-   end Texture_2_is;
-
-
-
-
-
    overriding
    function to_GL_Geometries (Self : access Item;   Textures : access Texture.name_Map_of_texture'Class;
                                                     Fonts    : in     Font.font_id_Map_of_font) return Geometry.views
@@ -116,8 +99,66 @@ is
          upper_Face := new_Face (Vertices => the_Vertices);
       end;
 
+      upper_Face.Model_is (Self.all'unchecked_Access);
+
       return (1 => upper_Face.all'Access);
    end to_GL_Geometries;
+
+
+
+
+   ------------
+   -- Texturing
+   --
+
+   procedure Texture_1_is (Self : in out Item;   Now : in openGL.asset_Name)
+   is
+   begin
+      Self.Face.Texture_1 := Now;
+   end Texture_1_is;
+
+
+   procedure Texture_2_is (Self : in out Item;   Now : in openGL.asset_Name)
+   is
+   begin
+      Self.Face.Texture_2 := Now;
+   end Texture_2_is;
+
+
+
+
+   overriding
+   procedure Fade_1_is (Self : in out Item;   Now : in openGL.Geometry.texturing.fade_Level)
+   is
+   begin
+      Self.Face.Fade_1 := Now;
+   end Fade_1_is;
+
+
+   overriding
+   procedure Fade_2_is (Self : in out Item;   Now : in openGL.Geometry.texturing.fade_Level)
+   is
+   begin
+      Self.Face.Fade_2 := Now;
+   end Fade_2_is;
+
+
+
+   overriding
+   function  Fade_1 (Self : in Item) return Geometry.Texturing.fade_Level
+   is
+   begin
+      return Self.Face.Fade_1;
+   end Fade_1;
+
+
+   overriding
+   function  Fade_2 (Self : in Item) return Geometry.Texturing.fade_Level
+   is
+   begin
+      return Self.Face.Fade_2;
+   end Fade_2;
+
 
 
 end openGL.Model.hexagon.lit_textured_x2;

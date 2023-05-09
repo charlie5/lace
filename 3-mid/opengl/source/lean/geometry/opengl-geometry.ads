@@ -4,6 +4,9 @@ with
      openGL.Program,
      openGL.Texture;
 
+limited
+with
+     openGL.Model;
 
 private
 with
@@ -37,6 +40,11 @@ is
    --------------
    --  Attributes
    --
+
+   type Model_view is access all openGL.Model.item'Class;
+
+   procedure Model_is (Self : in out Item;   Now : in Model_view);
+
 
    procedure Label_is        (Self : in out Item'Class;   Now : in String);
    function  Label           (Self : in     Item'Class)     return String;
@@ -90,16 +98,16 @@ is
                         Sites     : in openGL.Sites) return access Normals;
 
 
+
 private
    use ada.Strings.unbounded;
 
    type Textures is array (texture_Id) of openGL.Texture.Object;
 
 
-
-
    type Item is abstract tagged limited
       record
+         Model           : Model_view;
          Label           : unbounded_String;
          Program         : openGL.Program.view;
          Vertices        : Buffer.view;

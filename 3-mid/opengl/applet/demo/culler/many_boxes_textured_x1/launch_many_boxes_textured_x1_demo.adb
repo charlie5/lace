@@ -76,6 +76,9 @@ begin
          Demo.Renderer.set (the_Light);
       end;
 
+      --  openGL.Demo.Camera.allow_Impostors;
+
+
       --  Main loop.
       --
       while not Demo.Done

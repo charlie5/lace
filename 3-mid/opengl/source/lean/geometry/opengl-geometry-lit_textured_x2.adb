@@ -5,6 +5,7 @@ with
      openGL.Attribute,
      openGL.Texture,
      openGL.Palette,
+     openGL.Model,
      openGL.Tasks,
      openGL.Errors,
 
@@ -312,6 +313,10 @@ is
    is
       use openGL.Geometry.texturing;
    begin
+      Self.Textures.Textures (1).Fade := Self.Model.Fade_1;
+      Self.Textures.Textures (2).Fade := Self.Model.Fade_2;
+
+
       enable (Self.Textures, Self.Program);
    end enable_Texture;
 

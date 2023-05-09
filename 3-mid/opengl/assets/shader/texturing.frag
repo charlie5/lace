@@ -13,8 +13,14 @@ apply_Texturing (vec2   Coords)
                      * texture (Textures [i], Coords).a
                      * (1.0 - Fade [i]);
                                       
-        Color.a    = max (Color.a, texture (Textures [i],
-                                            Coords).a);
+//        Color.a    += texture (Textures [i],  Coords).a * (1.0 - Fade[1]);
+
+        Color.a    = max (Color.a,
+                          texture (Textures [i],Coords).a * (1.0 - Fade[i]));
+
+
+//        Color.a    = max (Color.a,
+//                            texture (Textures [i],Coords).a);
     }
     
     return Color;

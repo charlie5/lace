@@ -3,8 +3,11 @@ with
      openGL.Visual,
      openGL.Light,
      openGL.Palette,
+     openGL.Geometry.texturing,
      --  openGL.IO,
      openGL.Demo;
+
+with Ada.Text_IO; use Ada.Text_IO;
 
 
 procedure launch_render_two_Textures
@@ -22,8 +25,9 @@ is
    --------------
    --  The model.
    --
-   the_1st_Texture : constant asset_Name :=  to_Asset ("assets/opengl/texture/blobber_floor.png");
-   the_2nd_Texture : constant asset_Name :=  to_Asset ("assets/opengl/texture/crawl_blob-1.png");
+   --  the_1st_Texture : constant asset_Name :=  to_Asset ("assets/opengl/texture/blobber_floor.png");
+   the_1st_Texture : constant asset_Name :=  to_Asset ("assets/crawl-blob-1.png");
+   the_2nd_Texture : constant asset_Name :=  to_Asset ("assets/crawl-blob-2.png");
 
    the_textured_hexagon_Model : constant Model.hexagon.lit_textured_x2.view
      := Model.hexagon.lit_textured_x2.new_Hexagon (Radius => 0.5,
@@ -44,6 +48,11 @@ is
    the_Light      :          openGL.Light.item := Demo.Renderer.new_Light;
    light_Site     : constant openGL.Vector_3   := [0.0, 0.0, 15.0];
    cone_Direction : constant openGL.Vector_3   := [0.0, 0.0, -1.0];
+
+   use openGL.Geometry.texturing;
+   Fade           : fade_Level := fade_Level'First;
+   increment_Fade : Boolean    := True;
+   Epoch          : Natural    := 0;
 
 begin
    Demo.print_Usage;
@@ -82,6 +91,34 @@ begin
 
       Demo.Renderer.render;
       Demo.FPS_Counter.increment;    -- Frames per second display.
+
+
+      if Epoch mod 20 = 0
+      then
+         the_textured_hexagon_Model.Fade_1_is (Fade);
+         the_textured_hexagon_Model.Fade_2_is (1.0 - Fade);
+         --  the_textured_hexagon_Model.needs_Rebuild;
+         --
+         --  the_textured_hexagon_Model.Fade_1_is (1.0);
+         --  the_textured_hexagon_Model.Fade_2_is (0.0);
+
+         --  put_Line ("my Fade: " & Fade'Image);
+
+         if increment_Fade
+         then
+            Fade := Fade + fade_Level'Small;
+         else
+            Fade := Fade - fade_Level'Small;
+         end if;
+
+         if    Fade = fade_Level'Last  then increment_Fade := False;
+         elsif Fade = fade_Level'First then increment_Fade := True;
+         end if;
+
+      end if;
+
+      Epoch := Epoch + 1;
    end loop;
+
    Demo.destroy;
 end launch_render_two_Textures;

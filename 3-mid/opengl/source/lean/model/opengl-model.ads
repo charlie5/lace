@@ -2,7 +2,7 @@ with
      openGL.remote_Model,
      openGL.Font,
      openGL.Texture,
-     openGL.Geometry;
+     openGL.Geometry.texturing;
 
 
 package openGL.Model
@@ -66,6 +66,19 @@ is
 
    procedure create_GL_Geometries (Self : in out Item'Class;   Textures : access Texture.name_Map_of_texture'Class;
                                                                Fonts    : in     Font.font_id_Map_of_font);
+
+
+
+   ------------
+   -- Texturing
+   --
+
+   procedure Fade_1_is (Self : in out Item;   Now : in Geometry.Texturing.fade_Level);
+   procedure Fade_2_is (Self : in out Item;   Now : in Geometry.Texturing.fade_Level);
+
+   function  Fade_1 (Self : in Item) return Geometry.Texturing.fade_Level;
+   function  Fade_2 (Self : in Item) return Geometry.Texturing.fade_Level;
+
 
 
 private

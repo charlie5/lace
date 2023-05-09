@@ -50,6 +50,15 @@ is
    --  Attributes
    --
 
+   procedure Model_is (Self : in out Item;   Now : in Model_view)
+   is
+   begin
+      Self.Model := Now;
+   end Model_is;
+
+
+
+
    function Label (Self : in Item'Class) return String
    is
    begin
