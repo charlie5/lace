@@ -95,6 +95,9 @@ begin
 
       if Epoch mod 20 = 0
       then
+         --  the_textured_hexagon_Model.Fade_is (which => 1, now => Fade);
+         --  the_textured_hexagon_Model.Fade_is (which => 2, now => 1.0 - Fade);
+
          the_textured_hexagon_Model.Fade_1_is (Fade);
          the_textured_hexagon_Model.Fade_2_is (1.0 - Fade);
          --  the_textured_hexagon_Model.needs_Rebuild;

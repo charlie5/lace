@@ -45,17 +45,17 @@ is
    procedure Texture_2_is (Self : in out Item;   Now : in openGL.asset_Name);
 
 
-   overriding
+   -- overriding
    procedure Fade_1_is (Self : in out Item;   Now : in openGL.Geometry.texturing.fade_Level);
 
-   overriding
+   -- overriding
    procedure Fade_2_is (Self : in out Item;   Now : in openGL.Geometry.texturing.fade_Level);
 
 
-   overriding
+   -- overriding
    function  Fade_1 (Self : in Item) return Geometry.Texturing.fade_Level;
 
-   overriding
+   -- overriding
    function  Fade_2 (Self : in Item) return Geometry.Texturing.fade_Level;
 
 

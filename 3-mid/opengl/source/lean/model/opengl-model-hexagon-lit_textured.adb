@@ -23,15 +23,50 @@ is
 
 
 
-   --------------
-   --- Attributes
+   ------------------
+   --- Attributes ---
+   ------------------
+
+
+   ------------
+   -- Texturing
    --
 
-   procedure Texture_is (Self : in out Item;   Now : in openGL.asset_Name)
+   overriding
+   procedure Fade_is (Self : in out Item;   Which : in Geometry.texture_Id;
+                                            Now   : in Geometry.Texturing.fade_Level)
    is
    begin
-      Self.Face.Texture := Now;
+      Self.Face.Fades (which) := Now;
+   end Fade_is;
+
+
+
+   overriding
+   function Fade (Self : in Item;   Which : in Geometry.texture_Id) return Geometry.Texturing.fade_Level
+   is
+   begin
+      return Self.Face.Fades (which);
+   end Fade;
+
+
+
+   procedure Texture_is (Self : in out Item;   Which : in Geometry.texture_Id;
+                                               Now   : in openGL.asset_Name)
+   is
+   begin
+      Self.Face.Textures (Positive (which)) := Now;
    end Texture_is;
+
+
+
+
+   overriding
+   function texture_Count (Self : in Item) return Natural
+   is
+   begin
+      return Self.Face.texture_Count;
+   end texture_Count;
 
 
 
@@ -42,11 +77,12 @@ is
    is
       pragma unreferenced (Fonts);
 
-      use Geometry.lit_textured,
+      use Geometry,
+          Geometry.lit_textured,
           Texture;
 
-      the_Sites    :         constant hexagon.Sites := vertex_Sites (Self.Radius);
-      the_Indices  : aliased constant Indices       := (1, 2, 3, 4, 5, 6, 7, 2);
+      the_Sites   :         constant hexagon.Sites := vertex_Sites (Self.Radius);
+      the_Indices : aliased constant Indices       := (1, 2, 3, 4, 5, 6, 7, 2);
 
 
       function new_Face (Vertices : in geometry.lit_textured.Vertex_array) return Geometry.lit_textured.view
@@ -58,17 +94,25 @@ is
 
          the_Primitive : constant Primitive.indexed.view
            := Primitive.indexed.new_Primitive (triangle_Fan, the_Indices);
+
+         Id : texture_Id;
       begin
          the_Geometry.Vertices_are (Vertices);
          the_Geometry.add          (Primitive.view (the_Primitive));
 
-         if Self.Face.Texture /= null_Asset
-         then
-            the_Geometry.Texture_is (Textures.fetch (Self.Face.Texture));
-            the_Geometry.is_Transparent (now => the_Geometry.Texture.is_Transparent);
-         end if;
+         for i in 1 .. Self.Face.texture_Count
+         loop
+            Id := texture_Id (i);
 
-         the_Geometry.is_Transparent (True);
+            the_Geometry.Fade_is (which => Id,
+                                  now   => Self.Face.Fades (Id));
+
+            the_Geometry.Texture_is     (which => Id,
+                                         now => Textures.fetch (Self.Face.Textures (i)));
+            the_Geometry.is_Transparent (now => the_Geometry.Texture.is_Transparent);
+         end loop;
+
+         the_Geometry.is_Transparent (True);     -- TODO: Do transparency properly.
 
          return the_Geometry;
       end new_Face;
@@ -92,6 +136,8 @@ is
       begin
          upper_Face := new_Face (Vertices => the_Vertices);
       end;
+
+      upper_Face.Model_is (Self.all'unchecked_Access);
 
       return (1 => upper_Face.all'Access);
    end to_GL_Geometries;

@@ -298,6 +298,7 @@ is
    end Texture_is;
 
 
+
    overriding
    function Texture (Self : in Item) return openGL.Texture.Object
    is
@@ -313,8 +314,8 @@ is
    is
       use openGL.Geometry.texturing;
    begin
-      Self.Textures.Textures (1).Fade := Self.Model.Fade_1;
-      Self.Textures.Textures (2).Fade := Self.Model.Fade_2;
+      Self.Textures.Textures (1).Fade := Self.Model.Fade (which => 1);
+      Self.Textures.Textures (2).Fade := Self.Model.Fade (which => 2);
 
 
       enable (Self.Textures, Self.Program);

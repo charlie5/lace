@@ -218,37 +218,67 @@ is
    -- Texturing
    --
 
-   procedure Fade_1_is (Self : in out Item;   Now : in Geometry.Texturing.fade_Level)
+   procedure Fade_is (Self : in out Item;   Which : in Geometry.texture_Id;
+                                            Now   : in Geometry.Texturing.fade_Level)
    is
    begin
       raise program_Error with "Model does not support texturing.";
-   end Fade_1_is;
+   end Fade_is;
 
 
 
-   procedure Fade_2_is (Self : in out Item;   Now : in Geometry.Texturing.fade_Level)
-   is
-   begin
-      raise program_Error with "Model does not support texturing.";
-   end Fade_2_is;
-
-
-
-   function Fade_1 (Self : in Item) return Geometry.Texturing.fade_Level
+   function Fade (Self : in Item;   Which : in Geometry.texture_Id) return Geometry.Texturing.fade_Level
    is
    begin
       raise program_Error with "Model does not support texturing.";
       return 0.0;
-   end Fade_1;
+   end Fade;
 
 
 
-   function Fade_2 (Self : in Item) return Geometry.Texturing.fade_Level
+   function texture_Count (Self : in Item) return Natural
    is
    begin
       raise program_Error with "Model does not support texturing.";
-      return 0.0;
-   end Fade_2;
+      return 0;
+   end texture_Count;
+
+
+
+
+
+
+   --  procedure Fade_1_is (Self : in out Item;   Now : in Geometry.Texturing.fade_Level)
+   --  is
+   --  begin
+   --     raise program_Error with "Model does not support texturing.";
+   --  end Fade_1_is;
+   --
+   --
+   --
+   --  procedure Fade_2_is (Self : in out Item;   Now : in Geometry.Texturing.fade_Level)
+   --  is
+   --  begin
+   --     raise program_Error with "Model does not support texturing.";
+   --  end Fade_2_is;
+   --
+   --
+   --
+   --  function Fade_1 (Self : in Item) return Geometry.Texturing.fade_Level
+   --  is
+   --  begin
+   --     raise program_Error with "Model does not support texturing.";
+   --     return 0.0;
+   --  end Fade_1;
+   --
+   --
+   --
+   --  function Fade_2 (Self : in Item) return Geometry.Texturing.fade_Level
+   --  is
+   --  begin
+   --     raise program_Error with "Model does not support texturing.";
+   --     return 0.0;
+   --  end Fade_2;
 
 
 end openGL.Model;

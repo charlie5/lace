@@ -10,14 +10,16 @@ package openGL.Geometry.texturing
 --
 is
 
-   type fade_Level is delta 0.001 range 0.0 .. 1.0;     -- '0.0' is no fading, '1.0' is fully faded (ie invisible).
+   type fade_Level  is delta 0.001 range 0.0 .. 1.0;                -- '0.0' is no fading, '1.0' is fully faded (ie invisible).
+   type fade_Levels is array (texture_Id range <>) of fade_Level;
+
 
    type fadeable_Texture is
       record
-         Fade             : fade_Level                       := 0.0;
-         Object           : openGL.Texture.Object            := openGL.Texture.null_Object;
-         textures_Uniform : openGL.Variable.uniform.sampler2D;
-         fade_Uniform     : openGL.Variable.uniform.float;
+         Fade            : fade_Level                       := 0.0;
+         Object          : openGL.Texture.Object            := openGL.Texture.null_Object;
+         texture_Uniform : openGL.Variable.uniform.sampler2D;
+         fade_Uniform    : openGL.Variable.uniform.float;
       end record;
 
    type fadeable_Textures is array (texture_Id range 1 .. max_Textures) of fadeable_Texture;

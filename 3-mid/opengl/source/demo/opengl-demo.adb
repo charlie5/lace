@@ -186,7 +186,9 @@ is
 
       the_textured_hexagon_Model : constant Model.hexagon.lit_textured.view
         := Model.hexagon.lit_textured.new_Hexagon (Radius => 0.5,
-                                                   Face   => (Texture => the_Texture));
+                                                   Face   => (Fades         => (1 => 0.0,         others => <>),
+                                                              Textures      => (1 => the_Texture, others => <>),
+                                                              texture_Count => 1));
 
       the_faceted_hexagon_column_Model : constant Model.hexagon_Column.lit_colored_faceted.view
         := Model.hexagon_Column.lit_colored_faceted.new_hexagon_Column

@@ -73,11 +73,18 @@ is
    -- Texturing
    --
 
-   procedure Fade_1_is (Self : in out Item;   Now : in Geometry.Texturing.fade_Level);
-   procedure Fade_2_is (Self : in out Item;   Now : in Geometry.Texturing.fade_Level);
+   function  Fade    (Self : in     Item;   Which : in Geometry.texture_Id) return Geometry.Texturing.fade_Level;
+   procedure Fade_is (Self : in out Item;   Which : in Geometry.texture_Id;
+                                            Now   : in Geometry.Texturing.fade_Level);
 
-   function  Fade_1 (Self : in Item) return Geometry.Texturing.fade_Level;
-   function  Fade_2 (Self : in Item) return Geometry.Texturing.fade_Level;
+   function  texture_Count (Self : in Item) return Natural;
+
+
+   --  procedure Fade_1_is (Self : in out Item;   Now : in Geometry.Texturing.fade_Level);
+   --  procedure Fade_2_is (Self : in out Item;   Now : in Geometry.Texturing.fade_Level);
+   --
+   --  function  Fade_1 (Self : in Item) return Geometry.Texturing.fade_Level;
+   --  function  Fade_2 (Self : in Item) return Geometry.Texturing.fade_Level;
 
 
 

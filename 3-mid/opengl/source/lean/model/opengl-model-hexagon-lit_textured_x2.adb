@@ -127,7 +127,7 @@ is
 
 
 
-   overriding
+   --  overriding
    procedure Fade_1_is (Self : in out Item;   Now : in openGL.Geometry.texturing.fade_Level)
    is
    begin
@@ -135,7 +135,7 @@ is
    end Fade_1_is;
 
 
-   overriding
+   --  overriding
    procedure Fade_2_is (Self : in out Item;   Now : in openGL.Geometry.texturing.fade_Level)
    is
    begin
@@ -144,7 +144,7 @@ is
 
 
 
-   overriding
+   --  overriding
    function  Fade_1 (Self : in Item) return Geometry.Texturing.fade_Level
    is
    begin
@@ -152,7 +152,7 @@ is
    end Fade_1;
 
 
-   overriding
+   --  overriding
    function  Fade_2 (Self : in Item) return Geometry.Texturing.fade_Level
    is
    begin

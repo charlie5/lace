@@ -17,8 +17,8 @@ is
    begin
       in_Set.Textures (Which) := (0.0,
                                   Now,
-                                  textures_Uniform => <>,
-                                  fade_Uniform     => <>);
+                                  texture_Uniform => <>,
+                                  fade_Uniform    => <>);
 
       in_Set.is_Transparent   :=    in_Set.is_Transparent
                                  or Now   .is_Transparent;
@@ -28,6 +28,8 @@ is
          in_Set.Count := Natural (Which);
       end if;
    end Texture_is;
+
+
 
 
    function Texture (in_Set : in  texture_Set;   Which : texture_ID) return openGL.Texture.Object
@@ -44,6 +46,8 @@ is
    begin
       return in_Set.Textures (1).Object;
    end Texture;
+
+
 
 
    procedure Texture_is (in_Set : in out texture_Set;   Now : in openGL.Texture.Object)
@@ -81,17 +85,19 @@ is
 
                Id : constant texture_Id := texture_Id (i);
             begin
+               null;
+
                declare
                   uniform_Name : aliased constant String :="Textures[" & Trim (Natural'Image (i - 1), Left) & "]";
                begin
-                  the_Textures.Textures (Id).textures_Uniform := Program.uniform_Variable (Named => uniform_Name);
+                  the_Textures.Textures (Id).texture_Uniform := Program.uniform_Variable (Named => uniform_Name);
                end;
 
-               declare
-                  uniform_Name : constant String := "Fade[" & Trim (Natural'Image (i - 1), Left) & "]";
-               begin
-                  the_Textures.Textures (Id).fade_Uniform := Program.uniform_Variable (Named => uniform_Name);
-               end;
+               --  declare
+               --     uniform_Name : constant String := "Fade[" & Trim (Natural'Image (i - 1), Left) & "]";
+               --  begin
+               --     the_Textures.Textures (Id).fade_Uniform := Program.uniform_Variable (Named => uniform_Name);
+               --  end;
             end;
          end loop;
 
@@ -143,7 +149,8 @@ is
 
             Id : constant texture_Id := texture_Id (i);
          begin
-            glUniform1i     (the_Textures.Textures (Id).textures_Uniform.gl_Variable,
+            null;
+            glUniform1i     (the_Textures.Textures (Id).texture_Uniform.gl_Variable,
                              GLint (i) - 1);
             glActiveTexture (all_texture_Units (Id));
             glBindTexture   (GL_TEXTURE_2D,
@@ -151,25 +158,28 @@ is
          end;
 
 
-         declare
-            use ada.Strings,
-                ada.Strings.fixed;
-
-            uniform_Name : constant String                        := "Fade[" & Trim (Natural'Image (i - 1), Left) & "]";
-            Uniform      : constant openGL.Variable.uniform.float := Program.uniform_Variable (uniform_Name);
-         begin
-            --  put_Line ("Fade:" & the_Textures.Textures (texture_Id (i)).Fade'Image);
-
-            Uniform.Value_is (Real (the_Textures.Textures (texture_Id (i)).Fade));
-         end;
+         --  declare
+         --     use ada.Strings,
+         --         ada.Strings.fixed;
+         --
+         --     uniform_Name : constant String                        := "Fade[" & Trim (Natural'Image (i - 1), Left) & "]";
+         --     Uniform      : constant openGL.Variable.uniform.float := Program.uniform_Variable (uniform_Name);
+         --     Id : constant texture_Id := texture_Id (i);
+         --  begin
+         --     --  put_Line ("Fade:" & the_Textures.Textures (texture_Id (i)).Fade'Image);
+         --
+         --     --  the_Textures.Textures (Id).fade_Uniform.Value_is (Real (the_Textures.Textures (texture_Id (i)).Fade));
+         --     --  Uniform.Value_is (Real (the_Textures.Textures (texture_Id (i)).Fade));
+         --     null;
+         --  end;
       end loop;
 
 
-      declare
-         the_texture_count_Uniform : constant openGL.Variable.uniform.int := Program.uniform_Variable ("texture_Count");
-      begin
-         the_texture_count_Uniform.Value_is (the_Textures.Count);
-      end;
+      --  declare
+      --     the_texture_count_Uniform : constant openGL.Variable.uniform.int := Program.uniform_Variable ("texture_Count");
+      --  begin
+      --     the_texture_count_Uniform.Value_is (the_Textures.Count);
+      --  end;
    end enable;
 
 
