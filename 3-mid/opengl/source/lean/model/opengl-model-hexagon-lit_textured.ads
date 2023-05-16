@@ -1,5 +1,5 @@
 with
-     openGL.Geometry.texturing,
+     openGL.texturing,
      openGL.Texture;
 
 
@@ -14,8 +14,8 @@ is
 
    type Face is
       record
-         Fades         : Geometry.texturing.fade_Levels    (Geometry.texture_Id)       := [others => 0.0];
-         Textures      : openGL.asset_Names (1 .. Positive (Geometry.texture_Id'Last)) := [others => null_Asset];     -- The textures to be applied to the hex.
+         Fades         : texturing.fade_Levels             (texturing.texture_Id)       := [others => 0.0];
+         Textures      : openGL.asset_Names (1 .. Positive (texturing.texture_Id'Last)) := [others => null_Asset];     -- The textures to be applied to the hex.
          texture_Count : Natural := 0;
       end record;
 
@@ -41,14 +41,14 @@ is
    --
 
    overriding
-   function  Fade       (Self : in     Item;   Which : in Geometry.texture_Id) return Geometry.Texturing.fade_Level;
+   function  Fade       (Self : in     Item;   Which : in texturing.texture_Id) return texturing.fade_Level;
 
    overriding
-   procedure Fade_is    (Self : in out Item;   Which : in Geometry.texture_Id;
-                                               Now   : in Geometry.Texturing.fade_Level);
+   procedure Fade_is    (Self : in out Item;   Which : in texturing.texture_Id;
+                                               Now   : in texturing.fade_Level);
 
-   procedure Texture_is (Self : in out Item;   Which : in Geometry.texture_Id;
-                                               Now   : in openGL.asset_Name);
+   procedure Texture_is (Self : in out Item;   Which : in texturing.texture_Id;
+                                               Now   : in asset_Name);
 
    overriding
    function  texture_Count (Self : in Item) return Natural;

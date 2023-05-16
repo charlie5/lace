@@ -25,6 +25,7 @@ package body openGL.Geometry.lit_textured
 is
    use GL.lean,
        GL.Pointers,
+       openGL.texturing,
        Interfaces;
 
    -----------
@@ -304,7 +305,7 @@ is
    --- Texturing
    --
 
-   procedure Fade_is (Self : in out Item;   Which : texture_ID;   Now : in Geometry.texturing.fade_Level)
+   procedure Fade_is (Self : in out Item;   Which : texture_ID;   Now : in texturing.fade_Level)
    is
    begin
       Self.Textures.Textures (which).Fade := Now;
@@ -312,7 +313,7 @@ is
 
 
 
-   function Fade (Self : in Item;   Which : texture_ID) return Geometry.texturing.fade_Level
+   function Fade (Self : in     Item;   Which : texturing.texture_ID)     return texturing.fade_Level
    is
    begin
       return Self.Textures.Textures (which).Fade;
@@ -322,7 +323,6 @@ is
 
    procedure Texture_is (Self : in out Item;   Which : texture_ID;   Now : in openGL.Texture.Object)
    is
-      use openGL.Geometry.texturing;
    begin
       Texture_is (in_Set => Self.Textures,
                   Which  => Which,
@@ -334,8 +334,8 @@ is
    function Texture (Self : in Item;   Which : texture_ID) return openGL.Texture.Object
    is
    begin
-      return openGL.Geometry.texturing.Texture (in_Set => Self.Textures,
-                                                Which  => Which);
+      return openGL.texturing.Texture (in_Set => Self.Textures,
+                                       Which  => Which);
    end Texture;
 
 
@@ -343,7 +343,6 @@ is
    overriding
    procedure Texture_is (Self : in out Item;   Now : in openGL.Texture.Object)
    is
-      use openGL.Geometry.texturing;
    begin
       Texture_is (in_Set => Self.Textures,
                   Now    => Now);
@@ -355,8 +354,8 @@ is
    function Texture (Self : in Item) return openGL.Texture.Object
    is
    begin
-      return openGL.Geometry.texturing.Texture (in_Set => Self.Textures,
-                                                Which  => 1);
+      return texturing.Texture (in_Set => Self.Textures,
+                                Which  => 1);
    end Texture;
 
 

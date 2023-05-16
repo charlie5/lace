@@ -18,7 +18,8 @@ with
 
 package body openGL.Geometry.lit_colored_textured
 is
-   use GL.lean,
+   use openGL.texturing,
+       GL.lean,
        GL.Pointers,
        Interfaces,
        System;
@@ -280,14 +281,14 @@ is
    --- Texturing
    --
 
-   procedure Fade_is (Self : in out Item;   Which : texture_ID;   Now : in Geometry.texturing.fade_Level)
+   procedure Fade_is (Self : in out Item;   Which : texturing.texture_ID;   Now : in texturing.fade_Level)
    is
    begin
       Self.Textures.Textures (Which).Fade := Now;
    end Fade_is;
 
 
-   function Fade (Self : in Item;   Which : texture_ID) return Geometry.texturing.fade_Level
+   function Fade (Self : in     Item;   Which : texturing.texture_ID)     return texturing.fade_Level
    is
    begin
       return Self.Textures.Textures (Which).Fade;
@@ -299,7 +300,6 @@ is
 
    procedure Texture_is (Self : in out Item;   Which : texture_ID;   Now : in openGL.Texture.Object)
    is
-      use openGL.Geometry.texturing;
    begin
       Texture_is (in_Set => Self.Textures,
                   Which  => Which,
@@ -311,8 +311,8 @@ is
    function Texture (Self : in Item;   Which : texture_ID) return openGL.Texture.Object
    is
    begin
-      return openGL.Geometry.texturing.Texture (in_Set => Self.Textures,
-                                                Which  => Which);
+      return openGL.texturing.Texture (in_Set => Self.Textures,
+                                       which  => Which);
    end Texture;
 
 
@@ -320,7 +320,6 @@ is
    overriding
    procedure Texture_is (Self : in out Item;   Now : in openGL.Texture.Object)
    is
-      use openGL.Geometry.texturing;
    begin
       Texture_is (in_Set => Self.Textures,
                   Now    => Now);
@@ -331,8 +330,8 @@ is
    function Texture (Self : in Item) return openGL.Texture.Object
    is
    begin
-      return openGL.Geometry.texturing.Texture (in_Set => Self.Textures,
-                                                Which  => 1);
+      return openGL.texturing.Texture (in_Set => Self.Textures,
+                                       which  => 1);
    end Texture;
 
 
@@ -340,7 +339,6 @@ is
    overriding
    procedure enable_Texture (Self : in out Item)
    is
-      use openGL.Geometry.texturing;
    begin
       enable (Self.Textures, Self.Program);
    end enable_Texture;

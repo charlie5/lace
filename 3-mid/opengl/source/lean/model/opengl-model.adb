@@ -218,8 +218,8 @@ is
    -- Texturing
    --
 
-   procedure Fade_is (Self : in out Item;   Which : in Geometry.texture_Id;
-                                            Now   : in Geometry.Texturing.fade_Level)
+   procedure Fade_is (Self : in out Item;   which : in texturing.texture_Id;
+                                            now   : in texturing.fade_Level)
    is
    begin
       raise program_Error with "Model does not support texturing.";
@@ -227,7 +227,7 @@ is
 
 
 
-   function Fade (Self : in Item;   Which : in Geometry.texture_Id) return Geometry.Texturing.fade_Level
+   function Fade (Self : in Item;   which : in texturing.texture_Id) return texturing.fade_Level
    is
    begin
       raise program_Error with "Model does not support texturing.";

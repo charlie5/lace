@@ -33,8 +33,8 @@ is
    --
 
    overriding
-   procedure Fade_is (Self : in out Item;   Which : in Geometry.texture_Id;
-                                            Now   : in Geometry.Texturing.fade_Level)
+   procedure Fade_is (Self : in out Item;   Which : in texturing.texture_Id;
+                                            Now   : in texturing.fade_Level)
    is
    begin
       Self.Face.Fades (which) := Now;
@@ -43,7 +43,7 @@ is
 
 
    overriding
-   function Fade (Self : in Item;   Which : in Geometry.texture_Id) return Geometry.Texturing.fade_Level
+   function Fade (Self : in Item;   Which : in texturing.texture_Id) return texturing.fade_Level
    is
    begin
       return Self.Face.Fades (which);
@@ -51,7 +51,7 @@ is
 
 
 
-   procedure Texture_is (Self : in out Item;   Which : in Geometry.texture_Id;
+   procedure Texture_is (Self : in out Item;   Which : in texturing.texture_Id;
                                                Now   : in openGL.asset_Name)
    is
    begin
@@ -87,7 +87,8 @@ is
 
       function new_Face (Vertices : in geometry.lit_textured.Vertex_array) return Geometry.lit_textured.view
       is
-         use Primitive;
+         use Primitive,
+             texturing;
 
          the_Geometry  : constant Geometry.lit_textured.view
            := Geometry.lit_textured.new_Geometry;
@@ -95,7 +96,7 @@ is
          the_Primitive : constant Primitive.indexed.view
            := Primitive.indexed.new_Primitive (triangle_Fan, the_Indices);
 
-         Id : texture_Id;
+         Id : texturing.texture_Id;
       begin
          the_Geometry.Vertices_are (Vertices);
          the_Geometry.add          (Primitive.view (the_Primitive));

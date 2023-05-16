@@ -2,7 +2,8 @@ with
      openGL.Primitive,
      openGL.Buffer,
      openGL.Program,
-     openGL.Texture;
+     openGL.Texture,
+     openGL.texturing;
 
 limited
 with
@@ -51,11 +52,11 @@ is
 
 
 
-   max_Textures : constant := 32;
-
-   type texture_Id is range 1 .. max_Textures;
-
-
+   --  max_Textures : constant := 32;
+   --
+   --  type texture_Id is range 1 .. max_Textures;
+   --
+   --
    procedure Texture_is      (Self : in out Item;   Now : in openGL.Texture.Object) is null;
    function  Texture         (Self : in     Item)     return openGL.Texture.Object;
 
@@ -102,7 +103,7 @@ is
 private
    use ada.Strings.unbounded;
 
-   type Textures is array (texture_Id) of openGL.Texture.Object;
+   type Textures is array (texturing.texture_Id) of openGL.Texture.Object;
 
 
    type Item is abstract tagged limited
