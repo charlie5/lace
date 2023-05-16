@@ -11,10 +11,11 @@ is
    type Item is new Model.item with private;
    type View is access all Item'Class;
 
+
    type Face is
       record
-         Fades         : Geometry.texturing.fade_Levels (Geometry.texture_Id)                      := [others => 0.0];
-         Textures      : openGL.asset_Names             (1 .. Positive (Geometry.texture_Id'Last)) := [others => null_Asset];     -- The textures to be applied to the hex.
+         Fades         : Geometry.texturing.fade_Levels    (Geometry.texture_Id)       := [others => 0.0];
+         Textures      : openGL.asset_Names (1 .. Positive (Geometry.texture_Id'Last)) := [others => null_Asset];     -- The textures to be applied to the hex.
          texture_Count : Natural := 0;
       end record;
 
@@ -49,6 +50,7 @@ is
    procedure Texture_is (Self : in out Item;   Which : in Geometry.texture_Id;
                                                Now   : in openGL.asset_Name);
 
+   overriding
    function  texture_Count (Self : in Item) return Natural;
 
 

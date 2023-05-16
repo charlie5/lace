@@ -10,7 +10,9 @@ package openGL.Geometry.texturing
 --
 is
 
-   type fade_Level  is delta 0.001 range 0.0 .. 1.0;                -- '0.0' is no fading, '1.0' is fully faded (ie invisible).
+   type fade_Level  is delta 0.001 range 0.0 .. 1.0      -- '0.0' is no fading, '1.0' is fully faded (ie invisible).
+     with Atomic;
+
    type fade_Levels is array (texture_Id range <>) of fade_Level;
 
 
