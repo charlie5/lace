@@ -308,7 +308,7 @@ is
    procedure Fade_is (Self : in out Item;   Which : texture_ID;   Now : in texturing.fade_Level)
    is
    begin
-      Self.Textures.Textures (which).Fade := Now;
+      Self.texture_Set.Textures (which).Fade := Now;
    end Fade_is;
 
 
@@ -316,7 +316,7 @@ is
    function Fade (Self : in     Item;   Which : texturing.texture_ID)     return texturing.fade_Level
    is
    begin
-      return Self.Textures.Textures (which).Fade;
+      return Self.texture_Set.Textures (which).Fade;
    end Fade;
 
 
@@ -324,7 +324,7 @@ is
    procedure Texture_is (Self : in out Item;   Which : texture_ID;   Now : in openGL.Texture.Object)
    is
    begin
-      Texture_is (in_Set => Self.Textures,
+      Texture_is (in_Set => Self.texture_Set,
                   Which  => Which,
                   Now    => Now);
    end Texture_is;
@@ -334,7 +334,7 @@ is
    function Texture (Self : in Item;   Which : texture_ID) return openGL.Texture.Object
    is
    begin
-      return openGL.texturing.Texture (in_Set => Self.Textures,
+      return openGL.texturing.Texture (in_Set => Self.texture_Set,
                                        Which  => Which);
    end Texture;
 
@@ -344,7 +344,7 @@ is
    procedure Texture_is (Self : in out Item;   Now : in openGL.Texture.Object)
    is
    begin
-      Texture_is (in_Set => Self.Textures,
+      Texture_is (in_Set => Self.texture_Set,
                   Now    => Now);
    end Texture_is;
 
@@ -354,7 +354,7 @@ is
    function Texture (Self : in Item) return openGL.Texture.Object
    is
    begin
-      return texturing.Texture (in_Set => Self.Textures,
+      return texturing.Texture (in_Set => Self.texture_Set,
                                 Which  => 1);
    end Texture;
 
@@ -414,10 +414,10 @@ is
                           GLint (i) - 1);
          glActiveTexture (all_texture_Units (i));
          glBindTexture   (GL_TEXTURE_2D,
-                          Self.Textures.Textures (i).Object.Name);
+                          Self.texture_Set.Textures (i).Object.Name);
       end loop;
 
-      the_texture_count_Uniform.Value_is (Self.Textures.Count);
+      the_texture_count_Uniform.Value_is (Self.texture_Set.Count);
    end enable_Texture;
 
 
