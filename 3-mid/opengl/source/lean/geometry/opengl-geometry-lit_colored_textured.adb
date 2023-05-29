@@ -337,11 +337,11 @@ is
 
 
    overriding
-   procedure enable_Texture (Self : in out Item)
+   procedure enable_Textures (Self : in out Item)
    is
    begin
       enable (Self.Textures, Self.Program);
-   end enable_Texture;
+   end enable_Textures;
 
 
 

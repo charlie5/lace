@@ -82,8 +82,8 @@ is
    --  Operations
    --
 
-   procedure render         (Self : in out Item'Class);
-   procedure enable_Texture (Self : in out Item) is null;
+   procedure render          (Self : in out Item'Class);
+   procedure enable_Textures (Self : in out Item) is null;
 
 
    -----------

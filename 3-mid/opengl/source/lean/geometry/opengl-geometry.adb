@@ -184,7 +184,7 @@ is
          raise Error with "Unable to render geometry with no primitives.";
       end if;
 
-      Self         .enable_Texture;
+      Self         .enable_Textures;
       Self.Program .set_Uniforms;
       Self.Vertices.enable;
       Self.Program .enable_Attributes;

@@ -192,7 +192,7 @@ is
 
 
    overriding
-   procedure enable_Texture (Self : in out Item)
+   procedure enable_Textures (Self : in out Item)
    is
       use GL,
           GL.Binding,
@@ -207,7 +207,7 @@ is
       then   enable (white_Texture);
       else   enable (Self.Texture);
       end if;
-   end enable_Texture;
+   end enable_Textures;
 
 
 end openGL.Geometry.colored_textured;

@@ -403,7 +403,7 @@ is
 
 
    overriding
-   procedure enable_Texture (Self : in out Item)
+   procedure enable_Textures (Self : in out Item)
    is
    begin
       for i in 1 .. texture_Id (Self.Model.texture_Count)
@@ -418,7 +418,7 @@ is
       end loop;
 
       the_texture_count_Uniform.Value_is (Self.texture_Set.Count);
-   end enable_Texture;
+   end enable_Textures;
 
 
 end openGL.Geometry.lit_textured;

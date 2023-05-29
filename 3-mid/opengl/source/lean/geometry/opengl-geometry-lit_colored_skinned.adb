@@ -258,11 +258,11 @@ is
 
 
    overriding
-   procedure enable_Texture (Self : in out Item)
+   procedure enable_Textures (Self : in out Item)
    is
    begin
       null;
-   end enable_Texture;
+   end enable_Textures;
 
 
 end openGL.Geometry.lit_colored_skinned;

@@ -66,6 +66,6 @@ private
 
 
    overriding
-   procedure enable_Texture (Self : in out Item);
+   procedure enable_Textures (Self : in out Item);
 
 end openGL.Geometry.textured;
