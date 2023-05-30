@@ -1,10 +1,9 @@
 with
-     --  openGL.Geometry.texturing,
+     openGL.Geometry.texturing,
      openGL.Buffer.general,
      openGL.Model,
      openGL.Shader,
      openGL.Program.lit,
-     openGL.Variable.uniform,
      openGL.Attribute,
      openGL.Texture,
      openGL.Palette,
@@ -12,7 +11,6 @@ with
      openGL.Errors,
 
      GL.lean,
-     GL.Binding,
      GL.Pointers,
 
      ada.Strings.fixed,
@@ -54,20 +52,7 @@ is
    Attribute_3_Name_ptr : aliased constant C.strings.chars_ptr := C.strings.to_chars_ptr (Attribute_3_Name'Access);
    Attribute_4_Name_ptr : aliased constant C.strings.chars_ptr := C.strings.to_chars_ptr (Attribute_4_Name'Access);
 
-
-   --- Uniforms
-   --
-
-   type texture_fade_Uniform_pair is
-      record
-         texture_Uniform : openGL.Variable.uniform.sampler2D;
-         fade_Uniform    : openGL.Variable.uniform.float;
-      end record;
-
-   type texture_fade_Uniform_pairs is array (texture_Id range 1 .. max_Textures) of texture_fade_Uniform_pair;
-
-   the_Textures              : texture_fade_Uniform_pairs;
-   the_texture_count_Uniform : openGL.Variable.uniform.int;
+   texture_Uniforms     : texturing.Uniforms;
 
 
 
@@ -173,16 +158,17 @@ is
          declare
             use ada.Strings,
                 ada.Strings.fixed;
+
             i                    : constant Positive := Positive (Id);
             texture_uniform_Name : constant String   := "Textures[" & trim (Natural'Image (i - 1), Left) & "]";
             fade_uniform_Name    : constant String   := "Fade["     & trim (Natural'Image (i - 1), Left) & "]";
          begin
-            the_Textures (Id).texture_Uniform := the_Program.uniform_Variable (named => texture_uniform_Name);
-            the_Textures (Id).   fade_Uniform := the_Program.uniform_Variable (named =>    fade_uniform_Name);
+            texture_Uniforms.Textures (Id).texture_Uniform := the_Program.uniform_Variable (named => texture_uniform_Name);
+            texture_Uniforms.Textures (Id).   fade_Uniform := the_Program.uniform_Variable (named =>    fade_uniform_Name);
          end;
       end loop;
 
-      the_texture_count_Uniform := the_Program.uniform_Variable ("texture_Count");
+      texture_Uniforms.Count := the_Program.uniform_Variable ("texture_Count");
    end create_Program;
 
 
@@ -363,95 +349,14 @@ is
 
 
 
-
-   use GL,
-       GL.Binding;
-
-   use type GL.GLint;
-
-   type texture_Units is array (texture_Id) of GLenum;
-
-   all_texture_Units : constant texture_Units := (GL_TEXTURE0,
-                                                  GL_TEXTURE1,
-                                                  GL_TEXTURE2,
-                                                  GL_TEXTURE3,
-                                                  GL_TEXTURE4,
-                                                  GL_TEXTURE5,
-                                                  GL_TEXTURE6,
-                                                  GL_TEXTURE7,
-                                                  GL_TEXTURE8,
-                                                  GL_TEXTURE9,
-                                                  GL_TEXTURE10,
-                                                  GL_TEXTURE11,
-                                                  GL_TEXTURE12,
-                                                  GL_TEXTURE13,
-                                                  GL_TEXTURE14,
-                                                  GL_TEXTURE15,
-                                                  GL_TEXTURE16,
-                                                  GL_TEXTURE17,
-                                                  GL_TEXTURE18,
-                                                  GL_TEXTURE19,
-                                                  GL_TEXTURE20,
-                                                  GL_TEXTURE21,
-                                                  GL_TEXTURE22,
-                                                  GL_TEXTURE23,
-                                                  GL_TEXTURE24,
-                                                  GL_TEXTURE25,
-                                                  GL_TEXTURE26,
-                                                  GL_TEXTURE27,
-                                                  GL_TEXTURE28,
-                                                  GL_TEXTURE29,
-                                                  GL_TEXTURE30,
-                                                  GL_TEXTURE31);
-
-
-
-   procedure enable_Texturing (for_Model          : in openGL.Model.view;
-                               texturing_Uniforms : in texture_fade_Uniform_pairs;
-                               texture_Set        : in openGL.texture_Set.Item)
-   is
-   begin
-      for i in 1 .. texture_Id (for_Model.texture_Count)
-      loop
-         texturing_Uniforms (i).fade_Uniform.Value_is (Real (for_Model.Fade (i)));
-
-         glUniform1i     (texturing_Uniforms (i).texture_Uniform.gl_Variable,
-                          GLint (i) - 1);
-         glActiveTexture (all_texture_Units (i));
-         glBindTexture   (GL_TEXTURE_2D,
-                          texture_Set.Textures (i).Object.Name);
-      end loop;
-
-      the_texture_count_Uniform.Value_is (for_Model.texture_Count);
-   end enable_Texturing;
-
-
-
-
    overriding
    procedure enable_Textures (Self : in out Item)
    is
    begin
-      enable_Texturing (for_Model          => Self.Model.all'Access,
-                        texturing_Uniforms => the_Textures,
-                        texture_Set        => Self.texture_Set);
---
---        for i in 1 .. texture_Id (Self.Model.texture_Count)
---        loop
---           the_Textures (i).fade_Uniform.Value_is (Real (Self.Model.Fade (i)));
---
---           glUniform1i     (the_Textures (i).texture_Uniform.gl_Variable,
---                            GLint (i) - 1);
---           glActiveTexture (all_texture_Units (i));
---           glBindTexture   (GL_TEXTURE_2D,
---                            Self.texture_Set.Textures (i).Object.Name);
---        end loop;
---
---        the_texture_count_Uniform.Value_is (Self.texture_Set.Count);
+      texturing.enable (for_Model   => Self.Model.all'Access,
+                        Uniforms    => texture_Uniforms,
+                        texture_Set => Self.texture_Set);
    end enable_Textures;
-
-
-
 
 
 end openGL.Geometry.lit_textured;
