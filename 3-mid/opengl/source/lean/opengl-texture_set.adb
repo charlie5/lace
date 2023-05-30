@@ -9,16 +9,16 @@ with
 with ada.Text_IO;   use ada.Text_IO;
 
 
-package body openGL.texturing
+package body openGL.texture_Set
 is
 
    procedure Texture_is (in_Set : in out texture_Set;   Which : texture_ID;   Now : in openGL.Texture.Object)
    is
    begin
       in_Set.Textures (Which) := (0.0,
-                                  Now,
-                                  texture_Uniform => <>,
-                                  fade_Uniform    => <>);
+                                  Now); --,
+                                  --  texture_Uniform => <>,
+                                  --  fade_Uniform    => <>);
 
       in_Set.is_Transparent   :=    in_Set.is_Transparent
                                  or Now   .is_Transparent;
@@ -87,11 +87,11 @@ is
             begin
                null;
 
-               declare
-                  uniform_Name : aliased constant String :="Textures[" & Trim (Natural'Image (i - 1), Left) & "]";
-               begin
-                  the_Textures.Textures (Id).texture_Uniform := Program.uniform_Variable (Named => uniform_Name);
-               end;
+               --  declare
+               --     uniform_Name : aliased constant String :="Textures[" & Trim (Natural'Image (i - 1), Left) & "]";
+               --  begin
+               --     the_Textures.Textures (Id).texture_Uniform := Program.uniform_Variable (Named => uniform_Name);
+               --  end;
 
                --  declare
                --     uniform_Name : constant String := "Fade[" & Trim (Natural'Image (i - 1), Left) & "]";
@@ -150,11 +150,11 @@ is
             Id : constant texture_Id := texture_Id (i);
          begin
             null;
-            glUniform1i     (the_Textures.Textures (Id).texture_Uniform.gl_Variable,
-                             GLint (i) - 1);
-            glActiveTexture (all_texture_Units (Id));
-            glBindTexture   (GL_TEXTURE_2D,
-                             the_Textures.Textures (Id).Object.Name);
+            --  glUniform1i     (the_Textures.Textures (Id).texture_Uniform.gl_Variable,
+            --                   GLint (i) - 1);
+            --  glActiveTexture (all_texture_Units (Id));
+            --  glBindTexture   (GL_TEXTURE_2D,
+            --                   the_Textures.Textures (Id).Object.Name);
          end;
 
 
@@ -183,4 +183,4 @@ is
    end enable;
 
 
-end openGL.texturing;
+end openGL.texture_Set;

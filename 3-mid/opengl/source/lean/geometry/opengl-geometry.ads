@@ -3,7 +3,7 @@ with
      openGL.Buffer,
      openGL.Program,
      openGL.Texture,
-     openGL.texturing;
+     openGL.texture_Set;
 
 limited
 with
@@ -103,7 +103,7 @@ is
 private
    use ada.Strings.unbounded;
 
-   type Textures is array (texturing.texture_Id) of openGL.Texture.Object;
+   type Textures is array (texture_Set.texture_Id) of openGL.Texture.Object;
 
 
    type Item is abstract tagged limited

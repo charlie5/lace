@@ -18,7 +18,7 @@ with
 
 package body openGL.Geometry.lit_colored_textured
 is
-   use openGL.texturing,
+   use openGL.texture_Set,
        GL.lean,
        GL.Pointers,
        Interfaces,
@@ -281,14 +281,14 @@ is
    --- Texturing
    --
 
-   procedure Fade_is (Self : in out Item;   Which : texturing.texture_ID;   Now : in texturing.fade_Level)
+   procedure Fade_is (Self : in out Item;   Which : texture_Set.texture_ID;   Now : in texture_Set.fade_Level)
    is
    begin
       Self.Textures.Textures (Which).Fade := Now;
    end Fade_is;
 
 
-   function Fade (Self : in     Item;   Which : texturing.texture_ID)     return texturing.fade_Level
+   function Fade (Self : in     Item;   Which : texture_Set.texture_ID)     return texture_Set.fade_Level
    is
    begin
       return Self.Textures.Textures (Which).Fade;
@@ -311,7 +311,7 @@ is
    function Texture (Self : in Item;   Which : texture_ID) return openGL.Texture.Object
    is
    begin
-      return openGL.texturing.Texture (in_Set => Self.Textures,
+      return openGL.texture_Set.Texture (in_Set => Self.Textures,
                                        which  => Which);
    end Texture;
 
@@ -330,7 +330,7 @@ is
    function Texture (Self : in Item) return openGL.Texture.Object
    is
    begin
-      return openGL.texturing.Texture (in_Set => Self.Textures,
+      return openGL.texture_Set.Texture (in_Set => Self.Textures,
                                        which  => 1);
    end Texture;
 

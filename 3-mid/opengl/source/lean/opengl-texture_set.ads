@@ -4,7 +4,7 @@ with
      openGL.Variable.uniform;
 
 
-package openGL.texturing
+package openGL.texture_Set
 --
 -- Facilitates texturing of geometries.
 --
@@ -25,8 +25,8 @@ is
       record
          Fade            : fade_Level                       := 0.0;
          Object          : openGL.Texture.Object            := openGL.Texture.null_Object;
-         texture_Uniform : openGL.Variable.uniform.sampler2D;
-         fade_Uniform    : openGL.Variable.uniform.float;
+         --  texture_Uniform : openGL.Variable.uniform.sampler2D;
+         --  fade_Uniform    : openGL.Variable.uniform.float;
       end record;
 
    type fadeable_Textures is array (texture_Id range 1 .. max_Textures) of fadeable_Texture;
@@ -51,4 +51,4 @@ is
    function  Texture         (in_Set : in     texture_Set)     return openGL.Texture.Object;
 
 
-end openGL.texturing;
+end openGL.texture_Set;

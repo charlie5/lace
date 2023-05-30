@@ -3,7 +3,7 @@ with
      openGL.Font,
      openGL.Texture,
      openGL.Geometry,
-     openGL.texturing;
+     openGL.texture_Set;
 
 
 package openGL.Model
@@ -74,9 +74,9 @@ is
    -- Texturing
    --
 
-   function  Fade    (Self : in     Item;   Which : in texturing.texture_Id) return texturing.fade_Level;
-   procedure Fade_is (Self : in out Item;   Which : in texturing.texture_Id;
-                                            Now   : in texturing.fade_Level);
+   function  Fade    (Self : in     Item;   Which : in texture_Set.texture_Id) return texture_Set.fade_Level;
+   procedure Fade_is (Self : in out Item;   Which : in texture_Set.texture_Id;
+                                            Now   : in texture_Set.fade_Level);
 
    function  texture_Count (Self : in Item) return Natural;
 

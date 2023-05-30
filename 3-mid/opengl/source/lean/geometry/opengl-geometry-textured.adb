@@ -19,7 +19,7 @@ is
    use GL.lean,
        GL.Pointers,
 
-       openGL.texturing,
+       openGL.texture_Set,
 
        Interfaces,
        System;
@@ -169,7 +169,7 @@ is
    --- Texturing
    --
 
-   procedure Fade_is (Self : in out Item;   Which : texturing.texture_ID;   Now : in texturing.fade_Level)
+   procedure Fade_is (Self : in out Item;   Which : texture_Set.texture_ID;   Now : in texture_Set.fade_Level)
    is
    begin
       Self.Textures.Textures (Which).Fade := Now;
@@ -177,7 +177,7 @@ is
 
 
 
-   function Fade (Self : in     Item;   Which : texturing.texture_ID)     return texturing.fade_Level
+   function Fade (Self : in     Item;   Which : texture_Set.texture_ID)     return texture_Set.fade_Level
    is
    begin
       return Self.Textures.Textures (Which).Fade;
@@ -198,7 +198,7 @@ is
    function Texture (Self : in Item;   Which : texture_ID) return openGL.Texture.Object
    is
    begin
-      return openGL.texturing.Texture (in_Set => Self.Textures,
+      return openGL.texture_Set.Texture (in_Set => Self.Textures,
                                        Which  => Which);
    end Texture;
 
@@ -218,7 +218,7 @@ is
    function Texture (Self : in Item) return openGL.Texture.Object
    is
    begin
-      return openGL.texturing.Texture (in_Set => Self.Textures,
+      return openGL.texture_Set.Texture (in_Set => Self.Textures,
                                        which  => 1);
    end Texture;
 

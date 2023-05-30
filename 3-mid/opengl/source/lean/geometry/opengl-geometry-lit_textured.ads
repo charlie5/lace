@@ -1,5 +1,5 @@
 with
-     openGL.texturing;
+     openGL.texture_Set;
 
 
 package openGL.Geometry.lit_textured
@@ -45,12 +45,12 @@ is
    --- Texturing.
    --
 
-   procedure Fade_is      (Self : in out Item;   Which : texturing.texture_ID;   Now : in texturing.fade_Level);
-   function  Fade         (Self : in     Item;   Which : texturing.texture_ID)     return texturing.fade_Level;
+   procedure Fade_is      (Self : in out Item;   Which : texture_Set.texture_ID;   Now : in texture_Set.fade_Level);
+   function  Fade         (Self : in     Item;   Which : texture_Set.texture_ID)     return texture_Set.fade_Level;
 
 
-   procedure Texture_is   (Self : in out Item;   Which : texturing.texture_ID;   Now : in openGL.Texture.Object);
-   function  Texture      (Self : in     Item;   Which : texturing.texture_ID)     return openGL.Texture.Object;
+   procedure Texture_is   (Self : in out Item;   Which : texture_Set.texture_ID;   Now : in openGL.Texture.Object);
+   function  Texture      (Self : in     Item;   Which : texture_Set.texture_ID)     return openGL.Texture.Object;
 
    overriding
    procedure Texture_is   (Self : in out Item;   Now : in openGL.Texture.Object);
@@ -64,7 +64,7 @@ private
 
    type Item is new Geometry.item with
       record
-         texture_Set : texturing.texture_Set;
+         texture_Set : openGL.texture_Set.texture_Set;
       end record;
 
 
