@@ -64,7 +64,7 @@ private
 
    type Item is new Geometry.item with
       record
-         texture_Set : openGL.texture_Set.texture_Set;
+         texture_Set : openGL.texture_Set.Item;
       end record;
 
 

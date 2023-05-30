@@ -408,7 +408,7 @@ is
 
    procedure enable_Texturing (for_Model          : in openGL.Model.view;
                                texturing_Uniforms : in texture_fade_Uniform_pairs;
-                               texture_Set        : in openGL.texture_Set.texture_Set)
+                               texture_Set        : in openGL.texture_Set.Item)
    is
    begin
       for i in 1 .. texture_Id (for_Model.texture_Count)

@@ -61,7 +61,7 @@ private
 
    type Item is new Geometry.item with
       record
-         Textures : texture_Set.texture_Set;
+         Textures : texture_Set.Item;
       end record;
 
 

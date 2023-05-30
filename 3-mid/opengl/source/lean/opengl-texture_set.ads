@@ -31,7 +31,7 @@ is
 
    type fadeable_Textures is array (texture_Id range 1 .. max_Textures) of fadeable_Texture;
 
-   type texture_Set is
+   type Item is
       record
          Textures       : fadeable_Textures;
          Count          : Natural          := 0;
@@ -39,16 +39,16 @@ is
          initialised    : Boolean          := False;
       end record;
 
-   procedure enable (the_Textures : in out texture_Set;
+   procedure enable (the_Textures : in out Item;
                      Program      : in     openGL.Program.view);
 
 
 
-   procedure Texture_is      (in_Set : in out texture_Set;   Which : texture_ID;   Now : in openGL.Texture.Object);
-   function  Texture         (in_Set : in     texture_Set;   Which : texture_ID)     return openGL.Texture.Object;
+   procedure Texture_is      (in_Set : in out Item;   Which : texture_ID;   Now : in openGL.Texture.Object);
+   function  Texture         (in_Set : in     Item;   Which : texture_ID)     return openGL.Texture.Object;
 
-   procedure Texture_is      (in_Set : in out texture_Set;   Now : in openGL.Texture.Object);
-   function  Texture         (in_Set : in     texture_Set)     return openGL.Texture.Object;
+   procedure Texture_is      (in_Set : in out Item;   Now : in openGL.Texture.Object);
+   function  Texture         (in_Set : in     Item)     return openGL.Texture.Object;
 
 
 end openGL.texture_Set;

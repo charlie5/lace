@@ -12,7 +12,7 @@ with ada.Text_IO;   use ada.Text_IO;
 package body openGL.texture_Set
 is
 
-   procedure Texture_is (in_Set : in out texture_Set;   Which : texture_ID;   Now : in openGL.Texture.Object)
+   procedure Texture_is (in_Set : in out Item;   Which : texture_ID;   Now : in openGL.Texture.Object)
    is
    begin
       in_Set.Textures (Which) := (0.0,
@@ -32,7 +32,7 @@ is
 
 
 
-   function Texture (in_Set : in  texture_Set;   Which : texture_ID) return openGL.Texture.Object
+   function Texture (in_Set : in  Item;   Which : texture_ID) return openGL.Texture.Object
    is
    begin
       return in_Set.Textures (Which).Object;
@@ -41,7 +41,7 @@ is
 
 
 
-   function Texture (in_Set : in texture_Set) return openGL.Texture.Object
+   function Texture (in_Set : in Item) return openGL.Texture.Object
    is
    begin
       return in_Set.Textures (1).Object;
@@ -50,7 +50,7 @@ is
 
 
 
-   procedure Texture_is (in_Set : in out texture_Set;   Now : in openGL.Texture.Object)
+   procedure Texture_is (in_Set : in out Item;   Now : in openGL.Texture.Object)
    is
    begin
       in_Set.Textures (1).Object := Now;
@@ -65,7 +65,7 @@ is
 
 
 
-   procedure enable (the_Textures : in out texture_Set;
+   procedure enable (the_Textures : in out Item;
                      Program      : in     openGL.Program.view)
    is
       use GL,
