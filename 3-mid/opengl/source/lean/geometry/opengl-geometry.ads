@@ -50,13 +50,6 @@ is
    procedure Label_is        (Self : in out Item'Class;   Now : in String);
    function  Label           (Self : in     Item'Class)     return String;
 
-
-
-   --  max_Textures : constant := 32;
-   --
-   --  type texture_Id is range 1 .. max_Textures;
-   --
-   --
    procedure Texture_is      (Self : in out Item;   Now : in openGL.Texture.Object) is null;
    function  Texture         (Self : in     Item)     return openGL.Texture.Object;
 
@@ -70,6 +63,7 @@ is
    function  Program         (Self : in     Item)           return Program.view;
 
    procedure add             (Self : in out Item'Class;   the_Primitive : in Primitive.view);
+
    function  Primitives      (Self : in     Item'Class)     return Primitive.views;
    procedure free_Primitives (Self : in out Item);
 
@@ -102,9 +96,6 @@ is
 
 private
    use ada.Strings.unbounded;
-
-   type Textures is array (texture_Set.texture_Id) of openGL.Texture.Object;
-
 
    type Item is abstract tagged limited
       record
