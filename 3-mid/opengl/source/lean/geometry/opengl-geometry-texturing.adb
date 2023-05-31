@@ -98,4 +98,104 @@ is
    end create;
 
 
+
+
+   -------------
+   --- Mixin ---
+   -------------
+
+   --  generic
+   package body Mixin
+   is
+      use openGL.texture_Set;
+
+
+      texture_Uniforms : texturing.Uniforms;
+
+      procedure create_Uniforms (for_Program : in openGL.Program.view)
+      is
+      begin
+         create (texture_Uniforms, for_Program);
+      end create_Uniforms;
+
+
+
+
+
+
+      overriding
+      procedure Fade_is (Self : in out Item;   Which : in texture_Set.texture_ID;
+                                               Now   : in texture_Set.fade_Level)
+      is
+      begin
+         Self.texture_Set.Textures (which).Fade := Now;
+      end Fade_is;
+
+
+
+      overriding
+      function Fade (Self : in Item;   Which : in texture_Set.texture_ID) return texture_Set.fade_Level
+      is
+      begin
+         return Self.texture_Set.Textures (which).Fade;
+      end Fade;
+
+
+
+      overriding
+      procedure Texture_is (Self : in out Item;   Which : in texture_Set.texture_ID;
+                                                  Now   : in openGL.Texture.Object)
+      is
+      begin
+         Texture_is (in_Set => Self.texture_Set,
+                     Which  => Which,
+                     Now    => Now);
+      end Texture_is;
+
+
+
+      overriding
+      function Texture (Self : in Item;   Which : texture_Set.texture_ID) return openGL.Texture.Object
+      is
+      begin
+         return openGL.texture_Set.Texture (in_Set => Self.texture_Set,
+                                            Which  => Which);
+      end Texture;
+
+
+
+      overriding
+      procedure Texture_is (Self : in out Item;   Now : in openGL.Texture.Object)
+      is
+      begin
+         Texture_is (in_Set => Self.texture_Set,
+                     Now    => Now);
+      end Texture_is;
+
+
+
+      overriding
+      function Texture (Self : in Item) return openGL.Texture.Object
+      is
+      begin
+         return texture_Set.Texture (in_Set => Self.texture_Set,
+                                     Which  => 1);
+      end Texture;
+
+
+
+      overriding
+      procedure enable_Textures (Self : in out Item)
+      is
+      begin
+         texturing.enable (for_Model   => Self.Model.all'Access,
+                           Uniforms    => texture_Uniforms,
+                           texture_Set => Self.texture_Set);
+      end enable_Textures;
+
+
+   end Mixin;
+
+
+
 end openGL.Geometry.texturing;

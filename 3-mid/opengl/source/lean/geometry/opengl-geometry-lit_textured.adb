@@ -52,7 +52,7 @@ is
    Attribute_3_Name_ptr : aliased constant C.strings.chars_ptr := C.strings.to_chars_ptr (Attribute_3_Name'Access);
    Attribute_4_Name_ptr : aliased constant C.strings.chars_ptr := C.strings.to_chars_ptr (Attribute_4_Name'Access);
 
-   texture_Uniforms     : texturing.Uniforms;
+   --  texture_Uniforms     : texturing.Uniforms;
 
 
 
@@ -153,22 +153,24 @@ is
       --- Set up the texturing uniforms.
       --
 
-      for Id in texture_Id'Range
-      loop
-         declare
-            use ada.Strings,
-                ada.Strings.fixed;
+      --  for Id in texture_Id'Range
+      --  loop
+      --     declare
+      --        use ada.Strings,
+      --            ada.Strings.fixed;
+      --
+      --        i                    : constant Positive := Positive (Id);
+      --        texture_uniform_Name : constant String   := "Textures[" & trim (Natural'Image (i - 1), Left) & "]";
+      --        fade_uniform_Name    : constant String   := "Fade["     & trim (Natural'Image (i - 1), Left) & "]";
+      --     begin
+      --        texture_Uniforms.Textures (Id).texture_Uniform := the_Program.uniform_Variable (named => texture_uniform_Name);
+      --        texture_Uniforms.Textures (Id).   fade_Uniform := the_Program.uniform_Variable (named =>    fade_uniform_Name);
+      --     end;
+      --  end loop;
+      --
+      --  texture_Uniforms.Count := the_Program.uniform_Variable ("texture_Count");
 
-            i                    : constant Positive := Positive (Id);
-            texture_uniform_Name : constant String   := "Textures[" & trim (Natural'Image (i - 1), Left) & "]";
-            fade_uniform_Name    : constant String   := "Fade["     & trim (Natural'Image (i - 1), Left) & "]";
-         begin
-            texture_Uniforms.Textures (Id).texture_Uniform := the_Program.uniform_Variable (named => texture_uniform_Name);
-            texture_Uniforms.Textures (Id).   fade_Uniform := the_Program.uniform_Variable (named =>    fade_uniform_Name);
-         end;
-      end loop;
-
-      texture_Uniforms.Count := the_Program.uniform_Variable ("texture_Count");
+      textured_Geometry.create_Uniforms (for_Program => the_Program.all'Access);
    end create_Program;
 
 
@@ -294,69 +296,69 @@ is
    --- Texturing
    --
 
-   procedure Fade_is (Self : in out Item;   Which : texture_ID;   Now : in texture_Set.fade_Level)
-   is
-   begin
-      Self.texture_Set.Textures (which).Fade := Now;
-   end Fade_is;
+   --  procedure Fade_is (Self : in out Item;   Which : texture_ID;   Now : in texture_Set.fade_Level)
+   --  is
+   --  begin
+   --     Self.texture_Set.Textures (which).Fade := Now;
+   --  end Fade_is;
+   --
+   --
+   --
+   --  function Fade (Self : in     Item;   Which : texture_Set.texture_ID)     return texture_Set.fade_Level
+   --  is
+   --  begin
+   --     return Self.texture_Set.Textures (which).Fade;
+   --  end Fade;
+   --
+   --
+   --
+   --  procedure Texture_is (Self : in out Item;   Which : texture_ID;   Now : in openGL.Texture.Object)
+   --  is
+   --  begin
+   --     Texture_is (in_Set => Self.texture_Set,
+   --                 Which  => Which,
+   --                 Now    => Now);
+   --  end Texture_is;
+   --
+   --
+   --
+   --  function Texture (Self : in Item;   Which : texture_ID) return openGL.Texture.Object
+   --  is
+   --  begin
+   --     return openGL.texture_Set.Texture (in_Set => Self.texture_Set,
+   --                                        Which  => Which);
+   --  end Texture;
+   --
+   --
+   --
+   --  overriding
+   --  procedure Texture_is (Self : in out Item;   Now : in openGL.Texture.Object)
+   --  is
+   --  begin
+   --     Texture_is (in_Set => Self.texture_Set,
+   --                 Now    => Now);
+   --  end Texture_is;
+   --
+   --
+   --
+   --  overriding
+   --  function Texture (Self : in Item) return openGL.Texture.Object
+   --  is
+   --  begin
+   --     return texture_Set.Texture (in_Set => Self.texture_Set,
+   --                                 Which  => 1);
+   --  end Texture;
 
 
 
-   function Fade (Self : in     Item;   Which : texture_Set.texture_ID)     return texture_Set.fade_Level
-   is
-   begin
-      return Self.texture_Set.Textures (which).Fade;
-   end Fade;
-
-
-
-   procedure Texture_is (Self : in out Item;   Which : texture_ID;   Now : in openGL.Texture.Object)
-   is
-   begin
-      Texture_is (in_Set => Self.texture_Set,
-                  Which  => Which,
-                  Now    => Now);
-   end Texture_is;
-
-
-
-   function Texture (Self : in Item;   Which : texture_ID) return openGL.Texture.Object
-   is
-   begin
-      return openGL.texture_Set.Texture (in_Set => Self.texture_Set,
-                                         Which  => Which);
-   end Texture;
-
-
-
-   overriding
-   procedure Texture_is (Self : in out Item;   Now : in openGL.Texture.Object)
-   is
-   begin
-      Texture_is (in_Set => Self.texture_Set,
-                  Now    => Now);
-   end Texture_is;
-
-
-
-   overriding
-   function Texture (Self : in Item) return openGL.Texture.Object
-   is
-   begin
-      return texture_Set.Texture (in_Set => Self.texture_Set,
-                                  Which  => 1);
-   end Texture;
-
-
-
-   overriding
-   procedure enable_Textures (Self : in out Item)
-   is
-   begin
-      texturing.enable (for_Model   => Self.Model.all'Access,
-                        Uniforms    => texture_Uniforms,
-                        texture_Set => Self.texture_Set);
-   end enable_Textures;
+   --  overriding
+   --  procedure enable_Textures (Self : in out Item)
+   --  is
+   --  begin
+   --     texturing.enable (for_Model   => Self.Model.all'Access,
+   --                       Uniforms    => texture_Uniforms,
+   --                       texture_Set => Self.texture_Set);
+   --  end enable_Textures;
 
 
 end openGL.Geometry.lit_textured;

@@ -50,8 +50,20 @@ is
    procedure Label_is        (Self : in out Item'Class;   Now : in String);
    function  Label           (Self : in     Item'Class)     return String;
 
+
+   --- Texturing
+   --
+
+   procedure Fade_is         (Self : in out Item;   Which : in texture_Set.texture_ID;   Now : in texture_Set.fade_Level) is null;
+   function  Fade            (Self : in     Item;   Which : in texture_Set.texture_ID)     return texture_Set.fade_Level;
+
+   procedure Texture_is      (Self : in out Item;   Which : in texture_Set.texture_ID;   Now : in openGL.Texture.Object) is null;
+   function  Texture         (Self : in     Item;   Which : in texture_Set.texture_ID)     return openGL.Texture.Object;
+
    procedure Texture_is      (Self : in out Item;   Now : in openGL.Texture.Object) is null;
    function  Texture         (Self : in     Item)     return openGL.Texture.Object;
+
+
 
    procedure Bounds_are      (Self : in out Item'Class;   Now : in Bounds);
    function  Bounds          (self : in     Item'Class)     return Bounds;   -- Returns the bounds in object space.

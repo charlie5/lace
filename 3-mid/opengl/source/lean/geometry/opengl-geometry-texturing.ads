@@ -49,4 +49,53 @@ is
                      for_Program : in     openGL.Program.view);
 
 
+
+
+   -------------
+   --- Mixin ---
+   -------------
+
+   generic
+   package Mixin
+   is
+      type Item is new Geometry.item with private;
+
+
+      procedure create_Uniforms (for_Program : in     openGL.Program.view);
+
+
+
+      overriding
+      procedure Fade_is      (Self : in out Item;   Which : texture_Set.texture_ID;   Now : in texture_Set.fade_Level);
+      overriding
+      function  Fade         (Self : in     Item;   Which : texture_Set.texture_ID)     return texture_Set.fade_Level;
+
+
+      overriding
+      procedure Texture_is   (Self : in out Item;   Which : texture_Set.texture_ID;   Now : in openGL.Texture.Object);
+      overriding
+      function  Texture      (Self : in     Item;   Which : texture_Set.texture_ID)     return openGL.Texture.Object;
+
+      overriding
+      procedure Texture_is   (Self : in out Item;   Now : in openGL.Texture.Object);
+
+      overriding
+      function  Texture      (Self : in     Item)     return openGL.Texture.Object;
+
+
+      overriding
+      procedure enable_Textures (Self : in out Item);
+
+
+   private
+
+      type Item is new Geometry.item with
+         record
+            texture_Set : openGL.texture_Set.item;
+         end record;
+
+   end Mixin;
+
+
+
 end openGL.Geometry.texturing;
