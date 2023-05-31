@@ -24,6 +24,12 @@ build
 bin
 
 
+
+## Copies
+#
+3-mid/opengl (copy 1)
+
+
 ## Source
 #
 2-low/neural/source/attic
