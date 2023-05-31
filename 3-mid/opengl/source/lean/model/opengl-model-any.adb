@@ -139,6 +139,7 @@ is
 
 
 
+
    overriding
    function to_GL_Geometries (Self : access Item;   Textures : access Texture.name_Map_of_texture'Class;
                                                     Fonts    : in     Font.font_id_Map_of_font) return Geometry.views
@@ -146,8 +147,11 @@ is
       pragma unreferenced (Textures, Fonts);
    begin
       Self.build_GL_Geometries;
+      Self.Geometry.Model_is  (Self.all'unchecked_Access);
+
       return [1 => Self.Geometry];
    end to_GL_Geometries;
+
 
 
 
@@ -486,10 +490,52 @@ is
          end if;
 
          Self.Geometry.is_Transparent (now => False);
-         Self.Geometry.Label_is (to_String (Self.Model) & "-" & to_String (Self.Texture));
+         Self.Geometry.Label_is       (to_String (Self.Model) & "-" & to_String (Self.Texture));
       end;
 
    end build_GL_Geometries;
+
+
+
+   ------------
+   -- Texturing
+   --
+
+   overriding
+   procedure Fade_is (Self : in out Item;   Which : in texture_Set.texture_Id;
+                                            Now   : in texture_Set.fade_Level)
+   is
+   begin
+      null;
+   end Fade_is;
+
+
+
+   overriding
+   function Fade (Self : in Item;   Which : in texture_Set.texture_Id) return texture_Set.fade_Level
+   is
+   begin
+      return 0.0;
+   end Fade;
+
+
+
+   procedure Texture_is (Self : in out Item;   Which : in texture_Set.texture_Id;
+                                               Now   : in openGL.asset_Name)
+   is
+   begin
+      null;
+   end Texture_is;
+
+
+
+   overriding
+   function texture_Count (Self : in Item) return Natural
+   is
+   begin
+      return 1;
+   end texture_Count;
+
 
 
 end openGL.Model.any;

@@ -190,6 +190,8 @@ is
          begin
             the_shaft_Geometry.add (Primitive.view (the_Primitive));
          end;
+
+         the_shaft_Geometry.Model_is (Self.all'unchecked_Access);
       end;
 
 
@@ -386,6 +388,8 @@ is
                end;
             end;
 
+            cap_Geometry.Model_is (Self.all'unchecked_Access);
+
             return cap_Geometry;
          end new_Cap;
 
@@ -398,6 +402,47 @@ is
               2 =>     cap_1_Geometry.all'Access,
               3 =>     cap_2_Geometry.all'Access];
    end to_GL_Geometries;
+
+
+
+   ------------
+   -- Texturing
+   --
+
+   overriding
+   procedure Fade_is (Self : in out Item;   Which : in texture_Set.texture_Id;
+                                            Now   : in texture_Set.fade_Level)
+   is
+   begin
+      null;
+   end Fade_is;
+
+
+
+   overriding
+   function Fade (Self : in Item;   Which : in texture_Set.texture_Id) return texture_Set.fade_Level
+   is
+   begin
+      return 0.0;
+   end Fade;
+
+
+
+   procedure Texture_is (Self : in out Item;   Which : in texture_Set.texture_Id;
+                                               Now   : in openGL.asset_Name)
+   is
+   begin
+      null;
+   end Texture_is;
+
+
+
+   overriding
+   function texture_Count (Self : in Item) return Natural
+   is
+   begin
+      return 1;
+   end texture_Count;
 
 
 end openGL.Model.capsule.lit_textured;

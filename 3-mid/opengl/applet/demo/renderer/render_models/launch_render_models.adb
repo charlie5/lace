@@ -80,6 +80,7 @@ begin
 
       the_Visuals (3).Site_is ([0.0, 0.0, -50.0]);
 
+
       --  Main loop.
       --
       while not Demo.Done

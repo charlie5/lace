@@ -114,6 +114,7 @@ is
          end loop;
 
          the_Geometry.is_Transparent (True);     -- TODO: Do transparency properly.
+         the_Geometry.Model_is       (Self.all'unchecked_Access);
 
          return the_Geometry;
       end new_Face;
@@ -137,8 +138,6 @@ is
       begin
          upper_Face := new_Face (Vertices => the_Vertices);
       end;
-
-      upper_Face.Model_is (Self.all'unchecked_Access);
 
       return (1 => upper_Face.all'Access);
    end to_GL_Geometries;

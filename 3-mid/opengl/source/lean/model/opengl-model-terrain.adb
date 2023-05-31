@@ -226,6 +226,8 @@ is
          the_Geometry.add (Primitive.view (the_Primitive));
       end;
 
+      the_Geometry.Model_is (Self.all'unchecked_Access);
+
       return [1 => Geometry.view (the_Geometry)];
    end to_GL_Geometries;
 
@@ -280,6 +282,47 @@ is
 
       Self.Bounds := the_Bounds;
    end set_Bounds;
+
+
+
+   ------------
+   -- Texturing
+   --
+
+   overriding
+   procedure Fade_is (Self : in out Item;   Which : in texture_Set.texture_Id;
+                                            Now   : in texture_Set.fade_Level)
+   is
+   begin
+      null;
+   end Fade_is;
+
+
+
+   overriding
+   function Fade (Self : in Item;   Which : in texture_Set.texture_Id) return texture_Set.fade_Level
+   is
+   begin
+      return 0.0;
+   end Fade;
+
+
+
+   procedure Texture_is (Self : in out Item;   Which : in texture_Set.texture_Id;
+                                               Now   : in openGL.asset_Name)
+   is
+   begin
+      Self.color_Map := Now;
+   end Texture_is;
+
+
+
+   overriding
+   function texture_Count (Self : in Item) return Natural
+   is
+   begin
+      return 1;
+   end texture_Count;
 
 
 end openGL.Model.terrain;

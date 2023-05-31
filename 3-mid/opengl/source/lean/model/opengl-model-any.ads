@@ -39,6 +39,24 @@ is
    unsupported_model_Format : exception;
 
 
+   ------------
+   -- Texturing
+   --
+
+   overriding
+   function  Fade       (Self : in     Item;   Which : in texture_Set.texture_Id) return texture_Set.fade_Level;
+
+   overriding
+   procedure Fade_is    (Self : in out Item;   Which : in texture_Set.texture_Id;
+                                               Now   : in texture_Set.fade_Level);
+
+   procedure Texture_is (Self : in out Item;   Which : in texture_Set.texture_Id;
+                                               Now   : in asset_Name);
+
+   overriding
+   function  texture_Count (Self : in Item) return Natural;
+
+
 
 private
 
