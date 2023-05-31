@@ -54,14 +54,16 @@ is
    --- Texturing
    --
 
-   procedure Fade_is         (Self : in out Item;   Which : in texture_Set.texture_ID;   Now : in texture_Set.fade_Level) is null;
-   function  Fade            (Self : in     Item;   Which : in texture_Set.texture_ID)     return texture_Set.fade_Level;
+   procedure Fade_is         (Self : in out Item;   Now   : in texture_Set.fade_Level;
+                                                    Which : in texture_Set.texture_ID := 1) is null;
+   function  Fade            (Self : in     Item;   Which : in texture_Set.texture_ID := 1) return texture_Set.fade_Level;
 
-   procedure Texture_is      (Self : in out Item;   Which : in texture_Set.texture_ID;   Now : in openGL.Texture.Object) is null;
-   function  Texture         (Self : in     Item;   Which : in texture_Set.texture_ID)     return openGL.Texture.Object;
+   procedure Texture_is      (Self : in out Item;   Now   : in openGL.Texture.Object;
+                                                    Which : in texture_Set.texture_ID := 1) is null;
+   function  Texture         (Self : in     Item;   Which : in texture_Set.texture_ID := 1) return openGL.Texture.Object;
 
-   procedure Texture_is      (Self : in out Item;   Now : in openGL.Texture.Object) is null;
-   function  Texture         (Self : in     Item)     return openGL.Texture.Object;
+   --  procedure Texture_is      (Self : in out Item;   Now : in openGL.Texture.Object) is null;
+   --  function  Texture         (Self : in     Item)     return openGL.Texture.Object;
 
 
 

@@ -1,6 +1,10 @@
 with
      openGL.texture_Set;
 
+private
+with
+     openGL.Geometry.texturing;
+
 
 package openGL.Geometry.lit_colored_textured
 --
@@ -42,30 +46,41 @@ is
    --- Texturing.
    --
 
-   procedure Fade_is      (Self : in out Item;   Which : texture_Set.texture_ID;   Now : in texture_Set.fade_Level);
-   function  Fade         (Self : in     Item;   Which : texture_Set.texture_ID)     return texture_Set.fade_Level;
+   --  procedure Fade_is      (Self : in out Item;   Now   : in texture_Set.fade_Level;
+   --                                                Which : in texture_Set.texture_ID := 1);
+   --  function  Fade         (Self : in     Item;   Which : in texture_Set.texture_ID := 1) return texture_Set.fade_Level;
+   --
+   --
+   --  procedure Texture_is   (Self : in out Item;   Now   : in openGL.Texture.Object;
+   --                                                Which : in texture_Set.texture_ID);
+   --  function  Texture      (Self : in     Item;   Which : in texture_Set.texture_ID := 1) return openGL.Texture.Object;
 
-
-   procedure Texture_is   (Self : in out Item;   Which : texture_Set.texture_ID;   Now : in openGL.Texture.Object);
-   function  Texture      (Self : in     Item;   Which : texture_Set.texture_ID)     return openGL.Texture.Object;
-
-   overriding
-   procedure Texture_is   (Self : in out Item;   Now : in openGL.Texture.Object);
-
-   overriding
-   function  Texture      (Self : in     Item)     return openGL.Texture.Object;
+   --  overriding
+   --  procedure Texture_is   (Self : in out Item;   Now : in openGL.Texture.Object);
+   --
+   --  overriding
+   --  function  Texture      (Self : in     Item)     return openGL.Texture.Object;
 
 
 
 private
 
-   type Item is new Geometry.item with
+   package textured_Geometry is new texturing.Mixin;
+
+
+   type Item is new textured_Geometry.item with
       record
-         Textures : texture_Set.Item;
+         null;
       end record;
 
 
-   overriding
-   procedure enable_Textures (Self : in out Item);
+   --  type Item is new Geometry.item with
+   --     record
+   --        Textures : texture_Set.Item;
+   --     end record;
+
+
+   --  overriding
+   --  procedure enable_Textures (Self : in out Item);
 
 end openGL.Geometry.lit_colored_textured;

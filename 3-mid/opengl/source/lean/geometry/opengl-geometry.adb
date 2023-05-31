@@ -103,7 +103,7 @@ is
 
 
 
-   function Fade (Self : in Item;   Which : texture_Set.texture_ID) return texture_Set.fade_Level
+   function Fade (Self : in Item;   Which : texture_Set.texture_ID := 1) return texture_Set.fade_Level
    is
    begin
       raise program_Error with "Geometry has no texture.";
@@ -112,16 +112,16 @@ is
 
 
 
-   function Texture (Self : in Item) return openGL.Texture.Object
-   is
-   begin
-      raise program_Error with "Geometry has no texture.";
-      return openGL.Texture.null_Object;
-   end Texture;
+   --  function Texture (Self : in Item) return openGL.Texture.Object
+   --  is
+   --  begin
+   --     raise program_Error with "Geometry has no texture.";
+   --     return openGL.Texture.null_Object;
+   --  end Texture;
 
 
 
-   function Texture (Self : in Item;   Which : in texture_Set.texture_ID) return openGL.Texture.Object
+   function Texture (Self : in Item;   Which : in texture_Set.texture_ID := 1) return openGL.Texture.Object
    is
    begin
       raise program_Error with "Geometry has no texture.";

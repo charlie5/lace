@@ -1,5 +1,12 @@
 with
-     openGL.Program.lit.colored_textured_skinned;
+     openGL.Program.lit.colored_textured_skinned,
+     openGL.texture_Set;
+
+
+private
+with
+     openGL.Geometry.texturing;
+
 
 
 package openGL.Geometry.lit_colored_textured_skinned
@@ -50,9 +57,18 @@ is
 
 private
 
-   type Item is new Geometry.item with null record;
+   package textured_Geometry is new texturing.Mixin;
 
-   overriding
-   procedure enable_Textures (Self : in out Item);
+
+   type Item is new textured_Geometry.item with
+      record
+         null;
+      end record;
+
+
+   --  type Item is new Geometry.item with null record;
+   --
+   --  overriding
+   --  procedure enable_Textures (Self : in out Item);
 
 end openGL.Geometry.lit_colored_textured_skinned;

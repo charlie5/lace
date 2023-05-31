@@ -69,11 +69,9 @@ private
    package textured_Geometry is new texturing.Mixin;
 
 
-   --  type Item is new Geometry.item with
    type Item is new textured_Geometry.item with
       record
          null;
-         --  texture_Set : openGL.texture_Set.Item;
       end record;
 
 

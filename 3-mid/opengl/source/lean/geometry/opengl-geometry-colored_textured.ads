@@ -1,3 +1,12 @@
+with
+openGL.texture_Set;
+
+
+private
+with
+     openGL.Geometry.texturing;
+
+
 package openGL.Geometry.colored_textured
 --
 --  Supports per-vertex site, color and texture.
@@ -36,13 +45,22 @@ is
 
 private
 
-   type Item is new Geometry.item with
+   package textured_Geometry is new texturing.Mixin;
+
+
+   type Item is new textured_Geometry.item with
       record
          null;
       end record;
 
 
-   overriding
-   procedure enable_Textures (Self : in out Item);
+   --  type Item is new Geometry.item with
+   --     record
+   --        null;
+   --     end record;
+   --
+   --
+   --  overriding
+   --  procedure enable_Textures (Self : in out Item);
 
 end openGL.Geometry.colored_textured;

@@ -120,12 +120,9 @@ is
 
 
 
-
-
-
       overriding
-      procedure Fade_is (Self : in out Item;   Which : in texture_Set.texture_ID;
-                                               Now   : in texture_Set.fade_Level)
+      procedure Fade_is (Self : in out Item;   Now   : in texture_Set.fade_Level;
+                                               Which : in texture_Set.texture_ID := 1)
       is
       begin
          Self.texture_Set.Textures (which).Fade := Now;
@@ -134,7 +131,7 @@ is
 
 
       overriding
-      function Fade (Self : in Item;   Which : in texture_Set.texture_ID) return texture_Set.fade_Level
+      function Fade (Self : in Item;   Which : in texture_Set.texture_ID := 1) return texture_Set.fade_Level
       is
       begin
          return Self.texture_Set.Textures (which).Fade;
@@ -143,8 +140,8 @@ is
 
 
       overriding
-      procedure Texture_is (Self : in out Item;   Which : in texture_Set.texture_ID;
-                                                  Now   : in openGL.Texture.Object)
+      procedure Texture_is (Self : in out Item;   Now   : in openGL.Texture.Object;
+                                                  Which : in texture_Set.texture_ID := 1)
       is
       begin
          Texture_is (in_Set => Self.texture_Set,
@@ -155,7 +152,7 @@ is
 
 
       overriding
-      function Texture (Self : in Item;   Which : texture_Set.texture_ID) return openGL.Texture.Object
+      function Texture (Self : in Item;   Which : texture_Set.texture_ID := 1) return openGL.Texture.Object
       is
       begin
          return openGL.texture_Set.Texture (in_Set => Self.texture_Set,
@@ -164,23 +161,23 @@ is
 
 
 
-      overriding
-      procedure Texture_is (Self : in out Item;   Now : in openGL.Texture.Object)
-      is
-      begin
-         Texture_is (in_Set => Self.texture_Set,
-                     Now    => Now);
-      end Texture_is;
-
-
-
-      overriding
-      function Texture (Self : in Item) return openGL.Texture.Object
-      is
-      begin
-         return texture_Set.Texture (in_Set => Self.texture_Set,
-                                     Which  => 1);
-      end Texture;
+      --  overriding
+      --  procedure Texture_is (Self : in out Item;   Now : in openGL.Texture.Object)
+      --  is
+      --  begin
+      --     Texture_is (in_Set => Self.texture_Set,
+      --                 Now    => Now);
+      --  end Texture_is;
+      --
+      --
+      --
+      --  overriding
+      --  function Texture (Self : in Item) return openGL.Texture.Object
+      --  is
+      --  begin
+      --     return texture_Set.Texture (in_Set => Self.texture_Set,
+      --                                 Which  => 1);
+      --  end Texture;
 
 
 

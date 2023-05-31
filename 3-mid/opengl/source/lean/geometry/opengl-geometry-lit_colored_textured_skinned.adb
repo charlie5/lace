@@ -287,35 +287,35 @@ is
 
 
 
-   overriding
-   procedure enable_Textures (Self : in out Item)
-   is
-      use GL,
-          GL.Binding,
-          openGL.Texture;
-   begin
-      Tasks.check;
-
-      glActiveTexture (gl.GL_TEXTURE0);
-      Errors.log;
-
-      if Self.Texture = openGL.Texture.null_Object
-      then
-         if not white_Texture.is_Defined
-         then
-            declare
-               use Palette;
-               white_Image : constant openGL.Image := [1 .. 2 => [1 .. 2 => +White]];
-            begin
-               white_Texture := openGL.Texture.Forge.to_Texture (white_Image);
-            end;
-         end if;
-
-         white_Texture.enable;
-      else
-         Self.Texture.enable;
-      end if;
-   end enable_Textures;
+   --  overriding
+   --  procedure enable_Textures (Self : in out Item)
+   --  is
+   --     use GL,
+   --         GL.Binding,
+   --         openGL.Texture;
+   --  begin
+   --     Tasks.check;
+   --
+   --     glActiveTexture (gl.GL_TEXTURE0);
+   --     Errors.log;
+   --
+   --     if Self.Texture = openGL.Texture.null_Object
+   --     then
+   --        if not white_Texture.is_Defined
+   --        then
+   --           declare
+   --              use Palette;
+   --              white_Image : constant openGL.Image := [1 .. 2 => [1 .. 2 => +White]];
+   --           begin
+   --              white_Texture := openGL.Texture.Forge.to_Texture (white_Image);
+   --           end;
+   --        end if;
+   --
+   --        white_Texture.enable;
+   --     else
+   --        Self.Texture.enable;
+   --     end if;
+   --  end enable_Textures;
 
 
 end openGL.Geometry.lit_colored_textured_skinned;

@@ -129,6 +129,8 @@ is
                                   name    => +Attribute_3_Name_ptr);
             Errors.log;
          end;
+
+         textured_Geometry.create_Uniforms (for_Program => the_Program.all'Access);
       end if;
 
       Self.Program_is (the_Program.all'Access);
@@ -182,6 +184,7 @@ is
    end Vertices_are;
 
 
+
    overriding
    procedure Indices_are  (Self : in out Item;   Now       : in Indices;
                                                  for_Facia : in Positive)
@@ -191,23 +194,23 @@ is
    end Indices_are;
 
 
-   overriding
-   procedure enable_Textures (Self : in out Item)
-   is
-      use GL,
-          GL.Binding,
-          openGL.Texture;
-   begin
-      Tasks.check;
-
-      glActiveTexture (gl.GL_TEXTURE0);
-      Errors.log;
-
-      if Self.Texture = openGL.Texture.null_Object
-      then   enable (white_Texture);
-      else   enable (Self.Texture);
-      end if;
-   end enable_Textures;
+   --  overriding
+   --  procedure enable_Textures (Self : in out Item)
+   --  is
+   --     use GL,
+   --         GL.Binding,
+   --         openGL.Texture;
+   --  begin
+   --     Tasks.check;
+   --
+   --     glActiveTexture (gl.GL_TEXTURE0);
+   --     Errors.log;
+   --
+   --     if Self.Texture = openGL.Texture.null_Object
+   --     then   enable (white_Texture);
+   --     else   enable (Self.Texture);
+   --     end if;
+   --  end enable_Textures;
 
 
 end openGL.Geometry.colored_textured;
