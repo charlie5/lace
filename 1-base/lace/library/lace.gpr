@@ -29,7 +29,7 @@ is
                         "../source/events/mixin/" & external ("restrictions", "xgc"),
                         "../source/events/utility",
                         "../source/strings",
-                        "../source/text");
+                        "../source/text/**");
 
    package Builder  renames Lace_shared.Builder;
    package Compiler renames Lace_shared.Compiler;
