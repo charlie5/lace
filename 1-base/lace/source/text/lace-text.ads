@@ -21,6 +21,7 @@ is
    -- Stock Items
    --
 
+   subtype Item_1   is Item (Capacity =>   1);
    subtype Item_2   is Item (Capacity =>   2);
    subtype Item_4   is Item (Capacity =>   4);
    subtype Item_8   is Item (Capacity =>   8);
@@ -58,6 +59,7 @@ is
    -- Stock Arrays
    --
 
+   type Items_1   is array (Positive range <>) of aliased Item_1;
    type Items_2   is array (Positive range <>) of aliased Item_2;
    type Items_4   is array (Positive range <>) of aliased Item_4;
    type Items_8   is array (Positive range <>) of aliased Item_8;

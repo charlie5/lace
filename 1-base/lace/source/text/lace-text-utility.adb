@@ -98,6 +98,7 @@ is
       First  : Natural  := 1;
       Last   : Natural;
    begin
+      while First <= Self.Length
       loop
          Last := First + Pattern'Length - 1;
 
@@ -116,8 +117,6 @@ is
             Cursor := Cursor + 1;
             First  := First  + 1;
          end if;
-
-         exit when First > Self.Length;
       end loop;
 
       Self.Length                  := Cursor - 1;

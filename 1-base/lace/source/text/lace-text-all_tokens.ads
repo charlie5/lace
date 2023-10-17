@@ -1,11 +1,21 @@
 package lace.Text.all_Tokens
+--
+-- Some of these functions require a very large stack size.
+-- If a Storage_Error is raised, try setting stack size to 'unlimited'.
+--
+-- $ ulimit -s unlimited
+--
 is
    default_Max : constant := 8 * 1024;
+   stack_Error : exception;
 
 
    ----------------------
    -- Character Delimiter
    --
+   function Tokens (Self : in Item;   Delimiter  : in Character := ' ';
+                                      Trim       : in Boolean   := False;
+                                      max_Tokens : in Positive  := default_Max) return Text.items_1;
    function Tokens (Self : in Item;   Delimiter  : in Character := ' ';
                                       Trim       : in Boolean   := False;
                                       max_Tokens : in Positive  := default_Max) return Text.items_2;
@@ -67,6 +77,9 @@ is
    -------------------
    -- String Delimiter
    --
+   function Tokens (Self : in Item;   Delimiter  : in String;
+                                      Trim       : in Boolean  := False;
+                                      max_Tokens : in Positive := default_Max) return Text.items_1;
    function Tokens (Self : in Item;   Delimiter  : in String;
                                       Trim       : in Boolean  := False;
                                       max_Tokens : in Positive := default_Max) return Text.items_2;

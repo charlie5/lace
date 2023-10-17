@@ -65,31 +65,43 @@ is
                                               Trim       : in Boolean   := False;
                                               max_Tokens : in Positive  := 8 * 1024) return Array_type
    is
-      the_Tokens : Array_type (1 .. max_Tokens);
-      Count      : Natural  := 0;
-      From       : Positive := 1;
    begin
-      while From <= Self.Length
-      loop
-         Count              := Count + 1;
-         the_Tokens (Count) := any_to_Text (next_Token (Self,
-                                                        Delimiter,
-                                                        From),
-                                            capacity => Text_Capacity,
-                                            trim     => Trim);
-      end loop;
+      declare
+         the_Tokens : Array_type (1 .. max_Tokens);
+         Count      : Natural  := 0;
+         From       : Positive := 1;
+      begin
+         while From <= Self.Length
+         loop
+            Count              := Count + 1;
+            the_Tokens (Count) := any_to_Text (next_Token (Self,
+                                                           Delimiter,
+                                                           From),
+                                               capacity => Text_Capacity,
+                                               trim     => Trim);
+         end loop;
 
-      if         Self.Length > 0
-        and then Self.Data (Self.Length) = Delimiter
-      then                                                      -- Handle case where final character is the delimiter.
-         Count              := Count + 1;
-         the_Tokens (Count) := any_to_Text ("", capacity => Text_Capacity);     -- Add an empty token.
-      end if;
+         if         Self.Length > 0
+           and then Self.Data (Self.Length) = Delimiter
+         then                                                      -- Handle case where final character is the delimiter.
+            Count              := Count + 1;
+            the_Tokens (Count) := any_to_Text ("", capacity => Text_Capacity);     -- Add an empty token.
+         end if;
 
-      return the_Tokens (1 .. Count);
+         return the_Tokens (1 .. Count);
+      end;
+
+   exception
+      when storage_Error =>
+         raise stack_Error with "Stack size exceeded. Increase stack size via '$ ulimit -s unlimited' or similar.";
    end any_Tokens_chr;
 
 
+
+   function Tokens_1 is new any_Tokens_chr (Text_Capacity => 1,
+                                            Component     => Text.item_1,
+                                            Array_type    => Text.items_1,
+                                            any_to_Text   => to_Text);
 
    function Tokens_2 is new any_Tokens_chr (Text_Capacity => 2,
                                             Component     => Text.item_2,
@@ -186,6 +198,10 @@ is
                                                Array_type    => Text.items_512k,
                                                any_to_Text   => to_Text);
 
+
+   function Tokens (Self : in Item;   Delimiter  : in Character := ' ';
+                                      Trim       : in Boolean   := False;
+                                      max_Tokens : in Positive  := default_Max) return Text.items_1 renames Tokens_1;
 
    function Tokens (Self : in Item;   Delimiter  : in Character := ' ';
                                       Trim       : in Boolean   := False;
@@ -304,6 +320,11 @@ is
 
 
 
+   function Tokens_1 is new any_Tokens_str (Text_Capacity => 1,
+                                            Component     => Text.item_1,
+                                            Array_type    => Text.items_1,
+                                            any_to_Text   => to_Text);
+
    function Tokens_2 is new any_Tokens_str (Text_Capacity => 2,
                                             Component     => Text.item_2,
                                             Array_type    => Text.items_2,
@@ -399,6 +420,10 @@ is
                                                Array_type    => Text.items_512k,
                                                any_to_Text   => to_Text);
 
+
+   function Tokens (Self : in Item;   Delimiter  : in String;
+                                      Trim       : in Boolean  := False;
+                                      max_Tokens : in Positive := default_Max) return Text.items_1 renames Tokens_1;
 
    function Tokens (Self : in Item;   Delimiter  : in String;
                                       Trim       : in Boolean  := False;

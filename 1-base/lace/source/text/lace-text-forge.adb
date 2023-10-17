@@ -28,6 +28,11 @@ is
       Result   : sized_String;
       i        : Natural := 0;
    begin
+      if Length = 0
+      then
+         return "";
+      end if;
+
       open  (the_File, in_File, String (Filename));
       read  (the_File, Pad);
       close (the_File);
@@ -70,6 +75,19 @@ is
    --------------
    -- Stock Items
    --
+
+   function to_Text_1 (From : in String) return Item_1
+   is
+   begin
+      return to_Text (From, capacity => 1);
+   end to_Text_1;
+
+   function to_Text_1 (From : in Text.item) return Item_1
+   is
+   begin
+      return to_Text (to_String (From), capacity => 1);
+   end to_Text_1;
+
 
    function to_Text_2 (From : in String) return Item_2
    is

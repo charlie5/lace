@@ -21,6 +21,9 @@ is
    -- Stock Items
    --
 
+   function to_Text_1 (From : in String)       return Item_1;
+   function to_Text_1 (From : in Text.item)    return Item_1;
+
    function to_Text_2 (From : in String)       return Item_2;
    function to_Text_2 (From : in Text.item)    return Item_2;
 
