@@ -143,8 +143,8 @@ is
    -- 'Named' can contain an asterix GLOB such as "*" or "*.txt".
 
 
-   procedure  rid_File   (Self  : in File);
-   procedure  rid_Files  (Named : in String);
+   procedure rid_File    (Self  : in File);
+   procedure rid_Files   (Named : in String);
    --
    -- 'Named' can contain an asterix GLOB such as "*" or "*.txt".
 
