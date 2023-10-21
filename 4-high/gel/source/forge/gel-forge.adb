@@ -116,14 +116,14 @@ is
    --
 
    function new_circle_Sprite (in_World   : in gel.World.view;
-                                  Site       : in math.Vector_2      := math.Origin_2D;
-                                  Mass       : in math.Real          := 1.0;
-                                  Friction   : in math.Real          := 0.5;
-                                  Bounce     : in math.Real          := 0.5;
-                                  Radius     : in math.Real          := 0.5;
-                                  Color      : in openGL.Color       := opengl.Palette.White;
-                                  Texture    : in openGL.asset_Name  := openGL.null_Asset;
-                                  user_Data  : in any_user_Data_view := null) return gel.Sprite.view
+                               Site       : in math.Vector_2      := math.Origin_2D;
+                               Mass       : in math.Real          := 1.0;
+                               Friction   : in math.Real          := 0.5;
+                               Bounce     : in math.Real          := 0.5;
+                               Radius     : in math.Real          := 0.5;
+                               Color      : in openGL.Color       := opengl.Palette.White;
+                               Texture    : in openGL.asset_Name  := openGL.null_Asset;
+                               user_Data  : in any_user_Data_view := null) return gel.Sprite.view
    is
       use openGL;
       use type Vector_2;
