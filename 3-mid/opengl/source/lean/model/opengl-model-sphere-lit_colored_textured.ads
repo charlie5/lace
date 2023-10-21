@@ -1,5 +1,6 @@
 with
      openGL.Font,
+     openGL.Palette,
      openGL.Geometry;
 
 
@@ -13,9 +14,11 @@ is
 
 
    function new_Sphere (Radius     : in Real;
-                        lat_Count  : in Positive   := default_latitude_Count;
-                        long_Count : in Positive   := default_longitude_Count;
-                        Image      : in asset_Name := null_Asset) return View;
+                        lat_Count  : in Positive           := default_latitude_Count;
+                        long_Count : in Positive           := default_longitude_Count;
+                        Color      : in openGL.lucid_Color := (openGL.Palette.Grey,
+                                                               Opacity => 1.0);
+                        Image      : in asset_Name         := null_Asset) return View;
 
 
    overriding
@@ -46,6 +49,7 @@ private
 
    type Item is new Model.sphere.item with     -- TODO: Add 'Color' component.
       record
+         Color : openGL.lucid_Color;
          Image : asset_Name := null_Asset;     -- Usually a mercator projection to be mapped onto the sphere.
       end record;
 

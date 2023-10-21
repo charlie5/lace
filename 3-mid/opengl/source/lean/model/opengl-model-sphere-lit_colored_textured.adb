@@ -1,8 +1,6 @@
 with
-     openGL.Palette,
      openGL.Geometry.lit_colored_textured,
      openGL.Texture,
-     openGL.IO,
      openGL.Primitive.indexed;
 
 
@@ -13,9 +11,11 @@ is
    --
 
    function new_Sphere (Radius     : in Real;
-                        lat_Count  : in Positive   := default_latitude_Count;
-                        long_Count : in Positive   := default_longitude_Count;
-                        Image      : in asset_Name := null_Asset) return View
+                        lat_Count  : in Positive           := default_latitude_Count;
+                        long_Count : in Positive           := default_longitude_Count;
+                        Color      : in openGL.lucid_Color := (openGL.Palette.Grey,
+                                                               Opacity => 1.0);
+                        Image      : in asset_Name         := null_Asset) return View
    is
       Self : constant View := new Item;
    begin
@@ -23,6 +23,7 @@ is
 
       Self.lat_Count  := lat_Count;
       Self.long_Count := long_Count;
+      Self.Color      := Color;
       Self.Image      := Image;
 
       return Self;
@@ -45,11 +46,9 @@ is
    function to_GL_Geometries (Self : access Item;   Textures : access Texture.name_Map_of_texture'Class;
                                                     Fonts    : in     Font.font_id_Map_of_font) return Geometry.views
    is
-      pragma unreferenced (Textures, Fonts);
+      pragma unreferenced (Fonts);
 
-      use openGL.Geometry,
-          openGL.Palette,
-          openGL.Geometry.lit_colored_textured;
+      use openGL.Geometry.lit_colored_textured;
 
       lat_Count      : Positive renames Self.lat_Count;
       long_Count     : Positive renames Self.long_Count;
@@ -92,8 +91,7 @@ is
          the_Vertices (the_Vertices'First).Normal := Normalised (north_Pole);
          the_Vertices (the_Vertices'First).Shine  := 0.5;
          the_Vertices (the_Vertices'First).Coords := (S => 0.5, T => 1.0);
-         the_Vertices (the_Vertices'First).Color  := (Primary => +White,
-                                                      Alpha   => opaque_Value);
+         the_Vertices (the_Vertices'First).Color  := +Self.Color;
 
          the_Sites (the_Vertices'Last) := south_Pole;
 
@@ -101,8 +99,7 @@ is
          the_Vertices (the_Vertices'Last).Normal  := Normalised (south_Pole);
          the_Vertices (the_Vertices'Last).Shine   := 0.5;
          the_Vertices (the_Vertices'Last).Coords  := (S => 0.5, T => 0.0);
-         the_Vertices (the_Vertices'Last).Color   := (Primary => +White,
-                                                      Alpha   => opaque_Value);
+         the_Vertices (the_Vertices'Last).Color   := +Self.Color;
 
          for lat_Id in 2 .. lat_Count - 1
          loop
@@ -118,8 +115,7 @@ is
             the_Vertices (vert_Id).Site   := the_Site;
             the_Vertices (vert_Id).Normal := Normalised (the_Site);
             the_Vertices (vert_Id).Shine  := 0.5;
-            the_Vertices (vert_Id).Color  := (Primary => +White,
-                                              Alpha   => opaque_Value);
+            the_Vertices (vert_Id).Color  := +Self.Color;
             the_Vertices (vert_Id).Coords := (S =>       a / Degrees_360,
                                               T => 1.0 - b / Degrees_180);
 
@@ -138,8 +134,7 @@ is
                the_Vertices (vert_Id).Site   := the_Site;
                the_Vertices (vert_Id).Normal := Normalised (the_Site);
                the_Vertices (vert_Id).Shine  := 0.5;
-               the_Vertices (vert_Id).Color  := (Primary => +White,
-                                                 Alpha   => opaque_Value);
+               the_Vertices (vert_Id).Color  := +Self.Color;
                the_Vertices (vert_Id).Coords := (S =>       a / Degrees_360,
                                                  T => 1.0 - b / Degrees_180);
             end loop;
