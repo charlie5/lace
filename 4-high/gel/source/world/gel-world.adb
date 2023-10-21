@@ -437,7 +437,7 @@ is
                                                 Force     : in Vector_3)
    is
    begin
-      null;
+      to_Sprite.apply_Force (Force);
       --  Self.physics_Engine.apply_Force (to_Sprite.Solid, Force);
    end apply_Force;
 

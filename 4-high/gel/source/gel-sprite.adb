@@ -709,7 +709,8 @@ is
    is
       the_Force : aliased constant Vector_3 := Force;
    begin
-      Self.World.apply_Force (Self'unchecked_Access, the_Force);
+      Self.Solid.apply_Force (Force);
+      --  Self.World.apply_Force (Self'unchecked_Access, the_Force);
    end apply_Force;
 
 
