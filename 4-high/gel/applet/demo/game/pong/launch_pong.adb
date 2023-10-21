@@ -9,7 +9,8 @@ with
 
      Physics,
      openGL.Palette,
-     openGL.Model.text,
+     openGL.Light,
+      openGL.Model.text,
 
      float_Math.Random,
 
@@ -54,8 +55,8 @@ is
                                      Bounce   => 1.0,
                                      Friction => 0.0,
                                      Radius   => 0.5,
-                                     Color    => White,
-                                     Texture  => openGL.to_Asset ("assets/opengl/texture/Face1.bmp"));
+                                     Color    => White);
+                                     --  Texture  => openGL.to_Asset ("assets/opengl/texture/Face1.bmp"));
    --- Players
    --
    type Player is
@@ -184,6 +185,17 @@ begin
 
    the_Applet.World.Gravity_is ([0.0, 0.0, 0.0]);
    the_Applet.World.add (the_Ball);
+
+
+   -- Set the lights position.
+   --
+   declare
+      Light : openGL.Light.item := the_Applet.Renderer.new_Light;
+   begin
+      Light.Site_is ([0.0, 1000.0, 0.0]);
+      the_Applet.Renderer.set (Light);
+   end;
+
 
    --- Add the players.
    --
