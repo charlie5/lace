@@ -2,24 +2,32 @@ with
      openGL.Palette,
      openGL.Font,
      openGL.IO,
+
      openGL.Model.arrow    .colored,
      openGL.Model.billboard.textured,
+
      openGL.Model.box      .colored,
      openGL.Model.box      .textured,
      openGL.Model.box      .lit_textured,
+
      openGL.Model.capsule  .lit_textured,
      openGL.Model.grid,
+
      openGL.Model.hexagon       .lit_colored,
      openGL.Model.hexagon       .lit_textured,
      openGL.Model.hexagon_Column.lit_colored_faceted,
      openGL.Model.hexagon_Column.lit_colored_rounded,
+
      openGL.Model.line          .colored,
      openGL.Model.any,
      openGL.Model.polygon       .lit_colored,
      openGL.Model.segment_line,
+
      openGL.Model.sphere        .colored,
      openGL.Model.sphere        .lit_colored,
      openGL.Model.sphere        .lit_textured,
+     openGL.Model.sphere        .lit_colored_textured,
+
      openGL.Model.Text          .lit_colored,
      openGL.Model.terrain,
      openGL.Light,
@@ -140,6 +148,9 @@ is
 
       the_ball_3_Model : constant Model.sphere.lit_textured.view
         := Model.sphere.lit_textured.new_Sphere (Radius => 1.0, Image => the_Texture);
+
+      the_ball_4_Model : constant Model.sphere.lit_colored_textured.view
+        := Model.sphere.lit_colored_textured.new_Sphere (Radius => 1.0, Image => the_Texture);
 
       the_billboard_Model : constant Model.billboard.textured.view
         := Model.billboard.textured.forge.new_Billboard (Size    => (1.0, 1.0),
@@ -269,6 +280,7 @@ is
                               the_ball_1_Model.all'Access,
                               the_ball_2_Model.all'Access,
                               the_ball_3_Model.all'Access,
+                              the_ball_4_Model.all'Access,
 
                            the_billboard_Model.all'Access,
                    the_colored_billboard_Model.all'Access,

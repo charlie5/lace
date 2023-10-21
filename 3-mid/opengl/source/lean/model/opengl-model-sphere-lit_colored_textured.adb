@@ -186,16 +186,10 @@ is
       end set_Indices;
 
 
-      if Self.Image /= null_Asset     -- TODO: Use 'Textures' (ie name_Map_of_texture) here and in other models.
+      if Self.Image /= null_Asset
       then
-         set_Texture:
-         declare
-            use Texture;
-            the_Image   : constant Image          := IO.to_Image      (Self.Image);
-            the_Texture : constant Texture.object := Forge.to_Texture ( the_Image);
-         begin
-            the_Geometry.Texture_is (the_Texture);
-         end set_Texture;
+         the_Geometry.Texture_is (Textures.fetch (Self.Image));
+         the_Geometry.is_Transparent (now => the_Geometry.Texture.is_Transparent);
       end if;
 
       the_Geometry.is_Transparent (False);
@@ -209,8 +203,52 @@ is
          the_Geometry.add (Primitive.view (the_Primitive));
       end;
 
+      the_Geometry.Model_is (Self.all'unchecked_Access);
+
       return [1 => Geometry.view (the_Geometry)];
    end to_GL_Geometries;
+
+
+
+
+   ------------
+   -- Texturing
+   --
+
+   overriding
+   procedure Fade_is (Self : in out Item;   Which : in texture_Set.texture_Id;
+                                            Now   : in texture_Set.fade_Level)
+   is
+   begin
+      null;
+   end Fade_is;
+
+
+
+   overriding
+   function Fade (Self : in Item;   Which : in texture_Set.texture_Id) return texture_Set.fade_Level
+   is
+   begin
+      return 0.0;
+   end Fade;
+
+
+
+   procedure Texture_is (Self : in out Item;   Which : in texture_Set.texture_Id;
+                                               Now   : in openGL.asset_Name)
+   is
+   begin
+      Self.Image := Now;
+   end Texture_is;
+
+
+
+   overriding
+   function texture_Count (Self : in Item) return Natural
+   is
+   begin
+      return 1;
+   end texture_Count;
 
 
 end openGL.Model.sphere.lit_colored_textured;

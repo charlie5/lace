@@ -48,7 +48,7 @@ private
 
    type Item is new Model.sphere.item with
       record
-         Image : asset_Name := null_Asset;
+         Image : asset_Name := null_Asset;     -- Usually a mercator projection to be mapped onto the sphere.
       end record;
 
 end openGL.Model.sphere.lit_textured;
