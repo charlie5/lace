@@ -140,9 +140,10 @@ is
       if Texture = openGL.null_Asset
       then
          the_graphics_Model := openGL.Model.sphere.lit_colored.new_Sphere (Radius,
-                                                                           Color => (Color, openGL.Opaque)).all'Access;
+                                                                           Color => (Color, Opaque)).all'Access;
       else
          the_graphics_Model := openGL.Model.sphere.lit_colored_textured.new_Sphere (Radius,
+                                                                                    Color => (Color, Opaque),
                                                                                     Image => Texture).all'Access;
       end if;
 
