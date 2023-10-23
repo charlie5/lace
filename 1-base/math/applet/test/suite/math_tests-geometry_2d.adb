@@ -52,9 +52,9 @@ is
    is
       use float_Math.Geometry.d2;
 
-      the_Tri : Triangle := [vertices => [[0.0, 0.0],
+      the_Tri : Triangle := (vertices => [[0.0, 0.0],
                                           [1.0, 0.0],
-                                          [1.0, 1.0]]];
+                                          [1.0, 1.0]]);
    begin
       assert (almost_Equal (Area (the_Tri), 0.5),
               "T1 =>  & Image (the_Tri) &  area should be 0.5 ... failed !   " & Image (Area (the_Tri), 12));
