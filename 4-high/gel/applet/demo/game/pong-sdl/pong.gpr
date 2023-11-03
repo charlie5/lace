@@ -2,6 +2,7 @@ with
      "gel_sdl",
      "lace_shared";
 
+
 project Pong
 is
    for Object_Dir use "build";
