@@ -1,6 +1,7 @@
 with
-     "gel",
+     "gel_sdl",
      "lace_shared";
+
 
 project mixed_Joints_2D
 is

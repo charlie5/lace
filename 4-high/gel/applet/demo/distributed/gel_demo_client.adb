@@ -3,9 +3,11 @@ with
      gel_demo_Server,
 
      gel.Applet.client_World,
-
+     gel.Window.setup,
      gel.Forge,
      gel.Camera,
+
+     openGL.Light,
 
      ada.Calendar,
      ada.Text_IO,
@@ -39,6 +41,17 @@ is
       --
       the_Applet.client_Camera.Site_is ([0.0, 0.0, 20.0]);
       the_Applet.enable_simple_Dolly (1);
+
+
+      -- Set the lights position.
+      --
+      declare
+         Light : openGL.Light.item := the_Applet.Renderer.new_Light;
+      begin
+         Light.Site_is ([0.0, -1000.0, 0.0]);
+         the_Applet.Renderer.set (Light);
+      end;
+
 
       next_render_Time := ada.Calendar.clock;
 

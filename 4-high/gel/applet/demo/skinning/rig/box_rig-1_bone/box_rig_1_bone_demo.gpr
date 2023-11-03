@@ -1,6 +1,7 @@
 with
-     "gel",
+     "gel_sdl",
      "lace_shared";
+
 
 project box_rig_1_bone_Demo
 is

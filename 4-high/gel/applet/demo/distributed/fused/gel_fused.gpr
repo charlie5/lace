@@ -1,7 +1,7 @@
 with
-     "gel",
      "../gel_demo",
      "lace_shared";
+
 
 project GEL_fused
 is

@@ -1,6 +1,7 @@
 with
-     "gel",
+     "gel_sdl",
      "lace_shared";
+
 
 project opengl_Model
 is

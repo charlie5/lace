@@ -1,6 +1,6 @@
 with
      gel.Window.setup,
-     gel.Applet.gui_and_sim_world,
+     gel.Applet.gui_world,
      gel.Forge,
      gel.Sprite,
 
@@ -28,10 +28,10 @@ is
        openGL.Model.box,
        opengl.Palette;
 
-   the_Applet : constant gel.Applet.gui_and_sim_world.view := gel.Forge.new_gui_and_sim_Applet ("mixed Shapes", 1536, 864);
+   the_Applet : constant gel.Applet.gui_world.view := gel.Forge.new_gui_Applet ("mixed Shapes", 1536, 864);
 
 
-   text_line_Site : gel.Math.Vector_3 := (-10.0, 50.0, -60.0);
+   text_line_Site : gel.Math.Vector_3 := [-10.0, 50.0, -60.0];
 
    procedure put_Line (Message : in String)
    is
@@ -94,8 +94,8 @@ is
    the_terrain_physics_Model : constant physics.Model.view
      := physics.Model.forge.new_physics_Model (shape_Info => (Kind         => physics.Model.heightfield,
                                                               Heights      => new physics.Heightfield' (to_Heightfield (gl_Heights.all)),
-                                                              height_Range => (0.0, 200.0)),
-                                               Scale      =>  (hs, 1.0, hs));
+                                                              height_Range => [0.0, 200.0]),
+                                               Scale      =>  [hs, 1.0, hs]);
    the_Terrain : constant gel.Sprite.view
      := gel.Sprite.forge.new_Sprite ("demo.Terrain",
                                      the_Applet.gui_World.all'Access,
@@ -105,15 +105,14 @@ is
 begin
    -- Setup the applet.
    --
-   the_Applet.gui_Camera.Site_is ((0.0, 4.0, 30.0));                         -- Position the camera.
-   the_Applet.sim_Camera.Site_is ((0.0, 4.0, 30.0));                         -- Position the camera.
+   the_Applet.gui_Camera.Site_is ([0.0, 4.0, 30.0]);                         -- Position the camera.
 
-   the_Applet.enable_simple_Dolly (in_World => the_Applet.sim_World.Id);     -- Enable user camera control via keyboard.
+   the_Applet.enable_simple_Dolly (in_World => the_Applet.gui_World.Id);     -- Enable user camera control via keyboard.
    the_Applet.Dolly.Speed_is (0.1);
 
    the_Applet.Renderer.Background_is (sky_Blue);
 
-   the_Applet.sim_World.Gravity_is ((0.0, -9.8, 0.0));
+   the_Applet.gui_World.Gravity_is ([0.0, -9.8, 0.0]);
 
 
    -- Camera controls text.
@@ -131,7 +130,7 @@ begin
       Light : openGL.Light.item := the_Applet.Renderer.new_Light;
    begin
       Light.Kind_is (Diffuse);
-      Light.Site_is ((0.0, 100.0, 100.0));
+      Light.Site_is ([0.0, 100.0, 100.0]);
       Light.ambient_Coefficient_is (0.2);
 
       the_Applet.Renderer.set (Light);
@@ -140,7 +139,7 @@ begin
 
    -- Terrain.
    --
-   the_Applet.sim_World.add (the_Terrain);     -- Add the terrain.
+   the_Applet.gui_World.add (the_Terrain);     -- Add the terrain.
 
 
    -- Add several sprites of each shape.
@@ -151,13 +150,13 @@ begin
          --  Box
          --
          the_box_Model : constant openGL.Model.box.colored.view
-           := openGL.Model.box.colored.new_Box (Size => (1.0, 1.0, 1.0),
-                                                Faces => (Front => (Colors => (others => (Red,     Opaque))),
-                                                          Rear  => (Colors => (others => (Green,   Opaque))),
-                                                          Upper => (Colors => (others => (Violet,  Opaque))),
-                                                          Lower => (Colors => (others => (Yellow,  Opaque))),
-                                                          Left  => (Colors => (others => (Cyan,    Opaque))),
-                                                          Right => (Colors => (others => (Magenta, Opaque)))));
+           := openGL.Model.box.colored.new_Box (Size => [1.0, 1.0, 1.0],
+                                                Faces => [Front => (Colors => [others => (Red,     Opaque)]),
+                                                          Rear  => (Colors => [others => (Green,   Opaque)]),
+                                                          Upper => (Colors => [others => (Violet,  Opaque)]),
+                                                          Lower => (Colors => [others => (Yellow,  Opaque)]),
+                                                          Left  => (Colors => [others => (Cyan,    Opaque)]),
+                                                          Right => (Colors => [others => (Magenta, Opaque)])]);
          the_box_physics_Model : constant physics.Model.view
            := physics.Model.forge.new_physics_Model (shape_Info => (Kind         => physics.Model.Cube,
                                                                     half_Extents => the_box_Model.Size / 2.0),
@@ -232,8 +231,8 @@ begin
 
          the_multi_Sphere_physics_Model : constant physics.Model.view
            := physics.Model.forge.new_physics_Model (shape_Info => (Kind  => physics.Model.multi_Sphere,
-                                                                    Sites => new physics.Vector_3_array' ((-0.5, 0.0, 0.0),
-                                                                                                          ( 0.5, 0.0, 0.0)),
+                                                                    Sites => new physics.Vector_3_array' ([-0.5, 0.0, 0.0],
+                                                                                                          [ 0.5, 0.0, 0.0]),
                                                                     Radii => new gel.math.Vector' (1 => 0.5,
                                                                                                    2 => 0.5)),
                                                      Mass       => 1.0);
@@ -249,41 +248,41 @@ begin
          --
          s              : constant := 0.5;
          the_hull_Model : constant openGL.Model.box.colored.view
-           := openGL.Model.box.colored.new_Box (Size  => (s * 2.0,  s * 2.0,  s * 2.0),
-                                                Faces => (others => (others => (others => (Palette.random_Color, Opaque)))));
+           := openGL.Model.box.colored.new_Box (Size  => [s * 2.0,  s * 2.0,  s * 2.0],
+                                                Faces => [others => (others => [others => (Palette.random_Color, Opaque)])]);
 
          the_hull_physics_Model : constant physics.Model.view
-           := physics.Model.forge.new_physics_Model (shape_Info => (Kind   => physics.Model.hull,
-                                                                    Points => new physics.Vector_3_array' ((-s, -s,  s),
-                                                                                                           ( s, -s,  s),
-                                                                                                           ( s,  s,  s),
-                                                                                                           (-s,  s,  s),
+           := physics.Model.forge.new_physics_Model (Mass       => 1.0,
+                                                     shape_Info => (Kind   => physics.Model.hull,
+                                                                    Points => new physics.Vector_3_array' ([-s, -s,  s],
+                                                                                                           [ s, -s,  s],
+                                                                                                           [ s,  s,  s],
+                                                                                                           [-s,  s,  s],
 
-                                                                                                           (-s, -s, -s),
-                                                                                                           ( s, -s, -s),
-                                                                                                           ( s,  s, -s),
-                                                                                                           (-s,  s, -s))),
-                                                     Mass       => 1.0);
-         the_Hull : constant gel.Sprite.view
+                                                                                                           [-s, -s, -s],
+                                                                                                           [ s, -s, -s],
+                                                                                                           [ s,  s, -s],
+                                                                                                           [-s,  s, -s])));
+                                                     the_Hull : constant gel.Sprite.view
            := gel.Sprite.forge.new_Sprite ("demo.Hull",
                                            the_Applet.gui_World.all'Access,
                                            Origin_3D,
                                            the_hull_Model.all'Access,
                                            the_hull_physics_Model);
       begin
-         the_Applet.sim_World.add (the_Ball);
-         the_Applet.sim_World.add (the_Box);
-         the_Applet.sim_World.add (the_Cone);
-         the_Applet.sim_World.add (the_Capsule);
-         the_Applet.sim_World.add (the_multi_Sphere);
-         the_Applet.sim_World.add (the_Hull);
+         the_Applet.gui_World.add (the_Ball);
+         the_Applet.gui_World.add (the_Box);
+         the_Applet.gui_World.add (the_Cone);
+         the_Applet.gui_World.add (the_Capsule);
+         the_Applet.gui_World.add (the_multi_Sphere);
+         the_Applet.gui_World.add (the_Hull);
 
-         the_Ball        .Site_is (( x,        y,      0.0));
-         the_Box         .Site_is (( 0.0,      y,     -2.5));
-         the_Cone        .Site_is (( 0.0,      y,      0.0));
-         the_Capsule     .Site_is (( 0.0 + X,  y,  0.0 + x));
-         the_multi_Sphere.Site_is ((-4.0,      y,      4.4));
-         the_Hull        .Site_is (( 4.0,      y,      4.4));
+         the_Ball        .Site_is ([ x,        y,      0.0]);
+         the_Box         .Site_is ([ 0.0,      y,     -2.5]);
+         the_Cone        .Site_is ([ 0.0,      y,      0.0]);
+         the_Capsule     .Site_is ([ 0.0 + X,  y,  0.0 + x]);
+         the_multi_Sphere.Site_is ([-4.0,      y,      4.4]);
+         the_Hull        .Site_is ([ 4.0,      y,      4.4]);
 
          x := x + 2.0;
          y := y + 2.0;

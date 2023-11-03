@@ -6,17 +6,24 @@ set -e
 ## Clean 
 #
 rm -fr ./dsa
-gprclean -r -P ../gel_demo.gpr -Xrestrictions=xgc -Xopengl_platform=glx -Xopengl_profile=lean
+gprclean -r -P ../gel_demo.gpr -Xrestrictions=xgc -Xopengl_platform=egl -Xopengl_profile=lean
 
 
 #########
 ## Build
 #
+mkdir --parents  dsa/x86_64-unknown-linux-gnu/obj
+cp /usr/lib/gcc/x86_64-pc-linux-gnu/13.2.1/adalib/a-sttebu.ali \
+   dsa/x86_64-unknown-linux-gnu/obj
+
 set +e
-po_gnatdist  -Xrestrictions=xgc -Xopengl_platform=glx -Xopengl_profile=lean -P demo_dsa.gpr  simple_dsa.cfg 
+po_gnatdist  -Xrestrictions=xgc -Xopengl_platform=egl -Xopengl_profile=lean -P demo_dsa.gpr  simple_dsa.cfg 
 set -e
+
+
+echo __________________________________________________ PHASE 2 _____________________________________________
 
 cp dsa/x86_64-unknown-linux-gnu/obj/*.o   dsa/x86_64-unknown-linux-gnu/partitions/simple_dsa/server_partition
 cp dsa/x86_64-unknown-linux-gnu/obj/*.o   dsa/x86_64-unknown-linux-gnu/partitions/simple_dsa/client_partition
 
-po_gnatdist  -Xrestrictions=xgc -Xopengl_platform=glx -Xopengl_profile=lean -P demo_dsa.gpr  simple_dsa.cfg 
+po_gnatdist  -Xrestrictions=xgc -Xopengl_platform=egl -Xopengl_profile=lean -P demo_dsa.gpr  simple_dsa.cfg 
