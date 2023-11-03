@@ -48,12 +48,14 @@ is
    function  Light     (Self : in out Item;   Id        : in light.Id_t) return openGL.Light.item;
    function  fetch     (Self : in out Item)                              return openGL.Light.items;
 
-   type context_Setter is access procedure;
-   type Swapper        is access procedure;
+   type context_Setter  is access procedure;
+   type context_Clearer is access procedure;
+   type Swapper         is access procedure;
 
-   procedure Context_is        (Self : in out Item;   Now : in Context.view);
-   procedure Context_Setter_is (Self : in out Item;   Now : in context_Setter);
-   procedure Swapper_is        (Self : in out Item;   Now : in Swapper);
+   procedure Context_is         (Self : in out Item;   Now : in Context.view);
+   procedure Context_Setter_is  (Self : in out Item;   Now : in context_Setter);
+   procedure Context_Clearer_is (Self : in out Item;   Now : in context_Clearer);
+   procedure Swapper_is         (Self : in out Item;   Now : in Swapper);
 
 
    --------------
@@ -88,8 +90,22 @@ is
    procedure queue_Visuals          (Self : in out Item;    the_Visuals   : in     Visual.views;
                                                             the_Camera    : access Camera.item'Class);
 
+
+
+   --- Engine
+   --
+   protected gl_Lock
+   is
+      entry acquire;
+      entry release;
+   private
+      Locked : Boolean := False;
+   end gl_Lock;
+
    procedure start_Engine (Self : in out Item);
    procedure  stop_Engine (Self : in out Item);
+
+
 
    procedure render       (Self : in out Item;   to_Surface : in Surface.view := null);
    procedure add_Font     (Self : in out Item;   font_Id    : in Font.font_Id);
@@ -293,6 +309,7 @@ private
 
          Context            :         openGL.Context.view;
          context_Setter     :         lean.context_Setter;
+         context_Clearer    :         lean.context_Clearer;
          Swapper            :         lean.Swapper;
          swap_Required      :         Boolean;
          is_Busy            :         Boolean := False;

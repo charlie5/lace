@@ -1,6 +1,7 @@
 with 
-     "gel_sdl",
+     "gel_gtk",
      "lace_shared";
+
 
 project Pong
 is

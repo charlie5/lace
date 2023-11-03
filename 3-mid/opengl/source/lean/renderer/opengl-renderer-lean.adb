@@ -24,6 +24,9 @@ with
      ada.Task_Identification,
      ada.unchecked_Deallocation;
 
+with GL.Binding;
+     --  gdk.GLContext;
+
 
 package body openGL.Renderer.lean
 is
@@ -91,11 +94,21 @@ is
    end Context_is;
 
 
+
    procedure Context_Setter_is (Self : in out Item;   Now : in context_Setter)
    is
    begin
       Self.context_Setter := Now;
    end Context_Setter_is;
+
+
+
+   procedure context_Clearer_is (Self : in out Item;   Now : in context_Clearer)
+   is
+   begin
+      Self.context_Clearer := Now;
+   end context_Clearer_is;
+
 
 
    procedure Swapper_is (Self : in out Item;   Now : in Swapper)
@@ -211,9 +224,28 @@ is
    -- Engine
    --
 
+   protected body gl_Lock
+   is
+      entry acquire when not Locked
+      is
+      begin
+         Locked := True;
+      end acquire;
+
+
+      entry release when Locked
+      is
+      begin
+         Locked := False;
+      end release;
+
+   end gl_Lock;
+
+
+
    task body Engine
    is
-      the_Context : Context.view with unreferenced;
+      the_Context : Context.view; -- with unreferenced;
       Done        : Boolean := False;
 
    begin
@@ -224,9 +256,10 @@ is
          end start;
 
          openGL.Tasks.Renderer_Task := ada.Task_Identification.current_Task;
-         Self.context_Setter.all;
+         --  Self.context_Setter.all;
+         Self.Context := the_Context;
 
-         put_Line ("openGL Server version: " & Server.Version);
+         --  put_Line ("openGL Server version: " & Server.Version);
 
       or
          accept Stop
@@ -235,8 +268,16 @@ is
          end Stop;
       end select;
 
+      --  put_Line ("renderer CONTEXT 1 " & Self.Context'Image);
+
+      gl_Lock.acquire;
+      Self.context_Setter.all;
+
       openGL.Geometry.        lit_textured_skinned.define_Program;
       openGL.Geometry.lit_colored_textured_skinned.define_Program;
+
+      Self.context_Clearer.all;
+      gl_Lock.release;
 
 
       while not Done
@@ -281,6 +322,23 @@ is
             exit when Done;
 
 
+            --  declare
+            --     use gl.Binding;
+            --  begin
+            --     gl_Lock.acquire;
+            --     --gl_Context.make_Current;
+            --     Self.context_Setter.all;
+            --     glClearColor (0.0, 1.0, 0.0, 0.0);
+            --     glClear      (GL_COLOR_BUFFER_BIT or GL_DEPTH_BUFFER_BIT);
+            --     --  Gdk.GLContext.clear_Current;
+            --     Self.context_Clearer.all;
+            --     gl_Lock.release;
+            --  end;
+
+            --  gl_Lock.acquire;
+            --  Self.context_Setter.all;
+            --  put_Line ("renderer CONTEXT 2 " & Self.Context'Image);
+
             if new_font_Name /= null_Asset
             then
                Self.Fonts.insert ((new_font_Name,
@@ -289,24 +347,42 @@ is
 
             elsif new_snapshot_Name /= null_Asset
             then
+               gl_Lock.acquire;
+               Self.context_Setter.all;
+
                IO.Screenshot (Filename   => to_String (new_snapshot_Name),
                               with_Alpha => snapshot_has_Alpha);
+
+               Self.context_Clearer.all;
+               gl_Lock.release;
+
             else
+               gl_Lock.acquire;
+               Self.context_Setter.all;
+
                Self.update_Impostors_and_draw_Visuals (all_Updates (1 .. Length));
-
-               Self.free_old_Models;
-               Self.free_old_Impostors;
-
-               Self.is_Busy := False;
 
                if    Self.Swapper /= null
                  and Self.swap_Required
                then
                   Self.Swapper.all;
                end if;
+
+               Self.context_Clearer.all;
+               gl_Lock.release;
+
+               Self.free_old_Models;
+               Self.free_old_Impostors;
+
+               Self.is_Busy := False;
+
             end if;
+
+            --  Self.context_Clearer.all;
+            --  gl_Lock.release;
          end;
       end loop;
+
 
       Self.free_old_Models;
       Self.free_old_Impostors;

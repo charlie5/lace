@@ -62,10 +62,11 @@ is
    --- Operations
    --
 
-   procedure emit_Events  (Self : in out Item)   is null;
-   procedure enable_GL    (Self : in     Item)   is null;
-   procedure disable_GL   (Self : in     Item)   is null;
-   procedure swap_GL      (Self : in out Item)   is null;
+   procedure emit_Events (Self : in out Item)   is null;
+   procedure enable_GL   (Self : in     Item)   is null;
+   procedure disable_GL  (Self : in     Item)   is null;
+   procedure swap_GL     (Self : in out Item)   is null;
+   procedure freshen     (Self : in     Item)   is null;
 
 
    ----------

@@ -1,0 +1,21 @@
+with
+     "gel",
+     "gtkada",
+     "lace_shared";
+
+--library
+project GEL_gtk
+is
+   for Create_Missing_Dirs use "True";
+
+   for Source_Dirs     use ("../../source/platform/gtk");
+   for Object_Dir      use "build";
+   for Library_Dir     use "lib";
+   for Library_Ali_Dir use "objects";
+--   for Library_Name    use "GEL_gtk";
+
+   package Ide      renames Lace_shared.Ide;
+   package Builder  renames Lace_shared.Builder;
+   package Compiler renames Lace_shared.Compiler;
+
+end GEL_gtk;

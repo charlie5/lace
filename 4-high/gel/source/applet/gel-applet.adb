@@ -31,6 +31,14 @@ is
 
 
 
+   procedure my_context_Clearer
+   is
+   begin
+      global_Window.disable_GL;
+   end my_context_Clearer;
+
+
+
    procedure my_Swapper
    is
    begin
@@ -96,7 +104,8 @@ is
 
       Self.Window.disable_GL;
 
-      Self.Renderer.Context_Setter_is (my_context_Setter'unrestricted_Access);
+      Self.Renderer.Context_Setter_is  (my_context_Setter 'unrestricted_Access);
+      Self.Renderer.Context_Clearer_is (my_context_Clearer'unrestricted_Access);
       Self.Renderer.start_Engine;
 
       Self.Renderer.add_Font (Self.       Font);
@@ -428,6 +437,7 @@ is
 
    begin
       Self.Window.emit_Events;
+      Self.Window.freshen;
       Self.Window.swap_GL;
 
       Self                           .respond;

@@ -1,8 +1,10 @@
 with
      openGL.Tasks,
+     openGL.Errors,
      GL.lean,
      System,
      ada.unchecked_Conversion;
+
 
 package body openGL.Attribute
 is
@@ -103,12 +105,15 @@ is
       Tasks.check;
 
       glEnableVertexAttribArray (Index      => Self.gl_Location);
+      openGL.Errors.log;
+
       glVertexAttribPointer     (Index      => Self.gl_Location,
                                  Size       => Self.Size,
                                  the_Type   => to_GL (Self.data_Kind),
                                  Normalized => Self.Normalized,
                                  Stride     => Self.vertex_Stride,
                                  Ptr        => to_GL (Self.Offset));
+      openGL.Errors.log;
    end enable;
 
 
