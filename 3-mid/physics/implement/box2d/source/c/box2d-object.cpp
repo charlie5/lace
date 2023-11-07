@@ -219,17 +219,17 @@ void
 b2d_Object_Spin_is (Object*       Self,
                     Matrix_3x3*   Now)
 {
-  b2Vec2     Pos   = b2Vec2 (Now->m20, Now->m21);
-  float      Angle = atan2  (Now->m10, Now->m00);
+  float   Angle = atan2 (Now->m10, Now->m00);
 
   if (Self->body)
     {
+      b2Vec2   Pos = Self->body->GetPosition();
+
       Self->body->SetTransform (Pos, Angle);
     }
   else
     {
-      Self->bodyDef.position = Pos;
-      Self->bodyDef.angle    = Angle;
+      Self->bodyDef.angle = Angle;
     }
 }
 
