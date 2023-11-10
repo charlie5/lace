@@ -140,6 +140,8 @@ private
    max_Geometries : constant := max_Visuals * 6;
 
 
+   procedure no_context_Clearer is null;
+
 
    ----------
    -- Updates
@@ -309,7 +311,7 @@ private
 
          Context            :         openGL.Context.view;
          context_Setter     :         lean.context_Setter;
-         context_Clearer    :         lean.context_Clearer;
+         context_Clearer    :         lean.context_Clearer := no_context_Clearer'Access;
          Swapper            :         lean.Swapper;
          swap_Required      :         Boolean;
          is_Busy            :         Boolean := False;
