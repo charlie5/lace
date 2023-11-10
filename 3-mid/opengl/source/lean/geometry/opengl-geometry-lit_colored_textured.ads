@@ -8,7 +8,7 @@ with
 
 package openGL.Geometry.lit_colored_textured
 --
---  Supports per-vertex site color, texture and lighting.
+--  Supports 'per-vertex' site, color, texture and lighting.
 --
 is
    type Item is new openGL.Geometry.item with private;

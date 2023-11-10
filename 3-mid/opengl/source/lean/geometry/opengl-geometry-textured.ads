@@ -9,11 +9,12 @@ with
 
 package openGL.Geometry.textured
 --
---  Supports per-vertex site and texture.
+--  Supports 'per-vertex' site and texture.
 --
 is
    type Item is new openGL.Geometry.item with private;
    type View is access all Item'Class;
+
 
    function new_Geometry return View;
 

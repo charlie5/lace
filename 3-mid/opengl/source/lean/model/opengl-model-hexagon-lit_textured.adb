@@ -109,8 +109,8 @@ is
                                   now   => Self.Face.Fades (Id));
 
             the_Geometry.Texture_is     (which => Id,
-                                         now => Textures.fetch (Self.Face.Textures (i)));
-            the_Geometry.is_Transparent (now => the_Geometry.Texture.is_Transparent);
+                                         now   => Textures.fetch (Self.Face.Textures (i)));
+            the_Geometry.is_Transparent (now   => the_Geometry.Texture.is_Transparent);
          end loop;
 
          the_Geometry.is_Transparent (True);     -- TODO: Do transparency properly.

@@ -1,5 +1,5 @@
 with
-openGL.texture_Set;
+     openGL.texture_Set;
 
 
 private
@@ -9,7 +9,7 @@ with
 
 package openGL.Geometry.colored_textured
 --
---  Supports per-vertex site, color and texture.
+--  Supports 'per-vertex' site, color and texture.
 --
 is
    type Item is new openGL.Geometry.item with private;

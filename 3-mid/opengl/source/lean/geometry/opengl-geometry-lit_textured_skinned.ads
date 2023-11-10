@@ -9,10 +9,11 @@ with
 
 package openGL.Geometry.lit_textured_skinned
 --
---  Supports per-vertex site, texture, lighting and skinning.
+--  Supports 'per-vertex' site, texture, lighting and skinning.
 --
 is
    type Item is new openGL.Geometry.item with private;
+
 
    function new_Geometry return access Geometry.lit_textured_skinned.item'Class;
 
@@ -25,14 +26,15 @@ is
 
    type Vertex is
       record
-         Site   : Vector_3;
-         Normal : Vector_3;
-         Coords : Coordinate_2D;
-         Shine  : Real;
+         Site         : Vector_3;
+         Normal       : Vector_3;
+         Coords       : Coordinate_2D;
+         Shine        : Real;
 
          bone_Ids     : Vector_4;
          bone_Weights : Vector_4;
       end record;
+
    pragma Convention (C, Vertex);
 
    type Vertex_array is array (long_Index_t range <>) of aliased Vertex;
