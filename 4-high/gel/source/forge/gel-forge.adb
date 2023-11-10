@@ -108,10 +108,13 @@ is
    end new_client_Applet;
 
 
+
+
    -----------
    --- Sprites
    --
 
+   -----
    -- 2D
    --
 
@@ -161,12 +164,13 @@ is
 
 
    function new_polygon_Sprite (in_World   : in gel.World.view;
-                                  Site       : in math.Vector_2      := math.Origin_2D;
-                                  Mass       : in math.Real          := 1.0;
-                                  Friction   : in math.Real          := 0.5;
-                                  Bounce     : in math.Real          := 0.5;
-                                  Vertices   : in Geometry_2d.Sites;
-                                  Color      : in openGL.Color       := opengl.Palette.White;
+                                Site       : in math.Vector_2      := math.Origin_2D;
+                                Mass       : in math.Real          := 1.0;
+                                Friction   : in math.Real          := 0.5;
+                                Bounce     : in math.Real          := 0.5;
+                                Vertices   : in Geometry_2d.Sites;
+                                Color      : in openGL.Color       := opengl.Palette.White;
+                                Texture    : in openGL.asset_Name  := openGL.null_Asset;
                                 user_Data  : in any_user_Data_view := null) return gel.Sprite.view
    is
       use Math;
@@ -208,6 +212,7 @@ is
                                   Width,
                                   Height     : in math.Real;
                                   Color      : in openGL.Color       := opengl.Palette.White;
+                                  Texture    : in openGL.asset_Name  := openGL.null_Asset;
                                   user_Data  : in any_user_Data_view := null) return gel.Sprite.view
    is
       use Math;
@@ -220,11 +225,12 @@ is
                                                              [ half_Width,  half_Height],
                                                              [-half_Width,  half_Height]];
    begin
-      return new_polygon_Sprite (in_World, Site, Mass, Friction, Bounce, the_Vertices, Color, user_Data);
+      return new_polygon_Sprite (in_World, Site, Mass, Friction, Bounce, the_Vertices, Color, Texture, user_Data);
    end new_rectangle_Sprite;
 
 
 
+   -----
    -- 3D
    --
 

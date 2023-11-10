@@ -365,6 +365,9 @@ is
             end loop;
          end;
       end;
+
+      of_World.register (the_Mirror         => Self,
+                         Mirror_as_observer => Self);
    end is_a_Mirror;
 
 

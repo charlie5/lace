@@ -19,7 +19,7 @@ is
 
    procedure log (Message : in String)
                   renames ada.text_IO.put_Line;
-   pragma Unreferenced (log);
+   --  pragma Unreferenced (log);
 
 
    ---------
@@ -80,7 +80,7 @@ is
 
          Self : constant gel.World.server.view
            := new gel.World.server.item' (to_Subject_and_Observer (name => Name & " world" & Id'Image)
-                                   with others => <>);
+                                          with others => <>);
       begin
          Self.define (Name, Id, space_Kind, Renderer);
          return Self;
@@ -127,6 +127,7 @@ is
 
       return the_Sprite;
    end to_Sprite;
+
    pragma Unreferenced (to_Sprite);
 
 
@@ -186,6 +187,8 @@ is
             while has_Element (Cursor)
             loop
                the_Sprite := Sprite.view (Element (Cursor));
+               --  the_Sprite.apply_Force ([0.0, 1.0, 0.0]);
+               --  the_Sprite.apply_Torque_impulse ([0.0, 1.0, 0.0]);
 
                updates_Count                      := updates_Count + 1;
                the_motion_Updates (updates_Count) := (Id   => the_Sprite.Id,
@@ -194,6 +197,7 @@ is
                                                       --  Spin => the_Sprite.Spin);
 
                --  log (Image (Quaternion' (refined (the_motion_Updates (updates_Count).Spin))));
+               ada.Text_IO.put (refined (the_motion_Updates (updates_Count).Site)'Image);
 
                next (Cursor);
             end loop;

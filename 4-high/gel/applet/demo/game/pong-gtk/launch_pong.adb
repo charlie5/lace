@@ -197,7 +197,7 @@ begin
       is
          pragma Unreferenced (Self);
          the_Event :          gel.Keyboard.key_press_Event renames gel.Keyboard.key_press_Event (to_Event);
-         the_Key   : constant gel.keyboard.Key := the_Event.modified_Key.Key;
+         the_Key   : constant gel.keyboard.Key                  := the_Event.modified_Key.Key;
       begin
          case the_Key
          is
@@ -220,7 +220,7 @@ begin
       is
          pragma Unreferenced (Self);
          the_Event :          gel.Keyboard.key_release_Event renames gel.Keyboard.key_release_Event (to_Event);
-         the_Key   : constant gel.keyboard.Key := the_Event.modified_Key.Key;
+         the_Key   : constant gel.keyboard.Key                    := the_Event.modified_Key.Key;
       begin
          case the_Key
          is
@@ -247,16 +247,17 @@ begin
       the_key_release_Response : aliased key_release_Response;
 
    begin
+      -------------------
       --- Setup the game.
       --
 
       Box.pack_Start (window_gl_Area);
 
 
-      --  Show the window and present it.
+      --  Show the window.
       --
-      top_Window.Show_All;
-      top_Window.Present;
+      top_Window.show_All;
+      --  top_Window.present;
 
       the_Applet.Camera.  Site_is ([0.0, 0.0, 20.0]);
       the_Applet.World.Gravity_is ([0.0, 0.0,  0.0]);
