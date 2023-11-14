@@ -7,6 +7,7 @@ with
      openGL.Model.sphere   .colored,
 
      openGL.Model.polygon  .lit_colored,
+     openGL.Model.polygon  .lit_textured,
 
      openGL.Model.box      .colored,
      openGL.Model.box      .textured,
@@ -174,11 +175,14 @@ is
                                 user_Data  : in any_user_Data_view := null) return gel.Sprite.view
    is
       use Math;
-      use type Geometry_2d.Sites;
+      use type Geometry_2d.Sites,
+               openGL.asset_Name;
 
-      the_graphics_Model : constant openGL.Model.polygon.lit_colored.view
-        := openGL.Model.polygon.lit_colored.new_Polygon (openGL.Vector_2_array (Vertices),
-                                                         (Color, openGL.Opaque));
+      --  the_graphics_Model : constant openGL.Model.polygon.lit_colored.view
+      --    := openGL.Model.polygon.lit_colored.new_Polygon (openGL.Vector_2_array (Vertices),
+      --                                                     (Color, openGL.Opaque));
+
+      the_graphics_Model : openGL.Model.view;
 
       Padding            : constant Geometry_2d.Sites (1 .. 8 - Vertices'Length) := (others => <>);
 
@@ -191,6 +195,17 @@ is
                                                   Friction    => Friction,
                                                   Restitution => Bounce);
    begin
+      if Texture = openGL.null_Asset
+      then
+         the_graphics_Model := openGL.Model.polygon.lit_colored.new_Polygon (openGL.Vector_2_array (Vertices),
+                                                                             (Color, openGL.Opaque)).all'Access;
+      else
+         the_graphics_Model := openGL.Model.polygon.lit_textured.new_Polygon (openGL.Vector_2_array (Vertices),
+                                                                              Face         => (Fades         => (1 => 0.0,     others => <>),
+                                                                                               Textures      => (1 => Texture, others => <>),
+                                                                                               texture_Count => 1)).all'Access;
+      end if;
+
       return gel.Sprite.Forge.new_Sprite ("polygon_Sprite",
                                           sprite.World_view (in_World),
                                           Vector_3 (Site & 0.0),
