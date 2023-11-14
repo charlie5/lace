@@ -21,6 +21,7 @@ with
      openGL.Model.line          .colored,
      openGL.Model.any,
      openGL.Model.polygon       .lit_colored,
+     openGL.Model.polygon       .lit_textured,
      openGL.Model.segment_line,
 
      openGL.Model.sphere        .colored,
@@ -157,7 +158,7 @@ is
                                                          Plane   => Billboard.xy,
                                                          Texture => the_Texture);
 
-      the_colored_billboard_Model : constant Model.billboard.textured.view
+      the_colored_billboard_Model : constant Model.billboard.textured.view               -- TODO: Add color.
         := Model.billboard.textured.forge.new_Billboard (Size    => (1.0, 1.0),
                                                          Plane   => Billboard.xy,
                                                          Texture => the_Texture);
@@ -236,9 +237,15 @@ is
                                 Texture          => the_Texture,
                                 Texture_is_lucid => False);
 
-      the_polygon_Model : constant Model.polygon.lit_colored.view
+      the_lit_colored_polygon_Model : constant Model.polygon.lit_colored.view
         := Model.polygon.lit_colored.new_Polygon (Vertices => [Origin_2D, [1.0, 0.0], [1.0, 1.0], [-1.0, 0.5]],
                                                   Color    => (Red, Opaque));
+
+      the_lit_textured_polygon_Model : constant Model.polygon.lit_textured.view
+        := Model.polygon.lit_textured.new_Polygon (vertex_Sites => [Origin_2D, [1.0, 0.0], [1.0, 1.0], [-1.0, 0.5]],
+                                                   Face         => (Fades         => (1 => 0.0,         others => <>),
+                                                                    Textures      => (1 => the_Texture, others => <>),
+                                                                    texture_Count => 1));
 
       the_text_Model : constant Model.Text.lit_colored.view
         := Model.Text.lit_colored.new_Text (Text     => "Once upon a midnight dreary ...",
@@ -274,7 +281,8 @@ is
       the_segment_line_Model.add_Segment     (end_Site   => [0.0, 2.0, 0.0]);
 
       return [                the_ground_Model.all'Access,
-                             the_polygon_Model.all'Access,
+                the_lit_textured_polygon_Model.all'Access,
+                 the_lit_colored_polygon_Model.all'Access,
                                 the_text_Model.all'Access,
                                the_arrow_Model.all'Access,
                               the_ball_1_Model.all'Access,

@@ -31,6 +31,7 @@ is
 
    type fadeable_Textures is array (texture_Id range 1 .. max_Textures) of fadeable_Texture;
 
+
    type Item is
       record
          Textures       : fadeable_Textures;

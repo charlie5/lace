@@ -5,4 +5,10 @@ package openGL.Model.polygon
 is
    type Item is abstract new Model.item with null record;
 
+
+
+private
+
+   Normal : constant Vector_3 := [0.0, 0.0, 1.0];
+
 end openGL.Model.polygon;

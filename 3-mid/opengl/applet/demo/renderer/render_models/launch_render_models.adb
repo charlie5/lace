@@ -78,7 +78,7 @@ begin
          the_Visuals (i) := new_Visual (the_Models (i));
       end loop;
 
-      the_Visuals (3).Site_is ([0.0, 0.0, -50.0]);
+      the_Visuals (4).Site_is ([0.0, 0.0, -50.0]);
 
 
       --  Main loop.
