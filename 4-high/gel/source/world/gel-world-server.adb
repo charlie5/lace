@@ -197,7 +197,7 @@ is
                                                       --  Spin => the_Sprite.Spin);
 
                --  log (Image (Quaternion' (refined (the_motion_Updates (updates_Count).Spin))));
-               ada.Text_IO.put (refined (the_motion_Updates (updates_Count).Site)'Image);
+               --  ada.Text_IO.put (refined (the_motion_Updates (updates_Count).Site)'Image);
 
                next (Cursor);
             end loop;
