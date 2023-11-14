@@ -8,7 +8,14 @@ is
    --- 2D
    --
 
-   function to_Coordinates (the_Vertices : in Vector_2_array) return Coordinates_2D;
+   type Coords_2D_and_Centroid (coords_Count : Index_t) is
+      record
+         Coords   : Coordinates_2D (1 .. coords_Count);
+         Centroid : Vector_2;
+      end record;
+
+
+   function to_Coordinates (the_Vertices : in Vector_2_array) return Coords_2D_and_Centroid;
    --
    -- Maps the vertices to texture coordinates.
 

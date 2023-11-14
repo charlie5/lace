@@ -144,28 +144,28 @@ is
       declare
          use openGL.Texture.Coordinates;
 
-         the_Vertices :          Geometry.lit_textured.Vertex_array (1 .. the_Sites'Length + 1);
-         the_Coords   : constant Coordinates_2D := to_Coordinates (the_Sites);
-         Centroid     :          Vector_2       := (0.0, 0.0);
+         the_Vertices        :          Geometry.lit_textured.Vertex_array (1 .. the_Sites'Length + 1);
+         Coords_and_Centroid : constant Coords_2D_and_Centroid := to_Coordinates (the_Sites);
+         --  Centroid     :          Vector_2       := (0.0, 0.0);
       begin
          --- Calculate the centroid and min/max of x and y.
          --
-         for i in the_Sites'Range
-         loop
-            Centroid := Centroid + the_Sites (i);
-         end loop;
-
-         Centroid := Centroid / Real (the_Sites'Length);
+         --  for i in the_Sites'Range
+         --  loop
+         --     Centroid := Centroid + the_Sites (i);
+         --  end loop;
+         --
+         --  Centroid := Centroid / Real (the_Sites'Length);
 
          for i in the_Sites'Range
          loop
             the_Vertices (Index_t (i)) := (Site   => Vector_3 (the_Sites (i) & 0.0),
                                            Normal => Normal,
-                                           Coords => the_Coords (Index_t (i)),
+                                           Coords => Coords_and_Centroid.Coords (Index_t (i)),
                                            Shine  => default_Shine);
          end loop;
 
-         the_Vertices (the_Vertices'Last) := (Site   => Vector_3 (Centroid & 0.0),
+         the_Vertices (the_Vertices'Last) := (Site   => Vector_3 (Coords_and_Centroid.Centroid & 0.0),
                                               Normal => Normal,
                                               Coords => (0.5, 0.5),
                                               Shine  => default_Shine);
@@ -173,7 +173,7 @@ is
          upper_Face := new_Face (Vertices => the_Vertices);
       end;
 
-      return (1 => upper_Face.all'Access);
+      return [1 => upper_Face.all'Access];
    end to_GL_Geometries;
 
 
