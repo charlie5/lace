@@ -1,6 +1,59 @@
 package body openGL.Texture.Coordinates
 is
 
+   function to_Coordinates (the_Vertices : in Vector_2_array) return Coordinates_2D
+   is
+      Centroid : Vector_2 := (0.0, 0.0);
+      Min      : Vector_2 := (Real'Last,  Real'Last);
+      Max      : Vector_2 := (Real'First, Real'First);
+      Coords   : Vector_2;
+
+      Result   : Coordinates_2D (1 .. the_Vertices'Length);
+   begin
+      --- Calculate the centroid and min/max of x and y.
+      --
+      for i in the_Vertices'Range
+      loop
+         Centroid := Centroid + the_Vertices (i);
+
+         Min (1) := Real'Min (Min (1),
+                              the_Vertices (i) (1));
+         Min (2) := Real'Min (Min (2),
+                              the_Vertices (i) (2));
+
+         Max (1) := Real'Max (Max (1),
+                              the_Vertices (i) (1));
+         Max (2) := Real'Max (Max (2),
+                              the_Vertices (i) (2));
+      end loop;
+
+      Centroid := Centroid / Real (the_Vertices'Length);
+
+      declare
+         half_Width  : constant Real := (Max (1) - Min (1))  /  2.0;
+         half_Height : constant Real := (Max (2) - Min (2))  /  2.0;
+      begin
+         for i in the_Vertices'Range
+         loop
+            Coords := the_Vertices (i) - Centroid;         -- The centroid is now the origin.
+
+            Coords (1) := Coords (1) / half_Width;
+            Coords (2) := Coords (2) / half_Height;     -- The coords are now in range -1.0 .. 1.0.
+
+            Coords (1) := (Coords (1) + 1.0) / 2.0;
+            Coords (2) := (Coords (2) + 1.0) / 2.0;     -- The coords are now in range 0.0 .. 1.0.
+
+            Result (Index_t (i)) := (Coords (1), Coords (2));
+         end loop;
+      end;
+
+      return Result;
+   end to_Coordinates;
+
+
+
+
+
    overriding
    function to_Coordinates (Self : in xz_Generator;   the_Vertices : access Sites) return Coordinates_2D
    is

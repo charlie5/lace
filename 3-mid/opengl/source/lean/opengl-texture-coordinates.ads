@@ -8,6 +8,15 @@ is
    --- 2D
    --
 
+   function to_Coordinates (the_Vertices : in Vector_2_array) return Coordinates_2D;
+   --
+   -- Maps the vertices to texture coordinates.
+
+
+
+   --- Generator
+   --
+
    type coordinate_Generator is abstract tagged null record;
 
    function to_Coordinates (Self : in coordinate_Generator;   the_Vertices : access Sites) return Coordinates_2D
@@ -48,6 +57,9 @@ is
 
    overriding
    function to_Coordinates (Self : in mercator_Generator;   the_Vertices : access Sites) return Coordinates_2D;
+
+
+
 
 
 end openGL.Texture.Coordinates;
