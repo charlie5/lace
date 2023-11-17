@@ -356,12 +356,27 @@ b2d_Object_Speed_is (Object*     Self,
 
 
 
+// TODO: Check these Gyre function are correct.
+
 Vector_3
 b2d_Object_Gyre (Object*   Self)
 {
-  Vector_3     the_Gyre;     // TODO
+  Vector_3     the_Gyre;
 
-  printf ("TODO: b2d_Object_Gyre");
+  if (Self->body)
+    {
+      Real     b2d_Gyre = Self->body->GetAngularVelocity();
+
+      the_Gyre.x = 0.0;
+      the_Gyre.y = 0.0;
+      the_Gyre.z = b2d_Gyre;
+    }
+  else
+    {
+      the_Gyre.x = 0.0;
+      the_Gyre.y = 0.0;
+      the_Gyre.z = 0.0;
+    }
   return the_Gyre;
 }
 
@@ -371,7 +386,10 @@ void
 b2d_Object_Gyre_is (Object*     Self,
                     Vector_3*   Now)
 {
-  printf ("TODO: b2d_Object_Gyre_is");
+  if (Self->body)
+    {
+      Self->body->SetAngularVelocity (Now->z);
+    }
 }
 
 
