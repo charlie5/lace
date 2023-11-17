@@ -164,7 +164,7 @@ is
 
 
    procedure Write (Stream    : not null access ada.Streams.Root_Stream_type'Class;
-                    the_Event : in              new_model_Event)
+                    the_Event : in              new_graphics_model_Event)
    is
    begin
       openGL.remote_Model.item'Class'Output (Stream,
@@ -174,7 +174,7 @@ is
 
 
    procedure Read (Stream    : not null access ada.Streams.Root_Stream_type'Class;
-                   the_Event : out             new_model_Event)
+                   the_Event : out             new_graphics_model_Event)
    is
    begin
       the_Event.Model := new openGL.remote_Model.item'Class' (openGL.remote_Model.item'Class'Input (Stream));

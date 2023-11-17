@@ -244,9 +244,9 @@ is
 
 
    overriding
-   function  graphics_Models (Self : in Item) return remote.World.graphics_Model_Set;
+   function  graphics_Models (Self : in Item) return remote.World.id_Map_of_graphics_model;
    overriding
-   function  physics_Models  (Self : in Item) return remote.World.physics_Model_Set;
+   function  physics_Models  (Self : in Item) return remote.World.id_Map_of_physics_model;
    overriding
    function  Sprites         (Self : in out Item) return remote.World.sprite_model_Pairs;
 
@@ -259,11 +259,11 @@ is
    --
    use type openGL.Model.view;
    use type gel.graphics_model_Id;
-   function Hash             is new ada.unchecked_Conversion   (gel.graphics_model_Id,  ada.Containers.Hash_type);
-   package  id_Maps_of_model is new ada.Containers.hashed_Maps (gel.graphics_model_Id,  openGL.Model.view,
-                                                                Hash,                   "=");
+   function Hash                      is new ada.unchecked_Conversion   (gel.graphics_model_Id,  ada.Containers.Hash_type);
+   package  id_Maps_of_graphics_model is new ada.Containers.hashed_Maps (gel.graphics_model_Id,  openGL.Model.view,
+                                                                         Hash,                   "=");
 
-   function local_graphics_Models (Self : in Item) return id_Maps_of_model.Map;
+   function local_graphics_Models (Self : in Item) return id_Maps_of_graphics_model.Map;
 
 
    --  Physics Models
@@ -401,7 +401,7 @@ private
 
          --  Models
          --
-         graphics_Models : aliased id_Maps_of_model        .Map;
+         graphics_Models : aliased id_Maps_of_graphics_model        .Map;
          physics_Models  : aliased id_Maps_of_physics_model.Map;
 
          --  Ids

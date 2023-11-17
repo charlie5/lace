@@ -27,6 +27,7 @@ is
    type View is access all Item'Class with asynchronous;
 
 
+
    -----------
    --  Mirrors
    --
@@ -37,6 +38,7 @@ is
    procedure   register (Self : access Item;   the_Mirror         : in World.view;
                                                Mirror_as_observer : in lace.Observer.view)   is abstract;
    procedure deregister (Self : access Item;   the_Mirror         : in World.view)           is abstract;
+
 
 
    ----------
@@ -52,26 +54,26 @@ is
    function Hash is new ada.unchecked_Conversion (gel.graphics_model_Id, ada.containers.Hash_type);
    use type gel.graphics_model_Id;
 
-   package  id_Maps_of_model_plan is new ada.Containers.indefinite_Hashed_Maps (gel.graphics_model_Id,
-                                                                                openGL.remote_Model.item'Class,
-                                                                                Hash,
-                                                                                "=");
-   subtype  graphics_Model_Set is id_Maps_of_model_plan.Map;     -- TODO: Rename to id_Map_of_graphics_model_plan.
+   package  id_Maps_of_graphics_model is new ada.Containers.indefinite_Hashed_Maps (gel.graphics_model_Id,
+                                                                                    openGL.remote_Model.item'Class,
+                                                                                    Hash,
+                                                                                    "=");
+   subtype  id_Map_of_graphics_model is id_Maps_of_graphics_model.Map;
 
-   function graphics_Models (Self : in Item) return graphics_Model_Set is abstract;
+   function graphics_Models (Self : in Item) return id_Map_of_graphics_model is abstract;
 
 
-   type new_model_Event is new lace.Event.item with
+   type new_graphics_model_Event is new lace.Event.item with
       record
          Model : access openGL.remote_Model.item'Class;
       end record;
 
 
-   procedure Write (Stream : not null access ada.Streams.Root_Stream_type'Class;   the_Event : in  new_model_Event);
-   procedure Read  (Stream : not null access ada.Streams.Root_Stream_type'Class;   the_Event : out new_model_Event);
+   procedure Write (Stream : not null access ada.Streams.Root_Stream_type'Class;   the_Event : in  new_graphics_model_Event);
+   procedure Read  (Stream : not null access ada.Streams.Root_Stream_type'Class;   the_Event : out new_graphics_model_Event);
 
-   for new_model_Event'write use write;
-   for new_model_Event'read  use read;
+   for new_graphics_model_Event'write use write;
+   for new_graphics_model_Event'read  use read;
 
 
    --  Physics
@@ -83,13 +85,13 @@ is
    use type physics.model_Id;
    function Hash is new ada.unchecked_Conversion (physics.model_Id, ada.containers.Hash_type);
 
-   package  id_Maps_of_physics_model_plan is new ada.containers.indefinite_Hashed_Maps (physics.model_Id,
-                                                                                        physics.remote.Model.item'Class,
-                                                                                        Hash,
-                                                                                        "=");
-   subtype  physics_Model_Set is id_Maps_of_physics_model_plan.Map;     -- TODO: Rename to id_Map_of_physics_model_plan.
+   package  id_Maps_of_physics_model is new ada.containers.indefinite_Hashed_Maps (physics.model_Id,
+                                                                                   physics.remote.Model.item'Class,
+                                                                                   Hash,
+                                                                                   "=");
+   subtype  id_Map_of_physics_model is id_Maps_of_physics_model.Map;
 
-   function physics_Models (Self : in Item) return physics_Model_Set is abstract;
+   function physics_Models (Self : in Item) return id_Map_of_physics_model is abstract;
 
 
    type new_physics_model_Event is new lace.Event.item with

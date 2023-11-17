@@ -90,10 +90,10 @@ is
 
 
 
-   function to_Sprite (the_Pair           : in remote.World.sprite_model_Pair;
-                       the_Models         : in Id_Maps_of_Model        .Map;
-                       the_physics_Models : in Id_Maps_of_physics_Model.Map;
-                       the_World          : in gel.World.view) return gel.Sprite.view
+   function to_Sprite (the_Pair            : in remote.World.sprite_model_Pair;
+                       the_graphics_Models : in Id_Maps_of_graphics_Model.Map;
+                       the_physics_Models  : in Id_Maps_of_physics_Model .Map;
+                       the_World           : in gel.World.view) return gel.Sprite.view
    is
       the_graphics_Model : access openGL .Model.item'Class;
       the_physics_Model  : access physics.Model.item'Class;
@@ -101,7 +101,7 @@ is
 
       use openGL;
    begin
-      the_graphics_Model := openGL .Model.view (the_Models        .Element (the_Pair.graphics_Model_Id));
+      the_graphics_Model := openGL .Model.view (the_graphics_Models        .Element (the_Pair.graphics_Model_Id));
       the_physics_Model  := physics.Model.view (the_physics_Models.Element (the_Pair. physics_Model_Id));
 
       the_Sprite := gel.Sprite.forge.new_Sprite ("Sprite" & the_Pair.sprite_Id'Image,
@@ -278,8 +278,9 @@ is
    begin
       Self.Clients.append (the_Mirror);
 
-      Self.register (Mirror_as_observer,  to_Kind (remote.World.                 new_model_Event'Tag));
-      Self.register (Mirror_as_observer,  to_Kind (gel.events.                  new_sprite_Event'Tag));
+      Self.register (Mirror_as_observer,  to_Kind (remote.World.        new_graphics_model_Event'Tag));
+      Self.register (Mirror_as_observer,  to_Kind (remote.World.         new_physics_model_Event'Tag));
+      Self.register (Mirror_as_observer,  to_Kind (gel.events.                  new_sprite_Event'Tag));     -- TODO: Rid.
       Self.register (Mirror_as_observer,  to_Kind (gel.events.my_new_sprite_added_to_world_Event'Tag));
    end register;
 

@@ -23,6 +23,11 @@ is
    use lace.Event.utility;
 
 
+   procedure log (Message : in String := "")
+                  renames ada.Text_IO.put_Line;
+
+
+
    procedure my_context_Setter
    is
    begin
@@ -56,6 +61,7 @@ is
       the_Sprite : gel.Sprite.view;
 
    begin
+      log ("gel.applet.add_new_Sprite.respond");
       the_Sprite := Self.Applet.World (the_Event.World_Id).fetch_Sprite (the_event.Sprite_Id);
 
       the_Sprite.is_Visible (True);

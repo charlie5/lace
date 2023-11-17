@@ -85,10 +85,10 @@ is
 
 
 
-   function to_Sprite (the_Pair           : in remote.World.sprite_model_Pair;
-                       the_Models         : in Id_Maps_of_Model        .Map;
-                       the_physics_Models : in Id_Maps_of_physics_Model.Map;
-                       the_World          : in gel.World.view) return gel.Sprite.view
+   function to_Sprite (the_Pair            : in remote.World.sprite_model_Pair;
+                       the_graphics_Models : in id_Maps_of_graphics_model        .Map;
+                       the_physics_Models  : in Id_Maps_of_physics_Model.Map;
+                       the_World           : in gel.World.view) return gel.Sprite.view
    is
       the_graphics_Model : access openGL .Model.item'Class;
       the_physics_Model  : access physics.Model.item'Class;
@@ -96,8 +96,8 @@ is
 
       use openGL;
    begin
-      the_graphics_Model := openGL .Model.view (the_Models        .Element (the_Pair.graphics_Model_Id));
-      the_physics_Model  := physics.Model.view (the_physics_Models.Element (the_Pair. physics_Model_Id));
+      the_graphics_Model := openGL .Model.view (the_graphics_Models.Element (the_Pair.graphics_Model_Id));
+      the_physics_Model  := physics.Model.view ( the_physics_Models.Element (the_Pair. physics_Model_Id));
 
       the_Sprite := gel.Sprite.forge.new_Sprite ("Sprite" & the_Pair.sprite_Id'Image,
                                                  sprite.World_view (the_World),
@@ -120,15 +120,16 @@ is
    end to_Sprite;
 
 
+
    --------------------------------
    --- 'create_new_Sprite' Response
    --
 
    type create_new_Sprite is new lace.Response.item with
       record
-         World          :        gel.World.view;
-         Models         : access id_Maps_of_model        .Map;
-         physics_Models : access id_Maps_of_physics_model.Map;
+         World           :        gel.World.view;
+         graphics_Models : access id_Maps_of_graphics_model.Map;
+         physics_Models  : access id_Maps_of_physics_model .Map;
       end record;
 
 
@@ -144,8 +145,8 @@ is
       declare
          the_Event  : constant gel.Events.new_sprite_Event := gel.Events.new_sprite_Event (to_Event);
          the_Sprite : constant gel.Sprite.view             := to_Sprite (the_Event.Pair,
-                                                                         Self.Models.all,
-                                                                         Self.physics_Models.all,
+                                                                         Self.graphics_Models.all,
+                                                                         Self. physics_Models.all,
                                                                          Self.World);
       begin
          Self.World.add (the_Sprite, and_children => False);
@@ -154,12 +155,12 @@ is
 
 
 
-   procedure define (Self : in out create_new_Sprite;    World  : in     gel.World.view;
-                                                         Models : access id_Maps_of_model.Map)
+   procedure define (Self : in out create_new_Sprite;    World           : in     gel.World.view;
+                                                         graphics_Models : access id_Maps_of_graphics_model.Map)
    is
    begin
-      Self.World  := World;
-      Self.Models := Models;
+      Self.World           := World;
+      Self.graphics_Models := graphics_Models;
    end define;
 
 
@@ -177,10 +178,10 @@ is
    --- Define
    --
 
-   procedure define  (Self : in out Item'Class;   Name       : in     String;
-                                                  Id         : in     world_Id;
-                                                  space_Kind : in     physics.space_Kind;
-                                                  Renderer   : access openGL.Renderer.lean.Item'Class)
+   procedure define (Self : in out Item'Class;   Name       : in     String;
+                                                 Id         : in     world_Id;
+                                                 space_Kind : in     physics.space_Kind;
+                                                 Renderer   : access openGL.Renderer.lean.Item'Class)
    is
       use lace.Subject_and_deferred_Observer.Forge;
    begin
@@ -343,7 +344,7 @@ is
 
 
 
-   function local_graphics_Models (Self : in Item) return id_Maps_of_model.Map
+   function local_graphics_Models (Self : in Item) return id_Maps_of_graphics_model.Map
    is
    begin
       return Self.graphics_Models;
@@ -760,6 +761,9 @@ is
    procedure add (Self : in out Item;   the_Model : in openGL.Model.view)
    is
    begin
+      log ("gel.World.add (the opengl Model) ~ the_Model.Id:" & the_Model.Id'Image);
+
+
       if the_Model.Id = null_graphics_model_Id
       then
          Self.last_used_model_Id := Self.last_used_model_Id + 1;
@@ -772,8 +776,9 @@ is
 
          --  Emit a new model event.
          --
+         log ("gel.World.add ~ emit new graphics model event");
          declare
-            the_Event : remote.World.new_model_Event;
+            the_Event : remote.World.new_graphics_model_Event;
          begin
             the_Event.Model := the_Model;
             Self.emit (the_Event);
@@ -795,6 +800,16 @@ is
       if not Self.physics_Models.contains (the_Model.Id)
       then
          Self.physics_Models.insert (the_Model.Id, the_Model);
+
+         --  Emit a new model event.
+         --
+         log ("gel.World.add ~ emit new physics model event");
+         declare
+            the_Event : remote.World.new_physics_model_Event;
+         begin
+            the_Event.Model := the_Model;
+            Self.emit (the_Event);
+         end;
       end if;
    end add;
 
@@ -948,12 +963,12 @@ is
 
 
    overriding
-   function graphics_Models (Self : in Item) return remote.World.graphics_Model_Set
+   function graphics_Models (Self : in Item) return remote.World.id_Map_of_graphics_model
    is
-      use id_Maps_of_model;
+      use id_Maps_of_graphics_model;
 
-      the_Models  : remote.World.graphics_Model_Set;
-      Cursor      : id_Maps_of_model.Cursor := Self.graphics_Models.First;
+      the_Models  : remote.World.id_Map_of_graphics_model;
+      Cursor      : id_Maps_of_graphics_model.Cursor := Self.graphics_Models.First;
    begin
       while has_Element (Cursor)
       loop
@@ -968,11 +983,11 @@ is
 
 
    overriding
-   function physics_Models (Self : in Item) return remote.World.physics_model_Set
+   function physics_Models (Self : in Item) return remote.World.id_Map_of_physics_model
    is
       use id_Maps_of_physics_model;
 
-      the_Models  : remote.World.physics_model_Set;
+      the_Models  : remote.World.id_Map_of_physics_model;
       Cursor      : id_Maps_of_physics_model.Cursor := Self.physics_Models.First;
    begin
       while has_Element (Cursor)
@@ -1118,7 +1133,8 @@ is
    is
       the_Sprite : constant gel.Sprite.view := Item'Class (Self).all_Sprites.fetch.Element (sprite_Id);
    begin
-      the_Sprite.Speed_is ([0.0, 10.0, 0.0]);
+      log ("KICK");
+      the_Sprite.Speed_is ([0.0, 0.1, 0.0]);
    end kick_Sprite;
 
 
@@ -1170,8 +1186,8 @@ end gel.World;
 
       --  procedure free_graphics_Models
       --  is
-      --     use id_Maps_of_model;
-      --     Cursor : id_Maps_of_model.Cursor := the_World.graphics_Models.First;
+      --     use id_Maps_of_graphics_model;
+      --     Cursor : id_Maps_of_graphics_model.Cursor := the_World.graphics_Models.First;
       --  begin
       --     while has_Element (Cursor)
       --     loop

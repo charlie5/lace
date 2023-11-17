@@ -665,7 +665,8 @@ is
    procedure Speed_is (Self : in out Item;   Now : in Vector_3)
    is
    begin
-      Self.World.set_Speed (Self'unchecked_Access, Now);
+      Self.Solid.Speed_is (Now);
+      --  Self.World.set_Speed (Self'unchecked_Access, Now);
    end Speed_is;
 
 

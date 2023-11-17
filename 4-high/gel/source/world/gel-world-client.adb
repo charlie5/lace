@@ -22,7 +22,6 @@ is
 
    procedure log (Message : in String)
                   renames ada.text_IO.put_Line;
-   pragma Unreferenced (log);
 
 
    ---------
@@ -92,10 +91,10 @@ is
 
 
 
-   function to_Sprite (the_Pair           : in remote.World.sprite_model_Pair;
-                       the_Models         : in Id_Maps_of_Model        .Map;
-                       the_physics_Models : in Id_Maps_of_physics_Model.Map;
-                       the_World          : in gel.World.view) return gel.Sprite.view
+   function to_Sprite (the_Pair            : in remote.World.sprite_model_Pair;
+                       the_graphics_Models : in id_Maps_of_graphics_model.Map;
+                       the_physics_Models  : in Id_Maps_of_physics_Model .Map;
+                       the_World           : in gel.World.view) return gel.Sprite.view
    is
       the_graphics_Model : access openGL .Model.item'Class;
       the_physics_Model  : access physics.Model.item'Class;
@@ -103,8 +102,13 @@ is
 
       use openGL;
    begin
-      the_graphics_Model := openGL .Model.view (the_Models        .Element (the_Pair.graphics_Model_Id));
-      the_physics_Model  := physics.Model.view (the_physics_Models.Element (the_Pair. physics_Model_Id));
+      log ("gel.world.client.to_Sprite ~ the_Pair.graphics_Model_Id:" & the_Pair.graphics_Model_Id'Image);
+
+      the_graphics_Model := openGL .Model.view (the_graphics_Models.Element (the_Pair.graphics_Model_Id));
+
+      log ("gel.world.client.to_Sprite ~ the_Pair.physics_Model_Id:" & the_Pair.physics_Model_Id'Image);
+
+      the_physics_Model  := physics.Model.view ( the_physics_Models.Element (the_Pair. physics_Model_Id));
 
       the_Sprite := gel.Sprite.forge.new_Sprite ("Sprite" & the_Pair.sprite_Id'Image,
                                                  sprite.World_view (the_World),
@@ -140,7 +144,7 @@ is
    type create_new_Sprite is new lace.Response.item with
       record
          World          :        gel.World.view;
-         Models         : access id_Maps_of_model        .Map;
+         Models         : access id_Maps_of_graphics_model        .Map;
          physics_Models : access id_Maps_of_physics_model.Map;
       end record;
 
@@ -197,49 +201,89 @@ is
 
 
 
-   ----------------------
-   --- new_model_Response
+   -------------------------------
+   --- new_graphics_model_Response
    --
 
-   type new_model_Response is new lace.Response.item with
+   type new_graphics_model_Response is new lace.Response.item with
       record
          World : gel.World.view;
       end record;
 
 
    overriding
-   function Name (Self : in new_model_Response) return String;
+   function Name (Self : in new_graphics_model_Response) return String;
 
 
    overriding
-   procedure respond (Self : in out new_model_Response;   to_Event : in lace.Event.Item'Class)
+   procedure respond (Self : in out new_graphics_model_Response;   to_Event : in lace.Event.Item'Class)
    is
-      the_Event : constant remote.World.new_model_Event := remote.World.new_model_Event (to_Event);
+      the_Event : constant remote.World.new_graphics_model_Event := remote.World.new_graphics_model_Event (to_Event);
    begin
+      log ("gel.world.client ~ new graphics model response ~ model id:" & the_Event.Model.Id'Image);
       Self.World.add (new openGL.Model.item'Class' (openGL.Model.item'Class (the_Event.Model.all)));
    end respond;
 
 
    overriding
-   function Name (Self : in new_model_Response) return String
+   function Name (Self : in new_graphics_model_Response) return String
    is
       pragma unreferenced (Self);
    begin
-      return "new_model_Response";
+      return "new_graphics_model_Response";
    end Name;
 
 
-   the_new_model_Response : aliased new_model_Response;
+   the_new_graphics_model_Response : aliased new_graphics_model_Response;
+
+
+
+   ------------------------------
+   --- new_physics_model_Response
+   --
+
+   type new_physics_model_Response is new lace.Response.item with
+      record
+         World : gel.World.view;
+      end record;
+
+
+   overriding
+   function Name (Self : in new_physics_model_Response) return String;
+
+
+   overriding
+   procedure respond (Self : in out new_physics_model_Response;   to_Event : in lace.Event.Item'Class)
+   is
+      the_Event : constant remote.World.new_physics_model_Event := remote.World.new_physics_model_Event (to_Event);
+   begin
+      log ("gel.world.client ~ new physics model response ~ model id:" & the_Event.Model.Id'Image);
+      Self.World.add (new physics.Model.item'Class' (physics.Model.item'Class (the_Event.Model.all)));
+   end respond;
+
+
+   overriding
+   function Name (Self : in new_physics_model_Response) return String
+   is
+      pragma unreferenced (Self);
+   begin
+      return "new_physics_model_Response";
+   end Name;
+
+
+   the_new_physics_model_Response : aliased new_physics_model_Response;
+
 
 
    --------------------------
    --- my_new_sprite_Response
    --
+
    type my_new_sprite_Response is new lace.Response.item with
       record
-         World          :        gel.World.view;
-         Models         : access id_Maps_of_model        .Map;
-         physics_Models : access id_Maps_of_physics_model.Map;
+         World           :        gel.World.view;
+         graphics_Models : access id_Maps_of_graphics_model.Map;
+         physics_Models  : access id_Maps_of_physics_model .Map;
       end record;
 
 
@@ -251,27 +295,36 @@ is
    overriding
    procedure respond (Self : in out my_new_sprite_Response;   to_Event : in lace.Event.Item'Class)
    is
-      the_Event  : constant gel.Events.my_new_sprite_added_to_world_Event
-        := gel.events.my_new_sprite_added_to_world_Event (to_Event);
-
-      the_Sprite : constant gel.Sprite.view
-        := to_Sprite (the_Event.Pair,
-                      Self.Models.all,
-                      Self.physics_Models.all,
-                      Self.World);
    begin
-      Self.World.add (the_Sprite);
+      log ("gel.world.client.my_new_Sprite.respond");
+
+      declare
+         the_Event  : constant gel.Events.my_new_sprite_added_to_world_Event
+           := gel.events.my_new_sprite_added_to_world_Event (to_Event);
+
+         the_Sprite : constant gel.Sprite.view
+           := to_Sprite (the_Event.Pair,
+                         Self.graphics_Models.all,
+                         Self.physics_Models.all,
+                         Self.World);
+      begin
+         Self.World.add (the_Sprite);
+      end;
+
    end respond;
 
 
 
-   procedure define (Self : in out my_new_sprite_Response;   World  : in     gel.World.view;
-                                                             Models : access id_Maps_of_model.Map)
+   procedure define (Self : in out my_new_sprite_Response;   World          : in     gel.World.view;
+                                                             Models         : access id_Maps_of_graphics_model.Map;
+                                                             physics_Models : access id_Maps_of_physics_model.Map)
    is
    begin
-      Self.World  := World;
-      Self.Models := Models;
+      Self.World          := World;
+      Self.graphics_Models         := Models;
+      Self.physics_Models := physics_Models;
    end define;
+
 
 
    overriding
@@ -286,40 +339,52 @@ is
 
 
 
-   type graphics_Model_iface_view is access all openGL.remote_Model.item'Class;
-
-   type physics_Model_iface_view is access all Standard.physics.remote.Model.item'Class;
+   type graphics_Model_iface_view is access all openGL .remote_Model.item'Class;
+   type  physics_Model_iface_view is access all physics.remote.Model.item'Class;
 
 
 
    procedure is_a_Mirror (Self : access Item'Class;   of_World : in remote.World.view)
    is
    begin
-      the_new_model_Response.World := Self.all'Access;
+      --  New graphics model response.
+      --
+      the_new_graphics_model_Response.World := Self.all'Access;
 
-      Self.add (the_new_model_Response'Access,
-                to_Kind (remote.World.new_model_Event'Tag),
-                of_World.Name);
+      Self.add (the_new_graphics_model_Response'Access,
+                to_Kind (remote.World.new_graphics_model_Event'Tag),
+                from_Subject => of_World.Name);
 
-      define   (the_my_new_sprite_Response, World  => Self.all'Access,
-                                            Models => Self.graphics_Models'Access);
+      --  New physics model response.
+      --
+      the_new_physics_model_Response.World := Self.all'Access;
+
+      Self.add (the_new_physics_model_Response'Access,
+                to_Kind (remote.World.new_physics_model_Event'Tag),
+                from_Subject => of_World.Name);
+
+      --  New sprite response.
+      --
+      define   (the_my_new_sprite_Response, World          => Self.all'Access,
+                                            Models         => Self.graphics_Models'Access,
+                                            physics_Models => Self. physics_Models'Access);
 
       Self.add (the_my_new_sprite_Response'Access,
                 to_Kind (gel.Events.my_new_sprite_added_to_world_Event'Tag),
-                of_World.Name);
+                from_Subject => of_World.Name);
 
-      --  Obtain and make a local copy of models, sprites and humans from the mirrored world.
+      --  Obtain and make a local copy of graphics_Models, sprites and humans from the mirrored world.
       --
       declare
-         use remote.World.id_Maps_of_model_plan;
+         use remote.World.id_Maps_of_graphics_model;
 
-         the_server_Models         : constant remote.World.graphics_Model_Set := of_World.graphics_Models;    -- Fetch graphics models from the server.
-         the_server_physics_Models : constant remote.World.physics_model_Set  := of_World.physics_Models;     -- Fetch physics  models from the server.
+         the_server_graphics_Models : constant remote.World.id_Map_of_graphics_model := of_World.graphics_Models;     -- Fetch graphics graphics_Models from the server.
+         the_server_physics_Models  : constant remote.World. id_Map_of_physics_model := of_World. physics_Models;     -- Fetch physics  graphics_Models from the server.
       begin
-         --  Create our local graphics models.
+         --  Create our local graphics graphics_Models.
          --
          declare
-            Cursor    : remote.World.Id_Maps_of_Model_Plan.Cursor := the_server_Models.First;
+            Cursor    : remote.World.id_Maps_of_graphics_model.Cursor := the_server_graphics_Models.First;
             new_Model : graphics_Model_iFace_view;
          begin
             while has_Element (Cursor)
@@ -331,12 +396,12 @@ is
             end loop;
          end;
 
-         --  Create our local physics models.
+         --  Create our local physics graphics_Models.
          --
          declare
-            use remote.World.id_Maps_of_physics_model_plan;
+            use remote.World.id_Maps_of_physics_model;
 
-            Cursor    : remote.World.id_Maps_of_physics_model_plan.Cursor := the_server_physics_Models.First;
+            Cursor    : remote.World.id_Maps_of_physics_model.Cursor := the_server_physics_Models.First;
             new_Model : physics_Model_iFace_view;
 
          begin
