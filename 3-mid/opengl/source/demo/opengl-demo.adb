@@ -11,6 +11,7 @@ with
      openGL.Model.box      .lit_textured,
 
      openGL.Model.capsule  .lit_textured,
+     openGL.Model.circle   .lit_textured,
      openGL.Model.grid,
 
      openGL.Model.hexagon       .lit_colored,
@@ -188,6 +189,14 @@ is
         := Model.capsule.lit_textured.new_Capsule (Radius => 0.5,
                                                    Height => 2.0,
                                                    Image  => the_Texture);
+
+      the_lit_textured_circle_Model : constant Model.circle.lit_textured.view
+        := Model.circle.lit_textured.new_Circle (Radius => 1.5,
+                                                 Face   => (Fades         => (1 => 0.0,         others => <>),
+                                                            Textures      => (1 => the_Texture, others => <>),
+                                                            texture_Count => 1),
+                                                 Sides  => 24);
+
       the_grid_Model    : constant Model.grid.view
         := Model.grid.new_grid_Model (Color  => Red,
                                       Width  => 3,
@@ -297,6 +306,7 @@ is
                                the_box_3_Model.all'Access,
 
                              the_capsule_Model.all'Access,
+                 the_lit_textured_circle_Model.all'Access,
                                 the_grid_Model.all'Access,
 
                              the_hexagon_Model.all'Access,

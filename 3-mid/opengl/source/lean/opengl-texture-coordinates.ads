@@ -3,9 +3,8 @@ package openGL.Texture.Coordinates
 -- Provides openGL texture co-ordinates.
 --
 is
-
-   ------
-   --- 2D
+   ---------------
+   --- 2D Textures
    --
 
    type Coords_2D_and_Centroid (coords_Count : Index_t) is
@@ -21,7 +20,7 @@ is
 
 
 
-   --- Generator
+   --- Generators
    --
 
    type coordinate_Generator is abstract tagged null record;
@@ -64,9 +63,6 @@ is
 
    overriding
    function to_Coordinates (Self : in mercator_Generator;   the_Vertices : access Sites) return Coordinates_2D;
-
-
-
 
 
 end openGL.Texture.Coordinates;

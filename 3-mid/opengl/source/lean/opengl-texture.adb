@@ -9,6 +9,9 @@ with
 
      ada.unchecked_Deallocation;
 
+with ada.Text_IO;
+
+
 package body openGL.Texture
 is
    use GL,
@@ -84,7 +87,7 @@ is
 
 
       function to_Texture (the_Image   : in Image;
-                           use_Mipmaps : in Boolean     := True) return Object
+                           use_Mipmaps : in Boolean := True) return Object
       is
          Self : aliased Texture.Object;
       begin
@@ -96,7 +99,7 @@ is
 
 
       function to_Texture (the_Image   : in lucid_Image;
-                           use_Mipmaps : in Boolean           := True) return Object
+                           use_Mipmaps : in Boolean    := True) return Object
       is
          Self : aliased Texture.Object;
       begin
@@ -153,7 +156,9 @@ is
    procedure set_Image (Self : in out Object;   To          : in Image;
                                                 use_Mipmaps : in Boolean := True)
    is
-      use GL.Binding;
+      use GL.Binding,
+          ada.Text_IO;
+
       the_Image  :          Image renames To;
       min_Width  : constant Positive := the_Image'Length (2);
       min_Height : constant Positive := the_Image'Length (1);
@@ -163,17 +168,23 @@ is
       Self.is_Transparent    := False;
       Self.Dimensions.Width  := min_Width;
       Self.Dimensions.Height := min_Height;
+
+      new_Line (3);
+      put_Line ("openGL.Texture.set_Image ~ GLsizei (Self.Dimensions.Width)  =>" & GLsizei (Self.Dimensions.Width) 'Image);
+      put_Line ("                         ~ GLsizei (Self.Dimensions.Height) =>" & GLsizei (Self.Dimensions.Height)'Image);
+      put_Line ("                         ~ the_Image                        =>");
+      put_Line (the_Image'Image);
+      new_Line (3);
+
       Self.enable;
 
-      glPixelStorei   (GL_UNPACK_ALIGNMENT, 1);
+      glPixelStorei   (GL_UNPACK_ALIGNMENT, 1);                                 Errors.log;
 
-      glTexParameteri (GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
-      glTexParameteri (GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+      glTexParameteri (GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);     Errors.log;
+      glTexParameteri (GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);     Errors.log;
 
-      glTexParameteri (GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-      glTexParameteri (GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-
-      Errors.log;
+      glTexParameteri (GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);        Errors.log;
+      glTexParameteri (GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);        Errors.log;
 
       glTexImage2D (GL_TEXTURE_2D,
                     0,
@@ -212,15 +223,13 @@ is
       Self.Dimensions.Height := min_Height;
       Self.enable;
 
-      glPixelStorei   (GL_UNPACK_ALIGNMENT, 1);
+      glPixelStorei   (GL_UNPACK_ALIGNMENT, 1);                                 Errors.log;
 
-      glTexParameteri (GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
-      glTexParameteri (GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+      glTexParameteri (GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);     Errors.log;
+      glTexParameteri (GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);     Errors.log;
 
-      glTexParameteri (GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-      glTexParameteri (GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-
-      Errors.log;
+      glTexParameteri (GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);        Errors.log;
+      glTexParameteri (GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);        Errors.log;
 
       glTexImage2D (GL_TEXTURE_2D,
                     0,
@@ -258,6 +267,7 @@ is
    begin
       Tasks.check;
       glBindTexture (GL.GL_TEXTURE_2D, Self.Name);
+      Errors.log;
    end enable;
 
 
