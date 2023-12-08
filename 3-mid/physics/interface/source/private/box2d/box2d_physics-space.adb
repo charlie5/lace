@@ -15,6 +15,9 @@ with
 
      ada.unchecked_Conversion;
 
+with ada.Text_IO; use ada.Text_IO;
+
+
 package body box2d_Physics.Space
 is
    use box2d_c.Binding,
@@ -413,6 +416,7 @@ is
    end add;
 
 
+
    overriding
    procedure rid (Self : in out Item;   the_Object : in physics.Object.view)
    is
@@ -420,6 +424,7 @@ is
    begin
       b2d_Space_rid_Object (Self.C, the_c_Object);
    end rid;
+
 
 
    overriding
@@ -446,6 +451,7 @@ is
    end cast_Ray;
 
 
+
    overriding
    procedure evolve (Self : in out Item;   By : in Duration)
    is
@@ -470,6 +476,7 @@ is
    end evolve;
 
 
+
    overriding
    function Gravity (Self : in Item) return Vector_3
    is
@@ -477,6 +484,7 @@ is
       raise Error with "TODO";
       return [0.0, 0.0, 0.0];
    end Gravity;
+
 
 
    overriding

@@ -762,7 +762,7 @@ is
    procedure add (Self : in out Item;   the_Model : in openGL.Model.view)
    is
    begin
-      log ("gel.World.add (the opengl Model) ~ the_Model.Id:" & the_Model.Id'Image);
+      --  log ("gel.World.add (the opengl Model) ~ the_Model.Id:" & the_Model.Id'Image);
 
 
       if the_Model.Id = null_graphics_model_Id
@@ -777,7 +777,9 @@ is
 
          --  Emit a new model event.
          --
-         log ("gel.World.add ~ emit new graphics model event");
+
+         --  log ("gel.World.add ~ emit new graphics model event");
+
          declare
             the_Event : remote.World.new_graphics_model_Event;
          begin
@@ -804,7 +806,7 @@ is
 
          --  Emit a new model event.
          --
-         log ("gel.World.add ~ emit new physics model event");
+         --  log ("gel.World.add ~ emit new physics model event");
          declare
             the_Event : remote.World.new_physics_model_Event;
          begin
@@ -929,35 +931,35 @@ is
 
       --  Perform responses to events for all sprites.
       --
-      --  declare
-      --     use id_Maps_of_sprite;
-      --
-      --     all_Sprites : constant id_Maps_of_sprite.Map    := Item'Class (Self).all_Sprites.fetch;
-      --     Cursor      :          id_Maps_of_sprite.Cursor := all_Sprites.First;
-      --     the_Sprite  :          Sprite.view;
-      --  begin
-      --     while has_Element (Cursor)
-      --     loop
-      --        the_Sprite := Element (Cursor);
-      --
-      --        begin
-      --           if not the_Sprite.is_Destroyed
-      --           then
-      --              the_Sprite.respond;
-      --           end if;
-      --
-      --        exception
-      --           when E : others =>
-      --              new_Line (2);
-      --              put_Line ("Error in 'gel.World.evolve' sprite response.");
-      --              new_Line;
-      --              put_Line (ada.Exceptions.exception_Information (E));
-      --              new_Line (2);
-      --        end;
-      --
-      --        next (Cursor);
-      --     end loop;
-      --  end;
+      declare
+         use id_Maps_of_sprite;
+
+         all_Sprites : constant id_Maps_of_sprite.Map    := Item'Class (Self).all_Sprites.fetch;
+         Cursor      :          id_Maps_of_sprite.Cursor := all_Sprites.First;
+         the_Sprite  :          Sprite.view;
+      begin
+         while has_Element (Cursor)
+         loop
+            the_Sprite := Element (Cursor);
+
+            begin
+               if not the_Sprite.is_Destroyed
+               then
+                  the_Sprite.respond;
+               end if;
+
+            exception
+               when E : others =>
+                  new_Line (2);
+                  put_Line ("Error in 'gel.World.evolve' sprite response.");
+                  new_Line;
+                  put_Line (ada.Exceptions.exception_Information (E));
+                  new_Line (2);
+            end;
+
+            next (Cursor);
+         end loop;
+      end;
 
    end evolve;
 

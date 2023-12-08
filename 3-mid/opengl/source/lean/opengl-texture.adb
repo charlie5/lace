@@ -169,12 +169,12 @@ is
       Self.Dimensions.Width  := min_Width;
       Self.Dimensions.Height := min_Height;
 
-      new_Line (3);
-      put_Line ("openGL.Texture.set_Image ~ GLsizei (Self.Dimensions.Width)  =>" & GLsizei (Self.Dimensions.Width) 'Image);
-      put_Line ("                         ~ GLsizei (Self.Dimensions.Height) =>" & GLsizei (Self.Dimensions.Height)'Image);
-      put_Line ("                         ~ the_Image                        =>");
-      put_Line (the_Image'Image);
-      new_Line (3);
+      --  new_Line (3);
+      --  put_Line ("openGL.Texture.set_Image ~ GLsizei (Self.Dimensions.Width)  =>" & GLsizei (Self.Dimensions.Width) 'Image);
+      --  put_Line ("                         ~ GLsizei (Self.Dimensions.Height) =>" & GLsizei (Self.Dimensions.Height)'Image);
+      --  put_Line ("                         ~ the_Image                        =>");
+      --  put_Line (the_Image'Image);
+      --  new_Line (3);
 
       Self.enable;
 

@@ -102,11 +102,11 @@ is
 
       use openGL;
    begin
-      log ("gel.world.client.to_Sprite ~ the_Pair.graphics_Model_Id:" & the_Pair.graphics_Model_Id'Image);
+      --  log ("gel.world.client.to_Sprite ~ the_Pair.graphics_Model_Id:" & the_Pair.graphics_Model_Id'Image);
 
       the_graphics_Model := openGL .Model.view (the_graphics_Models.Element (the_Pair.graphics_Model_Id));
 
-      log ("gel.world.client.to_Sprite ~ the_Pair.physics_Model_Id:" & the_Pair.physics_Model_Id'Image);
+      --  log ("gel.world.client.to_Sprite ~ the_Pair.physics_Model_Id:" & the_Pair.physics_Model_Id'Image);
 
       the_physics_Model  := physics.Model.view ( the_physics_Models.Element (the_Pair. physics_Model_Id));
 
@@ -158,7 +158,7 @@ is
    procedure respond (Self : in out create_new_Sprite;   to_Event : in lace.Event.item'Class)
    is
    begin
-      raise Program_Error with "KKK";
+      raise Program_Error with "???";
       --  declare
       --     the_Event  : constant gel.Events.new_sprite_Event := gel.Events.new_sprite_Event (to_Event);
       --     the_Sprite : constant gel.Sprite.view             := to_Sprite (the_Event.Pair,
