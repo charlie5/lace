@@ -38,6 +38,7 @@ is
 
       my_Name : constant String := Observer.item'Class (Self.all).Name;
 
+
       procedure actuate (the_Responses     : in event_response_Map;
                          the_Events        : in Event_Vector;
                          from_subject_Name : in Event.subject_Name)
@@ -98,13 +99,17 @@ is
          end loop;
       end actuate;
 
-      the_subject_Events : subject_events_Pairs (1 .. 5_000);
-      Count              : Natural;
+
+      the_subject_Events : constant subject_events_Pairs := Self.pending_Events.fetch;
+
+      --  the_subject_Events : subject_events_Pairs (1 .. 5_000);
+      --  Count              : Natural;
 
    begin
-      Self.pending_Events.fetch (the_subject_Events, Count);
+      --  Self.pending_Events.fetch (the_subject_Events, Count);
 
-      for i in 1 .. Count
+      --  for i in 1 .. Count
+      for i in the_subject_Events'Range
       loop
          declare
             procedure deallocate is new ada.unchecked_Deallocation (String, String_view);
@@ -112,14 +117,14 @@ is
             subject_Name : String_view       := the_subject_Events (i).Subject;
             the_Events   : Event_vector renames the_subject_Events (i).Events;
          begin
-            if Self.Responses.Contains (subject_Name.all)
+            if Self.Responses.contains (subject_Name.all)
             then
                actuate (Self.Responses.Element (subject_Name.all),
                         the_Events,
                         subject_Name.all);
             else
                declare
-                  Message : constant String := my_Name & " has no responses for events from " & subject_Name.all & ".";
+                  Message : constant String := "*** Warning *** ~ " & my_Name & " has no responses for events from " & subject_Name.all & ".";
                begin
                   if Observer.Logger /= null
                   then
@@ -179,6 +184,36 @@ is
       end add;
 
 
+
+      function fetch return subject_events_Pairs
+      is
+         use subject_Maps_of_safe_events;
+
+         Result : subject_events_Pairs (1 .. Natural (the_Map.Length));
+
+         Cursor : subject_Maps_of_safe_events.Cursor := the_Map.First;
+         Index  : Natural := 0;
+      begin
+         while has_Element (Cursor)
+         loop
+            declare
+               the_Events : Event_vector;
+            begin
+               Element (Cursor).fetch (the_Events);
+
+               Index          := Index + 1;
+               Result (Index) := (Subject => new String' (Key (Cursor)),
+                                  Events  => the_Events);
+            end;
+
+            next (Cursor);
+         end loop;
+
+         return Result;
+      end fetch;
+
+
+
       procedure fetch (all_Events : out subject_events_Pairs;
                        Count      : out Natural)
       is
@@ -195,8 +230,8 @@ is
                Element (Cursor).fetch (the_Events);
 
                Index              := Index + 1;
-               all_Events (Index) := (subject => new String' (Key (Cursor)),
-                                      events  => the_Events);
+               all_Events (Index) := (Subject => new String' (Key (Cursor)),
+                                      Events  => the_Events);
             end;
 
             next (Cursor);
@@ -204,6 +239,7 @@ is
 
          Count := Index;
       end fetch;
+
 
 
       procedure free

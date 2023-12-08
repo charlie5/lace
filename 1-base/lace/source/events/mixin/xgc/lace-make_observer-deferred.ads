@@ -101,8 +101,10 @@ private
       procedure add   (the_Event    : in Event.item'Class;
                        from_Subject : in String);
 
+      function  fetch            return subject_events_Pairs;
       procedure fetch (all_Events : out subject_events_Pairs;
                        Count      : out Natural);
+
       procedure free;
 
    private
