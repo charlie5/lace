@@ -29,6 +29,9 @@ package gel.World
 --  Provides a gel world.
 --
 is
+   pragma Suppress (Container_Checks);     -- Suppress expensive tamper checks.
+
+
    type Item  is abstract limited new lace.Subject_and_deferred_Observer.item
                                   and gel.remote.World.item
    with private;

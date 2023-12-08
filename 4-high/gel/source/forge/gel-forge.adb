@@ -1,6 +1,8 @@
 with
      openGL.Model.text     .lit_colored,
 
+     openGL.Model.circle   .lit_textured,
+
      openGL.Model.sphere   .lit_colored_textured,
      openGL.Model.sphere   .lit_colored,
      openGL.Model.sphere   .textured,
@@ -20,7 +22,8 @@ with
      openGL.Model.segment_line,
 
      physics.Model,
-     gel.Window;
+     gel.Window,
+     float_Math.Random;
 
 
 package body gel.Forge
@@ -132,7 +135,7 @@ is
       use openGL;
       use type Vector_2;
 
-      the_graphics_Model : openGL.Model.sphere.view;
+      the_graphics_Model : openGL.Model.view;
 
       the_physics_Model  : constant physics.Model.view
         := physics.Model.Forge.new_physics_Model (shape_Info  => (physics.Model.Circle, Radius),
@@ -146,14 +149,18 @@ is
          the_graphics_Model := openGL.Model.sphere.lit_colored.new_Sphere (Radius,
                                                                            Color => (Color, Opaque)).all'Access;
       else
-         the_graphics_Model := openGL.Model.sphere.lit_colored_textured.new_Sphere (Radius,
-                                                                                    Color => (Color, Opaque),
-                                                                                    Image => Texture).all'Access;
+         --  the_graphics_Model := openGL.Model.sphere.lit_colored_textured.new_Sphere (Radius,
+         --                                                                             Color => (Color, Opaque),
+         --                                                                             Image => Texture).all'Access;
+         the_graphics_Model := openGL.Model.circle.lit_textured.new_Circle (Radius,
+                                                                            Face => (Fades         => (1 => 0.0,     others => <>),
+                                                                                     Textures      => (1 => Texture, others => <>),
+                                                                                     texture_Count => 1)).all'Access;
       end if;
 
       return gel.Sprite.Forge.new_Sprite ("circle_Sprite",
                                           sprite.World_view (in_World),
-                                          Vector_3 (Site & 0.0),
+                                          Vector_3 (Site & float_Math.Random.random_Real (Lower => 0.0, Upper => 1.1)),
                                           the_graphics_Model,
                                           the_physics_Model,
                                           owns_graphics => True,

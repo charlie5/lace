@@ -56,6 +56,10 @@ is
 
 
 private
+
+   pragma Suppress (Container_Checks);     -- Suppress expensive tamper checks.
+
+
    ----------------------
    -- Event response maps
    --

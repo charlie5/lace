@@ -20,7 +20,7 @@ is
          when GL_INVALID_VALUE     =>   return "invalid Value";
          when GL_INVALID_OPERATION =>   return "invalid Operation";
          when GL_OUT_OF_MEMORY     =>   return "out of Memory";
-         when others               =>   return "unknown openGL error detected";
+         when others               =>   return "unknown openGL error detected (Code:" & the_Error'Image & ")";
       end case;
    end Current;
 

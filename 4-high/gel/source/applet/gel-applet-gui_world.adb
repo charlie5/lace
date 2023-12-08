@@ -30,9 +30,9 @@ is
 
       Self.Worlds.append (the_world_Info);
 
-      Self.local_Subject_and_Observer.add (the_add_new_sprite_Response'Access,
-                                           to_Kind (gel.events.new_sprite_added_to_world_Event'Tag),
-                                           the_world_Info.World.Name);
+      --  Self.local_Subject_and_Observer.add (the_add_new_sprite_Response'Access,
+      --                                       to_Kind (gel.events.new_sprite_added_to_world_Event'Tag),
+      --                                       the_world_Info.World.Name);
       the_world_Info.World.start;
    end define;
 

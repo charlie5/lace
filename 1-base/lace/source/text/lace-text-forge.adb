@@ -11,7 +11,7 @@ is
    -- Files
    --
 
-   function to_String (Filename : in forge.Filename) return String
+   function File_to_String (Filename : in forge.Filename) return String
    is
       use ada.Characters,
           ada.Directories;
@@ -47,15 +47,15 @@ is
       end loop;
 
       return Result (1 .. i);
-   end to_String;
+   end File_to_String;
 
 
 
-   function to_Text (Filename : in forge.Filename) return Item
+   function File_to_Text (Filename : in forge.Filename) return Item
    is
    begin
-      return to_Text (to_String (Filename));
-   end to_Text;
+      return to_Text (File_to_String (Filename));
+   end File_to_Text;
 
 
 

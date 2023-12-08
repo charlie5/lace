@@ -55,14 +55,14 @@ is
    overriding
    procedure respond (Self : in out add_new_Sprite;   to_Event : in lace.Event.item'Class)
    is
-      the_Event : constant gel.events.new_sprite_added_to_world_Event
-        := gel.events.new_sprite_added_to_world_Event (to_Event);
+      --  the_Event : constant gel.events.new_sprite_added_to_world_Event
+      --    := gel.events.new_sprite_added_to_world_Event (to_Event);
 
       the_Sprite : gel.Sprite.view;
 
    begin
       log ("gel.applet.add_new_Sprite.respond");
-      the_Sprite := Self.Applet.World (the_Event.World_Id).fetch_Sprite (the_event.Sprite_Id);
+      --  the_Sprite := Self.Applet.World (the_Event.World_Id).fetch_Sprite (the_event.Sprite_Id);
 
       the_Sprite.is_Visible (True);
       Self.Applet.add (the_Sprite);
@@ -276,9 +276,9 @@ is
 
       Self.Worlds.append (the_world_Info);
 
-      Self.local_Subject_and_Observer.add (the_add_new_sprite_Response'Access,
-                                           to_Kind (gel.Events.new_sprite_added_to_world_Event'Tag),
-                                           the_world_Info.World.Name);
+      --  Self.local_Subject_and_Observer.add (the_add_new_sprite_Response'Access,
+      --                                       to_Kind (gel.Events.new_sprite_added_to_world_Event'Tag),
+      --                                       the_world_Info.World.Name);
       the_world_Info.World.start;
 
       Self.add (the_world_Info);

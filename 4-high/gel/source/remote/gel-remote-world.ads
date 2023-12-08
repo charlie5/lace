@@ -19,6 +19,7 @@ package gel.remote.World
 --
 is
    pragma remote_Types;
+   pragma Suppress (Container_Checks);     -- Suppress expensive tamper checks.
 
    type Item is  limited interface
              and lace.Subject .item

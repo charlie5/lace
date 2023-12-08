@@ -33,6 +33,9 @@ is
 private
    use ada.Strings.unbounded;
 
+   pragma Suppress (Container_Checks);     -- Suppress expensive tamper checks.
+
+
    package Observer is new lace.make_Observer (Any.limited_item);
    package Deferred is new Observer.deferred  (Observer.item);
 

@@ -142,15 +142,16 @@ is
    procedure respond (Self : in out create_new_Sprite;   to_Event : in lace.Event.item'Class)
    is
    begin
-      declare
-         the_Event  : constant gel.Events.new_sprite_Event := gel.Events.new_sprite_Event (to_Event);
-         the_Sprite : constant gel.Sprite.view             := to_Sprite (the_Event.Pair,
-                                                                         Self.graphics_Models.all,
-                                                                         Self. physics_Models.all,
-                                                                         Self.World);
-      begin
-         Self.World.add (the_Sprite, and_children => False);
-      end;
+      raise Program_Error with "JJJ";
+      --  declare
+      --     the_Event  : constant gel.Events.new_sprite_Event := gel.Events.new_sprite_Event (to_Event);
+      --     the_Sprite : constant gel.Sprite.view             := to_Sprite (the_Event.Pair,
+      --                                                                     Self.graphics_Models.all,
+      --                                                                     Self. physics_Models.all,
+      --                                                                     Self.World);
+      --  begin
+      --     Self.World.add (the_Sprite, and_children => False);
+      --  end;
    end respond;
 
 
@@ -928,35 +929,35 @@ is
 
       --  Perform responses to events for all sprites.
       --
-      declare
-         use id_Maps_of_sprite;
-
-         all_Sprites : constant id_Maps_of_sprite.Map    := Item'Class (Self).all_Sprites.fetch;
-         Cursor      :          id_Maps_of_sprite.Cursor := all_Sprites.First;
-         the_Sprite  :          Sprite.view;
-      begin
-         while has_Element (Cursor)
-         loop
-            the_Sprite := Element (Cursor);
-
-            begin
-               if not the_Sprite.is_Destroyed
-               then
-                  the_Sprite.respond;
-               end if;
-
-            exception
-               when E : others =>
-                  new_Line (2);
-                  put_Line ("Error in 'gel.World.evolve' sprite response.");
-                  new_Line;
-                  put_Line (ada.Exceptions.exception_Information (E));
-                  new_Line (2);
-            end;
-
-            next (Cursor);
-         end loop;
-      end;
+      --  declare
+      --     use id_Maps_of_sprite;
+      --
+      --     all_Sprites : constant id_Maps_of_sprite.Map    := Item'Class (Self).all_Sprites.fetch;
+      --     Cursor      :          id_Maps_of_sprite.Cursor := all_Sprites.First;
+      --     the_Sprite  :          Sprite.view;
+      --  begin
+      --     while has_Element (Cursor)
+      --     loop
+      --        the_Sprite := Element (Cursor);
+      --
+      --        begin
+      --           if not the_Sprite.is_Destroyed
+      --           then
+      --              the_Sprite.respond;
+      --           end if;
+      --
+      --        exception
+      --           when E : others =>
+      --              new_Line (2);
+      --              put_Line ("Error in 'gel.World.evolve' sprite response.");
+      --              new_Line;
+      --              put_Line (ada.Exceptions.exception_Information (E));
+      --              new_Line (2);
+      --        end;
+      --
+      --        next (Cursor);
+      --     end loop;
+      --  end;
 
    end evolve;
 

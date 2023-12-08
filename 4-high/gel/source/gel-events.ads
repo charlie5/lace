@@ -48,22 +48,28 @@ is
       end record;
 
 
+   --  type new_sprite_Event is new lace.Event.item with
+   --     record
+   --        Pair : gel.remote.World.sprite_model_Pair;
+   --     end record;
+
+
+   --  type new_sprite_added_to_world_Event is new lace.Event.item with
+   --     record
+   --        Sprite_Id : gel.sprite_Id;
+   --        World_Id  : gel. world_Id;
+   --     end record;
+
+
    type new_sprite_Event is new lace.Event.item with
       record
          Pair : gel.remote.World.sprite_model_Pair;
       end record;
 
 
-   type new_sprite_added_to_world_Event is new lace.Event.item with
+   type rid_sprite_Event is new lace.Event.item with
       record
-         Sprite_Id : gel.sprite_Id;
-         World_Id  : gel. world_Id;
-      end record;
-
-
-   type my_new_sprite_added_to_world_Event is new lace.Event.item with
-      record
-         Pair : gel.remote.World.sprite_model_Pair;
+         Id : gel.sprite_Id;
       end record;
 
 

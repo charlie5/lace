@@ -40,6 +40,8 @@ is
 
 private
 
+   pragma Suppress (Container_Checks);     -- Suppress expensive tamper checks.
+
    ----------------
    -- Event Vectors
    --

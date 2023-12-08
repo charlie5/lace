@@ -158,15 +158,16 @@ is
    procedure respond (Self : in out create_new_Sprite;   to_Event : in lace.Event.item'Class)
    is
    begin
-      declare
-         the_Event  : constant gel.Events.new_sprite_Event := gel.Events.new_sprite_Event (to_Event);
-         the_Sprite : constant gel.Sprite.view             := to_Sprite (the_Event.Pair,
-                                                                         Self.Models.all,
-                                                                         Self.physics_Models.all,
-                                                                         Self.World);
-      begin
-         Self.World.add (the_Sprite);
-      end;
+      raise Program_Error with "KKK";
+      --  declare
+      --     the_Event  : constant gel.Events.new_sprite_Event := gel.Events.new_sprite_Event (to_Event);
+      --     the_Sprite : constant gel.Sprite.view             := to_Sprite (the_Event.Pair,
+      --                                                                     Self.Models.all,
+      --                                                                     Self.physics_Models.all,
+      --                                                                     Self.World);
+      --  begin
+      --     Self.World.add (the_Sprite);
+      --  end;
    end respond;
 
 
@@ -299,8 +300,8 @@ is
       log ("gel.world.client.my_new_Sprite.respond");
 
       declare
-         the_Event  : constant gel.Events.my_new_sprite_added_to_world_Event
-           := gel.events.my_new_sprite_added_to_world_Event (to_Event);
+         the_Event  : constant gel.Events.new_sprite_Event
+           := gel.events.new_sprite_Event (to_Event);
 
          the_Sprite : constant gel.Sprite.view
            := to_Sprite (the_Event.Pair,
@@ -320,9 +321,9 @@ is
                                                              physics_Models : access id_Maps_of_physics_model.Map)
    is
    begin
-      Self.World          := World;
-      Self.graphics_Models         := Models;
-      Self.physics_Models := physics_Models;
+      Self.World           := World;
+      Self.graphics_Models := Models;
+      Self.physics_Models  := physics_Models;
    end define;
 
 
@@ -339,6 +340,74 @@ is
 
 
 
+   --------------------------
+   --- my_rid_sprite_Response
+   --
+
+   type my_rid_sprite_Response is new lace.Response.item with
+      record
+         World           :        gel.World.view;
+         graphics_Models : access id_Maps_of_graphics_model.Map;
+         physics_Models  : access id_Maps_of_physics_model .Map;
+      end record;
+
+
+   overriding
+   function Name (Self : in my_rid_sprite_Response) return String;
+
+
+
+   overriding
+   procedure respond (Self : in out my_rid_sprite_Response;   to_Event : in lace.Event.Item'Class)
+   is
+   begin
+      log ("gel.world.client.my_rid_Sprite.respond");
+
+      declare
+         the_Event  : constant gel.Events.rid_sprite_Event
+           := gel.events.rid_sprite_Event (to_Event);
+
+         --  the_Sprite : constant gel.Sprite.view
+         --    := to_Sprite (the_Event.Pair,
+         --                  Self.graphics_Models.all,
+         --                  Self.physics_Models.all,
+         --                  Self.World);
+      begin
+         Self.World.rid (Self.World.fetch_Sprite (the_Event.Id));
+      end;
+
+   end respond;
+
+
+
+   procedure define (Self : in out my_rid_sprite_Response;   World          : in     gel.World.view;
+                                                             Models         : access id_Maps_of_graphics_model.Map;
+                                                             physics_Models : access id_Maps_of_physics_model.Map)
+   is
+   begin
+      Self.World           := World;
+      Self.graphics_Models := Models;
+      Self.physics_Models  := physics_Models;
+   end define;
+
+
+
+   overriding
+   function Name (Self : in my_rid_sprite_Response) return String
+   is
+      pragma unreferenced (Self);
+   begin
+      return "my_rid_sprite_Response";
+   end Name;
+
+   the_my_rid_sprite_Response : aliased my_rid_sprite_Response;
+
+
+
+
+   -------------------
+   --- World Mirroring
+   --
    type graphics_Model_iface_view is access all openGL .remote_Model.item'Class;
    type  physics_Model_iface_view is access all physics.remote.Model.item'Class;
 
@@ -370,7 +439,17 @@ is
                                             physics_Models => Self. physics_Models'Access);
 
       Self.add (the_my_new_sprite_Response'Access,
-                to_Kind (gel.Events.my_new_sprite_added_to_world_Event'Tag),
+                to_Kind (gel.Events.new_sprite_Event'Tag),
+                from_Subject => of_World.Name);
+
+      --  Rid sprite response.
+      --
+      define   (the_my_rid_sprite_Response, World          => Self.all'Access,
+                                            Models         => Self.graphics_Models'Access,
+                                            physics_Models => Self. physics_Models'Access);
+
+      Self.add (the_my_rid_sprite_Response'Access,
+                to_Kind (gel.Events.rid_sprite_Event'Tag),
                 from_Subject => of_World.Name);
 
       --  Obtain and make a local copy of graphics_Models, sprites and humans from the mirrored world.
@@ -455,50 +534,56 @@ is
    procedure motion_Updates_are (Self : in Item;   Now : in remote.World.motion_Updates)
    is
       all_Sprites : constant id_Maps_of_sprite.Map := Self.all_Sprites.Map.fetch_all;
+      the_Id      :          gel.sprite_Id;
 
    begin
       for i in Now'Range
       loop
-         declare
-            use remote.World;
-
-            the_Id             : constant gel.sprite_Id := Now (i).Id;
-            the_Sprite         : constant Sprite.view   := all_Sprites.Element (the_Id);
-
-            new_Site           : constant Vector_3      := refined (Now (i).Site);
-            --  site_Delta         :          Vector_3;
-            --  min_teleport_Delta : constant               := 20.0;
-
-            new_Spin           : constant Quaternion    := refined (Now (i).Spin);
-            --  new_Spin           : constant Matrix_3x3        := Now (i).Spin;
-
          begin
-            --  site_Delta := new_Site - the_Sprite.desired_Site;
-            --
-            --  if        abs site_Delta (1) > min_teleport_Delta
-            --    or else abs site_Delta (2) > min_teleport_Delta
-            --    or else abs site_Delta (3) > min_teleport_Delta
-            --  then
-            --     log ("Teleport.");
-            --     the_Sprite.Site_is (new_Site);   -- Sprite has been 'teleported', so move it now
-            --  end if;                             -- to prevent later interpolation.
+            the_Id := Now (i).Id;
 
-            null;
+            declare
+               use remote.World;
 
-            --  the_Sprite.Site_is (new_Site);
-            --  the_Sprite.Spin_is (to_Rotation (Axis  => new_Spin.V,
-            --                                   Angle => new_Spin.R));
+               the_Sprite         : constant Sprite.view   := all_Sprites.Element (the_Id);
+               new_Site           : constant Vector_3      := refined (Now (i).Site);
+               --  site_Delta         :          Vector_3;
+               --  min_teleport_Delta : constant               := 20.0;
 
-            --  the_Sprite.Spin_is (to_Matrix (to_Quaternion (new_Spin)));
+               new_Spin           : constant Quaternion    := refined (Now (i).Spin);
+               --  new_Spin           : constant Matrix_3x3        := Now (i).Spin;
 
-            --  the_Sprite.desired_Dynamics_are (Site => new_Site,
-            --                                   Spin => to_Quaternion (new_Spin));
+            begin
+               --  site_Delta := new_Site - the_Sprite.desired_Site;
+               --
+               --  if        abs site_Delta (1) > min_teleport_Delta
+               --    or else abs site_Delta (2) > min_teleport_Delta
+               --    or else abs site_Delta (3) > min_teleport_Delta
+               --  then
+               --     log ("Teleport.");
+               --     the_Sprite.Site_is (new_Site);   -- Sprite has been 'teleported', so move it now
+               --  end if;                             -- to prevent later interpolation.
 
-            the_Sprite.desired_Dynamics_are (Site => new_Site,
-                                             Spin => new_Spin);
 
-            --  the_Sprite.desired_Site_is (new_Site);
-            --  the_Sprite.desired_Spin_is (new_Spin);
+               --  the_Sprite.Site_is (new_Site);
+               --  the_Sprite.Spin_is (to_Rotation (Axis  => new_Spin.V,
+               --                                   Angle => new_Spin.R));
+
+               --  the_Sprite.Spin_is (to_Matrix (to_Quaternion (new_Spin)));
+
+               --  the_Sprite.desired_Dynamics_are (Site => new_Site,
+               --                                   Spin => to_Quaternion (new_Spin));
+
+               the_Sprite.desired_Dynamics_are (Site => new_Site,
+                                                Spin => new_Spin);
+
+               --  the_Sprite.desired_Site_is (new_Site);
+               --  the_Sprite.desired_Spin_is (new_Spin);
+            end;
+
+         exception
+            when constraint_Error =>
+               log ("Warning: Received motion updates for unknown sprite" & the_Id'Image & ".");
          end;
       end loop;
    end motion_Updates_are;

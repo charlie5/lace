@@ -10,8 +10,8 @@ is
 
    type Filename is new String;
 
-   function to_String (Filename : in forge.Filename) return String;     -- Converts 'CR & LF' to 'LF' at the end of a line.
-   function to_Text   (Filename : in forge.Filename) return Item;       -- Converts 'CR & LF' to 'LF' at the end of a line.
+   function File_to_String (Filename : in forge.Filename) return String;     -- Converts 'CR & LF' to 'LF' at the end of a line.
+   function File_to_Text   (Filename : in forge.Filename) return Item;       -- Converts 'CR & LF' to 'LF' at the end of a line.
 
 
    procedure store (Filename : in forge.Filename;   the_String : in String);
