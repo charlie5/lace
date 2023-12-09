@@ -37,7 +37,8 @@ is
                     "-gnatn",
                     -- "-gnatp",       -- TODO: This breaks opengl code. Investigate more.
                     "-funroll-loops",
-                    "-ftracer");
+                    "-ftracer",
+                    "-g");             -- TODO: Temporary for profiling. Make a new build mode for profiling.
 
    Small_Options := ("-Os",
                      "-gnatp",
