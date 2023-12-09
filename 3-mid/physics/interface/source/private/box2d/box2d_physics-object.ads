@@ -61,6 +61,7 @@ private
          user_Data : access lace.Any.limited_item'Class;
 
          Dynamics  : physics.Object.safe_Dynamics;
+         Site_z    : Real := 0.0;
       end record;
 
 

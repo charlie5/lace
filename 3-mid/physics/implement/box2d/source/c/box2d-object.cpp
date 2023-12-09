@@ -158,7 +158,7 @@ b2d_Object_Site (Object*   Self)
       the_Site.y = Self->bodyDef.position (1);
     }
 
-    the_Site.z = 0.0;
+  the_Site.z = 0.0;
 
   return the_Site;
 }

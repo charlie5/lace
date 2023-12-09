@@ -184,8 +184,9 @@ is
    overriding
    function Site (Self : in Item) return Vector_3
    is
-      the_Site : constant c_math_c.Vector_3.item := b2d_Object_Site (Self.C);
+      the_Site : c_math_c.Vector_3.item := b2d_Object_Site (Self.C);
    begin
+      the_Site.z := c_math_c.Real (Self.Site_z);
       return +the_Site;
    end Site;
 
@@ -195,6 +196,7 @@ is
    is
       c_Now : aliased c_math_c.Vector_3.item := +Now;
    begin
+      Self.Site_z := Now (3);
       b2d_Object_Site_is (Self.C, c_Now'unchecked_Access);
    end Site_is;
 
@@ -238,8 +240,9 @@ is
    overriding
    function Transform (Self : in Item) return Matrix_4x4
    is
-      the_Transform : constant c_math_c.Matrix_4x4.item := b2d_Object_Transform (Self.C);
+      the_Transform : c_math_c.Matrix_4x4.item := b2d_Object_Transform (Self.C);
    begin
+      the_Transform.m32 := c_math_c.Real (Self.Site_z);
       return +the_Transform;
    end Transform;
 
