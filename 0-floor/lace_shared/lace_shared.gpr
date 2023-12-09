@@ -35,7 +35,7 @@ is
 
    Fast_Options := ("-O3", 
                     "-gnatn",
-                    "-gnatp",
+                    -- "-gnatp",       -- TODO: This breaks opengl code. Investigate more.
                     "-funroll-loops",
                     "-ftracer");
 
