@@ -54,7 +54,7 @@ is
    --
 
    function new_circle_Sprite    (in_World   : in gel.World.view;
-                                  Site       : in math.Vector_2      := math.Origin_2D;
+                                  Site       : in math.Vector_3      := math.Origin_3D;
                                   Mass       : in math.Real          := 1.0;
                                   Friction   : in math.Real          := 0.5;
                                   Bounce     : in math.Real          := 0.5;
@@ -64,7 +64,7 @@ is
                                   user_Data  : in any_user_Data_view := null) return gel.Sprite.view;
 
    function new_polygon_Sprite   (in_World   : in gel.World.view;
-                                  Site       : in math.Vector_2      := math.Origin_2D;
+                                  Site       : in math.Vector_3      := math.Origin_3D;
                                   Mass       : in math.Real          := 1.0;
                                   Friction   : in math.Real          := 0.5;
                                   Bounce     : in math.Real          := 0.5;
@@ -74,7 +74,7 @@ is
                                   user_Data  : in any_user_Data_view := null) return gel.Sprite.view;
 
    function new_rectangle_Sprite (in_World   : in gel.World.view;
-                                  Site       : in math.Vector_2      := math.Origin_2D;
+                                  Site       : in math.Vector_3      := math.Origin_3D;
                                   Mass       : in math.Real          := 1.0;
                                   Friction   : in math.Real          := 0.5;
                                   Bounce     : in math.Real          := 0.5;

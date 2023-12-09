@@ -123,7 +123,7 @@ is
    --
 
    function new_circle_Sprite (in_World   : in gel.World.view;
-                               Site       : in math.Vector_2      := math.Origin_2D;
+                               Site       : in math.Vector_3      := math.Origin_3D;
                                Mass       : in math.Real          := 1.0;
                                Friction   : in math.Real          := 0.5;
                                Bounce     : in math.Real          := 0.5;
@@ -160,7 +160,7 @@ is
 
       return gel.Sprite.Forge.new_Sprite ("circle_Sprite",
                                           sprite.World_view (in_World),
-                                          Vector_3 (Site & float_Math.Random.random_Real (Lower => 0.0, Upper => 1.1)),
+                                          Site,
                                           the_graphics_Model,
                                           the_physics_Model,
                                           owns_graphics => True,
@@ -172,7 +172,7 @@ is
 
 
    function new_polygon_Sprite (in_World   : in gel.World.view;
-                                Site       : in math.Vector_2      := math.Origin_2D;
+                                Site       : in math.Vector_3      := math.Origin_3D;
                                 Mass       : in math.Real          := 1.0;
                                 Friction   : in math.Real          := 0.5;
                                 Bounce     : in math.Real          := 0.5;
@@ -215,7 +215,7 @@ is
 
       return gel.Sprite.Forge.new_Sprite ("polygon_Sprite",
                                           sprite.World_view (in_World),
-                                          Vector_3 (Site & 0.0),
+                                          Site,
                                           the_graphics_Model,
                                           the_physics_Model,
                                           owns_graphics => True,
@@ -227,7 +227,7 @@ is
 
 
    function new_rectangle_Sprite (in_World   : in gel.World.view;
-                                  Site       : in math.Vector_2      := math.Origin_2D;
+                                  Site       : in math.Vector_3      := math.Origin_3D;
                                   Mass       : in math.Real          := 1.0;
                                   Friction   : in math.Real          := 0.5;
                                   Bounce     : in math.Real          := 0.5;
