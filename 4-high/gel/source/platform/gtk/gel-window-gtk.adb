@@ -46,7 +46,7 @@ is
       gel_Window.Keyboard.emit_key_press_Event (Key      => to_gel_Key (Event.Key.keyVal),
                                                 key_Code => Integer    (Event.Key.hardware_Keycode));
 
-      return True;
+      return False;
    end key_press_Event_Cb;
 
 
@@ -69,7 +69,7 @@ is
          gel_Window.is_Open := False;
       end if;
 
-      return True;
+      return False;
    end key_release_Event_Cb;
 
 
