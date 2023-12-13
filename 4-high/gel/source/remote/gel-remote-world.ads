@@ -160,7 +160,7 @@ is
 
 
    type motion_Updates is array (Positive range <>) of motion_Update
-   with Pack;
+     with Pack;
 
    procedure motion_Updates_write (Stream : access ada.Streams.Root_Stream_type'Class;   Item : in  motion_Updates);
    procedure motion_Updates_read  (Stream : access ada.Streams.Root_Stream_type'Class;   Item : out motion_Updates);
@@ -168,7 +168,13 @@ is
    for motion_Updates'write use motion_Updates_write;
    for motion_Updates'read  use motion_Updates_read;
 
-   procedure motion_Updates_are (Self : in Item;   Now : in motion_Updates) is abstract;
+
+   type sequence_Id is range 0 .. 2**32 - 1;
+
+   procedure motion_Updates_are (Self : in Item;   seq_Id : in sequence_Id;
+                                                   Now    : in motion_Updates) is abstract;
+
+
 
 
    --------------

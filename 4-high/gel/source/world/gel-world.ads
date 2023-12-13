@@ -241,7 +241,8 @@ is
    procedure deregister (Self : access Item;   the_Mirror         : in remote.World.view);
 
    overriding
-   procedure motion_Updates_are (Self : in Item;   Now : in remote.World.motion_Updates);
+   procedure motion_Updates_are (Self : in Item;   seq_Id : in remote.World.sequence_Id;
+                                                   Now    : in remote.World.motion_Updates);
    --
    --  'Self' must use 'in' as mode to ensure async transmission with DSA.
 
@@ -293,7 +294,7 @@ private
    type Hertz is new Real;
 
    evolve_Hz            : constant Hertz    := 60.0;
-   client_update_Hz     : constant Hertz    :=  4.0;
+   client_update_Hz     : constant Hertz    := 20.0;     -- Too small will make player movement response time sluggish. Too large consumes much bandwidth.
 
    evolve_Period        : constant Duration := 1.0 / Duration (evolve_Hz);
    client_update_Period : constant Duration := 1.0 / Duration (client_update_Hz);
@@ -404,8 +405,8 @@ private
 
          --  Models
          --
-         graphics_Models : aliased id_Maps_of_graphics_model        .Map;
-         physics_Models  : aliased id_Maps_of_physics_model.Map;
+         graphics_Models : aliased id_Maps_of_graphics_model.Map;
+         physics_Models  : aliased id_Maps_of_physics_model .Map;
 
          --  Ids
          --

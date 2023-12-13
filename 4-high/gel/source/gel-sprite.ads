@@ -328,6 +328,16 @@ is
 
 
 
+   -- Motion Updates
+   --
+   function has_Moved (Self : in out Item;   current_Site : Vector_3;
+                                             current_Spin : Matrix_3x3) return Boolean;
+
+
+
+
+
+
 private
 
    type access_Joint_views is access all Joint.views;
@@ -422,6 +432,11 @@ private
          user_Data               : any_user_Data_view;
 
          is_Destroyed            : Boolean := False;
+
+         -- Motion Updates
+         --
+         prior_Site : Vector_3   := Origin_3D;
+         prior_Spin : Matrix_3x3 := Identity_3x3;
       end record;
 
 

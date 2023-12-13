@@ -1,6 +1,5 @@
 with
      lace.Observer,
-     ada.unchecked_Conversion,
      ada.Containers.Vectors;
 
 limited
@@ -96,6 +95,10 @@ private
          Clients                    : World_vector;
 
          all_Sprites : aliased sprite_Map;
+
+         -- Motion Updates
+         --
+         seq_Id : remote.World.sequence_Id := 0;
       end record;
 
 

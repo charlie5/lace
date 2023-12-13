@@ -862,7 +862,8 @@ is
    procedure deregister (Self : access Item;   the_Mirror         : in remote.World.view) is null;
 
    overriding
-   procedure motion_Updates_are (Self : in Item;   Now : in remote.World.motion_Updates) is null;
+   procedure motion_Updates_are (Self : in Item;   seq_Id : in remote.World.sequence_Id;
+                                                   Now    : in remote.World.motion_Updates) is null;
 
 
    ----------

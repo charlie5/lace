@@ -1098,6 +1098,33 @@ is
 
 
 
+
+   -----------------
+   -- Motion Updates
+   --
+
+   function has_Moved (Self : in out Item;   current_Site : Vector_3;
+                                             current_Spin : Matrix_3x3) return Boolean
+   is
+      Result : Boolean := False;
+   begin
+      if current_Site /= Self.prior_Site
+      then
+         Self.prior_Site := current_Site;
+         Result          := True;
+      end if;
+
+      if current_Spin /= Self.prior_Spin
+      then
+         Self.prior_Spin := current_Spin;
+         Result          := True;
+      end if;
+
+      return Result;
+   end has_Moved;
+
+
+
    ------------
    --- Graphics
    --

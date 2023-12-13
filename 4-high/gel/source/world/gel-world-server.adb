@@ -174,7 +174,7 @@ is
 
          the_Sprite             :          gel.Sprite.view;
 
-         is_a_mirrored_World    : constant Boolean := not Self.Clients.Is_Empty;
+         is_a_mirrored_World    : constant Boolean := not Self.Clients.is_Empty;
          mirror_Updates_are_due : constant Boolean := Self.Age >= Self.Age_at_last_Clients_update + client_update_Period;
          updates_Count          :          Natural := 0;
 
@@ -187,17 +187,20 @@ is
             while has_Element (Cursor)
             loop
                the_Sprite := Sprite.view (Element (Cursor));
-               --  the_Sprite.apply_Force ([0.0, 1.0, 0.0]);
-               --  the_Sprite.apply_Torque_impulse ([0.0, 1.0, 0.0]);
 
-               updates_Count                      := updates_Count + 1;
-               the_motion_Updates (updates_Count) := (Id   => the_Sprite.Id,
-                                                      Site => coarsen (the_Sprite.Site),
-                                                      Spin => coarsen (to_Quaternion (the_Sprite.Spin)));
-                                                      --  Spin => the_Sprite.Spin);
-
-               --  log (Image (Quaternion' (refined (the_motion_Updates (updates_Count).Spin))));
-               --  ada.Text_IO.put (refined (the_motion_Updates (updates_Count).Site)'Image);
+               declare
+                  the_Site : constant Vector_3   := the_Sprite.Site;
+                  the_Spin : constant Matrix_3x3 := the_Sprite.Spin;
+               begin
+                  if the_Sprite.has_Moved (current_Site => the_Site,
+                                           current_Spin => the_Spin)
+                  then
+                     updates_Count                      := updates_Count + 1;
+                     the_motion_Updates (updates_Count) := (Id   => the_Sprite.Id,
+                                                            Site => coarsen (the_Site),
+                                                            Spin => coarsen (to_Quaternion (the_Spin)));
+                  end if;
+               end;
 
                next (Cursor);
             end loop;
@@ -205,6 +208,7 @@ is
             --  Send updated sprite motions to all registered client worlds.
             --
             Self.Age_at_last_clients_update := Self.Age;
+            Self.seq_Id                     := Self.seq_Id + 1;
 
             if updates_Count > 0
             then
@@ -217,8 +221,8 @@ is
                   while has_Element (Cursor)
                   loop
                      the_Mirror := Element (Cursor);
-                     the_Mirror.motion_Updates_are (the_motion_Updates (1 .. updates_Count));
-
+                     the_Mirror.motion_Updates_are (Self.seq_Id,
+                                                    the_motion_Updates (1 .. updates_Count));
                      next (Cursor);
                   end loop;
                end;

@@ -219,6 +219,7 @@ is
    begin
       Self.gl_Area := gtk_glArea_new;
       Self.gl_Area.set_use_ES (True);
+      Self.gl_Area.Set_Can_Focus (True);
 
       Callbacks_with_gel_Window_user_Data.connect (Self.gl_Area,
                                                   "realize",

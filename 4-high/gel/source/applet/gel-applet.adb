@@ -426,7 +426,7 @@ is
          declare
             the_world_Info : world_Info renames Element (world_Cursor).all;
          begin
-            the_world_Info.World.evolve;
+            null; -- the_world_Info.World.evolve;
          end;
 
          next (world_Cursor);

@@ -50,7 +50,7 @@ is
    --
    the_Ball : constant gel.Sprite.view
      := gel.Forge.new_circle_Sprite (in_World => the_Applet.World,
-                                     Site     => [0.0, 0.0],
+                                     Site     => [0.0, 0.0, 0.0],
                                      Mass     => 1.0,
                                      Bounce   => 1.0,
                                      Friction => 0.0,
@@ -77,10 +77,12 @@ is
 
 
    procedure add_Player (Id   : in player_Id;
-                         Site : in Vector_2)
+                         Site : in Vector_3)
    is
       the_Player :          Player renames the_Players (Id);
-      score_Site : constant Vector_2    := Site + [0.0, stadium_Height / 2.0 + 0.8];
+      score_Site : constant Vector_3    := Site + [0.0,
+                                                   stadium_Height / 2.0 + 0.8,
+                                                   0.0];
    begin
       the_Player.Paddle := gel.Forge.new_rectangle_Sprite (the_Applet.World,
                                                            Site     => Site,
@@ -101,13 +103,13 @@ is
       the_Applet.World.add (the_Player.Paddle);
       the_Applet.World.add (the_Player.score_Text);
 
-      the_Player.score_Text.Site_is (Vector_3 (score_Site & 0.0));
+      the_Player.score_Text.Site_is (score_Site);
    end add_Player;
 
 
    --- Walls
    --
-   procedure add_Wall (Site   : in Vector_2;
+   procedure add_Wall (Site   : in Vector_3;
                        Width,
                        Height : in Real)
    is
@@ -204,8 +206,8 @@ begin
    declare
       paddle_X_Offset : constant := stadium_Width / 2.0 - 2.0;
    begin
-      add_Player (1, Site => [-paddle_X_Offset, 0.0]);
-      add_Player (2, Site => [ paddle_X_Offset, 0.0]);
+      add_Player (1, Site => [-paddle_X_Offset, 0.0, 0.0]);
+      add_Player (2, Site => [ paddle_X_Offset, 0.0, 0.0]);
    end;
 
    --- Build the stadium.
@@ -219,14 +221,14 @@ begin
       side_wall_X_Offset : constant :=  stadium_Width / 2.0;
       side_wall_Y_Offset : constant := (side_wall_Height + goal_Size) / 2.0;
    begin
-      add_Wall (Site => [0.0,  top_wall_Y_Offset],  Width => stadium_Width,  Height => Thickness);   -- Top
-      add_Wall (Site => [0.0, -top_wall_Y_Offset],  Width => stadium_Width,  Height => Thickness);   -- Bottom
+      add_Wall (Site => [0.0,  top_wall_Y_Offset, 0.0],  Width => stadium_Width,  Height => Thickness);   -- Top
+      add_Wall (Site => [0.0, -top_wall_Y_Offset, 0.0],  Width => stadium_Width,  Height => Thickness);   -- Bottom
 
-      add_Wall (Site => [-side_wall_X_Offset,  side_wall_Y_Offset],  Width => Thickness,   Height => side_wall_Height);   -- upper Left
-      add_Wall (Site => [-side_wall_X_Offset, -side_wall_Y_Offset],  Width => Thickness,   Height => side_wall_Height);   -- lower Left
+      add_Wall (Site => [-side_wall_X_Offset,  side_wall_Y_Offset, 0.0],  Width => Thickness,   Height => side_wall_Height);   -- upper Left
+      add_Wall (Site => [-side_wall_X_Offset, -side_wall_Y_Offset, 0.0],  Width => Thickness,   Height => side_wall_Height);   -- lower Left
 
-      add_Wall (Site => [ side_wall_X_Offset,  side_wall_Y_Offset],  Width => Thickness,   Height => side_wall_Height);   -- upper Right
-      add_Wall (Site => [ side_wall_X_Offset, -side_wall_Y_Offset],  Width => Thickness,   Height => side_wall_Height);   -- lower Right
+      add_Wall (Site => [ side_wall_X_Offset,  side_wall_Y_Offset, 0.0],  Width => Thickness,   Height => side_wall_Height);   -- upper Right
+      add_Wall (Site => [ side_wall_X_Offset, -side_wall_Y_Offset, 0.0],  Width => Thickness,   Height => side_wall_Height);   -- lower Right
    end;
 
    -- Connect events.
@@ -248,7 +250,7 @@ begin
    loop
       Cycle := Cycle + 1;
 
-      the_Applet.World.evolve;                        -- Advance the world.
+      --  the_Applet.World.evolve;                        -- Advance the world.
       the_Applet.freshen;                             -- Handle any new events and update the screen.
 
       --- Check goal scoring.

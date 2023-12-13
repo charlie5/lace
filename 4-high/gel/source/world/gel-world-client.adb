@@ -531,61 +531,70 @@ is
 
 
    overriding
-   procedure motion_Updates_are (Self : in Item;   Now : in remote.World.motion_Updates)
+   procedure motion_Updates_are (Self : in Item;   seq_Id : in remote.World.sequence_Id;
+                                                   Now    : in remote.World.motion_Updates)
    is
+      use type remote.World.sequence_Id;
+
       all_Sprites : constant id_Maps_of_sprite.Map := Self.all_Sprites.Map.fetch_all;
       the_Id      :          gel.sprite_Id;
 
    begin
-      for i in Now'Range
-      loop
-         begin
-            the_Id := Now (i).Id;
+      if seq_Id > Self.seq_Id.Value
+      then
+         Self.seq_Id.Value_is (seq_Id);
 
-            declare
-               use remote.World;
-
-               the_Sprite         : constant Sprite.view   := all_Sprites.Element (the_Id);
-               new_Site           : constant Vector_3      := refined (Now (i).Site);
-               --  site_Delta         :          Vector_3;
-               --  min_teleport_Delta : constant               := 20.0;
-
-               new_Spin           : constant Quaternion    := refined (Now (i).Spin);
-               --  new_Spin           : constant Matrix_3x3        := Now (i).Spin;
-
+         for i in Now'Range
+         loop
             begin
-               --  site_Delta := new_Site - the_Sprite.desired_Site;
-               --
-               --  if        abs site_Delta (1) > min_teleport_Delta
-               --    or else abs site_Delta (2) > min_teleport_Delta
-               --    or else abs site_Delta (3) > min_teleport_Delta
-               --  then
-               --     log ("Teleport.");
-               --     the_Sprite.Site_is (new_Site);   -- Sprite has been 'teleported', so move it now
-               --  end if;                             -- to prevent later interpolation.
+               the_Id := Now (i).Id;
+
+               declare
+                  use remote.World;
+
+                  the_Sprite         : constant Sprite.view   := all_Sprites.Element (the_Id);
+                  new_Site           : constant Vector_3      := refined (Now (i).Site);
+                  --  site_Delta         :          Vector_3;
+                  --  min_teleport_Delta : constant               := 20.0;
+
+                  new_Spin           : constant Quaternion    := refined (Now (i).Spin);
+                  --  new_Spin           : constant Matrix_3x3        := Now (i).Spin;
+
+               begin
+                  --  site_Delta := new_Site - the_Sprite.desired_Site;
+                  --
+                  --  if        abs site_Delta (1) > min_teleport_Delta
+                  --    or else abs site_Delta (2) > min_teleport_Delta
+                  --    or else abs site_Delta (3) > min_teleport_Delta
+                  --  then
+                  --     log ("Teleport.");
+                  --     the_Sprite.Site_is (new_Site);   -- Sprite has been 'teleported', so move it now
+                  --  end if;                             -- to prevent later interpolation.
 
 
-               --  the_Sprite.Site_is (new_Site);
-               --  the_Sprite.Spin_is (to_Rotation (Axis  => new_Spin.V,
-               --                                   Angle => new_Spin.R));
+                  --  the_Sprite.Site_is (new_Site);
+                  --  the_Sprite.Spin_is (to_Rotation (Axis  => new_Spin.V,
+                  --                                   Angle => new_Spin.R));
 
-               --  the_Sprite.Spin_is (to_Matrix (to_Quaternion (new_Spin)));
+                  --  the_Sprite.Spin_is (to_Matrix (to_Quaternion (new_Spin)));
 
-               --  the_Sprite.desired_Dynamics_are (Site => new_Site,
-               --                                   Spin => to_Quaternion (new_Spin));
+                  --  the_Sprite.desired_Dynamics_are (Site => new_Site,
+                  --                                   Spin => to_Quaternion (new_Spin));
 
-               the_Sprite.desired_Dynamics_are (Site => new_Site,
-                                                Spin => new_Spin);
+                  the_Sprite.desired_Dynamics_are (Site => new_Site,
+                                                   Spin => new_Spin);
 
-               --  the_Sprite.desired_Site_is (new_Site);
-               --  the_Sprite.desired_Spin_is (new_Spin);
+                  --  the_Sprite.desired_Site_is (new_Site);
+                  --  the_Sprite.desired_Spin_is (new_Spin);
+               end;
+
+            exception
+               when constraint_Error =>
+                  log ("Warning: Received motion updates for unknown sprite" & the_Id'Image & ".");
             end;
+         end loop;
 
-         exception
-            when constraint_Error =>
-               log ("Warning: Received motion updates for unknown sprite" & the_Id'Image & ".");
-         end;
-      end loop;
+      end if;
    end motion_Updates_are;
 
 
@@ -661,6 +670,26 @@ is
    --------------
    --  Containers
    --
+
+   protected
+   body safe_sequence_Id
+   is
+      procedure Value_is (Now : in remote.World.sequence_Id)
+      is
+      begin
+         the_Value := Now;
+      end Value_is;
+
+
+      function Value return remote.World.sequence_Id
+      is
+      begin
+         return the_Value;
+      end Value;
+
+   end safe_sequence_Id;
+
+
 
    protected
    body safe_id_Map_of_sprite

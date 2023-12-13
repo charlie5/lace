@@ -60,7 +60,8 @@ is
    procedure is_a_Mirror (Self : access Item'Class;   of_World : in remote.World.view);
 
    overriding
-   procedure motion_Updates_are (Self : in Item;   Now : in remote.World.motion_Updates);
+   procedure motion_Updates_are (Self : in Item;   seq_Id : in remote.World.sequence_Id;
+                                                   Now    : in remote.World.motion_Updates);
    --
    --  'Self' must use 'in' as mode to ensure async transmission with DSA.
 
@@ -98,6 +99,20 @@ private
    procedure rid   (To   : in out sprite_Map;   the_Sprite : in Sprite.view);
 
 
+
+   protected
+   type safe_sequence_Id
+   is
+      procedure Value_is (Now : in remote.World.sequence_Id);
+      function  Value       return remote.World.sequence_Id;
+   private
+      the_Value : remote.World.sequence_Id := 0;
+   end safe_sequence_Id;
+
+   type safe_sequence_Id_view is access all safe_sequence_Id;
+
+
+
    --------------
    --- World Item
    --
@@ -106,6 +121,10 @@ private
       record
          Age_at_last_mirror_update : Duration := 0.0;
          all_Sprites               : aliased sprite_Map;
+
+         -- Motion Updates
+         --
+         seq_Id : safe_sequence_Id_view := new safe_sequence_Id;
       end record;
 
 
