@@ -766,16 +766,16 @@ is
          declare
             use gel.World;
 
-            the_Camera        : constant gel.Camera.view   := the_world_Info.Cameras.first_Element;
+            the_Camera        : constant gel.Camera.view := the_world_Info.Cameras.first_Element;
 
-            Site_window_space : constant Vector_3          := [Real (the_Event.Site (1)),
-                                                               Real (the_Event.Site (2)),
-                                                               1.0];
+            Site_window_space : constant Vector_3        := [Real (the_Event.Site (1)),
+                                                             Real (the_Event.Site (2)),
+                                                             1.0];
 
-            Site_world_space  : constant Vector_3          := the_Camera.to_world_Site (Site_window_space);
+            Site_world_space  : constant Vector_3        := the_Camera.to_world_Site (Site_window_space);
 
-            Collision         :          ray_Collision := the_world_Info.World.cast_Ray (From => the_Camera.Site,
-                                                                                             To   => Site_world_space);
+            Collision         :          ray_Collision   := the_world_Info.World.cast_Ray (From => the_Camera.Site,
+                                                                                           To   => Site_world_space);
 
             Event             : constant gel.Events.sprite_click_down_Event := (mouse_Button => the_Event.Button,
                                                                                 world_Site   => Site_world_space);
