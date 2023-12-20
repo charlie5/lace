@@ -35,14 +35,13 @@ begin
    lace.Event.utility.use_text_Logger ("events");
    lace.Event.utility.Logger.ignore (to_Kind (gel.Mouse.motion_Event'Tag));
 
-   the_Applet := gel.Forge.new_gui_Applet  ("mouse_Demo",
-                                            space_Kind => physics.Bullet);
-
+   the_Applet := gel.Forge.new_gui_Applet ("mouse_Demo",
+                                           space_Kind => physics.Bullet);
    declare
       use ada.Calendar;
 
-      the_Ball   : constant gel.Sprite.view           := gel.Forge.new_ball_Sprite (the_Applet.World (1),
-                                                                                    mass => 1.0);
+      the_Ball : constant gel.Sprite.view := gel.Forge.new_ball_Sprite (the_Applet.World (1),
+                                                                        Mass => 1.0);
 
 
       type retreat_Sprite is new lace.Response.item with
@@ -78,7 +77,7 @@ begin
          Self.Sprite.Site_is (Self.Sprite.Site + the_Applet.gui_Camera.Spin * [0.0, 0.0, 1.0]);
       end respond;
 
-      advance_Sprite_Response : aliased advance_Sprite := (lace.Response.Item with sprite => the_Ball);
+      advance_Sprite_Response : aliased advance_Sprite := (lace.Response.item with Sprite => the_Ball);
 
 
 
