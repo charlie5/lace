@@ -127,6 +127,8 @@ b3d_Space_cast_Ray (Space*   Self,    Vector_3*   From,
   btVector3                                    rayTo      = to_btVector3 (To);
   btCollisionWorld::ClosestRayResultCallback   rayCallback (rayFrom, rayTo);
 
+  // printf ("bullet-space ~ object count: %d\n", Self->dynamicsWorld->getNumCollisionObjects());
+
   Self->dynamicsWorld->rayTest (rayFrom, rayTo,
                                 rayCallback);
 
