@@ -94,6 +94,7 @@ is
          exception
             when system.RPC.communication_Error
                | storage_Error =>
+
                if Subject.Logger /= null
                then
                   Subject.Logger.log_Emit (Subject.view (Self),
