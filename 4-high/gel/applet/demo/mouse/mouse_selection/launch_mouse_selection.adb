@@ -108,10 +108,7 @@ begin
 
       while the_Applet.is_open
       loop
-         the_Applet.gui_World.evolve;
-         the_Ball.respond;
          the_Applet.freshen;
-
          next_render_Time := next_render_Time + gel.World.evolve_Period;
          delay until next_render_Time;
       end loop;
