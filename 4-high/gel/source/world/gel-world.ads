@@ -227,6 +227,20 @@ is
 
 
 
+   -----------------
+   --- Point Casting
+   --
+
+   type point_Collision is
+      record
+         near_Sprite  : gel.Sprite.view;
+         Site_world   : Vector_3;
+      end record;
+
+   function cast_Point (Self : in Item;   Point : in Vector_3) return point_Collision;
+
+
+
 
    --------------------
    ---  World Mirroring

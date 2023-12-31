@@ -461,11 +461,13 @@ is
 
 
 
+
    procedure Gravity_is (Self : in out Item;   Now : in Vector_3)
    is
    begin
       Self.physics_Space.Gravity_is (Now);
    end Gravity_is;
+
 
 
 
@@ -488,6 +490,25 @@ is
       end if;
    end cast_Ray;
 
+
+
+
+   function cast_Point (Self : in Item;   Point : in Vector_3) return point_Collision
+   is
+      use type physics.Object.view;
+
+      physics_Collision : constant physics.Space.point_Collision := Self.physics_Space.cast_Point (Point);
+
+   begin
+      if physics_Collision.near_Object = null
+      then
+         return point_Collision' (near_Sprite => null,
+                                  others      => <>);
+      else
+         return point_Collision' (to_GEL (physics_Collision.near_Object),
+                                  physics_Collision.Site_world);
+      end if;
+   end cast_Point;
 
 
 
