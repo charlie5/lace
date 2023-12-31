@@ -55,6 +55,21 @@ extern "C"
   b2d_ray_Collision      b2d_Space_cast_Ray (Space*   Self,    Vector_3*   From,
                                                                Vector_3*   To);
 
+
+  //  Point Casting
+  //
+  struct b2d_point_Collision
+  {
+      const Object*    near_Object;
+//      Real             hit_Fraction;
+//      Vector_3         Normal_world;
+      Vector_3         Site_world;
+  };
+
+  b2d_point_Collision    b2d_Space_cast_Point (Space*   Self,    Vector_3*   Point);
+
+
+
   //  Collisions
   //
 
