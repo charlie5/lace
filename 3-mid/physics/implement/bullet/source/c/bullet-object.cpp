@@ -125,7 +125,8 @@ b3d_Object_user_Data      (Object*   Self)
 
 
 void
-b3d_Object_user_Data_is   (Object*   Self,   void*   Now)
+b3d_Object_user_Data_is   (Object*   Self,
+                           void*     Now)
 {
   btRigidBody*   the_Body = to_bullet (Self);
 
@@ -150,7 +151,8 @@ b3d_Object_Mass (Object*   Self)
 
 
 void
-b3d_Object_Friction_is    (Object*   Self,   Real   Now)
+b3d_Object_Friction_is (Object*   Self,   
+                        Real      Now)
 {
   btRigidBody*   the_Body = to_bullet (Self);
 

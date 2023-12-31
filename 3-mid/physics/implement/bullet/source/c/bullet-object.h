@@ -11,8 +11,8 @@ extern "C"
   struct Object;
 
   struct Object*       b3d_new_Object            (Real     Mass,
-						  Shape*   the_Shape,
-						  int      is_Kinematic);
+						                                      Shape*   the_Shape,
+						                                      int      is_Kinematic);
 
   Shape*               b3d_Object_Shape          (Object*   Self);
 
