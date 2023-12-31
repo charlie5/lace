@@ -61,7 +61,7 @@ is
    procedure Viewport_is              (Self : in out Item'Class;   Width,
                                                                    Height : in Positive);
 
-   function  to_World_Site            (Self : in     Item;   Window_Site : in math.Vector_3) return math.Vector_3;
+   function  to_World_Site            (Self : in     Item;         Window_Site : in math.Vector_3) return math.Vector_3;
    --
    --  Returns the 'window space' site transformed to the equivalent 'world space' site.
 
