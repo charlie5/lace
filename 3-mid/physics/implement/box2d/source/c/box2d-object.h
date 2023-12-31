@@ -2,7 +2,7 @@
 #define C_BOX2D_OBJECT_H
 
 
-#include "box2d.h"
+#include "c_math.h"
 #include "box2d-shape.h"
 
 
@@ -14,7 +14,7 @@ extern "C"
                                               Real      Mass,
                                               Real      Friction,
                                               Real      Restitution,
-					      Shape*    the_Shape);
+					                                    Shape*    the_Shape);
 
   void             b2d_free_Object           (Object*   Self);
 

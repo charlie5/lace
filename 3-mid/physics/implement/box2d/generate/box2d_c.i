@@ -17,7 +17,7 @@ extern "C"
 
 %import "../../c_math/generate/c_math_c.i"
 
-%include "../source/c/box2d.h"
+# %include "../source/c/box2d.h"
 %include "../source/c/box2d-shape.h"
 %include "../source/c/box2d-object.h"
 %include "../source/c/box2d-joint.h"

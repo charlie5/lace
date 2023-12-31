@@ -2,7 +2,7 @@
 #define C_BOX2D_SPACE_H
 
 
-#include "box2d.h"
+#include "c_math.h"
 #include "box2d-object.h"
 #include "box2d-joint.h"
 

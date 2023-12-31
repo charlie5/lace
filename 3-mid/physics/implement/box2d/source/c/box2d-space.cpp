@@ -43,11 +43,10 @@ public:
   b2Fixture*   Nearest;
 
   float
-  ReportFixture
-    (b2Fixture*      fixture,
-		 const b2Vec2&   point,
-		 const b2Vec2&   normal,
-		 float           fraction)
+  ReportFixture (b2Fixture*      fixture,
+		             const b2Vec2&   point,
+		             const b2Vec2&   normal,
+		             float           fraction)
   {
     Nearest = fixture;
 
@@ -55,6 +54,7 @@ public:
   }
 
 };
+
 
 
 /// Collisions
@@ -223,7 +223,8 @@ b2d_free_Space (struct Space*    Self)
 
 
 void
-b2d_Space_Gravity_is (Space*   Self,    Vector_3*     Now)
+b2d_Space_Gravity_is (Space*      Self,    
+                      Vector_3*   Now)
 {
   b2World*   the_World = to_World (Self);
 
@@ -232,7 +233,8 @@ b2d_Space_Gravity_is (Space*   Self,    Vector_3*     Now)
 
 
 void
-b2d_Space_evolve (Space*   Self,     float   By)
+b2d_Space_evolve (Space*   Self,
+                  float    By)
 {
   b2World*            the_World            = to_World (Self);
   contact_Listener*   the_contact_Listener = dynamic_cast <contact_Listener*> (the_World->GetContactManager().m_contactListener);
@@ -244,19 +246,20 @@ b2d_Space_evolve (Space*   Self,     float   By)
 
 
 void
-b2d_Space_add_Object (Space*   Self,    Object*   the_Object)
+b2d_Space_add_Object (Space*    Self,
+                      Object*   the_Object)
 {
-  b2World*   the_World = (b2World*)Self;
+  b2World*   the_World = (b2World*) Self;
 
   the_Object->body = the_World->CreateBody (&the_Object->bodyDef);
-  // the_Object->body->SetUserData (the_Object);
-
+  the_Object->body->SetUserData   (the_Object);
   the_Object->body->CreateFixture (&the_Object->fixtureDef);
 }
 
 
 void
-b2d_Space_rid_Object (Space*   Self,    Object*   the_Object)
+b2d_Space_rid_Object (Space*    Self,
+                      Object*   the_Object)
 {
   ((b2World*)Self)->DestroyBody (the_Object->body);
   the_Object->body = 0;
@@ -264,7 +267,8 @@ b2d_Space_rid_Object (Space*   Self,    Object*   the_Object)
 
 
 void
-b2d_Space_add_Joint (Space*   Self,    Joint*   the_Joint)
+b2d_Space_add_Joint (Space*   Self, 
+                     Joint*   the_Joint)
 {
   b2World*           the_World = (b2World*)    Self;
   b2JointDef*        jointDef  = (b2JointDef*) the_Joint;
@@ -351,21 +355,21 @@ b2d_ray_Collision
 b2d_Space_cast_Ray (Space*   Self,    Vector_3*   From,
                                       Vector_3*   To)
 {
-  b2World*              the_World     = (b2World*)    Self;
+  b2World*              the_World   = (b2World*) Self;
   my_raycast_Callback   the_Callback;
 
   the_Callback.Nearest = 0;
 
   the_World->RayCast (&the_Callback,
-		      b2Vec2 (From->x, From->y),
-		      b2Vec2 (To  ->x, To  ->y));
+                      b2Vec2 (From->x, From->y),
+                      b2Vec2 (To  ->x, To  ->y));
 
   b2d_ray_Collision   the_Collision;
 
   if (the_Callback.Nearest == 0)
     the_Collision.near_Object = 0;
   else
-    the_Collision.near_Object  = (Object*) (the_Callback.Nearest->GetBody()->GetUserData().pointer);
+    the_Collision.near_Object = (Object*) (the_Callback.Nearest->GetBody()->GetUserData().pointer);
 
   the_Collision.hit_Fraction = 0.0;
   the_Collision.Normal_world = Vector_3 (0.0, 0.0, 0.0);
@@ -373,6 +377,83 @@ b2d_Space_cast_Ray (Space*   Self,    Vector_3*   From,
 
   return the_Collision;
 }
+
+
+
+/// Pointcasts
+//
+
+class QueryCallback : public b2QueryCallback
+{
+public:
+	QueryCallback (const b2Vec2& point)
+	{
+		m_point   = point;
+		m_fixture = NULL;
+	}
+
+
+	bool
+	ReportFixture (b2Fixture*   fixture) override
+	{
+		b2Body*   body   = fixture->GetBody();
+		bool      inside = fixture->TestPoint (m_point);
+			
+    if (inside)
+		{
+	     m_fixture = fixture;
+			 return false;            // We are done, terminate the query.
+		}
+		
+		return true;                // Continue the query.
+  }
+
+  b2Vec2       m_point;
+	b2Fixture*   m_fixture;
+};
+
+
+
+b2d_point_Collision    
+b2d_Space_cast_Point (Space*      Self,
+                      Vector_3*   Point)
+{
+   b2d_point_Collision   Result;
+   b2World*              the_World = (b2World *)Self;
+   const b2Vec2          p         = b2Vec2 (Point->x,
+                                             Point->y);
+   // Make a small box.
+   //
+   b2AABB   aabb;
+   b2Vec2   d;
+
+   d.Set (0.001f, 0.001f);
+
+   aabb.lowerBound = p - d;
+   aabb.upperBound = p + d;
+
+   printf ("\n");
+   printf ("b2d_Space_cast_Point ~ p = %f   %f\n", p.x, p.y);
+
+   // Query the world for overlapping shapes.
+   //
+   QueryCallback   Callback (p);
+
+   the_World->QueryAABB (&Callback, aabb);
+
+   if (Callback.m_fixture)
+   {
+     Result.near_Object = (Object*) Callback.m_fixture->GetBody()->GetUserData().pointer;
+   }
+   else
+   {
+     Result.near_Object = NULL;
+   }
+
+   Result.Site_world = *Point;
+   return Result;
+}
+
 
 
 } // extern "C"

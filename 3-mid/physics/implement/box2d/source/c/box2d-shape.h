@@ -1,7 +1,7 @@
 #ifndef C_BOX2D_SHAPE_H
 #define C_BOX2D_SHAPE_H
 
-#include "box2d.h"
+#include "c_math.h"
 
 
 
