@@ -736,6 +736,11 @@ inline b2BodyUserData& b2Body::GetUserData()
 	return m_userData;
 }
 
+inline void b2Body::SetUserData(void* data)
+{
+  m_userData.pointer = (uintptr_t) data;     // Added by RAK.
+}
+
 inline void b2Body::ApplyForce(const b2Vec2& force, const b2Vec2& point, bool wake)
 {
 	if (m_type != b2_dynamicBody)
