@@ -1024,4 +1024,88 @@ is
    end inverse_Transform;
 
 
+
+
+
+   ----------------------------
+   --- Line/Plane Intersections
+   --
+
+   function intersect_Line_and_x0_Plane (Line_p1, Line_p2 : Vector_3) return Vector_3
+   is
+   begin
+      if    Line_p1 (1) = 0.0
+        and Line_p2 (1) = 0.0
+      then
+         raise Line_lies_on_Plane;
+      end if;
+
+      if Line_p1 (1) = Line_p2 (1)
+      then
+         raise Line_is_parralel_to_Plane;
+      end if;
+
+      declare
+         lambda    : constant Real     :=   -Line_p1 (1)
+                                          / (Line_p2 (1) - Line_p1 (1));
+         Intersect : constant Vector_3 :=   Line_p1
+                                          + lambda * (Line_p2 - Line_p1);
+      begin
+         return Intersect;
+      end;
+   end intersect_line_and_x0_plane;
+
+
+
+   function intersect_Line_and_y0_Plane (Line_p1, Line_p2 : Vector_3) return Vector_3
+   is
+   begin
+      if    Line_p1 (2) = 0.0
+        and Line_p2 (2) = 0.0
+      then
+         raise Line_lies_on_Plane;
+      end if;
+
+      if Line_p1 (2) = Line_p2 (2)
+      then
+         raise Line_is_parralel_to_Plane;
+      end if;
+
+      declare
+         lambda    : constant Real     :=   -Line_p1 (2)
+                                          / (Line_p2 (2) - Line_p1 (2));
+         Intersect : constant Vector_3 :=   Line_p1
+                                          + lambda * (Line_p2 - Line_p1);
+      begin
+         return Intersect;
+      end;
+   end intersect_line_and_y0_plane;
+
+
+
+   function intersect_Line_and_z0_Plane (Line_p1, Line_p2 : Vector_3) return Vector_3
+   is
+   begin
+      if    Line_p1 (3) = 0.0
+        and Line_p2 (3) = 0.0
+      then
+         raise Line_lies_on_Plane;
+      end if;
+
+      if Line_p1 (3) = Line_p2 (3)
+      then
+         raise Line_is_parralel_to_Plane;
+      end if;
+
+      declare
+         lambda    : constant Real     :=   -Line_p1 (3)
+                                          / (Line_p2 (3) - Line_p1 (3));
+         Intersect : constant Vector_3 :=   Line_p1
+                                          + lambda * (Line_p2 - Line_p1);
+      begin
+         return Intersect;
+      end;
+   end intersect_Line_and_z0_Plane;
+
+
 end any_math.any_Algebra.any_linear.any_d3;
