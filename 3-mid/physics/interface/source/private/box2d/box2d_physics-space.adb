@@ -2,6 +2,7 @@ with
      box2d_c.Binding,
      box2d_c.b2d_Contact,
      box2d_c.b2d_ray_Collision,
+     box2d_c.b2d_point_Collision,
 
      box2d_physics.Shape,
      box2d_physics.Joint,
@@ -449,6 +450,29 @@ is
 
       return the_Collision;
    end cast_Ray;
+
+
+
+   overriding
+   function cast_Point (Self : access Item;   Point : in Vector_3) return physics.Space.point_Collision
+   is
+      the_Collision   :          physics.Space.point_Collision;
+      c_Point         : aliased  c_math_c.Vector_3.item           := +Point;
+      the_c_Collision : constant box2d_c.b2d_point_Collision.item := b2d_Space_cast_Point (Self.C, c_Point'unchecked_Access);
+
+   begin
+      if the_c_Collision.near_Object /= null
+      then
+         new_Line;
+         Put_Line ("box2d_Physics.Space.cast_Point ~ the_c_Collision.near_Object = " & the_c_Collision.near_Object'Image);
+         the_Collision.near_Object := to_Object_view (b2d_Object_user_Data (the_c_Collision.near_Object));
+      end if;
+
+      the_Collision.Site_world := +the_c_Collision.Site_world;
+
+      return the_Collision;
+   end cast_Point;
+
 
 
 

@@ -203,6 +203,8 @@ private
    overriding
    function  cast_Ray      (Self : access Item;   From, To     : in Vector_3) return physics.Space.ray_Collision;
    overriding
+   function  cast_Point    (Self : access Item;   Point        : in Vector_3) return physics.Space.point_Collision;
+   overriding
    procedure add           (Self : in out Item;   the_Joint    : in physics.Joint.view);
    overriding
    procedure rid           (Self : in out Item;   the_Joint    : in physics.Joint.view);

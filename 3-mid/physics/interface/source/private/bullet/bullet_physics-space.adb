@@ -416,6 +416,19 @@ is
 
 
    overriding
+   function cast_Point (Self : access Item;   Point    : in Vector_3) return physics.Space.point_Collision
+   is
+      Result : physics.Space.point_Collision;
+   begin
+      raise Program_Error with "TODO";
+      return Result;
+   end cast_Point;
+
+
+
+
+
+   overriding
    procedure evolve (Self : in out Item;   By : in Duration)
    is
    begin

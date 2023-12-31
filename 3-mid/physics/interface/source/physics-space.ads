@@ -75,6 +75,18 @@ is
    function  cast_Ray (Self : access Item;    From, To : in Vector_3) return ray_Collision   is abstract;
 
 
+   --- Point Casting
+   --
+
+   type point_Collision is
+      record
+         near_Object  : Object.view;
+         Site_world   : Vector_3;
+      end record;
+
+   function  cast_Point (Self : access Item;    Point : in Vector_3) return point_Collision   is abstract;
+
+
    --- Bounds
    --
 
