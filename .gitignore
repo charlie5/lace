@@ -77,6 +77,7 @@ launch_many_boxes_demo
 launch_model_scaling
 launch_modeller_test
 launch_mouse_motion
+launch_mouse_selection_2d
 launch_mouse_selection
 launch_render_arrows
 launch_render_asteroids
