@@ -754,9 +754,9 @@ is
    is
       use world_Vectors;
 
-      the_Event       : gel.mouse.button_press_Event renames gel.Mouse.button_press_Event (to_Event);
-      Cursor          : world_Vectors.Cursor         :=      Self.Applet.Worlds.First;
-      the_world_Info  : world_Info_view;
+      the_Event      : gel.mouse.button_press_Event renames gel.Mouse.button_press_Event (to_Event);
+      Cursor         : world_Vectors.Cursor         :=      Self.Applet.Worlds.First;
+      the_world_Info : world_Info_view;
 
    begin
       while has_Element (Cursor)
@@ -765,6 +765,7 @@ is
 
          declare
             use gel.World;
+            use type physics.space_Kind;
 
             the_Camera        : constant gel.Camera.view := the_world_Info.Cameras.first_Element;
 
@@ -774,16 +775,37 @@ is
 
             Site_world_space  : constant Vector_3        := the_Camera.to_world_Site (Site_window_space);
 
-            Collision         :          ray_Collision   := the_world_Info.World.cast_Ray (From => the_Camera.Site,
-                                                                                           To   => Site_world_space);
-
-            Event             : constant gel.Events.sprite_click_down_Event := (mouse_Button => the_Event.Button,
+            sprite_Event      : constant gel.Events.sprite_click_down_Event := (mouse_Button => the_Event.Button,
                                                                                 world_Site   => Site_world_space);
+
          begin
-            if Collision.near_Sprite /= null
-            then
-               Collision.near_Sprite.emit (Event);
-            end if;
+            case the_world_Info.World.space_Kind
+            is
+               when physics.Bullet =>
+                  declare
+                     the_Collision : ray_Collision := the_world_Info.World.cast_Ray (From => the_Camera.Site,
+                                                                                     To   => Site_world_space);
+                  begin
+                     if the_Collision.near_Sprite /= null
+                     then
+                        the_Collision.near_Sprite.emit (sprite_Event);
+                     end if;
+                  end;
+
+               when physics.Box2D =>
+                  declare
+                     use gel.linear_Algebra_3D;
+
+                     Intersect     : constant Vector_3        := intersect_Line_and_z0_Plane (Line_p1 => the_Camera.Site,
+                                                                                              Line_p2 => Site_world_space);
+                     the_Collision : constant point_Collision := the_world_Info.World.cast_Point (Point => Intersect);
+                  begin
+                     if the_Collision.near_Sprite /= null
+                     then
+                        the_Collision.near_Sprite.emit (sprite_Event);
+                     end if;
+                  end;
+            end case;
          end;
 
          next (Cursor);
@@ -797,9 +819,10 @@ is
    is
       use world_Vectors;
 
-      the_Event      : gel.Mouse.button_release_Event renames gel.Mouse.button_release_Event (to_Event);
+      the_Event      : gel.mouse.button_release_Event renames gel.Mouse.button_release_Event (to_Event);
       Cursor         : world_Vectors.Cursor           :=      Self.Applet.Worlds.First;
       the_world_Info : world_Info_view;
+
 
    begin
       while has_Element (Cursor)
@@ -817,16 +840,36 @@ is
 
             Site_world_space  : constant Vector_3          := the_Camera.to_world_Site (Site_window_space);
 
-            Collision         :          ray_Collision := the_world_Info.World.cast_Ray (From       => the_Camera.Site,
-                                                                                             To         => Site_world_space);
-
-            Event             : constant gel.Events.sprite_click_up_Event := (mouse_Button => the_Event.Button,
+            sprite_Event      : constant gel.Events.sprite_click_up_Event := (mouse_Button => the_Event.Button,
                                                                               world_Site   => Site_world_space);
          begin
-            if Collision.near_Sprite /= null
-            then
-               Collision.near_Sprite.emit (Event);
-            end if;
+            case the_world_Info.World.space_Kind
+            is
+               when physics.Bullet =>
+                  declare
+                     the_Collision : ray_Collision := the_world_Info.World.cast_Ray (From => the_Camera.Site,
+                                                                                     To   => Site_world_space);
+                  begin
+                     if the_Collision.near_Sprite /= null
+                     then
+                        the_Collision.near_Sprite.emit (sprite_Event);
+                     end if;
+                  end;
+
+               when physics.Box2D =>
+                  declare
+                     use gel.linear_Algebra_3D;
+
+                     Intersect     : constant Vector_3        := intersect_Line_and_z0_Plane (Line_p1 => the_Camera.Site,
+                                                                                              Line_p2 => Site_world_space);
+                     the_Collision : constant point_Collision := the_world_Info.World.cast_Point (Point => Intersect);
+                  begin
+                     if the_Collision.near_Sprite /= null
+                     then
+                        the_Collision.near_Sprite.emit (sprite_Event);
+                     end if;
+                  end;
+            end case;
          end;
 
          next (Cursor);
