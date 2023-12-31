@@ -1,7 +1,5 @@
 with
      box2d_c.Binding,
-     box2d_c.Pointers,
-
      box2d_physics.Shape,
 
      c_math_c.Vector_2,
@@ -14,6 +12,7 @@ with
 
      ada.unchecked_Deallocation,
      ada.Unchecked_Conversion;
+
 
 package body box2d_Physics.Object
 is
@@ -46,9 +45,8 @@ is
                                            Restitution : in Real;
                                            at_Site     : in Vector_3)
    is
-      Self_as_any : constant Any_limited_view       := Any_limited_view (Self);
-      c_Site      : aliased  c_math_c.Vector_2.item := (c_math_c.Real (at_Site (1)),
-                                                        c_math_c.Real (at_Site (2)));
+      c_Site : aliased  c_math_c.Vector_2.item := (c_math_c.Real (at_Site (1)),
+                                                   c_math_c.Real (at_Site (2)));
    begin
       Self.C := b2d_new_Object (c_Site'unchecked_Access,
                                 c_math_c.Real (Mass),
@@ -56,8 +54,8 @@ is
                                 c_math_c.Real (Restitution),
                                 box2d_physics.Shape.view (Shape).C);
       Self.Shape := Shape;
-      b2d_Object_user_Data_is (box2d_c.Pointers.Object_pointer (Self.C),
-                               to_void_ptr (Self_as_any));
+      b2d_Object_user_Data_is (Self.C,
+                               to_void_ptr (Self));
       Self.Site_is (at_Site);
       Self.update_Dynamics;
    end define;

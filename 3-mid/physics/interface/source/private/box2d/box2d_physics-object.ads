@@ -3,6 +3,7 @@ with
      physics.Shape,
      physics.Model,
      box2d_C;
+with box2d_c.Pointers;
 
 private
 with
@@ -55,7 +56,9 @@ private
 
    type Item is limited new physics.Object.item with
       record
-         C         : access box2d_C.Object;
+         --  C         : access box2d_C.Object;
+         C         : box2d_c.Pointers.Object_pointer;
+
          Shape     :        physics.Shape.view;
          Model     :        physics.Model.view;
          user_Data : access lace.Any.limited_item'Class;
