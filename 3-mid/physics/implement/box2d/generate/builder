@@ -16,7 +16,7 @@ echo
 echo Generating the binding.
 echo
 
-swig_gnat  -gnat -c++  -cpperraswarn    box2d_c.i 
+swig4ada  -ada -c++  -cpperraswarn    box2d_c.i 
 rm portable_new_line_Token.tmp
 
 
