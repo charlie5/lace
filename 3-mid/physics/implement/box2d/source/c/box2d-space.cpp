@@ -432,9 +432,6 @@ b2d_Space_cast_Point (Space*      Self,
    aabb.lowerBound = p - d;
    aabb.upperBound = p + d;
 
-   printf ("\n");
-   printf ("b2d_Space_cast_Point ~ p = %f   %f\n", p.x, p.y);
-
    // Query the world for overlapping shapes.
    //
    QueryCallback   Callback (p);

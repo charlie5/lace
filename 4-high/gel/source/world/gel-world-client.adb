@@ -106,12 +106,7 @@ is
       the_Sprite         :        gel.Sprite.view;
 
    begin
-      --  log ("gel.world.client.to_Sprite ~ the_Pair.graphics_Model_Id:" & the_Pair.graphics_Model_Id'Image);
-
       the_graphics_Model := openGL .Model.view (the_graphics_Models.Element (the_Pair.graphics_Model_Id));
-
-      --  log ("gel.world.client.to_Sprite ~ the_Pair.physics_Model_Id:" & the_Pair.physics_Model_Id'Image);
-
       the_physics_Model  := physics.Model.view ( the_physics_Models.Element (the_Pair. physics_Model_Id));
 
       the_Sprite := gel.Sprite.forge.new_Sprite (+the_Pair.sprite_Name,
@@ -129,14 +124,8 @@ is
       the_Sprite.Site_is    (get_Translation (the_Pair.Transform));
       the_Sprite.Spin_is    (get_Rotation    (the_Pair.Transform));
 
-
       the_Sprite.desired_Dynamics_are (Site => the_Sprite.Site,
                                        Spin => to_Quaternion (get_Rotation (the_Sprite.Transform)));
-
-      --  the_Sprite.desired_Site_is (the_Sprite.Site);
-      --  the_Sprite.desired_Spin_is (to_Quaternion (get_Rotation (the_Sprite.Transform)));
-
-      log ("gel.world.client.to_Sprite");
 
       return the_Sprite;
    end to_Sprite;
@@ -516,7 +505,6 @@ is
                                         Self.graphics_Models,
                                         Self. physics_Models,
                                         gel.World.view (Self));
-               log ("k1");
                Self.add (the_Sprite);
                --  Self.emit (sprite_added_Event' (Sprite => the_Sprite.Id));
                --  Self.emit (sprite_added_Event' (kkk));
