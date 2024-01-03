@@ -104,7 +104,7 @@ is
       the_graphics_Model := openGL .Model.view (the_graphics_Models        .Element (the_Pair.graphics_Model_Id));
       the_physics_Model  := physics.Model.view (the_physics_Models.Element (the_Pair. physics_Model_Id));
 
-      the_Sprite := gel.Sprite.forge.new_Sprite ("Sprite" & the_Pair.sprite_Id'Image,
+      the_Sprite := gel.Sprite.forge.new_Sprite ("2Sprite" & the_Pair.sprite_Id'Image,
                                                  sprite.World_view (the_World),
                                                  get_Translation (the_Pair.Transform),
                                                  the_graphics_Model,

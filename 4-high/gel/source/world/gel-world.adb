@@ -7,6 +7,7 @@ with
      openGL.Renderer.lean,
 
      lace.Response,
+     lace.Text.Forge,
 
      ada.Text_IO,
      ada.Exceptions,
@@ -96,10 +97,12 @@ is
 
       use openGL;
    begin
+      log ("gel.world.to_Sprite");
+
       the_graphics_Model := openGL .Model.view (the_graphics_Models.Element (the_Pair.graphics_Model_Id));
       the_physics_Model  := physics.Model.view ( the_physics_Models.Element (the_Pair. physics_Model_Id));
 
-      the_Sprite := gel.Sprite.forge.new_Sprite ("Sprite" & the_Pair.sprite_Id'Image,
+      the_Sprite := gel.Sprite.forge.new_Sprite ("1Sprite" & the_Pair.sprite_Id'Image,
                                                  sprite.World_view (the_World),
                                                  get_Translation (the_Pair.Transform),
                                                  the_graphics_Model,
@@ -1030,7 +1033,8 @@ is
    overriding
    function Sprites (Self : in out Item) return remote.World.sprite_model_Pairs
    is
-      use id_Maps_of_sprite;
+      use id_Maps_of_sprite,
+          lace.Text;
 
       all_Sprites : constant id_Maps_of_sprite.Map    := Item'Class (Self).all_Sprites.fetch;
       Cursor      :          id_Maps_of_sprite.Cursor := all_Sprites.First;
@@ -1044,6 +1048,7 @@ is
          the_Sprite := Element (Cursor);
 
          the_Pairs (i) := (sprite_Id         => the_Sprite.Id,
+                           sprite_Name       => lace.Text.forge.to_Text_64 (the_Sprite.Name),
                            graphics_model_Id => the_Sprite.graphics_Model.Id,
                            physics_model_Id  => the_Sprite. physics_Model.Id,
                            Mass              => the_Sprite.Mass,

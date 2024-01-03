@@ -5,6 +5,7 @@ with
      lace.Observer,
      lace.Subject,
      lace.Event,
+     lace.Text,
 
      ada.unchecked_Conversion,
      ada.Containers.indefinite_hashed_Maps,
@@ -114,6 +115,7 @@ is
    type sprite_model_Pair is
       record
          sprite_Id         : gel   .sprite_Id;
+         sprite_Name       : lace.Text.item_64;
          graphics_model_Id : openGL .model_Id;
          physics_model_Id  : physics.model_Id;
 
@@ -174,6 +176,14 @@ is
    procedure motion_Updates_are (Self : in Item;   seq_Id : in sequence_Id;
                                                    Now    : in motion_Updates) is abstract;
 
+
+
+
+
+   type sprite_added_Event is new lace.Event.item with
+      record
+         Sprite : gel.sprite_Id;
+      end record;
 
 
 

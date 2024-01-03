@@ -54,6 +54,7 @@ is
    --
 
    function new_circle_Sprite    (in_World   : in gel.World.view;
+                                  Name       : in String;
                                   Site       : in math.Vector_3      := math.Origin_3D;
                                   Mass       : in math.Real          := 1.0;
                                   Friction   : in math.Real          := 0.5;

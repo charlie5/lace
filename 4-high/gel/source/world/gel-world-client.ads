@@ -63,7 +63,12 @@ is
    procedure motion_Updates_are (Self : in Item;   seq_Id : in remote.World.sequence_Id;
                                                    Now    : in remote.World.motion_Updates);
    --
-   --  'Self' must use 'in' as mode to ensure async transmission with DSA.
+   --  'Self' must use 'in' mode to ensure async transmission with DSA.
+
+
+   ----------
+   --- Events
+   --
 
 
 
