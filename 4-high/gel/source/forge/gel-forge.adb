@@ -122,16 +122,17 @@ is
    -- 2D
    --
 
-   function new_circle_Sprite (in_World   : in gel.World.view;
-                               Name       : in String;
-                               Site       : in math.Vector_3      := math.Origin_3D;
-                               Mass       : in math.Real          := 1.0;
-                               Friction   : in math.Real          := 0.5;
-                               Bounce     : in math.Real          := 0.5;
-                               Radius     : in math.Real          := 0.5;
-                               Color      : in openGL.Color       := opengl.Palette.White;
-                               Texture    : in openGL.asset_Name  := openGL.null_Asset;
-                               user_Data  : in any_user_Data_view := null) return gel.Sprite.view
+   function new_circle_Sprite (in_World    : in gel.World.view;
+                               Name        : in String;
+                               Site        : in math.Vector_3      := math.Origin_3D;
+                               Mass        : in math.Real          := 1.0;
+                               Friction    : in math.Real          := 0.5;
+                               Bounce      : in math.Real          := 0.5;
+                               is_Tangible : in Boolean            := True;
+                               Radius      : in math.Real          := 0.5;
+                               Color       : in openGL.Color       := opengl.Palette.White;
+                               Texture     : in openGL.asset_Name  := openGL.null_Asset;
+                               user_Data   : in any_user_Data_view := null) return gel.Sprite.view
    is
       use openGL;
       use type Vector_2;
@@ -142,8 +143,8 @@ is
         := physics.Model.Forge.new_physics_Model (shape_Info  => (physics.Model.Circle, Radius),
                                                   Mass        => Mass,
                                                   Friction    => Friction,
-                                                  Restitution => Bounce);
-                                                  --  Site        => Vector_3 (Site & 0.0));
+                                                  Restitution => Bounce,
+                                                  is_Tangible => is_Tangible);
    begin
       if Texture = openGL.null_Asset
       then

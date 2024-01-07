@@ -53,37 +53,38 @@ is
    -- 2D
    --
 
-   function new_circle_Sprite    (in_World   : in gel.World.view;
-                                  Name       : in String;
-                                  Site       : in math.Vector_3      := math.Origin_3D;
-                                  Mass       : in math.Real          := 1.0;
-                                  Friction   : in math.Real          := 0.5;
-                                  Bounce     : in math.Real          := 0.5;
-                                  Radius     : in math.Real          := 0.5;
-                                  Color      : in openGL.Color       := opengl.Palette.White;
-                                  Texture    : in openGL.asset_Name  := openGL.null_Asset;
-                                  user_Data  : in any_user_Data_view := null) return gel.Sprite.view;
+   function new_circle_Sprite    (in_World    : in gel.World.view;
+                                  Name        : in String;
+                                  Site        : in math.Vector_3      := math.Origin_3D;
+                                  Mass        : in math.Real          := 1.0;
+                                  Friction    : in math.Real          := 0.5;
+                                  Bounce      : in math.Real          := 0.5;
+                                  is_Tangible : in Boolean            := True;
+                                  Radius      : in math.Real          := 0.5;
+                                  Color       : in openGL.Color       := opengl.Palette.White;
+                                  Texture     : in openGL.asset_Name  := openGL.null_Asset;
+                                  user_Data   : in any_user_Data_view := null) return gel.Sprite.view;
 
-   function new_polygon_Sprite   (in_World   : in gel.World.view;
-                                  Site       : in math.Vector_3      := math.Origin_3D;
-                                  Mass       : in math.Real          := 1.0;
-                                  Friction   : in math.Real          := 0.5;
-                                  Bounce     : in math.Real          := 0.5;
-                                  Vertices   : in Geometry_2d.Sites;
-                                  Color      : in openGL.Color       := opengl.Palette.White;
-                                  Texture    : in openGL.asset_Name  := openGL.null_Asset;
-                                  user_Data  : in any_user_Data_view := null) return gel.Sprite.view;
+   function new_polygon_Sprite   (in_World    : in gel.World.view;
+                                  Site        : in math.Vector_3      := math.Origin_3D;
+                                  Mass        : in math.Real          := 1.0;
+                                  Friction    : in math.Real          := 0.5;
+                                  Bounce      : in math.Real          := 0.5;
+                                  Vertices    : in Geometry_2d.Sites;
+                                  Color       : in openGL.Color       := opengl.Palette.White;
+                                  Texture     : in openGL.asset_Name  := openGL.null_Asset;
+                                  user_Data   : in any_user_Data_view := null) return gel.Sprite.view;
 
-   function new_rectangle_Sprite (in_World   : in gel.World.view;
-                                  Site       : in math.Vector_3      := math.Origin_3D;
-                                  Mass       : in math.Real          := 1.0;
-                                  Friction   : in math.Real          := 0.5;
-                                  Bounce     : in math.Real          := 0.5;
+   function new_rectangle_Sprite (in_World    : in gel.World.view;
+                                  Site        : in math.Vector_3      := math.Origin_3D;
+                                  Mass        : in math.Real          := 1.0;
+                                  Friction    : in math.Real          := 0.5;
+                                  Bounce      : in math.Real          := 0.5;
                                   Width,
-                                  Height     : in math.Real;
-                                  Color      : in openGL.Color       := opengl.Palette.White;
-                                  Texture    : in openGL.asset_Name  := openGL.null_Asset;
-                                  user_Data  : in any_user_Data_view := null) return gel.Sprite.view;
+                                  Height      : in math.Real;
+                                  Color       : in openGL.Color       := opengl.Palette.White;
+                                  Texture     : in openGL.asset_Name  := openGL.null_Asset;
+                                  user_Data   : in any_user_Data_view := null) return gel.Sprite.view;
    -- 3D
    --
 
