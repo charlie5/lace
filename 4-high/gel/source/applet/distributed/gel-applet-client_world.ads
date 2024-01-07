@@ -5,7 +5,7 @@ with
 
 package gel.Applet.client_world
 --
---  Provides a gel applet configured with a single window and a single client world.
+--  Provides a GEL applet configured with a single window and a single client world.
 --
 is
    type Item is new gel.Applet.item with private;
