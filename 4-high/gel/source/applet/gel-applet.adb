@@ -775,9 +775,6 @@ is
 
             Site_world_space  : constant Vector_3        := the_Camera.to_world_Site (Site_window_space);
 
-            sprite_Event      : constant gel.Events.sprite_click_down_Event := (mouse_Button => the_Event.Button,
-                                                                                world_Site   => Site_world_space);
-
          begin
             case the_world_Info.World.space_Kind
             is
@@ -788,7 +785,12 @@ is
                   begin
                      if the_Collision.near_Sprite /= null
                      then
-                        the_Collision.near_Sprite.emit (sprite_Event);
+                        declare
+                           sprite_clicked_Event : constant gel.Events.sprite_click_down_Event := (mouse_Button => the_Event.Button,
+                                                                                                  world_Site   => Site_world_space);
+                        begin
+                           the_Collision.near_Sprite.emit (sprite_clicked_Event);
+                        end;
                      end if;
                   end;
 
@@ -796,13 +798,26 @@ is
                   declare
                      use gel.linear_Algebra_3D;
 
-                     Intersect     : constant Vector_3        := intersect_Line_and_z0_Plane (Line_p1 => the_Camera.Site,
-                                                                                              Line_p2 => Site_world_space);
-                     the_Collision : constant point_Collision := the_world_Info.World.cast_Point (Point => Intersect);
+                     Intersect     : constant Vector_3        := intersect_Line_and_z0_Plane     (Line_p1 => the_Camera.Site,
+                                                                                                  Line_p2 => Site_world_space);
+                     the_Collision : constant point_Collision := the_world_Info.World.cast_Point (Point   => Intersect);
                   begin
                      if the_Collision.near_Sprite /= null
                      then
-                        the_Collision.near_Sprite.emit (sprite_Event);
+                        declare
+                           sprite_clicked_Event : constant gel.Events.sprite_click_down_Event := (mouse_Button => the_Event.Button,
+                                                                                                  world_Site   => Site_world_space);
+
+                        begin
+                           the_Collision.near_Sprite.emit (sprite_clicked_Event);
+                        end;
+                     else
+                        declare
+                           space_clicked_Event : constant gel.Events.space_click_down_Event := (mouse_Button => the_Event.Button,
+                                                                                                world_Site   => Site_world_space);
+                        begin
+                           Self.Applet.emit (space_clicked_Event);
+                        end;
                      end if;
                   end;
             end case;

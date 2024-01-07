@@ -73,6 +73,20 @@ is
       end record;
 
 
+   type space_click_down_Event is new lace.Event.item with
+      record
+         mouse_Button : gel.Mouse.Button_Id;
+         world_Site   : math.Vector_3;
+      end record;
+
+
+   type space_click_up_Event is new lace.Event.item with
+      record
+         mouse_Button : gel.Mouse.Button_Id;
+         world_Site   : math.Vector_3;
+      end record;
+
+
    type sprite_click_down_Event is new lace.Event.item with
       record
          mouse_Button : gel.Mouse.Button_Id;
