@@ -61,7 +61,9 @@ is
                                   Bounce      : in math.Real          := 0.5;
                                   is_Tangible : in Boolean            := True;
                                   Radius      : in math.Real          := 0.5;
-                                  Color       : in openGL.Color       := opengl.Palette.White;
+                                  Color       : in openGL.lucid_Color := (opengl.Palette.White, openGL.Opaque);
+                                  Sides       : in Positive           := 24;
+                                  Fill        : in Boolean            := True;
                                   Texture     : in openGL.asset_Name  := openGL.null_Asset;
                                   user_Data   : in any_user_Data_view := null) return gel.Sprite.view;
 

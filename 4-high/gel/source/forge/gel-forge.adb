@@ -1,6 +1,7 @@
 with
      openGL.Model.text     .lit_colored,
 
+     openGL.Model.circle   .colored,
      openGL.Model.circle   .lit_textured,
 
      openGL.Model.sphere   .lit_colored_textured,
@@ -22,8 +23,8 @@ with
      openGL.Model.segment_line,
 
      physics.Model,
-     gel.Window,
-     float_Math.Random;
+     gel.Window;
+     --  float_Math.Random;
 
 
 package body gel.Forge
@@ -130,12 +131,13 @@ is
                                Bounce      : in math.Real          := 0.5;
                                is_Tangible : in Boolean            := True;
                                Radius      : in math.Real          := 0.5;
-                               Color       : in openGL.Color       := opengl.Palette.White;
+                               Color       : in openGL.lucid_Color := (opengl.Palette.White, openGL.Opaque);
+                               Sides       : in Positive           := 24;
+                               Fill        : in Boolean            := True;
                                Texture     : in openGL.asset_Name  := openGL.null_Asset;
                                user_Data   : in any_user_Data_view := null) return gel.Sprite.view
    is
       use openGL;
-      use type Vector_2;
 
       the_graphics_Model : openGL.Model.view;
 
@@ -148,15 +150,21 @@ is
    begin
       if Texture = openGL.null_Asset
       then
-         the_graphics_Model := openGL.Model.sphere.lit_colored.new_Sphere (Radius,
-                                                                           Color => (Color, Opaque)).all'Access;
+         if Fill
+         then
+            the_graphics_Model := openGL.Model.sphere.lit_colored_textured.new_Sphere (Radius,
+                                                                                       Color => Color,
+                                                                                       Image => Texture).all'Access;
+         else
+            the_graphics_Model := openGL.Model.circle.colored.new_circle (Radius,
+                                                                          Color => Color,
+                                                                          Sides => Sides).all'Access;
+         end if;
+
       else
-         --  the_graphics_Model := openGL.Model.sphere.lit_colored_textured.new_Sphere (Radius,
-         --                                                                             Color => (Color, Opaque),
-         --                                                                             Image => Texture).all'Access;
          the_graphics_Model := openGL.Model.circle.lit_textured.new_Circle (Radius,
-                                                                            Face => (Fades         => (1 => 0.0,     others => <>),
-                                                                                     Textures      => (1 => Texture, others => <>),
+                                                                            Face => (Fades         => [1 => 0.0,     others => <>],
+                                                                                     Textures      => [1 => Texture, others => <>],
                                                                                      texture_Count => 1)).all'Access;
       end if;
 
@@ -183,7 +191,6 @@ is
                                 Texture    : in openGL.asset_Name  := openGL.null_Asset;
                                 user_Data  : in any_user_Data_view := null) return gel.Sprite.view
    is
-      use Math;
       use type Geometry_2d.Sites,
                openGL.asset_Name;
 
@@ -210,8 +217,8 @@ is
                                                                              (Color, openGL.Opaque)).all'Access;
       else
          the_graphics_Model := openGL.Model.polygon.lit_textured.new_Polygon (openGL.Vector_2_array (Vertices),
-                                                                              Face         => (Fades         => (1 => 0.0,     others => <>),
-                                                                                               Textures      => (1 => Texture, others => <>),
+                                                                              Face         => (Fades         => [1 => 0.0,     others => <>],
+                                                                                               Textures      => [1 => Texture, others => <>],
                                                                                                texture_Count => 1)).all'Access;
       end if;
 
