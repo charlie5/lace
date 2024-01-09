@@ -1154,6 +1154,21 @@ is
 
 
 
+
+   -------
+   --- Ids
+   --
+
+   procedure reserve_Ids (Self : in out Item;   Before : in long_Integer)
+   is
+   begin
+      Self.last_used_sprite_Id        :=         sprite_Id (Before - 1);
+      Self.last_used_model_Id         := graphics_model_Id (Before - 1);
+      Self.last_used_physics_model_Id := physics .model_Id (Before - 1);
+   end reserve_Ids;
+
+
+
    -----------
    --  Testing
    --

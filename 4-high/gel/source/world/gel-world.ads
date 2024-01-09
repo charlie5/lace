@@ -241,7 +241,6 @@ is
 
 
 
-
    --------------------
    ---  World Mirroring
    --
@@ -269,6 +268,7 @@ is
    function  Sprites         (Self : in out Item) return remote.World.sprite_model_Pairs;
 
 
+
    ----------
    --- Models
    --
@@ -293,6 +293,15 @@ is
                                                                         Hash,              "=");
 
    function local_physics_Models (Self : in Item) return id_Maps_of_physics_model.Map;
+
+
+
+
+   -------
+   --- Ids
+   --
+
+   procedure reserve_Ids (Self : in out Item;   Before : in long_Integer);
 
 
 
@@ -427,7 +436,7 @@ private
          --  Ids
          --
          last_used_sprite_Id        : gel.sprite_Id         := 0;
-         last_used_model_Id         : gel.graphics_model_Id := 0;
+         last_used_model_Id         : gel.graphics_model_Id := 0;     --TODO: Rename to 'last_used_graphics_model_Id'.
          last_used_physics_model_Id : physics     .model_Id := 0;
 
          --  Free Sets
