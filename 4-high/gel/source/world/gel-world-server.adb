@@ -128,7 +128,7 @@ is
       return the_Sprite;
    end to_Sprite;
 
-   pragma Unreferenced (to_Sprite);
+   --  pragma Unreferenced (to_Sprite);
 
 
    ----------
