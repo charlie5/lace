@@ -806,7 +806,7 @@ is
                      then
                         declare
                            sprite_clicked_Event : constant gel.Events.sprite_click_down_Event := (mouse_Button => the_Event.Button,
-                                                                                                  world_Site   => Site_world_space);
+                                                                                                  world_Site   => the_Collision.Site_world);
 
                         begin
                            the_Collision.near_Sprite.emit (sprite_clicked_Event);
@@ -814,7 +814,7 @@ is
                      else
                         declare
                            space_clicked_Event : constant gel.Events.space_click_down_Event := (mouse_Button => the_Event.Button,
-                                                                                                world_Site   => Site_world_space);
+                                                                                                world_Site   => Intersect);
                         begin
                            Self.Applet.emit (space_clicked_Event);
                         end;
