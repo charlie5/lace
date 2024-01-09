@@ -880,12 +880,13 @@ is
 
       if world_Position (4) = 0.0
       then
-         raise Constraint_Error with "unProject: world_Position (4) = 0.0";
-      else
-         world_Position (1) := world_Position (1) / world_Position (4);
-         world_Position (2) := world_Position (2) / world_Position (4);
-         world_Position (3) := world_Position (3) / world_Position (4);
+         world_Position (4) := Real'Epsilon;
+         --  raise Constraint_Error with "unProject: world_Position (4) = 0.0";     -- TODO: Find out why this happens.
       end if;
+
+      world_Position (1) := world_Position (1) / world_Position (4);
+      world_Position (2) := world_Position (2) / world_Position (4);
+      world_Position (3) := world_Position (3) / world_Position (4);
 
       return Vector_3 (world_Position (1 .. 3));
    end unProject;
