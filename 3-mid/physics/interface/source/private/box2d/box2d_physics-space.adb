@@ -463,8 +463,6 @@ is
    begin
       if the_c_Collision.near_Object /= null
       then
-         new_Line;
-         Put_Line ("box2d_Physics.Space.cast_Point ~ the_c_Collision.near_Object = " & the_c_Collision.near_Object'Image);
          the_Collision.near_Object := to_Object_view (b2d_Object_user_Data (the_c_Collision.near_Object));
       end if;
 
