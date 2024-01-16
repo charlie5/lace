@@ -74,6 +74,16 @@ is
    end almost_Zero;
 
 
+   function  almost_Equals (Self,
+                            Other,
+                            Tolerance : in Real := Real'Base'Model_Small) return Boolean
+   is
+   begin
+      return Self <= Other + Tolerance
+        and  Self >= Other - Tolerance;
+   end almost_Equals;
+
+
    function Clamped (Self : in Real;   Low, High : in Real) return Real
    is
    begin
@@ -601,6 +611,16 @@ is
    begin
       return Vector_3 (Vector' (abs (Vector (Right))));
    end "abs";
+
+
+   function  almost_Equals (Self, Other : in Vector_3;
+                            Tolerance   : in     Real := Real'Base'Model_Small) return Boolean
+   is
+   begin
+      return almost_Equals (Self (1), Other (1),  Tolerance)
+        and  almost_Equals (Self (2), Other (2),  Tolerance)
+        and  almost_Equals (Self (3), Other (3),  Tolerance);
+   end almost_Equals;
 
 
    ---------

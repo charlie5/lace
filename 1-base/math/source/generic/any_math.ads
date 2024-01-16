@@ -49,15 +49,18 @@ is
    subtype Real          is Real_t;
    subtype unit_Interval is Real range 0.0 ..   1.0;
 
-   function  almost_Zero (Self  : in     Real) return Boolean;
+   function  almost_Zero   (Self      : in     Real) return Boolean;
+   function  almost_Equals (Self,
+                            Other,
+                            Tolerance : in     Real := Real'Base'Model_Small) return Boolean;
 
-   function  Clamped     (Self  : in     Real;   Low, High : in Real) return Real;
-   procedure clamp       (Self  : in out Real;   Low, High : in Real);
+   function  Clamped (Self  : in     Real;   Low, High : in Real) return Real;
+   procedure clamp   (Self  : in out Real;   Low, High : in Real);
 
-   procedure swap        (Left,
-                          Right : in out Real);
+   procedure swap    (Left,
+                      Right : in out Real);
 
-   function  Image       (Self  : in     Real;   Precision : in Natural := 5) return String;
+   function  Image   (Self  : in     Real;   Precision : in Natural := 5) return String;
 
 
    -------------
@@ -170,6 +173,8 @@ is
    overriding
    function "abs" (Right : in Vector_3) return Vector_3;
 
+   function  almost_Equals (Self, Other : in Vector_3;
+                            Tolerance   : in     Real := Real'Base'Model_Small) return Boolean;
 
    -----------
    -- Matrices
