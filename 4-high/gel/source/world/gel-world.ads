@@ -296,13 +296,11 @@ is
 
 
 
-
    -------
    --- Ids
    --
 
    procedure reserve_Ids (Self : in out Item;   Before : in long_Integer);
-
 
 
 
