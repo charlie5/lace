@@ -181,15 +181,17 @@ is
 
 
 
-   function new_polygon_Sprite (in_World   : in gel.World.view;
-                                Site       : in math.Vector_3      := math.Origin_3D;
-                                Mass       : in math.Real          := 1.0;
-                                Friction   : in math.Real          := 0.5;
-                                Bounce     : in math.Real          := 0.5;
-                                Vertices   : in Geometry_2d.Sites;
-                                Color      : in openGL.Color       := opengl.Palette.White;
-                                Texture    : in openGL.asset_Name  := openGL.null_Asset;
-                                user_Data  : in any_user_Data_view := null) return gel.Sprite.view
+   function new_polygon_Sprite (in_World    : in gel.World.view;
+                                  Name        : in String;
+                                  Site        : in math.Vector_3      := math.Origin_3D;
+                                  Mass        : in math.Real          := 1.0;
+                                  Friction    : in math.Real          := 0.5;
+                                  Bounce      : in math.Real          := 0.5;
+                                  is_Tangible : in Boolean            := True;
+                                  Vertices    : in Geometry_2d.Sites;
+                                  Color       : in openGL.Color       := opengl.Palette.White;
+                                  Texture     : in openGL.asset_Name  := openGL.null_Asset;
+                                  user_Data   : in any_user_Data_view := null) return gel.Sprite.view
    is
       use type Geometry_2d.Sites,
                openGL.asset_Name;
@@ -206,10 +208,10 @@ is
         := physics.Model.Forge.new_physics_Model (shape_Info  => (physics.Model.Polygon,
                                                                   vertex_Count => Vertices'Length,
                                                                   Vertices     => Vertices & Padding),
-                                                  --  Site        => Vector_3 (Site & 0.0),
                                                   Mass        => Mass,
                                                   Friction    => Friction,
-                                                  Restitution => Bounce);
+                                                  Restitution => Bounce,
+                                                  is_Tangible => is_Tangible);
    begin
       if Texture = openGL.null_Asset
       then
@@ -222,7 +224,7 @@ is
                                                                                                texture_Count => 1)).all'Access;
       end if;
 
-      return gel.Sprite.Forge.new_Sprite ("polygon_Sprite",
+      return gel.Sprite.Forge.new_Sprite (Name,
                                           sprite.World_view (in_World),
                                           Site,
                                           the_graphics_Model,
@@ -235,16 +237,18 @@ is
 
 
 
-   function new_rectangle_Sprite (in_World   : in gel.World.view;
-                                  Site       : in math.Vector_3      := math.Origin_3D;
-                                  Mass       : in math.Real          := 1.0;
-                                  Friction   : in math.Real          := 0.5;
-                                  Bounce     : in math.Real          := 0.5;
+   function new_rectangle_Sprite (in_World    : in gel.World.view;
+                                  Name        : in String;
+                                  Site        : in math.Vector_3      := math.Origin_3D;
+                                  Mass        : in math.Real          := 1.0;
+                                  Friction    : in math.Real          := 0.5;
+                                  Bounce      : in math.Real          := 0.5;
+                                  is_Tangible : in Boolean            := True;
                                   Width,
-                                  Height     : in math.Real;
-                                  Color      : in openGL.Color       := opengl.Palette.White;
-                                  Texture    : in openGL.asset_Name  := openGL.null_Asset;
-                                  user_Data  : in any_user_Data_view := null) return gel.Sprite.view
+                                  Height      : in math.Real;
+                                  Color       : in openGL.Color       := opengl.Palette.White;
+                                  Texture     : in openGL.asset_Name  := openGL.null_Asset;
+                                  user_Data   : in any_user_Data_view := null) return gel.Sprite.view
    is
       use Math;
 
@@ -256,7 +260,7 @@ is
                                                              [ half_Width,  half_Height],
                                                              [-half_Width,  half_Height]];
    begin
-      return new_polygon_Sprite (in_World, Site, Mass, Friction, Bounce, the_Vertices, Color, Texture, user_Data);
+      return new_polygon_Sprite (in_World, Name, Site, Mass, Friction, Bounce, is_Tangible, the_Vertices, Color, Texture, user_Data);
    end new_rectangle_Sprite;
 
 
@@ -266,15 +270,15 @@ is
    --
 
    function new_ball_Sprite (in_World   : in gel.World.view;
-                                  Site       : in math.Vector_3      := math.Origin_3D;
-                                  Mass       : in math.Real          := 1.0;
-                                  Radius     : in math.Real          := 0.5;
-                                  lat_Count  : in Positive           := openGL.Model.sphere.default_latitude_Count;
-                                  long_Count : in Positive           := openGL.Model.sphere.default_longitude_Count;
-                                  is_Lit     : in Boolean            := True;
-                                  Color      : in openGL.lucid_Color := opengl.no_lucid_Color;
-                                  Texture    : in openGL.asset_Name  := openGL.null_Asset;
-                                  user_Data  : in any_user_Data_view := null) return gel.Sprite.view
+                             Site       : in math.Vector_3      := math.Origin_3D;
+                             Mass       : in math.Real          := 1.0;
+                             Radius     : in math.Real          := 0.5;
+                             lat_Count  : in Positive           := openGL.Model.sphere.default_latitude_Count;
+                             long_Count : in Positive           := openGL.Model.sphere.default_longitude_Count;
+                             is_Lit     : in Boolean            := True;
+                             Color      : in openGL.lucid_Color := opengl.no_lucid_Color;
+                             Texture    : in openGL.asset_Name  := openGL.null_Asset;
+                             user_Data  : in any_user_Data_view := null) return gel.Sprite.view
    is
       use type openGL.lucid_Color;
 
