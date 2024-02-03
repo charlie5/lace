@@ -181,17 +181,18 @@ is
 
 
 
-   function new_polygon_Sprite (in_World    : in gel.World.view;
-                                  Name        : in String;
-                                  Site        : in math.Vector_3      := math.Origin_3D;
-                                  Mass        : in math.Real          := 1.0;
-                                  Friction    : in math.Real          := 0.5;
-                                  Bounce      : in math.Real          := 0.5;
-                                  is_Tangible : in Boolean            := True;
-                                  Vertices    : in Geometry_2d.Sites;
-                                  Color       : in openGL.Color       := opengl.Palette.White;
-                                  Texture     : in openGL.asset_Name  := openGL.null_Asset;
-                                  user_Data   : in any_user_Data_view := null) return gel.Sprite.view
+   function new_polygon_Sprite (in_World       : in gel.World.view;
+                                Name           : in String;
+                                Site           : in math.Vector_3      := math.Origin_3D;
+                                Mass           : in math.Real          := 1.0;
+                                Friction       : in math.Real          := 0.5;
+                                Bounce         : in math.Real          := 0.5;
+                                is_Tangible    : in Boolean            := True;
+                                Vertices       : in Geometry_2d.Sites;
+                                Color          : in openGL.Color       := opengl.Palette.White;
+                                Texture        : in openGL.asset_Name  := openGL.null_Asset;
+                                texture_Tiling : in openGL.Real        := 1.0;
+                                user_Data      : in any_user_Data_view := null) return gel.Sprite.view
    is
       use type Geometry_2d.Sites,
                openGL.asset_Name;
@@ -219,9 +220,10 @@ is
                                                                              (Color, openGL.Opaque)).all'Access;
       else
          the_graphics_Model := openGL.Model.polygon.lit_textured.new_Polygon (openGL.Vector_2_array (Vertices),
-                                                                              Face         => (Fades         => [1 => 0.0,     others => <>],
-                                                                                               Textures      => [1 => Texture, others => <>],
-                                                                                               texture_Count => 1)).all'Access;
+                                                                              Face         => (Fades          => [1 => 0.0,     others => <>],
+                                                                                               Textures       => [1 => Texture, others => <>],
+                                                                                               texture_Count  => 1,
+                                                                                               texture_Tiling => texture_Tiling)).all'Access;
       end if;
 
       return gel.Sprite.Forge.new_Sprite (Name,
@@ -237,18 +239,19 @@ is
 
 
 
-   function new_rectangle_Sprite (in_World    : in gel.World.view;
-                                  Name        : in String;
-                                  Site        : in math.Vector_3      := math.Origin_3D;
-                                  Mass        : in math.Real          := 1.0;
-                                  Friction    : in math.Real          := 0.5;
-                                  Bounce      : in math.Real          := 0.5;
-                                  is_Tangible : in Boolean            := True;
+   function new_rectangle_Sprite (in_World       : in gel.World.view;
+                                  Name           : in String;
+                                  Site           : in math.Vector_3      := math.Origin_3D;
+                                  Mass           : in math.Real          := 1.0;
+                                  Friction       : in math.Real          := 0.5;
+                                  Bounce         : in math.Real          := 0.5;
+                                  is_Tangible    : in Boolean            := True;
                                   Width,
-                                  Height      : in math.Real;
-                                  Color       : in openGL.Color       := opengl.Palette.White;
-                                  Texture     : in openGL.asset_Name  := openGL.null_Asset;
-                                  user_Data   : in any_user_Data_view := null) return gel.Sprite.view
+                                  Height         : in math.Real;
+                                  Color          : in openGL.Color       := opengl.Palette.White;
+                                  Texture        : in openGL.asset_Name  := openGL.null_Asset;
+                                  texture_Tiling : in openGL.Real        := 1.0;
+                                  user_Data      : in any_user_Data_view := null) return gel.Sprite.view
    is
       use Math;
 
@@ -260,7 +263,18 @@ is
                                                              [ half_Width,  half_Height],
                                                              [-half_Width,  half_Height]];
    begin
-      return new_polygon_Sprite (in_World, Name, Site, Mass, Friction, Bounce, is_Tangible, the_Vertices, Color, Texture, user_Data);
+      return new_polygon_Sprite (in_World,
+                                 Name,
+                                 Site,
+                                 Mass,
+                                 Friction,
+                                 Bounce,
+                                 is_Tangible,
+                                 the_Vertices,
+                                 Color,
+                                 Texture,
+                                 texture_Tiling,
+                                 user_Data);
    end new_rectangle_Sprite;
 
 

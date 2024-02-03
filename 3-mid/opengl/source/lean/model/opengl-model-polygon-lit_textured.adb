@@ -161,13 +161,15 @@ is
          loop
             the_Vertices (Index_t (i)) := (Site   => Vector_3 (the_Sites (i) & 0.0),
                                            Normal => Normal,
-                                           Coords => Coords_and_Centroid.Coords (Index_t (i)),
+                                           Coords => (Coords_and_Centroid.Coords (Index_t (i)).S * Self.Face.texture_Tiling,
+                                                      Coords_and_Centroid.Coords (Index_t (i)).T * Self.Face.texture_Tiling),
                                            Shine  => default_Shine);
          end loop;
 
          the_Vertices (the_Vertices'Last) := (Site   => Vector_3 (Coords_and_Centroid.Centroid & 0.0),
                                               Normal => Normal,
-                                              Coords => (0.5, 0.5),
+                                              Coords => (S => 0.5 * Self.Face.texture_Tiling,
+                                                         T => 0.5 * Self.Face.texture_Tiling),
                                               Shine  => default_Shine);
 
          upper_Face := new_Face (Vertices => the_Vertices);
