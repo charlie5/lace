@@ -265,6 +265,9 @@ is
       use type GL.GLuint;
       pragma Assert (Self.Name > 0);
    begin
+      gl.Binding.glTexParameteri (GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+      gl.Binding.glTexParameteri (GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+
       Tasks.check;
       glBindTexture (GL.GL_TEXTURE_2D, Self.Name);
       Errors.log;
