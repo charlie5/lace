@@ -172,7 +172,7 @@ is
                                     Size        => 4,
                                     data_Kind   => Attribute.GL_FLOAT,
                                     Stride      => lit_colored_textured_skinned.Vertex'Size / 8,
-                                    Offset      =>   Sample.bone_Ids (1)'Address
+                                    Offset      =>   Sample.Shine'Address
                                                    - Sample.Site (1)'Address,
                                     Normalized  => False);
 
