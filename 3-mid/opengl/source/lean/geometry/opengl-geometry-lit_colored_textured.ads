@@ -27,7 +27,7 @@ is
          Normal : Vector_3;
          Color  : rgba_Color;
          Coords : Coordinate_2D;
-         Shine  : Real;
+         Shine  : Real;                    -- TODO: Use 'openGL.Shine' type.
       end record;
 
    type Vertex_array is array (Index_t range <>) of aliased Vertex;
