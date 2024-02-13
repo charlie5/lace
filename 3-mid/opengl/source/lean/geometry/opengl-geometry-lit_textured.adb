@@ -103,7 +103,7 @@ is
                                     data_Kind   => attribute.GL_FLOAT,
                                     Stride      => lit_textured.Vertex'Size / 8,
                                     Offset      =>   Sample.Normal (1)'Address
-                                    - Sample.Site   (1)'Address,
+                                                   - Sample.Site   (1)'Address,
                                     Normalized  => False);
 
       Attribute_3 := new_Attribute (Name        => Name_3,
@@ -112,7 +112,7 @@ is
                                     data_Kind   => attribute.GL_FLOAT,
                                     Stride      => lit_textured.Vertex'Size / 8,
                                     Offset      =>   Sample.Coords.S'Address
-                                    - Sample.Site (1)'Address,
+                                                   - Sample.Site (1)'Address,
                                     Normalized  => False);
 
       Attribute_4 := new_Attribute (Name        => Name_4,
@@ -121,7 +121,7 @@ is
                                     data_Kind   => attribute.GL_FLOAT,
                                     Stride      => lit_textured.Vertex'Size / 8,
                                     Offset      =>   Sample.Shine   'Address
-                                    - Sample.Site (1)'Address,
+                                                   - Sample.Site (1)'Address,
                                     Normalized  => False);
 
       the_Program.add (Attribute_1);
