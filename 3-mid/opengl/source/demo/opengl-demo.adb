@@ -252,9 +252,10 @@ is
 
       the_lit_textured_polygon_Model : constant Model.polygon.lit_textured.view
         := Model.polygon.lit_textured.new_Polygon (vertex_Sites => [Origin_2D, [1.0, 0.0], [1.0, 1.0], [-1.0, 0.5]],
-                                                   Face         => (Fades         => (1 => 0.0,         others => <>),
-                                                                    Textures      => (1 => the_Texture, others => <>),
-                                                                    texture_Count => 1));
+                                                   Face         => (Fades          => (1 => 0.0,         others => <>),
+                                                                    Textures       => (1 => the_Texture, others => <>),
+                                                                    texture_Tiling => <>,
+                                                                    texture_Count  => 1));
 
       the_text_Model : constant Model.Text.lit_colored.view
         := Model.Text.lit_colored.new_Text (Text     => "Once upon a midnight dreary ...",
