@@ -109,7 +109,8 @@ is
          the_Light : openGL.Light.item := Demo.Renderer.new_Light;
       begin
          the_Light. Site_is ([5_000.0, 2_000.0, 5_000.0]);
-         the_Light.Color_is (White);
+         the_Light.Color_is (Grey);
+         --  the_Light.Color_is (Black);
 
          Demo.Renderer.set (the_Light);
       end;
@@ -271,7 +272,7 @@ is
       heights_File : constant asset_Name := to_Asset ("assets/opengl/terrain/kidwelly-terrain.png");
       texture_File : constant asset_Name := to_Asset ("assets/opengl/terrain/kidwelly-terrain-texture.png");
 
-      the_Region   : constant IO.height_Map_view   := IO.to_height_Map (heights_File, 10.0);
+      the_Region   : constant IO.height_Map_view   := IO.to_height_Map (heights_File, Scale => 10.0);
       Tiling       : constant texture_Transform_2d := (S => (0.0, 1.0),
                                                        T => (0.0, 1.0));
       the_ground_Model : constant Model.terrain.view

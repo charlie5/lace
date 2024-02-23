@@ -82,8 +82,9 @@ is
 
       vertex_Shader  .define (Shader.Vertex,   "assets/opengl/shader/lit_textured.vert");
       fragment_Shader.define (Shader.Fragment, (asset_Names' (1 => to_Asset ("assets/opengl/shader/version.header"),
-                                                              2 => to_Asset ("assets/opengl/shader/texturing.frag"),
-                                                              3 => to_Asset ("assets/opengl/shader/lit_textured.frag"))));
+                                                              2 => to_Asset ("assets/opengl/shader/texturing-frag.snippet"),
+                                                              3 => to_Asset ("assets/opengl/shader/lighting-frag.snippet"),
+                                                              4 => to_Asset ("assets/opengl/shader/lit_textured.frag"))));
       the_Program := new openGL.Program.lit.item;
       the_Program.define (  vertex_Shader'Access,
                             fragment_Shader'Access);

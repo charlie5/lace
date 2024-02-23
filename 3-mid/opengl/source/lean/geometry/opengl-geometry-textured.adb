@@ -76,7 +76,7 @@ is
 
             vertex_Shader  .define (Shader.vertex,   "assets/opengl/shader/textured.vert");
             fragment_Shader.define (Shader.Fragment, (asset_Names' (1 => to_Asset ("assets/opengl/shader/version.header"),
-                                                                    2 => to_Asset ("assets/opengl/shader/texturing.frag"),
+                                                                    2 => to_Asset ("assets/opengl/shader/texturing-frag.snippet"),
                                                                     3 => to_Asset ("assets/opengl/shader/textured.frag"))));
             the_Program := new openGL.Program.item;
 

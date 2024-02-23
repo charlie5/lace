@@ -1,4 +1,5 @@
-#version 140
+
+
 
 struct light
 {
@@ -11,22 +12,13 @@ struct light
 };
 
 
-uniform mat4        model_Transform;
-uniform mat3        inverse_model_Rotation;
-uniform vec3        camera_Site;
-uniform vec3        specular_Color;    // The materials specular color.
-uniform sampler2D   Texture;
+
 uniform int         light_Count;
 uniform light       Lights [50];
+uniform vec3        specular_Color;     // The materials specular color.
 
+in      float       frag_Shine;
 
-in  vec3   frag_Site;
-in  vec3   frag_Normal;
-in  vec4   frag_Color;
-in  vec2   frag_Coords;
-in  float  frag_Shine;
-
-out vec4   final_Color;
 
 
 vec3
@@ -78,12 +70,15 @@ apply_Light (light   Light,
     vec3    Diffuse              = diffuse_Coefficient * lit_surface_Color;
     float   specular_Coefficient = 0.0;
 
+
     if (diffuse_Coefficient > 0.0)
+    {
         specular_Coefficient = pow (max (0.0, 
                                          dot (Surface_to_Camera, 
                                               reflect (-Surface_to_Light,
                                                        Normal))),
                                     frag_Shine);
+    }
 
     vec3   Specular = specular_Coefficient * specular_Color * Light.Color;
 
@@ -92,36 +87,3 @@ apply_Light (light   Light,
 
 
 
-void
-main()
-{
-    vec3   surface_Site    = vec3 (  model_Transform
-                                   * vec4 (frag_Site, 1));
-                                   
-    vec4   surface_Color   = mix (texture (Texture, frag_Coords),
-                                  frag_Color,
-                                  0.5);
-
-    vec3   Surface_to_Camera = normalize (camera_Site - surface_Site);
-    vec3   Normal            = normalize (  frag_Normal
-                                          * inverse_model_Rotation);
-
-    // Combine color from all the lights.
-    //
-    vec3   linear_Color = vec3 (0);
-    
-    for (int i = 0;   i < light_Count;   ++i)
-    {
-        linear_Color += apply_Light (Lights [i],
-                                     surface_Color.rgb,
-                                     Normal,
-                                     surface_Site,
-                                     Surface_to_Camera);
-    }
-    
-    vec3   Gamma = vec3 (1.0 / 2.2);
-
-    final_Color = vec4 (pow (linear_Color,     // Final color (after gamma correction).
-                             Gamma),
-                        surface_Color.a);
-}

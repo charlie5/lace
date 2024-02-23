@@ -115,8 +115,11 @@ is
       white_Texture := openGL.Texture.Forge.to_Texture (white_Image);
 
       vertex_Shader  .define (Shader.Vertex,   "assets/opengl/shader/lit_textured_skinned.vert");
-      fragment_Shader.define (Shader.Fragment, "assets/opengl/shader/lit_textured_skinned.frag");
-
+      --  fragment_Shader.define (Shader.Fragment, "assets/opengl/shader/lit_textured_skinned.frag");
+      fragment_Shader.define (Shader.Fragment, (asset_Names' (1 => to_Asset ("assets/opengl/shader/version.header"),
+                                                              2 => to_Asset ("assets/opengl/shader/lighting-frag.snippet"),
+                                                              3 => to_Asset ("assets/opengl/shader/texturing-frag.snippet"),
+                                                              4 => to_Asset ("assets/opengl/shader/lit_textured.frag"))));
       the_Program.define (  vertex_Shader'Access,
                           fragment_Shader'Access);
       the_Program.enable;

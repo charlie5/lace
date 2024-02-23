@@ -99,8 +99,24 @@ is
          white_Texture       := openGL.Texture.Forge.to_Texture (white_Image);
          the_Program.Program := new openGL.Program.lit.item;
 
-         the_Program.  vertex_Shader.define (Shader.Vertex,   "assets/opengl/shader/lit_colored_textured.vert");
-         the_Program.fragment_Shader.define (Shader.Fragment, use_fragment_Shader);
+         the_Program.vertex_Shader.define (Shader.Vertex, "assets/opengl/shader/lit_colored_textured.vert");
+
+         if use_fragment_Shader = "assets/opengl/shader/lit_colored_text.frag"
+         then
+            the_Program.fragment_Shader.define (Shader.Fragment, use_fragment_Shader);
+
+            -- TODO: The below code produces ugly text. Investigate and fix.
+            --
+            --  the_Program.fragment_Shader.define (Shader.Fragment, (asset_Names' (1 => to_Asset ("assets/opengl/shader/version.header"),
+            --                                                                      2 => to_Asset ("assets/opengl/shader/texturing-frag.snippet"),
+            --                                                                      3 => to_Asset ("assets/opengl/shader/lighting-frag.snippet"),
+            --                                                                      4 => to_Asset ("assets/opengl/shader/lit_colored_textured.frag"))));
+         else
+            the_Program.fragment_Shader.define (Shader.Fragment, (asset_Names' (1 => to_Asset ("assets/opengl/shader/version.header"),
+                                                                                2 => to_Asset ("assets/opengl/shader/texturing-frag.snippet"),
+                                                                                3 => to_Asset ("assets/opengl/shader/lighting-frag.snippet"),
+                                                                                4 => to_Asset ("assets/opengl/shader/lit_colored_textured.frag"))));
+         end if;
 
          the_Program.Program.define (the_Program.  vertex_Shader'Access,
                                      the_Program.fragment_Shader'Access);
