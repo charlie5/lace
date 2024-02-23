@@ -16,7 +16,7 @@ uniform mat3    inverse_model_Rotation;
 uniform vec3    camera_Site;
 uniform vec3    specular_Color;    // The materials specular color.
 uniform int     light_Count;
-uniform light   Lights [10];
+uniform light   Lights [50];
 
 
 in  vec3   frag_Site;
