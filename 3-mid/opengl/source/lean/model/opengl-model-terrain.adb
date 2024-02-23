@@ -172,7 +172,7 @@ is
          for i in the_Vertices'Range
          loop
             the_Vertices (i).Normal := the_Normals (i);
-            the_Vertices (i).Shine  := 0.005;
+            the_Vertices (i).Shine  := default_Shine;
          end loop;
 
          deallocate (the_Normals);
