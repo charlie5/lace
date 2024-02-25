@@ -36,7 +36,7 @@ apply_Light (light   Light,
         // Directional light.
         //
         Surface_to_Light = normalize (-Light.Site.xyz);
-        Attenuation      = 1.0;     // No attenuation for directional lights.
+        Attenuation      = 1.0;                             // No attenuation for directional lights.
     } 
     else
     {
@@ -62,19 +62,20 @@ apply_Light (light   Light,
         }
     }
 
-    vec3    lit_surface_Color    = surface_Color * Light.Color;
+    vec3    lit_surface_Color    = surface_Color             * Light.Color;
     vec3    Ambient              = Light.ambient_Coefficient * lit_surface_Color;
     float   diffuse_Coefficient  = max (0.0, 
                                         dot (Normal,
-                                             Surface_to_Light));                   
+                                             Surface_to_Light));
+                                             
     vec3    Diffuse              = diffuse_Coefficient * lit_surface_Color;
     float   specular_Coefficient = 0.0;
 
 
     if (diffuse_Coefficient > 0.0)
     {
-        specular_Coefficient = pow (max (0.0, 
-                                         dot (Surface_to_Camera, 
+        specular_Coefficient = pow (max (0.01,                             // Using '0.0' produces wierd results when
+                                         dot (Surface_to_Camera,           // light shines directly on a flat surface.
                                               reflect (-Surface_to_Light,
                                                        Normal))),
                                     frag_Shine);
@@ -82,7 +83,7 @@ apply_Light (light   Light,
 
     vec3   Specular = specular_Coefficient * specular_Color * Light.Color;
 
-    return Ambient + Attenuation * (Diffuse + Specular);     // Linear color (before gamma correction).
+    return Ambient + Attenuation * (Diffuse + Specular);                   // Linear color (before gamma correction).
 }
 
 
