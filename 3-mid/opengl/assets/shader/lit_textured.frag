@@ -25,6 +25,7 @@ main()
     vec3   Surface_to_Camera = normalize (camera_Site - surface_Site);
     vec3   Normal            = normalize (  frag_Normal
                                           * inverse_model_Rotation);
+  
     // Combine color from all the lights.
     //
     vec3   linear_Color = vec3 (0);

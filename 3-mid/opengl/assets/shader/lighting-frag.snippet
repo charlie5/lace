@@ -43,7 +43,7 @@ apply_Light (light   Light,
         // Point light.
         //
         vec3    Surface_to_Light_vector = Light.Site.xyz - surface_Site;
-        float   Distance_to_Light       = length (Surface_to_Light_vector);
+        float   Distance_to_Light       = length (Surface_to_Light_vector);     // TODO: This is buggy causes wrong attenuation.
 
         Surface_to_Light = normalize (Surface_to_Light_vector);
         Attenuation      =   1.0
