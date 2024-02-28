@@ -4,6 +4,7 @@
 struct light
 {
    vec4    Site;
+   float   Strength;
    vec3    Color;
    float   Attenuation;
    float   ambient_Coefficient;
@@ -67,7 +68,7 @@ apply_Light (light   Light,
 
     // Abmbient.
     //
-    vec3    lit_surface_Color    = surface_Color             * Light.Color;
+    vec3    lit_surface_Color    = surface_Color             * Light.Color * Light.Strength;
     vec3    Ambient              = Light.ambient_Coefficient * lit_surface_Color;
 
 

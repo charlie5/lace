@@ -1,12 +1,6 @@
 with
      openGL.Conversions,
-     GL.lean,
-     GL.Binding,
-     GL.Pointers,
-     ada.Strings.fixed,
-     Interfaces.C.Strings;
-
-with ada.text_io; use ada.text_io;
+     ada.Strings.fixed;
 
 
 package body openGL.Program.lit
@@ -49,9 +43,9 @@ is
       the_model_transform_Uniform        : constant Variable.uniform.mat4 := Self.uniform_Variable ("model_Transform");
       the_inverse_model_rotation_Uniform : constant Variable.uniform.mat3 := Self.uniform_Variable ("inverse_model_Rotation");
 
-      the_camera_site_Uniform     : constant Variable.uniform.vec3 := Self.uniform_Variable ("camera_Site");
-      the_light_count_Uniform     : constant Variable.uniform.int  := Self.uniform_Variable ("light_Count");
-      the_specular_color_Uniform  : constant Variable.uniform.vec3 := Self.uniform_Variable ("specular_Color");
+      the_camera_site_Uniform            : constant Variable.uniform.vec3 := Self.uniform_Variable ("camera_Site");
+      the_light_count_Uniform            : constant Variable.uniform.int  := Self.uniform_Variable ("light_Count");
+      the_specular_color_Uniform         : constant Variable.uniform.vec3 := Self.uniform_Variable ("specular_Color");
    begin
       openGL.Program.item (Self).set_Uniforms;
 
@@ -80,6 +74,7 @@ is
             end light_Name;
 
             site_Uniform                : constant Variable.uniform.vec4  := Self.uniform_Variable (light_Name & ".Site");
+            strength_Uniform            : constant Variable.uniform.float := Self.uniform_Variable (light_Name & ".Strength");
             color_Uniform               : constant Variable.uniform.vec3  := Self.uniform_Variable (light_Name & ".Color");
             attenuation_Uniform         : constant Variable.uniform.float := Self.uniform_Variable (light_Name & ".Attenuation");
             ambient_coefficient_Uniform : constant Variable.uniform.float := Self.uniform_Variable (light_Name & ".ambient_Coefficient");
@@ -93,6 +88,7 @@ is
             end case;
 
             color_Uniform              .Value_is (to_Vector_3 (Light.Color));
+            strength_Uniform           .Value_is (Real        (Light.Strength));
             attenuation_Uniform        .Value_is (             Light.Attenuation);
             ambient_coefficient_Uniform.Value_is (             Light.ambient_Coefficient);
             cone_angle_Uniform         .Value_is (Real        (Light.cone_Angle));

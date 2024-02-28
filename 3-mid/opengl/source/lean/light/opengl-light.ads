@@ -14,22 +14,26 @@ is
    --------------
    --- Attributes
    --
-   type Id_t   is new Natural;
-   type Kind_t is (Diffuse, Direct);
+   type Id_t      is new Natural;
+   type Kind_t    is (Diffuse, Direct);
+   type Intensity is digits 5 range 0.0 .. 10.0;
 
    null_Id : constant Id_t;
 
-   function  Id      (Self : in     Item)     return light.Id_t;
-   procedure Id_is   (Self : in out Item;   Now : in light.Id_t);
+   function  Id          (Self : in     Item)     return light.Id_t;
+   procedure Id_is       (Self : in out Item;   Now : in light.Id_t);
 
-   function  Kind    (Self : in     Item)     return light.Kind_t;
-   procedure Kind_is (Self : in out Item;   Now : in light.Kind_t);
+   function  Kind        (Self : in     Item)     return light.Kind_t;
+   procedure Kind_is     (Self : in out Item;   Now : in light.Kind_t);
 
-   function  is_On   (Self : in     Item)     return Boolean;
-   procedure is_On   (Self : in out Item;   Now : in Boolean := True);
+   function  is_On       (Self : in     Item)     return Boolean;
+   procedure is_On       (Self : in out Item;   Now : in Boolean := True);
 
-   function  Site    (Self : in     Item)     return openGL.Site;
-   procedure Site_is (Self : in out Item;   Now : in openGL.Site);
+   function  Site        (Self : in     Item)     return openGL.Site;
+   procedure Site_is     (Self : in out Item;   Now : in openGL.Site);
+
+   function  Strength    (Self : in     Item)     return Intensity;
+   procedure Strength_is (Self : in out Item;   Now : in Intensity);
 
    function  Color               (Self : in     Item) return Color;
    function  Attenuation         (Self : in     Item) return Real;
@@ -56,6 +60,7 @@ private
          On   : Boolean      := True;
          Site : openGL.Site  := [0.0, 0.0, 1.0];     -- The GL default.
 
+         Strength            : Intensity    := 1.0;
          Color               : openGL.Color := Palette.White;
          Attenuation         : Real         :=  0.1;
          ambient_Coefficient : Real         :=  0.1;

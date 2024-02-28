@@ -58,6 +58,22 @@ is
    end Site_is;
 
 
+
+   function Strength (Self : in Item)     return Intensity
+   is
+   begin
+      return Self.Strength;
+   end Strength;
+
+
+   procedure Strength_is (Self : in out Item;   Now : in Intensity)
+   is
+   begin
+      Self.Strength := Now;
+   end Strength_is;
+
+
+
    function Color (Self : in Item) return openGL.Color
    is
    begin
