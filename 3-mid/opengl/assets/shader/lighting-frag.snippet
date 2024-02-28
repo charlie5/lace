@@ -25,12 +25,13 @@ vec3
 apply_Light (light   Light, 
              vec3    surface_Color, 
              vec3    Normal, 
-             vec3    surface_Site, 
+             vec3    surface_Site,
              vec3    Surface_to_Camera)
 {
     vec3    Surface_to_Light;
     float   Attenuation = 1.0;
     
+
     if (Light.Site.w == 0.0)
     {
         // Directional light.
@@ -43,14 +44,15 @@ apply_Light (light   Light,
         // Point light.
         //
         vec3    Surface_to_Light_vector = Light.Site.xyz - surface_Site;
-        float   Distance_to_Light       = length (Surface_to_Light_vector);     // TODO: This is buggy causes wrong attenuation.
+        float   Distance_to_Light       = length (Surface_to_Light_vector);
+
 
         Surface_to_Light = normalize (Surface_to_Light_vector);
         Attenuation      =   1.0
                            / (  1.0 
                               +   Light.Attenuation
                                 * pow (Distance_to_Light, 2));
-
+                                
         // Cone restrictions which affects attenuation.
         //
         float   Light_to_Surface_Angle = degrees (acos (dot (-Surface_to_Light, 
@@ -62,28 +64,40 @@ apply_Light (light   Light,
         }
     }
 
+
+    // Abmbient.
+    //
     vec3    lit_surface_Color    = surface_Color             * Light.Color;
     vec3    Ambient              = Light.ambient_Coefficient * lit_surface_Color;
+
+
+    // Diffuse.
+    //
     float   diffuse_Coefficient  = max (0.0, 
                                         dot (Normal,
                                              Surface_to_Light));
-                                             
     vec3    Diffuse              = diffuse_Coefficient * lit_surface_Color;
-    float   specular_Coefficient = 0.0;
 
+    
+    // Specular.
+    //    
+    float   specular_Coefficient = 0.0;
 
     if (diffuse_Coefficient > 0.0)
     {
-        specular_Coefficient = pow (max (0.01,                             // Using '0.0' produces wierd results when
-                                         dot (Surface_to_Camera,           // light shines directly on a flat surface.
-                                              reflect (-Surface_to_Light,
+        specular_Coefficient = pow (max (0.0,                                             // Using '0.0' can produce wierd results when
+                                         dot (Surface_to_Camera,                          // light shines directly on a flat surface.
+                                              reflect (-Surface_to_Light,                 // Use '0.01' to avoid this.
                                                        Normal))),
                                     frag_Shine);
     }
 
     vec3   Specular = specular_Coefficient * specular_Color * Light.Color;
 
-    return Ambient + Attenuation * (Diffuse + Specular);                   // Linear color (before gamma correction).
+
+    // Linear color (before gamma correction).
+    //
+    return Ambient + Attenuation * (Diffuse + Specular);                   
 }
 
 

@@ -38,13 +38,19 @@ main()
                                      surface_Site,
                                      Surface_to_Camera);
     }
+
     
+    // Final color (after gamma correction).
+    //
     vec3   Gamma = vec3 (1.0 / 2.2);
     
-    final_Color = vec4 (pow (linear_Color,     // Final color (after gamma correction).
+    final_Color = vec4 (pow (linear_Color,     
                              Gamma),
                         surface_Color.a);
+ 
                         
-    final_Color = min (final_Color,            // Prevent light saturation.
-                       surface_Color);
+    // Prevent light saturation.
+    //
+//    final_Color = min (final_Color,
+//                       surface_Color);
 }
