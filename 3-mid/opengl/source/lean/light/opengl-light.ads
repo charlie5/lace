@@ -60,11 +60,11 @@ private
          On   : Boolean      := True;
          Site : openGL.Site  := [0.0, 0.0, 1.0];     -- The GL default.
 
-         Strength            : Intensity    := 1.0;
+         Strength            : Intensity    :=   1.0;
          Color               : openGL.Color := Palette.White;
-         Attenuation         : Real         :=  0.1;
-         ambient_Coefficient : Real         :=  0.1;
-         cone_Angle          : Degrees      :=  2.0;
+         Attenuation         : Real         :=   0.0;
+         ambient_Coefficient : Real         :=   0.0;
+         cone_Angle          : Degrees      :=  90.0;
          cone_Direction      : Vector_3     := [0.0, 0.0, -1.0];
       end record;
 
