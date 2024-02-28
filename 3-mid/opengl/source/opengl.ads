@@ -230,12 +230,16 @@ is
    no_lucid_Color : constant lucid_Color;
 
 
+   function to_Color (From : in rgb_Color) return Color;
+
+
+   -- Shine
+   --
    subtype Shine is Real range 1.0 .. Real'Last;
 
-   default_Shine : constant := 0.05;
+   no_Shine      : constant Shine;
+   default_Shine : constant Shine;     -- Defaults to no shine.
 
-
-   function to_Color (From : in rgb_Color) return Color;
 
 
    ----------
@@ -246,6 +250,7 @@ is
    type lucid_Image is array (Index_t range <>, Index_t range <>) of aliased rgba_Color;
 
    function to_Image (From : in lucid_Image) return Image;
+
 
 
    -----------
@@ -396,6 +401,13 @@ private
    --
    type  rgb_Colors is array (Index_t range <>) of  rgb_Color;
    type rgba_Colors is array (Index_t range <>) of rgba_Color;
+
+
+   -- Shine
+   --
+   no_Shine      : constant Shine := Shine'Last;
+   default_Shine : constant Shine := no_Shine;
+
 
 
    -- Conversions
