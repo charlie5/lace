@@ -426,6 +426,7 @@ is
    Medium_turquoise         : constant Color;
    Midnight_blue            : constant Color;
    Midnight_green           : constant Color;
+   Moonlight                : constant Color;
    Eagle_green              : constant Color;
    Mikado_yellow            : constant Color;
    Mint_green               : constant Color;
@@ -1034,6 +1035,7 @@ private
    Medium_turquoise         : constant Color := +(72, 209, 204);
    Midnight_blue            : constant Color := +(25, 25, 112);
    Midnight_green           : constant Color := +(0, 73, 83);
+   Moonlight                : constant Color := +(255, 248, 222);
    Eagle_green              : constant Color := +(0, 73, 83);
    Mikado_yellow            : constant Color := +(255, 196, 12);
    Mint_green               : constant Color := +(152, 255, 152);
