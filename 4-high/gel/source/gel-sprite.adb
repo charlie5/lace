@@ -347,7 +347,7 @@ is
 
 
 
-   procedure is_Visible (Self : in out Item;   Now : in Boolean)
+   procedure is_Visible (Self : in out Item;   Now : in Boolean := True)
    is
    begin
       Self.is_Visible := Now;

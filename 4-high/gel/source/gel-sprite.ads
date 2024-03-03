@@ -130,7 +130,7 @@ is
    procedure mvp_Matrix_is         (Self : in out Item;   Now : in Matrix_4x4);
    function  mvp_Matrix            (Self : in     Item)     return Matrix_4x4;
 
-   procedure is_Visible            (Self : in out Item;   Now : in Boolean);
+   procedure is_Visible            (Self : in out Item;   Now : in Boolean := True);
    function  is_Visible            (Self : in     Item)     return Boolean;
 
    procedure key_Response_is       (Self : in out Item;   Now : in lace.Response.view);
