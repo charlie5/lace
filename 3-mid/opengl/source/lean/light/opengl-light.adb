@@ -1,6 +1,37 @@
 package body openGL.Light
 is
 
+   package body Forge
+   is
+      function to_Light (Id                  : in Id_t         := null_Id;
+                         Kind                : in Kind_t       := Direct;
+                         is_On               : in Boolean      := True;
+                         Site                : in openGL.Site  := [0.0, 0.0, 1.0];
+                         Strength            : in Intensity    :=  1.0;
+                         Color               : in openGL.Color := (1.0, 1.0, 1.0);
+                         Attenuation         : in Real         :=  0.0;
+                         ambient_Coefficient : in Real         :=  0.0;
+                         cone_Angle          : in Degrees      := 90.0;
+                         cone_Direction      : in Vector_3     := [0.0, 0.0, -1.0]) return Item
+      is
+      begin
+         return (Id                  => Id,
+                 Kind                => Kind,
+                 On                  => is_On,
+                 Site                => Site,
+                 Color               => Color,
+                 Strength            => Strength,
+                 Attenuation         => Attenuation,
+                 ambient_Coefficient => ambient_Coefficient,
+                 cone_Angle          => cone_Angle,
+                 cone_Direction      => cone_Direction);
+      end to_Light;
+
+   end Forge;
+
+
+
+
    function Id (Self : in Item) return light.Id_t
    is
    begin

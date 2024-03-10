@@ -1,8 +1,4 @@
-with
-     openGL.Palette;
-
-
-package openGL.Light
+package openGL.Light with Pure
 --
 --  Models a light.
 --
@@ -11,15 +7,31 @@ is
    type Items is array (Positive range <>) of Item;
 
 
-   --------------
-   --- Attributes
-   --
    type Id_t      is new Natural;
    type Kind_t    is (Diffuse, Direct);
    type Intensity is digits 5 range 0.0 .. 10.0;
 
    null_Id : constant Id_t;
 
+
+   package Forge
+   is
+      function to_Light (Id                  : in Id_t         := null_Id;
+                         Kind                : in Kind_t       := Direct;
+                         is_On               : in Boolean      := True;
+                         Site                : in openGL.Site  := [0.0, 0.0, 1.0];
+                         Strength            : in Intensity    :=  1.0;
+                         Color               : in openGL.Color := (1.0, 1.0, 1.0);
+                         Attenuation         : in Real         :=  0.0;
+                         ambient_Coefficient : in Real         :=  0.0;
+                         cone_Angle          : in Degrees      := 90.0;
+                         cone_Direction      : in Vector_3     := [0.0, 0.0, -1.0]) return Item;
+   end Forge;
+
+
+   --------------
+   --- Attributes
+   --
    function  Id          (Self : in     Item)     return light.Id_t;
    procedure Id_is       (Self : in out Item;   Now : in light.Id_t);
 
@@ -60,11 +72,11 @@ private
          On   : Boolean      := True;
          Site : openGL.Site  := [0.0, 0.0, 1.0];     -- The GL default.
 
-         Strength            : Intensity    :=   1.0;
-         Color               : openGL.Color := Palette.White;
-         Attenuation         : Real         :=   0.0;
-         ambient_Coefficient : Real         :=   0.0;
-         cone_Angle          : Degrees      :=  90.0;
+         Color               : openGL.Color := (1.0, 1.0, 1.0);
+         Strength            : Intensity    :=  1.0;
+         Attenuation         : Real         :=  0.0;
+         ambient_Coefficient : Real         :=  0.0;
+         cone_Angle          : Degrees      := 90.0;
          cone_Direction      : Vector_3     := [0.0, 0.0, -1.0];
       end record;
 
