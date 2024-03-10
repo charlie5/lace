@@ -1066,6 +1066,13 @@ is
    end new_Light;
 
 
+   procedure add (Self : in out Item;   the_Light : in openGL.Light.item)
+   is
+   begin
+      Self.Lights.add (the_Light);
+   end add;
+
+
    procedure set (Self : in out Item;   the_Light : in openGL.Light.item)
    is
    begin

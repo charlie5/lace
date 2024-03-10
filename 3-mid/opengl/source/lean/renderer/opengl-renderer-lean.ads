@@ -43,6 +43,7 @@ is
    --
 
    function  new_Light (Self : in out Item)           return Light.item;
+   procedure add       (Self : in out Item;   the_Light : in Light.item);
    procedure set       (Self : in out Item;   the_Light : in Light.item);
    procedure rid       (Self : in out Item;   the_Light : in Light.item);
    function  Light     (Self : in out Item;   Id        : in light.Id_t) return openGL.Light.item;
