@@ -20,13 +20,13 @@ package gel.remote.World
 --
 is
    pragma remote_Types;
-   pragma Suppress (Container_Checks);     -- Suppress expensive tamper checks.
+   pragma suppress (Container_Checks);     -- Suppress expensive tamper checks.
 
    type Item is  limited interface
              and lace.Subject .item
              and lace.Observer.item;
 
-   type View is access all Item'Class with asynchronous;
+   type View is access all Item'Class with Asynchronous;
 
 
 
