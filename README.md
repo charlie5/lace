@@ -46,7 +46,7 @@ Installation
 The development packages for the following projects need to be installed on your OS.
 
 - Bullet3d
-- Florist
+- Florist/aShell (for 'Lace.Environ' only)
 - Freetype
 - Expat
 - SDL
@@ -70,7 +70,7 @@ export LACE=/path/to/lace
 source $LACE/lace-gpr_paths.sh
 ```
 
-Of course, substitute  /path/to  with the actual paths you use.
+Of course, substitute  '/path/to/lace'  with the actual path you use.
 
 This should allow any Lace component to be 'with'ed in a user applications gnat project file.
 
