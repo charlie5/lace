@@ -1,0 +1,26 @@
+with 
+   "lace_shared",
+   "ashell";
+
+
+--library
+project lace_Environ
+is
+   type Restrictions is ("xgc", "ravenscar");
+   the_Restrictions : Restrictions := external ("restrictions", "xgc");
+
+   for Create_Missing_Dirs use "True";
+
+   for Object_Dir      use "build";
+   for Exec_Dir        use ".";
+   for Library_Dir     use "lib";
+   for Library_Ali_Dir use "objects";
+--   for Library_Name    use "lace_environ";
+
+   for Source_Dirs use ("../source/environ");
+
+   package Builder  renames Lace_shared.Builder;
+   package Compiler renames Lace_shared.Compiler;
+   package Binder   renames Lace_shared.Binder;
+
+end lace_Environ;
