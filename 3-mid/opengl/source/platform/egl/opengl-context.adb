@@ -4,6 +4,7 @@ with
      opengl.Surface        .privvy,
 
      egl.Binding,
+     ada.Text_IO,
      System;
 
 
@@ -13,7 +14,7 @@ is
        System;
 
 
-   procedure define (Self : in out Item;   the_Display         : access opengl.Display.item'Class;
+   procedure define (Self : in out Item;   the_Display         : access opengl.Display.item'class;
                                            the_surface_Profile : in     opengl.surface_Profile.item)
    is
       use EGL,
@@ -26,10 +27,12 @@ is
       Self.egl_Context := eglCreateContext (to_eGL (the_Display.all),
                                             to_eGL (the_surface_Profile),
                                             EGL_NO_CONTEXT,
-                                            contextAttribs (contextAttribs'First)'Unchecked_Access);
-
-      if Self.egl_Context = EGL_NO_CONTEXT then
+                                            contextAttribs (contextAttribs'First)'unchecked_Access);
+      if Self.egl_Context = EGL_NO_CONTEXT
+      then
          raise opengl.Error with "Unable to create an EGL Context.";
+      else
+         ada.Text_IO.put_Line ("Created a new eGL context.");
       end if;
 
       Self.Display := the_Display;
@@ -45,7 +48,7 @@ is
                opengl.Surface.privvy;
       use type EGLBoolean;
 
-      Success : constant EGLBoolean := eglmakeCurrent (to_eGL (Self.Display.all),
+      Success : constant EGLBoolean := eGLmakeCurrent (to_eGL (Self.Display.all),
                                                        to_eGL (read_Surface),
                                                        to_eGL (write_Surface),
                                                        Self.egl_Context);
