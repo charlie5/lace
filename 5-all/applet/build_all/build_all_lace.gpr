@@ -80,7 +80,7 @@ with
      "../../../4-high/gel/applet/demo/distributed/dsa/demo_dsa",
      "../../../4-high/gel/applet/demo/distributed/fused/gel_fused",
      "../../../4-high/gel/applet/demo/game/box2d_test/gel_box2d_test",
-     "../../../4-high/gel/applet/demo/game/pong/pong",
+     "../../../4-high/gel/applet/demo/game/pong-gtk/pong",
      "../../../4-high/gel/applet/demo/hello_gel/hello_sdl_gel",
      "../../../4-high/gel/applet/demo/models/opengl_model/opengl_model",
      "../../../4-high/gel/applet/demo/mouse/mouse_motion/mouse_motion",
