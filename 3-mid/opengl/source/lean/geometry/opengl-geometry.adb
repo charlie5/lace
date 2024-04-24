@@ -57,6 +57,12 @@ is
    end Model_is;
 
 
+   function Model (Self : in Item) return Model_view
+   is
+   begin
+      return Self.Model;
+   end Model;
+
 
 
    function Label (Self : in Item'Class) return String

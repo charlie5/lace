@@ -45,7 +45,7 @@ is
    type Model_view is access all openGL.Model.item'Class;
 
    procedure Model_is (Self : in out Item;   Now : in Model_view);
-
+   function  Model    (Self : in     Item)     return Model_view;
 
    procedure Label_is        (Self : in out Item'Class;   Now : in String);
    function  Label           (Self : in     Item'Class)     return String;
