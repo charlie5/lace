@@ -121,8 +121,12 @@ is
          if Status = 0
          then
             declare
+               use ada.Text_IO;
                compile_Log : constant String := Self.shader_info_Log;
             begin
+               new_Line;
+               put_Line ("Shader compile log:");
+               put_Line (compile_Log);
                Self.destroy;
                raise Error with "'" & to_Ada (the_Source) & "' compilation failed ~ " & compile_Log;
             end;
@@ -147,8 +151,34 @@ is
    procedure define (Self : in out Item;   Kind            : in Shader.Kind;
                                            shader_Snippets : in asset_Names)
    is
+      use ada.Text_IO,
+          interfaces.C;
+
       the_Source : aliased constant C.char_array := to_C_char_array (shader_Snippets);
    begin
+      --  if Debug
+      --  then
+         new_Line;
+         put_Line ("Shader snippets:");
+
+         for Each of shader_Snippets
+         loop
+            put_Line (to_String (Each));
+         end loop;
+
+         new_Line;
+         new_Line;
+         new_Line;
+         new_Line;
+         put_Line ("Shader source code:");
+         put_Line (to_Ada (the_Source));
+         put_Line ("End source code!");
+         new_Line;
+         new_Line;
+         new_Line;
+         new_Line;
+      --  end if;
+
       create_Shader (Self, Kind, the_Source);
    end define;
 

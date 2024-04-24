@@ -3,7 +3,9 @@ with
      openGL.Visual,
      openGL.Light,
      openGL.Palette,
-     openGL.Demo;
+     openGL.Demo,
+
+     ada.Text_IO;
 
 
 procedure launch_render_Models
@@ -14,7 +16,8 @@ is
    use openGL,
        openGL.Math,
        openGL.linear_Algebra_3D,
-       openGL.Palette;
+       openGL.Palette,
+       ada.Text_IO;
 
 begin
    Demo.print_Usage ("Use space ' ' to cycle through models.");

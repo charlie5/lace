@@ -9,7 +9,10 @@ package openGL.texture_Set
 -- Facilitates texturing of geometries.
 --
 is
-   max_Textures : constant := 32;
+   --- Note that Mesa currently only supports 16 texture units.
+   --
+   --  max_Textures : constant := 32;
+   max_Textures : constant := 16;
 
    type texture_Id is range 1 .. max_Textures;
 

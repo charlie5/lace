@@ -1,12 +1,12 @@
-#version 140
+#version 410
 
 
 
 // Texturing snippet.
 //
 uniform int         texture_Count;
-uniform sampler2D   Textures [32];
-uniform float       Fade     [32];
+uniform sampler2D   Textures [16];
+uniform float       Fade     [16];
 
 vec4
 apply_Texturing (vec2   Coords)
@@ -32,6 +32,7 @@ apply_Texturing (vec2   Coords)
 struct light
 {
    vec4    Site;
+   float   Strength;
    vec3    Color;
    float   Attenuation;
    float   ambient_Coefficient;

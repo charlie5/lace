@@ -235,11 +235,13 @@ is
                                               End_1 => [0.0, 0.0, 0.0],
                                               End_2 => [5.0, 5.0, 0.0]);
 
-      the_collada_Model : constant Model.any.view
-        := Model.any.new_Model (--Scale            => (1.0, 1.0, 1.0),
-                                Model            => to_Asset ("assets/opengl/model/human.dae"),
-                                Texture          => the_Texture,
-                                Texture_is_lucid => False);
+      -- The collada model requires 'Desktop' openGL build mode.
+      --
+      --  the_collada_Model : constant Model.any.view
+      --    := Model.any.new_Model (--Scale            => (1.0, 1.0, 1.0),
+      --                            Model            => to_Asset ("assets/opengl/model/human.dae"),
+      --                            Texture          => the_Texture,
+      --                            Texture_is_lucid => False);
 
       the_wavefront_Model : constant Model.any.view
         := Model.any.new_Model (--Scale            => (1.0, 1.0, 1.0),
@@ -266,6 +268,7 @@ is
 
       the_segment_line_Model : constant Model.segment_line.view
         := Model.segment_line.new_segment_line_Model (Color => Green);
+
 
       -- Terrain
       --
@@ -318,7 +321,7 @@ is
               the_rounded_hexagon_column_Model.all'Access,
 
                                 the_line_Model.all'Access,
-                             the_collada_Model.all'Access,
+                             --  the_collada_Model.all'Access,
                            the_wavefront_Model.all'Access,
 
                         the_segment_line_Model.all'Access];
