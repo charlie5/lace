@@ -163,7 +163,8 @@ is
                                                          Tiling        => Tiling);
 
                   function to_Physics is new ada.unchecked_Conversion (height_Map_view,
-                                                                       Heightfield_view);
+                                                                       physics.Model.Heightfield_view);
+                                                                       --  Heightfield_view);
 
                   the_ground_physics_Model : constant physics.Model.view
                     := new physics.Model.item' (Id          => physics.null_model_Id,
