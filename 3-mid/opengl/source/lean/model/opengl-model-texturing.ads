@@ -3,9 +3,9 @@ with
      openGL.texture_Set,
      openGL.Program;
 
-limited
-with
-     openGL.Model;
+--  limited
+--  with
+--       openGL.Model;
 
 
 private

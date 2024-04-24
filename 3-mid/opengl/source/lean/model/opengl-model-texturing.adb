@@ -1,10 +1,10 @@
 with
-     openGL.Model,
+     --  openGL.Model,
      GL.lean,
      GL.Binding,
      ada.Strings.fixed;
 
-with ada.Text_IO;
+--  with ada.Text_IO;
 
 
 package body openGL.Model.texturing
@@ -14,7 +14,7 @@ is
 
    type texture_Units is array (texture_Set.texture_Id) of GLenum;
 
-   all_texture_Units : constant texture_Units := (GL_TEXTURE0,
+   all_texture_Units : constant texture_Units := [GL_TEXTURE0,
                                                   GL_TEXTURE1,
                                                   GL_TEXTURE2,
                                                   GL_TEXTURE3,
@@ -45,7 +45,7 @@ is
                                                   GL_TEXTURE28,
                                                   GL_TEXTURE29,
                                                   GL_TEXTURE30,
-                                                  GL_TEXTURE31);
+                                                  GL_TEXTURE31];
 
 
 
