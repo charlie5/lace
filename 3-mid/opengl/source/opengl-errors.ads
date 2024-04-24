@@ -22,4 +22,9 @@ is
    --  Clears any existing error.
    --  Sets 'Error_occurred' to true, if a GL error was detected.
 
+
+   function Debugging return Boolean;
+   --
+   -- True when the build mode is
+
 end openGL.Errors;

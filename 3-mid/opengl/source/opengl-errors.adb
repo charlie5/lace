@@ -70,4 +70,9 @@ is
    end log;
 
 
+
+
+   function Debugging return Boolean is separate;
+
+
 end openGL.Errors;

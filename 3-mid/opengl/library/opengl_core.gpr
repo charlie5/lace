@@ -30,7 +30,19 @@ is
                         "../source/platform/" & external ("opengl_platform", "egl") & "/private", 
                         "../source/platform/" & external ("opengl_platform", "egl") & "/private/thin");
 
-   
+   package Naming
+   is
+      case Lace_shared.lace_Build_Mode
+      is
+         when "debug" => 
+            for Body ("openGL.Errors.Debugging") use "opengl-errors-debugging.adb";  
+      
+         when others  => 
+            for Body ("openGL.Errors.Debugging") use "opengl-errors-not_debugging.adb";  
+      end case;
+   end Naming;
+      
+        
    package Builder renames Lace_shared.Builder;
 
 
