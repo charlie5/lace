@@ -17,6 +17,7 @@ with
 package body openGL.Shader
 is
    use GL.lean,
+       openGL.Errors,
        Interfaces;
 
    -----------
@@ -85,14 +86,6 @@ is
    begin
       Tasks.check;
 
-
-      --  new_Line (20);
-      --  for i in the_Source'Range
-      --  loop
-      --     put (Character (the_Source (i)));
-      --  end loop;
-
-
       Self.Kind := Kind;
 
       if Kind = Vertex
@@ -118,7 +111,8 @@ is
          glGetShaderiv (self.gl_Shader,
                         GL_COMPILE_STATUS,
                         Status'unchecked_Access);
-         if Status = 0
+         if    Status = 0
+           and Debugging
          then
             declare
                use ada.Text_IO;
@@ -156,8 +150,8 @@ is
 
       the_Source : aliased constant C.char_array := to_C_char_array (shader_Snippets);
    begin
-      --  if Debug
-      --  then
+      if Debugging
+      then
          new_Line;
          put_Line ("Shader snippets:");
 
@@ -177,7 +171,7 @@ is
          new_Line;
          new_Line;
          new_Line;
-      --  end if;
+      end if;
 
       create_Shader (Self, Kind, the_Source);
    end define;
