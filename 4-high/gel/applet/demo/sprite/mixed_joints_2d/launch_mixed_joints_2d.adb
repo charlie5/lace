@@ -47,8 +47,8 @@ begin
       --  Hinge
       --
       declare
-         the_hinge_Box_1 : constant gel.Sprite.view := new_circle_Sprite (the_Applet.gui_World, mass => 0.0);
-         the_hinge_Box_2 : constant gel.Sprite.view := new_circle_Sprite (the_Applet.gui_World, mass => 1.0);
+         the_hinge_Box_1 : constant gel.Sprite.view := new_circle_Sprite (the_Applet.gui_World, Name => "the_hinge_Box_1", mass => 0.0);
+         the_hinge_Box_2 : constant gel.Sprite.view := new_circle_Sprite (the_Applet.gui_World, Name => "the_hinge_Box_2", mass => 1.0);
          new_Joint       :          gel.      Joint .view;
 
          Frame_A : constant math.Matrix_4x4 := math.Identity_4x4;

@@ -26,6 +26,7 @@ is
                                                              space_Kind => physics.Box2D);
 
    the_Ground : constant gel.Sprite.view  := new_rectangle_Sprite (the_Applet.gui_World,
+                                                                   Name   => "the_Ground",
                                                                    Mass   =>   0.0,
                                                                    Width  => 100.0,
                                                                    Height =>   1.0,
@@ -43,8 +44,8 @@ begin
    --
    declare
       ball_Count    : constant := 39;
-      the_root_Ball : constant gel.Sprite.view  :=                     new_circle_Sprite (the_Applet.gui_World, Mass =>  0.0);
-      the_Balls     : constant gel.Sprite.views := [1 .. ball_Count => new_circle_Sprite (the_Applet.gui_World, Mass =>  1.0)];
+      the_root_Ball : constant gel.Sprite.view  :=                     new_circle_Sprite (the_Applet.gui_World, Name => "the_root_Ball", Mass =>  0.0);
+      the_Balls     : constant gel.Sprite.views := [1 .. ball_Count => new_circle_Sprite (the_Applet.gui_World, Name => "the_Balls",     Mass =>  1.0)];
 
       Parent    : gel.Sprite.view := the_root_Ball;
       new_Joint : gel.Joint .view;

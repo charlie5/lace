@@ -49,7 +49,7 @@ with
 
      launch_Client,
      launch_Server,
-     launch_Pong,
+--     launch_Pong,
      launch_Hello_gel,
      launch_opengl_Model,
      launch_Mouse_motion,
@@ -122,7 +122,7 @@ begin
 
    launch_Client;
    launch_Server;
-   launch_Pong;
+--   launch_Pong;
    launch_Hello_gel;
    launch_opengl_Model;
    launch_Mouse_motion;

@@ -1,5 +1,7 @@
 with
-     Interfaces.C.Pointers;
+     Interfaces.C.Pointers,
+     System;
+
 
 package GL.safe
 --
@@ -42,7 +44,7 @@ is
    package GLvoid_Pointers is new C.Pointers (Index              => C.size_t,
                                               Element            => GLvoid,
                                               Element_Array      => GLvoid_array,
-                                              Default_Terminator => 0);
+                                              Default_Terminator => system.null_Address);
    subtype GLvoid_Pointer  is GLvoid_Pointers.Pointer;
 
 
