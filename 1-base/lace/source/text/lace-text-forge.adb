@@ -2,6 +2,7 @@ with
      ada.Characters.latin_1,
      ada.Directories,
      ada.Direct_IO,
+     ada.Streams.Stream_IO,
      ada.Text_IO;
 
 
@@ -61,13 +62,15 @@ is
 
    procedure store (Filename : in forge.Filename;   the_String : in String)
    is
-      use ada.Text_IO;
+      use ada.Streams.Stream_IO;
 
       File : File_type;
+      S    : Stream_access;
    begin
-      create (File, out_File, String (Filename));
-      put    (File, the_String);
-      close  (File);
+      create       (File, out_File, String (Filename));
+      S := Stream  (File);
+      String'write (S, the_String);
+      close        (File);
    end store;
 
 
