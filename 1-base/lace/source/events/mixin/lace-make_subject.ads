@@ -3,8 +3,11 @@ with
      lace.Subject,
      lace.Observer;
 
+
 private
 with
+     lace.event_Emitter,
+
      ada.Containers.Vectors,
      ada.Containers.indefinite_hashed_Maps;
 
@@ -32,6 +35,7 @@ is
 
    overriding
    function Observers      (Self : in Item;   of_Kind : in Event.Kind) return Subject.Observer_views;
+
    overriding
    function observer_Count (Self : in Item) return Natural;
 
@@ -54,6 +58,11 @@ is
    function  emit (Self : access Item;   the_Event : in Event.item'Class := Event.null_Event)
                    return subject.Observer_views;
 
+   overriding
+   procedure use_event_Emitter (Self : in out Item);
+   --
+   -- Delegate event emission to a task to prevent blocking. Useful for reducing lag with DSA.
+
 
 
 private
@@ -71,6 +80,7 @@ private
    type    event_Observer_Vector_view is access all event_Observer_Vector;
 
 
+
    -------------------------------------
    -- Event kind Maps of event observers
    --
@@ -80,6 +90,7 @@ private
                                                                                             Event.Hash,
                                                                                             "=");
    subtype event_kind_Map_of_event_observers  is event_kind_Maps_of_event_observers.Map;
+
 
 
    -----------------
@@ -104,14 +115,19 @@ private
    end safe_Observers;
 
 
+
    ---------------
    -- Subject Item
    --
+
+   type event_Emitter_view is access all event_Emitter.item'Class;
+
    type Item is abstract limited new T
                                  and Subject.item
    with
       record
          safe_Observers : make_Subject.safe_Observers;
+         Emitter        : event_Emitter_view;
       end record;
 
 end lace.make_Subject;

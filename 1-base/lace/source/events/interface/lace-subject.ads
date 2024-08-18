@@ -64,6 +64,12 @@ is
    -- Observers who cannot be communicated with are returned.
 
 
+   procedure use_event_Emitter (Self : in out Item) is abstract;
+   --
+   -- Delegate event emission to a task to prevent blocking. Useful for reducing lag with DSA.
+
+
+
    ----------
    -- Logging
    --

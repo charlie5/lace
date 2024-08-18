@@ -13,6 +13,11 @@ is
    procedure destroy (Self : in out Item)
    is
    begin
+      if Self.Emitter /= null
+      then
+         Self.Emitter.destruct;
+      end if;
+
       Self.safe_Observers.destruct;
    end destroy;
 
@@ -29,12 +34,14 @@ is
    end Observers;
 
 
+
    overriding
    function observer_Count (Self : in Item) return Natural
    is
    begin
       return Self.safe_Observers.observer_Count;
    end observer_Count;
+
 
 
    -------------
@@ -57,6 +64,7 @@ is
    end register;
 
 
+
    overriding
    procedure deregister (Self : in out Item;   the_Observer : in Observer.view;
                                                of_Kind      : in Event.Kind)
@@ -73,37 +81,58 @@ is
    end deregister;
 
 
+
+   overriding
+   procedure use_event_Emitter (Self : in out Item)
+   is
+   begin
+      Self.Emitter := new event_Emitter.item;
+      Self.Emitter.define (Self'unchecked_Access);
+   end use_event_Emitter;
+
+
+
    overriding
    procedure emit (Self : access Item;   the_Event : in Event.item'Class := Event.null_Event)
    is
-      use lace.Event.utility;
-      my_Observers : constant Subject.Observer_views := Self.Observers (to_Kind (the_Event'Tag));
    begin
-      for i in my_Observers'Range
-      loop
+      if Self.Emitter = null
+      then
+         declare
+            use lace.Event.utility;
+            my_Observers : constant Subject.Observer_views := Self.Observers (to_Kind (the_Event'Tag));
          begin
-            my_Observers (i).receive (the_Event,
-                                      from_Subject => Subject.item'Class (Self.all).Name);
-            if Subject.Logger /= null
-            then
-               Subject.Logger.log_Emit (Subject.view (Self),
-                                        my_Observers (i),
-                                        the_Event);
-            end if;
+            for i in my_Observers'Range
+            loop
+               begin
+                  my_Observers (i).receive (the_Event,
+                                            from_Subject => Subject.item'Class (Self.all).Name);
+                  if Subject.Logger /= null
+                  then
+                     Subject.Logger.log_Emit (Subject.view (Self),
+                                              my_Observers (i),
+                                              the_Event);
+                  end if;
 
-         exception
-            when system.RPC.communication_Error
-               | storage_Error =>
+               exception
+                  when system.RPC.communication_Error
+                     | storage_Error =>
 
-               if Subject.Logger /= null
-               then
-                  Subject.Logger.log_Emit (Subject.view (Self),
-                                           my_Observers (i),
-                                           the_Event);
-               end if;
+                     if Subject.Logger /= null
+                     then
+                        Subject.Logger.log_Emit (Subject.view (Self),
+                                                 my_Observers (i),
+                                                 the_Event);
+                     end if;
+               end;
+            end loop;
          end;
-      end loop;
+
+      else
+         Self.Emitter.add (the_Event);
+      end if;
    end emit;
+
 
 
    overriding
@@ -139,6 +168,7 @@ is
    end emit;
 
 
+
    -----------------
    -- Safe Observers
    --
@@ -166,6 +196,7 @@ is
       end destruct;
 
 
+
       procedure add (the_Observer : in Observer.view;
                      of_Kind      : in Event.Kind)
       is
@@ -188,6 +219,7 @@ is
       end add;
 
 
+
       procedure rid (the_Observer : in Observer.view;
                      of_Kind      : in Event.Kind)
       is
@@ -195,6 +227,7 @@ is
       begin
          the_event_Observers.delete (the_event_Observers.find_Index (the_Observer));
       end rid;
+
 
 
       function fetch_Observers (of_Kind : in Event.Kind) return subject.Observer_views
@@ -217,6 +250,7 @@ is
             return [1 .. 0 => <>];
          end if;
       end fetch_Observers;
+
 
 
       function observer_Count return Natural

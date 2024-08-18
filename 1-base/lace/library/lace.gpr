@@ -26,6 +26,7 @@ is
                         "../source/events/concrete",
                         "../source/events/interface",
                         "../source/events/mixin",
+                        "../source/events/mixin/private",
                         "../source/events/mixin/" & external ("restrictions", "xgc"),
                         "../source/events/utility",
                         "../source/strings",
