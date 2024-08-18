@@ -191,7 +191,7 @@ is
    is
       use Model;
 
-      free_Models : graphics_Models;
+      free_Models : graphics_Models with Convention => C;     -- Convention C is for performance.
       Last        : Natural;
    begin
       Self.obsolete_Models.fetch (free_Models, Last);
@@ -208,7 +208,7 @@ is
    is
       use Impostor;
 
-      free_Impostors : Impostor_Set;
+      free_Impostors : Impostor_Set with Convention => C;     -- Convention C is for performance.
       Last           : Natural;
    begin
       Self.obsolete_Impostors.fetch (free_Impostors, Last);

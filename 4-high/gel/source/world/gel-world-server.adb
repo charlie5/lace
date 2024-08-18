@@ -168,8 +168,8 @@ is
          use id_Maps_of_sprite,
              remote.World;
 
-         all_Sprites            : constant id_Maps_of_sprite.Map    := Self.all_Sprites.fetch;
-         Cursor                 :          id_Maps_of_sprite.Cursor := all_Sprites.First;
+         all_Sprites            :          id_Maps_of_sprite.Map    renames Self.all_Sprites.fetch;
+         Cursor                 :          id_Maps_of_sprite.Cursor :=      all_Sprites.First;
 
 
          the_Sprite             :          gel.Sprite.view;

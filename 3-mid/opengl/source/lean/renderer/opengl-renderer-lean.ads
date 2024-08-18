@@ -208,10 +208,15 @@ private
    type visual_geometry_Couples_view is access all visual_geometry_Couples;
 
 
-   -- graphics_Models
+   --- graphics_Models
    --
 
-   type graphics_Models is array (1 .. max_Visuals) of Model.view;
+   -- Convention C is for performance.
+   --
+
+   type graphics_Models is array (1 .. max_Visuals) of Model.view
+     with Convention => C;
+
 
    protected
    type safe_Models
@@ -228,7 +233,11 @@ private
    -- Impostors
    --
 
-   type Impostor_Set is array (1 .. max_Visuals) of Impostor.view;
+   -- Convention C is for performance.
+   --
+
+   type Impostor_Set is array (1 .. max_Visuals) of Impostor.view
+     with Convention => C;
 
    protected
    type safe_Impostors

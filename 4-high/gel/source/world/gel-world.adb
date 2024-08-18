@@ -615,8 +615,8 @@ is
    is
       use id_Maps_of_sprite;
 
-      all_Sprites : constant  id_Maps_of_sprite.Map    := Self.all_Sprites.fetch;
-      Cursor      :           id_Maps_of_sprite.Cursor := all_Sprites.First;
+      all_Sprites : id_Maps_of_sprite.Map    renames Self.all_Sprites.fetch;
+      Cursor      : id_Maps_of_sprite.Cursor :=      all_Sprites.First;
 
       the_sprite_Transforms : sprite_transform_Pairs (1 .. Natural (all_Sprites.Length)) := (others => <>);
       Count                 : Natural := 0;
@@ -959,9 +959,9 @@ is
       declare
          use id_Maps_of_sprite;
 
-         all_Sprites : constant id_Maps_of_sprite.Map    := Item'Class (Self).all_Sprites.fetch;
-         Cursor      :          id_Maps_of_sprite.Cursor := all_Sprites.First;
-         the_Sprite  :          Sprite.view;
+         all_Sprites : id_Maps_of_sprite.Map    renames Item'Class (Self).all_Sprites.fetch;
+         Cursor      : id_Maps_of_sprite.Cursor :=      all_Sprites.First;
+         the_Sprite  : Sprite.view;
       begin
          while has_Element (Cursor)
          loop
@@ -1036,11 +1036,11 @@ is
       use id_Maps_of_sprite,
           lace.Text;
 
-      all_Sprites : constant id_Maps_of_sprite.Map    := Item'Class (Self).all_Sprites.fetch;
-      Cursor      :          id_Maps_of_sprite.Cursor := all_Sprites.First;
-      the_Pairs   :          remote.World.sprite_model_Pairs (1 .. Natural (all_Sprites.Length));
-      the_Sprite  :          Sprite.view;
-      i           :          Natural := 0;
+      all_Sprites : id_Maps_of_sprite.Map    renames Item'Class (Self).all_Sprites.fetch;
+      Cursor      : id_Maps_of_sprite.Cursor :=      all_Sprites.First;
+      the_Pairs   : remote.World.sprite_model_Pairs (1 .. Natural (all_Sprites.Length));
+      the_Sprite  : Sprite.view;
+      i           : Natural := 0;
    begin
       while has_Element (Cursor)
       loop

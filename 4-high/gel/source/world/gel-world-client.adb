@@ -546,8 +546,8 @@ is
    is
       use type remote.World.sequence_Id;
 
-      all_Sprites : constant id_Maps_of_sprite.Map := Self.all_Sprites.Map.fetch_all;
-      the_Id      :          gel.sprite_Id;
+      all_Sprites : id_Maps_of_sprite.Map renames Self.all_Sprites.Map.fetch_all;
+      the_Id      : gel.sprite_Id;
 
    begin
       if seq_Id > Self.seq_Id.Value
@@ -624,9 +624,9 @@ is
          use id_Maps_of_sprite;
 
          --  all_Sprites   : constant id_Maps_of_sprite.Map    := Self.id_Map_of_sprite;
-         all_Sprites   : constant id_Maps_of_sprite.Map    := Self.all_Sprites.Map.fetch_all;
-         Cursor        :          id_Maps_of_sprite.Cursor := all_Sprites.First;
-         the_Sprite    :          gel.Sprite.view;
+         all_Sprites   : id_Maps_of_sprite.Map    renames Self.all_Sprites.Map.fetch_all;
+         Cursor        : id_Maps_of_sprite.Cursor :=      all_Sprites.First;
+         the_Sprite    : gel.Sprite.view;
 
       begin
          while has_Element (Cursor)
