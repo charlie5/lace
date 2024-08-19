@@ -100,11 +100,13 @@ is
 
    exception
       when E : others =>
+         ada.Text_IO.new_Line;
+         ada.Text_IO.put_Line (ada.Exceptions.exception_Information (E));
          ada.Text_IO.put_Line ("Error detected in 'lace.event_Emitter.Emitter' task for subject '" & subject_Name.Element & "'.");
          ada.Text_IO.put_Line ("Event:    '" & Event.Element'Image & "'.");
          ada.Text_IO.put_Line ("Observer: '" & the_Observer.Name   & "'.");
          ada.Text_IO.new_Line;
-         ada.Text_IO.put_Line (ada.Exceptions.exception_Information (E));
+         --  ada.Text_IO.put_Line (ada.Exceptions.exception_Information (E));
          ada.Text_IO.new_Line;
    end Emitter;
 
@@ -202,9 +204,11 @@ is
 
    exception
       when E : others =>
+         ada.Text_IO.put_Line (ada.Exceptions.exception_Information (E));
+         ada.Text_IO.new_Line;
          ada.Text_IO.put_Line ("Error detected in 'lace.event_Emitter.emit_Delegator' for subject '" & the_subject_Name.Element & "'.");
          ada.Text_IO.new_Line;
-         ada.Text_IO.put_Line (ada.Exceptions.exception_Information (E));
+         --  ada.Text_IO.put_Line (ada.Exceptions.exception_Information (E));
          ada.Text_IO.new_Line;
    end emit_Delegator;
 
