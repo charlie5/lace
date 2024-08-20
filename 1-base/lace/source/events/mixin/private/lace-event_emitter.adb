@@ -74,40 +74,53 @@ is
       emitter_Pool : safe_Emitters_view;
    begin
       loop
-         select
-            accept emit (Self         : in Emitter_view;
-                         the_Event    : in lace.Event.item'Class;
-                         To           : in lace.Observer.view;
-                         from_Subject : in String;
-                         Emitters     : in safe_Emitters_view)
-            do
-               Event       .replace_Element (the_Event);
-               subject_Name.replace_Element (from_Subject);
+         begin
+            select
+               accept emit (Self         : in Emitter_view;
+                            the_Event    : in lace.Event.item'Class;
+                            To           : in lace.Observer.view;
+                            from_Subject : in String;
+                            Emitters     : in safe_Emitters_view)
+               do
+                  Event       .replace_Element (the_Event);
+                  subject_Name.replace_Element (from_Subject);
 
-               Myself       := Self;
-               the_Observer := To;
+                  Myself       := Self;
+                  the_Observer := To;
 
-               emitter_Pool := Emitters;
-            end emit;
-         or
-            terminate;
-         end select;
+                  emitter_Pool := Emitters;
+               end emit;
+            or
+               terminate;
+            end select;
 
-         the_Observer.receive (Event.Reference,
-                               from_Subject => subject_Name.Element);
-         emitter_Pool.add     (Myself);     -- Return the emitter to the safe pool.
+            the_Observer.receive (Event.Reference,
+                                  from_Subject => subject_Name.Element);
+            emitter_Pool.add     (Myself);                                   -- Return the emitter to the safe pool.
+
+         exception
+            when E : others =>
+               ada.Text_IO.new_Line;
+               ada.Text_IO.put_Line (ada.Exceptions.exception_Information (E));
+               ada.Text_IO.put_Line ("Error detected in 'lace.event_Emitter.Emitter' task.");
+               ada.Text_IO.put_Line ("Subject:  '" & subject_Name.Element & "'.");
+               ada.Text_IO.put_Line ("Event:    '" & Event.Element'Image  & "'.");
+               ada.Text_IO.put_Line ("Observer: '" & the_Observer.Name    & "'.");
+               ada.Text_IO.put_Line ("Continuing.");
+               ada.Text_IO.new_Line (2);
+               emitter_Pool.add     (Myself);                                -- Return the emitter to the safe pool.
+         end;
       end loop;
 
    exception
       when E : others =>
          ada.Text_IO.new_Line;
          ada.Text_IO.put_Line (ada.Exceptions.exception_Information (E));
-         ada.Text_IO.put_Line ("Error detected in 'lace.event_Emitter.Emitter' task for subject '" & subject_Name.Element & "'.");
-         ada.Text_IO.put_Line ("Event:    '" & Event.Element'Image & "'.");
-         ada.Text_IO.put_Line ("Observer: '" & the_Observer.Name   & "'.");
-         ada.Text_IO.new_Line;
-         --  ada.Text_IO.put_Line (ada.Exceptions.exception_Information (E));
-         ada.Text_IO.new_Line;
+         ada.Text_IO.put_Line ("Fatal error detected in 'lace.event_Emitter.Emitter' task.");
+         ada.Text_IO.put_Line ("Subject:  '" & subject_Name.Element & "'.");
+         ada.Text_IO.put_Line ("Event:    '" & Event.Element'Image  & "'.");
+         ada.Text_IO.put_Line ("Observer: '" & the_Observer.Name    & "'.");
+         ada.Text_IO.new_Line (2);
    end Emitter;
 
 
@@ -127,6 +140,22 @@ is
       the_Events       :         safe_Events_view;
       new_Events       :         event_Vector;
       Done             :         Boolean     := False;
+
+
+      procedure shutdown
+      is
+         procedure free is new ada.unchecked_Deallocation (Emitter,
+                                                           Emitter_view);
+         the_Emitter : Emitter_view;
+      begin
+         loop
+            the_Emitters.get (the_Emitter);
+            exit when the_Emitter = null;
+
+            free (the_Emitter);
+         end loop;
+      end shutdown;
+
 
    begin
       accept start (Subject : in lace.Subject.view;
@@ -180,6 +209,16 @@ is
                                        To           => each_Observer,
                                        from_Subject => the_subject_Name.Element,
                                        Emitters     => the_Emitters'unchecked_Access);
+                  exception
+                     when E : others =>
+                        ada.Text_IO.new_Line;
+                        ada.Text_IO.put_Line (ada.Exceptions.exception_Information (E));
+                        ada.Text_IO.new_Line;
+                        ada.Text_IO.put_Line ("Error detected in 'lace.event_Emitter.emit_Delegator'.");
+                        ada.Text_IO.put_Line ("Subject '" & the_subject_Name.Element & "'.");
+                        ada.Text_IO.put_Line ("Event   '" & each_Event'Image         & "'.");
+                        ada.Text_IO.put_Line ("Continuing.");
+                        ada.Text_IO.new_Line (2);
                   end;
                end loop;
             end;
@@ -188,28 +227,17 @@ is
          delay 0.001;
       end loop;
 
-
-      declare
-         procedure free is new ada.unchecked_Deallocation (Emitter,
-                                                           Emitter_view);
-         the_Emitter : Emitter_view;
-      begin
-         loop
-            the_Emitters.get (the_Emitter);
-            exit when the_Emitter = null;
-
-            free (the_Emitter);
-         end loop;
-      end;
+      shutdown;
 
    exception
       when E : others =>
+         ada.Text_IO.new_Line;
          ada.Text_IO.put_Line (ada.Exceptions.exception_Information (E));
          ada.Text_IO.new_Line;
-         ada.Text_IO.put_Line ("Error detected in 'lace.event_Emitter.emit_Delegator' for subject '" & the_subject_Name.Element & "'.");
-         ada.Text_IO.new_Line;
-         --  ada.Text_IO.put_Line (ada.Exceptions.exception_Information (E));
-         ada.Text_IO.new_Line;
+         ada.Text_IO.put_Line ("Fatal error detected in 'lace.event_Emitter.emit_Delegator' for subject '" & the_subject_Name.Element & "'.");
+         ada.Text_IO.new_Line (2);
+
+         shutdown;
    end emit_Delegator;
 
 
@@ -308,14 +336,6 @@ is
    begin
       Self.Events.add (new_Event);
    end add;
-
-
-
-   --  procedure stop (Self : in out Item)
-   --  is
-   --  begin
-   --     Self.Delegator.stop;
-   --  end stop;
 
 
 end lace.event_Emitter;
