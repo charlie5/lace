@@ -419,8 +419,8 @@ is
       --
       the_new_graphics_model_Response.World := Self.all'Access;
 
-      Self.add (the_new_graphics_model_Response'Access,
-                to_Kind (remote.World.new_graphics_model_Event'Tag),
+      Self.add (the_Response => the_new_graphics_model_Response'Access,
+                to_Kind      => to_Kind (remote.World.new_graphics_model_Event'Tag),
                 from_Subject => of_World.Name);
 
       --  New physics model response.

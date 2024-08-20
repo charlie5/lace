@@ -282,20 +282,25 @@ is
    begin
       Self.Clients.append (the_Mirror);
 
-      Self.register (Mirror_as_observer,  to_Kind (remote.World.        new_graphics_model_Event'Tag));
-      Self.register (Mirror_as_observer,  to_Kind (remote.World.         new_physics_model_Event'Tag));
-      --  Self.register (Mirror_as_observer,  to_Kind (gel.events.                  new_sprite_Event'Tag));     -- TODO: Rid.
-      Self.register (Mirror_as_observer,  to_Kind (gel.events.new_sprite_Event'Tag));
-      Self.register (Mirror_as_observer,  to_Kind (gel.events.rid_sprite_Event'Tag));
+      Self.register (Mirror_as_observer, to_Kind (remote.World.new_graphics_model_Event'Tag));
+      Self.register (Mirror_as_observer, to_Kind (remote.World. new_physics_model_Event'Tag));
+      Self.register (Mirror_as_observer, to_Kind (gel.events  .new_sprite_Event        'Tag));
+      Self.register (Mirror_as_observer, to_Kind (gel.events  .rid_sprite_Event        'Tag));
    end register;
 
 
 
    overriding
-   procedure deregister (Self : access Item;   the_Mirror : in remote.World.view)
+   procedure deregister (Self : access Item;   the_Mirror         : in remote.World.view;
+                                               Mirror_as_observer : in lace.Observer.view)
    is
    begin
       Self.Clients.delete (Self.Clients.find_Index (the_Mirror));
+
+      Self.deregister (Mirror_as_observer, to_Kind (remote.World.new_graphics_model_Event'Tag));
+      Self.deregister (Mirror_as_observer, to_Kind (remote.World. new_physics_model_Event'Tag));
+      Self.deregister (Mirror_as_observer, to_Kind (gel.events  .new_sprite_Event        'Tag));
+      Self.deregister (Mirror_as_observer, to_Kind (gel.events  .rid_sprite_Event        'Tag));
    end deregister;
 
 

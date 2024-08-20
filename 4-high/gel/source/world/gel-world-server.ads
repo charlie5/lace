@@ -51,7 +51,8 @@ is
    procedure   register (Self : access Item;   the_Mirror         : in remote.World.view;
                                                Mirror_as_observer : in lace.Observer.view);
    overriding
-   procedure deregister (Self : access Item;   the_Mirror         : in remote.World.view);
+   procedure deregister (Self : access Item;   the_Mirror         : in remote.World.view;
+                                               Mirror_as_observer : in lace.Observer.view);
 
    overriding
    procedure evolve     (Self : in out Item);

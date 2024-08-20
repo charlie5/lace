@@ -39,7 +39,8 @@ is
 
    procedure   register (Self : access Item;   the_Mirror         : in World.view;
                                                Mirror_as_observer : in lace.Observer.view)   is abstract;
-   procedure deregister (Self : access Item;   the_Mirror         : in World.view)           is abstract;
+   procedure deregister (Self : access Item;   the_Mirror         : in World.view;
+                                               Mirror_as_observer : in lace.Observer.view)   is abstract;
 
 
 
@@ -71,8 +72,8 @@ is
       end record;
 
 
-   procedure Write (Stream : not null access ada.Streams.Root_Stream_type'Class;   the_Event : in  new_graphics_model_Event);
-   procedure Read  (Stream : not null access ada.Streams.Root_Stream_type'Class;   the_Event : out new_graphics_model_Event);
+   procedure write (Stream : not null access ada.Streams.Root_Stream_type'Class;   the_Event : in     new_graphics_model_Event);
+   procedure read  (Stream : not null access ada.Streams.Root_Stream_type'Class;   the_Event :    out new_graphics_model_Event);
 
    for new_graphics_model_Event'write use write;
    for new_graphics_model_Event'read  use read;
