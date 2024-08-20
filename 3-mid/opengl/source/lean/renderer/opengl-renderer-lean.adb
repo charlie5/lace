@@ -1029,6 +1029,13 @@ is
       end rid;
 
 
+      function Exists (Id : in openGL.light.Id_t) return Boolean
+      is
+      begin
+         return the_Lights.Contains (Id);
+      end Exists;
+
+
       function get (Id : in openGL.Light.Id_t) return openGL.Light.item
       is
       begin
@@ -1085,6 +1092,13 @@ is
    begin
       Self.Lights.rid (the_Light);
    end rid;
+
+
+   function Exists (Self : in out Item;   Id : in openGL.light.Id_t) return Boolean
+   is
+   begin
+      return Self.Lights.Exists (Id);
+   end;
 
 
    function Light (Self : in out Item;   Id : in openGL.light.Id_t) return openGL.Light.item

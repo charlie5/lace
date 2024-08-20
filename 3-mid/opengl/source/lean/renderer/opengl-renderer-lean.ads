@@ -46,8 +46,10 @@ is
    procedure add       (Self : in out Item;   the_Light : in Light.item);
    procedure set       (Self : in out Item;   the_Light : in Light.item);
    procedure rid       (Self : in out Item;   the_Light : in Light.item);
-   function  Light     (Self : in out Item;   Id        : in light.Id_t) return openGL.Light.item;
-   function  fetch     (Self : in out Item)                              return openGL.Light.items;
+
+   function  Exists    (Self : in out Item;   Id : in light.Id_t) return Boolean;
+   function  Light     (Self : in out Item;   Id : in light.Id_t) return openGL.Light.item;
+   function  fetch     (Self : in out Item)                       return openGL.Light.items;
 
    type context_Setter  is access procedure;
    type context_Clearer is access procedure;
@@ -272,7 +274,8 @@ private
       procedure set (Light : in openGL.Light.item);
       procedure rid (Light : in openGL.Light.item);
 
-      function  get (Id    : in openGL.light.Id_t) return openGL.Light.item;
+      function  Exists (Id : in openGL.light.Id_t) return Boolean;
+      function  get    (Id : in openGL.light.Id_t) return openGL.Light.item;
       function  fetch                              return openGL.Light.items;
    private
       the_Lights : id_Map_of_light;
