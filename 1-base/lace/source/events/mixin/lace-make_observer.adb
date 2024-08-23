@@ -18,6 +18,7 @@ is
    end destroy;
 
 
+
    ------------
    -- Responses
    --
@@ -32,6 +33,7 @@ is
    end add;
 
 
+
    overriding
    procedure rid (Self : access Item;   the_Response : in Response.view;
                                         to_Kind      : in Event.Kind;
@@ -39,7 +41,12 @@ is
    is
    begin
       Self.Responses.rid (Self, the_Response, to_Kind, from_Subject);
+
+   exception
+      when storage_Error =>
+         null;   -- The observer is dead.
    end rid;
+
 
 
    overriding
@@ -48,6 +55,7 @@ is
    begin
       Self.Responses.relay_responseless_Events (To);
    end relay_responseless_Events;
+
 
 
    -------------

@@ -42,6 +42,7 @@ is
    end Name_of;
 
 
+
    --------------
    -- Connections
    --
@@ -68,14 +69,9 @@ is
                          Subject_Name  : in String)
    is
    begin
-      begin
-         the_Observer.rid (for_Response,
-                           to_Event_Kind,
-                           Subject_Name);
-      exception
-         when storage_Error =>
-            null;   -- The observer is dead.
-      end;
+      the_Observer.rid (for_Response,
+                        to_Event_Kind,
+                        Subject_Name);
 
       begin
          from_Subject.deregister (the_Observer,
@@ -86,6 +82,7 @@ is
             null;   -- The subject is dead.
       end;
    end disconnect;
+
 
 
    ----------
