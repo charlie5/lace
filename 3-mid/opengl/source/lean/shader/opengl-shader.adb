@@ -113,6 +113,7 @@ is
                         Status'unchecked_Access);
          if    Status = 0
            and Debugging
+           and False
          then
             declare
                use ada.Text_IO;
@@ -151,6 +152,7 @@ is
       the_Source : aliased constant C.char_array := to_C_char_array (shader_Snippets);
    begin
       if Debugging
+        and False
       then
          new_Line;
          put_Line ("Shader snippets:");
