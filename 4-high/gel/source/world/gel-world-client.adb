@@ -451,15 +451,53 @@ is
                 to_Kind (gel.Events.rid_sprite_Event'Tag),
                 from_Subject => of_World.Name);
 
-      --  Obtain and make a local copy of graphics_Models, sprites and humans from the mirrored world.
+      --  Obtain and make a local copy of graphics models, physics models and sprites from the mirrored world.
       --
       declare
          use remote.World.id_Maps_of_graphics_model;
 
-         the_server_graphics_Models : constant remote.World.id_Map_of_graphics_model := of_World.graphics_Models;     -- Fetch graphics graphics_Models from the server.
-         the_server_physics_Models  : constant remote.World.id_Map_of_physics_model  := of_World. physics_Models;     -- Fetch physics  graphics_Models from the server.
+         --  the_server_graphics_Models : constant remote.World.id_Map_of_graphics_model := of_World.graphics_Models;     -- Fetch graphics models from the server.
+         --  the_server_physics_Models  : constant remote.World.id_Map_of_physics_model  := of_World. physics_Models;     -- Fetch physics  models from the server.
+
+         the_server_graphics_Models : remote.World.id_Map_of_graphics_model;
+         the_server_physics_Models  : remote.World.id_Map_of_physics_model;
+         the_server_Sprites         : remote.World.sprite_model_Pairs := of_World.Sprites;
+
+
+         task      graphics_model_Fetcher;
+         task body graphics_model_Fetcher
+         is
+         begin
+            the_server_graphics_Models := of_World.graphics_Models;     -- Fetch graphics models from the server.
+         end graphics_model_Fetcher;
+
+
+         task      physics_model_Fetcher;
+         task body physics_model_Fetcher
+         is
+         begin
+            the_server_physics_Models := of_World.physics_Models;       -- Fetch physics models from the server.
+         end physics_model_Fetcher;
+
+
+         task      sprite_Fetcher;
+         task body sprite_Fetcher
+         is
+         begin
+            the_server_Sprites := of_World.Sprites;              -- Fetch sprites from the server.
+         end sprite_Fetcher;
+
+
       begin
-         --  Create our local graphics graphics_Models.
+         while not (    graphics_model_Fetcher'Terminated
+                    and  physics_model_Fetcher'Terminated
+                    and         sprite_Fetcher'Terminated)
+         loop
+            delay 0.05;
+         end loop;
+
+
+         --  Create our local graphics models.
          --
          declare
             Cursor    : remote.World.id_Maps_of_graphics_model.Cursor := the_server_graphics_Models.First;
@@ -474,7 +512,7 @@ is
             end loop;
          end;
 
-         --  Create our local physics graphics_Models.
+         --  Create our local physics models.
          --
          declare
             use remote.World.id_Maps_of_physics_model;
@@ -496,8 +534,7 @@ is
          --
          declare
             the_Sprite         :          gel.Sprite.view;
-            the_server_Sprites : constant remote.World.sprite_model_Pairs := of_World.Sprites;
-            --  kkk : gel.remote.World.sprite_added_Event;
+            --  the_server_Sprites : constant remote.World.sprite_model_Pairs := of_World.Sprites;
          begin
             for i in the_server_Sprites'Range
             loop
@@ -506,8 +543,6 @@ is
                                         Self. physics_Models,
                                         gel.World.view (Self));
                Self.add (the_Sprite);
-               --  Self.emit (sprite_added_Event' (Sprite => the_Sprite.Id));
-               --  Self.emit (sprite_added_Event' (kkk));
             end loop;
          end;
       end;
