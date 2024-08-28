@@ -62,6 +62,7 @@ is
    end connect;
 
 
+
    procedure disconnect (the_Observer  : in Observer.view;
                          from_Subject  : in Subject .view;
                          for_Response  : in Response.view;
