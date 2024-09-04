@@ -134,10 +134,28 @@ is
    is
       use ada.Text_IO;
 
-      the_Connectors   : aliased safe_Connectors;
+      all_Connectors   :         connector_Vector;
+      idle_Connectors  : aliased safe_Connectors;
       the_Connections  :         safe_Connections_view;
       new_Connections  :         connection_Vector;
       Done             :         Boolean          := False;
+
+
+      function all_Connectors_are_idle return Boolean
+      is
+         Result : Boolean := True;
+      begin
+         for Each of all_Connectors
+         loop
+            if not Each'Callable
+            then
+               Result := False;
+               exit;
+            end if;
+         end loop;
+
+         return Result;
+      end all_Connectors_are_idle;
 
 
       procedure shutdown
@@ -146,25 +164,18 @@ is
                                                            Connector_view);
          the_Connector : Connector_view;
       begin
+         for Each of all_Connectors
          loop
-            the_Connectors.get (the_Connector);
-            exit when the_Connector = null;
-
+            the_Connector := Each;
             free (the_Connector);
          end loop;
       end shutdown;
 
 
    begin
-      ada.text_io.put_Line ("KKK0");
-
       accept start (Connections : in safe_Connections_view)
       do
-         ada.text_io.put_Line ("KKK2");
-
          the_Connections := Connections;
-         ada.text_io.put_Line ("KKK3");
-
       end start;
 
 
@@ -191,16 +202,17 @@ is
                use lace.Text;
                the_Connector : Connector_view;
             begin
-               the_Connectors.get (the_Connector);
+               idle_Connectors.get (the_Connector);
 
                if the_Connector = null
                then
                   the_Connector := new Connector;
+                  all_Connectors.append (the_Connector);
                end if;
 
                the_Connector.connect (Self           => the_Connector,
                                       the_Connection => each_Connection,
-                                      Connectors     => the_Connectors'unchecked_Access);
+                                      Connectors     => idle_Connectors'unchecked_Access);
             exception
                when E : others =>
                   new_Line;
@@ -220,6 +232,13 @@ is
 
          delay 0.001;     -- Keep task from churning when idle.
       end loop;
+
+
+      while not all_Connectors_are_idle
+      loop
+         delay 0.001;
+      end loop;
+
 
       shutdown;
 
@@ -373,6 +392,17 @@ is
 
       Self.Connections.add (new_Disconnection);
    end disconnect;
+
+
+
+
+   --  function is_Busy (Self : in Item) return Boolean
+   --  is
+   --  begin
+   --     return false;
+   --     --  return not (    Self.Connections.is_Empty
+   --                 --  and Self.Delegator  .active_Count = 0);
+   --  end is_Busy;
 
 
 end lace.event_Connector;

@@ -12,6 +12,9 @@ with
 
 
 package lace.event_Connector
+--
+--
+--
 is
 
    type Item is tagged limited private;
@@ -30,6 +33,9 @@ is
                                                for_Response  : in Response.view;
                                                to_Event_Kind : in Event.Kind;
                                                subject_Name  : in String);
+
+   --  function  is_Busy    (Self : in Item) return Boolean;
+
 
 
 private
@@ -79,7 +85,7 @@ private
       procedure add (new_Connection  : in     Connection);
       procedure get (the_Connections :    out connection_Vector);
 
-      function is_Empty return Boolean;
+      function  is_Empty return Boolean;
 
    private
       all_Connections : connection_Vector;
