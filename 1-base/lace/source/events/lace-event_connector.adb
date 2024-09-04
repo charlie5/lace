@@ -30,6 +30,8 @@ is
       procedure add (new_Connector : in     Connector_view);
       procedure get (  a_Connector :    out Connector_view);
 
+      function  Length return ada.Containers.Count_type;
+
    private
       all_Connectors : connector_Vector;
    end safe_Connectors;
@@ -143,18 +145,20 @@ is
 
       function all_Connectors_are_idle return Boolean
       is
-         Result : Boolean := True;
+         use type ada.Containers.Count_type;
+         --  Result : Boolean := True;
       begin
-         for Each of all_Connectors
-         loop
-            if not Each'Callable
-            then
-               Result := False;
-               exit;
-            end if;
-         end loop;
-
-         return Result;
+         return all_Connectors.Length = idle_Connectors.Length;
+         --  for Each of all_Connectors
+         --  loop
+         --     if not Each'Callable
+         --     then
+         --        Result := False;
+         --        exit;
+         --     end if;
+         --  end loop;
+         --
+         --  return Result;
       end all_Connectors_are_idle;
 
 
@@ -292,8 +296,8 @@ is
 
 
 
-   ------------------
-   --- Safe emitters.
+   --------------------
+   --- Safe connectors.
    --
 
    protected body safe_Connectors
@@ -318,6 +322,13 @@ is
             all_Connectors.delete_Last;
          end if;
       end get;
+
+
+      function Length return ada.Containers.Count_type
+      is
+      begin
+         return all_Connectors.Length;
+      end Length;
 
 
    end safe_Connectors;
