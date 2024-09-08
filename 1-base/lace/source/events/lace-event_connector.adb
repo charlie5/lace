@@ -343,9 +343,7 @@ is
    procedure define (Self : in out Item)
    is
    begin
-      ada.text_io.put_Line ("KKK");
       Self.Delegator.start (Connections => Self.Connections'unchecked_Access);
-      ada.text_io.put_Line ("JJJ");
    end define;
 
 
