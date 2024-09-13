@@ -79,6 +79,26 @@ is
    d6x8_plus1 : aliased constant d6.Item;
    d6x8_plus2 : aliased constant d6.Item;
 
+   d6x9_less1 : aliased constant d6.Item;
+   d6x9       : aliased constant d6.Item;
+   d6x9_plus1 : aliased constant d6.Item;
+   d6x9_plus2 : aliased constant d6.Item;
+
+   d6x10_less1 : aliased constant d6.Item;
+   d6x10       : aliased constant d6.Item;
+   d6x10_plus1 : aliased constant d6.Item;
+   d6x10_plus2 : aliased constant d6.Item;
+
+   d6x11_less1 : aliased constant d6.Item;
+   d6x11       : aliased constant d6.Item;
+   d6x11_plus1 : aliased constant d6.Item;
+   d6x11_plus2 : aliased constant d6.Item;
+
+   d6x12_less1 : aliased constant d6.Item;
+   d6x12       : aliased constant d6.Item;
+   d6x12_plus1 : aliased constant d6.Item;
+   d6x12_plus2 : aliased constant d6.Item;
+
 
 
 private
@@ -132,6 +152,26 @@ private
    d6x8       : aliased constant d6.Item := (roll_count => 8,   modifier =>  0);
    d6x8_plus1 : aliased constant d6.Item := (roll_count => 8,   modifier =>  1);
    d6x8_plus2 : aliased constant d6.Item := (roll_count => 8,   modifier =>  2);
+
+   d6x9_less1 : aliased constant d6.Item := (roll_count => 9,   modifier => -1);
+   d6x9       : aliased constant d6.Item := (roll_count => 9,   modifier =>  0);
+   d6x9_plus1 : aliased constant d6.Item := (roll_count => 9,   modifier =>  1);
+   d6x9_plus2 : aliased constant d6.Item := (roll_count => 9,   modifier =>  2);
+
+   d6x10_less1 : aliased constant d6.Item := (roll_count => 10,   modifier => -1);
+   d6x10       : aliased constant d6.Item := (roll_count => 10,   modifier =>  0);
+   d6x10_plus1 : aliased constant d6.Item := (roll_count => 10,   modifier =>  1);
+   d6x10_plus2 : aliased constant d6.Item := (roll_count => 10,   modifier =>  2);
+
+   d6x11_less1 : aliased constant d6.Item := (roll_count => 11,   modifier => -1);
+   d6x11       : aliased constant d6.Item := (roll_count => 11,   modifier =>  0);
+   d6x11_plus1 : aliased constant d6.Item := (roll_count => 11,   modifier =>  1);
+   d6x11_plus2 : aliased constant d6.Item := (roll_count => 11,   modifier =>  2);
+
+   d6x12_less1 : aliased constant d6.Item := (roll_count => 12,   modifier => -1);
+   d6x12       : aliased constant d6.Item := (roll_count => 12,   modifier =>  0);
+   d6x12_plus1 : aliased constant d6.Item := (roll_count => 12,   modifier =>  1);
+   d6x12_plus2 : aliased constant d6.Item := (roll_count => 12,   modifier =>  2);
 
 end lace.Dice.d6;
 
