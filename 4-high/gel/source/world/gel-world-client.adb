@@ -458,10 +458,10 @@ is
 
          --  the_server_graphics_Models : constant remote.World.id_Map_of_graphics_model := of_World.graphics_Models;     -- Fetch graphics models from the server.
          --  the_server_physics_Models  : constant remote.World.id_Map_of_physics_model  := of_World. physics_Models;     -- Fetch physics  models from the server.
+         --  the_server_Sprites         : remote.World.sprite_model_Pairs                := of_World.Sprites;             -- Fetch sprites         from the server.
 
          the_server_graphics_Models : remote.World.id_Map_of_graphics_model;
          the_server_physics_Models  : remote.World.id_Map_of_physics_model;
-         the_server_Sprites         : remote.World.sprite_model_Pairs := of_World.Sprites;
 
 
          task      graphics_model_Fetcher;
@@ -469,6 +469,14 @@ is
          is
          begin
             the_server_graphics_Models := of_World.graphics_Models;     -- Fetch graphics models from the server.
+         exception
+            when E : others =>
+               log ("");
+               log ("__________________________________________________________________________");
+               log ("Error detected in 'graphics_model_Fetcher'.");
+               log (ada.Exceptions.exception_Information (E));
+               log ("__________________________________________________________________________");
+               log ("");
          end graphics_model_Fetcher;
 
 
@@ -477,21 +485,40 @@ is
          is
          begin
             the_server_physics_Models := of_World.physics_Models;       -- Fetch physics models from the server.
+         exception
+            when E : others =>
+               log ("");
+               log ("__________________________________________________________________________");
+               log ("Error detected in 'physics_model_Fetcher'.");
+               log (ada.Exceptions.exception_Information (E));
+               log ("__________________________________________________________________________");
+               log ("");
          end physics_model_Fetcher;
 
 
-         task      sprite_Fetcher;
-         task body sprite_Fetcher
-         is
-         begin
-            the_server_Sprites := of_World.Sprites;              -- Fetch sprites from the server.
-         end sprite_Fetcher;
+         --  task      sprite_Fetcher;
+         --  task body sprite_Fetcher
+         --  is
+         --  begin
+         --     the_server_Sprites := of_World.Sprites;                     -- Fetch sprites from the server.
+         --  exception
+         --     when E : others =>
+         --        log ("");
+         --        log ("__________________________________________________________________________");
+         --        log ("Error detected in 'sprite_Fetcher'.");
+         --        log (ada.Exceptions.exception_Information (E));
+         --        log ("__________________________________________________________________________");
+         --        log ("");
+         --  end sprite_Fetcher;
+
+
+         the_server_Sprites : remote.World.sprite_model_Pairs := of_World.Sprites;
 
 
       begin
          while not (    graphics_model_Fetcher'Terminated
-                    and  physics_model_Fetcher'Terminated
-                    and         sprite_Fetcher'Terminated)
+                    and  physics_model_Fetcher'Terminated)
+                    --  and         sprite_Fetcher'Terminated)
          loop
             delay 0.05;
          end loop;
