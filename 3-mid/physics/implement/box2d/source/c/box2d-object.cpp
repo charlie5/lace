@@ -398,7 +398,10 @@ void
 b2d_Object_apply_Torque (Object*     Self,
                          Vector_3*   Torque)
 {
-  printf ("TODO: b2d_Object_apply_Torque");
+  if (Self->body)
+    {
+      Self->body->ApplyTorque (Torque->z, true);
+    }
 }
 
 
@@ -407,7 +410,10 @@ void
 b2d_Object_apply_Torque_impulse (Object*     Self,
                                  Vector_3*   Torque)
 {
-  printf ("TODO: b2d_Object_apply_Torque_impulse");
+  if (Self->body)
+    {
+      Self->body->ApplyAngularImpulse (Torque->z, true);
+    }
 }
 
 
