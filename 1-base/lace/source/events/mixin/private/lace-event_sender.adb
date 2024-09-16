@@ -124,11 +124,11 @@ is
    task body send_Delegator
    is
       the_subject_Name :         string_Holder;
-
       the_Senders      : aliased safe_Senders;
 
       the_Pairs        :         safe_Pairs_view;
       new_Pairs        :         pair_Vector;
+
       Done             :         Boolean     := False;
 
 
@@ -303,11 +303,11 @@ is
 
 
 
-   procedure destruct (Self : in out Item)
+   procedure destroy (Self : in out Item)
    is
    begin
        Self.Delegator.stop;
-   end destruct;
+   end destroy;
 
 
 

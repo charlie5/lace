@@ -323,11 +323,11 @@ is
 
 
 
-   procedure destruct (Self : in out Item)
+   procedure destroy (Self : in out Item)
    is
    begin
        Self.Delegator.stop;
-   end destruct;
+   end destroy;
 
 
 
