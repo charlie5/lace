@@ -15,7 +15,12 @@ is
    begin
       if Self.Emitter /= null
       then
-         Self.Emitter.destruct;
+         Self.Emitter.destroy;
+      end if;
+
+      if Self.Sender /= null
+      then
+         Self.Sender.destroy;
       end if;
 
       Self.safe_Observers.destruct;
