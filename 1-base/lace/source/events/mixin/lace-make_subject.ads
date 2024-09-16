@@ -7,6 +7,7 @@ with
 private
 with
      lace.event_Emitter,
+     lace.event_Sender,
 
      ada.Containers.Vectors,
      ada.Containers.indefinite_hashed_Maps;
@@ -29,6 +30,7 @@ is
    procedure destroy (Self : in out Item);
 
 
+
    -------------
    -- Attributes
    --
@@ -38,6 +40,7 @@ is
 
    overriding
    function observer_Count (Self : in Item) return Natural;
+
 
 
    -------------
@@ -51,27 +54,40 @@ is
    procedure deregister (Self : in out Item;   the_Observer : in Observer.view;
                                                of_Kind      : in Event.Kind);
 
-   overriding
-   procedure emit (Self : access Item;   the_Event : in Event.item'Class := Event.null_Event);
+
+   -- Emit
+   --
 
    overriding
-   function  emit (Self : access Item;   the_Event : in Event.item'Class := Event.null_Event)
+   procedure emit (Self : access Item;   the_Event : in Event.item'Class := Event.null_Event);     -- TODO: Rid default.
+
+   overriding
+   function  emit (Self : access Item;   the_Event : in Event.item'Class := Event.null_Event)      -- TODO: Rid default.
                    return subject.Observer_views;
 
    overriding
    procedure use_event_Emitter (Self : in out Item);
+
+
+
+   -- Send
    --
-   -- Delegate event emission to a task to prevent blocking. Useful for reducing lag with DSA.
+   overriding
+   procedure send (Self : access Item;   the_Event   : in Event.item'Class;
+                                         to_Observer : in Observer.view);
+
+   overriding
+   procedure use_event_Sender (Self : in out Item);
 
 
 
 private
 
-   pragma Suppress (Container_Checks);     -- Suppress expensive tamper checks.
+   pragma suppress (container_Checks);     -- Suppress expensive tamper checks.
 
 
-   -------------------------
-   -- Event observer vectors
+   --------------------------
+   -- Event observer vectors.
    --
    use type Observer.view;
 
@@ -81,8 +97,8 @@ private
 
 
 
-   -------------------------------------
-   -- Event kind Maps of event observers
+   --------------------------------------
+   -- Event kind Maps of event observers.
    --
    use type Event.Kind;
    package event_kind_Maps_of_event_observers is new ada.Containers.indefinite_hashed_Maps (Event.Kind,
@@ -121,6 +137,7 @@ private
    --
 
    type event_Emitter_view is access all event_Emitter.item'Class;
+   type event_Sender_view  is access all event_Sender .item'Class;
 
    type Item is abstract limited new T
                                  and Subject.item
@@ -128,6 +145,7 @@ private
       record
          safe_Observers : make_Subject.safe_Observers;
          Emitter        : event_Emitter_view;
+         Sender         : event_Sender_view;
       end record;
 
 end lace.make_Subject;

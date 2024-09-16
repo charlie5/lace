@@ -78,6 +78,10 @@ is
 
 
 
+   function to_Integer is new ada.unchecked_Conversion (lace.Observer.view,
+                                                        long_Integer);
+
+
    overriding
    procedure log_Emit (Self : in out Item;   From      : in Subject .view;
                                              To        : in Observer.view;
@@ -85,10 +89,9 @@ is
    is
       function to_Name return String
       is
-         function to_Integer is new ada.unchecked_Conversion (lace.Observer.view,
-                                                              long_Integer);
       begin
          return To.Name;
+
       exception
             when system.RPC.communication_Error
                | storage_Error =>
@@ -103,9 +106,39 @@ is
 
       new_Line (Self.File);
       put_Line (Self.File,   "Emit     => "
-                           & From.Name & "  sends       " & Name_of (Kind_of (the_Event))
+                           & From.Name & "  emits       " & Name_of (Kind_of (the_Event))
                            & " to "    & to_Name & ".");
    end log_Emit;
+
+
+
+   overriding
+   procedure log_Send (Self : in out Item;   From      : in Subject .view;
+                                             To        : in Observer.view;
+                                             the_Event : in Event.item'Class)
+   is
+      function to_Name return String
+      is
+      begin
+         return To.Name;
+
+      exception
+         when system.RPC.communication_Error
+            | storage_Error =>
+            return "dead Observer (" & to_Integer (To)'Image & ")";
+      end to_Name;
+
+   begin
+      if Self.Ignored.contains (to_Kind (the_Event'Tag))
+      then
+         return;
+      end if;
+
+      new_Line (Self.File);
+      put_Line (Self.File,   "Send     => "
+                           & From.Name & "  sends       " & Name_of (Kind_of (the_Event))
+                           & " to "    & to_Name & ".");
+   end log_Send;
 
 
 

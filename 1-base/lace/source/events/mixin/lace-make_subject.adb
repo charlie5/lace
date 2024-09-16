@@ -82,6 +82,10 @@ is
 
 
 
+   --------
+   --- Emit
+   --
+
    overriding
    procedure use_event_Emitter (Self : in out Item)
    is
@@ -148,7 +152,7 @@ is
       loop
          begin
             my_Observers (i).receive (the_Event,
-                                      from_Subject => Subject.item'Class (Self.all).Name);
+                                      from_Subject => Subject.view (Self).Name);
             if Subject.Logger /= null
             then
                Subject.Logger.log_Emit (Subject.view (Self),
@@ -166,6 +170,59 @@ is
 
       return bad_Observers (1 .. bad_Count);
    end emit;
+
+
+
+
+   --------
+   --- Send
+   --
+
+   overriding
+   procedure use_event_Sender (Self : in out Item)
+   is
+   begin
+      Self.Sender := new event_Sender.item;
+      Self.Sender.define (Self'unchecked_Access);
+   end use_event_Sender;
+
+
+
+   overriding
+   procedure send (Self : access Item;   the_Event   : in Event.item'Class;
+                                         to_Observer : in Observer.view)
+   is
+   begin
+      if Self.Sender = null
+      then
+         begin
+            to_Observer.receive (the_Event,
+                                 from_Subject => Subject.view (Self).Name);
+            if Subject.Logger /= null
+            then
+               Subject.Logger.log_Send (Subject.view (Self),
+                                        to_Observer,
+                                        the_Event);
+            end if;
+
+         exception
+            when system.RPC.communication_Error
+               | storage_Error =>
+
+               if Subject.Logger /= null
+               then
+                  Subject.Logger.log_Send (Subject.view (Self),
+                                           to_Observer,
+                                           the_Event);
+               end if;
+         end;
+
+      else
+         Self.Sender.add (the_Event,
+                          for_Observer => to_Observer,
+                          from_Subject => Self);
+      end if;
+   end send;
 
 
 
