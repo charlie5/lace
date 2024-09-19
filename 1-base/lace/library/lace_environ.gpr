@@ -1,5 +1,6 @@
 with 
    "lace_shared",
+   "lace",
    "ashell";
 
 
