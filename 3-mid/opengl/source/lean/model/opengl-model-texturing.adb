@@ -127,7 +127,7 @@ is
                                                Which : in texture_Set.texture_ID := 1)
       is
       begin
-         Self.texture_Set.Textures (which).Fade := Now;
+         Self.texture_Set.Textures (Which).Fade := Now;
       end Fade_is;
 
 
@@ -136,7 +136,7 @@ is
       function Fade (Self : in Item;   Which : in texture_Set.texture_ID := 1) return texture_Set.fade_Level
       is
       begin
-         return Self.texture_Set.Textures (which).Fade;
+         return Self.texture_Set.Textures (Which).Fade;
       end Fade;
 
 
@@ -163,23 +163,22 @@ is
 
 
 
-      --  overriding
-      --  procedure Texture_is (Self : in out Item;   Now : in openGL.Texture.Object)
-      --  is
-      --  begin
-      --     Texture_is (in_Set => Self.texture_Set,
-      --                 Now    => Now);
-      --  end Texture_is;
-      --
-      --
-      --
-      --  overriding
-      --  function Texture (Self : in Item) return openGL.Texture.Object
-      --  is
-      --  begin
-      --     return texture_Set.Texture (in_Set => Self.texture_Set,
-      --                                 Which  => 1);
-      --  end Texture;
+      overriding
+      procedure texture_Applied_is (Self : in out Item;   Now   : in Boolean;
+                                                          Which : in texture_Set.texture_ID := 1)
+      is
+      begin
+         Self.texture_Set.Textures (Which).Applied := Now;
+      end texture_Applied_is;
+
+
+
+      overriding
+      function texture_Applied (Self : in Item;   Which : in texture_Set.texture_ID := 1) return Boolean
+      is
+      begin
+         return Self.texture_Set.Textures (Which).Applied;
+      end texture_Applied;
 
 
 
@@ -187,8 +186,6 @@ is
       procedure enable_Textures (Self : in out Item)
       is
       begin
-         --  ada.Text_IO.put_Line (Self.Model'Image);
-
          texturing.enable (for_Model   => Self.Model.all'Access,
                            Uniforms    => texture_Uniforms,
                            texture_Set => Self.texture_Set);

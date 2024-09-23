@@ -24,10 +24,14 @@ is
    type fade_Levels is array (texture_Id range <>) of fade_Level;
 
 
+   type texture_Apply_array is array (texture_Set.texture_Id) of Boolean;
+
+
    type fadeable_Texture is
       record
          Fade            : fade_Level                       := 0.0;
          Object          : openGL.Texture.Object            := openGL.Texture.null_Object;
+         Applied         : Boolean                          := True;                           -- Whether this texture is painted on.
          --  texture_Uniform : openGL.Variable.uniform.sampler2D;
          --  fade_Uniform    : openGL.Variable.uniform.float;
       end record;

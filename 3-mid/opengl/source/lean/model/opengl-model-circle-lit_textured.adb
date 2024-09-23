@@ -72,6 +72,24 @@ is
 
 
 
+   overriding
+   function texture_Applied (Self : in Item;   Which : in texture_Set.texture_Id) return Boolean
+   is
+   begin
+      return Self.Face.texture_Applies (Which);
+   end texture_Applied;
+
+
+
+   overriding
+   procedure texture_Applied_is (Self : in out Item;   Which : in texture_Set.texture_Id;
+                                                       Now   : in Boolean)
+   is
+   begin
+      Self.Face.texture_Applies (Which) := Now;
+   end texture_Applied_is;
+
+
 
    ---------------------
    --- openGL Geometries

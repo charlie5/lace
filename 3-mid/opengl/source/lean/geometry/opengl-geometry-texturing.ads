@@ -20,8 +20,9 @@ is
 
    type texture_fade_Uniform_pair is
       record
-         texture_Uniform : openGL.Variable.uniform.sampler2D;
-         fade_Uniform    : openGL.Variable.uniform.float;
+         texture_Uniform         : openGL.Variable.uniform.sampler2D;
+         fade_Uniform            : openGL.Variable.uniform.float;
+         texture_applied_Uniform : openGL.Variable.uniform.bool;
       end record;
 
 
@@ -78,11 +79,13 @@ is
       overriding
       function  Texture      (Self : in     Item;   Which : in texture_Set.texture_ID := 1) return openGL.Texture.Object;
 
-      --  overriding
-      --  procedure Texture_is   (Self : in out Item;   Now : in openGL.Texture.Object);
-      --
-      --  overriding
-      --  function  Texture      (Self : in     Item)     return openGL.Texture.Object;
+
+      overriding
+      procedure texture_Applied_is (Self : in out Item;   Now   : in Boolean;
+                                                          Which : in texture_Set.texture_ID := 1);
+      overriding
+      function  texture_Applied    (Self : in     Item;   Which : in texture_Set.texture_ID := 1) return Boolean;
+
 
 
       overriding

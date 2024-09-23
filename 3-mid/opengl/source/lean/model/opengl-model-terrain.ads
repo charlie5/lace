@@ -46,10 +46,10 @@ is
 
    overriding
    procedure Fade_is    (Self : in out Item;   Which : in texture_Set.texture_Id;
-                         Now   : in texture_Set.fade_Level);
+                                               Now   : in texture_Set.fade_Level);
 
    procedure Texture_is (Self : in out Item;   Which : in texture_Set.texture_Id;
-                         Now   : in asset_Name);
+                                               Now   : in asset_Name);
 
    overriding
    function  texture_Count (Self : in Item) return Natural;

@@ -15,10 +15,7 @@ is
    procedure Texture_is (in_Set : in out Item;   Which : texture_ID;   Now : in openGL.Texture.Object)
    is
    begin
-      in_Set.Textures (Which) := (0.0,
-                                  Now); --,
-                                  --  texture_Uniform => <>,
-                                  --  fade_Uniform    => <>);
+      in_Set.Textures (Which).Object := Now;
 
       in_Set.is_Transparent   :=    in_Set.is_Transparent
                                  or Now   .is_Transparent;

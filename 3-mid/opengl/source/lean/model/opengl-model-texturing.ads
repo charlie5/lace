@@ -69,7 +69,7 @@ is
       procedure Fade_is      (Self : in out Item;   Now   : in texture_Set.fade_Level;
                                                     Which : in texture_Set.texture_ID := 1);
       overriding
-      function  Fade         (Self : in     Item;   Which : texture_Set.texture_ID := 1) return texture_Set.fade_Level;
+      function  Fade         (Self : in     Item;   Which : in texture_Set.texture_ID := 1) return texture_Set.fade_Level;
 
 
       overriding
@@ -78,15 +78,17 @@ is
       overriding
       function  Texture      (Self : in     Item;   Which : in texture_Set.texture_ID := 1) return openGL.Texture.Object;
 
-      --  overriding
-      --  procedure Texture_is   (Self : in out Item;   Now : in openGL.Texture.Object);
-      --
-      --  overriding
-      --  function  Texture      (Self : in     Item)     return openGL.Texture.Object;
+
+      overriding
+      procedure texture_Applied_is (Self : in out Item;   Now   : in Boolean;
+                                                          Which : in texture_Set.texture_ID := 1);
+      overriding
+      function  texture_Applied    (Self : in     Item;   Which : in texture_Set.texture_ID := 1) return Boolean;
 
 
       overriding
       procedure enable_Textures (Self : in out Item);
+
 
 
    private

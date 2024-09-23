@@ -218,8 +218,8 @@ is
    -- Texturing
    --
 
-   procedure Fade_is (Self : in out Item;   which : in texture_Set.texture_Id;
-                                            now   : in texture_Set.fade_Level)
+   procedure Fade_is (Self : in out Item;   Which : in texture_Set.texture_Id;
+                                            Now   : in texture_Set.fade_Level)
    is
    begin
       raise program_Error with "Model does not support texturing.";
@@ -227,7 +227,7 @@ is
 
 
 
-   function Fade (Self : in Item;   which : in texture_Set.texture_Id) return texture_Set.fade_Level
+   function Fade (Self : in Item;   Which : in texture_Set.texture_Id) return texture_Set.fade_Level
    is
    begin
       raise program_Error with "Model does not support texturing.";
@@ -245,40 +245,21 @@ is
 
 
 
+   function texture_Applied (Self : in Item;   Which : in texture_Set.texture_Id) return Boolean
+   is
+   begin
+      raise program_Error with "Model does not support texturing.";
+      return False;
+   end texture_Applied;
 
 
 
-   --  procedure Fade_1_is (Self : in out Item;   Now : in Geometry.Texturing.fade_Level)
-   --  is
-   --  begin
-   --     raise program_Error with "Model does not support texturing.";
-   --  end Fade_1_is;
-   --
-   --
-   --
-   --  procedure Fade_2_is (Self : in out Item;   Now : in Geometry.Texturing.fade_Level)
-   --  is
-   --  begin
-   --     raise program_Error with "Model does not support texturing.";
-   --  end Fade_2_is;
-   --
-   --
-   --
-   --  function Fade_1 (Self : in Item) return Geometry.Texturing.fade_Level
-   --  is
-   --  begin
-   --     raise program_Error with "Model does not support texturing.";
-   --     return 0.0;
-   --  end Fade_1;
-   --
-   --
-   --
-   --  function Fade_2 (Self : in Item) return Geometry.Texturing.fade_Level
-   --  is
-   --  begin
-   --     raise program_Error with "Model does not support texturing.";
-   --     return 0.0;
-   --  end Fade_2;
+   procedure texture_Applied_is (Self : in out Item;   Which : in texture_Set.texture_Id;
+                                                       Now   : in Boolean)
+   is
+   begin
+      raise program_Error with "Model does not support texturing.";
+   end texture_applied_is;
 
 
 end openGL.Model;

@@ -80,12 +80,9 @@ is
 
    function  texture_Count (Self : in Item) return Natural;
 
-
-   --  procedure Fade_1_is (Self : in out Item;   Now : in Geometry.Texturing.fade_Level);
-   --  procedure Fade_2_is (Self : in out Item;   Now : in Geometry.Texturing.fade_Level);
-   --
-   --  function  Fade_1 (Self : in Item) return Geometry.Texturing.fade_Level;
-   --  function  Fade_2 (Self : in Item) return Geometry.Texturing.fade_Level;
+   function  texture_Applied    (Self : in     Item;   Which : in texture_Set.texture_Id) return Boolean;
+   procedure texture_Applied_is (Self : in out Item;   Which : in texture_Set.texture_Id;
+                                                       Now   : in Boolean);
 
 
 

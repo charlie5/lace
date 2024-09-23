@@ -14,10 +14,11 @@ is
 
    type Face is
       record
-         Fades          : texture_Set.fade_Levels           (texture_Set.texture_Id)       := [others => 0.0];
-         Textures       : openGL.asset_Names (1 .. Positive (texture_Set.texture_Id'Last)) := [others => null_Asset];     -- The textures to be applied to the hex.
-         texture_Count  : Natural     := 0;
-         texture_Tiling : openGL.Real := 1.0;                                                                             -- The number of times the texture should be wrapped.
+         Fades           : texture_Set.fade_Levels           (texture_Set.texture_Id)       := [others => 0.0];
+         Textures        : openGL.asset_Names (1 .. Positive (texture_Set.texture_Id'Last)) := [others => null_Asset];     -- The textures to be applied to the hex.
+         texture_Count   : Natural                                                          := 0;
+         texture_Tiling  : openGL.Real                                                      := 1.0;                        -- The number of times the texture should be wrapped.
+         texture_Applies : texture_Set.texture_Apply_array                                  := [others => True];
       end record;
 
 
@@ -54,6 +55,13 @@ is
    overriding
    function  texture_Count (Self : in Item) return Natural;
 
+
+   overriding
+   function  texture_Applied    (Self : in     Item;   Which : in texture_Set.texture_Id) return Boolean;
+
+   overriding
+   procedure texture_Applied_is (Self : in out Item;   Which : in texture_Set.texture_Id;
+                                 Now   : in Boolean);
 
 
 private

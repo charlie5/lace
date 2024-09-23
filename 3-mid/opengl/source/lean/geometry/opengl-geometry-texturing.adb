@@ -62,7 +62,8 @@ is
    begin
       for i in 1 .. openGL.texture_Set.texture_Id (for_Model.texture_Count)
       loop
-         Uniforms.Textures (i).fade_Uniform.Value_is (Real (for_Model.Fade (i)));
+         Uniforms.Textures (i).fade_Uniform           .Value_is (Real (for_Model.Fade      (i)));
+         Uniforms.Textures (i).texture_applied_Uniform.Value_is (for_Model.texture_Applied (i));
 
          glUniform1i     (Uniforms.Textures (i).texture_Uniform.gl_Variable,
                           GLint (i) - 1);
@@ -86,12 +87,14 @@ is
          declare
             use ada.Strings,
                 ada.Strings.fixed;
-            i                    : constant Positive := Positive (Id);
-            texture_uniform_Name : constant String   := "Textures[" & trim (Natural'Image (i - 1), Left) & "]";
-            fade_uniform_Name    : constant String   := "Fade["     & trim (Natural'Image (i - 1), Left) & "]";
+            i                            : constant Positive := Positive (Id);
+            texture_uniform_Name         : constant String   := "Textures["        & trim (Natural'Image (i - 1), Left) & "]";
+            fade_uniform_Name            : constant String   := "Fade["            & trim (Natural'Image (i - 1), Left) & "]";
+            texture_applies_uniform_Name : constant String   := "texture_Applies[" & trim (Natural'Image (i - 1), Left) & "]";
          begin
-            Uniforms.Textures (Id).texture_Uniform := for_Program.uniform_Variable (named => texture_uniform_Name);
-            Uniforms.Textures (Id).   fade_Uniform := for_Program.uniform_Variable (named =>    fade_uniform_Name);
+            Uniforms.Textures (Id).        texture_Uniform := for_Program.uniform_Variable (Named =>         texture_uniform_Name);
+            Uniforms.Textures (Id).           fade_Uniform := for_Program.uniform_Variable (Named =>            fade_uniform_Name);
+            Uniforms.Textures (Id).texture_applied_Uniform := for_Program.uniform_Variable (Named => texture_applies_uniform_Name);
          end;
       end loop;
 
@@ -106,7 +109,6 @@ is
    --- Mixin ---
    -------------
 
-   --  generic
    package body Mixin
    is
       use openGL.texture_Set;
@@ -127,7 +129,7 @@ is
                                                Which : in texture_Set.texture_ID := 1)
       is
       begin
-         Self.texture_Set.Textures (which).Fade := Now;
+         Self.texture_Set.Textures (Which).Fade := Now;
       end Fade_is;
 
 
@@ -163,23 +165,22 @@ is
 
 
 
-      --  overriding
-      --  procedure Texture_is (Self : in out Item;   Now : in openGL.Texture.Object)
-      --  is
-      --  begin
-      --     Texture_is (in_Set => Self.texture_Set,
-      --                 Now    => Now);
-      --  end Texture_is;
-      --
-      --
-      --
-      --  overriding
-      --  function Texture (Self : in Item) return openGL.Texture.Object
-      --  is
-      --  begin
-      --     return texture_Set.Texture (in_Set => Self.texture_Set,
-      --                                 Which  => 1);
-      --  end Texture;
+      overriding
+      procedure texture_Applied_is (Self : in out Item;   Now   : in Boolean;
+                                                          Which : in texture_Set.texture_ID := 1)
+      is
+      begin
+         Self.texture_Set.Textures (Which).Applied := Now;
+      end texture_Applied_is;
+
+
+
+      overriding
+      function  texture_Applied    (Self : in Item;   Which : in texture_Set.texture_ID := 1) return Boolean
+      is
+      begin
+         return Self.texture_Set.Textures (which).Applied;
+      end texture_Applied;
 
 
 

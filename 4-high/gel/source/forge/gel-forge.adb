@@ -163,9 +163,10 @@ is
 
       else
          the_graphics_Model := openGL.Model.circle.lit_textured.new_Circle (Radius,
-                                                                            Face => (Fades         => [1 => 0.0,     others => <>],
-                                                                                     Textures      => [1 => Texture, others => <>],
-                                                                                     texture_Count => 1)).all'Access;
+                                                                            Face => (Fades           => [1 => 0.0,     others => <>],
+                                                                                     texture_Applies => [1 => True,     others => <>],
+                                                                                     Textures        => [1 => Texture, others => <>],
+                                                                                     texture_Count   => 1)).all'Access;
       end if;
 
       return gel.Sprite.Forge.new_Sprite (Name,
@@ -220,10 +221,11 @@ is
                                                                              (Color, openGL.Opaque)).all'Access;
       else
          the_graphics_Model := openGL.Model.polygon.lit_textured.new_Polygon (openGL.Vector_2_array (Vertices),
-                                                                              Face         => (Fades          => [1 => 0.0,     others => <>],
-                                                                                               Textures       => [1 => Texture, others => <>],
-                                                                                               texture_Count  => 1,
-                                                                                               texture_Tiling => texture_Tiling)).all'Access;
+                                                                              Face         => (Fades           => [1 => 0.0,     others => <>],
+                                                                                               Textures        => [1 => Texture, others => <>],
+                                                                                               texture_Count   => 1,
+                                                                                               texture_Tiling  => texture_Tiling,
+                                                                                               texture_Applies => [others => <>])).all'Access;
       end if;
 
       return gel.Sprite.Forge.new_Sprite (Name,

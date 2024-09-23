@@ -62,8 +62,9 @@ is
                                                     Which : in texture_Set.texture_ID := 1) is null;
    function  Texture         (Self : in     Item;   Which : in texture_Set.texture_ID := 1) return openGL.Texture.Object;
 
-   --  procedure Texture_is      (Self : in out Item;   Now : in openGL.Texture.Object) is null;
-   --  function  Texture         (Self : in     Item)     return openGL.Texture.Object;
+   procedure texture_Applied_is (Self : in out Item;   Now   : in Boolean;
+                                                       Which : in texture_Set.texture_ID := 1) is null;
+   function  texture_Applied    (Self : in     Item;   Which : in texture_Set.texture_ID := 1) return Boolean;
 
 
 

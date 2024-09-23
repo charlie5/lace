@@ -37,7 +37,7 @@ is
                                             Now   : in texture_Set.fade_Level)
    is
    begin
-      Self.Face.Fades (which) := Now;
+      Self.Face.Fades (Which) := Now;
    end Fade_is;
 
 
@@ -46,7 +46,7 @@ is
    function Fade (Self : in Item;   Which : in texture_Set.texture_Id) return texture_Set.fade_Level
    is
    begin
-      return Self.Face.Fades (which);
+      return Self.Face.Fades (Which);
    end Fade;
 
 
@@ -55,7 +55,7 @@ is
                                                Now   : in openGL.asset_Name)
    is
    begin
-      Self.Face.Textures (Positive (which)) := Now;
+      Self.Face.Textures (Positive (Which)) := Now;
    end Texture_is;
 
 
@@ -67,6 +67,26 @@ is
    begin
       return Self.Face.texture_Count;
    end texture_Count;
+
+
+
+
+   overriding
+   function texture_Applied (Self : in Item;   Which : in texture_Set.texture_Id) return Boolean
+   is
+   begin
+      return Self.Face.texture_Applies (Which);
+   end texture_Applied;
+
+
+
+   overriding
+   procedure texture_Applied_is (Self : in out Item;   Which : in texture_Set.texture_Id;
+                                                       Now   : in Boolean)
+   is
+   begin
+      Self.Face.texture_Applies (Which) := Now;
+   end texture_Applied_is;
 
 
 

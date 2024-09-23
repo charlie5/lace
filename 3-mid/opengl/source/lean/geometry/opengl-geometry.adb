@@ -118,21 +118,21 @@ is
 
 
 
-   --  function Texture (Self : in Item) return openGL.Texture.Object
-   --  is
-   --  begin
-   --     raise program_Error with "Geometry has no texture.";
-   --     return openGL.Texture.null_Object;
-   --  end Texture;
-
-
-
    function Texture (Self : in Item;   Which : in texture_Set.texture_ID := 1) return openGL.Texture.Object
    is
    begin
       raise program_Error with "Geometry has no texture.";
       return openGL.Texture.null_Object;
    end Texture;
+
+
+
+   function texture_Applied (Self : in     Item;   Which : in texture_Set.texture_ID := 1) return Boolean
+   is
+   begin
+      raise program_Error with "Geometry has no texture.";
+      return False;
+   end texture_Applied;
 
 
 
