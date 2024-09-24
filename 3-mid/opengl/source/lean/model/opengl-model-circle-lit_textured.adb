@@ -91,6 +91,22 @@ is
 
 
 
+   overriding
+   procedure animate (Self : in out Item)
+   is
+      use type texture_Set.Animation_view;
+   begin
+      if Self.Face.Animation = null
+      then
+         return;
+      end if;
+
+      texture_Set.animate (Self.Face.Animation.all,
+                           Self.Face.texture_Applies);
+   end animate;
+
+
+
    ---------------------
    --- openGL Geometries
    --

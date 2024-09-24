@@ -12,6 +12,57 @@ with ada.Text_IO;   use ada.Text_IO;
 package body openGL.texture_Set
 is
 
+   -------------
+   --- Animation
+   --
+
+   function to_Frames (From : in texture_Set.texture_Ids) return Frames
+   is
+      Result : Frames (1 .. From'Length);
+   begin
+      for i in From'Range
+      loop
+         Result (i).texture_Id := From (i);
+      end loop;
+
+      return Result;
+   end to_Frames;
+
+
+
+   procedure animate (the_Animation   : in out Animation;
+                      texture_Applies : in out texture_Apply_array)
+   is
+      use ada.Calendar;
+
+      Now           : constant ada.Calendar.Time := Clock;
+
+   begin
+      if Now >= the_Animation.next_frame_Time
+      then
+         declare
+
+            next_frame_Id : constant frame_Id := (if the_Animation.Current < the_Animation.frame_Count then the_Animation.Current + 1
+                                                                                                          else 1);
+            old_Frame     :          Frame renames the_Animation.Frames (the_Animation.Current);
+            new_Frame     :          Frame renames the_Animation.Frames (next_frame_Id);
+         begin
+            texture_Applies (old_Frame.texture_Id) := False;
+            texture_Applies (new_Frame.texture_Id) := True;
+
+            the_Animation.Current         := next_frame_Id;
+            the_Animation.next_frame_Time := Now + the_Animation.frame_Duration;
+         end;
+      end if;
+   end animate;
+
+
+
+
+   --------
+   --- Item
+   --
+
    procedure Texture_is (in_Set : in out Item;   Which : texture_ID;   Now : in openGL.Texture.Object)
    is
    begin
@@ -178,6 +229,28 @@ is
       --     the_texture_count_Uniform.Value_is (the_Textures.Count);
       --  end;
    end enable;
+
+
+
+   -----------
+   --- Streams
+   --
+
+   procedure write (Stream : not null access Ada.Streams.Root_Stream_Type'Class;
+                    Item   : in              Animation_view)
+   is
+   begin
+      Animation'output (Stream, Item.all);
+   end write;
+
+
+
+   procedure read  (Stream : not null access Ada.Streams.Root_Stream_Type'Class;
+                    Item   : out             Animation_view)
+   is
+   begin
+      Item := new Animation' (Animation'Input (Stream));
+   end read;
 
 
 end openGL.texture_Set;

@@ -74,15 +74,17 @@ is
    -- Texturing
    --
 
-   function  Fade    (Self : in     Item;   Which : in texture_Set.texture_Id) return texture_Set.fade_Level;
-   procedure Fade_is (Self : in out Item;   Which : in texture_Set.texture_Id;
-                                            Now   : in texture_Set.fade_Level);
+   function  Fade               (Self : in     Item;   Which : in texture_Set.texture_Id) return texture_Set.fade_Level;
+   procedure Fade_is            (Self : in out Item;   Which : in texture_Set.texture_Id;
+                                                       Now   : in texture_Set.fade_Level);
 
-   function  texture_Count (Self : in Item) return Natural;
+   function  texture_Count      (Self : in Item) return Natural;
 
    function  texture_Applied    (Self : in     Item;   Which : in texture_Set.texture_Id) return Boolean;
    procedure texture_Applied_is (Self : in out Item;   Which : in texture_Set.texture_Id;
                                                        Now   : in Boolean);
+
+   procedure animate            (Self : in out Item) is null;
 
 
 

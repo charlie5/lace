@@ -3,10 +3,6 @@ with
      openGL.texture_Set,
      openGL.Program;
 
---  limited
---  with
---       openGL.Model;
-
 
 private
 package openGL.Model.texturing

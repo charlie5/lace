@@ -1,7 +1,9 @@
 with
      openGL.Geometry.lit_textured,
      openGL.Primitive.indexed,
-     openGL.Texture.Coordinates;
+     openGL.Texture.Coordinates,
+
+     ada.Calendar;
 
 
 package body openGL.Model.polygon.lit_textured
@@ -84,13 +86,28 @@ is
 
    overriding
    procedure texture_Applied_is (Self : in out Item;   Which : in texture_Set.texture_Id;
-                                 Now   : in Boolean)
+                                                       Now   : in Boolean)
    is
    begin
       Self.Face.texture_Applies (Which) := Now;
    end texture_Applied_is;
 
 
+
+
+   overriding
+   procedure animate (Self : in out Item)
+   is
+      use type texture_Set.Animation_view;
+   begin
+      if Self.Face.Animation = null
+      then
+         return;
+      end if;
+
+      texture_Set.animate (Self.Face.Animation.all,
+                           Self.Face.texture_Applies);
+   end animate;
 
 
 
@@ -160,27 +177,17 @@ is
       end new_Face;
 
 
-      upper_Face : Geometry.lit_textured.view;
+      the_Face : Geometry.lit_textured.view;
 
    begin
-      --  Upper Face
+      --  Face
       --
       declare
          use openGL.Texture.Coordinates;
 
          the_Vertices        :          Geometry.lit_textured.Vertex_array (1 .. the_Sites'Length + 1);
          Coords_and_Centroid : constant Coords_2D_and_Centroid := to_Coordinates (the_Sites);
-         --  Centroid     :          Vector_2       := (0.0, 0.0);
       begin
-         --- Calculate the centroid and min/max of x and y.
-         --
-         --  for i in the_Sites'Range
-         --  loop
-         --     Centroid := Centroid + the_Sites (i);
-         --  end loop;
-         --
-         --  Centroid := Centroid / Real (the_Sites'Length);
-
          for i in the_Sites'Range
          loop
             the_Vertices (Index_t (i)) := (Site   => Vector_3 (the_Sites (i) & 0.0),
@@ -196,10 +203,10 @@ is
                                                          T => 0.5 * Self.Face.texture_Tiling),
                                               Shine  => default_Shine);
 
-         upper_Face := new_Face (Vertices => the_Vertices);
+         the_Face := new_Face (Vertices => the_Vertices);
       end;
 
-      return [1 => upper_Face.all'Access];
+      return [1 => the_Face.all'Access];
    end to_GL_Geometries;
 
 

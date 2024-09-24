@@ -12,6 +12,11 @@ is
    type View is access all Item'Class;
 
 
+
+   --------
+   --- Face
+   --
+
    type Face is
       record
          Fades           : texture_Set.fade_Levels           (texture_Set.texture_Id)       := [others => 0.0];
@@ -19,6 +24,7 @@ is
          texture_Count   : Natural                                                          := 0;
          texture_Tiling  : openGL.Real                                                      := 1.0;                        -- The number of times the texture should be wrapped.
          texture_Applies : texture_Set.texture_Apply_array                                  := [others => True];
+         Animation       : texture_Set.Animation_view;
       end record;
 
 
@@ -43,17 +49,17 @@ is
    --
 
    overriding
-   function  Fade       (Self : in     Item;   Which : in texture_Set.texture_Id) return texture_Set.fade_Level;
+   function  Fade               (Self : in     Item;   Which : in texture_Set.texture_Id) return texture_Set.fade_Level;
 
    overriding
-   procedure Fade_is    (Self : in out Item;   Which : in texture_Set.texture_Id;
-                                               Now   : in texture_Set.fade_Level);
+   procedure Fade_is            (Self : in out Item;   Which : in texture_Set.texture_Id;
+                                                       Now   : in texture_Set.fade_Level);
 
-   procedure Texture_is (Self : in out Item;   Which : in texture_Set.texture_Id;
-                                               Now   : in asset_Name);
+   procedure Texture_is         (Self : in out Item;   Which : in texture_Set.texture_Id;
+                                                       Now   : in asset_Name);
 
    overriding
-   function  texture_Count (Self : in Item) return Natural;
+   function  texture_Count      (Self : in     Item) return Natural;
 
 
    overriding
@@ -61,7 +67,11 @@ is
 
    overriding
    procedure texture_Applied_is (Self : in out Item;   Which : in texture_Set.texture_Id;
-                                 Now   : in Boolean);
+                                                       Now   : in Boolean);
+
+   overriding
+   procedure animate            (Self : in out Item);
+
 
 
 private
@@ -73,5 +83,6 @@ private
 
          Face       : lit_textured.Face;
       end record;
+
 
 end openGL.Model.polygon.lit_textured;

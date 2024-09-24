@@ -166,7 +166,8 @@ is
                                                                             Face => (Fades           => [1 => 0.0,     others => <>],
                                                                                      texture_Applies => [1 => True,     others => <>],
                                                                                      Textures        => [1 => Texture, others => <>],
-                                                                                     texture_Count   => 1)).all'Access;
+                                                                                     texture_Count   => 1,
+                                                                                     Animation       => null)).all'Access;
       end if;
 
       return gel.Sprite.Forge.new_Sprite (Name,
@@ -225,7 +226,8 @@ is
                                                                                                Textures        => [1 => Texture, others => <>],
                                                                                                texture_Count   => 1,
                                                                                                texture_Tiling  => texture_Tiling,
-                                                                                               texture_Applies => [others => <>])).all'Access;
+                                                                                               texture_Applies => [others => <>],
+                                                                                               Animation       => null)).all'Access;
       end if;
 
       return gel.Sprite.Forge.new_Sprite (Name,
