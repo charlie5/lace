@@ -240,16 +240,30 @@ is
                     Item   : in              Animation_view)
    is
    begin
-      Animation'output (Stream, Item.all);
+      if Item = null
+      then
+         Boolean'write (Stream, False);
+      else
+         Boolean'write (Stream, True);
+         Animation'output (Stream, Item.all);
+      end if;
    end write;
 
 
 
-   procedure read  (Stream : not null access Ada.Streams.Root_Stream_Type'Class;
-                    Item   : out             Animation_view)
+   procedure read (Stream : not null access Ada.Streams.Root_Stream_Type'Class;
+                   Item   : out             Animation_view)
    is
+      Item_not_null : Boolean;
    begin
-      Item := new Animation' (Animation'Input (Stream));
+      Boolean'read (Stream, Item_not_null);
+
+      if Item_not_null
+      then
+         Item := new Animation' (Animation'Input (Stream));
+      else
+         Item := null;
+      end if;
    end read;
 
 
