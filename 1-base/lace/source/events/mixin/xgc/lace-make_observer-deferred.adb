@@ -23,7 +23,7 @@ is
    --
 
    overriding
-   procedure receive (Self : access Item;   the_Event    : in Event.item'Class := Event.null_Event;
+   procedure receive (Self : access Item;   the_Event    : in Event.item'Class;
                                             from_Subject : in Event.subject_Name)
    is
    begin

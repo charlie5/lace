@@ -61,11 +61,11 @@ is
    -- Emit
    --
 
-   procedure emit (Self : access Item;   the_Event : in Event.item'Class := Event.null_Event) is abstract;
+   procedure emit (Self : access Item;   the_Event : in Event.item'Class) is abstract;
    --
    -- Communication errors are ignored.
 
-   function  emit (Self : access Item;   the_Event : in Event.item'Class := Event.null_Event)
+   function  emit (Self : access Item;   the_Event : in Event.item'Class)
                    return Observer_views is abstract;
    --
    -- Observers who cannot be communicated with are returned.

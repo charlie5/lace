@@ -59,10 +59,10 @@ is
    --
 
    overriding
-   procedure emit (Self : access Item;   the_Event : in Event.item'Class := Event.null_Event);     -- TODO: Rid default.
+   procedure emit (Self : access Item;   the_Event : in Event.item'Class);
 
    overriding
-   function  emit (Self : access Item;   the_Event : in Event.item'Class := Event.null_Event)      -- TODO: Rid default.
+   function  emit (Self : access Item;   the_Event : in Event.item'Class)
                    return subject.Observer_views;
 
    overriding
@@ -109,8 +109,8 @@ private
 
 
 
-   -----------------
-   -- Safe observers
+   ------------------
+   -- Safe observers.
    --
    protected
    type safe_Observers
@@ -132,10 +132,9 @@ private
 
 
 
-   ---------------
-   -- Subject Item
+   ----------------
+   -- Subject Item.
    --
-
    type event_Emitter_view is access all event_Emitter.item'Class;
    type event_Sender_view  is access all event_Sender .item'Class;
 

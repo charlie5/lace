@@ -49,7 +49,7 @@ is
    -- Operations
    --
 
-   procedure receive (Self : access Item;   the_Event    : in Event.item'Class := event.null_Event;
+   procedure receive (Self : access Item;   the_Event    : in Event.item'Class;
                                             from_Subject : in event.subject_Name) is abstract;
    --
    -- Accepts an Event from a Subject.

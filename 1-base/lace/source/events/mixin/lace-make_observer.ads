@@ -48,7 +48,7 @@ is
    --
 
    overriding
-   procedure receive (Self : access Item;   the_Event    : in Event.item'Class := event.null_Event;
+   procedure receive (Self : access Item;   the_Event    : in Event.item'Class;
                                             from_Subject : in Event.subject_Name);
    overriding
    procedure respond (Self : access Item);
@@ -120,7 +120,7 @@ private
       --
 
       procedure receive (Self         : access Item'Class;
-                         the_Event    : in     Event.item'Class := Event.null_Event;
+                         the_Event    : in     Event.item'Class;
                          from_Subject : in     Event.subject_Name);
 
    private

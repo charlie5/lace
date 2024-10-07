@@ -102,7 +102,7 @@ is
 
 
    overriding
-   procedure emit (Self : access Item;   the_Event : in Event.item'Class := Event.null_Event)
+   procedure emit (Self : access Item;   the_Event : in Event.item'Class)
    is
    begin
       if Self.Emitter = null
@@ -145,7 +145,7 @@ is
 
 
    overriding
-   function emit (Self : access Item;   the_Event : in Event.item'Class := Event.null_Event)
+   function emit (Self : access Item;   the_Event : in Event.item'Class)
                   return subject.Observer_views
    is
       use lace.Event.utility;

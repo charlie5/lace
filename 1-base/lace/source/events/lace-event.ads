@@ -9,9 +9,7 @@ package lace.Event
 is
    pragma Pure;
 
-   type Item is tagged null record;
-
-   null_Event : constant Event.item;
+   type Item is tagged private;
 
 
    subtype  subject_Name is String;
@@ -35,5 +33,13 @@ is
 
 
 private
-   null_Event : constant Event.item := (others => <>);
+
+   type sequence_Id is range 0 .. 2**32 - 1;
+
+
+   type Item is tagged
+      record
+         s_Id : sequence_Id;
+      end record;
+
 end lace.Event;
