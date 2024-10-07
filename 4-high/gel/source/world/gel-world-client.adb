@@ -557,7 +557,7 @@ is
             end loop;
          end;
 
-         --  Fetch sprites from the server.
+         --  Create our local sprites.
          --
          declare
             the_Sprite         :          gel.Sprite.view;
@@ -591,13 +591,12 @@ is
       added_Event : gel.remote.World.sprite_added_Event;
 
    begin
+      log ("gel.world.client.add (sprite and children)" & the_Sprite.Name & the_Sprite.Id'Image);
       gel.World.item (Self.all).add (the_Sprite);     -- Do base class.
       Self.all_Sprites.Map.add (the_Sprite);
 
       added_Event.Sprite := the_Sprite.Id;
       Self.emit (added_Event);
-
-
    end add;
 
 

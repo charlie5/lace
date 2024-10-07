@@ -802,7 +802,7 @@ is
          --  Emit a new model event.
          --
 
-         --  log ("gel.World.add ~ emit new graphics model event");
+         log ("gel.World.add ~ emit new graphics model event");
 
          declare
             the_Event : remote.World.new_graphics_model_Event;
