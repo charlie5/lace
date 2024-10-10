@@ -7,8 +7,8 @@ private
 with
      lace.event_Emitter,
      lace.event_Sender,
+     lace.event.Containers,
 
-     ada.Strings.Hash,
      ada.Containers.Vectors,
      ada.Containers.indefinite_hashed_Maps;
 
@@ -88,33 +88,6 @@ private
    pragma suppress (container_Checks);     -- Suppress expensive tamper checks.
 
 
-   ---------------------------
-   -- Name map of sequence Id.
-   --
-   package name_Maps_of_sequence_Id is new ada.Containers.indefinite_hashed_Maps (event.observer_Name,
-                                                                                  event.sequence_Id,
-                                                                                  ada.Strings.Hash,
-                                                                                  "=");
-   subtype name_Map_of_sequence_Id  is name_Maps_of_sequence_Id.Map;
-
-
-   ------------------------
-   -- Safe sequence Id map.
-   --
-   protected
-   type safe_sequence_Id_Map
-   is
-      procedure add (the_Observer : in Observer.view);
-      procedure rid (the_Observer : in Observer.view);
-
-      procedure get_Next (Id           :    out event.sequence_Id;
-                          for_Observer : in     Observer.view);
-   private
-      the_Map : name_Map_of_sequence_Id;
-   end safe_sequence_Id_Map;
-
-
-
    --------------------------
    -- Event observer vectors.
    --
@@ -171,7 +144,7 @@ private
    with
       record
          safe_Observers  : make_Subject.safe_Observers;
-         sequence_Id_Map : safe_sequence_Id_Map;
+         sequence_Id_Map : Containers.safe_sequence_Id_Map;
          Emitter         : event_Emitter_view;
          Sender          : event_Sender_view;
       end record;

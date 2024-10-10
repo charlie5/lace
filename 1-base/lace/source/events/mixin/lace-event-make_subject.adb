@@ -55,7 +55,7 @@ is
       Sequence : sequence_Id;
    begin
       Self.sequence_Id_Map.get_Next (Sequence,
-                                     for_Observer);
+                                     for_Observer.Name);
       return Sequence;
    end next_Sequence;
 
@@ -71,7 +71,7 @@ is
    is
    begin
       Self.safe_Observers .add (the_Observer, of_Kind);
-      Self.sequence_Id_Map.add (the_Observer);
+      Self.sequence_Id_Map.add (the_Observer.Name);
 
       if Subject.Logger /= null
       then
@@ -129,7 +129,7 @@ is
             loop
                begin
                   Self.sequence_Id_Map.get_Next (Sequence,
-                                                 for_Observer => my_Observers (i));
+                                                 for_Name => my_Observers (i).Name);
 
                   my_Observers (i).receive (the_Event,
                                             from_Subject => Subject.item'Class (Self.all).Name,
@@ -178,7 +178,7 @@ is
       loop
          begin
             Self.sequence_Id_Map.get_Next (s_Id,
-                                           for_Observer => my_Observers (i));
+                                           for_Name => my_Observers (i).Name);
 
             my_Observers (i).receive (the_Event,
                                       from_Subject => Subject.view (Self).Name,
@@ -229,7 +229,7 @@ is
       if Self.Sender = null
       then
          Self.sequence_Id_Map.get_Next (s_Id,
-                                        for_Observer => to_Observer);
+                                        for_Name => to_Observer.Name);
          begin
             to_Observer.receive (the_Event,
                                  from_Subject => Subject.view (Self).Name,
@@ -260,46 +260,6 @@ is
                           from_Subject => Self);
       end if;
    end send;
-
-
-
-
-   ------------------------
-   -- Safe sequence Id map.
-   --
-
-   protected
-   body safe_sequence_Id_Map
-   is
-      procedure add (the_Observer : in Observer.view)
-      is
-      begin
-         if not the_Map.Contains (the_Observer.Name)
-         then
-            the_Map.insert (the_Observer.Name,
-                            new_Item => 0);
-         end if;
-      end add;
-
-
-      procedure rid (the_Observer : in Observer.view)
-      is
-      begin
-         the_Map.delete (the_Observer.Name);
-      end rid;
-
-
-      procedure get_Next (Id           :    out event.sequence_Id;
-                          for_Observer : in     Observer.view)
-      is
-         next_Id : name_Maps_of_sequence_Id.Reference_type renames the_Map (for_Observer.Name);
-      begin
-         Id      := next_Id;
-         next_Id := next_Id + 1;
-      end get_Next;
-
-   end safe_sequence_Id_Map;
-
 
 
 
