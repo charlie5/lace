@@ -1,5 +1,5 @@
 with
-     lace.make_Subject,
+     lace.event.make_Subject,
      lace.Any;
 
 private
@@ -39,7 +39,7 @@ private
    pragma Suppress (Container_Checks);     -- Suppress expensive tamper checks.
 
 
-   package Subject is new make_Subject (Any.limited_item);
+   package Subject is new event.make_Subject (Any.limited_item);
 
    type Item is limited new Subject.item with
       record

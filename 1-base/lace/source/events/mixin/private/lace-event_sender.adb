@@ -51,6 +51,7 @@ is
                   the_Event    : in lace.Event.item'Class;
                   To           : in lace.Observer.view;
                   from_Subject : in String;
+                  Sequence     : in event.sequence_Id;
                   Senders      : in safe_Senders_view);
    end Sender;
 
@@ -62,6 +63,7 @@ is
       Event        : event_Holder;
       the_Observer : lace.Observer.view;
       subject_Name : string_Holder;
+      the_Sequence : lace.event.sequence_Id;
       sender_Pool  : safe_Senders_view;
    begin
       loop
@@ -71,11 +73,13 @@ is
                             the_Event    : in lace.Event.item'Class;
                             To           : in lace.Observer.view;
                             from_Subject : in String;
+                            Sequence     : in lace.event.sequence_Id;
                             Senders      : in safe_Senders_view)
                do
                   Event       .replace_Element (the_Event);
                   subject_Name.replace_Element (from_Subject);
 
+                  the_Sequence := Sequence;
                   Myself       := Self;
                   the_Observer := To;
 
@@ -86,7 +90,8 @@ is
             end select;
 
             the_Observer.receive (Event.Reference,
-                                  from_Subject => subject_Name.Element);
+                                  from_Subject => subject_Name.Element,
+                                  Sequence     => the_Sequence);
             sender_Pool.add      (Myself);                                   -- Return the sender to the safe pool.
 
          exception
@@ -126,8 +131,8 @@ is
       the_subject_Name :         string_Holder;
       the_Senders      : aliased safe_Senders;
 
-      the_Pairs        :         safe_Pairs_view;
-      new_Pairs        :         pair_Vector;
+      the_send_Details :         safe_send_Details_view;
+      new_send_Details :         send_Details_Vector;
 
       Done             :         Boolean     := False;
 
@@ -148,11 +153,11 @@ is
 
 
    begin
-      accept start (Subject : in lace.Subject.view;
-                    Pairs   : in safe_Pairs_view)
+      accept start (Subject      : in lace.Subject.view;
+                    send_Details : in safe_send_Details_view)
       do
-         the_Pairs := Pairs;
          the_subject_Name.replace_Element (Subject.Name);
+         the_send_Details := send_Details;
       end start;
 
 
@@ -169,11 +174,11 @@ is
 
 
          exit when     Done
-                   and the_Pairs.is_Empty;
+                   and the_send_Details.is_Empty;
 
-         the_Pairs.get (new_Pairs);
+         the_send_Details.get (new_send_Details);
 
-         for each_Pair of new_Pairs
+         for Each of new_send_Details
          loop
             declare
                the_Sender : Sender_view;
@@ -186,9 +191,10 @@ is
                end if;
 
                the_Sender.send (Self         => the_Sender,
-                                the_Event    => each_Pair.Event.Element,
-                                To           => each_Pair.Observer,
+                                the_Event    => Each.Event.Element,
+                                To           => Each.Observer,
                                 from_Subject => the_subject_Name.Element,
+                                Sequence     => Each.Sequence,
                                 Senders      => the_Senders'unchecked_Access);
             exception
                when E : others =>
@@ -197,8 +203,8 @@ is
                   ada.Text_IO.new_Line;
                   ada.Text_IO.put_Line ("Error detected in 'lace.event_Sender.send_Delegator'.");
                   ada.Text_IO.put_Line ("Subject  '" & the_subject_Name.Element & "'.");
-                  ada.Text_IO.put_Line ("Observer '" & each_Pair.Observer.Name  & "'.");
-                  ada.Text_IO.put_Line ("Event    '" & each_Pair.Event'Image    & "'.");
+                  ada.Text_IO.put_Line ("Observer '" & Each.Observer.Name       & "'.");
+                  ada.Text_IO.put_Line ("Event    '" & Each.Event'Image         & "'.");
                   ada.Text_IO.put_Line ("Continuing.");
                   ada.Text_IO.new_Line (2);
             end;
@@ -223,26 +229,26 @@ is
 
 
 
-   ---------------
-   --- Safe Pairs.
+   ------------------------
+   --- Safe 'send_Details'.
    --
 
-   protected body safe_Pairs
+   protected body safe_send_Details
    is
 
-      procedure add (new_Pair : in event_observer_Pair)
+      procedure add (new_send_Details : in send_Details)
       is
       begin
-         all_Pairs.append (new_Pair);
+         all_the_send_Details.append (new_send_Details);
       end add;
 
 
 
-      procedure get (the_Pairs : out pair_Vector)
+      procedure get (all_send_Details : out send_Details_Vector)
       is
       begin
-         the_Pairs := all_Pairs;
-         all_Pairs.clear;
+         all_send_Details := all_the_send_Details;
+         all_the_send_Details.clear;
       end get;
 
 
@@ -250,10 +256,10 @@ is
       function is_Empty return Boolean
       is
       begin
-         return all_Pairs.is_Empty;
+         return all_the_send_Details.is_Empty;
       end is_Empty;
 
-   end safe_Pairs;
+   end safe_send_Details;
 
 
 
@@ -297,8 +303,8 @@ is
    procedure define (Self : in out Item;   Subject : in lace.Subject.view)
    is
    begin
-      Self.Delegator.start (Subject => Subject,
-                            Pairs   => Self.Pairs'unchecked_Access);
+      Self.Delegator.start (Subject      => Subject,
+                            send_Details => Self.send_Details'unchecked_Access);
    end define;
 
 
@@ -317,8 +323,9 @@ is
    is
       use event_Holders;
    begin
-      Self.Pairs.add (event_observer_Pair' (Event    => to_Holder (new_Event),
-                                            Observer => for_Observer));
+      Self.send_Details.add (send_Details' (Event    => to_Holder (new_Event),
+                                            Observer => for_Observer,
+                                            Sequence => from_Subject.next_Sequence (for_Observer => for_Observer)));
    end add;
 
 

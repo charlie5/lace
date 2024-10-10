@@ -4,7 +4,7 @@ with
      ada.unchecked_Deallocation;
 
 
-package body lace.make_Observer.deferred
+package body lace.event.make_Observer.deferred
 is
    use type Event.Logger.view;
 
@@ -24,7 +24,8 @@ is
 
    overriding
    procedure receive (Self : access Item;   the_Event    : in Event.item'Class;
-                                            from_Subject : in Event.subject_Name)
+                                            from_Subject : in Event.subject_Name;
+                                            Sequence     : in sequence_Id)
    is
    begin
       Self.pending_Events.add (the_Event, from_Subject);
@@ -264,4 +265,4 @@ is
    end safe_subject_Map_of_safe_events;
 
 
-end lace.make_Observer.deferred;
+end lace.event.make_Observer.deferred;

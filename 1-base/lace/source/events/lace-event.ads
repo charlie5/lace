@@ -9,7 +9,7 @@ package lace.Event
 is
    pragma Pure;
 
-   type Item is tagged private;
+   type Item is tagged null record;
 
 
    subtype  subject_Name is String;
@@ -31,15 +31,7 @@ is
    function Hash (the_Kind : in Kind) return ada.Containers.Hash_type;
 
 
-
-private
-
    type sequence_Id is range 0 .. 2**32 - 1;
 
-
-   type Item is tagged
-      record
-         s_Id : sequence_Id;
-      end record;
 
 end lace.Event;

@@ -1,5 +1,4 @@
 with
-     lace.Event,
      lace.Subject,
      lace.Observer;
 
@@ -9,6 +8,7 @@ with
      lace.event_Emitter,
      lace.event_Sender,
 
+     ada.Strings.Hash,
      ada.Containers.Vectors,
      ada.Containers.indefinite_hashed_Maps;
 
@@ -16,7 +16,7 @@ with
 generic
    type T is abstract tagged limited private;
 
-package lace.make_Subject
+package lace.event.make_Subject
 --
 --  Makes a user class T into an event Subject.
 --
@@ -41,6 +41,8 @@ is
    overriding
    function observer_Count (Self : in Item) return Natural;
 
+   overriding
+   function next_Sequence (Self : in out Item;   for_Observer : in Observer.view) return event.sequence_Id;
 
 
    -------------
@@ -86,6 +88,33 @@ private
    pragma suppress (container_Checks);     -- Suppress expensive tamper checks.
 
 
+   ---------------------------
+   -- Name map of sequence Id.
+   --
+   package name_Maps_of_sequence_Id is new ada.Containers.indefinite_hashed_Maps (event.observer_Name,
+                                                                                  event.sequence_Id,
+                                                                                  ada.Strings.Hash,
+                                                                                  "=");
+   subtype name_Map_of_sequence_Id  is name_Maps_of_sequence_Id.Map;
+
+
+   ------------------------
+   -- Safe sequence Id map.
+   --
+   protected
+   type safe_sequence_Id_Map
+   is
+      procedure add (the_Observer : in Observer.view);
+      procedure rid (the_Observer : in Observer.view);
+
+      procedure get_Next (Id           :    out event.sequence_Id;
+                          for_Observer : in     Observer.view);
+   private
+      the_Map : name_Map_of_sequence_Id;
+   end safe_sequence_Id_Map;
+
+
+
    --------------------------
    -- Event observer vectors.
    --
@@ -100,7 +129,6 @@ private
    --------------------------------------
    -- Event kind Maps of event observers.
    --
-   use type Event.Kind;
    package event_kind_Maps_of_event_observers is new ada.Containers.indefinite_hashed_Maps (Event.Kind,
                                                                                             event_Observer_Vector_view,
                                                                                             Event.Hash,
@@ -142,9 +170,10 @@ private
                                  and Subject.item
    with
       record
-         safe_Observers : make_Subject.safe_Observers;
-         Emitter        : event_Emitter_view;
-         Sender         : event_Sender_view;
+         safe_Observers  : make_Subject.safe_Observers;
+         sequence_Id_Map : safe_sequence_Id_Map;
+         Emitter         : event_Emitter_view;
+         Sender          : event_Sender_view;
       end record;
 
-end lace.make_Subject;
+end lace.event.make_Subject;

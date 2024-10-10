@@ -1,8 +1,8 @@
 with
      lace.Subject,
      lace.Observer,
-     lace.make_Subject,
-     lace.make_Observer.deferred,
+     lace.event.make_Subject,
+     lace.event.make_Observer.deferred,
      lace.Any;
 
 private
@@ -42,9 +42,9 @@ private
    pragma Suppress (Container_Checks);     -- Suppress expensive tamper checks.
 
 
-   package Subject  is new make_Subject      (Any.limited_item);
-   package Observer is new make_Observer     (Subject    .item);
-   package Deferred is new Observer.deferred (Observer   .item);
+   package Subject  is new event.make_Subject  (Any.limited_item);
+   package Observer is new event.make_Observer (Subject    .item);
+   package Deferred is new Observer.deferred   (Observer   .item);
 
    type Item is limited new Deferred.item with
       record

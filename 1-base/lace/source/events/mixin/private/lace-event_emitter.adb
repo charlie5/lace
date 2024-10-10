@@ -4,9 +4,7 @@ with
 
      ada.Text_IO,
      ada.Exceptions,
-     ada.unchecked_Deallocation,
-     ada.Containers.Vectors,
-     ada.Containers.indefinite_Holders;
+     ada.unchecked_Deallocation;
 
 
 package body lace.event_Emitter
@@ -18,10 +16,6 @@ is
 
    package string_Holders is new ada.Containers.indefinite_Holders (Element_type => String);
    subtype string_Holder  is string_Holders.Holder;
-
-
-   package event_Holders is new ada.Containers.indefinite_Holders (Element_type => lace.Event.item'Class);
-   subtype event_Holder  is event_Holders.Holder;
 
 
    package emitter_Vectors is new ada.Containers.Vectors (Positive,
@@ -60,6 +54,7 @@ is
                   the_Event    : in lace.Event.item'Class;
                   To           : in lace.Observer.view;
                   from_Subject : in String;
+                  Sequence     : in event.sequence_Id;
                   Emitters     : in safe_Emitters_view);
    end Emitter;
 
@@ -68,10 +63,12 @@ is
    task body Emitter
    is
       Myself       : Emitter_view;
+      s_Id         : event.sequence_Id;
       Event        : event_Holder;
       the_Observer : lace.Observer.view;
       subject_Name : string_Holder;
       emitter_Pool : safe_Emitters_view;
+
    begin
       loop
          begin
@@ -80,6 +77,7 @@ is
                             the_Event    : in lace.Event.item'Class;
                             To           : in lace.Observer.view;
                             from_Subject : in String;
+                            Sequence     : in lace.event.sequence_Id;
                             Emitters     : in safe_Emitters_view)
                do
                   Event       .replace_Element (the_Event);
@@ -88,6 +86,7 @@ is
                   Myself       := Self;
                   the_Observer := To;
 
+                  s_Id         := Sequence;
                   emitter_Pool := Emitters;
                end emit;
             or
@@ -95,8 +94,10 @@ is
             end select;
 
             the_Observer.receive (Event.Reference,
-                                  from_Subject => subject_Name.Element);
-            emitter_Pool.add     (Myself);                                   -- Return the emitter to the safe pool.
+                                  from_Subject => subject_Name.Element,
+                                  Sequence     => s_Id);
+
+            emitter_Pool.add (Myself);                                   -- Return the emitter to the safe pool.
 
          exception
             when E : others =>
@@ -108,6 +109,7 @@ is
                ada.Text_IO.put_Line ("Observer: '" & the_Observer.Name    & "'.");
                ada.Text_IO.put_Line ("Continuing.");
                ada.Text_IO.new_Line (2);
+
                emitter_Pool.add     (Myself);                                -- Return the emitter to the safe pool.
          end;
       end loop;
@@ -161,8 +163,8 @@ is
       accept start (Subject : in lace.Subject.view;
                     Events  : in safe_Events_view)
       do
-         the_Subject  := Subject;
-         the_Events   := Events;
+         the_Subject := Subject;
+         the_Events  := Events;
 
          the_subject_Name.replace_Element (Subject.Name);
       end start;
@@ -191,11 +193,14 @@ is
                use lace.Event.utility;
 
                the_Observers : constant lace.Subject.Observer_views := the_Subject.Observers (of_Kind => Kind_of (each_Event));
+
             begin
                for each_Observer of the_Observers
                loop
                   declare
-                     the_Emitter : Emitter_view;
+                     the_Emitter :          Emitter_view;
+                     Sequence    : constant event.sequence_Id := the_Subject.next_Sequence (for_Observer => each_Observer);
+
                   begin
                      the_Emitters.get (the_Emitter);
 
@@ -208,6 +213,7 @@ is
                                        the_Event    => each_Event,
                                        To           => each_Observer,
                                        from_Subject => the_subject_Name.Element,
+                                       Sequence     => Sequence,
                                        Emitters     => the_Emitters'unchecked_Access);
                   exception
                      when E : others =>
@@ -251,7 +257,11 @@ is
    is
 
       procedure add (new_Event : in lace.Event.item'Class)
+                     --  Sequence  : in event.sequence_Id)
       is
+         --  use event_Holders;
+         --  the_Details : constant event_Details := (Event    => to_Holder (new_Event),
+         --                                           Sequence => Sequence);
       begin
          all_Events.append (new_Event);
       end add;
@@ -331,10 +341,12 @@ is
 
 
 
-   procedure add (Self : in out Item;   new_Event : lace.Event.item'Class)
+   procedure add (Self : in out Item;   new_Event : in lace.Event.item'Class)
+                                        --  Sequence  : in event.sequence_Id)
    is
    begin
       Self.Events.add (new_Event);
+                       --  Sequence);
    end add;
 
 

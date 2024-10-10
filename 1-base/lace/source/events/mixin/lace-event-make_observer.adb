@@ -2,11 +2,10 @@ with
      lace.Event.Logger,
      lace.Event.utility,
 
-     ada.unchecked_Conversion,
      ada.unchecked_Deallocation;
 
 
-package body lace.make_Observer
+package body lace.event.make_Observer
 is
    use type Event.Logger.view;
 
@@ -64,7 +63,8 @@ is
 
    overriding
    procedure receive (Self : access Item;   the_Event    : in Event.item'Class;
-                                            from_Subject : in Event.subject_Name)
+                                            from_Subject : in Event.subject_Name;
+                                            Sequence     : in sequence_Id)
    is
    begin
       Self.Responses.receive (Self, the_Event, from_Subject);
@@ -248,4 +248,4 @@ is
    end safe_Responses;
 
 
-end lace.make_Observer;
+end lace.event.make_Observer;

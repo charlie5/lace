@@ -5,7 +5,9 @@ with
 private
 with
      lace.Subject,
-     ada.Containers.indefinite_Vectors;
+     ada.Containers.indefinite_Holders,
+     ada.Containers.indefinite_Vectors,
+     ada.Containers.Vectors;
 
 
 private
@@ -15,10 +17,11 @@ is
    type Item is tagged limited private;
 
 
-   procedure define   (Self : in out Item;   Subject   : in lace.Subject.view);
+   procedure define  (Self : in out Item;   Subject   : in lace.Subject.view);
    procedure destroy (Self : in out Item);
 
-   procedure add      (Self : in out Item;   new_Event : in lace.Event.item'Class);
+   procedure add     (Self : in out Item;   new_Event : in lace.Event.item'Class);
+                                            --  Sequence  : in event.sequence_Id);
 
 
 
@@ -36,10 +39,22 @@ private
    ---------------
    --- Containers.
    --
+   use type Event.item'Class;
+   package event_Holders is new ada.Containers.Indefinite_Holders (Event.item'Class);
+   subtype event_Holder  is event_Holders.Holder;
 
-   use type lace.Event.item'Class;
+
+   --  type event_Details is
+   --     record
+   --        Sequence : event.sequence_Id;
+   --        Event    : event_Holder;
+   --     end record;
+
+
    package event_Vectors is new ada.Containers.indefinite_Vectors (Positive,
                                                                    lace.Event.item'Class);
+   --  package event_Vectors is new ada.Containers.Vectors (Positive,
+   --                                                       event_Details);
    subtype event_Vector  is event_Vectors.Vector;
 
 
@@ -52,6 +67,7 @@ private
    type safe_Events
    is
       procedure add (new_Event  : in     lace.Event.item'Class);
+                     --  Sequence   : in     event.sequence_Id);
       procedure get (the_Events :    out event_Vector);
 
       function is_Empty return Boolean;
@@ -71,8 +87,8 @@ private
    task
    type emit_Delegator
    is
-      entry start (Subject  : in lace.Subject.view;
-                   Events   : in safe_Events_view);
+      entry start (Subject : in lace.Subject.view;
+                   Events  : in safe_Events_view);
       entry stop;
    end emit_Delegator;
 

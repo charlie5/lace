@@ -1,5 +1,4 @@
 with
-     lace.Event,
      lace.Response,
      lace.Observer;
 
@@ -12,7 +11,7 @@ with
 generic
    type T is abstract tagged limited private;
 
-package lace.make_Observer
+package lace.event.make_Observer
 --
 --  Makes a user class T into an event Observer.
 --
@@ -49,7 +48,8 @@ is
 
    overriding
    procedure receive (Self : access Item;   the_Event    : in Event.item'Class;
-                                            from_Subject : in Event.subject_Name);
+                                            from_Subject : in Event.subject_Name;
+                                            Sequence     : in sequence_Id);
    overriding
    procedure respond (Self : access Item);
 
@@ -63,7 +63,6 @@ private
    ----------------------
    -- Event response maps
    --
-   use type event.Kind;
    use type Response.view;
 
    package event_response_Maps     is new ada.Containers.indefinite_hashed_Maps (key_type        => Event.Kind,
@@ -139,4 +138,4 @@ private
          Responses : safe_Responses;
       end record;
 
-end lace.make_Observer;
+end lace.event.make_Observer;

@@ -1,6 +1,3 @@
-with
-     lace.Event;
-
 private
 with
      ada.Containers.indefinite_Vectors,
@@ -9,9 +6,9 @@ with
 
 
 generic
-   type T is abstract new lace.make_Observer.item with private;
+   type T is abstract new lace.event.make_Observer.item with private;
 
-package lace.make_Observer.deferred
+package lace.event.make_Observer.deferred
 --
 --  Makes a user class T into a deferred event Observer.
 --
@@ -32,7 +29,8 @@ is
 
    overriding
    procedure receive (Self : access Item;   the_Event    : in Event.item'Class;
-                                            from_Subject : in Event.subject_Name);
+                                            from_Subject : in Event.subject_Name;
+                                            Sequence     : in sequence_Id);
    overriding
    procedure respond (Self : access Item);
 
@@ -45,8 +43,6 @@ private
    ----------------
    -- Event Vectors
    --
-   use type Event.item;
-
    package event_Vectors     is new ada.Containers.indefinite_Vectors (Positive, Event.item'Class);
    subtype event_Vector      is event_Vectors.Vector;
    type    event_Vector_view is access all event_Vector;
@@ -120,4 +116,4 @@ private
          pending_Events : safe_subject_Map_of_safe_events;
       end record;
 
-end lace.make_Observer.deferred;
+end lace.event.make_Observer.deferred;

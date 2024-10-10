@@ -16,12 +16,12 @@ is
    type Item is tagged limited private;
 
 
-   procedure define   (Self : in out Item;   Subject   : in lace.Subject.view);
+   procedure define  (Self : in out Item;   Subject   : in lace.Subject.view);
    procedure destroy (Self : in out Item);
 
-   procedure add      (Self : in out Item;   new_Event    : in lace.Event.item'Class;
-                                             for_Observer : in lace.Observer.view;
-                                             from_Subject : in lace.Subject.view);
+   procedure add     (Self : in out Item;   new_Event    : in lace.Event.item'Class;
+                                            for_Observer : in lace.Observer.view;
+                                            from_Subject : in lace.Subject.view);
 
 
 private
@@ -32,10 +32,11 @@ private
 
 
 
-   type event_observer_Pair is
+   type send_Details is
       record
          Event    : event_Holder;
          Observer : lace.Observer.view;
+         Sequence : lace.event.sequence_Id;
       end record;
 
 
@@ -49,33 +50,33 @@ private
 
 
 
-   -------------------------------
-   --- event_observer_Pair_Vector.
+   --------------------------
+   --- 'send_Details' Vector.
    --
 
-   package pair_Vectors is new ada.Containers.Vectors (Positive,
-                                                       event_observer_Pair);
-   subtype pair_Vector  is pair_Vectors.Vector;
+   package send_Details_Vectors is new ada.Containers.Vectors (Positive,
+                                                               send_Details);
+   subtype send_Details_Vector  is send_Details_Vectors.Vector;
 
 
 
-   ---------------
-   --- Safe pairs.
+   ------------------------
+   --- Safe 'send_Detail's.
    --
 
    protected
-   type safe_Pairs
+   type safe_send_Details
    is
-      procedure add (new_Pair  : in     event_observer_Pair);
-      procedure get (the_pairs :    out pair_Vector);
+      procedure add (new_send_Details : in     send_Details);
+      procedure get (all_send_Details :    out send_Details_Vector);
 
       function  is_Empty return Boolean;
 
    private
-      all_Pairs : pair_Vector;
-   end safe_Pairs;
+      all_the_send_Details : send_Details_Vector;
+   end safe_send_Details;
 
-   type safe_Pairs_view is access all safe_Pairs;
+   type safe_send_Details_view is access all safe_send_Details;
 
 
 
@@ -86,8 +87,8 @@ private
    task
    type send_Delegator
    is
-      entry start (Subject : in lace.Subject.view;
-                   Pairs   : in safe_Pairs_view);
+      entry start (Subject      : in lace.Subject.view;
+                   send_Details : in safe_send_Details_view);
       entry stop;
    end send_Delegator;
 
@@ -99,8 +100,8 @@ private
 
    type Item is tagged limited
       record
-         Pairs     : aliased safe_Pairs;
-         Delegator :         send_Delegator;
+         send_Details : aliased safe_send_Details;
+         Delegator    :         send_Delegator;
       end record;
 
 

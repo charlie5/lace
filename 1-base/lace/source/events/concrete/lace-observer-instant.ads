@@ -1,5 +1,5 @@
 with
-     lace.make_Observer,
+     lace.event.make_Observer,
      lace.Any;
 
 private
@@ -35,7 +35,7 @@ private
    pragma Suppress (Container_Checks);     -- Suppress expensive tamper checks.
 
 
-   package Observer is new make_Observer (Any.limited_item);
+   package Observer is new event.make_Observer (Any.limited_item);
 
    type Item is limited new Observer.item with
       record

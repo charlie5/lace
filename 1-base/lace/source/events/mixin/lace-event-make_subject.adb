@@ -5,7 +5,7 @@ with
      ada.unchecked_Deallocation;
 
 
-package body lace.make_Subject
+package body lace.event.make_Subject
 is
    use type Event.Logger.view;
 
@@ -49,6 +49,18 @@ is
 
 
 
+   overriding
+   function next_Sequence (Self : in out Item;   for_Observer : in Observer.view) return event.sequence_Id
+   is
+      Sequence : sequence_Id;
+   begin
+      Self.sequence_Id_Map.get_Next (Sequence,
+                                     for_Observer);
+      return Sequence;
+   end next_Sequence;
+
+
+
    -------------
    -- Operations
    --
@@ -58,7 +70,8 @@ is
                                              of_Kind      : in Event.Kind)
    is
    begin
-      Self.safe_Observers.add (the_Observer, of_Kind);
+      Self.safe_Observers .add (the_Observer, of_Kind);
+      Self.sequence_Id_Map.add (the_Observer);
 
       if Subject.Logger /= null
       then
@@ -110,12 +123,18 @@ is
          declare
             use lace.Event.utility;
             my_Observers : constant Subject.Observer_views := Self.Observers (to_Kind (the_Event'Tag));
+            Sequence     :          sequence_Id;
          begin
             for i in my_Observers'Range
             loop
                begin
+                  Self.sequence_Id_Map.get_Next (Sequence,
+                                                 for_Observer => my_Observers (i));
+
                   my_Observers (i).receive (the_Event,
-                                            from_Subject => Subject.item'Class (Self.all).Name);
+                                            from_Subject => Subject.item'Class (Self.all).Name,
+                                            Sequence     => Sequence);
+
                   if Subject.Logger /= null
                   then
                      Subject.Logger.log_Emit (Subject.view (Self),
@@ -152,12 +171,19 @@ is
       my_Observers  : constant Subject.Observer_views := Self.Observers (to_Kind (the_Event'Tag));
       bad_Observers :          Subject.Observer_views (my_Observers'Range);
       bad_Count     :          Natural := 0;
+      s_Id          :          sequence_Id;
+
    begin
       for i in my_Observers'Range
       loop
          begin
+            Self.sequence_Id_Map.get_Next (s_Id,
+                                           for_Observer => my_Observers (i));
+
             my_Observers (i).receive (the_Event,
-                                      from_Subject => Subject.view (Self).Name);
+                                      from_Subject => Subject.view (Self).Name,
+                                      Sequence     => s_Id);
+
             if Subject.Logger /= null
             then
                Subject.Logger.log_Emit (Subject.view (Self),
@@ -197,12 +223,18 @@ is
    procedure send (Self : access Item;   the_Event   : in Event.item'Class;
                                          to_Observer : in Observer.view)
    is
+      s_Id : sequence_Id;
+
    begin
       if Self.Sender = null
       then
+         Self.sequence_Id_Map.get_Next (s_Id,
+                                        for_Observer => to_Observer);
          begin
             to_Observer.receive (the_Event,
-                                 from_Subject => Subject.view (Self).Name);
+                                 from_Subject => Subject.view (Self).Name,
+                                 Sequence     => s_Id);
+
             if Subject.Logger /= null
             then
                Subject.Logger.log_Send (Subject.view (Self),
@@ -228,6 +260,46 @@ is
                           from_Subject => Self);
       end if;
    end send;
+
+
+
+
+   ------------------------
+   -- Safe sequence Id map.
+   --
+
+   protected
+   body safe_sequence_Id_Map
+   is
+      procedure add (the_Observer : in Observer.view)
+      is
+      begin
+         if not the_Map.Contains (the_Observer.Name)
+         then
+            the_Map.insert (the_Observer.Name,
+                            new_Item => 0);
+         end if;
+      end add;
+
+
+      procedure rid (the_Observer : in Observer.view)
+      is
+      begin
+         the_Map.delete (the_Observer.Name);
+      end rid;
+
+
+      procedure get_Next (Id           :    out event.sequence_Id;
+                          for_Observer : in     Observer.view)
+      is
+         next_Id : name_Maps_of_sequence_Id.Reference_type renames the_Map (for_Observer.Name);
+      begin
+         Id      := next_Id;
+         next_Id := next_Id + 1;
+      end get_Next;
+
+   end safe_sequence_Id_Map;
+
 
 
 
@@ -265,8 +337,8 @@ is
          use event_Observer_Vectors,
              event_kind_Maps_of_event_observers;
 
-         Cursor              : constant event_kind_Maps_of_event_observers.Cursor := the_Observers.find (of_Kind);
-         the_event_Observers :          event_Observer_Vector_view;
+         Cursor               : constant event_kind_Maps_of_event_observers.Cursor := the_Observers.find    (of_Kind);
+         the_event_Observers  :          event_Observer_Vector_view;
       begin
          if has_Element (Cursor)
          then
@@ -334,4 +406,4 @@ is
    end safe_Observers;
 
 
-end lace.make_Subject;
+end lace.event.make_Subject;

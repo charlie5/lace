@@ -1,5 +1,5 @@
 with
-     lace.make_Observer.deferred,
+     lace.event.make_Observer.deferred,
      lace.Any;
 
 private
@@ -36,8 +36,8 @@ private
    pragma Suppress (Container_Checks);     -- Suppress expensive tamper checks.
 
 
-   package Observer is new lace.make_Observer (Any.limited_item);
-   package Deferred is new Observer.deferred  (Observer.item);
+   package Observer is new event.make_Observer (Any.limited_item);
+   package Deferred is new Observer.deferred   (Observer.item);
 
    type Item is limited new Deferred.item with
       record
