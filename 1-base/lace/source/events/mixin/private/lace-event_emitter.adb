@@ -1,10 +1,12 @@
 with
      lace.Observer,
+     lace.Event.Containers,
      lace.Event.utility,
 
      ada.Text_IO,
      ada.Exceptions,
-     ada.unchecked_Deallocation;
+     ada.unchecked_Deallocation,
+     ada.Containers.Vectors;
 
 
 package body lace.event_Emitter
@@ -64,7 +66,7 @@ is
    is
       Myself       : Emitter_view;
       s_Id         : event.sequence_Id;
-      Event        : event_Holder;
+      Event        : lace.event.Containers.event_Holder;
       the_Observer : lace.Observer.view;
       subject_Name : string_Holder;
       emitter_Pool : safe_Emitters_view;

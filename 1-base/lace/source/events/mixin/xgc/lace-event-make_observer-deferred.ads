@@ -1,6 +1,7 @@
 private
 with
-     ada.Containers.indefinite_Vectors,
+     lace.Event.Containers,
+     ada.Containers.Vectors,
      ada.Containers.indefinite_hashed_Maps,
      ada.Strings.Hash;
 
@@ -38,12 +39,20 @@ is
 
 private
 
-   pragma Suppress (Container_Checks);     -- Suppress expensive tamper checks.
+   --  pragma Suppress (Container_Checks);     -- Suppress expensive tamper checks.
+
+
+   type event_sequence_Pair is
+      record
+         Event    : Containers.event_Holder;
+         Sequence : sequence_Id;
+      end record;
+
 
    ----------------
    -- Event Vectors
    --
-   package event_Vectors     is new ada.Containers.indefinite_Vectors (Positive, Event.item'Class);
+   package event_Vectors     is new ada.Containers.Vectors (Positive, event_sequence_Pair);
    subtype event_Vector      is event_Vectors.Vector;
    type    event_Vector_view is access all event_Vector;
 
@@ -54,7 +63,8 @@ private
    protected
    type safe_Events
    is
-      procedure add   (the_Event  : in     Event.item'Class);
+      procedure add   (the_Event  : in     Event.item'Class;
+                       Sequence   : in     sequence_Id);
       procedure fetch (all_Events :    out event_Vector);
    private
       the_Events : event_Vector;
@@ -95,6 +105,7 @@ private
    type safe_subject_Map_of_safe_events
    is
       procedure add   (the_Event    : in Event.item'Class;
+                       Sequence     : in sequence_Id;
                        from_Subject : in String);
 
       function  fetch            return subject_events_Pairs;

@@ -32,7 +32,7 @@ is
 private
    use ada.Strings.unbounded;
 
-   pragma Suppress (Container_Checks);     -- Suppress expensive tamper checks.
+   --  pragma Suppress (Container_Checks);     -- Suppress expensive tamper checks.
 
 
    package Observer is new event.make_Observer (Any.limited_item);

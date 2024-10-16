@@ -4,6 +4,7 @@ with
 
 private
 with
+     lace.event.Containers,
      ada.Containers.indefinite_hashed_Maps,
      ada.Strings.Hash;
 
@@ -57,7 +58,7 @@ is
 
 private
 
-   pragma Suppress (Container_Checks);     -- Suppress expensive tamper checks.
+   --  pragma Suppress (Container_Checks);     -- Suppress expensive tamper checks.
 
 
    ----------------------
@@ -135,7 +136,8 @@ private
                                  and Observer.item
    with
       record
-         Responses : safe_Responses;
+         Responses       : safe_Responses;
+         sequence_Id_Map : Containers.name_Map_of_sequence_Id;     -- Contains the next expected sequence ID from each subject.
       end record;
 
 end lace.event.make_Observer;

@@ -3,6 +3,8 @@ with
      lace.Event.utility,
      ada.unchecked_Deallocation;
 
+with ada.Text_IO; use ada.Text_IO;
+
 
 package body lace.event.make_Observer.deferred
 is
@@ -28,8 +30,11 @@ is
                                             Sequence     : in sequence_Id)
    is
    begin
-      Self.pending_Events.add (the_Event, from_Subject);
+      Self.pending_Events.add (the_Event,
+                               Sequence,
+                               from_Subject);
    end receive;
+
 
 
    overriding
@@ -44,7 +49,8 @@ is
                          the_Events        : in Event_Vector;
                          from_subject_Name : in Event.subject_Name)
       is
-         Cursor : Event_Vectors.Cursor := the_Events.First;
+         expected_Sequence : Containers.name_Maps_of_sequence_Id.Reference_type renames Self.sequence_Id_Map (from_subject_Name);
+         Cursor            : Event_Vectors.Cursor                               :=      the_Events.First;
       begin
          while has_Element (Cursor)
          loop
@@ -54,45 +60,59 @@ is
                    ada.Containers;
                use type Observer.view;
 
-               the_Event : constant Event.item'Class           := Element (Cursor);
-               Response  : constant event_response_Maps.Cursor := the_Responses.find (to_Kind (the_Event'Tag));
+               the_Event    : constant Event.item'Class           := Element (Cursor).Event.Element;
+               the_Sequence : constant sequence_Id                := Element (Cursor).Sequence;
+               Response     : constant event_response_Maps.Cursor := the_Responses.find (to_Kind (the_Event'Tag));
+
             begin
-               if has_Element (Response)
+               --  put_Line ("observer " & my_Name & " from " & from_subject_Name & "     seq" & the_Sequence'Image & "     exp seq " & sequence_Id' (expected_Sequence)'Image);
+
+               if the_Sequence = expected_Sequence
                then
-                  Element (Response).respond (the_Event);
+                  expected_Sequence := expected_Sequence + 1;
 
-                  if Observer.Logger /= null
+                  if has_Element (Response)
                   then
-                     Observer.Logger.log_Response (Element (Response),
-                                                   Observer.view (Self),
-                                                   the_Event,
-                                                   from_subject_Name);
-                  end if;
+                     Element (Response).respond (the_Event);
 
-               elsif Self.Responses.relay_Target /= null
-               then
-                  --  Self.relay_Target.notify (the_Event, from_Subject_Name);   -- todo: Re-enable relayed events.
+                     if Observer.Logger /= null
+                     then
+                        Observer.Logger.log_Response (Element (Response),
+                                                      Observer.view (Self),
+                                                      the_Event,
+                                                      from_subject_Name);
+                     end if;
 
-                  if Observer.Logger /= null
+                  elsif Self.Responses.relay_Target /= null
                   then
-                     Observer.Logger.log ("[Warning] ~ Relayed events are currently disabled.");
+                     --  Self.relay_Target.notify (the_Event, from_Subject_Name);   -- todo: Re-enable relayed events.
+
+                     if Observer.Logger /= null
+                     then
+                        Observer.Logger.log ("[Warning] ~ Relayed events are currently disabled.");
+                     else
+                        raise program_Error with "Event relaying is currently disabled.";
+                     end if;
+
                   else
-                     raise program_Error with "Event relaying is currently disabled.";
+                     if Observer.Logger /= null
+                     then
+                        Observer.Logger.log ("[Warning] ~ Observer "
+                                             & my_Name
+                                             & " has no response to " & Name_of (the_Event)
+                                             & " from " & from_subject_Name & ".");
+                        Observer.Logger.log ("            Count of responses =>"
+                                             & the_Responses.Length'Image);
+                     else
+                        raise program_Error with "Observer " & my_Name & " has no response to " & Name_of (the_Event)
+                                               & " from " & from_subject_Name & ".";
+                     end if;
                   end if;
 
                else
-                  if Observer.Logger /= null
-                  then
-                     Observer.Logger.log ("[Warning] ~ Observer "
-                                          & my_Name
-                                          & " has no response to " & Name_of (the_Event)
-                                          & " from " & from_subject_Name & ".");
-                     Observer.Logger.log ("            Count of responses =>"
-                                          & the_Responses.Length'Image);
-                  else
-                     raise program_Error with "Observer " & my_Name & " has no response to " & Name_of (the_Event)
-                                            & " from " & from_subject_Name & ".";
-                  end if;
+                  Self.receive (the_Event    => the_Event,             -- Return the event to the event queue for later processing,
+                                from_Subject => from_subject_Name,     -- after the missing sequence event has arrived.
+                                Sequence     => the_Sequence);
                end if;
             end;
 
@@ -103,26 +123,23 @@ is
 
       the_subject_Events : constant subject_events_Pairs := Self.pending_Events.fetch;
 
-      --  the_subject_Events : subject_events_Pairs (1 .. 5_000);
-      --  Count              : Natural;
-
    begin
-      --  Self.pending_Events.fetch (the_subject_Events, Count);
-
-      --  for i in 1 .. Count
       for i in the_subject_Events'Range
       loop
          declare
+            function  Less_than (L, R : in event_sequence_Pair) return Boolean is (L.Sequence < R.Sequence);
+            package   Sorter     is new event_Vectors.generic_Sorting ("<" => Less_than);
             procedure deallocate is new ada.unchecked_Deallocation (String, String_view);
 
-            subject_Name : String_view       := the_subject_Events (i).Subject;
-            the_Events   : Event_vector renames the_subject_Events (i).Events;
+            subject_Name : String_view  := the_subject_Events (i).Subject;
+            the_Events   : Event_vector := the_subject_Events (i).Events;
          begin
             if Self.Responses.contains (subject_Name.all)
             then
-               actuate (Self.Responses.Element (subject_Name.all),
-                        the_Events,
-                        subject_Name.all);
+               Sorter.sort (the_Events);
+               actuate     (Self.Responses.Element (subject_Name.all),
+                            the_Events,
+                            subject_Name.all);
             else
                declare
                   Message : constant String := "*** Warning *** ~ " & my_Name & " has no responses for events from " & subject_Name.all & ".";
@@ -149,10 +166,13 @@ is
    protected
    body safe_Events
    is
-      procedure add (the_Event : in Event.item'Class)
+      procedure add (the_Event : in Event.item'Class;
+                     Sequence  : in sequence_Id)
       is
+         use Containers.event_Holders;
       begin
-         the_Events.append (the_Event);
+         the_Events.append (event_sequence_Pair' (to_Holder (the_Event),
+                                                  Sequence));
       end add;
 
 
@@ -172,6 +192,7 @@ is
    body safe_subject_Map_of_safe_events
    is
       procedure add (the_Event    : in Event.item'Class;
+                     Sequence     : in sequence_Id;
                      from_Subject : in String)
       is
       begin
@@ -181,7 +202,8 @@ is
                             new safe_Events);
          end if;
 
-         the_Map.Element (from_Subject).add (the_Event);
+         the_Map.Element (from_Subject).add (the_Event,
+                                             Sequence);
       end add;
 
 

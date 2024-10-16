@@ -5,9 +5,9 @@ with
 private
 with
      lace.Subject,
+     lace.event.Containers,
      ada.Containers.indefinite_Holders,
-     ada.Containers.indefinite_Vectors,
-     ada.Containers.Vectors;
+     ada.Containers.indefinite_Vectors;
 
 
 private
@@ -39,22 +39,13 @@ private
    ---------------
    --- Containers.
    --
-   use type Event.item'Class;
-   package event_Holders is new ada.Containers.Indefinite_Holders (Event.item'Class);
-   subtype event_Holder  is event_Holders.Holder;
+   --  use type Event.item'Class;
+   --  package event_Holders is new ada.Containers.Indefinite_Holders (Event.item'Class);
+   --  subtype event_Holder  is event_Holders.Holder;
 
-
-   --  type event_Details is
-   --     record
-   --        Sequence : event.sequence_Id;
-   --        Event    : event_Holder;
-   --     end record;
-
-
+   use type lace.Event.item'Class;
    package event_Vectors is new ada.Containers.indefinite_Vectors (Positive,
                                                                    lace.Event.item'Class);
-   --  package event_Vectors is new ada.Containers.Vectors (Positive,
-   --                                                       event_Details);
    subtype event_Vector  is event_Vectors.Vector;
 
 
@@ -67,7 +58,6 @@ private
    type safe_Events
    is
       procedure add (new_Event  : in     lace.Event.item'Class);
-                     --  Sequence   : in     event.sequence_Id);
       procedure get (the_Events :    out event_Vector);
 
       function is_Empty return Boolean;

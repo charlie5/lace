@@ -29,6 +29,11 @@ is
    is
    begin
       Self.Responses.add (Self, the_Response, to_Kind, from_Subject);
+
+      if not Self.sequence_Id_Map.contains (from_Subject)
+      then
+         Self.sequence_Id_Map.insert (from_Subject, 0);
+      end if;
    end add;
 
 

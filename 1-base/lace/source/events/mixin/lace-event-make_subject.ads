@@ -85,7 +85,7 @@ is
 
 private
 
-   pragma suppress (container_Checks);     -- Suppress expensive tamper checks.
+   --  pragma suppress (container_Checks);     -- Suppress expensive tamper checks.
 
 
    --------------------------
@@ -144,7 +144,7 @@ private
    with
       record
          safe_Observers  : make_Subject.safe_Observers;
-         sequence_Id_Map : Containers.safe_sequence_Id_Map;
+         sequence_Id_Map : Containers.safe_sequence_Id_Map;     -- Contains the next send sequence ID for each observer.
          Emitter         : event_Emitter_view;
          Sender          : event_Sender_view;
       end record;

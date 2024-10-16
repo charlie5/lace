@@ -36,7 +36,7 @@ is
 private
    use ada.Strings.unbounded;
 
-   pragma Suppress (Container_Checks);     -- Suppress expensive tamper checks.
+   --  pragma Suppress (Container_Checks);     -- Suppress expensive tamper checks.
 
 
    package Subject  is new event.make_Subject  (Any.limited_item);

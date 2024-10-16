@@ -34,6 +34,14 @@ is
          next_Id := next_Id + 1;
       end get_Next;
 
+
+      procedure decrement (for_Name : in String)
+      is
+         next_Id : name_Maps_of_sequence_Id.Reference_type renames the_Map (for_Name);
+      begin
+         next_Id := next_Id - 1;
+      end decrement;
+
    end safe_sequence_Id_Map;
 
 
