@@ -29,7 +29,7 @@ package gel.World
 --  Provides a gel world.
 --
 is
-   pragma Suppress (Container_Checks);     -- Suppress expensive tamper checks.
+   --  pragma Suppress (Container_Checks);     -- Suppress expensive tamper checks.
 
 
    type Item  is abstract limited new lace.Subject_and_deferred_Observer.item
@@ -92,6 +92,7 @@ is
    function  new_sprite_Id   (Self : access Item)                                    return sprite_Id;
    function  free_sprite_Set (Self : access Item)                                    return gel.Sprite.views;
    function  fetch_Sprite    (Self : in out Item'Class;   Id         : in sprite_Id) return gel.Sprite.view;
+   function  sprite_Exists   (Self : in out Item'Class;   Id         : in sprite_Id) return Boolean;
    procedure destroy         (Self : in out Item;         the_Sprite : in gel.Sprite.view);
    procedure set_Scale       (Self : in out Item;         for_Sprite : in gel.Sprite.view;
                                                           To         : in Vector_3);

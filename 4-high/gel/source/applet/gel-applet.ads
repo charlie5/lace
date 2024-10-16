@@ -137,7 +137,7 @@ is
 
 private
 
-   pragma Suppress (Container_Checks);     -- Suppress expensive tamper checks.
+   --  pragma Suppress (Container_Checks);     -- Suppress expensive tamper checks.
 
    use type Sprite.view;
    package sprite_Vectors is new ada.containers.Vectors (Positive, Sprite.view);

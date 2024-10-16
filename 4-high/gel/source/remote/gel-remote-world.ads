@@ -20,7 +20,7 @@ package gel.remote.World
 --
 is
    pragma remote_Types;
-   pragma suppress (Container_Checks);     -- Suppress expensive tamper checks.
+   --  pragma suppress (Container_Checks);     -- Suppress expensive tamper checks.
 
    type Item is  limited interface
              and lace.Subject .item
@@ -180,8 +180,17 @@ is
 
 
 
+   ------------------------------
+   --- Sprite add and rid events.
+   --
 
    type sprite_added_Event is new lace.Event.item with
+      record
+         Sprite : gel.sprite_Id;
+      end record;
+
+
+   type sprite_ridded_Event is new lace.Event.item with
       record
          Sprite : gel.sprite_Id;
       end record;

@@ -49,7 +49,7 @@ is
    --- Containers
    --
 
-   pragma Suppress (Container_Checks);     -- Suppress expensive tamper checks.
+   --  pragma Suppress (Container_Checks);     -- Suppress expensive tamper checks.
 
    type Grid       is array (math.Index range <>,
                              math.Index range <>) of Sprite.view;

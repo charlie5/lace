@@ -597,6 +597,14 @@ is
 
 
 
+   function sprite_Exists (Self : in out Item'Class;   Id : in sprite_Id) return Boolean
+   is
+   begin
+      return Self.all_Sprites.fetch.Contains (Id);
+   end sprite_Exists;
+
+
+
    procedure set_Scale (Self : in out Item;   for_Sprite : in gel.Sprite.view;
                                               To         : in Vector_3)
    is
@@ -830,7 +838,8 @@ is
 
          --  Emit a new model event.
          --
-         --  log ("gel.World.add ~ emit new physics model event");
+         log ("gel.World.add ~ emit new physics model event");
+
          declare
             the_Event : remote.World.new_physics_model_Event;
          begin

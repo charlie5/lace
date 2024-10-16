@@ -8,7 +8,7 @@ package gel.World.client
 --  Provides a gel world.
 --
 is
-   pragma Suppress (Container_Checks);     -- Suppress expensive tamper checks.
+   --  pragma Suppress (Container_Checks);     -- Suppress expensive tamper checks.
 
    type Item  is limited new gel.World.item with private;
 

@@ -12,7 +12,7 @@ package gel.World.server
 --  Provides a gel world server.
 --
 is
-   pragma Suppress (Container_Checks);     -- Suppress expensive tamper checks.
+   --  pragma Suppress (Container_Checks);     -- Suppress expensive tamper checks.
 
    type Item  is limited new gel.World.item
    with private;

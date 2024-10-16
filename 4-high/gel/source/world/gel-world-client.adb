@@ -302,13 +302,10 @@ is
                          Self.graphics_Models.all,
                          Self. physics_Models.all,
                          Self.World);
-         added_Event : gel.remote.World.sprite_added_Event;
       begin
+         log ("*** gel.world.client.my_new_sprite_Response.add sprite ~ " & the_Sprite.Name'Image);
          Self.World.add  (the_Sprite);
-         --  Self.World.emit (sprite_added_Event' (Sprite => the_Sprite.Id));
-
-         added_Event.Sprite := the_Sprite.Id;
-         Self.World.emit (added_Event);
+         Self.World.emit (remote.world.sprite_added_Event' (Sprite => the_Sprite.Id));
       end;
 
    end respond;
@@ -373,6 +370,7 @@ is
          --                  Self.World);
       begin
          Self.World.rid (Self.World.fetch_Sprite (the_Event.Id));
+         Self.World.emit (remote.world.sprite_ridded_Event' (Sprite => the_Event.Id));
       end;
 
    end respond;
@@ -512,7 +510,7 @@ is
          --  end sprite_Fetcher;
 
 
-         the_server_Sprites : remote.World.sprite_model_Pairs := of_World.Sprites;
+         the_server_Sprites : constant remote.World.sprite_model_Pairs := of_World.Sprites;
 
 
       begin
@@ -569,6 +567,7 @@ is
                                         Self.graphics_Models,
                                         Self. physics_Models,
                                         gel.World.view (Self));
+               log ("*** gel.world.client.is_a_Mirror.add sprite ~ " & the_Sprite.Name'Image);
                Self.add (the_Sprite);
             end loop;
          end;
@@ -588,15 +587,22 @@ is
    procedure add (Self : access Item;   the_Sprite   : in gel.Sprite.view;
                                         and_Children : in Boolean := False)
    is
-      added_Event : gel.remote.World.sprite_added_Event;
+      --  added_Event : gel.remote.World.sprite_added_Event;
 
    begin
-      log ("gel.world.client.add (sprite and children)" & the_Sprite.Name & the_Sprite.Id'Image);
-      gel.World.item (Self.all).add (the_Sprite);     -- Do base class.
-      Self.all_Sprites.Map.add (the_Sprite);
+      log ("gel.world.client.add (sprite and children) " & the_Sprite.Name & the_Sprite.Id'Image);
+      gel.World.item (Self.all).add (the_Sprite, and_Children);     -- Do base class.
+      --  Self.all_Sprites.Map.add (the_Sprite);
 
-      added_Event.Sprite := the_Sprite.Id;
-      Self.emit (added_Event);
+      --  added_Event.Sprite := the_Sprite.Id;
+
+      --  log ("****** gel.world.client.add " & the_Sprite.Name);
+      --  if the_Sprite.Id /= 50000000
+      --  then
+      --     raise Program_Error;
+      --  end if;
+
+      --  Self.emit (added_Event);
    end add;
 
 
@@ -803,6 +809,8 @@ is
       procedure add (the_Sprite : in Sprite.view)
       is
       begin
+         log ("safe_id_Map_of_sprite" & the_Sprite.Id'Image);
+         --  raise Program_Error;
          Map.insert (the_Sprite.Id,
                      the_Sprite);
       end add;

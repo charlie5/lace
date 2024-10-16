@@ -110,7 +110,7 @@ private
 
    type String_view is access all String;
 
-   pragma Suppress (Container_Checks);     -- Suppress expensive tamper checks.
+   --  pragma Suppress (Container_Checks);     -- Suppress expensive tamper checks.
 
    type Item is limited new lace.Subject_and_deferred_Observer.item with
       record
