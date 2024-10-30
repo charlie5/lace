@@ -9,7 +9,7 @@ with
 
      lace.Response,
      lace.Event.utility,
-     lace.Text,
+     lace.Text.forge,
 
      ada.unchecked_Deallocation,
      ada.Exceptions,
@@ -216,7 +216,7 @@ is
    is
       the_Event : constant remote.World.new_graphics_model_Event := remote.World.new_graphics_model_Event (to_Event);
    begin
-      log ("gel.world.client ~ new graphics model response ~ model id:" & the_Event.Model.Id'Image);
+      --  log ("gel.world.client ~ new graphics model response ~ model id:" & the_Event.Model.Id'Image);
       Self.World.add (new openGL.Model.item'Class' (openGL.Model.item'Class (the_Event.Model.all)));
    end respond;
 
@@ -253,7 +253,7 @@ is
    is
       the_Event : constant remote.World.new_physics_model_Event := remote.World.new_physics_model_Event (to_Event);
    begin
-      log ("gel.world.client ~ new physics model response ~ model id:" & the_Event.Model.Id'Image);
+      --  log ("gel.world.client ~ new physics model response ~ model id:" & the_Event.Model.Id'Image);
       Self.World.add (new physics.Model.item'Class' (physics.Model.item'Class (the_Event.Model.all)));
    end respond;
 
@@ -363,14 +363,11 @@ is
          the_Event  : constant gel.Events.rid_sprite_Event
            := gel.events.rid_sprite_Event (to_Event);
 
-         --  the_Sprite : constant gel.Sprite.view
-         --    := to_Sprite (the_Event.Pair,
-         --                  Self.graphics_Models.all,
-         --                  Self.physics_Models.all,
-         --                  Self.World);
+         the_Sprite : constant gel.Sprite.view := Self.World.fetch_Sprite (the_Event.Id);
       begin
-         Self.World.rid (Self.World.fetch_Sprite (the_Event.Id));
-         Self.World.emit (remote.world.sprite_ridded_Event' (Sprite => the_Event.Id));
+         Self.World.rid (the_Sprite);
+         Self.World.emit (remote.world.sprite_ridded_Event' (Id   => the_Event.Id,
+                                                             Name => lace.Text.forge.to_Text_128 (the_Sprite.Name)));
       end;
 
    end respond;
@@ -429,7 +426,7 @@ is
                 to_Kind (remote.World.new_physics_model_Event'Tag),
                 from_Subject => of_World.Name);
 
-      --  New sprite response.
+      --  New Id response.
       --
       define   (the_my_new_sprite_Response, World          => Self.all'Access,
                                             Models         => Self.graphics_Models'Access,
@@ -439,7 +436,7 @@ is
                 to_Kind (gel.Events.new_sprite_Event'Tag),
                 from_Subject => of_World.Name);
 
-      --  Rid sprite response.
+      --  Rid Id response.
       --
       define   (the_my_rid_sprite_Response, World          => Self.all'Access,
                                             Models         => Self.graphics_Models'Access,
@@ -594,7 +591,7 @@ is
       gel.World.item (Self.all).add (the_Sprite, and_Children);     -- Do base class.
       --  Self.all_Sprites.Map.add (the_Sprite);
 
-      --  added_Event.Sprite := the_Sprite.Id;
+      --  added_Event.Id := the_Sprite.Id;
 
       --  log ("****** gel.world.client.add " & the_Sprite.Name);
       --  if the_Sprite.Id /= 50000000
@@ -685,7 +682,7 @@ is
       Self.respond;
       Self.local_Subject_and_deferred_Observer.respond;
 
-      --  Interpolate sprite transforms.
+      --  Interpolate Id transforms.
       --
       declare
          use id_Maps_of_sprite;
@@ -730,7 +727,7 @@ is
       --        exception
       --           when E : others =>
       --              log ("");   log ("");
-      --              log ("Error in 'gel.World.client.evolve' sprite response.");
+      --              log ("Error in 'gel.World.client.evolve' Id response.");
       --              log ("");
       --              log (ada.Exceptions.exception_Information (E));
       --              log ("");   log ("");

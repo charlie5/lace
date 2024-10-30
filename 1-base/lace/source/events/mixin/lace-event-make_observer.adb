@@ -72,6 +72,11 @@ is
                                             Sequence     : in sequence_Id)
    is
    begin
+      if not Self.sequence_Id_Map.contains (from_Subject)
+      then
+         Self.sequence_Id_Map.insert (from_Subject, 0);
+      end if;
+
       Self.Responses.receive (Self, the_Event, from_Subject);
    end receive;
 
@@ -145,6 +150,11 @@ is
       is
       begin
          my_Responses.Element (from_Subject).delete (to_Kind);
+
+         if my_Responses.Element (from_Subject).is_Empty
+         then
+            Self.sequence_Id_Map.delete (from_Subject);
+         end if;
 
          if Observer.Logger /= null
          then

@@ -76,6 +76,7 @@ is
 
    type sprite_click_down_Event is new lace.Event.item with
       record
+         Sprite       : gel.sprite_Id;
          mouse_Button : gel.Mouse.Button_Id;
          world_Site   : math.Vector_3;
       end record;
@@ -83,6 +84,7 @@ is
 
    type sprite_click_up_Event is new lace.Event.item with
       record
+         Sprite       : gel.sprite_Id;
          mouse_Button : gel.Mouse.Button_Id;
          world_Site   : math.Vector_3;
       end record;

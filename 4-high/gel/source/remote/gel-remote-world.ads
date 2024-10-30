@@ -131,7 +131,7 @@ is
 
 
    -------------------------
-   --- Sprite Motion Updates
+   --- Id Motion Updates
    --
 
    --  Coarse types to help minimise network use - (TODO: Currently disabled til better quaternion 'coarsen' is ready.)
@@ -181,7 +181,7 @@ is
 
 
    ------------------------------
-   --- Sprite add and rid events.
+   --- Id add and rid events.
    --
 
    type sprite_added_Event is new lace.Event.item with
@@ -192,7 +192,8 @@ is
 
    type sprite_ridded_Event is new lace.Event.item with
       record
-         Sprite : gel.sprite_Id;
+         Id   : gel.sprite_Id;
+         Name : lace.Text.item_128;
       end record;
 
 

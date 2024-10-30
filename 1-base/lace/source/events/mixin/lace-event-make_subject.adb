@@ -4,6 +4,8 @@ with
      system.RPC,
      ada.unchecked_Deallocation;
 
+with ada.Text_IO; use ada.Text_IO;
+
 
 package body lace.event.make_Subject
 is
@@ -88,7 +90,7 @@ is
                                                of_Kind      : in Event.Kind)
    is
    begin
-      Self.safe_Observers.rid (the_Observer, of_Kind);
+      Self.safe_Observers.rid (the_Observer, of_Kind, Self.sequence_Id_Map);
 
       if Subject.Logger /= null
       then
@@ -297,7 +299,7 @@ is
          use event_Observer_Vectors,
              event_kind_Maps_of_event_observers;
 
-         Cursor               : constant event_kind_Maps_of_event_observers.Cursor := the_Observers.find    (of_Kind);
+         Cursor               : constant event_kind_Maps_of_event_observers.Cursor := the_Observers.find (of_Kind);
          the_event_Observers  :          event_Observer_Vector_view;
       begin
          if has_Element (Cursor)
@@ -314,12 +316,39 @@ is
 
 
 
-      procedure rid (the_Observer : in Observer.view;
-                     of_Kind      : in Event.Kind)
+      procedure rid (the_Observer    : in     Observer.view;
+                     of_Kind         : in     Event.Kind;
+                     sequence_Id_Map : in out Containers.safe_sequence_Id_Map)
       is
          the_event_Observers : event_Observer_Vector renames the_Observers.Element (of_Kind).all;
       begin
          the_event_Observers.delete (the_event_Observers.find_Index (the_Observer));
+
+         declare
+            Found : Boolean := False;
+         begin
+            for each_of_the_event_Observers of the_Observers
+            loop
+               declare
+                  the_event_Observers : event_Observer_Vector renames each_of_the_event_Observers.all;
+               begin
+                  for each_Observer of the_event_Observers
+                  loop
+                     if each_Observer = the_Observer
+                     then
+                        Found := True;
+                        exit;
+                     end if;
+                  end loop;
+               end;
+            end loop;
+
+            if not Found
+            then
+               sequence_Id_Map.rid (the_Observer.Name);
+            end if;
+
+         end;
       end rid;
 
 
@@ -347,7 +376,7 @@ is
 
 
 
-      function observer_Count return Natural
+      function observer_Count return Natural     -- TODO: This is wrong.
       is
          use event_kind_Maps_of_event_observers;
 

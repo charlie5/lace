@@ -42,7 +42,7 @@ is
 
       procedure get_Next  (Id       :    out event.sequence_Id;
                            for_Name : in     String);
-      procedure decrement (for_Name : in     String);
+      procedure decrement (for_Name : in     String);     -- TODO: Rid.
 
    private
       the_Map : name_Map_of_sequence_Id;

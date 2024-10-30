@@ -140,4 +140,5 @@ private
          sequence_Id_Map : Containers.name_Map_of_sequence_Id;     -- Contains the next expected sequence ID from each subject.
       end record;
 
+
 end lace.event.make_Observer;

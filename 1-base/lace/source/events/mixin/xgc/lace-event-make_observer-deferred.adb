@@ -136,6 +136,11 @@ is
          begin
             if Self.Responses.contains (subject_Name.all)
             then
+               if not Self.sequence_Id_Map.contains (subject_Name.all)
+               then
+                  Self.sequence_Id_Map.insert (subject_Name.all, 0);
+               end if;
+
                Sorter.sort (the_Events);
                actuate     (Self.Responses.Element (subject_Name.all),
                             the_Events,

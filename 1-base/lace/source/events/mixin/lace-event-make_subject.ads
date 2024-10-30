@@ -121,8 +121,9 @@ private
       procedure add (the_Observer : in Observer.view;
                      of_Kind      : in Event.Kind);
 
-      procedure rid (the_Observer : in Observer.view;
-                     of_Kind      : in Event.Kind);
+      procedure rid (the_Observer    : in     Observer.view;
+                     of_Kind         : in     Event.Kind;
+                     sequence_Id_Map : in out Containers.safe_sequence_Id_Map);
 
       function  fetch_Observers (of_Kind : in Event.Kind) return Subject.Observer_views;
       function  observer_Count return Natural;
