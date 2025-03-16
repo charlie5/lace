@@ -1,4 +1,4 @@
-abstract 
+abstract
 project Lace_shared
 is
    -- Scenario Variables
@@ -33,7 +33,7 @@ is
                           "-fno-strict-aliasing")
                         & Style_Options;
 
-   Fast_Options := ("-O3", 
+   Fast_Options := ("-O3",
                     "-gnatn",
                     -- "-gnatp",       -- TODO: This breaks opengl code. Investigate more.
                     "-funroll-loops",
@@ -53,8 +53,8 @@ is
 
    -- Modify options to cater for the build mode.
    --
-   
-   case lace_Build_Mode 
+
+   case lace_Build_Mode
    is
       when "debug" =>
          Binder_Options   := Binder_Options   & "-Es";
@@ -72,7 +72,7 @@ is
             when "Windows_NT"  =>
                Compiler_Options := Compiler_Options & "-fno-inline"
                                                     & "-gnatVcdeimoprst";
---                                                  & "-gnatVf"             -- (2016) turned off floating point validity check, seems to give  
+--                                                  & "-gnatVf"             -- (2016) turned off floating point validity check, seems to give
                                                                             -- false positives on a scalar product for collision detection
             when "MacOSX" =>
                null;
@@ -82,12 +82,12 @@ is
          case lace_OS
          is
             when "Linux"  =>
-               Compiler_Options := Compiler_Options & Fast_Options 
+               Compiler_Options := Compiler_Options & Fast_Options
                                                     & "-fomit-frame-pointer";
             when "Windows_NT"  =>
                Compiler_Options := Compiler_Options & Fast_Options
                                                     & "-fipa-cp-clone"
-                                                    & "-fgcse-after-reload" 
+                                                    & "-fgcse-after-reload"
                                                     & "-ftree-vectorize"
                                                     & "-mfpmath=sse"
                                                     & "-msse3";
@@ -99,7 +99,7 @@ is
          case lace_OS
          is
             when "Linux"  =>
-               Compiler_Options := Compiler_Options & Small_Options 
+               Compiler_Options := Compiler_Options & Small_Options
                                                     & "-fdata-sections";
             when "Windows_NT"  =>
                Compiler_Options := Compiler_Options & Small_Options;
@@ -112,12 +112,12 @@ is
 
    -- Modify options to cater for the operating system.
    --
-   
+
    case lace_OS
    is
       when "MacOSX" =>
-         Compiler_Options := Compiler_Options & "-gnatf" 
-                                              & "-gnatE" 
+         Compiler_Options := Compiler_Options & "-gnatf"
+                                              & "-gnatE"
                                               & "-gnatVcfimorst"
                                               & "-gnatyhiknp";
       when "Linux" =>
@@ -144,7 +144,7 @@ is
    package Builder is
       for Default_Switches ("ada") use ("-C", "-j0");
 
-      case lace_Build_Mode 
+      case lace_Build_Mode
       is
          when "debug" => for Global_Configuration_Pragmas use "debug.pra";
                          for Default_Switches ("ada") use ("-C", "-j0", "-gnat2022");     -- TODO: Create and use a Builder_Options variable ?
