@@ -47,6 +47,7 @@ is
       Self : constant Geometry.colored.view := new Geometry.colored.item;
    begin
       Tasks.check;
+      Errors.log;
 
       if the_Program = null
       then   -- Define the shaders and program.
