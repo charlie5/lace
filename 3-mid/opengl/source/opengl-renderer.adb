@@ -2,6 +2,7 @@ with
      GL,
      GL.Binding,
      openGL.Tasks,
+     openGL.Errors,
      interfaces.C;
 
 package body openGL.Renderer
@@ -33,16 +34,23 @@ is
       use GL.Binding;
       check_is_OK : constant Boolean := openGL.Tasks.Check with Unreferenced;
    begin
+      Errors.log;
       glClearColor (GLfloat (to_Primary (Self.Background.Primary.Red)),
                     GLfloat (to_Primary (Self.Background.Primary.Green)),
                     GLfloat (to_Primary (Self.Background.Primary.Blue)),
                     GLfloat (to_Primary (Self.Background.Alpha)));
+      Errors.log;
 
       glClear (   GL_COLOR_BUFFER_BIT
                or GL_DEPTH_BUFFER_BIT);
+      Errors.log;
 
       glCullFace (GL_BACK);
+      Errors.log;
+
       glEnable   (GL_CULL_FACE);
+      Errors.log;
+
    end clear_Frame;
 
 
