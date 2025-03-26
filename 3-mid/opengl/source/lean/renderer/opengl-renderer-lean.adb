@@ -600,12 +600,10 @@ is
 
    begin
       Tasks.check;
-      Errors.log;
 
       if clear_Frame
       then
          Self.clear_Frame;
-         Errors.log;
       end if;
 
       ---------------------
@@ -627,14 +625,12 @@ is
                or (    the_Visual.Model.opaque_Geometries = null
                    and the_Visual.Model. lucid_Geometries = null)
             then
-               Errors.log;
                the_Visual.Model.create_GL_Geometries (Self.Textures'Access, Self.Fonts);
                --  put_Line ("Rebuild");
 
             elsif the_Visual.Model.is_Modified
             then
                the_Visual.Model.modify;
-               Errors.log;
             end if;
 
             declare
@@ -665,12 +661,8 @@ is
 
             end;
          end;
-
-         put_Line ("the_Visuals (" & Each'Image & ") =>");
-         Errors.log;
       end loop;
 
-      Errors.log;
 
       --  State sort opaque geometries and render them.
       --

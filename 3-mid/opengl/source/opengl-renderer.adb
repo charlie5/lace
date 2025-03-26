@@ -34,7 +34,6 @@ is
       use GL.Binding;
       check_is_OK : constant Boolean := openGL.Tasks.Check with Unreferenced;
    begin
-      Errors.log;
       glClearColor (GLfloat (to_Primary (Self.Background.Primary.Red)),
                     GLfloat (to_Primary (Self.Background.Primary.Green)),
                     GLfloat (to_Primary (Self.Background.Primary.Blue)),
@@ -50,7 +49,6 @@ is
 
       glEnable   (GL_CULL_FACE);
       Errors.log;
-
    end clear_Frame;
 
 
