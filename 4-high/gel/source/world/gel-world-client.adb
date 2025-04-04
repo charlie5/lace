@@ -564,7 +564,7 @@ is
                                         Self.graphics_Models,
                                         Self. physics_Models,
                                         gel.World.view (Self));
-               log ("*** gel.world.client.is_a_Mirror.add sprite ~ " & the_Sprite.Name'Image);
+               --  log ("*** gel.world.client.is_a_Mirror.add sprite ~ " & the_Sprite.Name'Image);
                Self.add (the_Sprite);
             end loop;
          end;

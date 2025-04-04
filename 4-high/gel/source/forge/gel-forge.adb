@@ -164,7 +164,7 @@ is
       else
          the_graphics_Model := openGL.Model.circle.lit_textured.new_Circle (Radius,
                                                                             Face => (Fades           => [1 => 0.0,     others => <>],
-                                                                                     texture_Applies => [1 => True,     others => <>],
+                                                                                     texture_Applies => [1 => True,    others => <>],
                                                                                      Textures        => [1 => Texture, others => <>],
                                                                                      texture_Count   => 1,
                                                                                      Animation       => null)).all'Access;
