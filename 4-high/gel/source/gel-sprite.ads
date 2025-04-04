@@ -112,7 +112,7 @@ is
    function  Visual                (Self : access Item)     return openGL.Visual.view;
 
    function  graphics_Model        (Self : in     Item)     return openGL.Model.view;
-   procedure Model_is              (Self : in out Item;   Now : in openGL.Model.view);
+   procedure graphics_Model_is     (Self : in out Item;   Now : in openGL.Model.view);
    function  owns_Graphics         (Self : in     Item)           return Boolean;
 
    function  physics_Model         (Self : in     Item)     return access physics.Model.item'Class;

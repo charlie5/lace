@@ -395,11 +395,11 @@ is
 
 
 
-   procedure Model_is (Self : in out Item;   Now : in openGL.Model.view)
+   procedure graphics_Model_is (Self : in out Item;   Now : in openGL.Model.view)
    is
    begin
       Self.Visual.Model_is (Now);
-   end Model_is;
+   end graphics_Model_is;
 
 
 
