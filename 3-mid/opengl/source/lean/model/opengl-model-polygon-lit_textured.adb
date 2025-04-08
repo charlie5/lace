@@ -1,9 +1,7 @@
 with
      openGL.Geometry.lit_textured,
      openGL.Primitive.indexed,
-     openGL.Texture.Coordinates,
-
-     ada.Calendar;
+     openGL.Texture.Coordinates;
 
 
 package body openGL.Model.polygon.lit_textured
@@ -42,7 +40,7 @@ is
                                             Now   : in texture_Set.fade_Level)
    is
    begin
-      Self.Face.Fades (which) := Now;
+      Self.Face.texture_Details.Fades (which) := Now;
    end Fade_is;
 
 
@@ -51,7 +49,7 @@ is
    function Fade (Self : in Item;   Which : in texture_Set.texture_Id) return texture_Set.fade_Level
    is
    begin
-      return Self.Face.Fades (which);
+      return Self.Face.texture_Details.Fades (which);
    end Fade;
 
 
@@ -60,7 +58,7 @@ is
                                                Now   : in openGL.asset_Name)
    is
    begin
-      Self.Face.Textures (Positive (which)) := Now;
+      Self.Face.texture_Details.Textures (Positive (which)) := Now;
    end Texture_is;
 
 
@@ -70,7 +68,7 @@ is
    function texture_Count (Self : in Item) return Natural
    is
    begin
-      return Self.Face.texture_Count;
+      return Self.Face.texture_Details.texture_Count;
    end texture_Count;
 
 
@@ -79,7 +77,7 @@ is
    function texture_Applied (Self : in Item;   Which : in texture_Set.texture_Id) return Boolean
    is
    begin
-      return Self.Face.texture_Applies (Which);
+      return Self.Face.texture_Details.texture_Applies (Which);
    end texture_Applied;
 
 
@@ -89,7 +87,7 @@ is
                                                        Now   : in Boolean)
    is
    begin
-      Self.Face.texture_Applies (Which) := Now;
+      Self.Face.texture_Details.texture_Applies (Which) := Now;
    end texture_Applied_is;
 
 
@@ -100,13 +98,13 @@ is
    is
       use type texture_Set.Animation_view;
    begin
-      if Self.Face.Animation = null
+      if Self.Face.texture_Details.Animation = null
       then
          return;
       end if;
 
-      texture_Set.animate (Self.Face.Animation.all,
-                           Self.Face.texture_Applies);
+      texture_Set.animate (Self.Face.texture_Details.Animation.all,
+                           Self.Face.texture_Details.texture_Applies);
    end animate;
 
 
@@ -128,7 +126,7 @@ is
       the_Sites : Vector_2_array renames Self.vertex_Sites (1 .. Self.vertex_Count);
 
 
-      function new_Face (Vertices : in geometry.lit_textured.Vertex_array) return Geometry.lit_textured.view
+      function new_Geometry (Vertices : in geometry.lit_textured.Vertex_array) return Geometry.lit_textured.view
       is
          use Primitive,
              texture_Set;
@@ -154,19 +152,20 @@ is
            := Primitive.indexed.new_Primitive (triangle_Fan, the_Indices);
 
          Id : texture_Set.texture_Id;
+
       begin
          the_Geometry.Vertices_are (Vertices);
          the_Geometry.add          (Primitive.view (the_Primitive));
 
-         for i in 1 .. Self.Face.texture_Count
+         for i in 1 .. Self.Face.texture_Details.texture_Count
          loop
             Id := texture_Id (i);
 
             the_Geometry.Fade_is (which => Id,
-                                  now   => Self.Face.Fades (Id));
+                                  now   => Self.Face.texture_Details.Fades (Id));
 
             the_Geometry.Texture_is     (which => Id,
-                                         now   => Textures.fetch (Self.Face.Textures (i)));
+                                         now   => Textures.fetch (Self.Face.texture_Details.Textures (i)));
             the_Geometry.is_Transparent (now   => the_Geometry.Texture.is_Transparent);
          end loop;
 
@@ -174,13 +173,13 @@ is
          the_Geometry.Model_is       (Self.all'unchecked_Access);
 
          return the_Geometry;
-      end new_Face;
+      end new_Geometry;
 
 
-      the_Face : Geometry.lit_textured.view;
+      face_Geometry : Geometry.lit_textured.view;
 
    begin
-      --  Face
+      --  Geometry
       --
       declare
          use openGL.Texture.Coordinates;
@@ -192,21 +191,21 @@ is
          loop
             the_Vertices (Index_t (i)) := (Site   => Vector_3 (the_Sites (i) & 0.0),
                                            Normal => Normal,
-                                           Coords => (Coords_and_Centroid.Coords (Index_t (i)).S * Self.Face.texture_Tiling,
-                                                      Coords_and_Centroid.Coords (Index_t (i)).T * Self.Face.texture_Tiling),
+                                           Coords => (Coords_and_Centroid.Coords (Index_t (i)).S * Self.Face.texture_Details.texture_Tiling,
+                                                      Coords_and_Centroid.Coords (Index_t (i)).T * Self.Face.texture_Details.texture_Tiling),
                                            Shine  => default_Shine);
          end loop;
 
          the_Vertices (the_Vertices'Last) := (Site   => Vector_3 (Coords_and_Centroid.Centroid & 0.0),
                                               Normal => Normal,
-                                              Coords => (S => 0.5 * Self.Face.texture_Tiling,
-                                                         T => 0.5 * Self.Face.texture_Tiling),
+                                              Coords => (S => 0.5 * Self.Face.texture_Details.texture_Tiling,
+                                                         T => 0.5 * Self.Face.texture_Details.texture_Tiling),
                                               Shine  => default_Shine);
 
-         the_Face := new_Face (Vertices => the_Vertices);
+         face_Geometry := new_Geometry (Vertices => the_Vertices);
       end;
 
-      return [1 => the_Face.all'Access];
+      return [1 => face_Geometry.all'Access];
    end to_GL_Geometries;
 
 

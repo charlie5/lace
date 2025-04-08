@@ -59,6 +59,42 @@ is
 
 
 
+   -----------
+   --- Details
+   --
+   --
+   --  type Details is
+   --     record
+   --        Fades           : fade_Levels                (texture_Id)       := [others => 0.0];
+   --        Textures        : asset_Names (1 .. Positive (texture_Id'Last)) := [others => null_Asset];     -- The textures to be applied to the hex.
+   --        texture_Count   : Natural                                       := 0;
+   --        texture_Tiling  : Real                                          := 1.0;                        -- The number of times the texture should be wrapped.
+   --        texture_Applies : texture_Apply_array                           := [others => True];
+   --        Animation       : Animation_view;
+   --     end record;
+   --
+
+   function to_Details (texture_Assets : in asset_Names;
+                        Animation      : in Animation_view := null) return Details
+   is
+      Result : Details;
+   begin
+      Result.texture_Count := texture_Assets'Length;
+
+      for i in 1 .. texture_Assets'Length
+      loop
+         Result.Textures (i) := texture_Assets (i);
+      end loop;
+
+      Result.Animation := Animation;
+
+      return Result;
+   end to_Details;
+
+
+
+
+
    --------
    --- Item
    --
