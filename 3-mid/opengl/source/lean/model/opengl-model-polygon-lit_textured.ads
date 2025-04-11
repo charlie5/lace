@@ -20,25 +20,7 @@ is
    type Face is
       record
          texture_Details : texture_Set.Details;
-         --  Fades           : texture_Set.fade_Levels           (texture_Set.texture_Id)       := [others => 0.0];
-         --  Textures        : openGL.asset_Names (1 .. Positive (texture_Set.texture_Id'Last)) := [others => null_Asset];     -- The textures to be applied to the hex.
-         --  texture_Count   : Natural                                                          := 0;
-         --  texture_Tiling  : openGL.Real                                                      := 1.0;                        -- The number of times the texture should be wrapped.
-         --  texture_Applies : texture_Set.texture_Apply_array                                  := [others => True];
-         --  Animation       : texture_Set.Animation_view;
       end record;
-
-
-
-   --  type Face is
-   --     record
-   --        Fades           : texture_Set.fade_Levels           (texture_Set.texture_Id)       := [others => 0.0];
-   --        Textures        : openGL.asset_Names (1 .. Positive (texture_Set.texture_Id'Last)) := [others => null_Asset];     -- The textures to be applied to the hex.
-   --        texture_Count   : Natural                                                          := 0;
-   --        texture_Applies : texture_Set.texture_Apply_array                                  := [others => True];
-   --        Animation       : texture_Set.Animation_view;
-   --     end record;
-
 
 
    ---------

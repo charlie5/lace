@@ -362,7 +362,7 @@ is
 
 private
 
-   -- NB: Packing these arrays forces compiler to use the correct size for the element type, rather than the most efficient size.
+   -- NB: Packing these arrays forces compiler to use the correct size for the element type, rather than the most efficient size.  -- TODO: Use 'Size' aspect clauses, instead of 'Pack'.
    --
    pragma Pack (short_Indices);
    pragma Pack (      Indices);

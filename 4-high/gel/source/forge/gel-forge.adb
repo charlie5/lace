@@ -200,14 +200,8 @@ is
       use type Geometry_2d.Sites,
                openGL.asset_Name;
 
-      --  the_graphics_Model : constant openGL.Model.polygon.lit_colored.view
-      --    := openGL.Model.polygon.lit_colored.new_Polygon (openGL.Vector_2_array (Vertices),
-      --                                                     (Color, openGL.Opaque));
-
-      the_graphics_Model : openGL.Model.view;
-
+      the_graphics_Model :          openGL.Model.view;
       Padding            : constant Geometry_2d.Sites (1 .. 8 - Vertices'Length) := (others => <>);
-
       the_physics_Model  : constant physics.Model.view
         := physics.Model.Forge.new_physics_Model (shape_Info  => (physics.Model.Polygon,
                                                                   vertex_Count => Vertices'Length,
@@ -393,7 +387,6 @@ is
       the_box_physics_Model : constant physics.Model.view
         := physics.Model.Forge.new_physics_Model (shape_Info => (Kind         => physics.Model.Cube,
                                                                  half_Extents => Size / 2.0),
-                                                                 --  half_Extents => the_box_Model.Scale / 2.0),
                                                   Mass       => Mass);
       the_Box : constant gel.Sprite.view
         := gel.Sprite.Forge.new_Sprite ("demo.Box",
@@ -432,7 +425,6 @@ is
       the_box_physics_Model : constant physics.Model.view
         := physics.Model.Forge.new_physics_Model (shape_Info => (Kind         => physics.Model.Cube,
                                                                  half_Extents => Size / 2.0),
-                                                                 --  half_Extents => the_box_Model.Scale / 2.0),
                                                   Mass       => Mass);
       the_Box : constant gel.Sprite.view
         := gel.Sprite.forge.new_Sprite ("demo.Box",
@@ -468,7 +460,6 @@ is
       the_billboard_physics_Model : constant physics.Model.view
         := physics.Model.Forge.new_physics_Model (shape_Info => (Kind         => physics.Model.Cube,
                                                                  half_Extents => Size / 2.0),
-                                                                 --  half_Extents => the_billboard_Model.Scale / 2.0),
                                                   Mass       => Mass);
 
       the_Billboard : constant gel.Sprite.view
@@ -506,7 +497,6 @@ is
       the_billboard_physics_Model : constant physics.Model.view
         := physics.Model.Forge.new_physics_Model (shape_Info => (Kind         => physics.Model.Cube,
                                                                  half_Extents => Size / 2.0),
-                                                                 --  half_Extents => the_billboard_Model.Scale / 2.0),
                                                   Mass       => Mass);
       the_Billboard : constant gel.Sprite.view
         := gel.Sprite.forge.new_Sprite ("Billboard",
@@ -525,12 +515,12 @@ is
 
 
    function new_arrow_Sprite (in_World      : in gel.World.view;
-                                  Site          : in math.Vector_3      := math.Origin_3D;
-                                  Mass          : in math.Real          := 0.0;
-                                  Size          : in math.Vector_3      := [1.0, 1.0, 1.0];
-                                  Texture       : in openGL.asset_Name  := openGL.null_Asset;
-                                  Color         : in openGL.lucid_Color := (openGL.Palette.Black, openGL.Opaque);
-                                  line_Width    : in openGL.Real        := openGL.Primitive.unused_line_Width;
+                              Site          : in math.Vector_3      := math.Origin_3D;
+                              Mass          : in math.Real          := 0.0;
+                              Size          : in math.Vector_3      := [1.0, 1.0, 1.0];
+                              Texture       : in openGL.asset_Name  := openGL.null_Asset;
+                              Color         : in openGL.lucid_Color := (openGL.Palette.Black, openGL.Opaque);
+                              line_Width    : in openGL.Real        := openGL.Primitive.unused_line_Width;
                               user_Data     : in any_user_Data_view := null) return gel.Sprite.view
    is
       pragma Unreferenced (Texture);
@@ -543,7 +533,6 @@ is
       the_physics_Model  : constant physics.Model.view
         := physics.Model.Forge.new_physics_Model (shape_Info => (Kind         => physics.Model.Cube,
                                                                  half_Extents => Size / 2.0),
-                                                                 --  half_Extents => the_graphics_Model.Scale / 2.0),
                                                   Mass       => Mass);
       the_Arrow : constant gel.Sprite.view
         := gel.Sprite.forge.new_Sprite ("Arrow",
@@ -562,12 +551,12 @@ is
 
 
    function new_line_Sprite (in_World      : in gel.World.view;
-                                  Site          : in math.Vector_3      := math.Origin_3D;
-                                  Mass          : in math.Real          := 0.0;
-                                  Size          : in math.Vector_3      := [1.0, 1.0, 1.0];
-                                  Texture       : in openGL.asset_Name  := openGL.null_Asset;
-                                  Color         : in openGL.lucid_Color := (openGL.Palette.Black, openGL.Opaque);
-                                  line_Width    : in openGL.Real        := openGL.Primitive.unused_line_Width;
+                             Site          : in math.Vector_3      := math.Origin_3D;
+                             Mass          : in math.Real          := 0.0;
+                             Size          : in math.Vector_3      := [1.0, 1.0, 1.0];
+                             Texture       : in openGL.asset_Name  := openGL.null_Asset;
+                             Color         : in openGL.lucid_Color := (openGL.Palette.Black, openGL.Opaque);
+                             line_Width    : in openGL.Real        := openGL.Primitive.unused_line_Width;
                              user_Data     : in any_user_Data_view := null) return gel.Sprite.view
    is
       pragma Unreferenced (Texture, line_Width);
@@ -579,7 +568,6 @@ is
       the_physics_Model  : constant physics.Model.view
         := physics.Model.Forge.new_physics_Model (shape_Info => (Kind         => physics.Model.Cube,
                                                                  half_Extents => Size / 2.0),
-                                                                 --  half_Extents => the_graphics_Model.Scale / 2.0),
                                                   Mass       => Mass);
       the_Line : constant gel.Sprite.view
         := gel.Sprite.forge.new_Sprite ("Line",
@@ -672,7 +660,6 @@ is
       else
          the_physics_Model := physics.Model.Forge.new_physics_Model (shape_Info => (Kind         => physics.Model.Cube,
                                                                                     half_Extents => Size / 2.0));
-                                                                                    --  half_Extents => the_graphics_Model.Scale));
       end if;
 
       return gel.Sprite.Forge.new_Sprite ("text_Sprite",

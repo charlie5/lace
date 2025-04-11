@@ -45,8 +45,6 @@ is
          Fade            : fade_Level                       := 0.0;
          Object          : openGL.Texture.Object            := openGL.Texture.null_Object;
          Applied         : Boolean                          := True;                           -- Whether this texture is painted on or not.
-         --  texture_Uniform : openGL.Variable.uniform.sampler2D;
-         --  fade_Uniform    : openGL.Variable.uniform.float;
       end record;
 
    type fadeable_Textures is array (texture_Id range 1 .. max_Textures) of fadeable_Texture;

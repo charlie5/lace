@@ -69,7 +69,6 @@ is
          Mass        : Real;
          Friction    : Real;
          Restitution : Real;     -- Bounce
-         --  Site        : Vector_3;
 
          is_Tangible : Boolean := True;
       end record;
@@ -89,7 +88,6 @@ is
                                   Mass        : in Real     := 0.0;
                                   Friction    : in Real     := 0.1;
                                   Restitution : in Real     := 0.1;
-                                  --  Site        : in Vector_3 := Origin_3d;
                                   is_Tangible : in Boolean  := True) return View;
    end Forge;
 

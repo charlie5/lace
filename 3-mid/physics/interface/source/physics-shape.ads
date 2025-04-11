@@ -6,7 +6,8 @@ is
    type Item is limited interface;
    type View is access all Item'Class;
 
-   procedure define (Self : in out Item) is abstract;
+
+   procedure define   (Self : in out Item) is abstract;
 
    procedure free     (Self : in out View);
 

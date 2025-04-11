@@ -90,6 +90,9 @@ is
 
 
 
+
+   -- TODO: Rid this ...
+
    function to_Sprite (the_Pair            : in remote.World.sprite_model_Pair;
                        the_graphics_Models : in Id_Maps_of_graphics_Model.Map;
                        the_physics_Models  : in Id_Maps_of_physics_Model .Map;
