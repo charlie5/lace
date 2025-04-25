@@ -12,7 +12,7 @@ is
    type View is access all Item'Class;
 
 
-   type Face is
+   type Face_t is
       record
          texture_Details : texture_Set.Details;
       end record;
@@ -23,13 +23,16 @@ is
    --
 
    function new_circle (Radius : in Real;
-                        Face   : in lit_textured.Face;
+                        Face   : in lit_textured.Face_t;
                         Sides  : in Positive         := 24) return View;
 
 
    --------------
    --- Attributes
    --
+
+   function Face (Self : in Item) return Face_t;
+
 
    overriding
    function to_GL_Geometries (Self : access Item;   Textures : access Texture.name_Map_of_texture'Class;
@@ -69,7 +72,7 @@ private
 
    type Item is new Model.circle.item with
       record
-         Face  : lit_textured.Face;
+         Face  : lit_textured.Face_t;
       end record;
 
 end openGL.Model.circle.lit_textured;

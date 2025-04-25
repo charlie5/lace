@@ -11,7 +11,7 @@ is
    --
 
    function new_circle (Radius : in Real;
-                        Face   : in lit_textured.Face;
+                        Face   : in lit_textured.Face_t;
                         Sides  : in Positive         := 24) return View
    is
       Self : constant View := new Item;
@@ -28,6 +28,13 @@ is
    ------------------
    --- Attributes ---
    ------------------
+
+   function Face (Self : in Item) return Face_t
+   is
+   begin
+      return Self.Face;
+   end Face;
+
 
 
    ------------
