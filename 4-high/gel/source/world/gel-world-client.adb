@@ -587,7 +587,7 @@ is
       --  added_Event : gel.remote.World.sprite_added_Event;
 
    begin
-      log ("gel.world.client.add (sprite and children) " & the_Sprite.Name & the_Sprite.Id'Image);
+      --  log ("gel.world.client.add (sprite and children) " & the_Sprite.Name & the_Sprite.Id'Image);
       gel.World.item (Self.all).add (the_Sprite, and_Children);     -- Do base class.
       --  Self.all_Sprites.Map.add (the_Sprite);
 
@@ -806,7 +806,7 @@ is
       procedure add (the_Sprite : in Sprite.view)
       is
       begin
-         log ("safe_id_Map_of_sprite" & the_Sprite.Id'Image);
+         --  log ("safe_id_Map_of_sprite" & the_Sprite.Id'Image);
          --  raise Program_Error;
          Map.insert (the_Sprite.Id,
                      the_Sprite);
