@@ -21,18 +21,23 @@ is
          begin
             case the_Error
             is
-               when GL.GL_NO_ERROR       =>   return "no error";
-               when GL_INVALID_ENUM      =>   return "invalid Enum";
-               when GL_INVALID_VALUE     =>   return "invalid Value";
-               when GL_INVALID_OPERATION =>   return "invalid Operation";
-               when GL_OUT_OF_MEMORY     =>   return "out of Memory";
-               when others               =>   return "unknown openGL error detected (Code:" & the_Error'Image & ")";
+               when GL.GL_NO_ERROR                   =>   return "no error";
+               when GL_INVALID_ENUM                  =>   return "invalid Enum";
+               when GL_INVALID_VALUE                 =>   return "invalid Value";
+               when GL_INVALID_OPERATION             =>   return "invalid Operation";
+               when GL_STACK_OVERFLOW                =>   return "Stack overflow";
+               when GL_STACK_UNDERFLOW               =>   return "Stack underflow";
+               when GL_OUT_OF_MEMORY                 =>   return "out of Memory";
+               when GL_INVALID_FRAMEBUFFER_OPERATION =>   return "invalid framebuffer Operation";
+               when GL_CONTEXT_LOST                  =>   return "Context lost";
+               when others                           =>   return "unknown openGL error detected (Code:" & the_Error'Image & ")";
             end case;
          end;
       end if;
 
       return "";
    end Current;
+
 
 
 

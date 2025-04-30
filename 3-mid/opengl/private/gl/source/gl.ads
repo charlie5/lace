@@ -131,11 +131,15 @@ is
    GL_POLYGON_OFFSET_FILL : constant := 16#8037#;
 
    --  ErrorCode
-   GL_NO_ERROR          : constant := 0;
-   GL_INVALID_ENUM      : constant := 16#500#;
-   GL_INVALID_VALUE     : constant := 16#501#;
-   GL_INVALID_OPERATION : constant := 16#502#;
-   GL_OUT_OF_MEMORY     : constant := 16#505#;
+   GL_NO_ERROR                      : constant := 0;
+   GL_INVALID_ENUM                  : constant := 16#500#;
+   GL_INVALID_VALUE                 : constant := 16#501#;
+   GL_INVALID_OPERATION             : constant := 16#502#;
+   GL_STACK_OVERFLOW                : constant := 16#503#;
+   GL_STACK_UNDERFLOW               : constant := 16#504#;
+   GL_OUT_OF_MEMORY                 : constant := 16#505#;
+   GL_INVALID_FRAMEBUFFER_OPERATION : constant := 16#506#;
+   GL_CONTEXT_LOST                  : constant := 16#507#;
 
    --  FrontFaceDirection
    GL_CW  : constant := 16#900#;
