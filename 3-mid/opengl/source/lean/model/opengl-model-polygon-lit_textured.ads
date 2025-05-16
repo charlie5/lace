@@ -17,7 +17,7 @@ is
    --- Face
    --
 
-   type Face is
+   type Face_t is
       record
          texture_Details : texture_Set.Details;
       end record;
@@ -28,12 +28,14 @@ is
    --
 
    function new_Polygon (vertex_Sites : in Vector_2_array;
-                         Face         : in lit_textured.Face) return View;
+                         Face         : in lit_textured.Face_t) return View;
 
 
    --------------
    --- Attributes
    --
+
+   function Face (Self : in Item) return Face_t;
 
    overriding
    function to_GL_Geometries (Self : access Item;   Textures : access Texture.name_Map_of_texture'Class;
@@ -76,7 +78,7 @@ private
          vertex_Sites : Vector_2_array (1 .. 8);
          vertex_Count : Positive;
 
-         Face         : lit_textured.Face;
+         Face         : lit_textured.Face_t;
       end record;
 
 

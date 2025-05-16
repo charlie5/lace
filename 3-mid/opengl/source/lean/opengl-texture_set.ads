@@ -93,7 +93,7 @@ is
    type Details is
       record
          Fades           : fade_Levels                (texture_Id)       := [others => 0.0];
-         Textures        : asset_Names (1 .. Positive (texture_Id'Last)) := [others => null_Asset];     -- The textures to be applied to the hex.
+         Textures        : asset_Names (1 .. Positive (texture_Id'Last)) := [others => null_Asset];     -- The textures to be applied to the visual.
          texture_Count   : Natural                                       := 0;
          texture_Tiling  : Real                                          := 1.0;                        -- The number of times the texture should be wrapped.
          texture_Applies : texture_Apply_array                           := [1 => True, others => False];

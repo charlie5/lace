@@ -11,7 +11,7 @@ is
    --
 
    function new_polygon (vertex_Sites : in Vector_2_array;
-                         Face         : in lit_textured.Face) return View
+                         Face         : in Face_t) return View
    is
       Self : constant View := new Item;
    begin
@@ -29,6 +29,13 @@ is
    ------------------
    --- Attributes ---
    ------------------
+
+   function Face (Self : in Item) return Face_t
+   is
+   begin
+      return Self.Face;
+   end Face;
+
 
 
    ------------
