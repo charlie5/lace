@@ -21,7 +21,9 @@ is
    end Naming;
 
    package Compiler is
-      for Default_Switches ("c++") use ("-g", "-I../../contrib/include");
+      for Default_Switches ("c++") use ("-g",
+                                        "-O2",
+                                        "-I../../contrib/include");
    end Compiler;
 
 end Box2d_contrib;
