@@ -7,7 +7,6 @@ with
      openGL.Geometry.        lit_textured_skinned,
      openGL.Geometry.lit_colored_textured_skinned,
      openGL.Font.texture,
-     openGL.Server,
      openGL.Tasks,
      openGL.IO,
      openGL.Errors,
@@ -23,9 +22,6 @@ with
      ada.Exceptions,
      ada.Task_Identification,
      ada.unchecked_Deallocation;
-
-with GL.Binding;
-     --  gdk.GLContext;
 
 
 package body openGL.Renderer.lean
@@ -190,32 +186,30 @@ is
    procedure free_old_Models (Self : in out Item)
    is
       use Model;
+      Last : Natural;
 
-      free_Models : graphics_Models with Convention => C;     -- Convention C is for performance.
-      Last        : Natural;
    begin
-      Self.obsolete_Models.fetch (free_Models, Last);
+      Self.obsolete_Models.fetch (Self.free_Models, Last);
 
       for i in 1 .. Last
       loop
-         free (free_Models (i));
+         free (Self.free_Models (i));
       end loop;
    end free_old_Models;
+
 
 
 
    procedure free_old_Impostors (Self : in out Item)
    is
       use Impostor;
-
-      free_Impostors : Impostor_Set with Convention => C;     -- Convention C is for performance.
-      Last           : Natural;
+      Last : Natural;
    begin
-      Self.obsolete_Impostors.fetch (free_Impostors, Last);
+      Self.obsolete_Impostors.fetch (Self.free_Impostors, Last);
 
       for i in 1 .. Last
       loop
-         free (free_Impostors (i));
+         free (Self.free_Impostors (i));
       end loop;
    end free_old_Impostors;
 
@@ -1098,7 +1092,7 @@ is
    is
    begin
       return Self.Lights.Exists (Id);
-   end;
+   end Exists;
 
 
    function Light (Self : in out Item;   Id : in openGL.light.Id_t) return openGL.Light.item

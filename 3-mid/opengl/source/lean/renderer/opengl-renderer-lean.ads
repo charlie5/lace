@@ -315,6 +315,9 @@ private
          obsolete_Models    :         safe_Models;
          obsolete_Impostors :         safe_Impostors;
 
+         free_Models        :         graphics_Models;
+         free_Impostors     :         impostor_Set;
+
          texture_Pool       : aliased Texture.Pool;
 
          safe_Camera_updates_Map
