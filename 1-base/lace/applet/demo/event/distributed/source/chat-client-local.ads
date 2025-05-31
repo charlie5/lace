@@ -3,8 +3,8 @@ with
 
 private
 with
-     lace.make_Subject,
-     lace.make_Observer,
+     lace.Event.make_Subject,
+     lace.Event.make_Observer,
      ada.Strings.unbounded;
 
 package chat.Client.local
@@ -52,8 +52,8 @@ is
 
 private
 
-   package Observer is new lace.make_Observer (lace.Any.limited_item);
-   package Subject  is new lace.make_Subject  (Observer        .item);
+   package Observer is new lace.Event.make_Observer (lace.Any.limited_item);
+   package Subject  is new lace.Event.make_Subject  (Observer        .item);
 
    use ada.Strings.unbounded;
 
