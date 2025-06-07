@@ -29,6 +29,7 @@ is
                         "../source/events/mixin/private",
                         "../source/events/mixin/" & external ("restrictions", "xgc"),
                         "../source/events/utility",
+                        "../source/jobs",
                         "../source/strings",
                         "../source/text/**");
 
