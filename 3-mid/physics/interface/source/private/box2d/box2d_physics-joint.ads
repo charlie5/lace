@@ -51,7 +51,8 @@ is
                                   low_Limit,  high_Limit   : in math.Real;
                                   collide_Conected         : in Boolean) return physics.Joint.hinge.view;
 
-   function new_hinge_Joint      (Object_A                 : in physics.Object.view;
+      function new_hinge_Joint   (in_Space                 : in box2d_c.Pointers.Space_Pointer;
+                                  Object_A                 : in physics.Object.view;
                                   Frame_A                  : in Matrix_4x4) return physics.Joint.hinge.view;
 
 

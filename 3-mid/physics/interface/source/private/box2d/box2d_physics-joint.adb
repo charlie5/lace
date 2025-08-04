@@ -765,7 +765,9 @@ is
    end new_hinge_Joint;
 
 
-   function new_hinge_Joint (Object_A : in physics.Object.view;
+
+   function new_hinge_Joint (in_Space : in box2d_c.Pointers.Space_Pointer;
+                             Object_A : in physics.Object.view;
                              Frame_A  : in Matrix_4x4) return physics.Joint.hinge.view
    is
       use type box2d_physics.Object.view;
@@ -775,7 +777,8 @@ is
       c_Object_A : constant box2d_C.Pointers.Object_Pointer := box2d_physics.Object.view (Object_A).C;
       c_Frame_A  : aliased  c_math_c.Matrix_4x4.item        := +Frame_A;
    begin
-      Self.C := b2d_new_space_hinge_Joint (c_Object_A,
+      Self.C := b2d_new_space_hinge_Joint (in_Space,
+                                           c_Object_A,
                                            c_Frame_A'unchecked_Access);
       return Self;
    end new_hinge_Joint;

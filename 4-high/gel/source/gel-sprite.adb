@@ -973,7 +973,6 @@ is
                         pivot_Anchor => pivot_Anchor);
 
       the_Joint.Limits_are (low_Limit, high_Limit);
-
       Self.attach (the_Child, the_Joint.all'Access);
 
       new_Joint := the_Joint.all'Access;

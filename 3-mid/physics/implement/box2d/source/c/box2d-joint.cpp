@@ -35,17 +35,15 @@ extern "C"
 ///  Forge
 //
 
-
-Joint*
-b2d_new_hinge_Joint_with_local_anchors
-  (Space*        in_Space,
-   Object*       Object_A,
-   Object*       Object_B,
-   Vector_3*     Anchor_in_A,
-   Vector_3*     Anchor_in_B,
-   float          low_Limit,
-   float          high_Limit,
-   bool          collide_Connected)
+Joint *
+b2d_new_hinge_Joint_with_local_anchors (Space *in_Space,
+                                        Object *Object_A,
+                                        Object *Object_B,
+                                        Vector_3 *Anchor_in_A,
+                                        Vector_3 *Anchor_in_B,
+                                        float low_Limit,
+                                        float high_Limit,
+                                        bool collide_Connected)
 {
   b2RevoluteJointDef*   Self = new b2RevoluteJointDef();
 
@@ -54,10 +52,10 @@ b2d_new_hinge_Joint_with_local_anchors
   Self->bodyB = (b2Body*) Object_B;   // The actual b2Body will be substituted when the joint is added to the world.
 
   Self->localAnchorA = b2Vec2 (Anchor_in_A->x,
-			       Anchor_in_A->y);
+                               Anchor_in_A->y);
 
   Self->localAnchorB = b2Vec2 (Anchor_in_B->x,
-			       Anchor_in_B->y);
+                               Anchor_in_B->y);
 
   Self->lowerAngle  = low_Limit;
   Self->upperAngle  = high_Limit;
@@ -70,15 +68,15 @@ b2d_new_hinge_Joint_with_local_anchors
 
 
 
-Joint*
-b2d_new_hinge_Joint (Space*        in_Space,
-		     Object*       Object_A,
-		     Object*       Object_B,
-		     Matrix_4x4*   Frame_A,
-		     Matrix_4x4*   Frame_B,
-		     float          low_Limit,
-                     float          high_Limit,
-		     bool          collide_Connected)
+Joint *
+b2d_new_hinge_Joint (Space *in_Space,
+                     Object *Object_A,
+                     Object *Object_B,
+                     Matrix_4x4 *Frame_A,
+                     Matrix_4x4 *Frame_B,
+                     float low_Limit,
+                     float high_Limit,
+                     bool collide_Connected)
 {
   b2RevoluteJointDef*   Self = new b2RevoluteJointDef();
 
@@ -99,10 +97,26 @@ b2d_new_hinge_Joint (Space*        in_Space,
 
 
 Joint*
-b2d_new_space_hinge_Joint (Object*       Object_A,
+b2d_new_space_hinge_Joint (Space*        in_Space,
+                           Object*       Object_A,
                            Matrix_4x4*   Frame_A)
 {
-  return 0;
+  b2RevoluteJointDef*   Self = new b2RevoluteJointDef();
+  b2World*              World = (b2World*) in_Space;
+  b2BodyDef             groundDef;
+  b2Body*               Ground = World->CreateBody (&groundDef);
+  Vector_2              ground_Site = Vector_2 (0.0, 0.0);
+  // Object*               Object_B = b2d_new_Object (&ground_Site,
+  //                                                  0.0,
+  //                                                  0.0,
+  //                                                  0.0,
+  //                                                  b2d_new_Circle (0.1));
+
+  Self->bodyA = (b2Body*) Object_A;
+  Self->bodyB = Ground; // (b2Body*) Object_B;
+
+
+  return (Joint*) dynamic_cast <b2JointDef*> (Self);
 }
 
 
