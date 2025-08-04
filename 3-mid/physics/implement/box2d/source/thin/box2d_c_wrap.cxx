@@ -164,9 +164,9 @@ template <typename T> T SwigValueInit() {
 #  define DllExport   __declspec( dllexport )
 #  define SWIGSTDCALL __stdcall
 #else
-#  define DllExport  
+#  define DllExport
 #  define SWIGSTDCALL
-#endif 
+#endif
 
 #ifdef __cplusplus
 #  include <new>
@@ -185,10 +185,10 @@ extern "C"
    #include "../c/box2d-space.h"
 }
 
-   
-      
 
-#ifdef __cplusplus 
+
+
+#ifdef __cplusplus
 extern "C" {
 #endif
 DllExport void * SWIGSTDCALL Ada_b2d_new_Circle (
@@ -198,18 +198,18 @@ DllExport void * SWIGSTDCALL Ada_b2d_new_Circle (
   void * jresult ;
   Real arg1 ;
   Shape *result = 0 ;
-  
-  
-  arg1 = (Real) a_arg1; 
-  
-  
+
+
+  arg1 = (Real) a_arg1;
+
+
   result = (Shape *)b2d_new_Circle(arg1);
-  jresult = (void *) result;      
-  
-  
-  
+  jresult = (void *) result;
+
+
+
   return jresult;
-  
+
 }
 
 
@@ -217,7 +217,7 @@ DllExport void * SWIGSTDCALL Ada_b2d_new_Circle (
 DllExport void * SWIGSTDCALL Ada_b2d_new_Polygon (
   void * a_arg1
   ,
-  
+
   int a_arg2
   )
 {
@@ -225,20 +225,20 @@ DllExport void * SWIGSTDCALL Ada_b2d_new_Polygon (
   Vector_2 *arg1 ;
   int arg2 ;
   Shape *result = 0 ;
-  
-  arg1      = (Vector_2 *) a_arg1; 
-  
-  
-  arg2 = (int) a_arg2; 
-  
-  
+
+  arg1      = (Vector_2 *) a_arg1;
+
+
+  arg2 = (int) a_arg2;
+
+
   result = (Shape *)b2d_new_Polygon(arg1,arg2);
-  jresult = (void *) result;      
-  
-  
-  
+  jresult = (void *) result;
+
+
+
   return jresult;
-  
+
 }
 
 
@@ -250,16 +250,16 @@ DllExport void * SWIGSTDCALL Ada_b2d_new_Box (
   void * jresult ;
   Vector_3 *arg1 = (Vector_3 *) 0 ;
   Shape *result = 0 ;
-  
-  arg1 = (Vector_3 *)a_arg1; 
-  
+
+  arg1 = (Vector_3 *)a_arg1;
+
   result = (Shape *)b2d_new_Box(arg1);
-  jresult = (void *) result;      
-  
-  
-  
+  jresult = (void *) result;
+
+
+
   return jresult;
-  
+
 }
 
 
@@ -267,7 +267,7 @@ DllExport void * SWIGSTDCALL Ada_b2d_new_Box (
 DllExport void * SWIGSTDCALL Ada_b2d_new_Capsule (
   void * a_arg1
   ,
-  
+
   float a_arg2
   )
 {
@@ -275,20 +275,20 @@ DllExport void * SWIGSTDCALL Ada_b2d_new_Capsule (
   Vector_2 *arg1 = (Vector_2 *) 0 ;
   Real arg2 ;
   Shape *result = 0 ;
-  
-  arg1 = (Vector_2 *)a_arg1; 
-  
-  
-  arg2 = (Real) a_arg2; 
-  
-  
+
+  arg1 = (Vector_2 *)a_arg1;
+
+
+  arg2 = (Real) a_arg2;
+
+
   result = (Shape *)b2d_new_Capsule(arg1,arg2);
-  jresult = (void *) result;      
-  
-  
-  
+  jresult = (void *) result;
+
+
+
   return jresult;
-  
+
 }
 
 
@@ -296,7 +296,7 @@ DllExport void * SWIGSTDCALL Ada_b2d_new_Capsule (
 DllExport void * SWIGSTDCALL Ada_b2d_new_Cone (
   float a_arg1
   ,
-  
+
   float a_arg2
   )
 {
@@ -304,22 +304,22 @@ DllExport void * SWIGSTDCALL Ada_b2d_new_Cone (
   Real arg1 ;
   Real arg2 ;
   Shape *result = 0 ;
-  
-  
-  arg1 = (Real) a_arg1; 
-  
-  
-  
-  arg2 = (Real) a_arg2; 
-  
-  
+
+
+  arg1 = (Real) a_arg1;
+
+
+
+  arg2 = (Real) a_arg2;
+
+
   result = (Shape *)b2d_new_Cone(arg1,arg2);
-  jresult = (void *) result;      
-  
-  
-  
+  jresult = (void *) result;
+
+
+
   return jresult;
-  
+
 }
 
 
@@ -327,7 +327,7 @@ DllExport void * SWIGSTDCALL Ada_b2d_new_Cone (
 DllExport void * SWIGSTDCALL Ada_b2d_new_convex_Hull (
   void * a_arg1
   ,
-  
+
   int a_arg2
   )
 {
@@ -335,20 +335,20 @@ DllExport void * SWIGSTDCALL Ada_b2d_new_convex_Hull (
   Vector_3 *arg1 ;
   int arg2 ;
   Shape *result = 0 ;
-  
-  arg1      = (Vector_3 *) a_arg1; 
-  
-  
-  arg2 = (int) a_arg2; 
-  
-  
+
+  arg1      = (Vector_3 *) a_arg1;
+
+
+  arg2 = (int) a_arg2;
+
+
   result = (Shape *)b2d_new_convex_Hull(arg1,arg2);
-  jresult = (void *) result;      
-  
-  
-  
+  jresult = (void *) result;
+
+
+
   return jresult;
-  
+
 }
 
 
@@ -360,16 +360,16 @@ DllExport void * SWIGSTDCALL Ada_b2d_new_Cylinder (
   void * jresult ;
   Vector_3 *arg1 = (Vector_3 *) 0 ;
   Shape *result = 0 ;
-  
-  arg1 = (Vector_3 *)a_arg1; 
-  
+
+  arg1 = (Vector_3 *)a_arg1;
+
   result = (Shape *)b2d_new_Cylinder(arg1);
-  jresult = (void *) result;      
-  
-  
-  
+  jresult = (void *) result;
+
+
+
   return jresult;
-  
+
 }
 
 
@@ -377,19 +377,19 @@ DllExport void * SWIGSTDCALL Ada_b2d_new_Cylinder (
 DllExport void * SWIGSTDCALL Ada_b2d_new_Heightfield (
   int a_arg1
   ,
-  
+
   int a_arg2
   ,
-  
+
   float* a_arg3
   ,
-  
+
   float a_arg4
   ,
-  
+
   float a_arg5
   ,
-  
+
   void * a_arg6
   )
 {
@@ -401,36 +401,36 @@ DllExport void * SWIGSTDCALL Ada_b2d_new_Heightfield (
   Real arg5 ;
   Vector_3 *arg6 = (Vector_3 *) 0 ;
   Shape *result = 0 ;
-  
-  
-  arg1 = (int) a_arg1; 
-  
-  
-  
-  arg2 = (int) a_arg2; 
-  
-  
-  
+
+
+  arg1 = (int) a_arg1;
+
+
+
+  arg2 = (int) a_arg2;
+
+
+
   arg3 = (Real *) a_arg3;
-  
-  
-  
-  arg4 = (Real) a_arg4; 
-  
-  
-  
-  arg5 = (Real) a_arg5; 
-  
-  
-  arg6 = (Vector_3 *)a_arg6; 
-  
+
+
+
+  arg4 = (Real) a_arg4;
+
+
+
+  arg5 = (Real) a_arg5;
+
+
+  arg6 = (Vector_3 *)a_arg6;
+
   result = (Shape *)b2d_new_Heightfield(arg1,arg2,arg3,arg4,arg5,arg6);
-  jresult = (void *) result;      
-  
-  
-  
+  jresult = (void *) result;
+
+
+
   return jresult;
-  
+
 }
 
 
@@ -438,10 +438,10 @@ DllExport void * SWIGSTDCALL Ada_b2d_new_Heightfield (
 DllExport void * SWIGSTDCALL Ada_b2d_new_multiSphere (
   void * a_arg1
   ,
-  
+
   float* a_arg2
   ,
-  
+
   int a_arg3
   )
 {
@@ -450,24 +450,24 @@ DllExport void * SWIGSTDCALL Ada_b2d_new_multiSphere (
   Real *arg2 = (Real *) 0 ;
   int arg3 ;
   Shape *result = 0 ;
-  
-  arg1      = (Vector_3 *) a_arg1; 
-  
-  
+
+  arg1      = (Vector_3 *) a_arg1;
+
+
   arg2 = (Real *) a_arg2;
-  
-  
-  
-  arg3 = (int) a_arg3; 
-  
-  
+
+
+
+  arg3 = (int) a_arg3;
+
+
   result = (Shape *)b2d_new_multiSphere(arg1,arg2,arg3);
-  jresult = (void *) result;      
-  
-  
-  
+  jresult = (void *) result;
+
+
+
   return jresult;
-  
+
 }
 
 
@@ -475,7 +475,7 @@ DllExport void * SWIGSTDCALL Ada_b2d_new_multiSphere (
 DllExport void * SWIGSTDCALL Ada_b2d_new_Plane (
   void * a_arg1
   ,
-  
+
   float a_arg2
   )
 {
@@ -483,20 +483,20 @@ DllExport void * SWIGSTDCALL Ada_b2d_new_Plane (
   Vector_3 *arg1 = (Vector_3 *) 0 ;
   Real arg2 ;
   Shape *result = 0 ;
-  
-  arg1 = (Vector_3 *)a_arg1; 
-  
-  
-  arg2 = (Real) a_arg2; 
-  
-  
+
+  arg1 = (Vector_3 *)a_arg1;
+
+
+  arg2 = (Real) a_arg2;
+
+
   result = (Shape *)b2d_new_Plane(arg1,arg2);
-  jresult = (void *) result;      
-  
-  
-  
+  jresult = (void *) result;
+
+
+
   return jresult;
-  
+
 }
 
 
@@ -508,18 +508,18 @@ DllExport void * SWIGSTDCALL Ada_b2d_new_Sphere (
   void * jresult ;
   Real arg1 ;
   Shape *result = 0 ;
-  
-  
-  arg1 = (Real) a_arg1; 
-  
-  
+
+
+  arg1 = (Real) a_arg1;
+
+
   result = (Shape *)b2d_new_Sphere(arg1);
-  jresult = (void *) result;      
-  
-  
-  
+  jresult = (void *) result;
+
+
+
   return jresult;
-  
+
 }
 
 
@@ -529,12 +529,12 @@ DllExport void SWIGSTDCALL Ada_b2d_free_Shape (
   )
 {
   Shape *arg1 = (Shape *) 0 ;
-  
-  arg1 = (Shape *)a_arg1; 
-  
+
+  arg1 = (Shape *)a_arg1;
+
   b2d_free_Shape(arg1);
-  
-  
+
+
 }
 
 
@@ -546,16 +546,16 @@ DllExport void* SWIGSTDCALL Ada_b2d_Shape_user_Data (
   void* jresult ;
   Shape *arg1 = (Shape *) 0 ;
   void *result = 0 ;
-  
-  arg1 = (Shape *)a_arg1; 
-  
+
+  arg1 = (Shape *)a_arg1;
+
   result = (void *)b2d_Shape_user_Data(arg1);
-  jresult = (void *) result;      
-  
-  
-  
+  jresult = (void *) result;
+
+
+
   return jresult;
-  
+
 }
 
 
@@ -563,20 +563,20 @@ DllExport void* SWIGSTDCALL Ada_b2d_Shape_user_Data (
 DllExport void SWIGSTDCALL Ada_b2d_Shape_user_Data_is (
   void * a_arg1
   ,
-  
+
   void* a_arg2
   )
 {
   Shape *arg1 = (Shape *) 0 ;
   void *arg2 = (void *) 0 ;
-  
-  arg1 = (Shape *)a_arg1; 
-  
-  arg2 = (void *)a_arg2; 
-  
+
+  arg1 = (Shape *)a_arg1;
+
+  arg2 = (void *)a_arg2;
+
   b2d_Shape_user_Data_is(arg1,arg2);
-  
-  
+
+
 }
 
 
@@ -584,25 +584,25 @@ DllExport void SWIGSTDCALL Ada_b2d_Shape_user_Data_is (
 DllExport void SWIGSTDCALL Ada_b2d_shape_Scale_is (
   void * a_arg1
   ,
-  
+
   Vector_2 a_arg2
   )
 {
   Shape *arg1 = (Shape *) 0 ;
   Vector_2 arg2 ;
   Vector_2 *argp2 ;
-  
-  arg1 = (Shape *)a_arg1; 
-  
-  
-  argp2 = (Vector_2 *) &a_arg2; 
-  
-  arg2 = *argp2; 
-  
-  
+
+  arg1 = (Shape *)a_arg1;
+
+
+  argp2 = (Vector_2 *) &a_arg2;
+
+  arg2 = *argp2;
+
+
   b2d_shape_Scale_is(arg1,arg2);
-  
-  
+
+
 }
 
 
@@ -610,16 +610,16 @@ DllExport void SWIGSTDCALL Ada_b2d_shape_Scale_is (
 DllExport void * SWIGSTDCALL Ada_b2d_new_Object (
   void * a_arg1
   ,
-  
+
   float a_arg2
   ,
-  
+
   float a_arg3
   ,
-  
+
   float a_arg4
   ,
-  
+
   void * a_arg5
   )
 {
@@ -630,30 +630,30 @@ DllExport void * SWIGSTDCALL Ada_b2d_new_Object (
   Real arg4 ;
   Shape *arg5 = (Shape *) 0 ;
   Object *result = 0 ;
-  
-  arg1 = (Vector_2 *)a_arg1; 
-  
-  
-  arg2 = (Real) a_arg2; 
-  
-  
-  
-  arg3 = (Real) a_arg3; 
-  
-  
-  
-  arg4 = (Real) a_arg4; 
-  
-  
-  arg5 = (Shape *)a_arg5; 
-  
+
+  arg1 = (Vector_2 *)a_arg1;
+
+
+  arg2 = (Real) a_arg2;
+
+
+
+  arg3 = (Real) a_arg3;
+
+
+
+  arg4 = (Real) a_arg4;
+
+
+  arg5 = (Shape *)a_arg5;
+
   result = (Object *)b2d_new_Object(arg1,arg2,arg3,arg4,arg5);
-  jresult = (void *) result;      
-  
-  
-  
+  jresult = (void *) result;
+
+
+
   return jresult;
-  
+
 }
 
 
@@ -663,12 +663,12 @@ DllExport void SWIGSTDCALL Ada_b2d_free_Object (
   )
 {
   Object *arg1 = (Object *) 0 ;
-  
-  arg1 = (Object *)a_arg1; 
-  
+
+  arg1 = (Object *)a_arg1;
+
   b2d_free_Object(arg1);
-  
-  
+
+
 }
 
 
@@ -676,20 +676,20 @@ DllExport void SWIGSTDCALL Ada_b2d_free_Object (
 DllExport void SWIGSTDCALL Ada_b2d_Object_Scale_is (
   void * a_arg1
   ,
-  
+
   void * a_arg2
   )
 {
   Object *arg1 = (Object *) 0 ;
   Vector_2 *arg2 = (Vector_2 *) 0 ;
-  
-  arg1 = (Object *)a_arg1; 
-  
-  arg2 = (Vector_2 *)a_arg2; 
-  
+
+  arg1 = (Object *)a_arg1;
+
+  arg2 = (Vector_2 *)a_arg2;
+
   b2d_Object_Scale_is(arg1,arg2);
-  
-  
+
+
 }
 
 
@@ -701,16 +701,16 @@ DllExport void * SWIGSTDCALL Ada_b2d_Object_Shape (
   void * jresult ;
   Object *arg1 = (Object *) 0 ;
   Shape *result = 0 ;
-  
-  arg1 = (Object *)a_arg1; 
-  
+
+  arg1 = (Object *)a_arg1;
+
   result = (Shape *)b2d_Object_Shape(arg1);
-  jresult = (void *) result;      
-  
-  
-  
+  jresult = (void *) result;
+
+
+
   return jresult;
-  
+
 }
 
 
@@ -722,16 +722,16 @@ DllExport void* SWIGSTDCALL Ada_b2d_Object_user_Data (
   void* jresult ;
   Object *arg1 = (Object *) 0 ;
   void *result = 0 ;
-  
-  arg1 = (Object *)a_arg1; 
-  
+
+  arg1 = (Object *)a_arg1;
+
   result = (void *)b2d_Object_user_Data(arg1);
-  jresult = (void *) result;      
-  
-  
-  
+  jresult = (void *) result;
+
+
+
   return jresult;
-  
+
 }
 
 
@@ -739,20 +739,20 @@ DllExport void* SWIGSTDCALL Ada_b2d_Object_user_Data (
 DllExport void SWIGSTDCALL Ada_b2d_Object_user_Data_is (
   void * a_arg1
   ,
-  
+
   void* a_arg2
   )
 {
   Object *arg1 = (Object *) 0 ;
   void *arg2 = (void *) 0 ;
-  
-  arg1 = (Object *)a_arg1; 
-  
-  arg2 = (void *)a_arg2; 
-  
+
+  arg1 = (Object *)a_arg1;
+
+  arg2 = (void *)a_arg2;
+
   b2d_Object_user_Data_is(arg1,arg2);
-  
-  
+
+
 }
 
 
@@ -764,16 +764,16 @@ DllExport float SWIGSTDCALL Ada_b2d_Object_Mass (
   float jresult ;
   Object *arg1 = (Object *) 0 ;
   Real result;
-  
-  arg1 = (Object *)a_arg1; 
-  
+
+  arg1 = (Object *)a_arg1;
+
   result = (Real)b2d_Object_Mass(arg1);
-  jresult = result; 
-  
-  
-  
+  jresult = result;
+
+
+
   return jresult;
-  
+
 }
 
 
@@ -781,22 +781,22 @@ DllExport float SWIGSTDCALL Ada_b2d_Object_Mass (
 DllExport void SWIGSTDCALL Ada_b2d_Object_Friction_is (
   void * a_arg1
   ,
-  
+
   float a_arg2
   )
 {
   Object *arg1 = (Object *) 0 ;
   Real arg2 ;
-  
-  arg1 = (Object *)a_arg1; 
-  
-  
-  arg2 = (Real) a_arg2; 
-  
-  
+
+  arg1 = (Object *)a_arg1;
+
+
+  arg2 = (Real) a_arg2;
+
+
   b2d_Object_Friction_is(arg1,arg2);
-  
-  
+
+
 }
 
 
@@ -804,22 +804,22 @@ DllExport void SWIGSTDCALL Ada_b2d_Object_Friction_is (
 DllExport void SWIGSTDCALL Ada_b2d_Object_Restitution_is (
   void * a_arg1
   ,
-  
+
   float a_arg2
   )
 {
   Object *arg1 = (Object *) 0 ;
   Real arg2 ;
-  
-  arg1 = (Object *)a_arg1; 
-  
-  
-  arg2 = (Real) a_arg2; 
-  
-  
+
+  arg1 = (Object *)a_arg1;
+
+
+  arg2 = (Real) a_arg2;
+
+
   b2d_Object_Restitution_is(arg1,arg2);
-  
-  
+
+
 }
 
 
@@ -831,19 +831,19 @@ DllExport Vector_3 SWIGSTDCALL Ada_b2d_Object_Site (
   Vector_3 jresult ;
   Object *arg1 = (Object *) 0 ;
   Vector_3 result;
-  
-  arg1 = (Object *)a_arg1; 
-  
+
+  arg1 = (Object *)a_arg1;
+
   result = b2d_Object_Site(arg1);
-  
-  jresult = result; 
-  //jresult = new Vector_3 ((Vector_3 &) result); 
-  
-  
-  
-  
+
+  jresult = result;
+  //jresult = new Vector_3 ((Vector_3 &) result);
+
+
+
+
   return jresult;
-  
+
 }
 
 
@@ -851,20 +851,20 @@ DllExport Vector_3 SWIGSTDCALL Ada_b2d_Object_Site (
 DllExport void SWIGSTDCALL Ada_b2d_Object_Site_is (
   void * a_arg1
   ,
-  
+
   void * a_arg2
   )
 {
   Object *arg1 = (Object *) 0 ;
   Vector_3 *arg2 = (Vector_3 *) 0 ;
-  
-  arg1 = (Object *)a_arg1; 
-  
-  arg2 = (Vector_3 *)a_arg2; 
-  
+
+  arg1 = (Object *)a_arg1;
+
+  arg2 = (Vector_3 *)a_arg2;
+
   b2d_Object_Site_is(arg1,arg2);
-  
-  
+
+
 }
 
 
@@ -876,19 +876,19 @@ DllExport Matrix_3x3 SWIGSTDCALL Ada_b2d_Object_Spin (
   Matrix_3x3 jresult ;
   Object *arg1 = (Object *) 0 ;
   Matrix_3x3 result;
-  
-  arg1 = (Object *)a_arg1; 
-  
+
+  arg1 = (Object *)a_arg1;
+
   result = b2d_Object_Spin(arg1);
-  
-  jresult = result; 
-  //jresult = new Matrix_3x3 ((Matrix_3x3 &) result); 
-  
-  
-  
-  
+
+  jresult = result;
+  //jresult = new Matrix_3x3 ((Matrix_3x3 &) result);
+
+
+
+
   return jresult;
-  
+
 }
 
 
@@ -896,20 +896,20 @@ DllExport Matrix_3x3 SWIGSTDCALL Ada_b2d_Object_Spin (
 DllExport void SWIGSTDCALL Ada_b2d_Object_Spin_is (
   void * a_arg1
   ,
-  
+
   void * a_arg2
   )
 {
   Object *arg1 = (Object *) 0 ;
   Matrix_3x3 *arg2 = (Matrix_3x3 *) 0 ;
-  
-  arg1 = (Object *)a_arg1; 
-  
-  arg2 = (Matrix_3x3 *)a_arg2; 
-  
+
+  arg1 = (Object *)a_arg1;
+
+  arg2 = (Matrix_3x3 *)a_arg2;
+
   b2d_Object_Spin_is(arg1,arg2);
-  
-  
+
+
 }
 
 
@@ -921,16 +921,16 @@ DllExport float SWIGSTDCALL Ada_b2d_Object_xy_Spin (
   float jresult ;
   Object *arg1 = (Object *) 0 ;
   Real result;
-  
-  arg1 = (Object *)a_arg1; 
-  
+
+  arg1 = (Object *)a_arg1;
+
   result = (Real)b2d_Object_xy_Spin(arg1);
-  jresult = result; 
-  
-  
-  
+  jresult = result;
+
+
+
   return jresult;
-  
+
 }
 
 
@@ -938,22 +938,22 @@ DllExport float SWIGSTDCALL Ada_b2d_Object_xy_Spin (
 DllExport void SWIGSTDCALL Ada_b2d_Object_xy_Spin_is (
   void * a_arg1
   ,
-  
+
   float a_arg2
   )
 {
   Object *arg1 = (Object *) 0 ;
   Real arg2 ;
-  
-  arg1 = (Object *)a_arg1; 
-  
-  
-  arg2 = (Real) a_arg2; 
-  
-  
+
+  arg1 = (Object *)a_arg1;
+
+
+  arg2 = (Real) a_arg2;
+
+
   b2d_Object_xy_Spin_is(arg1,arg2);
-  
-  
+
+
 }
 
 
@@ -965,19 +965,19 @@ DllExport Matrix_4x4 SWIGSTDCALL Ada_b2d_Object_Transform (
   Matrix_4x4 jresult ;
   Object *arg1 = (Object *) 0 ;
   Matrix_4x4 result;
-  
-  arg1 = (Object *)a_arg1; 
-  
+
+  arg1 = (Object *)a_arg1;
+
   result = b2d_Object_Transform(arg1);
-  
-  jresult = result; 
-  //jresult = new Matrix_4x4 ((Matrix_4x4 &) result); 
-  
-  
-  
-  
+
+  jresult = result;
+  //jresult = new Matrix_4x4 ((Matrix_4x4 &) result);
+
+
+
+
   return jresult;
-  
+
 }
 
 
@@ -985,20 +985,20 @@ DllExport Matrix_4x4 SWIGSTDCALL Ada_b2d_Object_Transform (
 DllExport void SWIGSTDCALL Ada_b2d_Object_Transform_is (
   void * a_arg1
   ,
-  
+
   void * a_arg2
   )
 {
   Object *arg1 = (Object *) 0 ;
   Matrix_4x4 *arg2 = (Matrix_4x4 *) 0 ;
-  
-  arg1 = (Object *)a_arg1; 
-  
-  arg2 = (Matrix_4x4 *)a_arg2; 
-  
+
+  arg1 = (Object *)a_arg1;
+
+  arg2 = (Matrix_4x4 *)a_arg2;
+
   b2d_Object_Transform_is(arg1,arg2);
-  
-  
+
+
 }
 
 
@@ -1010,19 +1010,19 @@ DllExport Vector_3 SWIGSTDCALL Ada_b2d_Object_Speed (
   Vector_3 jresult ;
   Object *arg1 = (Object *) 0 ;
   Vector_3 result;
-  
-  arg1 = (Object *)a_arg1; 
-  
+
+  arg1 = (Object *)a_arg1;
+
   result = b2d_Object_Speed(arg1);
-  
-  jresult = result; 
-  //jresult = new Vector_3 ((Vector_3 &) result); 
-  
-  
-  
-  
+
+  jresult = result;
+  //jresult = new Vector_3 ((Vector_3 &) result);
+
+
+
+
   return jresult;
-  
+
 }
 
 
@@ -1030,20 +1030,20 @@ DllExport Vector_3 SWIGSTDCALL Ada_b2d_Object_Speed (
 DllExport void SWIGSTDCALL Ada_b2d_Object_Speed_is (
   void * a_arg1
   ,
-  
+
   void * a_arg2
   )
 {
   Object *arg1 = (Object *) 0 ;
   Vector_3 *arg2 = (Vector_3 *) 0 ;
-  
-  arg1 = (Object *)a_arg1; 
-  
-  arg2 = (Vector_3 *)a_arg2; 
-  
+
+  arg1 = (Object *)a_arg1;
+
+  arg2 = (Vector_3 *)a_arg2;
+
   b2d_Object_Speed_is(arg1,arg2);
-  
-  
+
+
 }
 
 
@@ -1055,19 +1055,19 @@ DllExport Vector_3 SWIGSTDCALL Ada_b2d_Object_Gyre (
   Vector_3 jresult ;
   Object *arg1 = (Object *) 0 ;
   Vector_3 result;
-  
-  arg1 = (Object *)a_arg1; 
-  
+
+  arg1 = (Object *)a_arg1;
+
   result = b2d_Object_Gyre(arg1);
-  
-  jresult = result; 
-  //jresult = new Vector_3 ((Vector_3 &) result); 
-  
-  
-  
-  
+
+  jresult = result;
+  //jresult = new Vector_3 ((Vector_3 &) result);
+
+
+
+
   return jresult;
-  
+
 }
 
 
@@ -1075,20 +1075,20 @@ DllExport Vector_3 SWIGSTDCALL Ada_b2d_Object_Gyre (
 DllExport void SWIGSTDCALL Ada_b2d_Object_Gyre_is (
   void * a_arg1
   ,
-  
+
   void * a_arg2
   )
 {
   Object *arg1 = (Object *) 0 ;
   Vector_3 *arg2 = (Vector_3 *) 0 ;
-  
-  arg1 = (Object *)a_arg1; 
-  
-  arg2 = (Vector_3 *)a_arg2; 
-  
+
+  arg1 = (Object *)a_arg1;
+
+  arg2 = (Vector_3 *)a_arg2;
+
   b2d_Object_Gyre_is(arg1,arg2);
-  
-  
+
+
 }
 
 
@@ -1096,20 +1096,20 @@ DllExport void SWIGSTDCALL Ada_b2d_Object_Gyre_is (
 DllExport void SWIGSTDCALL Ada_b2d_Object_apply_Force (
   void * a_arg1
   ,
-  
+
   void * a_arg2
   )
 {
   Object *arg1 = (Object *) 0 ;
   Vector_3 *arg2 = (Vector_3 *) 0 ;
-  
-  arg1 = (Object *)a_arg1; 
-  
-  arg2 = (Vector_3 *)a_arg2; 
-  
+
+  arg1 = (Object *)a_arg1;
+
+  arg2 = (Vector_3 *)a_arg2;
+
   b2d_Object_apply_Force(arg1,arg2);
-  
-  
+
+
 }
 
 
@@ -1117,20 +1117,20 @@ DllExport void SWIGSTDCALL Ada_b2d_Object_apply_Force (
 DllExport void SWIGSTDCALL Ada_b2d_Object_apply_Torque (
   void * a_arg1
   ,
-  
+
   void * a_arg2
   )
 {
   Object *arg1 = (Object *) 0 ;
   Vector_3 *arg2 = (Vector_3 *) 0 ;
-  
-  arg1 = (Object *)a_arg1; 
-  
-  arg2 = (Vector_3 *)a_arg2; 
-  
+
+  arg1 = (Object *)a_arg1;
+
+  arg2 = (Vector_3 *)a_arg2;
+
   b2d_Object_apply_Torque(arg1,arg2);
-  
-  
+
+
 }
 
 
@@ -1138,20 +1138,20 @@ DllExport void SWIGSTDCALL Ada_b2d_Object_apply_Torque (
 DllExport void SWIGSTDCALL Ada_b2d_Object_apply_Torque_impulse (
   void * a_arg1
   ,
-  
+
   void * a_arg2
   )
 {
   Object *arg1 = (Object *) 0 ;
   Vector_3 *arg2 = (Vector_3 *) 0 ;
-  
-  arg1 = (Object *)a_arg1; 
-  
-  arg2 = (Vector_3 *)a_arg2; 
-  
+
+  arg1 = (Object *)a_arg1;
+
+  arg2 = (Vector_3 *)a_arg2;
+
   b2d_Object_apply_Torque_impulse(arg1,arg2);
-  
-  
+
+
 }
 
 
@@ -1161,12 +1161,12 @@ DllExport void SWIGSTDCALL Ada_b2d_dump (
   )
 {
   Object *arg1 = (Object *) 0 ;
-  
-  arg1 = (Object *)a_arg1; 
-  
+
+  arg1 = (Object *)a_arg1;
+
   b2d_dump(arg1);
-  
-  
+
+
 }
 
 
@@ -1174,25 +1174,25 @@ DllExport void SWIGSTDCALL Ada_b2d_dump (
 DllExport void * SWIGSTDCALL Ada_b2d_new_hinge_Joint_with_local_anchors (
   void * a_arg1
   ,
-  
+
   void * a_arg2
   ,
-  
+
   void * a_arg3
   ,
-  
+
   void * a_arg4
   ,
-  
+
   void * a_arg5
   ,
-  
+
   float a_arg6
   ,
-  
+
   float a_arg7
   ,
-  
+
   unsigned int a_arg8
   )
 {
@@ -1206,36 +1206,36 @@ DllExport void * SWIGSTDCALL Ada_b2d_new_hinge_Joint_with_local_anchors (
   float arg7 ;
   bool arg8 ;
   Joint *result = 0 ;
-  
-  arg1 = (Space *)a_arg1; 
-  
-  arg2 = (Object *)a_arg2; 
-  
-  arg3 = (Object *)a_arg3; 
-  
-  arg4 = (Vector_3 *)a_arg4; 
-  
-  arg5 = (Vector_3 *)a_arg5; 
-  
-  
-  arg6 = (float) a_arg6; 
-  
-  
-  
-  arg7 = (float) a_arg7; 
-  
-  
-  
-  arg8 = a_arg8 ? true : false; 
-  
-  
+
+  arg1 = (Space *)a_arg1;
+
+  arg2 = (Object *)a_arg2;
+
+  arg3 = (Object *)a_arg3;
+
+  arg4 = (Vector_3 *)a_arg4;
+
+  arg5 = (Vector_3 *)a_arg5;
+
+
+  arg6 = (float) a_arg6;
+
+
+
+  arg7 = (float) a_arg7;
+
+
+
+  arg8 = a_arg8 ? true : false;
+
+
   result = (Joint *)b2d_new_hinge_Joint_with_local_anchors(arg1,arg2,arg3,arg4,arg5,arg6,arg7,arg8);
-  jresult = (void *) result;      
-  
-  
-  
+  jresult = (void *) result;
+
+
+
   return jresult;
-  
+
 }
 
 
@@ -1243,25 +1243,25 @@ DllExport void * SWIGSTDCALL Ada_b2d_new_hinge_Joint_with_local_anchors (
 DllExport void * SWIGSTDCALL Ada_b2d_new_hinge_Joint (
   void * a_arg1
   ,
-  
+
   void * a_arg2
   ,
-  
+
   void * a_arg3
   ,
-  
+
   void * a_arg4
   ,
-  
+
   void * a_arg5
   ,
-  
+
   float a_arg6
   ,
-  
+
   float a_arg7
   ,
-  
+
   unsigned int a_arg8
   )
 {
@@ -1275,36 +1275,36 @@ DllExport void * SWIGSTDCALL Ada_b2d_new_hinge_Joint (
   float arg7 ;
   bool arg8 ;
   Joint *result = 0 ;
-  
-  arg1 = (Space *)a_arg1; 
-  
-  arg2 = (Object *)a_arg2; 
-  
-  arg3 = (Object *)a_arg3; 
-  
-  arg4 = (Matrix_4x4 *)a_arg4; 
-  
-  arg5 = (Matrix_4x4 *)a_arg5; 
-  
-  
-  arg6 = (float) a_arg6; 
-  
-  
-  
-  arg7 = (float) a_arg7; 
-  
-  
-  
-  arg8 = a_arg8 ? true : false; 
-  
-  
+
+  arg1 = (Space *)a_arg1;
+
+  arg2 = (Object *)a_arg2;
+
+  arg3 = (Object *)a_arg3;
+
+  arg4 = (Matrix_4x4 *)a_arg4;
+
+  arg5 = (Matrix_4x4 *)a_arg5;
+
+
+  arg6 = (float) a_arg6;
+
+
+
+  arg7 = (float) a_arg7;
+
+
+
+  arg8 = a_arg8 ? true : false;
+
+
   result = (Joint *)b2d_new_hinge_Joint(arg1,arg2,arg3,arg4,arg5,arg6,arg7,arg8);
-  jresult = (void *) result;      
-  
-  
-  
+  jresult = (void *) result;
+
+
+
   return jresult;
-  
+
 }
 
 
@@ -1314,12 +1314,12 @@ DllExport void SWIGSTDCALL Ada_b2d_free_hinge_Joint (
   )
 {
   Joint *arg1 = (Joint *) 0 ;
-  
-  arg1 = (Joint *)a_arg1; 
-  
+
+  arg1 = (Joint *)a_arg1;
+
   b2d_free_hinge_Joint(arg1);
-  
-  
+
+
 }
 
 
@@ -1327,26 +1327,32 @@ DllExport void SWIGSTDCALL Ada_b2d_free_hinge_Joint (
 DllExport void * SWIGSTDCALL Ada_b2d_new_space_hinge_Joint (
   void * a_arg1
   ,
-  
+
   void * a_arg2
+  ,
+
+  void * a_arg3
   )
 {
   void * jresult ;
-  Object *arg1 = (Object *) 0 ;
-  Matrix_4x4 *arg2 = (Matrix_4x4 *) 0 ;
+  Space *arg1 = (Space *) 0 ;
+  Object *arg2 = (Object *) 0 ;
+  Matrix_4x4 *arg3 = (Matrix_4x4 *) 0 ;
   Joint *result = 0 ;
-  
-  arg1 = (Object *)a_arg1; 
-  
-  arg2 = (Matrix_4x4 *)a_arg2; 
-  
-  result = (Joint *)b2d_new_space_hinge_Joint(arg1,arg2);
-  jresult = (void *) result;      
-  
-  
-  
+
+  arg1 = (Space *)a_arg1;
+
+  arg2 = (Object *)a_arg2;
+
+  arg3 = (Matrix_4x4 *)a_arg3;
+
+  result = (Joint *)b2d_new_space_hinge_Joint(arg1,arg2,arg3);
+  jresult = (void *) result;
+
+
+
   return jresult;
-  
+
 }
 
 
@@ -1354,13 +1360,13 @@ DllExport void * SWIGSTDCALL Ada_b2d_new_space_hinge_Joint (
 DllExport void * SWIGSTDCALL Ada_b2d_new_DoF6_Joint (
   void * a_arg1
   ,
-  
+
   void * a_arg2
   ,
-  
+
   void * a_arg3
   ,
-  
+
   void * a_arg4
   )
 {
@@ -1370,22 +1376,22 @@ DllExport void * SWIGSTDCALL Ada_b2d_new_DoF6_Joint (
   Matrix_4x4 *arg3 = (Matrix_4x4 *) 0 ;
   Matrix_4x4 *arg4 = (Matrix_4x4 *) 0 ;
   Joint *result = 0 ;
-  
-  arg1 = (Object *)a_arg1; 
-  
-  arg2 = (Object *)a_arg2; 
-  
-  arg3 = (Matrix_4x4 *)a_arg3; 
-  
-  arg4 = (Matrix_4x4 *)a_arg4; 
-  
+
+  arg1 = (Object *)a_arg1;
+
+  arg2 = (Object *)a_arg2;
+
+  arg3 = (Matrix_4x4 *)a_arg3;
+
+  arg4 = (Matrix_4x4 *)a_arg4;
+
   result = (Joint *)b2d_new_DoF6_Joint(arg1,arg2,arg3,arg4);
-  jresult = (void *) result;      
-  
-  
-  
+  jresult = (void *) result;
+
+
+
   return jresult;
-  
+
 }
 
 
@@ -1393,13 +1399,13 @@ DllExport void * SWIGSTDCALL Ada_b2d_new_DoF6_Joint (
 DllExport void * SWIGSTDCALL Ada_b2d_new_cone_twist_Joint (
   void * a_arg1
   ,
-  
+
   void * a_arg2
   ,
-  
+
   void * a_arg3
   ,
-  
+
   void * a_arg4
   )
 {
@@ -1409,22 +1415,22 @@ DllExport void * SWIGSTDCALL Ada_b2d_new_cone_twist_Joint (
   Matrix_4x4 *arg3 = (Matrix_4x4 *) 0 ;
   Matrix_4x4 *arg4 = (Matrix_4x4 *) 0 ;
   Joint *result = 0 ;
-  
-  arg1 = (Object *)a_arg1; 
-  
-  arg2 = (Object *)a_arg2; 
-  
-  arg3 = (Matrix_4x4 *)a_arg3; 
-  
-  arg4 = (Matrix_4x4 *)a_arg4; 
-  
+
+  arg1 = (Object *)a_arg1;
+
+  arg2 = (Object *)a_arg2;
+
+  arg3 = (Matrix_4x4 *)a_arg3;
+
+  arg4 = (Matrix_4x4 *)a_arg4;
+
   result = (Joint *)b2d_new_cone_twist_Joint(arg1,arg2,arg3,arg4);
-  jresult = (void *) result;      
-  
-  
-  
+  jresult = (void *) result;
+
+
+
   return jresult;
-  
+
 }
 
 
@@ -1432,13 +1438,13 @@ DllExport void * SWIGSTDCALL Ada_b2d_new_cone_twist_Joint (
 DllExport void * SWIGSTDCALL Ada_b2d_new_slider_Joint (
   void * a_arg1
   ,
-  
+
   void * a_arg2
   ,
-  
+
   void * a_arg3
   ,
-  
+
   void * a_arg4
   )
 {
@@ -1448,22 +1454,22 @@ DllExport void * SWIGSTDCALL Ada_b2d_new_slider_Joint (
   Matrix_4x4 *arg3 = (Matrix_4x4 *) 0 ;
   Matrix_4x4 *arg4 = (Matrix_4x4 *) 0 ;
   Joint *result = 0 ;
-  
-  arg1 = (Object *)a_arg1; 
-  
-  arg2 = (Object *)a_arg2; 
-  
-  arg3 = (Matrix_4x4 *)a_arg3; 
-  
-  arg4 = (Matrix_4x4 *)a_arg4; 
-  
+
+  arg1 = (Object *)a_arg1;
+
+  arg2 = (Object *)a_arg2;
+
+  arg3 = (Matrix_4x4 *)a_arg3;
+
+  arg4 = (Matrix_4x4 *)a_arg4;
+
   result = (Joint *)b2d_new_slider_Joint(arg1,arg2,arg3,arg4);
-  jresult = (void *) result;      
-  
-  
-  
+  jresult = (void *) result;
+
+
+
   return jresult;
-  
+
 }
 
 
@@ -1471,13 +1477,13 @@ DllExport void * SWIGSTDCALL Ada_b2d_new_slider_Joint (
 DllExport void * SWIGSTDCALL Ada_b2d_new_ball_Joint (
   void * a_arg1
   ,
-  
+
   void * a_arg2
   ,
-  
+
   void * a_arg3
   ,
-  
+
   void * a_arg4
   )
 {
@@ -1487,22 +1493,22 @@ DllExport void * SWIGSTDCALL Ada_b2d_new_ball_Joint (
   Vector_3 *arg3 = (Vector_3 *) 0 ;
   Vector_3 *arg4 = (Vector_3 *) 0 ;
   Joint *result = 0 ;
-  
-  arg1 = (Object *)a_arg1; 
-  
-  arg2 = (Object *)a_arg2; 
-  
-  arg3 = (Vector_3 *)a_arg3; 
-  
-  arg4 = (Vector_3 *)a_arg4; 
-  
+
+  arg1 = (Object *)a_arg1;
+
+  arg2 = (Object *)a_arg2;
+
+  arg3 = (Vector_3 *)a_arg3;
+
+  arg4 = (Vector_3 *)a_arg4;
+
   result = (Joint *)b2d_new_ball_Joint(arg1,arg2,arg3,arg4);
-  jresult = (void *) result;      
-  
-  
-  
+  jresult = (void *) result;
+
+
+
   return jresult;
-  
+
 }
 
 
@@ -1514,39 +1520,39 @@ DllExport void* SWIGSTDCALL Ada_b2d_Joint_user_Data (
   void* jresult ;
   Joint *arg1 = (Joint *) 0 ;
   void *result = 0 ;
-  
-  arg1 = (Joint *)a_arg1; 
-  
+
+  arg1 = (Joint *)a_arg1;
+
   result = (void *)b2d_Joint_user_Data(arg1);
-  jresult = (void *) result;      
-  
-  
-  
+  jresult = (void *) result;
+
+
+
   return jresult;
-  
+
 }
 
 
-/* RAK
-DllExport void SWIGSTDCALL Ada_b2d_Joint_user_Data_is (
-  void * a_arg1
-  ,
-  
-  void* a_arg2
-  )
-{
-  Joint *arg1 = (Joint *) 0 ;
-  void *arg2 = (void *) 0 ;
-  
-  arg1 = (Joint *)a_arg1; 
-  
-  arg2 = (void *)a_arg2; 
-  
-  b2d_Joint_user_Data_is(arg1,arg2);
-  
-  
-}
-*/
+
+// DllExport void SWIGSTDCALL Ada_b2d_Joint_user_Data_is (
+//   void * a_arg1
+//   ,
+//
+//   void* a_arg2
+//   )
+// {
+//   Joint *arg1 = (Joint *) 0 ;
+//   void *arg2 = (void *) 0 ;
+//
+//   arg1 = (Joint *)a_arg1;
+//
+//   arg2 = (void *)a_arg2;
+//
+//   b2d_Joint_user_Data_is(arg1,arg2);
+//
+//
+// }
+
 
 
 DllExport void * SWIGSTDCALL Ada_b2d_Joint_Object_A (
@@ -1556,16 +1562,16 @@ DllExport void * SWIGSTDCALL Ada_b2d_Joint_Object_A (
   void * jresult ;
   Joint *arg1 = (Joint *) 0 ;
   Object *result = 0 ;
-  
-  arg1 = (Joint *)a_arg1; 
-  
+
+  arg1 = (Joint *)a_arg1;
+
   result = (Object *)b2d_Joint_Object_A(arg1);
-  jresult = (void *) result;      
-  
-  
-  
+  jresult = (void *) result;
+
+
+
   return jresult;
-  
+
 }
 
 
@@ -1577,16 +1583,16 @@ DllExport void * SWIGSTDCALL Ada_b2d_Joint_Object_B (
   void * jresult ;
   Joint *arg1 = (Joint *) 0 ;
   Object *result = 0 ;
-  
-  arg1 = (Joint *)a_arg1; 
-  
+
+  arg1 = (Joint *)a_arg1;
+
   result = (Object *)b2d_Joint_Object_B(arg1);
-  jresult = (void *) result;      
-  
-  
-  
+  jresult = (void *) result;
+
+
+
   return jresult;
-  
+
 }
 
 
@@ -1598,19 +1604,19 @@ DllExport Matrix_4x4 SWIGSTDCALL Ada_b2d_Joint_Frame_A (
   Matrix_4x4 jresult ;
   Joint *arg1 = (Joint *) 0 ;
   Matrix_4x4 result;
-  
-  arg1 = (Joint *)a_arg1; 
-  
+
+  arg1 = (Joint *)a_arg1;
+
   result = b2d_Joint_Frame_A(arg1);
-  
-  jresult = result; 
-  //jresult = new Matrix_4x4 ((Matrix_4x4 &) result); 
-  
-  
-  
-  
+
+  jresult = result;
+  //jresult = new Matrix_4x4 ((Matrix_4x4 &) result);
+
+
+
+
   return jresult;
-  
+
 }
 
 
@@ -1622,19 +1628,19 @@ DllExport Matrix_4x4 SWIGSTDCALL Ada_b2d_Joint_Frame_B (
   Matrix_4x4 jresult ;
   Joint *arg1 = (Joint *) 0 ;
   Matrix_4x4 result;
-  
-  arg1 = (Joint *)a_arg1; 
-  
+
+  arg1 = (Joint *)a_arg1;
+
   result = b2d_Joint_Frame_B(arg1);
-  
-  jresult = result; 
-  //jresult = new Matrix_4x4 ((Matrix_4x4 &) result); 
-  
-  
-  
-  
+
+  jresult = result;
+  //jresult = new Matrix_4x4 ((Matrix_4x4 &) result);
+
+
+
+
   return jresult;
-  
+
 }
 
 
@@ -1642,20 +1648,20 @@ DllExport Matrix_4x4 SWIGSTDCALL Ada_b2d_Joint_Frame_B (
 DllExport void SWIGSTDCALL Ada_b2d_Joint_Frame_A_is (
   void * a_arg1
   ,
-  
+
   void * a_arg2
   )
 {
   Joint *arg1 = (Joint *) 0 ;
   Matrix_4x4 *arg2 = (Matrix_4x4 *) 0 ;
-  
-  arg1 = (Joint *)a_arg1; 
-  
-  arg2 = (Matrix_4x4 *)a_arg2; 
-  
+
+  arg1 = (Joint *)a_arg1;
+
+  arg2 = (Matrix_4x4 *)a_arg2;
+
   b2d_Joint_Frame_A_is(arg1,arg2);
-  
-  
+
+
 }
 
 
@@ -1663,20 +1669,20 @@ DllExport void SWIGSTDCALL Ada_b2d_Joint_Frame_A_is (
 DllExport void SWIGSTDCALL Ada_b2d_Joint_Frame_B_is (
   void * a_arg1
   ,
-  
+
   void * a_arg2
   )
 {
   Joint *arg1 = (Joint *) 0 ;
   Matrix_4x4 *arg2 = (Matrix_4x4 *) 0 ;
-  
-  arg1 = (Joint *)a_arg1; 
-  
-  arg2 = (Matrix_4x4 *)a_arg2; 
-  
+
+  arg1 = (Joint *)a_arg1;
+
+  arg2 = (Matrix_4x4 *)a_arg2;
+
   b2d_Joint_Frame_B_is(arg1,arg2);
-  
-  
+
+
 }
 
 
@@ -1684,28 +1690,28 @@ DllExport void SWIGSTDCALL Ada_b2d_Joint_Frame_B_is (
 DllExport void SWIGSTDCALL Ada_b2d_Joint_set_local_Anchor (
   void * a_arg1
   ,
-  
+
   unsigned int a_arg2
   ,
-  
+
   void * a_arg3
   )
 {
   Joint *arg1 = (Joint *) 0 ;
   bool arg2 ;
   Vector_3 *arg3 = (Vector_3 *) 0 ;
-  
-  arg1 = (Joint *)a_arg1; 
-  
-  
-  arg2 = a_arg2 ? true : false; 
-  
-  
-  arg3 = (Vector_3 *)a_arg3; 
-  
+
+  arg1 = (Joint *)a_arg1;
+
+
+  arg2 = a_arg2 ? true : false;
+
+
+  arg3 = (Vector_3 *)a_arg3;
+
   b2d_Joint_set_local_Anchor(arg1,arg2,arg3);
-  
-  
+
+
 }
 
 
@@ -1713,7 +1719,7 @@ DllExport void SWIGSTDCALL Ada_b2d_Joint_set_local_Anchor (
 DllExport unsigned int SWIGSTDCALL Ada_b2d_Joint_is_Limited (
   void * a_arg1
   ,
-  
+
   int a_arg2
   )
 {
@@ -1721,20 +1727,20 @@ DllExport unsigned int SWIGSTDCALL Ada_b2d_Joint_is_Limited (
   Joint *arg1 = (Joint *) 0 ;
   int arg2 ;
   bool result;
-  
-  arg1 = (Joint *)a_arg1; 
-  
-  
-  arg2 = (int) a_arg2; 
-  
-  
+
+  arg1 = (Joint *)a_arg1;
+
+
+  arg2 = (int) a_arg2;
+
+
   result = (bool)b2d_Joint_is_Limited(arg1,arg2);
-  jresult = result; 
-  
-  
-  
+  jresult = result;
+
+
+
   return jresult;
-  
+
 }
 
 
@@ -1742,7 +1748,7 @@ DllExport unsigned int SWIGSTDCALL Ada_b2d_Joint_is_Limited (
 DllExport unsigned int SWIGSTDCALL Ada_b2d_Joint_Extent (
   void * a_arg1
   ,
-  
+
   int a_arg2
   )
 {
@@ -1750,20 +1756,20 @@ DllExport unsigned int SWIGSTDCALL Ada_b2d_Joint_Extent (
   Joint *arg1 = (Joint *) 0 ;
   int arg2 ;
   bool result;
-  
-  arg1 = (Joint *)a_arg1; 
-  
-  
-  arg2 = (int) a_arg2; 
-  
-  
+
+  arg1 = (Joint *)a_arg1;
+
+
+  arg2 = (int) a_arg2;
+
+
   result = (bool)b2d_Joint_Extent(arg1,arg2);
-  jresult = result; 
-  
-  
-  
+  jresult = result;
+
+
+
   return jresult;
-  
+
 }
 
 
@@ -1771,30 +1777,30 @@ DllExport unsigned int SWIGSTDCALL Ada_b2d_Joint_Extent (
 DllExport void SWIGSTDCALL Ada_b2d_Joint_Velocity_is (
   void * a_arg1
   ,
-  
+
   int a_arg2
   ,
-  
+
   float a_arg3
   )
 {
   Joint *arg1 = (Joint *) 0 ;
   int arg2 ;
   Real arg3 ;
-  
-  arg1 = (Joint *)a_arg1; 
-  
-  
-  arg2 = (int) a_arg2; 
-  
-  
-  
-  arg3 = (Real) a_arg3; 
-  
-  
+
+  arg1 = (Joint *)a_arg1;
+
+
+  arg2 = (int) a_arg2;
+
+
+
+  arg3 = (Real) a_arg3;
+
+
   b2d_Joint_Velocity_is(arg1,arg2,arg3);
-  
-  
+
+
 }
 
 
@@ -1806,19 +1812,19 @@ DllExport Vector_3 SWIGSTDCALL Ada_b2d_Joint_reaction_Force (
   Vector_3 jresult ;
   Joint *arg1 = (Joint *) 0 ;
   Vector_3 result;
-  
-  arg1 = (Joint *)a_arg1; 
-  
+
+  arg1 = (Joint *)a_arg1;
+
   result = b2d_Joint_reaction_Force(arg1);
-  
-  jresult = result; 
-  //jresult = new Vector_3 ((Vector_3 &) result); 
-  
-  
-  
-  
+
+  jresult = result;
+  //jresult = new Vector_3 ((Vector_3 &) result);
+
+
+
+
   return jresult;
-  
+
 }
 
 
@@ -1830,16 +1836,16 @@ DllExport float SWIGSTDCALL Ada_b2d_Joint_reaction_Torque (
   float jresult ;
   Joint *arg1 = (Joint *) 0 ;
   Real result;
-  
-  arg1 = (Joint *)a_arg1; 
-  
+
+  arg1 = (Joint *)a_arg1;
+
   result = (Real)b2d_Joint_reaction_Torque(arg1);
-  jresult = result; 
-  
-  
-  
+  jresult = result;
+
+
+
   return jresult;
-  
+
 }
 
 
@@ -1847,30 +1853,30 @@ DllExport float SWIGSTDCALL Ada_b2d_Joint_reaction_Torque (
 DllExport void SWIGSTDCALL Ada_b2d_Joint_hinge_Limits_are (
   void * a_arg1
   ,
-  
+
   float a_arg2
   ,
-  
+
   float a_arg3
   )
 {
   Joint *arg1 = (Joint *) 0 ;
   Real arg2 ;
   Real arg3 ;
-  
-  arg1 = (Joint *)a_arg1; 
-  
-  
-  arg2 = (Real) a_arg2; 
-  
-  
-  
-  arg3 = (Real) a_arg3; 
-  
-  
+
+  arg1 = (Joint *)a_arg1;
+
+
+  arg2 = (Real) a_arg2;
+
+
+
+  arg3 = (Real) a_arg3;
+
+
   b2d_Joint_hinge_Limits_are(arg1,arg2,arg3);
-  
-  
+
+
 }
 
 
@@ -1880,14 +1886,14 @@ DllExport void * SWIGSTDCALL Ada_b2d_new_Space (
 {
   void * jresult ;
   Space *result = 0 ;
-  
+
   result = (Space *)b2d_new_Space();
-  jresult = (void *) result;      
-  
-  
-  
+  jresult = (void *) result;
+
+
+
   return jresult;
-  
+
 }
 
 
@@ -1897,12 +1903,12 @@ DllExport void SWIGSTDCALL Ada_b2d_free_Space (
   )
 {
   Space *arg1 = (Space *) 0 ;
-  
-  arg1 = (Space *)a_arg1; 
-  
+
+  arg1 = (Space *)a_arg1;
+
   b2d_free_Space(arg1);
-  
-  
+
+
 }
 
 
@@ -1910,20 +1916,20 @@ DllExport void SWIGSTDCALL Ada_b2d_free_Space (
 DllExport void SWIGSTDCALL Ada_b2d_Space_add_Object (
   void * a_arg1
   ,
-  
+
   void * a_arg2
   )
 {
   Space *arg1 = (Space *) 0 ;
   Object *arg2 = (Object *) 0 ;
-  
-  arg1 = (Space *)a_arg1; 
-  
-  arg2 = (Object *)a_arg2; 
-  
+
+  arg1 = (Space *)a_arg1;
+
+  arg2 = (Object *)a_arg2;
+
   b2d_Space_add_Object(arg1,arg2);
-  
-  
+
+
 }
 
 
@@ -1931,20 +1937,20 @@ DllExport void SWIGSTDCALL Ada_b2d_Space_add_Object (
 DllExport void SWIGSTDCALL Ada_b2d_Space_rid_Object (
   void * a_arg1
   ,
-  
+
   void * a_arg2
   )
 {
   Space *arg1 = (Space *) 0 ;
   Object *arg2 = (Object *) 0 ;
-  
-  arg1 = (Space *)a_arg1; 
-  
-  arg2 = (Object *)a_arg2; 
-  
+
+  arg1 = (Space *)a_arg1;
+
+  arg2 = (Object *)a_arg2;
+
   b2d_Space_rid_Object(arg1,arg2);
-  
-  
+
+
 }
 
 
@@ -1952,20 +1958,20 @@ DllExport void SWIGSTDCALL Ada_b2d_Space_rid_Object (
 DllExport void SWIGSTDCALL Ada_b2d_Space_add_Joint (
   void * a_arg1
   ,
-  
+
   void * a_arg2
   )
 {
   Space *arg1 = (Space *) 0 ;
   Joint *arg2 = (Joint *) 0 ;
-  
-  arg1 = (Space *)a_arg1; 
-  
-  arg2 = (Joint *)a_arg2; 
-  
+
+  arg1 = (Space *)a_arg1;
+
+  arg2 = (Joint *)a_arg2;
+
   b2d_Space_add_Joint(arg1,arg2);
-  
-  
+
+
 }
 
 
@@ -1973,20 +1979,20 @@ DllExport void SWIGSTDCALL Ada_b2d_Space_add_Joint (
 DllExport void SWIGSTDCALL Ada_b2d_Space_rid_Joint (
   void * a_arg1
   ,
-  
+
   void * a_arg2
   )
 {
   Space *arg1 = (Space *) 0 ;
   Joint *arg2 = (Joint *) 0 ;
-  
-  arg1 = (Space *)a_arg1; 
-  
-  arg2 = (Joint *)a_arg2; 
-  
+
+  arg1 = (Space *)a_arg1;
+
+  arg2 = (Joint *)a_arg2;
+
   b2d_Space_rid_Joint(arg1,arg2);
-  
-  
+
+
 }
 
 
@@ -1998,16 +2004,16 @@ DllExport void* SWIGSTDCALL Ada_b2d_b2Joint_user_Data (
   void* jresult ;
   b2Joint *arg1 = (b2Joint *) 0 ;
   void *result = 0 ;
-  
-  arg1 = (b2Joint *)a_arg1; 
-  
+
+  arg1 = (b2Joint *)a_arg1;
+
   result = (void *)b2d_b2Joint_user_Data(arg1);
-  jresult = (void *) result;      
-  
-  
-  
+  jresult = (void *) result;
+
+
+
   return jresult;
-  
+
 }
 
 
@@ -2017,12 +2023,12 @@ DllExport void SWIGSTDCALL Ada_delete_joint_Cursor (
   )
 {
   joint_Cursor *arg1 = (joint_Cursor *) 0 ;
-  
-  arg1 = (joint_Cursor *)a_arg1; 
-  
+
+  arg1 = (joint_Cursor *)a_arg1;
+
   delete arg1;
-  
-  
+
+
 }
 
 
@@ -2034,19 +2040,19 @@ DllExport joint_Cursor SWIGSTDCALL Ada_b2d_Space_first_Joint (
   joint_Cursor jresult ;
   Space *arg1 = (Space *) 0 ;
   joint_Cursor result;
-  
-  arg1 = (Space *)a_arg1; 
-  
+
+  arg1 = (Space *)a_arg1;
+
   result = b2d_Space_first_Joint(arg1);
-  
-  jresult = result; 
-  //jresult = new joint_Cursor ((joint_Cursor &) result); 
-  
-  
-  
-  
+
+  jresult = result;
+  //jresult = new joint_Cursor ((joint_Cursor &) result);
+
+
+
+
   return jresult;
-  
+
 }
 
 
@@ -2056,12 +2062,12 @@ DllExport void SWIGSTDCALL Ada_b2d_Space_next_Joint (
   )
 {
   joint_Cursor *arg1 = (joint_Cursor *) 0 ;
-  
-  arg1 = (joint_Cursor *)a_arg1; 
-  
+
+  arg1 = (joint_Cursor *)a_arg1;
+
   b2d_Space_next_Joint(arg1);
-  
-  
+
+
 }
 
 
@@ -2073,16 +2079,16 @@ DllExport void * SWIGSTDCALL Ada_b2d_Space_joint_Element (
   void * jresult ;
   joint_Cursor *arg1 = (joint_Cursor *) 0 ;
   b2Joint *result = 0 ;
-  
-  arg1 = (joint_Cursor *)a_arg1; 
-  
+
+  arg1 = (joint_Cursor *)a_arg1;
+
   result = (b2Joint *)b2d_Space_joint_Element(arg1);
-  jresult = (void *) result;      
-  
-  
-  
+  jresult = (void *) result;
+
+
+
   return jresult;
-  
+
 }
 
 
@@ -2090,20 +2096,20 @@ DllExport void * SWIGSTDCALL Ada_b2d_Space_joint_Element (
 DllExport void SWIGSTDCALL Ada_b2d_Space_Gravity_is (
   void * a_arg1
   ,
-  
+
   void * a_arg2
   )
 {
   Space *arg1 = (Space *) 0 ;
   Vector_3 *arg2 = (Vector_3 *) 0 ;
-  
-  arg1 = (Space *)a_arg1; 
-  
-  arg2 = (Vector_3 *)a_arg2; 
-  
+
+  arg1 = (Space *)a_arg1;
+
+  arg2 = (Vector_3 *)a_arg2;
+
   b2d_Space_Gravity_is(arg1,arg2);
-  
-  
+
+
 }
 
 
@@ -2111,22 +2117,22 @@ DllExport void SWIGSTDCALL Ada_b2d_Space_Gravity_is (
 DllExport void SWIGSTDCALL Ada_b2d_Space_evolve (
   void * a_arg1
   ,
-  
+
   float a_arg2
   )
 {
   Space *arg1 = (Space *) 0 ;
   float arg2 ;
-  
-  arg1 = (Space *)a_arg1; 
-  
-  
-  arg2 = (float) a_arg2; 
-  
-  
+
+  arg1 = (Space *)a_arg1;
+
+
+  arg2 = (float) a_arg2;
+
+
   b2d_Space_evolve(arg1,arg2);
-  
-  
+
+
 }
 
 
@@ -2136,12 +2142,12 @@ DllExport void SWIGSTDCALL Ada_delete_b2d_ray_Collision (
   )
 {
   b2d_ray_Collision *arg1 = (b2d_ray_Collision *) 0 ;
-  
-  arg1 = (b2d_ray_Collision *)a_arg1; 
-  
+
+  arg1 = (b2d_ray_Collision *)a_arg1;
+
   delete arg1;
-  
-  
+
+
 }
 
 
@@ -2149,10 +2155,10 @@ DllExport void SWIGSTDCALL Ada_delete_b2d_ray_Collision (
 DllExport b2d_ray_Collision SWIGSTDCALL Ada_b2d_Space_cast_Ray (
   void * a_arg1
   ,
-  
+
   void * a_arg2
   ,
-  
+
   void * a_arg3
   )
 {
@@ -2161,23 +2167,23 @@ DllExport b2d_ray_Collision SWIGSTDCALL Ada_b2d_Space_cast_Ray (
   Vector_3 *arg2 = (Vector_3 *) 0 ;
   Vector_3 *arg3 = (Vector_3 *) 0 ;
   b2d_ray_Collision result;
-  
-  arg1 = (Space *)a_arg1; 
-  
-  arg2 = (Vector_3 *)a_arg2; 
-  
-  arg3 = (Vector_3 *)a_arg3; 
-  
+
+  arg1 = (Space *)a_arg1;
+
+  arg2 = (Vector_3 *)a_arg2;
+
+  arg3 = (Vector_3 *)a_arg3;
+
   result = b2d_Space_cast_Ray(arg1,arg2,arg3);
-  
-  jresult = result; 
-  //jresult = new b2d_ray_Collision ((b2d_ray_Collision &) result); 
-  
-  
-  
-  
+
+  jresult = result;
+  //jresult = new b2d_ray_Collision ((b2d_ray_Collision &) result);
+
+
+
+
   return jresult;
-  
+
 }
 
 
@@ -2187,12 +2193,12 @@ DllExport void SWIGSTDCALL Ada_delete_b2d_point_Collision (
   )
 {
   b2d_point_Collision *arg1 = (b2d_point_Collision *) 0 ;
-  
-  arg1 = (b2d_point_Collision *)a_arg1; 
-  
+
+  arg1 = (b2d_point_Collision *)a_arg1;
+
   delete arg1;
-  
-  
+
+
 }
 
 
@@ -2200,7 +2206,7 @@ DllExport void SWIGSTDCALL Ada_delete_b2d_point_Collision (
 DllExport b2d_point_Collision SWIGSTDCALL Ada_b2d_Space_cast_Point (
   void * a_arg1
   ,
-  
+
   void * a_arg2
   )
 {
@@ -2208,21 +2214,21 @@ DllExport b2d_point_Collision SWIGSTDCALL Ada_b2d_Space_cast_Point (
   Space *arg1 = (Space *) 0 ;
   Vector_3 *arg2 = (Vector_3 *) 0 ;
   b2d_point_Collision result;
-  
-  arg1 = (Space *)a_arg1; 
-  
-  arg2 = (Vector_3 *)a_arg2; 
-  
+
+  arg1 = (Space *)a_arg1;
+
+  arg2 = (Vector_3 *)a_arg2;
+
   result = b2d_Space_cast_Point(arg1,arg2);
-  
-  jresult = result; 
-  //jresult = new b2d_point_Collision ((b2d_point_Collision &) result); 
-  
-  
-  
-  
+
+  jresult = result;
+  //jresult = new b2d_point_Collision ((b2d_point_Collision &) result);
+
+
+
+
   return jresult;
-  
+
 }
 
 
@@ -2232,12 +2238,12 @@ DllExport void SWIGSTDCALL Ada_delete_b2d_Contact (
   )
 {
   b2d_Contact *arg1 = (b2d_Contact *) 0 ;
-  
-  arg1 = (b2d_Contact *)a_arg1; 
-  
+
+  arg1 = (b2d_Contact *)a_arg1;
+
   delete arg1;
-  
-  
+
+
 }
 
 
@@ -2249,16 +2255,16 @@ DllExport int SWIGSTDCALL Ada_b2d_space_contact_Count (
   int jresult ;
   Space *arg1 = (Space *) 0 ;
   int result;
-  
-  arg1 = (Space *)a_arg1; 
-  
+
+  arg1 = (Space *)a_arg1;
+
   result = (int)b2d_space_contact_Count(arg1);
-  jresult = result; 
-  
-  
-  
+  jresult = result;
+
+
+
   return jresult;
-  
+
 }
 
 
@@ -2266,7 +2272,7 @@ DllExport int SWIGSTDCALL Ada_b2d_space_contact_Count (
 DllExport b2d_Contact SWIGSTDCALL Ada_b2d_space_Contact (
   void * a_arg1
   ,
-  
+
   int a_arg2
   )
 {
@@ -2274,23 +2280,23 @@ DllExport b2d_Contact SWIGSTDCALL Ada_b2d_space_Contact (
   Space *arg1 = (Space *) 0 ;
   int arg2 ;
   b2d_Contact result;
-  
-  arg1 = (Space *)a_arg1; 
-  
-  
-  arg2 = (int) a_arg2; 
-  
-  
+
+  arg1 = (Space *)a_arg1;
+
+
+  arg2 = (int) a_arg2;
+
+
   result = b2d_space_Contact(arg1,arg2);
-  
-  jresult = result; 
-  //jresult = new b2d_Contact ((b2d_Contact &) result); 
-  
-  
-  
-  
+
+  jresult = result;
+  //jresult = new b2d_Contact ((b2d_Contact &) result);
+
+
+
+
   return jresult;
-  
+
 }
 
 

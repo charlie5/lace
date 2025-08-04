@@ -225,6 +225,8 @@ is
       Self.Softness          := Softness;
       Self.bias_Factor       := bias_Factor;
       Self.relaxation_Factor := relaxation_Factor;
+
+      Self.apply_Limits;
    end Limits_are;
 
 

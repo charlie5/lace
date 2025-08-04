@@ -11,9 +11,9 @@ with interfaces.C.Pointers;
 package box2d_c.b2d_Contact is
 
    -- Item
-   -- 
+   --
 
-type Item is 
+type Item is
       record
          Object_A : access box2d_c.Object;
          Object_B : access box2d_c.Object;
@@ -23,13 +23,13 @@ type Item is
 
 
    -- Item_Array
-   -- 
+   --
    type Item_Array is array (interfaces.C.Size_t range <>) of aliased box2d_c.b2d_Contact.Item;
 
 
 
    -- Pointer
-   -- 
+   --
    package C_Pointers is new interfaces.c.Pointers (Index              => interfaces.c.size_t,
                                                                     Element            => box2d_c.b2d_Contact.Item,
                                                                     element_Array      => box2d_c.b2d_Contact.Item_Array,
@@ -38,13 +38,13 @@ type Item is
 subtype Pointer is C_Pointers.Pointer;
 
    -- Pointer_Array
-   -- 
+   --
    type Pointer_Array is array (interfaces.C.Size_t range <>) of aliased box2d_c.b2d_Contact.Pointer;
 
 
 
    -- Pointer_Pointer
-   -- 
+   --
    package C_Pointer_Pointers is new interfaces.c.Pointers (Index              => interfaces.c.size_t,
                                                                     Element            => box2d_c.b2d_Contact.Pointer,
                                                                     element_Array      => box2d_c.b2d_Contact.Pointer_Array,

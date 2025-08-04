@@ -12,9 +12,9 @@ with interfaces.C.Pointers;
 package box2d_c.b2d_ray_Collision is
 
    -- Item
-   -- 
+   --
 
-type Item is 
+type Item is
       record
          near_Object : access box2d_c.Object;
          hit_Fraction : aliased c_math_c.Real;
@@ -25,13 +25,13 @@ type Item is
 
 
    -- Item_Array
-   -- 
+   --
    type Item_Array is array (interfaces.C.Size_t range <>) of aliased box2d_c.b2d_ray_Collision.Item;
 
 
 
    -- Pointer
-   -- 
+   --
    package C_Pointers is new interfaces.c.Pointers (Index              => interfaces.c.size_t,
                                                                     Element            => box2d_c.b2d_ray_Collision.Item,
                                                                     element_Array      => box2d_c.b2d_ray_Collision.Item_Array,
@@ -40,13 +40,13 @@ type Item is
 subtype Pointer is C_Pointers.Pointer;
 
    -- Pointer_Array
-   -- 
+   --
    type Pointer_Array is array (interfaces.C.Size_t range <>) of aliased box2d_c.b2d_ray_Collision.Pointer;
 
 
 
    -- Pointer_Pointer
-   -- 
+   --
    package C_Pointer_Pointers is new interfaces.c.Pointers (Index              => interfaces.c.size_t,
                                                                     Element            => box2d_c.b2d_ray_Collision.Pointer,
                                                                     element_Array      => box2d_c.b2d_ray_Collision.Pointer_Array,
