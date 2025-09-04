@@ -2,50 +2,43 @@
 --
 with swig;
 with Interfaces.C;
-
-use  Interfaces.C;
-
-
+use Interfaces.C;
 
 package box2d_c is
 
    -- Shape
-   -- 
+   --
    subtype Shape is swig.opaque_structure;
 
-   type Shape_array is array (interfaces.C.Size_t range <>) of aliased box2d_c.Shape;
+   type Shape_array is
+     array (interfaces.C.Size_t range <>) of aliased box2d_c.Shape;
 
    -- Object
-   -- 
+   --
    subtype Object is swig.opaque_structure;
 
-   type Object_array is array (interfaces.C.Size_t range <>) of aliased box2d_c.Object;
+   type Object_array is
+     array (interfaces.C.Size_t range <>) of aliased box2d_c.Object;
 
    -- Joint
-   -- 
+   --
    subtype Joint is swig.opaque_structure;
 
-   type Joint_array is array (interfaces.C.Size_t range <>) of aliased box2d_c.Joint;
+   type Joint_array is
+     array (interfaces.C.Size_t range <>) of aliased box2d_c.Joint;
 
    -- Space
-   -- 
+   --
    subtype Space is swig.opaque_structure;
 
-   type Space_array is array (interfaces.C.Size_t range <>) of aliased box2d_c.Space;
+   type Space_array is
+     array (interfaces.C.Size_t range <>) of aliased box2d_c.Space;
 
    -- b2Joint
-   -- 
+   --
    subtype b2Joint is swig.opaque_structure;
 
-   type b2Joint_array is array (interfaces.C.Size_t range <>) of aliased box2d_c.b2Joint;
-
-
-
-
-
-
-
-
-
+   type b2Joint_array is
+     array (interfaces.C.Size_t range <>) of aliased box2d_c.b2Joint;
 
 end box2d_c;

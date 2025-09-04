@@ -61,26 +61,28 @@ is
    --- Hinges
    --
 
-   function local_Anchor_on_A (Self : in Item) return Vector_3
-   is
-   begin
-      return Self.local_Anchor_on_A;
-   end local_Anchor_on_A;
-
-
-
-   function local_Anchor_on_B (Self : in Item) return Vector_3
-   is
-   begin
-      return Self.local_Anchor_on_B;
-   end local_Anchor_on_B;
+   --  function local_Anchor_on_A (Self : in Item'Class) return Vector_3
+   --  is
+   --  begin
+   --     return Self.Physics.local_Anchor_on_A;
+   --     --  return Self.local_Anchor_on_A;
+   --  end local_Anchor_on_A;
+   --
+   --
+   --
+   --  function local_Anchor_on_B (Self : in Item'Class) return Vector_3
+   --  is
+   --  begin
+   --     return Self.Physics.local_Anchor_on_B;
+   --     --  return Self.local_Anchor_on_B;
+   --  end local_Anchor_on_B;
 
 
 
    procedure local_Anchor_on_A_is (Self : out Item;   Now : in Vector_3)
    is
    begin
-      Self.local_Anchor_on_A := Now;
+      --  Self.local_Anchor_on_A := Now;
 
       if Self.Sprite_A.World /= null
       then
@@ -94,7 +96,7 @@ is
    procedure local_Anchor_on_B_is (Self : out Item;   Now : in Vector_3)
    is
    begin
-      Self.local_Anchor_on_B := Now;
+      --  Self.local_Anchor_on_B := Now;
 
       if Self.Sprite_B.World /= null
       then
@@ -118,6 +120,14 @@ is
    begin
       return Self.Physics.reaction_Torque;
    end reaction_Torque;
+
+
+
+   function collide_Connected (Self : in Item'Class) return Boolean
+   is
+   begin
+      return Self.Physics.collide_Connected;
+   end collide_Connected;
 
 
 end gel.Joint;

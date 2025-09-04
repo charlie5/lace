@@ -269,7 +269,6 @@ is
    function new_hinge_Joint (Self : access Item;   Object_A : in physics.Object.view;
                                                    Frame_A  : in Matrix_4x4) return physics.Joint.hinge.view
    is
-      pragma unreferenced (Self);
       the_Joint : constant physics.Joint.hinge.view := box2d_physics.Joint.new_hinge_Joint (Self.C, Object_A, Frame_A);
    begin
       return the_Joint;

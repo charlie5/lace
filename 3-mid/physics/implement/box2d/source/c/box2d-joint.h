@@ -79,7 +79,7 @@ extern "C"
   void              b2d_Joint_Frame_B_is       (Joint*   Self,   Matrix_4x4*   Now);
 
   void              b2d_Joint_set_local_Anchor (Joint*   Self,   bool          is_Anchor_A,
-						                 Vector_3*     local_Anchor);
+						                                         Vector_3*     local_Anchor);
 
 
   bool              b2d_Joint_is_Limited       (Joint*   Self,   int           DoF);
@@ -91,14 +91,28 @@ extern "C"
   Vector_3          b2d_Joint_reaction_Force   (Joint*   Self);
   Real              b2d_Joint_reaction_Torque  (Joint*   Self);
 
+  bool              b2d_Joint_collide_Connected (Joint*   Self);
+
 
 
   /// Hinge
   //
 
+  bool              b2d_Joint_hinge_limit_Enabled (Joint*   Self);
+  
   void              b2d_Joint_hinge_Limits_are (Joint*   Self,   Real          Low,
                                                                  Real          High);
 
+  Vector_3          b2d_Joint_hinge_local_Anchor_on_A (Joint*   Self);
+  Vector_3          b2d_Joint_hinge_local_Anchor_on_B (Joint*   Self);
+  
+  Real              b2d_Joint_hinge_reference_Angle  (Joint*   Self);
+  Real              b2d_Joint_hinge_Angle            (Joint*   Self);
+  bool              b2d_Joint_hinge_motor_Enabled    (Joint*   Self);
+  Real              b2d_Joint_hinge_motor_Speed      (Joint*   Self);
+  Real              b2d_Joint_hinge_max_motor_Torque (Joint*   Self);
+  
+  
 
 } // extern "C"
 

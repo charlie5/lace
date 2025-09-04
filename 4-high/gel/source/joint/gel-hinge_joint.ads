@@ -66,11 +66,14 @@ is
    procedure destroy (Self : in out Item);
 
 
+
    --------------
    --- Attributes
    --
 
-   function  Angle      (Self : in     Item'Class) return Real;
+   function  reference_Angle (Self : in Item) return Radians;
+
+   function  Angle      (Self : in     Item) return Real;
 
    overriding
    function  Physics    (Self : in     Item) return Joint.Physics_view;
@@ -81,11 +84,13 @@ is
                                                      relaxation_Factor : in Real := 1.0);
    overriding
    function  Frame_A    (Self : in     Item) return Matrix_4x4;
+
    overriding
    function  Frame_B    (Self : in     Item) return Matrix_4x4;
 
    overriding
    procedure Frame_A_is (Self : in out Item;   Now  : in Matrix_4x4);
+
    overriding
    procedure Frame_B_is (Self : in out Item;   Now  : in Matrix_4x4);
 
@@ -93,16 +98,27 @@ is
    function Degrees_of_freedom (Self : in Item) return joint.degree_of_Freedom;
 
 
+   function Anchor_on_A (Self : in Item) return Vector_3;
+   function Anchor_on_B (Self : in Item) return Vector_3;
+
+   function pivot_Anchor (Self : in Item) return Vector_3;
+
+   function limit_Enabled (Self : in Item) return Boolean;
+
+
+
    --  Bounds - limits the range of motion for a degree of freedom.
    --
 
    overriding
    function  low_Bound     (Self : access Item;   for_Degree : in joint.Degree_of_freedom) return Real;
+
    overriding
    procedure low_Bound_is  (Self : access Item;   for_Degree : in joint.Degree_of_freedom;
                                                   Now        : in Real);
    overriding
    function  high_Bound    (Self : access Item;   for_Degree : in joint.Degree_of_freedom) return Real;
+
    overriding
    procedure high_Bound_is (Self : access Item;   for_Degree : in joint.Degree_of_freedom;
                                                   Now        : in Real);
@@ -116,11 +132,14 @@ is
    procedure Velocity_is   (Self : in     Item;   for_Degree : in joint.Degree_of_freedom;
                                                   Now        : in Real);
 
-   --------------
-   --- Operations
+   ---------
+   --- Motor
    --
 
-   -- Nil.
+   function motor_Enabled    (Self : in Item) return Boolean;
+   function motor_Speed      (Self : in Item) return Real;
+   function max_motor_Torque (Self : in Item) return Real;
+
 
 
 
@@ -129,6 +148,8 @@ private
    type Item  is new gel.Joint.item with
       record
          Physics : access std_physics.Joint.hinge.item'Class;
+
+         pivot_Anchor      : Vector_3;
 
          low_Bound,
          high_Bound        : Real;

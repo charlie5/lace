@@ -2,83 +2,64 @@
 --
 with c_math_c.Vector_3;
 with Interfaces.C;
-
-use  Interfaces.C;
-with interfaces.C.Pointers;
-
-
+use Interfaces.C;
+with Interfaces.C.Pointers;
 
 package box2d_c.b2d_point_Collision is
 
    -- Item
    --
 
-type Item is
-      record
-         near_Object : access box2d_c.Object;
-         Site_world : aliased c_math_c.Vector_3.Item;
-      end record;
-
-
+   type Item is record
+      near_Object : access box2d_c.Object;
+      Site_world  : aliased c_math_c.Vector_3.Item;
+   end record;
 
    -- Item_Array
    --
-   type Item_Array is array (interfaces.C.Size_t range <>) of aliased box2d_c.b2d_point_Collision.Item;
-
-
+   type Item_Array is
+     array
+       (Interfaces.C.size_t range <>) of aliased box2d_c.b2d_point_Collision
+       .Item;
 
    -- Pointer
    --
-   package C_Pointers is new interfaces.c.Pointers (Index              => interfaces.c.size_t,
-                                                                    Element            => box2d_c.b2d_point_Collision.Item,
-                                                                    element_Array      => box2d_c.b2d_point_Collision.Item_Array,
-                                                                    default_Terminator => (others => <>));
+   package C_Pointers is new Interfaces.C.Pointers
+     (Index              => Interfaces.C.size_t,
+      Element            => box2d_c.b2d_point_Collision.Item,
+      Element_Array      => box2d_c.b2d_point_Collision.Item_Array,
+      Default_Terminator => (others => <>));
 
-subtype Pointer is C_Pointers.Pointer;
+   subtype Pointer is C_Pointers.Pointer;
 
    -- Pointer_Array
    --
-   type Pointer_Array is array (interfaces.C.Size_t range <>) of aliased box2d_c.b2d_point_Collision.Pointer;
-
-
+   type Pointer_Array is
+     array
+       (Interfaces.C.size_t range <>) of aliased box2d_c.b2d_point_Collision
+       .Pointer;
 
    -- Pointer_Pointer
    --
-   package C_Pointer_Pointers is new interfaces.c.Pointers (Index              => interfaces.c.size_t,
-                                                                    Element            => box2d_c.b2d_point_Collision.Pointer,
-                                                                    element_Array      => box2d_c.b2d_point_Collision.Pointer_Array,
-                                                                    default_Terminator => null);
+   package C_Pointer_Pointers is new Interfaces.C.Pointers
+     (Index              => Interfaces.C.size_t,
+      Element            => box2d_c.b2d_point_Collision.Pointer,
+      Element_Array      => box2d_c.b2d_point_Collision.Pointer_Array,
+      Default_Terminator => null);
 
-subtype Pointer_Pointer is C_Pointer_Pointers.Pointer;
+   subtype Pointer_Pointer is C_Pointer_Pointers.Pointer;
 
-
-
-
-
-
-   function  construct  return box2d_c.b2d_point_Collision.Item;
+   function construct return box2d_c.b2d_point_Collision.Item;
 
    procedure destruct_0 (Self : in box2d_c.b2d_point_Collision.Item);
 
    procedure destruct (Self : in box2d_c.b2d_point_Collision.Item);
 
-
-
-
-
-
-
-
-
 private
 
-
-
-
-   pragma Import (CPP, construct, "ada_new_b2d_point_Collision_b2d_point_Collision");
+   pragma Import
+     (CPP, construct, "ada_new_b2d_point_Collision_b2d_point_Collision");
    pragma Import (CPP, destruct_0, "_ZN19b2d_point_CollisionD1Ev");
    pragma Import (CPP, destruct, "_ZN19b2d_point_CollisionD1Ev");
-
-
 
 end box2d_c.b2d_point_Collision;

@@ -89,6 +89,13 @@ is
    function  reaction_Torque (Self : in   Item'Class) return Real;
 
 
+   function collide_Connected (Self : in Item'Class) return Boolean;
+
+   --  function local_Anchor_on_A (Self : in Item'Class) return Vector_3;
+   --  function local_Anchor_on_B (Self : in Item'Class) return Vector_3;
+
+
+
    --------------
    --- Operations
    --
@@ -100,8 +107,8 @@ is
    --- Hinges
    --
 
-   function  local_Anchor_on_A    (Self : in     Item)     return Vector_3;
-   function  local_Anchor_on_B    (Self : in     Item)     return Vector_3;
+   --  function  local_Anchor_on_A    (Self : in     Item)     return Vector_3;
+   --  function  local_Anchor_on_B    (Self : in     Item)     return Vector_3;
 
    procedure local_Anchor_on_A_is (Self :    out Item;   Now : in Vector_3);
    procedure local_Anchor_on_B_is (Self :    out Item;   Now : in Vector_3);
@@ -115,8 +122,8 @@ private
          Sprite_A : access gel.Sprite.item'Class;
          Sprite_B : access gel.Sprite.item'Class;
 
-         local_Anchor_on_A : Vector_3;
-         local_Anchor_on_B : Vector_3;
+         --  local_Anchor_on_A : Vector_3;
+         --  local_Anchor_on_B : Vector_3;
       end record;
 
    null_Joints : constant Joint.views (1 .. 0) := [others => null];

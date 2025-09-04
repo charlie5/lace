@@ -56,4 +56,7 @@ is
    function  user_Data       (Self : in     Item)  return access lace.Any.limited_item'Class  is abstract;
 
 
+   function  collide_Connected (Self : in Item) return Boolean is abstract;
+
+
 end physics.Joint;

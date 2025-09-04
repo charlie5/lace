@@ -198,7 +198,7 @@ b2d_Joint_set_local_Anchor (Joint*   Self,   bool        is_Anchor_A,
                                                     local_Anchor->y));
   else
     b2_revolute_Joint->GetLocalAnchorB() = (b2Vec2 (local_Anchor->x,
-						    local_Anchor->y));
+						                            local_Anchor->y));
 }
 
 
@@ -319,9 +319,31 @@ b2d_Joint_Velocity_is    (Joint*   Self,   int           DoF,
 }
 
 
+bool
+b2d_Joint_collide_Connected    (Joint*   Self)
+{
+    b2JointDef*            b2_Self  = (b2JointDef*) Self;
+    b2Joint*               b2_Joint = (b2Joint*)    b2_Self->userData.pointer;
+
+    return b2_Joint->GetCollideConnected();
+}
+
+
 
 /// Hinge
 //
+
+bool
+b2d_Joint_hinge_limit_Enabled (Joint*   Self)
+{
+  b2JointDef*            b2_Self  = (b2JointDef*) Self;
+  b2Joint*               b2_Joint = (b2Joint*)    b2_Self->userData.pointer;
+  b2RevoluteJoint*       b2_Hinge = dynamic_cast <b2RevoluteJoint*> (b2_Joint);
+
+  return b2_Hinge->IsLimitEnabled();
+}
+
+
 
 void
 b2d_Joint_hinge_Limits_are (Joint*   Self,   Real   Low,
@@ -341,6 +363,95 @@ b2d_Joint_hinge_Limits_are (Joint*   Self,   Real   Low,
       b2_revolute_Self->upperAngle = High;
     }
 }
+
+
+
+Vector_3
+b2d_Joint_hinge_local_Anchor_on_A (Joint*   Self)
+{
+    b2JointDef*            b2_Self  = (b2JointDef*) Self;
+    b2Joint*               b2_Joint = (b2Joint*)    b2_Self->userData.pointer;
+    b2RevoluteJoint*       b2_Hinge = dynamic_cast <b2RevoluteJoint*> (b2_Joint);
+    b2Vec2                 Anchor   = b2_Hinge->GetLocalAnchorA();
+
+    return {Anchor.x, Anchor.y, 0.0};
+}
+
+
+
+Vector_3
+b2d_Joint_hinge_local_Anchor_on_B (Joint*   Self)
+{
+    b2JointDef*            b2_Self  = (b2JointDef*) Self;
+    b2Joint*               b2_Joint = (b2Joint*)    b2_Self->userData.pointer;
+    b2RevoluteJoint*       b2_Hinge = dynamic_cast <b2RevoluteJoint*> (b2_Joint);
+    b2Vec2                 Anchor   = b2_Hinge->GetLocalAnchorB();
+
+    return {Anchor.x, Anchor.y, 0.0};
+}
+
+
+
+Real
+b2d_Joint_hinge_reference_Angle (Joint*   Self)
+{
+    b2JointDef*            b2_Self  = (b2JointDef*) Self;
+    b2Joint*               b2_Joint = (b2Joint*)    b2_Self->userData.pointer;
+    b2RevoluteJoint*       b2_Hinge = dynamic_cast <b2RevoluteJoint*> (b2_Joint);
+
+    return b2_Hinge->GetReferenceAngle();
+}
+
+
+
+Real
+b2d_Joint_hinge_Angle (Joint*   Self)
+{
+    b2JointDef*            b2_Self  = (b2JointDef*) Self;
+    b2Joint*               b2_Joint = (b2Joint*)    b2_Self->userData.pointer;
+    b2RevoluteJoint*       b2_Hinge = dynamic_cast <b2RevoluteJoint*> (b2_Joint);
+
+    return b2_Hinge->GetJointAngle();
+}
+
+
+
+
+
+bool
+b2d_Joint_hinge_motor_Enabled    (Joint*   Self)
+{
+    b2JointDef*            b2_Self  = (b2JointDef*) Self;
+    b2Joint*               b2_Joint = (b2Joint*)    b2_Self->userData.pointer;
+    b2RevoluteJoint*       b2_Hinge = dynamic_cast <b2RevoluteJoint*> (b2_Joint);
+
+    return b2_Hinge->IsMotorEnabled();
+}
+
+
+
+Real
+b2d_Joint_hinge_motor_Speed      (Joint*   Self)
+{
+    b2JointDef*            b2_Self  = (b2JointDef*) Self;
+    b2Joint*               b2_Joint = (b2Joint*)    b2_Self->userData.pointer;
+    b2RevoluteJoint*       b2_Hinge = dynamic_cast <b2RevoluteJoint*> (b2_Joint);
+
+    return b2_Hinge->GetMotorSpeed();
+}
+
+
+
+Real
+b2d_Joint_hinge_max_motor_Torque (Joint*   Self)
+{
+    b2JointDef*            b2_Self  = (b2JointDef*) Self;
+    b2Joint*               b2_Joint = (b2Joint*)    b2_Self->userData.pointer;
+    b2RevoluteJoint*       b2_Hinge = dynamic_cast <b2RevoluteJoint*> (b2_Joint);
+
+    return b2_Hinge->GetMaxMotorTorque();
+}
+
 
 
 } // extern "C"

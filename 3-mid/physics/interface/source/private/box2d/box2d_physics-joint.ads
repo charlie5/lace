@@ -11,6 +11,7 @@ with
 
      lace.Any;
 
+
 package box2d_Physics.Joint
 --
 --  Provides glue between a physics joint and a Box2D joint.
@@ -51,9 +52,9 @@ is
                                   low_Limit,  high_Limit   : in math.Real;
                                   collide_Conected         : in Boolean) return physics.Joint.hinge.view;
 
-      function new_hinge_Joint   (in_Space                 : in box2d_c.Pointers.Space_Pointer;
-                                  Object_A                 : in physics.Object.view;
-                                  Frame_A                  : in Matrix_4x4) return physics.Joint.hinge.view;
+   function new_hinge_Joint   (in_Space                 : in box2d_c.Pointers.Space_Pointer;
+                               Object_A                 : in physics.Object.view;
+                               Frame_A                  : in Matrix_4x4) return physics.Joint.hinge.view;
 
 
    procedure free (the_Joint : in out physics.Joint.view);
@@ -76,6 +77,11 @@ private
 
    overriding
    function  user_Data       (Self : in     Item)  return access lace.Any.limited_Item'Class;
+
+
+
+   overriding
+   function collide_Connected (Self : in Item) return Boolean;
 
 
    use physics.Joint;
@@ -341,11 +347,33 @@ private
                                                  relaxationFactor : in Real := 1.0);
    overriding
    function  lower_Limit (Self : in     Hinge)   return Real;
+
    overriding
    function  upper_Limit (Self : in     Hinge)   return Real;
 
    overriding
+   function  limit_Enabled (Self : in   Hinge) return Boolean;
+
+   overriding
    function  Angle       (Self : in     Hinge)   return Real;
 
+   overriding
+   function reference_Angle (Self : in   Hinge) return Radians;
+
+   overriding
+   function  local_Anchor_on_A (Self : in   Hinge) return Vector_3;
+
+   overriding
+   function  local_Anchor_on_B (Self : in   Hinge) return Vector_3;
+
+
+   overriding
+   function motor_Enabled    (Self : in Hinge) return Boolean;
+
+   overriding
+   function motor_Speed      (Self : in Hinge) return Real;
+
+   overriding
+   function max_motor_Torque (Self : in Hinge) return Real;
 
 end box2d_Physics.Joint;

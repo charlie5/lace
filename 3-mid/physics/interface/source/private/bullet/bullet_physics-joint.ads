@@ -66,6 +66,13 @@ private
    overriding
    function  user_Data       (Self : in     Item)  return access lace.Any.limited_item'Class;
 
+   overriding
+   function collide_Connected (Self : in Item) return Boolean
+   is
+      (False);
+
+
+
 
    --------
    --  DoF6
@@ -76,8 +83,7 @@ private
          null;
       end record;
 
-   type DoF6_view is access DoF6
-   ;
+   type DoF6_view is access DoF6;
 
    overriding
    procedure destruct    (Self : in out DoF6);
@@ -328,6 +334,35 @@ private
 
    overriding
    function  Angle       (Self : in     Hinge)   return Real;
+
+   overriding
+   function reference_Angle (Self : in Hinge) return Radians
+   is (raise Program_Error);
+
+   overriding
+   function  local_Anchor_on_A (Self : in Hinge) return Vector_3
+   is (raise Program_Error);
+
+   overriding
+   function  local_Anchor_on_B (Self : in Hinge) return Vector_3
+   is (raise Program_Error);
+
+   overriding
+   function limit_Enabled (Self : in Hinge) return Boolean
+   is (raise Program_Error);
+
+
+   overriding
+   function motor_Enabled    (Self : in Hinge) return Boolean
+   is (raise Program_Error);
+
+   overriding
+   function motor_Speed      (Self : in Hinge) return Real
+   is (raise Program_Error);
+
+   overriding
+   function max_motor_Torque (Self : in Hinge) return Real
+   is (raise Program_Error);
 
 
 end bullet_Physics.Joint;

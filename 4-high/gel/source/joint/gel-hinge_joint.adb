@@ -25,6 +25,8 @@ is
                    low_Limit        => to_Radians (-180.0),
                    high_Limit       => to_Radians ( 180.0),
                    collide_Conected => False);
+
+      Self.pivot_Anchor := pivot_Anchor;
    end define;
 
 
@@ -162,11 +164,50 @@ is
 
 
 
-   function Angle (Self : in Item'Class) return Real
+   function Anchor_on_A (Self : in Item) return Vector_3
    is
    begin
-      raise Error with "TODO";
-      return 0.0;
+      return Self.Physics.local_Anchor_on_A;
+   end Anchor_on_A;
+
+
+
+   function Anchor_on_B (Self : in Item) return Vector_3
+   is
+   begin
+      return Self.Physics.local_Anchor_on_B;
+   end Anchor_on_B;
+
+
+
+   function pivot_Anchor (Self : in Item) return Vector_3
+   is
+   begin
+      return Self.pivot_Anchor;
+   end pivot_Anchor;
+
+
+
+   function reference_Angle (Self : in Item) return Radians
+   is
+   begin
+      return Self.Physics.reference_Angle;
+   end reference_Angle;
+
+
+
+   function limit_Enabled (Self : in Item) return Boolean
+   is
+   begin
+      return Self.Physics.limit_Enabled;
+   end limit_Enabled;
+
+
+
+   function Angle (Self : in Item) return Real
+   is
+   begin
+      return Self.Physics.Angle;
    end Angle;
 
 
@@ -208,6 +249,35 @@ is
    begin
       return Joint.Physics_view (Self.Physics);
    end Physics;
+
+
+
+   ---------
+   --- Motor
+   --
+
+   function motor_Enabled (Self : in Item) return Boolean
+   is
+   begin
+      return Self.Physics.motor_Enabled;
+   end motor_Enabled;
+
+
+
+   function motor_Speed (Self : in Item) return Real
+   is
+   begin
+      return Self.Physics.motor_Speed;
+   end motor_Speed;
+
+
+
+   function max_motor_Torque (Self : in Item) return Real
+      is
+   begin
+      return Self.Physics.max_motor_Torque;
+   end max_motor_Torque;
+
 
 
    ----------------

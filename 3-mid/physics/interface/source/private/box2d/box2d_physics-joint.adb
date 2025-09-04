@@ -66,6 +66,15 @@ is
    end user_Data;
 
 
+   overriding
+   function collide_Connected (Self : in Item) return Boolean
+   is
+   begin
+      return Boolean'Val (b2d_Joint_collide_Connected (Self.C));
+   end collide_Connected;
+
+
+
    --------
    --  DoF6
    --
@@ -245,7 +254,7 @@ is
                                     c_Object_B,
                                     c_Pivot_in_A'unchecked_Access,
                                     c_Pivot_in_B'unchecked_Access);
-      return Self;
+      return physics.Joint.ball.view (Self);
    end new_Ball_Joint;
 
 
@@ -408,7 +417,7 @@ is
                                       c_Object_B,
                                       c_Frame_A'unchecked_Access,
                                       c_Frame_B'unchecked_Access);
-      return Self;
+      return physics.Joint.slider.view (Self);
    end new_Slider_Joint;
 
 
@@ -571,7 +580,7 @@ is
                                     c_Object_B,
                                     c_Frame_A'unchecked_Access,
                                     c_Frame_B'unchecked_Access);
-      return Self;
+      return physics.Joint.cone_twist.view (Self);
    end new_cone_Twist_Joint;
 
 
@@ -761,7 +770,7 @@ is
                                                         c_math_c.Real (low_Limit),
                                                         c_math_c.Real (high_Limit),
                                                         Boolean'Pos (collide_Conected));
-      return Self;
+      return physics.Joint.hinge.view (Self);
    end new_hinge_Joint;
 
 
@@ -780,7 +789,7 @@ is
       Self.C := b2d_new_space_hinge_Joint (in_Space,
                                            c_Object_A,
                                            c_Frame_A'unchecked_Access);
-      return Self;
+      return physics.Joint.hinge.view (Self);
    end new_hinge_Joint;
 
 
@@ -825,7 +834,7 @@ is
                                      c_math_c.Real (low_Limit),
                                      c_math_c.Real (high_Limit),
                                      Boolean'Pos (collide_Conected));
-      return Self;
+      return physics.Joint.hinge.view (Self);
    end new_hinge_Joint;
 
 
@@ -850,6 +859,7 @@ is
    end Limits_are;
 
 
+
    overriding
    function lower_Limit (Self : in Hinge) return Real
    is
@@ -872,8 +882,7 @@ is
    function Angle (Self : in Hinge) return Real
    is
    begin
-      raise Error with "TODO";
-      return 0.0;
+      return Real (b2d_Joint_hinge_Angle (Self.C));
    end Angle;
 
 
@@ -978,6 +987,68 @@ is
    begin
       raise Error with "TODO";
    end desired_Extent_is;
+
+
+   overriding
+   function  local_Anchor_on_A (Self : in Hinge) return Vector_3
+   is
+   begin
+      return +b2d_Joint_hinge_local_Anchor_on_A (Self.C);
+   end local_Anchor_on_A;
+
+
+
+   overriding
+   function local_Anchor_on_B (Self : in Hinge) return Vector_3
+   is
+   begin
+      return +b2d_Joint_hinge_local_Anchor_on_B (Self.C);
+   end local_Anchor_on_B;
+
+
+
+   overriding
+   function reference_Angle (Self : in   Hinge) return Radians
+   is
+   begin
+      return Radians (b2d_Joint_hinge_reference_Angle (Self.C));
+   end reference_Angle;
+
+
+   overriding
+   function  limit_Enabled (Self : in Hinge) return Boolean
+   is
+   begin
+      return Boolean'Val (b2d_Joint_hinge_limit_Enabled (Self.C));
+   end limit_Enabled;
+
+
+
+   overriding
+   function motor_Enabled (Self : in Hinge) return Boolean
+   is
+   begin
+      return Boolean'Val (b2d_Joint_hinge_motor_Enabled (Self.C));
+   end motor_Enabled;
+
+
+
+   overriding
+   function motor_Speed (Self : in Hinge) return Real
+   is
+   begin
+      return Real (b2d_Joint_hinge_motor_Speed (Self.C));
+   end motor_Speed;
+
+
+
+   overriding
+   function max_motor_Torque (Self : in Hinge) return Real
+   is
+   begin
+      return Real (b2d_Joint_hinge_max_motor_Torque (Self.C));
+   end max_motor_Torque;
+
 
 
    --------
