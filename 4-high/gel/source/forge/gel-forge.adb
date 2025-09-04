@@ -1,3 +1,4 @@
+with openGL.texture_Set;
 with
      openGL.Model.text     .lit_colored,
 
@@ -167,7 +168,7 @@ is
                                                                                                          texture_Applies => [1 => True,    others => <>],
                                                                                                          Textures        => [1 => Texture, others => <>],
                                                                                                          texture_Count   => 1,
-                                                                                                         texture_Tiling  => 1.0,
+                                                                                                         texture_Tiling  => (S => 1.0, T => 1.0),
                                                                                                          Animation       => null))).all'Access;
       end if;
 
@@ -194,7 +195,7 @@ is
                                 Vertices       : in Geometry_2d.Sites;
                                 Color          : in openGL.Color       := opengl.Palette.White;
                                 Texture        : in openGL.asset_Name  := openGL.null_Asset;
-                                texture_Tiling : in openGL.Real        := 1.0;
+                                texture_Tiling : in openGL.texture_Set.Tiling := (S => 1.0, T => 1.0);
                                 user_Data      : in any_user_Data_view := null) return gel.Sprite.view
    is
       use type Geometry_2d.Sites,
@@ -249,7 +250,7 @@ is
                                   Height         : in math.Real;
                                   Color          : in openGL.Color       := opengl.Palette.White;
                                   Texture        : in openGL.asset_Name  := openGL.null_Asset;
-                                  texture_Tiling : in openGL.Real        := 1.0;
+                                  texture_Tiling : in openGL.texture_Set.Tiling := (S => 1.0, T => 1.0);
                                   user_Data      : in any_user_Data_view := null) return gel.Sprite.view
    is
       use Math;

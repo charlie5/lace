@@ -10,6 +10,7 @@ with
 
      openGL.Primitive,
      openGL.Model.sphere,
+     openGL.texture_Set,
      openGL.Font,
      openGL.Palette;
 
@@ -77,7 +78,7 @@ is
                                   Vertices       : in Geometry_2d.Sites;
                                   Color          : in openGL.Color       := opengl.Palette.White;
                                   Texture        : in openGL.asset_Name  := openGL.null_Asset;
-                                  texture_Tiling : in openGL.Real        := 1.0;
+                                  texture_Tiling : in openGL.texture_Set.Tiling := (S => 1.0, T => 1.0);
                                   user_Data      : in any_user_Data_view := null) return gel.Sprite.view;
 
    function new_rectangle_Sprite (in_World       : in gel.World.view;
@@ -91,7 +92,7 @@ is
                                   Height         : in math.Real;
                                   Color          : in openGL.Color       := opengl.Palette.White;
                                   Texture        : in openGL.asset_Name  := openGL.null_Asset;
-                                  texture_Tiling : in openGL.Real        := 1.0;
+                                  texture_Tiling : in openGL.texture_Set.Tiling := (S => 1.0, T => 1.0);
                                   user_Data      : in any_user_Data_view := null) return gel.Sprite.view;
 
 
