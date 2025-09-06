@@ -1,10 +1,7 @@
 with
-     --  openGL.Model,
      GL.lean,
      GL.Binding,
      ada.Strings.fixed;
-
---  with ada.Text_IO;
 
 
 package body openGL.Model.texturing

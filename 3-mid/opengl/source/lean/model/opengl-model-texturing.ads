@@ -4,13 +4,11 @@ with
      openGL.Program;
 
 
---  private
 package openGL.Model.texturing
 --
 -- Provides texturing support for models.
 --
 is
-
    --- Uniforms
    --
 
@@ -40,10 +38,8 @@ is
                      texture_Set : in     openGL.texture_Set.Item);
 
 
-
    procedure create (Uniforms    :    out texturing.Uniforms;
                      for_Program : in     openGL.Program.view);
-
 
 
 
@@ -96,7 +92,6 @@ is
          end record;
 
    end Mixin;
-
 
 
 end openGL.Model.texturing;

@@ -10,20 +10,6 @@ is
    --- Forge
    --
 
-   --  function new_polygon (vertex_Sites : in Vector_2_array;
-   --                        Face         : in Face_t) return View
-   --  is
-   --     Self : constant View := new Item;
-   --  begin
-   --     Self.vertex_Sites (1 .. vertex_Sites'Length) := vertex_Sites;
-   --     Self.vertex_Count                            := vertex_Sites'Length;
-   --
-   --     Self.Face := Face;
-   --
-   --     return Self;
-   --  end new_polygon;
-
-
    function new_polygon (vertex_Sites    : in Vector_2_array;
                          texture_Details : in texture_Set.Details) return View
    is
@@ -36,97 +22,6 @@ is
 
       return Self;
    end new_polygon;
-
-
-
-
-   ------------------
-   --- Attributes ---
-   ------------------
-
-   --  function texture_Details (Self : in Item) return texture_Set.Details
-   --  is
-   --  begin
-   --     return Self.texture_Details;
-   --  end texture_Details;
-
-
-
-   ------------
-   -- Texturing
-   --
-
-   --  overriding
-   --  procedure Fade_is (Self : in out Item;   Which : in texture_Set.texture_Id;
-   --                                           Now   : in texture_Set.fade_Level)
-   --  is
-   --  begin
-   --     Self.Face.texture_Details.Fades (which) := Now;
-   --  end Fade_is;
-   --
-   --
-   --
-   --  overriding
-   --  function Fade (Self : in Item;   Which : in texture_Set.texture_Id) return texture_Set.fade_Level
-   --  is
-   --  begin
-   --     return Self.Face.texture_Details.Fades (which);
-   --  end Fade;
-   --
-   --
-   --
-   --  procedure Texture_is (Self : in out Item;   Which : in texture_Set.texture_Id;
-   --                                              Now   : in openGL.asset_Name)
-   --  is
-   --  begin
-   --     Self.Face.texture_Details.Textures (Positive (which)) := Now;
-   --  end Texture_is;
-   --
-   --
-   --
-   --
-   --  overriding
-   --  function texture_Count (Self : in Item) return Natural
-   --  is
-   --  begin
-   --     return Self.Face.texture_Details.texture_Count;
-   --  end texture_Count;
-   --
-   --
-   --
-   --  overriding
-   --  function texture_Applied (Self : in Item;   Which : in texture_Set.texture_Id) return Boolean
-   --  is
-   --  begin
-   --     return Self.Face.texture_Details.texture_Applies (Which);
-   --  end texture_Applied;
-   --
-   --
-   --
-   --  overriding
-   --  procedure texture_Applied_is (Self : in out Item;   Which : in texture_Set.texture_Id;
-   --                                                      Now   : in Boolean)
-   --  is
-   --  begin
-   --     Self.Face.texture_Details.texture_Applies (Which) := Now;
-   --  end texture_Applied_is;
-   --
-   --
-   --
-   --
-   --  overriding
-   --  procedure animate (Self : in out Item)
-   --  is
-   --     use type texture_Set.Animation_view;
-   --  begin
-   --     if Self.Face.texture_Details.Animation = null
-   --     then
-   --        return;
-   --     end if;
-   --
-   --     texture_Set.animate (Self.Face.texture_Details.Animation.all,
-   --                          Self.Face.texture_Details.texture_Applies);
-   --  end animate;
 
 
 
