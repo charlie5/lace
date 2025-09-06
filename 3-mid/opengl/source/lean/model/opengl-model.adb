@@ -1,5 +1,6 @@
 with
-     ada.unchecked_Deallocation;
+     ada.unchecked_Deallocation,
+     ada.Tags;
 
 
 package body openGL.Model
@@ -218,11 +219,14 @@ is
    -- Texturing
    --
 
+   use ada.Tags;
+
+
    procedure Fade_is (Self : in out Item;   Which : in texture_Set.texture_Id;
                                             Now   : in texture_Set.fade_Level)
    is
    begin
-      raise program_Error with "Model does not support texturing.";
+      raise program_Error with External_Tag (Model.item'Class (Self)'Tag) & " Model does not support texturing.";
    end Fade_is;
 
 
@@ -230,7 +234,7 @@ is
    function Fade (Self : in Item;   Which : in texture_Set.texture_Id) return texture_Set.fade_Level
    is
    begin
-      raise program_Error with "Model does not support texturing.";
+      raise program_Error with External_Tag (Model.item'Class (Self)'Tag) & " Model does not support texturing.";
       return 0.0;
    end Fade;
 
@@ -239,7 +243,7 @@ is
    function texture_Count (Self : in Item) return Natural
    is
    begin
-      raise program_Error with "Model does not support texturing.";
+      raise program_Error with External_Tag (Model.item'Class (Self)'Tag) & " Model does not support texturing.";
       return 0;
    end texture_Count;
 
@@ -248,7 +252,7 @@ is
    function texture_Applied (Self : in Item;   Which : in texture_Set.texture_Id) return Boolean
    is
    begin
-      raise program_Error with "Model does not support texturing.";
+      raise program_Error with External_Tag (Model.item'Class (Self)'Tag) & " Model does not support texturing.";
       return False;
    end texture_Applied;
 
@@ -258,7 +262,7 @@ is
                                                        Now   : in Boolean)
    is
    begin
-      raise program_Error with "Model does not support texturing.";
+      raise program_Error with External_Tag (Model.item'Class (Self)'Tag) & " Model does not support texturing.";
    end texture_applied_is;
 
 
