@@ -1,3 +1,4 @@
+with openGL.texture_Set;
 with
      openGL.Palette,
      openGL.Font,
@@ -193,9 +194,10 @@ is
 
       the_lit_textured_circle_Model : constant Model.circle.lit_textured.view
         := Model.circle.lit_textured.new_Circle (Radius => 1.5,
-                                                 Face   => (Fades         => (1 => 0.0,         others => <>),
-                                                            Textures      => (1 => the_Texture, others => <>),
-                                                            texture_Count => 1),
+                                                 --  Face   => (Texture_Details => (Fades         => (1 => 0.0,         others => <>),
+                                                 --                                 Textures      => (1 => the_Texture, others => <>),
+                                                 --                                 texture_Count => 1)),
+                                                 Face   => (Texture_Details => (openGL.texture_Set.to_Details ([1 => the_Texture]))),
                                                  Sides  => 24);
 
       the_grid_Model    : constant Model.grid.view
@@ -210,9 +212,11 @@ is
 
       the_textured_hexagon_Model : constant Model.hexagon.lit_textured.view
         := Model.hexagon.lit_textured.new_Hexagon (Radius => 0.5,
-                                                   Face   => (Fades         => (1 => 0.0,         others => <>),
+                                                   Face   => (Fades         => [1 => 0.0,         others => <>],
                                                               Textures      => (1 => the_Texture, others => <>),
-                                                              texture_Count => 1));
+                                                              texture_Count => 1,
+                                                              texture_Applies => <>,
+                                                              Animation       => null));
 
       the_faceted_hexagon_column_Model : constant Model.hexagon_Column.lit_colored_faceted.view
         := Model.hexagon_Column.lit_colored_faceted.new_hexagon_Column
@@ -255,10 +259,11 @@ is
 
       the_lit_textured_polygon_Model : constant Model.polygon.lit_textured.view
         := Model.polygon.lit_textured.new_Polygon (vertex_Sites => [Origin_2D, [1.0, 0.0], [1.0, 1.0], [-1.0, 0.5]],
-                                                   Face         => (Fades          => (1 => 0.0,         others => <>),
-                                                                    Textures       => (1 => the_Texture, others => <>),
-                                                                    texture_Tiling => <>,
-                                                                    texture_Count  => 1));
+                                                   --  Face         => (Fades          => (1 => 0.0,         others => <>),
+                                                   --                   Textures       => (1 => the_Texture, others => <>),
+                                                   --                   texture_Tiling => <>,
+                                                   --                   texture_Count  => 1));
+                                                   Face => (Texture_Details => (openGL.texture_Set.to_Details ([1 => the_Texture]))));
 
       the_text_Model : constant Model.Text.lit_colored.view
         := Model.Text.lit_colored.new_Text (Text     => "Once upon a midnight dreary ...",
