@@ -62,8 +62,8 @@ is
    begin
       for i in 1 .. openGL.texture_Set.texture_Id (for_Model.texture_Count)
       loop
-         Uniforms.Textures (i).fade_Uniform           .Value_is (Real (for_Model.Fade      (i)));
-         Uniforms.Textures (i).texture_applied_Uniform.Value_is (for_Model.texture_Applied (i));
+         Uniforms.Textures (i).fade_Uniform           .Value_is (Real (for_Model.Fade      (Which => i)));
+         Uniforms.Textures (i).texture_applied_Uniform.Value_is (for_Model.texture_Applied (Which => i));
 
          glUniform1i     (Uniforms.Textures (i).texture_Uniform.gl_Variable,
                           GLint (i) - 1);
