@@ -217,13 +217,13 @@ is
          the_graphics_Model := openGL.Model.polygon.lit_colored.new_Polygon (openGL.Vector_2_array (Vertices),
                                                                              (Color, openGL.Opaque)).all'Access;
       else
-         the_graphics_Model := openGL.Model.polygon.lit_textured.new_Polygon (vertex_Sites => openGL.Vector_2_array (Vertices),
-                                                                              Face         => (texture_Details => ((Fades           => [1 => 0.0,     others => <>],
-                                                                                                                    Textures        => [1 => Texture, others => <>],
-                                                                                                                    texture_Count   => 1,
-                                                                                                                    texture_Tiling  => texture_Tiling,
-                                                                                                                    texture_Applies => [others => True],
-                                                                                                                    Animation       => null)))).all'Access;
+         the_graphics_Model := openGL.Model.polygon.lit_textured.new_Polygon (vertex_Sites    => openGL.Vector_2_array (Vertices),
+                                                                              texture_Details => (Fades           => [1 => 0.0,     others => <>],
+                                                                                                  Textures        => [1 => Texture, others => <>],
+                                                                                                  texture_Count   => 1,
+                                                                                                  texture_Tiling  => texture_Tiling,
+                                                                                                  texture_Applies => [others => True],
+                                                                                                  Animation       => null)).all'Access;
       end if;
 
       return gel.Sprite.Forge.new_Sprite (Name,

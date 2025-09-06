@@ -4,7 +4,7 @@ with
      openGL.Program;
 
 
-private
+--  private
 package openGL.Model.texturing
 --
 -- Provides texturing support for models.
@@ -54,44 +54,45 @@ is
    generic
    package Mixin
    is
-      type Item is new Geometry.item with private;
-
-
-      procedure create_Uniforms (for_Program : in     openGL.Program.view);
-
+      type Item is abstract new Model.item with private;
 
 
       overriding
-      procedure Fade_is      (Self : in out Item;   Now   : in texture_Set.fade_Level;
-                                                    Which : in texture_Set.texture_ID := 1);
+      function  Fade               (Self : in     Item;   Which : in texture_Set.texture_Id) return texture_Set.fade_Level;
+
       overriding
-      function  Fade         (Self : in     Item;   Which : in texture_Set.texture_ID := 1) return texture_Set.fade_Level;
+      procedure Fade_is            (Self : in out Item;   Which : in texture_Set.texture_Id;
+                                    Now   : in texture_Set.fade_Level);
+
+      procedure Texture_is         (Self : in out Item;   Which : in texture_Set.texture_Id;
+                                    Now   : in asset_Name);
+
+      overriding
+      function  texture_Count      (Self : in     Item) return Natural;
 
 
       overriding
-      procedure Texture_is   (Self : in out Item;   Now   : in openGL.Texture.Object;
-                                                    Which : in texture_Set.texture_ID := 1);
-      overriding
-      function  Texture      (Self : in     Item;   Which : in texture_Set.texture_ID := 1) return openGL.Texture.Object;
-
+      function  texture_Applied    (Self : in     Item;   Which : in texture_Set.texture_Id) return Boolean;
 
       overriding
-      procedure texture_Applied_is (Self : in out Item;   Now   : in Boolean;
-                                                          Which : in texture_Set.texture_ID := 1);
-      overriding
-      function  texture_Applied    (Self : in     Item;   Which : in texture_Set.texture_ID := 1) return Boolean;
-
+      procedure texture_Applied_is (Self : in out Item;   Which : in texture_Set.texture_Id;
+                                    Now   : in Boolean);
 
       overriding
-      procedure enable_Textures (Self : in out Item);
+      procedure animate            (Self : in out Item);
+
+
+      function texture_Details     (Self : in Item) return openGL.texture_Set.Details;
+
+      procedure texture_Details_is (Self : in out Item;   Now : in openGL.texture_Set.Details);
 
 
 
    private
 
-      type Item is new Geometry.item with
+      type Item is abstract new Model.item with
          record
-            texture_Set : openGL.texture_Set.item;
+            texture_Details : openGL.texture_Set.Details;
          end record;
 
    end Mixin;
