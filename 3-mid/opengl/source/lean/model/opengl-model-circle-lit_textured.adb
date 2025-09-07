@@ -10,14 +10,14 @@ is
    --- Forge
    --
 
-   function new_circle (Radius : in Real;
-                        Face   : in lit_textured.Face_t;
-                        Sides  : in Positive         := 24) return View
+   function new_circle (Radius          : in Real;
+                        texture_Details : in texture_Set.Details;
+                        Sides           : in Positive           := 24) return View
    is
       Self : constant View := new Item;
    begin
       Self.Radius := Radius;
-      Self.Face   := Face;
+      Self.texture_Details_is (texture_Details);
       Self.Sides  := Sides;
 
       return Self;
@@ -28,90 +28,6 @@ is
    ------------------
    --- Attributes ---
    ------------------
-
-   function Face (Self : in Item) return Face_t
-   is
-   begin
-      return Self.Face;
-   end Face;
-
-
-
-   ------------
-   -- Texturing
-   --
-
-   overriding
-   procedure Fade_is (Self : in out Item;   Which : in texture_Set.texture_Id;
-                                            Now   : in texture_Set.fade_Level)
-   is
-   begin
-      Self.Face.texture_Details.Fades (which) := Now;
-   end Fade_is;
-
-
-
-   overriding
-   function Fade (Self : in Item;   Which : in texture_Set.texture_Id) return texture_Set.fade_Level
-   is
-   begin
-      return Self.Face.texture_Details.Fades (which);
-   end Fade;
-
-
-
-   procedure Texture_is (Self : in out Item;   Which : in texture_Set.texture_Id;
-                                               Now   : in openGL.asset_Name)
-   is
-   begin
-      Self.Face.texture_Details.Textures (Positive (which)) := Now;
-   end Texture_is;
-
-
-
-
-   overriding
-   function texture_Count (Self : in Item) return Natural
-   is
-   begin
-      return Self.Face.texture_Details.texture_Count;
-   end texture_Count;
-
-
-
-   overriding
-   function texture_Applied (Self : in Item;   Which : in texture_Set.texture_Id) return Boolean
-   is
-   begin
-      return Self.Face.texture_Details.texture_Applies (Which);
-   end texture_Applied;
-
-
-
-   overriding
-   procedure texture_Applied_is (Self : in out Item;   Which : in texture_Set.texture_Id;
-                                                       Now   : in Boolean)
-   is
-   begin
-      Self.Face.texture_Details.texture_Applies (Which) := Now;
-   end texture_Applied_is;
-
-
-
-   overriding
-   procedure animate (Self : in out Item)
-   is
-      use type texture_Set.Animation_view;
-   begin
-      if Self.Face.texture_Details.Animation = null
-      then
-         return;
-      end if;
-
-      texture_Set.animate (Self.Face.texture_Details.Animation.all,
-                           Self.Face.texture_Details.texture_Applies);
-   end animate;
-
 
 
    ---------------------
@@ -165,15 +81,15 @@ is
          the_Geometry.Vertices_are (Vertices);
          the_Geometry.add          (Primitive.view (the_Primitive));
 
-         for i in 1 .. Self.Face.texture_Details.texture_Count
+         for i in 1 .. Self.texture_Details.texture_Count
          loop
             Id := texture_Id (i);
 
             the_Geometry.Fade_is (which => Id,
-                                  now   => Self.Face.texture_Details.Fades (Id));
+                                  now   => Self.texture_Details.Fades (Id));
 
             the_Geometry.Texture_is     (which => Id,
-                                         now   => Textures.fetch (Self.Face.texture_Details.Textures (i)));
+                                         now   => Textures.fetch (Self.texture_Details.Textures (i)));
             the_Geometry.is_Transparent (now   => the_Geometry.Texture.is_Transparent);
          end loop;
 

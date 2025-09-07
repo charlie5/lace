@@ -194,10 +194,7 @@ is
 
       the_lit_textured_circle_Model : constant Model.circle.lit_textured.view
         := Model.circle.lit_textured.new_Circle (Radius => 1.5,
-                                                 --  Face   => (Texture_Details => (Fades         => (1 => 0.0,         others => <>),
-                                                 --                                 Textures      => (1 => the_Texture, others => <>),
-                                                 --                                 texture_Count => 1)),
-                                                 Face   => (Texture_Details => (openGL.texture_Set.to_Details ([1 => the_Texture]))),
+                                                 Texture_Details => (openGL.texture_Set.to_Details ([1 => the_Texture])),
                                                  Sides  => 24);
 
       the_grid_Model    : constant Model.grid.view
@@ -259,10 +256,6 @@ is
 
       the_lit_textured_polygon_Model : constant Model.polygon.lit_textured.view
         := Model.polygon.lit_textured.new_Polygon (vertex_Sites => [Origin_2D, [1.0, 0.0], [1.0, 1.0], [-1.0, 0.5]],
-                                                   --  Face         => (Fades          => (1 => 0.0,         others => <>),
-                                                   --                   Textures       => (1 => the_Texture, others => <>),
-                                                   --                   texture_Tiling => <>,
-                                                   --                   texture_Count  => 1));
                                                    texture_Details => (openGL.texture_Set.to_Details ([1 => the_Texture])));
 
       the_text_Model : constant Model.Text.lit_colored.view

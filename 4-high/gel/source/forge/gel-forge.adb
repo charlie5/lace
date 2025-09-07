@@ -164,12 +164,12 @@ is
 
       else
          the_graphics_Model := openGL.Model.circle.lit_textured.new_Circle (Radius,
-                                                                            Face => (texture_Details => (Fades           => [1 => 0.0,     others => <>],
-                                                                                                         texture_Applies => [1 => True,    others => <>],
-                                                                                                         Textures        => [1 => Texture, others => <>],
-                                                                                                         texture_Count   => 1,
-                                                                                                         texture_Tiling  => (S => 1.0, T => 1.0),
-                                                                                                         Animation       => null))).all'Access;
+                                                                            texture_Details => (Fades           => [1 => 0.0,     others => <>],
+                                                                                                texture_Applies => [1 => True,    others => <>],
+                                                                                                Textures        => [1 => Texture, others => <>],
+                                                                                                texture_Count   => 1,
+                                                                                                texture_Tiling  => (S => 1.0, T => 1.0),
+                                                                                                Animation       => null)).all'Access;
       end if;
 
       return gel.Sprite.Forge.new_Sprite (Name,

@@ -48,45 +48,47 @@ is
    -------------
 
    generic
-   package Mixin
-   is
       type Item is abstract new Model.item with private;
 
-
-      overriding
-      function  Fade               (Self : in     Item;   Which : in texture_Set.texture_Id) return texture_Set.fade_Level;
-
-      overriding
-      procedure Fade_is            (Self : in out Item;   Which : in texture_Set.texture_Id;
-                                    Now   : in texture_Set.fade_Level);
-
-      procedure Texture_is         (Self : in out Item;   Which : in texture_Set.texture_Id;
-                                    Now   : in asset_Name);
-
-      overriding
-      function  texture_Count      (Self : in     Item) return Natural;
+   package Mixin
+   is
+      type textured_Item is abstract new Item with private;
 
 
       overriding
-      function  texture_Applied    (Self : in     Item;   Which : in texture_Set.texture_Id) return Boolean;
+      function  Fade               (Self : in     textured_Item;   Which : in texture_Set.texture_Id) return texture_Set.fade_Level;
 
       overriding
-      procedure texture_Applied_is (Self : in out Item;   Which : in texture_Set.texture_Id;
-                                    Now   : in Boolean);
+      procedure Fade_is            (Self : in out textured_Item;   Which : in texture_Set.texture_Id;
+                                                                   Now   : in texture_Set.fade_Level);
+
+      procedure Texture_is         (Self : in out textured_Item;   Which : in texture_Set.texture_Id;
+                                                                   Now   : in asset_Name);
 
       overriding
-      procedure animate            (Self : in out Item);
+      function  texture_Count      (Self : in     textured_Item) return Natural;
 
 
-      function texture_Details     (Self : in Item) return openGL.texture_Set.Details;
+      overriding
+      function  texture_Applied    (Self : in     textured_Item;   Which : in texture_Set.texture_Id) return Boolean;
 
-      procedure texture_Details_is (Self : in out Item;   Now : in openGL.texture_Set.Details);
+      overriding
+      procedure texture_Applied_is (Self : in out textured_Item;   Which : in texture_Set.texture_Id;
+                                                                   Now   : in Boolean);
+
+      overriding
+      procedure animate            (Self : in out textured_Item);
+
+
+      function texture_Details     (Self : in textured_Item) return openGL.texture_Set.Details;
+
+      procedure texture_Details_is (Self : in out textured_Item;   Now : in openGL.texture_Set.Details);
 
 
 
    private
 
-      type Item is abstract new Model.item with
+      type textured_Item is abstract new Item with
          record
             texture_Details : openGL.texture_Set.Details;
          end record;

@@ -9,9 +9,9 @@ package openGL.Model.polygon.lit_textured
 --  Models a lit and textured polygon.
 --
 is
-   package textured_Model is new texturing.Mixin;
+   package textured_Model is new texturing.Mixin (openGL.Model.polygon.item);
 
-   type Item is new textured_Model.item with private;
+   type Item is new textured_Model.textured_item with private;
    type View is access all Item'Class;
 
 
@@ -33,7 +33,7 @@ is
 
 private
 
-   type Item is new textured_Model.item with
+   type Item is new textured_Model.textured_item with
       record
          vertex_Sites : Vector_2_array (1 .. 8);
          vertex_Count : Positive;

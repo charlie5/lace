@@ -92,7 +92,6 @@ is
          end;
       end loop;
 
-
       Uniforms.Count := for_Program.uniform_Variable ("texture_Count");
    end create;
 
@@ -106,8 +105,8 @@ is
    package body Mixin
    is
       overriding
-      procedure Fade_is (Self : in out Item;   Which : in texture_Set.texture_Id;
-                         Now   : in texture_Set.fade_Level)
+      procedure Fade_is (Self : in out textured_Item;   Which : in texture_Set.texture_Id;
+                                                        Now   : in texture_Set.fade_Level)
       is
       begin
          Self.texture_Details.Fades (which) := Now;
@@ -116,7 +115,7 @@ is
 
 
       overriding
-      function Fade (Self : in Item;   Which : in texture_Set.texture_Id) return texture_Set.fade_Level
+      function Fade (Self : in textured_Item;   Which : in texture_Set.texture_Id) return texture_Set.fade_Level
       is
       begin
          return Self.texture_Details.Fades (which);
@@ -124,8 +123,8 @@ is
 
 
 
-      procedure Texture_is (Self : in out Item;   Which : in texture_Set.texture_Id;
-                            Now   : in openGL.asset_Name)
+      procedure Texture_is (Self : in out textured_Item;   Which : in texture_Set.texture_Id;
+                                                           Now   : in openGL.asset_Name)
       is
       begin
          Self.texture_Details.Textures (Positive (which)) := Now;
@@ -135,7 +134,7 @@ is
 
 
       overriding
-      function texture_Count (Self : in Item) return Natural
+      function texture_Count (Self : in textured_Item) return Natural
       is
       begin
          return Self.texture_Details.texture_Count;
@@ -144,7 +143,7 @@ is
 
 
       overriding
-      function texture_Applied (Self : in Item;   Which : in texture_Set.texture_Id) return Boolean
+      function texture_Applied (Self : in textured_Item;   Which : in texture_Set.texture_Id) return Boolean
       is
       begin
          return Self.texture_Details.texture_Applies (Which);
@@ -153,8 +152,8 @@ is
 
 
       overriding
-      procedure texture_Applied_is (Self : in out Item;   Which : in texture_Set.texture_Id;
-                                    Now   : in Boolean)
+      procedure texture_Applied_is (Self : in out textured_Item;   Which : in texture_Set.texture_Id;
+                                                                   Now   : in Boolean)
       is
       begin
          Self.texture_Details.texture_Applies (Which) := Now;
@@ -164,7 +163,7 @@ is
 
 
       overriding
-      procedure animate (Self : in out Item)
+      procedure animate (Self : in out textured_Item)
       is
          use type texture_Set.Animation_view;
       begin
@@ -179,14 +178,14 @@ is
 
 
 
-      function texture_Details (Self : in Item) return openGL.texture_Set.Details
+      function texture_Details (Self : in textured_Item) return openGL.texture_Set.Details
       is
       begin
          return Self.texture_Details;
       end texture_Details;
 
 
-      procedure texture_Details_is (Self : in out Item;   Now : in openGL.texture_Set.Details)
+      procedure texture_Details_is (Self : in out textured_Item;   Now : in openGL.texture_Set.Details)
       is
       begin
          Self.texture_Details := Now;
