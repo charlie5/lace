@@ -5,7 +5,7 @@ with
 
 package openGL.Model.hexagon.lit_textured
 --
---  Models a lit, colored and textured hexagon.
+--  Models a lit and textured hexagon.
 --
 is
    type Item is new Model.item with private;

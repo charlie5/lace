@@ -4,7 +4,7 @@ with
 
 package openGL.Model.capsule.textured
 --
---  Models a lit and textured capsule.
+--  Models a textured capsule.
 --
 is
    type Item is new Model.capsule.item with private;
