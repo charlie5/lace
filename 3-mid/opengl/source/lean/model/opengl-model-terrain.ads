@@ -1,5 +1,6 @@
 with
-     openGL.Geometry;
+     openGL.Geometry,
+     openGL.Model.texturing;
 
 
 package openGL.Model.terrain
@@ -7,7 +8,9 @@ package openGL.Model.terrain
 --  Models lit, textured terrain.
 --
 is
-   type Item is new Model.item with private;
+   package textured_Model is new texturing.Mixin (openGL.Model.item);
+
+   type Item is new textured_Model.textured_item with private;
    type View is access all Item'Class;
 
 
@@ -18,11 +21,12 @@ is
    --- Forge
    --
 
-   function new_Terrain (heights_Asset : in asset_Name;
-                         Row, Col      : in Integer;
-                         Heights       : in height_Map_view;
-                         color_Map     : in asset_Name;
-                         Tiling        : in texture_Transform_2d := (S => (0.0, 1.0),
+   function new_Terrain (heights_Asset   : in asset_Name;
+                         Row, Col        : in Integer;
+                         Heights         : in height_Map_view;
+                         color_Map       : in asset_Name;
+                         texture_Details : in texture_Set.Details;
+                         Tiling          : in texture_Transform_2d := (S => (0.0, 1.0),
                                                                      T => (0.0, 1.0))) return View;
    overriding
    procedure destroy (Self : in out Item);
@@ -41,24 +45,24 @@ is
    -- Texturing
    --
 
-   overriding
-   function  Fade       (Self : in     Item;   Which : in texture_Set.texture_Id) return texture_Set.fade_Level;
-
-   overriding
-   procedure Fade_is    (Self : in out Item;   Which : in texture_Set.texture_Id;
-                                               Now   : in texture_Set.fade_Level);
-
-   procedure Texture_is (Self : in out Item;   Which : in texture_Set.texture_Id;
-                                               Now   : in asset_Name);
-
-   overriding
-   function  texture_Count (Self : in Item) return Natural;
+   --  overriding
+   --  function  Fade       (Self : in     Item;   Which : in texture_Set.texture_Id) return texture_Set.fade_Level;
+   --
+   --  overriding
+   --  procedure Fade_is    (Self : in out Item;   Which : in texture_Set.texture_Id;
+   --                                              Now   : in texture_Set.fade_Level);
+   --
+   --  procedure Texture_is (Self : in out Item;   Which : in texture_Set.texture_Id;
+   --                                              Now   : in asset_Name);
+   --
+   --  overriding
+   --  function  texture_Count (Self : in Item) return Natural;
 
 
 
 private
 
-   type Item is new Model.item with
+   type Item is new textured_Model.textured_item with
       record
          heights_Asset : asset_Name := null_Asset;
 

@@ -1,6 +1,7 @@
 with
      openGL.Geometry,
-     openGL.Texture;
+     openGL.Texture,
+     openGL.Model.texturing;
 
 
 package openGL.Model.billboard.textured
@@ -8,7 +9,10 @@ package openGL.Model.billboard.textured
 --  Models a textured billboard.
 --
 is
-   type Item (Lucid : Boolean) is new Model.billboard.item with private;
+   package textured_Model is new texturing.Mixin (openGL.Model.billboard.item);
+
+   type Item (Lucid : Boolean) is new textured_Model.textured_item with private;
+   --  type Item (Lucid : Boolean) is new Model.billboard.item with private;
    type View                   is access all Item'Class;
 
    type       Image_view  is access       Image;
@@ -24,6 +28,7 @@ is
       function new_Billboard (Size    : in Size_t         := default_Size;
                               Plane   : in billboard.Plane;
                               Texture : in asset_Name;
+                              texture_Details : in texture_Set.Details;
                               Lucid   : in Boolean        := False) return View;
    end Forge;
 
@@ -50,24 +55,25 @@ is
    -- Texturing
    --
 
-   overriding
-   function  Fade       (Self : in     Item;   Which : in texture_Set.texture_Id) return texture_Set.fade_Level;
-
-   overriding
-   procedure Fade_is    (Self : in out Item;   Which : in texture_Set.texture_Id;
-                                               Now   : in texture_Set.fade_Level);
-
-   procedure Texture_is (Self : in out Item;   Which : in texture_Set.texture_Id;
-                                               Now   : in asset_Name);
-
-   overriding
-   function  texture_Count (Self : in Item) return Natural;
+   --  overriding
+   --  function  Fade       (Self : in     Item;   Which : in texture_Set.texture_Id) return texture_Set.fade_Level;
+   --
+   --  overriding
+   --  procedure Fade_is    (Self : in out Item;   Which : in texture_Set.texture_Id;
+   --                                              Now   : in texture_Set.fade_Level);
+   --
+   --  procedure Texture_is (Self : in out Item;   Which : in texture_Set.texture_Id;
+   --                                              Now   : in asset_Name);
+   --
+   --  overriding
+   --  function  texture_Count (Self : in Item) return Natural;
 
 
 
 private
 
-   type Item (Lucid : Boolean) is new Model.billboard.item with
+   --  type Item (Lucid : Boolean) is new Model.billboard.item with
+   type Item (Lucid : Boolean) is new textured_Model.textured_item with
       record
          texture_Name   : asset_Name            := null_Asset;
          Texture        : openGL.Texture.Object := openGL.Texture.null_Object;      -- The texture to be applied to the billboard face.

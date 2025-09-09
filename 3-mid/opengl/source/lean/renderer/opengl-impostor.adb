@@ -1,6 +1,7 @@
 with
      openGL.Camera,
      openGL.Model.billboard.textured,
+     openGL.texture_Set,
 
      ada.unchecked_Deallocation;
 
@@ -82,7 +83,8 @@ is
       Self.Visual.Model_is (Model.billboard.textured.Forge.new_Billboard (Size    => (Width  => Width,
                                                                                       Height => Height),
                                                                           Plane   => Model.billboard.xy,
-                                                                          Texture => null_Asset).all'Access);
+                                                                          Texture => null_Asset,
+                                                                          texture_Details => texture_Set.to_Details ([1 => null_Asset])).all'Access);
       Self.Visual.Transform_is (Target.Transform);
       --  Self.Visual.model_Transform_is (Target.model_Transform);
    end set_Target;

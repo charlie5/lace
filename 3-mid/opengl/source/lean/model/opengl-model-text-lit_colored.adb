@@ -16,6 +16,7 @@ is
    function new_Text (Text     : in String;
                       Font     : in openGL.Font.font_Id;
                       Color    : in lucid_Color;
+                      texture_Details  : in texture_Set.Details;
                       Centered : in Boolean := True) return View
    is
       Font_Name : constant String  := to_String (Font.Name);
@@ -34,6 +35,8 @@ is
          Self.Color    := +Color;
          Self.Centered := Centered;
          Self.Bounds   := null_Bounds;
+
+         Self.texture_Details_is (texture_Details);
 
          return Self;
       end;
@@ -292,41 +295,41 @@ is
    -- Texturing
    --
 
-   overriding
-   procedure Fade_is (Self : in out Item;   Which : in texture_Set.texture_Id;
-                                            Now   : in texture_Set.fade_Level)
-   is
-   begin
-      null;
-   end Fade_is;
-
-
-
-   overriding
-   function Fade (Self : in Item;   Which : in texture_Set.texture_Id) return texture_Set.fade_Level
-   is
-   begin
-      return 0.0;
-   end Fade;
-
-
-
-   procedure Texture_is (Self : in out Item;   Which : in texture_Set.texture_Id;
-                                               Now   : in openGL.asset_Name)
-   is
-   begin
-      null;
-   end Texture_is;
-
-
-
-
-   overriding
-   function texture_Count (Self : in Item) return Natural
-   is
-   begin
-      return 1;
-   end texture_Count;
+   --  overriding
+   --  procedure Fade_is (Self : in out Item;   Which : in texture_Set.texture_Id;
+   --                                           Now   : in texture_Set.fade_Level)
+   --  is
+   --  begin
+   --     null;
+   --  end Fade_is;
+   --
+   --
+   --
+   --  overriding
+   --  function Fade (Self : in Item;   Which : in texture_Set.texture_Id) return texture_Set.fade_Level
+   --  is
+   --  begin
+   --     return 0.0;
+   --  end Fade;
+   --
+   --
+   --
+   --  procedure Texture_is (Self : in out Item;   Which : in texture_Set.texture_Id;
+   --                                              Now   : in openGL.asset_Name)
+   --  is
+   --  begin
+   --     null;
+   --  end Texture_is;
+   --
+   --
+   --
+   --
+   --  overriding
+   --  function texture_Count (Self : in Item) return Natural
+   --  is
+   --  begin
+   --     return 1;
+   --  end texture_Count;
 
 
 end openGL.Model.Text.lit_colored;

@@ -18,6 +18,9 @@ is
 
    no_such_Font : exception;
 
+   overriding
+   function texture_Applied (Self : in Item;   Which : in texture_Set.texture_Id) return Boolean
+     is (True);
 
 
 private

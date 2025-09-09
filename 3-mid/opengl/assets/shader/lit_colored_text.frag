@@ -7,6 +7,7 @@
 uniform int         texture_Count;
 uniform sampler2D   Textures [16];
 uniform float       Fade     [16];
+uniform bool        texture_Applies [16];
 
 vec4
 apply_Texturing (vec2   Coords)
@@ -15,12 +16,15 @@ apply_Texturing (vec2   Coords)
     
     for (int i = 0;   i < texture_Count;   ++i)
     {
+      if (texture_Applies [i])
+      {
         Color.rgb +=   texture (Textures [i], Coords).rgb
                      * texture (Textures [i], Coords).a
                      * (1.0 - Fade [i]);
                                       
         Color.a    = max (Color.a, texture (Textures [i],
                                             Coords).a);
+      }
     }
     
     return Color;

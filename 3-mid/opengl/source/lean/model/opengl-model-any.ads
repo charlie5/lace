@@ -1,5 +1,6 @@
 with
-     openGL.Geometry;
+     openGL.Geometry,
+     openGL.Model.texturing;
 
 
 package openGL.Model.any
@@ -9,7 +10,11 @@ package openGL.Model.any
 --  This model is largely used by the IO importers of various model formats (ie collada, wavefront, etc).
 --
 is
-   type Item is new Model.item with private;
+   package textured_Model is new texturing.Mixin (openGL.Model.item);
+
+   type Item is new textured_Model.textured_item with private;
+
+   --  type Item is new Model.item with private;
    type View is access all Item'Class;
 
 
@@ -19,6 +24,7 @@ is
 
    function new_Model (Model            : in asset_Name;
                        Texture          : in asset_Name;
+                       texture_Details  : in texture_Set.Details;
                        Texture_is_lucid : in Boolean) return openGL.Model.any.view;
 
    --------------
@@ -43,24 +49,25 @@ is
    -- Texturing
    --
 
-   overriding
-   function  Fade       (Self : in     Item;   Which : in texture_Set.texture_Id) return texture_Set.fade_Level;
-
-   overriding
-   procedure Fade_is    (Self : in out Item;   Which : in texture_Set.texture_Id;
-                                               Now   : in texture_Set.fade_Level);
-
-   procedure Texture_is (Self : in out Item;   Which : in texture_Set.texture_Id;
-                                               Now   : in asset_Name);
-
-   overriding
-   function  texture_Count (Self : in Item) return Natural;
+   --  overriding
+   --  function  Fade       (Self : in     Item;   Which : in texture_Set.texture_Id) return texture_Set.fade_Level;
+   --
+   --  overriding
+   --  procedure Fade_is    (Self : in out Item;   Which : in texture_Set.texture_Id;
+   --                                              Now   : in texture_Set.fade_Level);
+   --
+   --  procedure Texture_is (Self : in out Item;   Which : in texture_Set.texture_Id;
+   --                                              Now   : in asset_Name);
+   --
+   --  overriding
+   --  function  texture_Count (Self : in Item) return Natural;
 
 
 
 private
 
-   type Item is new Model.item with
+   --  type Item is new Model.item with
+   type Item is new textured_Model.textured_item with
       record
          Model             : asset_Name := null_Asset;   -- A wavefront '.obj' or collada '.dae' file.   -- TODO: Rename to 'model_Name'.
 

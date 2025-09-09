@@ -23,6 +23,8 @@ with
      openGL.Model.line     .colored,
      openGL.Model.segment_line,
 
+     openGL.texture_Set,
+
      physics.Model,
      gel.Window;
      --  float_Math.Random;
@@ -155,6 +157,7 @@ is
          then
             the_graphics_Model := openGL.Model.sphere.lit_colored_textured.new_Sphere (Radius,
                                                                                        Color => Color,
+                                                                                       texture_Details => openGL.texture_Set.to_Details ([1 => Texture]),
                                                                                        Image => Texture).all'Access;
          else
             the_graphics_Model := openGL.Model.circle.colored.new_circle (Radius,
@@ -307,6 +310,7 @@ is
          the_graphics_Model := openGL.Model.sphere.lit_colored_textured.new_Sphere (Radius,
                                                                                     lat_Count  => lat_Count,
                                                                                     long_Count => long_Count,
+                                                                                    texture_Details => openGL.texture_Set.to_Details ([1 => Texture]),
                                                                                     Image      => Texture).all'Access;
       else
          if Color /= openGL.no_lucid_Color
@@ -422,7 +426,8 @@ is
                                                         Upper => (texture_Name => Texture),
                                                         Lower => (texture_Name => Texture),
                                                         Left  => (texture_Name => Texture),
-                                                        Right => (texture_Name => Texture)]);
+                                                        Right => (texture_Name => Texture)],
+                                                        texture_Details => openGL.texture_Set.to_Details ([1 => Texture]));
       the_box_physics_Model : constant physics.Model.view
         := physics.Model.Forge.new_physics_Model (shape_Info => (Kind         => physics.Model.Cube,
                                                                  half_Extents => Size / 2.0),
@@ -456,7 +461,8 @@ is
         := openGL.Model.billboard.textured.forge.new_Billboard (Size    => (Width  => Size (1),
                                                                             Height => Size (2)),
                                                                 Plane   => openGL.Model.Billboard.xy,
-                                                                Texture => Texture);
+                                                                Texture => Texture,
+                                                                texture_Details => openGL.texture_Set.to_Details ([1 => Texture]));
 
       the_billboard_physics_Model : constant physics.Model.view
         := physics.Model.Forge.new_physics_Model (shape_Info => (Kind         => physics.Model.Cube,
@@ -640,6 +646,7 @@ is
         := openGL.Model.text.lit_colored.new_Text (Text     => Text,
                                                    Font     => Font,
                                                    Color    => (Color, openGL.Opaque),
+                                                   texture_Details => openGL.texture_Set.to_Details ([1 => openGL.null_Asset]),
                                                    Centered => Centered);
       the_physics_Model  : physics.Model.view;
    begin

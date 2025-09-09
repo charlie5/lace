@@ -11,7 +11,7 @@ with
 
      interfaces.C.Strings;
 
--- use ada.Text_IO;
+ use ada.Text_IO;
 
 
 package body openGL.Shader
@@ -113,7 +113,7 @@ is
                         Status'unchecked_Access);
          if    Status = 0
            and Debugging
-           and False
+           --  and False
          then
             declare
                use ada.Text_IO;
@@ -137,6 +137,9 @@ is
    is
       the_Source : aliased constant C.char_array := to_C_char_array (shader_Filename);
    begin
+      put_Line ("SHADER NAME: " & shader_Filename);
+      put_Line (interfaces.C.to_Ada (the_Source));
+
       create_Shader (Self, Kind, the_Source);
    end define;
 

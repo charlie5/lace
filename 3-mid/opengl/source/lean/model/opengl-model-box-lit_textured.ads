@@ -1,6 +1,7 @@
 with
      openGL.Geometry,
-     openGL.Font;
+     openGL.Font,
+     openGL.Model.texturing;
 
 
 package openGL.Model.Box.lit_textured
@@ -10,7 +11,10 @@ package openGL.Model.Box.lit_textured
 --  Each face may have a separate texture.
 --
 is
-   type Item is new Model.box.item with private;
+   package textured_Model is new texturing.Mixin (openGL.Model.box.item);
+
+   type Item is new textured_Model.textured_item with private;
+   --  type Item is new Model.box.item with private;
    type View is access all Item'Class;
 
 
@@ -27,7 +31,8 @@ is
    --
 
    function new_Box (Size  : in Vector_3;
-                     Faces : in lit_textured.Faces) return View;
+                     Faces : in lit_textured.Faces;
+                     texture_Details : in texture_Set.Details) return View;
 
 
    --------------
@@ -43,24 +48,25 @@ is
    -- Texturing
    --
 
-   overriding
-   function  Fade       (Self : in     Item;   Which : in texture_Set.texture_Id) return texture_Set.fade_Level;
-
-   overriding
-   procedure Fade_is    (Self : in out Item;   Which : in texture_Set.texture_Id;
-                                               Now   : in texture_Set.fade_Level);
-
-   procedure Texture_is (Self : in out Item;   Which : in texture_Set.texture_Id;
-                                               Now   : in asset_Name);
-
-   overriding
-   function  texture_Count (Self : in Item) return Natural;
+   --  overriding
+   --  function  Fade       (Self : in     Item;   Which : in texture_Set.texture_Id) return texture_Set.fade_Level;
+   --
+   --  overriding
+   --  procedure Fade_is    (Self : in out Item;   Which : in texture_Set.texture_Id;
+   --                                              Now   : in texture_Set.fade_Level);
+   --
+   --  procedure Texture_is (Self : in out Item;   Which : in texture_Set.texture_Id;
+   --                                              Now   : in asset_Name);
+   --
+   --  overriding
+   --  function  texture_Count (Self : in Item) return Natural;
 
 
 
 private
 
-   type Item is new Model.box.item with
+   --  type Item is new Model.box.item with
+   type Item is new textured_Model.textured_item with
       record
          Faces : lit_textured.Faces;
       end record;

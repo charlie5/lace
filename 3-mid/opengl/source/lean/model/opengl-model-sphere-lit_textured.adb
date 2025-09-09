@@ -12,6 +12,7 @@ is
    function new_Sphere (Radius     : in Real;
                         lat_Count  : in Positive   := default_latitude_Count;
                         long_Count : in Positive   := default_longitude_Count;
+                        texture_Details : in texture_Set.Details;
                         Image      : in asset_Name := null_Asset) return View
    is
       Self : constant View := new Item;
@@ -21,6 +22,7 @@ is
       Self.lat_Count  := lat_Count;
       Self.long_Count := long_Count;
       Self.Image      := Image;
+      Self.texture_Details_is (texture_Details);
 
       return Self;
    end new_Sphere;
@@ -198,40 +200,40 @@ is
    -- Texturing
    --
 
-   overriding
-   procedure Fade_is (Self : in out Item;   Which : in texture_Set.texture_Id;
-                                            Now   : in texture_Set.fade_Level)
-   is
-   begin
-      null;
-   end Fade_is;
-
-
-
-   overriding
-   function Fade (Self : in Item;   Which : in texture_Set.texture_Id) return texture_Set.fade_Level
-   is
-   begin
-      return 0.0;
-   end Fade;
-
-
-
-   procedure Texture_is (Self : in out Item;   Which : in texture_Set.texture_Id;
-                                               Now   : in openGL.asset_Name)
-   is
-   begin
-      Self.Image := Now;
-   end Texture_is;
-
-
-
-   overriding
-   function texture_Count (Self : in Item) return Natural
-   is
-   begin
-      return 1;
-   end texture_Count;
+   --  overriding
+   --  procedure Fade_is (Self : in out Item;   Which : in texture_Set.texture_Id;
+   --                                           Now   : in texture_Set.fade_Level)
+   --  is
+   --  begin
+   --     null;
+   --  end Fade_is;
+   --
+   --
+   --
+   --  overriding
+   --  function Fade (Self : in Item;   Which : in texture_Set.texture_Id) return texture_Set.fade_Level
+   --  is
+   --  begin
+   --     return 0.0;
+   --  end Fade;
+   --
+   --
+   --
+   --  procedure Texture_is (Self : in out Item;   Which : in texture_Set.texture_Id;
+   --                                              Now   : in openGL.asset_Name)
+   --  is
+   --  begin
+   --     Self.Image := Now;
+   --  end Texture_is;
+   --
+   --
+   --
+   --  overriding
+   --  function texture_Count (Self : in Item) return Natural
+   --  is
+   --  begin
+   --     return 1;
+   --  end texture_Count;
 
 
 

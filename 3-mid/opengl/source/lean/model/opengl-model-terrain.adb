@@ -15,14 +15,15 @@ is
    -- Forge
    --
 
-   function new_Terrain (heights_Asset : in asset_Name;
-                         Row, Col      : in Integer;
-                         Heights       : in height_Map_view;
-                         color_Map     : in asset_Name;
-                         Tiling        : in texture_Transform_2d := (S => (0.0, 1.0),
-                                                                     T => (0.0, 1.0))) return View
+   function new_Terrain (heights_Asset   : in asset_Name;
+                         Row, Col        : in Integer;
+                         Heights         : in height_Map_view;
+                         color_Map       : in asset_Name;
+                         texture_Details : in texture_Set.Details;
+                         Tiling          : in texture_Transform_2d := (S => (0.0, 1.0),
+                                                                       T => (0.0, 1.0))) return View
    is
-      the_Model : constant View := new Item' (Model.item with
+      the_Model : constant View := new Item' (textured_Model.textured_item with
                                               heights_Asset => heights_Asset,
                                               Heights       => Heights,
                                               Row           => Row,
@@ -31,6 +32,7 @@ is
                                               tiling        => Tiling);
    begin
       the_Model.set_Bounds;
+      the_Model.texture_Details_is (texture_Details);
       return the_Model;
    end new_Terrain;
 
@@ -289,40 +291,40 @@ is
    -- Texturing
    --
 
-   overriding
-   procedure Fade_is (Self : in out Item;   Which : in texture_Set.texture_Id;
-                                            Now   : in texture_Set.fade_Level)
-   is
-   begin
-      null;
-   end Fade_is;
-
-
-
-   overriding
-   function Fade (Self : in Item;   Which : in texture_Set.texture_Id) return texture_Set.fade_Level
-   is
-   begin
-      return 0.0;
-   end Fade;
-
-
-
-   procedure Texture_is (Self : in out Item;   Which : in texture_Set.texture_Id;
-                                               Now   : in openGL.asset_Name)
-   is
-   begin
-      Self.color_Map := Now;
-   end Texture_is;
-
-
-
-   overriding
-   function texture_Count (Self : in Item) return Natural
-   is
-   begin
-      return 1;
-   end texture_Count;
+   --  overriding
+   --  procedure Fade_is (Self : in out Item;   Which : in texture_Set.texture_Id;
+   --                                           Now   : in texture_Set.fade_Level)
+   --  is
+   --  begin
+   --     null;
+   --  end Fade_is;
+   --
+   --
+   --
+   --  overriding
+   --  function Fade (Self : in Item;   Which : in texture_Set.texture_Id) return texture_Set.fade_Level
+   --  is
+   --  begin
+   --     return 0.0;
+   --  end Fade;
+   --
+   --
+   --
+   --  procedure Texture_is (Self : in out Item;   Which : in texture_Set.texture_Id;
+   --                                              Now   : in openGL.asset_Name)
+   --  is
+   --  begin
+   --     Self.color_Map := Now;
+   --  end Texture_is;
+   --
+   --
+   --
+   --  overriding
+   --  function texture_Count (Self : in Item) return Natural
+   --  is
+   --  begin
+   --     return 1;
+   --  end texture_Count;
 
 
 end openGL.Model.terrain;

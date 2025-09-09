@@ -31,27 +31,32 @@ is
 
    function to_Model (Model            : in asset_Name;
                       Texture          : in asset_Name;
+                      texture_Details  : in texture_Set.Details;
                       Texture_is_lucid : in Boolean) return openGL.Model.any.item
    is
    begin
-      return Self : openGL.Model.any.item := (openGL.Model.item with
+      --  return Self : openGL.Model.any. := (openGL.Model.item with
+      return Self : openGL.Model.any.item := (textured_Model.textured_item with
                                               Model,
                                               Texture,
                                               Texture_is_lucid,
                                               Geometry => null)
       do
          Self.Bounds.Ball := 1.0;
+         Self.texture_Details_is (texture_Details);
       end return;
    end to_Model;
 
 
    function new_Model (Model            : in asset_Name;
                        Texture          : in asset_Name;
+                       texture_Details  : in texture_Set.Details;
                        Texture_is_lucid : in Boolean) return openGL.Model.any.view
    is
    begin
-      return new openGL.Model.any.item' (to_Model (Model, Texture, Texture_is_lucid));
+      return new openGL.Model.any.item' (to_Model (Model, Texture, texture_Details, Texture_is_lucid));
    end new_Model;
+
 
 
    --------------
@@ -501,40 +506,40 @@ is
    -- Texturing
    --
 
-   overriding
-   procedure Fade_is (Self : in out Item;   Which : in texture_Set.texture_Id;
-                                            Now   : in texture_Set.fade_Level)
-   is
-   begin
-      null;
-   end Fade_is;
-
-
-
-   overriding
-   function Fade (Self : in Item;   Which : in texture_Set.texture_Id) return texture_Set.fade_Level
-   is
-   begin
-      return 0.0;
-   end Fade;
-
-
-
-   procedure Texture_is (Self : in out Item;   Which : in texture_Set.texture_Id;
-                                               Now   : in openGL.asset_Name)
-   is
-   begin
-      null;
-   end Texture_is;
-
-
-
-   overriding
-   function texture_Count (Self : in Item) return Natural
-   is
-   begin
-      return 1;
-   end texture_Count;
+   --  overriding
+   --  procedure Fade_is (Self : in out Item;   Which : in texture_Set.texture_Id;
+   --                                           Now   : in texture_Set.fade_Level)
+   --  is
+   --  begin
+   --     null;
+   --  end Fade_is;
+   --
+   --
+   --
+   --  overriding
+   --  function Fade (Self : in Item;   Which : in texture_Set.texture_Id) return texture_Set.fade_Level
+   --  is
+   --  begin
+   --     return 0.0;
+   --  end Fade;
+   --
+   --
+   --
+   --  procedure Texture_is (Self : in out Item;   Which : in texture_Set.texture_Id;
+   --                                              Now   : in openGL.asset_Name)
+   --  is
+   --  begin
+   --     null;
+   --  end Texture_is;
+   --
+   --
+   --
+   --  overriding
+   --  function texture_Count (Self : in Item) return Natural
+   --  is
+   --  begin
+   --     return 1;
+   --  end texture_Count;
 
 
 

@@ -1,3 +1,4 @@
+with openGL.Model.texturing;
 with openGL.texture_Set;
 with
      openGL.Palette,
@@ -151,20 +152,26 @@ is
         := Model.sphere.lit_colored.new_Sphere (Radius => 1.0, Color => (Green, Opaque));
 
       the_ball_3_Model : constant Model.sphere.lit_textured.view
-        := Model.sphere.lit_textured.new_Sphere (Radius => 1.0, Image => the_Texture);
+        := Model.sphere.lit_textured.new_Sphere (Radius => 1.0,
+                                                 texture_Details => texture_Set.to_Details ([1 => the_Texture]),
+                                                 Image => the_Texture);
 
       the_ball_4_Model : constant Model.sphere.lit_colored_textured.view
-        := Model.sphere.lit_colored_textured.new_Sphere (Radius => 1.0, Image => the_Texture);
+        := Model.sphere.lit_colored_textured.new_Sphere (Radius => 1.0,
+                                                         texture_Details => texture_Set.to_Details ([1 => the_Texture]),
+                                                         Image => the_Texture);
 
       the_billboard_Model : constant Model.billboard.textured.view
         := Model.billboard.textured.forge.new_Billboard (Size    => (1.0, 1.0),
                                                          Plane   => Billboard.xy,
+                                                         texture_Details => texture_Set.to_Details ([1 => the_Texture]),
                                                          Texture => the_Texture);
 
       the_colored_billboard_Model : constant Model.billboard.textured.view               -- TODO: Add color.
         := Model.billboard.textured.forge.new_Billboard (Size    => (1.0, 1.0),
                                                          Plane   => Billboard.xy,
-                                                         Texture => the_Texture);
+                                                         Texture => the_Texture,
+                                                         texture_Details => texture_Set.to_Details ([1 => the_Texture]));
       use Model.box;
 
       the_box_1_Model : constant Model.box.colored.view
@@ -180,16 +187,20 @@ is
       the_box_2_Model : constant Model.box.lit_textured.view
         := Model.box.lit_textured.new_Box
              (Size  => [1.0, 2.0, 1.0],
-              Faces => [others => (texture_Name => the_Texture)]);
+              Faces => [others => (texture_Name => the_Texture)],
+              texture_Details => texture_Set.to_Details ([1 => the_Texture]));
 
       the_box_3_Model : constant Model.box.textured.view
         := Model.box.textured.new_Box
              (Size  => [1.0, 2.0, 3.0],
-              Faces => [others => (texture_Name => the_Texture)]);
+              Faces => [others => (texture_Name => the_Texture)],
+              texture_Details => texture_Set.to_Details ([1 => the_Texture]));
+
 
       the_capsule_Model : constant Model.capsule.lit_textured.view
         := Model.capsule.lit_textured.new_Capsule (Radius => 0.5,
                                                    Height => 2.0,
+                                                   texture_Details => texture_Set.to_Details ([1 => the_Texture]),
                                                    Image  => the_Texture);
 
       the_lit_textured_circle_Model : constant Model.circle.lit_textured.view
@@ -248,6 +259,7 @@ is
         := Model.any.new_Model (--Scale            => (1.0, 1.0, 1.0),
                                 Model            => to_Asset ("assets/opengl/model/human.obj"),
                                 Texture          => the_Texture,
+                                texture_Details  => openGL.texture_Set.to_Details ([1 => the_Texture]),
                                 Texture_is_lucid => False);
 
       the_lit_colored_polygon_Model : constant Model.polygon.lit_colored.view
@@ -256,12 +268,13 @@ is
 
       the_lit_textured_polygon_Model : constant Model.polygon.lit_textured.view
         := Model.polygon.lit_textured.new_Polygon (vertex_Sites => [Origin_2D, [1.0, 0.0], [1.0, 1.0], [-1.0, 0.5]],
-                                                   texture_Details => (openGL.texture_Set.to_Details ([1 => the_Texture])));
+                                                   texture_Details => openGL.texture_Set.to_Details ([1 => the_Texture]));
 
       the_text_Model : constant Model.Text.lit_colored.view
         := Model.Text.lit_colored.new_Text (Text     => "Once upon a midnight dreary ...",
                                             Font     => the_font_Id,
                                             Color    => (Green, Opaque),
+                                            texture_Details => openGL.texture_Set.to_Details ([1 => the_Texture]),
                                             Centered => True);
 
       the_segment_line_Model : constant Model.segment_line.view
@@ -277,12 +290,13 @@ is
       Tiling       : constant texture_Transform_2d := (S => (0.0, 1.0),
                                                        T => (0.0, 1.0));
       the_ground_Model : constant Model.terrain.view
-        := Model.Terrain.new_Terrain (heights_Asset => heights_File,
-                                      Row           => 1,
-                                      Col           => 1,
-                                      Heights       => the_Region.all'Access,
-                                      Color_Map     => texture_File,
-                                      Tiling        => Tiling);
+        := Model.Terrain.new_Terrain (heights_Asset   => heights_File,
+                                      Row             => 1,
+                                      Col             => 1,
+                                      Heights         => the_Region.all'Access,
+                                      Color_Map       => texture_File,
+                                      texture_Details => openGL.texture_Set.to_Details ([1 => texture_File]),
+                                      Tiling          => Tiling);
    begin
       Demo.Renderer.add_Font (the_font_Id);
 
@@ -292,10 +306,10 @@ is
       the_segment_line_Model.add_Segment     (end_Site   => [2.0, 2.0, 0.0]);
       the_segment_line_Model.add_Segment     (end_Site   => [0.0, 2.0, 0.0]);
 
-      return [                the_ground_Model.all'Access,
+      return [                  the_text_Model.all'Access,
+                              the_ground_Model.all'Access,
                 the_lit_textured_polygon_Model.all'Access,
                  the_lit_colored_polygon_Model.all'Access,
-                                the_text_Model.all'Access,
                                the_arrow_Model.all'Access,
                               the_ball_1_Model.all'Access,
                               the_ball_2_Model.all'Access,

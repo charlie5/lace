@@ -1,6 +1,7 @@
 with
      openGL.Font.texture,
-     openGL.Geometry;
+     openGL.Geometry,
+     openGL.Model.texturing;
 
 
 package openGL.Model.Text.lit_colored
@@ -8,7 +9,10 @@ package openGL.Model.Text.lit_colored
 --  Models lit and colored text.
 --
 is
-   type Item is new Model.text.item with private;
+   package textured_Model is new texturing.Mixin (openGL.Model.text.item);
+
+   type Item is new textured_Model.textured_item with private;
+   --  type Item is new Model.text.item with private;
    type View is access all Item'Class;
 
 
@@ -19,6 +23,7 @@ is
    function new_Text (Text     : in String;
                       Font     : in openGL.Font.font_Id;
                       Color    : in lucid_Color;
+                      texture_Details  : in texture_Set.Details;
                       Centered : in Boolean := True) return View;
 
 
@@ -42,24 +47,25 @@ is
    -- Texturing
    --
 
-   overriding
-   function  Fade       (Self : in     Item;   Which : in texture_Set.texture_Id) return texture_Set.fade_Level;
-
-   overriding
-   procedure Fade_is    (Self : in out Item;   Which : in texture_Set.texture_Id;
-                                               Now   : in texture_Set.fade_Level);
-
-   procedure Texture_is (Self : in out Item;   Which : in texture_Set.texture_Id;
-                                               Now   : in asset_Name);
-
-   overriding
-   function  texture_Count (Self : in Item) return Natural;
+   --  overriding
+   --  function  Fade       (Self : in     Item;   Which : in texture_Set.texture_Id) return texture_Set.fade_Level;
+   --
+   --  overriding
+   --  procedure Fade_is    (Self : in out Item;   Which : in texture_Set.texture_Id;
+   --                                              Now   : in texture_Set.fade_Level);
+   --
+   --  procedure Texture_is (Self : in out Item;   Which : in texture_Set.texture_Id;
+   --                                              Now   : in asset_Name);
+   --
+   --  overriding
+   --  function  texture_Count (Self : in Item) return Natural;
 
 
 
 private
 
-   type Item is new Model.text.item with
+   --  type Item is new Model.text.item with
+   type Item is new textured_Model.textured_item with
       record
          Text     : String_view;
 
