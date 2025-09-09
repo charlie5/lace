@@ -158,6 +158,9 @@ main()
                                      Surface_to_Camera);
     }
     
+    // linear_Color.g = 1.0;
+    linear_Color += surface_Color.rgb;
+    
     vec3   Gamma = vec3 (1.0 / 2.2);
 
     final_Color = vec4 (pow (linear_Color,     // Final color (after gamma correction).

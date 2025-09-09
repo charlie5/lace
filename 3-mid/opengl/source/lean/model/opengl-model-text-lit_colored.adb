@@ -81,9 +81,14 @@ is
    is
       pragma unreferenced (Textures);
 
-      text_Scale : constant Vector_3 := [2.0 * 4.0 / 78.0,                -- TODO: Fix scaling.
-                                         2.0 * 4.0 / 95.0,
+      --  text_Scale : constant Vector_3 := [2.0 * 4.0 / 78.0,                -- TODO: Fix scaling.
+      --                                     2.0 * 4.0 / 95.0,
+      --                                     1.0 / 1.0];
+
+      text_Scale : constant Vector_3 := [1.0 * 1.0 / 78.0,                -- TODO: Fix scaling.
+                                         1.0 * 1.0 / 95.0,
                                          1.0 / 1.0];
+
    begin
       if Self.Text.all = ""
       then
