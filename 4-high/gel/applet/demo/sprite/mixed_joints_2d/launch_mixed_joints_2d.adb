@@ -47,26 +47,49 @@ begin
       --  Hinge
       --
       declare
-         the_hinge_Box_1 : constant gel.Sprite.view := new_circle_Sprite (the_Applet.gui_World, Name => "the_hinge_Box_1", mass => 0.0);
-         the_hinge_Box_2 : constant gel.Sprite.view := new_circle_Sprite (the_Applet.gui_World, Name => "the_hinge_Box_2", mass => 1.0);
+         the_hinge_Box_1 : constant gel.Sprite.view := new_circle_Sprite (in_World => the_Applet.gui_World,
+                                                                          Name     => "the_hinge_Box_1",
+                                                                          Mass     => 0.0,
+                                                                          Color    => (openGL.Palette.Green, openGL.Opaque),
+                                                                          Fill     => False);
+
+         the_hinge_Box_2 : constant gel.Sprite.view := new_circle_Sprite (in_World => the_Applet.gui_World,
+                                                                          Name     => "the_hinge_Box_2",
+                                                                          Mass     => 1.0,
+                                                                          Color    => (openGL.Palette.Green, openGL.Opaque),
+                                                                          Fill     => False);
+
          new_Joint       :          gel.      Joint .view;
 
-         Frame_A : constant math.Matrix_4x4 := math.Identity_4x4;
-         Frame_B : constant math.Matrix_4x4 := math.Identity_4x4;
+         --  Frame_A : constant math.Matrix_4x4 := math.Identity_4x4;
+         --  Frame_B : constant math.Matrix_4x4 := math.Identity_4x4;
       begin
          the_hinge_Box_1.Site_is ([ 0.0,  0.0,  0.0]);
          the_hinge_Box_2.Site_is ([-10.0, 0.0,  0.0]);
 
+         the_Applet.gui_World.add (the_hinge_Box_1);
+         the_Applet.gui_World.add (the_hinge_Box_2);
 
-         the_hinge_Box_1.attach_via_Hinge (the_Child         => the_hinge_Box_2,
-                                           Frame_in_parent   => Frame_A,
-                                           Frame_in_child    => Frame_B,
-                                           Limits            => (0.0, to_Radians (355.0)),
-                                           collide_Connected => False,
-                                           new_joint         => new_Joint);
+         --  the_hinge_Box_1.attach_via_Hinge (the_Child         => the_hinge_Box_2,
+         --                                    Frame_in_parent   => Frame_A,
+         --                                    Frame_in_child    => Frame_B,
+         --                                    Limits            => (0.0, to_Radians (355.0)),
+         --                                    collide_Connected => False,
+         --                                    new_joint         => new_Joint);
+
+
+         the_hinge_Box_1.attach_via_Hinge
+           (the_Child    => the_hinge_Box_2,
+            pivot_Axis   => [0.0, 0.0, 1.0],        -- Unused.
+            pivot_Anchor => [-0.0, 0.0, 0.0],
+            low_Limit    => to_Radians (-355.0),
+            high_Limit   => to_Radians ( 355.0),
+            new_joint    => new_Joint);
+
 --           the_hinge_Joint := gel.hinge_Joint .view (new_Joint);
 
-         the_Applet.gui_World.add (the_hinge_Box_1, and_children => True);
+         --  the_Applet.gui_World.add (the_hinge_Box_1, and_children => True);
+         the_Applet.gui_World.add (new_Joint);
       end;
 
 --        --  DoF6

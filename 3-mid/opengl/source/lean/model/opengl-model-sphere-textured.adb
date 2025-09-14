@@ -15,6 +15,7 @@ is
                         lat_Count    : in Positive   := 26;
                         long_Count   : in Positive   := 52;
                         Image        : in asset_Name := null_Asset;
+                        texture_Details : in texture_Set.Details;
                         is_Skysphere : in Boolean    := False) return View
    is
       Self : constant View := new Item;
@@ -25,6 +26,8 @@ is
       Self.is_Skysphere := is_Skysphere;
 
       Self.define (Radius);
+
+      Self.texture_Details_is (texture_Details);
 
       return Self;
    end new_Sphere;
@@ -195,6 +198,8 @@ is
       begin
          the_Geometry.add (Primitive.view (the_Primitive));
       end;
+
+      the_Geometry.Model_is (Self.all'unchecked_Access);
 
       return [1 => Geometry.view (the_Geometry)];
    end to_GL_Geometries;

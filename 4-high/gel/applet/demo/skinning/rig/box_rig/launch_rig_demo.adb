@@ -9,6 +9,7 @@ with
 
      openGL.Model.any,
      openGL.Light,
+     openGL.texture_Set,
 
      ada.Calendar;
 
@@ -46,6 +47,7 @@ is
                                                                                          Model            => openGL.to_Asset ("./box_1_bone.dae"),
                                                                                          --  Model            => openGL.to_Asset ("./box_2_bone.dae"),
                                                                                          Texture          => openGL.null_Asset,
+                                                                                         texture_Details  => openGL.texture_Set.to_Details ([1 => openGL.to_Asset ("./assets/opengl/textures/wooden-crate.jpg")]),
                                                                                          Texture_is_lucid => False);
    the_Rig       : aliased  gel.Rig.item;
 

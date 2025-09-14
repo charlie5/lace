@@ -102,13 +102,14 @@ begin
       --- Ball
       --
       the_Ball : constant gel.Sprite.view
-        := gel.Forge.new_circle_Sprite (in_World => the_Applet.World,
-                                        Site     => [0.0, 0.0],
-                                        Mass     => 1.0,
+        := gel.Forge.new_circle_Sprite (Name     => "Ball",
+                                        in_World => the_Applet.World,
+                                        Site     => [0.0, 0.0, 0.0],
+                                        Mass     => 0.2,
                                         Bounce   => 1.0,
                                         Friction => 0.0,
                                         Radius   => 0.5,
-                                        Color    => Grey,
+                                        Color    => (Grey, openGL.Opaque),
                                         Texture  => openGL.to_Asset ("assets/opengl/texture/Face1.bmp"));
 
       court_Width  : constant := 30.0;
@@ -140,8 +141,9 @@ begin
          the_Player :          Player renames the_Players (Id);
          score_Site : constant Vector_2    := Site + [0.0, court_Height / 2.0 + 0.8];
       begin
-         the_Player.Paddle := gel.Forge.new_rectangle_Sprite (the_Applet.World,
-                                                              Site     => Site,
+         the_Player.Paddle := gel.Forge.new_rectangle_Sprite (in_World => the_Applet.World,
+                                                              Name     => "Paddle" & Id'Image,
+                                                              Site     => Vector_3 (Site & 0.0),
                                                               Mass     => 0.0,
                                                               Bounce   => 1.0,
                                                               Friction => 0.0,
@@ -149,17 +151,22 @@ begin
                                                               Height   => 3.0,
                                                               Color    => Red);
 
-         the_Player.score_Text  := gel.Forge.new_text_Sprite (the_Applet.World,
-                                                              Origin_3D,
-                                                              " 0",
-                                                              the_Applet.Font,
-                                                              Green);
+         the_Player.score_Text  := gel.Forge.new_text_Sprite (in_World => the_Applet.World,
+                                                              Site     => Origin_3D,
+                                                              Text     => " 0",
+                                                              Font     => the_Applet.Font,
+                                                              Color    => Green,
+                                                              Size     => ([1.0, 1.0, 1.0]));
          the_Player.score_Model := openGL.Model.text.view (the_Player.score_Text.graphics_Model);
+
+         --  the_Player.score_Model.
 
          the_Applet.World.add (the_Player.Paddle);
          the_Applet.World.add (the_Player.score_Text);
 
          the_Player.score_Text.Site_is (Vector_3 (score_Site & 0.0));
+         the_Player.score_Text.Scale_is ([50.0, 50.0, 50.0]);
+         --  the_Player.score_Text.graphics_Model.
       end add_Player;
 
 
@@ -170,8 +177,9 @@ begin
                           Height : in Real)
       is
          the_Wall : constant gel.Sprite.view
-           := gel.Forge.new_rectangle_Sprite (the_Applet.World,
-                                              Site     => Site,
+           := gel.Forge.new_rectangle_Sprite (in_World => the_Applet.World,
+                                              Name     => "Wall",
+                                              Site     => Vector_3 (Site & 0.0),
                                               Mass     => 0.0,
                                               Bounce   => 1.0,
                                               Friction => 0.0,
@@ -269,7 +277,7 @@ begin
       declare
          Light : openGL.Light.item := the_Applet.Renderer.new_Light;
       begin
-         Light.Site_is ([0.0, -1000.0, 0.0]);
+         Light.Site_is ([0.0, 0.0, 1.0]);
          the_Applet.Renderer.set (Light);
       end;
 
@@ -387,6 +395,8 @@ begin
                if the_Player.moving_Down then   the_Player.Paddle.Site_is (the_Player.Paddle.Site - paddle_Speed);   end if;
             end;
          end loop;
+
+         delay 1.0 / 60.0;
       end loop;
 
       free (the_Applet);

@@ -6,6 +6,9 @@ with
      gel.World,
      gel.Camera,
 
+     openGL.Light,
+     openGL.Palette,
+
      Physics,
 
      ada.Text_IO,
@@ -41,7 +44,8 @@ is
    end gui_Camera;
 
 
-   the_Ball : constant gel.Sprite.view := gel.Forge.new_ball_Sprite (gui_World);
+   the_Ball : constant gel.Sprite.view := gel.Forge.new_ball_Sprite (in_World => gui_World,
+                                                                     Color    => (openGL.Palette.Green, openGL.Opaque));
    the_Box  : constant gel.Sprite.view := gel.Forge.new_box_Sprite  (gui_World,
                                                                      Mass => 0.0,
                                                                      Size => [20.0, 1.0, 20.0]);
@@ -59,6 +63,15 @@ begin
    gui_World.add (the_Ball);                                      -- Add ball.
    gui_World.add (the_Box);                                       -- Add box.
 
+   -- Set the lights position.
+   --
+   declare
+      Light : openGL.Light.item := the_Applet.Renderer.new_Light;
+   begin
+      Light.Site_is ([0.0, 15.0, 15.0]);
+      Light.ambient_Coefficient_is (0.5);
+      the_Applet.Renderer.set (Light);
+   end;
 
    while the_Applet.is_open
    loop

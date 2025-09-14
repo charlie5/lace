@@ -137,8 +137,8 @@ is
    is
       the_Source : aliased constant C.char_array := to_C_char_array (shader_Filename);
    begin
-      put_Line ("SHADER NAME: " & shader_Filename);
-      put_Line (interfaces.C.to_Ada (the_Source));
+      --  put_Line ("SHADER NAME: " & shader_Filename);
+      --  put_Line (interfaces.C.to_Ada (the_Source));
 
       create_Shader (Self, Kind, the_Source);
    end define;

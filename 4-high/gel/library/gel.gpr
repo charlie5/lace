@@ -22,6 +22,7 @@ is
                             "../source/concrete",
                             "../source/dolly",
                             "../source/forge",
+                            "../source/human",
                             "../source/joint", 
                             "../source/applet",
                             "../source/applet/distributed",

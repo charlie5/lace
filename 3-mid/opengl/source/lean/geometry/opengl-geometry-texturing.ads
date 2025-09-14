@@ -8,7 +8,7 @@ with
      openGL.Model;
 
 
-private
+--  private
 package openGL.Geometry.texturing
 --
 -- Provides texturing support for geometries.

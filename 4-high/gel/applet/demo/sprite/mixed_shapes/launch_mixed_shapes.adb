@@ -10,8 +10,10 @@ with
      openGL.Model.box.colored,
      openGL.Model.sphere.lit_colored_textured,
      openGL.Model.capsule.lit_colored_textured,
+     openGL.Model.capsule.textured,
      openGL.Model.any,
      openGL.Model.terrain,
+     openGL.texture_Set,
      openGL.IO,
      openGL.Light,
      openGL.Palette;
@@ -90,13 +92,14 @@ is
                                                                                Scale          => 2.0);
 
    the_heightfield_Model : constant openGL.Model.terrain.view
-     := openGL.Model.terrain.new_Terrain (heights_Asset => terrain_Heights,
-                                          Row           => 1,
-                                          Col           => 1,
-                                          Heights       => openGL.Model.terrain.height_Map_view (gl_Heights),
-                                          color_Map     => terrain_Texture,
-                                          Tiling        => (s => (0.0, 1.0),
-                                                            t => (0.0, 1.0)));
+     := openGL.Model.terrain.new_Terrain (heights_Asset    => terrain_Heights,
+                                          Row              => 1,
+                                          Col              => 1,
+                                          Heights          => openGL.Model.terrain.height_Map_view (gl_Heights),
+                                          color_Map        => terrain_Texture,
+                                           texture_Details => texture_Set.to_Details ([1 => terrain_Texture]),
+                                          Tiling           => (s => (0.0, 1.0),
+                                                               t => (0.0, 1.0)));
 
    the_heightfield_physics_Model : constant physics.Model.view
      := physics.Model.forge.new_physics_Model (shape_Info => (Kind         => physics.Model.heightfield,
@@ -104,11 +107,10 @@ is
                                                               height_Range => [0.0, 200.0]),
                                                Scale      =>  [hs, 1.0, hs]);
    the_Heightfield : constant gel.Sprite.view
-     := gel.Sprite.forge.new_Sprite ("demo.Hull",
-                                     the_Applet.gui_World.all'Access,
-                                     Origin_3D,
-                                     the_Heightfield_Model,
-                                     the_Heightfield_physics_Model);
+     := gel.Sprite.forge.new_Sprite (Name           => "demo.Heightfield",
+                                     World          => the_Applet.gui_World.all'Access,
+                                     graphics_Model => the_Heightfield_Model,
+                                     physics_Model  => the_Heightfield_physics_Model);
 begin
    -- Applet.
    --
@@ -153,11 +155,10 @@ begin
                                                      Mass       => 1.0);
 
          the_Box : constant gel.Sprite.view
-           := gel.Sprite.forge.new_Sprite ("demo.Box",
-                                           the_Applet.gui_World.all'Access,
-                                           Origin_3D,
-                                           the_box_Model.all'Access,
-                                           the_box_physics_Model);
+           := gel.Sprite.forge.new_Sprite (Name           => "demo.Box",
+                                           World          => the_Applet.gui_World.all'Access,
+                                           graphics_Model => the_box_Model.all'Access,
+                                           physics_Model  => the_box_physics_Model);
 
          --  Ball
          --
@@ -167,36 +168,37 @@ begin
                                                      Mass       => 1.0);
 
          the_ball_Model : constant openGL.Model.sphere.lit_colored_textured.view
-           := openGL.Model.sphere.lit_colored_textured.new_Sphere (Radius => 1.0,
-                                                                   Image  => openGL.to_Asset ("assets/gel/golf_green-16x16.tga"));
+           := openGL.Model.sphere.lit_colored_textured.new_Sphere (Radius          => 1.0,
+                                                                   Image           => openGL.to_Asset ("assets/gel/golf_green-16x16.tga"),
+                                                                   texture_Details => texture_Set.to_Details ([1 => openGL.to_Asset ("assets/gel/Face1.bmp")]));
          the_Ball : constant gel.Sprite.view
-           := gel.Sprite.forge.new_Sprite ("demo.Ball",
-                                           the_Applet.gui_World.all'Access,
-                                           Origin_3D,
-                                           the_ball_Model,
-                                           the_ball_physics_Model);
+           := gel.Sprite.forge.new_Sprite (Name           => "demo.Ball",
+                                           World          => the_Applet.gui_World.all'Access,
+                                           graphics_Model => the_ball_Model,
+                                           physics_Model  => the_ball_physics_Model);
 
          --  Cone
          --
          the_cone_Model : constant openGL.Model.any.view
            := openGL.Model.any.new_Model (Model            => openGL.to_Asset ("assets/gel/model/unit_cone.obj"),
-                                          Texture          => openGL.null_Asset,
+                                          Texture          => openGL.to_Asset ("assets/gel/Face1.bmp"),
+                                          texture_Details  => texture_Set.to_Details ([1 => openGL.to_Asset ("assets/gel/Face1.bmp")]),
                                           Texture_is_lucid => False);
 
          the_cone_physics_Model : constant physics.Model.view
            := physics.Model.forge.new_physics_Model (shape_Info => (Kind => physics.Model.cone),
                                                      Mass       => 1.0);
          the_Cone : constant gel.Sprite.view
-           := gel.Sprite.forge.new_Sprite ("demo.Cone",
-                                           the_Applet.gui_World.all'Access,
-                                           Origin_3D,
-                                           the_cone_Model.all'Access,
-                                           the_cone_physics_Model);
+           := gel.Sprite.forge.new_Sprite (Name           => "demo.Cone",
+                                           World          => the_Applet.gui_World.all'Access,
+                                           graphics_Model => the_cone_Model.all'Access,
+                                           physics_Model  => the_cone_physics_Model);
          --  Cylinder
          --
          the_cylinder_Model : constant openGL.Model.any.view
            := openGL.Model.any.new_Model (Model            => openGL.to_Asset ("assets/gel/model/unit_cylinder.obj"),
-                                          Texture          => openGL.null_Asset,
+                                          Texture          => openGL.to_Asset ("assets/gel/Face1.bmp"),
+                                          texture_Details  => texture_Set.to_Details ([1 => openGL.to_Asset ("assets/gel/Face1.bmp")]),
                                           Texture_is_lucid => False);
 
          the_cylinder_physics_Model : constant physics.Model.view
@@ -205,17 +207,18 @@ begin
                                                      Mass       => 1.0);
 
          the_Cylinder : constant gel.Sprite.view
-           := gel.Sprite.forge.new_Sprite ("demo.Cylinder",
-                                           the_Applet.gui_World.all'Access,
-                                           Origin_3D,
-                                           the_cylinder_Model.all'Access,
-                                           the_cylinder_physics_Model);
+           := gel.Sprite.forge.new_Sprite (Name           => "demo.Cylinder",
+                                           World          => the_Applet.gui_World.all'Access,
+                                           graphics_Model => the_cylinder_Model.all'Access,
+                                           physics_Model  => the_cylinder_physics_Model);
          --  Capsule
          --
-         the_capsule_Model : constant openGL.Model.capsule.lit_colored_textured.view
-           := openGL.Model.capsule.lit_colored_textured.new_Capsule (Radius => 0.5,
-                                                                     Height => 0.0,
-                                                                     Color  => (palette.Green, Opaque));
+         the_capsule_Model : constant openGL.Model.capsule.textured.view
+           := openGL.Model.capsule.textured.new_Capsule (Radius => 0.5,
+                                                         Height => 2.0,
+                                                         texture_Details  => texture_Set.to_Details ([1 => openGL.to_Asset ("assets/gel/Face1.bmp")]),
+                                                         Image  => openGL.to_Asset ("assets/gel/Face1.bmp"));
+
 
          the_capsule_physics_Model : constant physics.Model.view
            := physics.Model.forge.new_physics_Model (shape_Info => (Kind         => physics.Model.a_Capsule,
@@ -224,34 +227,33 @@ begin
                                                                     Height       => 1.0),
                                                      Mass       => 1.0);
          the_Capsule : constant gel.Sprite.view
-           := gel.Sprite.forge.new_Sprite ("demo.Capsule",
-                                           the_Applet.gui_World.all'Access,
-                                           Origin_3D,
-                                           the_capsule_Model.all'Access,
-                                           the_capsule_physics_Model);
+           := gel.Sprite.forge.new_Sprite (Name           => "demo.Capsule",
+                                           World          => the_Applet.gui_World.all'Access,
+                                           graphics_Model => the_capsule_Model.all'Access,
+                                           physics_Model  => the_capsule_physics_Model);
 
          --  multi_Sphere
          --
-         the_multi_Sphere_Model : constant openGL.Model.capsule.lit_colored_textured.view
-           := openGL.Model.capsule.lit_colored_textured.new_Capsule (Radius => 0.5,
-                                                                     Height => 0.0,
-                                                                     Color  => (palette.Green, Opaque),
-                                                                     Image  => openGL.to_Asset ("assets/gel/golf_green-16x16.tga"));
-
-         the_multi_Sphere_physics_Model : constant physics.Model.view
-           := physics.Model.forge.new_physics_Model (shape_Info => (Kind  => physics.Model.multi_Sphere,
-                                                                    Sites => new physics.Vector_3_array' ([-0.5, 0.0, 0.0],
-                                                                                                          [ 0.5, 0.0, 0.0]),
-                                                                    Radii => new gel.math.Vector' (1 => 0.5,
-                                                                                                   2 => 0.5)),
-                                                     Mass       => 1.0);
-
-         the_multi_Sphere : constant gel.Sprite.view
-           := gel.Sprite.forge.new_Sprite ("demo.multi_Sphere",
-                                           the_Applet.gui_World.all'Access,
-                                           Origin_3D,
-                                           the_multi_Sphere_Model.all'Access,
-                                           the_multi_Sphere_physics_Model);
+         --  the_multi_Sphere_Model : constant openGL.Model.capsule.lit_colored_textured.view
+         --    := openGL.Model.capsule.lit_colored_textured.new_Capsule (Radius => 0.5,
+         --                                                              Height => 0.0,
+         --                                                              Color  => (palette.Green, Opaque),
+         --                                                              Image  => openGL.to_Asset ("assets/gel/golf_green-16x16.tga"));
+         --
+         --  the_multi_Sphere_physics_Model : constant physics.Model.view
+         --    := physics.Model.forge.new_physics_Model (shape_Info => (Kind  => physics.Model.multi_Sphere,
+         --                                                             Sites => new physics.Vector_3_array' ([-0.5, 0.0, 0.0],
+         --                                                                                                   [ 0.5, 0.0, 0.0]),
+         --                                                             Radii => new gel.math.Vector' (1 => 0.5,
+         --                                                                                            2 => 0.5)),
+         --                                              Mass       => 1.0);
+         --
+         --  the_multi_Sphere : constant gel.Sprite.view
+         --    := gel.Sprite.forge.new_Sprite ("demo.multi_Sphere",
+         --                                    the_Applet.gui_World.all'Access,
+         --                                    Origin_3D,
+         --                                    the_multi_Sphere_Model.all'Access,
+         --                                    the_multi_Sphere_physics_Model);
 
          --  Hull
          --
@@ -277,18 +279,17 @@ begin
                                                                                                            [-s,  s, -s])),
                                                      Mass       => 1.0);
          the_Hull : constant gel.Sprite.view
-           := gel.Sprite.forge.new_Sprite ("demo.Hull",
-                                           the_Applet.gui_World.all'Access,
-                                           Origin_3D,
-                                           the_hull_Model.all'Access,
-                                           the_hull_physics_Model);
+           := gel.Sprite.forge.new_Sprite (Name           => "demo.Hull",
+                                           World          => the_Applet.gui_World.all'Access,
+                                           graphics_Model => the_hull_Model.all'Access,
+                                           physics_Model  => the_hull_physics_Model);
       begin
          the_Applet.gui_World.add (the_Ball);
          the_Applet.gui_World.add (the_Box);
          the_Applet.gui_World.add (the_Cone);
          the_Applet.gui_World.add (the_Cylinder);
          the_Applet.gui_World.add (the_Capsule);
-         the_Applet.gui_World.add (the_multi_Sphere);
+         --  the_Applet.gui_World.add (the_multi_Sphere);
          the_Applet.gui_World.add (the_Hull);
 
          the_Ball        .Site_is ([ x,        y,      0.0]);
@@ -297,7 +298,7 @@ begin
          the_Capsule     .Site_is ([ 0.0 + X,  y,  0.0 + x]);
          the_Cylinder    .Site_is ([ 0.0,      y,      4.4]);
          the_Hull        .Site_is ([ 4.0,      y,      4.4]);
-         the_multi_Sphere.Site_is ([-4.0,      y,      4.4]);
+         --  the_multi_Sphere.Site_is ([-4.0,      y,      4.4]);
 
          x := x + 2.0;
          y := y + 2.0;

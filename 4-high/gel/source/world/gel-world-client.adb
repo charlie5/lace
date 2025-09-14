@@ -1,3 +1,4 @@
+with any_math.any_Algebra.any_linear.any_d3;
 with
      gel.Events,
 
@@ -112,6 +113,7 @@ is
       the_Sprite := gel.Sprite.forge.new_Sprite (+the_Pair.sprite_Name,
                                                  sprite.World_view (the_World),
                                                  get_Translation (the_Pair.Transform),
+                                                 get_Rotation    (the_Pair.Transform),
                                                  the_graphics_Model,
                                                  the_physics_Model,
                                                  owns_Graphics => False,
@@ -565,6 +567,8 @@ is
                                         Self. physics_Models,
                                         gel.World.view (Self));
                --  log ("*** gel.world.client.is_a_Mirror.add sprite ~ " & the_Sprite.Name'Image);
+
+               --  the_Sprite.Spin_is (z_Rotation_from (to_Radians (90.0)));
                Self.add (the_Sprite);
             end loop;
          end;

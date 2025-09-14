@@ -23,6 +23,7 @@ with
      openGL.Model.line     .colored,
      openGL.Model.segment_line,
 
+     openGL.Palette,
      openGL.texture_Set,
 
      physics.Model,
@@ -129,6 +130,7 @@ is
    function new_circle_Sprite (in_World    : in gel.World.view;
                                Name        : in String;
                                Site        : in math.Vector_3      := math.Origin_3D;
+                               Spin        : in math.Matrix_3x3    := math.Identity_3x3;
                                Mass        : in math.Real          := 1.0;
                                Friction    : in math.Real          := 0.5;
                                Bounce      : in math.Real          := 0.5;
@@ -178,6 +180,7 @@ is
       return gel.Sprite.Forge.new_Sprite (Name,
                                           sprite.World_view (in_World),
                                           Site,
+                                          Spin,
                                           the_graphics_Model,
                                           the_physics_Model,
                                           owns_graphics => True,
@@ -191,6 +194,7 @@ is
    function new_polygon_Sprite (in_World       : in gel.World.view;
                                 Name           : in String;
                                 Site           : in math.Vector_3      := math.Origin_3D;
+                                Spin        : in math.Matrix_3x3    := math.Identity_3x3;
                                 Mass           : in math.Real          := 1.0;
                                 Friction       : in math.Real          := 0.5;
                                 Bounce         : in math.Real          := 0.5;
@@ -232,6 +236,7 @@ is
       return gel.Sprite.Forge.new_Sprite (Name,
                                           sprite.World_view (in_World),
                                           Site,
+                                          Spin,
                                           the_graphics_Model,
                                           the_physics_Model,
                                           owns_graphics => True,
@@ -245,6 +250,7 @@ is
    function new_rectangle_Sprite (in_World       : in gel.World.view;
                                   Name           : in String;
                                   Site           : in math.Vector_3      := math.Origin_3D;
+                                  Spin        : in math.Matrix_3x3    := math.Identity_3x3;
                                   Mass           : in math.Real          := 1.0;
                                   Friction       : in math.Real          := 0.5;
                                   Bounce         : in math.Real          := 0.5;
@@ -269,6 +275,7 @@ is
       return new_polygon_Sprite (in_World,
                                  Name,
                                  Site,
+                                 Spin,
                                  Mass,
                                  Friction,
                                  Bounce,
@@ -288,6 +295,7 @@ is
 
    function new_ball_Sprite (in_World   : in gel.World.view;
                              Site       : in math.Vector_3      := math.Origin_3D;
+                             Spin        : in math.Matrix_3x3    := math.Identity_3x3;
                              Mass       : in math.Real          := 1.0;
                              Radius     : in math.Real          := 0.5;
                              lat_Count  : in Positive           := openGL.Model.sphere.default_latitude_Count;
@@ -297,7 +305,8 @@ is
                              Texture    : in openGL.asset_Name  := openGL.null_Asset;
                              user_Data  : in any_user_Data_view := null) return gel.Sprite.view
    is
-      use type openGL.lucid_Color;
+      use type openGL.lucid_Color,
+               openGL.asset_Name;
 
       the_graphics_Model : openGL.Model.sphere.view;
 
@@ -307,11 +316,19 @@ is
    begin
       if is_Lit     -- TODO: Remaining combinations.
       then
-         the_graphics_Model := openGL.Model.sphere.lit_colored_textured.new_Sphere (Radius,
-                                                                                    lat_Count  => lat_Count,
-                                                                                    long_Count => long_Count,
-                                                                                    texture_Details => openGL.texture_Set.to_Details ([1 => Texture]),
-                                                                                    Image      => Texture).all'Access;
+         if Texture /= openGL.null_Asset
+         then
+            the_graphics_Model := openGL.Model.sphere.lit_colored_textured.new_Sphere (Radius,
+                                                                                       lat_Count  => lat_Count,
+                                                                                       long_Count => long_Count,
+                                                                                       texture_Details => openGL.texture_Set.to_Details ([1 => Texture]),
+                                                                                       Image      => Texture).all'Access;
+         else
+            the_graphics_Model := openGL.Model.sphere.lit_colored.new_Sphere (Radius,
+                                                                              lat_Count  => lat_Count,
+                                                                              long_Count => long_Count,
+                                                                              Color      => Color).all'Access;
+         end if;
       else
          if Color /= openGL.no_lucid_Color
          then
@@ -323,6 +340,7 @@ is
             the_graphics_Model := openGL.Model.sphere.textured.new_Sphere (Radius,
                                                                            lat_Count  => lat_Count,
                                                                            long_Count => long_Count,
+                                                                           texture_Details => openGL.texture_Set.to_Details ([1 => Texture]),
                                                                            Image      => Texture).all'Access;
          end if;
       end if;
@@ -330,6 +348,7 @@ is
       return gel.Sprite.Forge.new_Sprite ("ball_Sprite",
                                           sprite.World_view (in_World),
                                           Site,
+                                          Spin,
                                           the_graphics_Model,
                                           the_physics_Model,
                                           owns_Graphics => True,
@@ -342,6 +361,7 @@ is
 
    function new_skysphere_Sprite (in_World   : in gel.World.view;
                                   Site       : in math.Vector_3      := math.Origin_3D;
+                                  Spin        : in math.Matrix_3x3    := math.Identity_3x3;
                                   Radius     : in math.Real          := 1_000_000.0;
                                   Texture    : in openGL.asset_Name;
                                   user_Data  : in any_user_Data_view := null) return gel.Sprite.view
@@ -354,11 +374,13 @@ is
    begin
       the_graphics_Model := openGL.Model.sphere.textured.new_Sphere (Radius,
                                                                      lat_Count    => 180,
+                                                                     texture_Details => openGL.texture_Set.to_Details ([1 => Texture]),
                                                                      Image        => Texture,
                                                                      is_Skysphere => True).all'Access;
       return gel.Sprite.Forge.new_Sprite ("skysphere_Sprite",
                                           sprite.World_view (in_World),
                                           Site,
+                                          Spin,
                                           the_graphics_Model,
                                           the_physics_Model,
                                           owns_Graphics => True,
@@ -371,6 +393,7 @@ is
 
    function new_box_Sprite (in_World     : in gel.World.view;
                             Site         : in math.Vector_3      := math.Origin_3D;
+                            Spin        : in math.Matrix_3x3    := math.Identity_3x3;
                             Mass         : in math.Real          := 1.0;
                             Size         : in math.Vector_3      := [1.0, 1.0, 1.0];
                             Colors       : in box_Colors         := [others => opengl.Palette.random_Color];
@@ -397,6 +420,7 @@ is
         := gel.Sprite.Forge.new_Sprite ("demo.Box",
                                         sprite.World_view (in_World),
                                         Site,
+                                        Spin,
                                         the_box_Model.all'Access,
                                         the_box_physics_Model,
                                         owns_Graphics => True,
@@ -411,6 +435,7 @@ is
 
    function new_box_Sprite (in_World     : in gel.World.view;
                             Site         : in math.Vector_3      := math.Origin_3D;
+                            Spin        : in math.Matrix_3x3    := math.Identity_3x3;
                             Mass         : in math.Real          := 1.0;
                             Size         : in math.Vector_3      := [1.0, 1.0, 1.0];
                             Texture      : in openGL.asset_Name;
@@ -436,6 +461,7 @@ is
         := gel.Sprite.forge.new_Sprite ("demo.Box",
                                         sprite.World_view (in_World),
                                         Site,
+                                        Spin,
                                         the_box_Model.all'Access,
                                         the_box_physics_Model,
                                         owns_graphics => True,
@@ -450,6 +476,7 @@ is
 
    function new_billboard_Sprite (in_World      : in gel.World.view;
                                   Site          : in math.Vector_3      := math.Origin_3D;
+                                  Spin        : in math.Matrix_3x3    := math.Identity_3x3;
                                   Mass          : in math.Real          := 1.0;
                                   Size          : in math.Vector_3      := [1.0, 1.0, 1.0];
                                   Texture       : in openGL.asset_Name  := openGL.null_Asset;
@@ -473,6 +500,7 @@ is
         := gel.Sprite.forge.new_Sprite ("Billboard",
                                         sprite.World_view (in_World),
                                         Site,
+                                        Spin,
                                         the_billboard_Model.all'Access,
                                         the_billboard_physics_Model,
                                         owns_Graphics => True,
@@ -487,6 +515,7 @@ is
 
    function new_billboard_Sprite (in_World      : in gel.World.view;
                                   Site          : in math.Vector_3      := math.Origin_3D;
+                                  Spin        : in math.Matrix_3x3    := math.Identity_3x3;
                                   Color         : in openGL.lucid_Color;
                                   Mass          : in math.Real          := 1.0;
                                   Size          : in math.Vector_3      := [1.0, 1.0, 1.0];
@@ -509,6 +538,7 @@ is
         := gel.Sprite.forge.new_Sprite ("Billboard",
                                         sprite.World_view (in_World),
                                         Site,
+                                        Spin,
                                         the_billboard_Model.all'Access,
                                         the_billboard_physics_Model,
                                         owns_Graphics => True,
@@ -523,6 +553,7 @@ is
 
    function new_arrow_Sprite (in_World      : in gel.World.view;
                               Site          : in math.Vector_3      := math.Origin_3D;
+                              Spin        : in math.Matrix_3x3    := math.Identity_3x3;
                               Mass          : in math.Real          := 0.0;
                               Size          : in math.Vector_3      := [1.0, 1.0, 1.0];
                               Texture       : in openGL.asset_Name  := openGL.null_Asset;
@@ -545,6 +576,7 @@ is
         := gel.Sprite.forge.new_Sprite ("Arrow",
                                         sprite.World_view (in_World),
                                         Site,
+                                        Spin,
                                         the_graphics_Model.all'Access,
                                         the_physics_Model,
                                         owns_Graphics => True,
@@ -559,6 +591,7 @@ is
 
    function new_line_Sprite (in_World      : in gel.World.view;
                              Site          : in math.Vector_3      := math.Origin_3D;
+                             Spin        : in math.Matrix_3x3    := math.Identity_3x3;
                              Mass          : in math.Real          := 0.0;
                              Size          : in math.Vector_3      := [1.0, 1.0, 1.0];
                              Texture       : in openGL.asset_Name  := openGL.null_Asset;
@@ -580,6 +613,7 @@ is
         := gel.Sprite.forge.new_Sprite ("Line",
                                         sprite.World_view (in_World),
                                         Site,
+                                        Spin,
                                         the_graphics_Model.all'Access,
                                         the_physics_Model,
                                         owns_Graphics => True,
@@ -594,6 +628,7 @@ is
 
    function new_segment_line_Sprite (in_World   : in gel.World.view;
                                      Site       : in math.Vector_3      := math.Origin_3D;
+                                     Spin        : in math.Matrix_3x3    := math.Identity_3x3;
                                      Mass       : in math.Real          := 0.0;
                                      Size       : in math.Vector_3      := [1.0, 1.0, 1.0];
                                      Texture    : in openGL.asset_Name  := openGL.null_Asset;
@@ -615,6 +650,7 @@ is
         := gel.Sprite.forge.new_Sprite ("Line",
                                         sprite.World_view (in_World),
                                         Site,
+                                        Spin,
                                         the_graphics_Model.all'Access,
                                         the_physics_Model,
                                         owns_Graphics => True,
@@ -632,6 +668,7 @@ is
 
    function new_text_Sprite (in_World  : in gel.World.view;
                              Site      : in math.Vector_3      := math.Origin_3D;
+                             Spin        : in math.Matrix_3x3    := math.Identity_3x3;
                              Text      : in String;
                              Font      : in openGL.Font.font_Id;
                              Color     : in openGL.Color       := opengl.Palette.Black;
@@ -642,12 +679,22 @@ is
       use Math;
       use type Physics.space_Kind;
 
-      the_graphics_Model : constant openGL.Model.text.lit_colored.view
-        := openGL.Model.text.lit_colored.new_Text (Text     => Text,
+      the_Texture : constant openGL.asset_Name   :=  openGL.to_Asset ("assets/opengl/texture/Face1.bmp");
+
+      --  the_graphics_Model : constant openGL.Model.text.lit_colored.view
+      --    := openGL.Model.text.lit_colored.new_Text (Text     => Text,
+      --                                               Font     => Font,
+      --                                               Color    => (Color, openGL.Opaque),
+      --                                               texture_Details => openGL.texture_Set.to_Details ([1 => openGL.null_Asset]),
+      --                                               Centered => Centered);
+
+      the_graphics_Model : constant openGL.Model.Text.lit_colored.view
+        := openGL.Model.Text.lit_colored.new_Text (Text     => Text,
                                                    Font     => Font,
                                                    Color    => (Color, openGL.Opaque),
-                                                   texture_Details => openGL.texture_Set.to_Details ([1 => openGL.null_Asset]),
-                                                   Centered => Centered);
+                                                   texture_Details => openGL.texture_Set.to_Details ([1 => the_Texture]),
+                                                   Centered => True);
+
       the_physics_Model  : physics.Model.view;
    begin
       if in_World.space_Kind = Physics.Box2d
@@ -673,6 +720,7 @@ is
       return gel.Sprite.Forge.new_Sprite ("text_Sprite",
                                           sprite.World_view (in_World),
                                           Site,
+                                          Spin,
                                           the_graphics_Model,
                                           the_physics_Model,
                                           owns_Graphics => True,

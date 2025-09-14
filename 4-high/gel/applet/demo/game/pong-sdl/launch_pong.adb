@@ -50,12 +50,13 @@ is
    --
    the_Ball : constant gel.Sprite.view
      := gel.Forge.new_circle_Sprite (in_World => the_Applet.World,
+                                     Name     => "Ball",
                                      Site     => [0.0, 0.0, 0.0],
-                                     Mass     => 1.0,
+                                     Mass     => 0.2,
                                      Bounce   => 1.0,
                                      Friction => 0.0,
                                      Radius   => 0.5,
-                                     Color    => Grey,
+                                     Color    => (Grey, openGL.Opaque),
                                      Texture  => openGL.to_Asset ("assets/opengl/texture/Face1.bmp"));
    --- Players
    --
@@ -84,7 +85,8 @@ is
                                                    stadium_Height / 2.0 + 0.8,
                                                    0.0];
    begin
-      the_Player.Paddle := gel.Forge.new_rectangle_Sprite (the_Applet.World,
+      the_Player.Paddle := gel.Forge.new_rectangle_Sprite (in_World => the_Applet.World,
+                                                           Name     => "Paddle" & Id'Image,
                                                            Site     => Site,
                                                            Mass     => 0.0,
                                                            Bounce   => 1.0,
@@ -93,11 +95,14 @@ is
                                                            Height   => 3.0,
                                                            Color    => Red);
 
-      the_Player.score_Text  := gel.Forge.new_text_Sprite (the_Applet.World,
-                                                           Origin_3D,
-                                                           " 0",
-                                                           the_Applet.Font,
-                                                           Green);
+      the_Player.score_Text  := gel.Forge.new_text_Sprite (in_World => the_Applet.World,
+                                                           Site     => Origin_3D,
+                                                           Text     => " 0",
+                                                           Font     => the_Applet.Font,
+                                                           Color    => Green,
+                                                           Size     => ([1.0, 1.0, 1.0]));
+
+
       the_Player.score_Model := openGL.Model.text.view (the_Player.score_Text.graphics_Model);
 
       the_Applet.World.add (the_Player.Paddle);
@@ -114,14 +119,15 @@ is
                        Height : in Real)
    is
       the_Wall : constant gel.Sprite.view
-        := gel.Forge.new_rectangle_Sprite (the_Applet.World,
-                                           Site     => Site,
-                                           Mass     => 0.0,
-                                           Bounce   => 1.0,
-                                           Friction => 0.0,
-                                           Width    => Width,
-                                           Height   => Height,
-                                           Color    => Blue);
+           := gel.Forge.new_rectangle_Sprite (in_World => the_Applet.World,
+                                              Name     => "Wall",
+                                              Site     => Site,
+                                              Mass     => 0.0,
+                                              Bounce   => 1.0,
+                                              Friction => 0.0,
+                                              Width    => Width,
+                                              Height   => Height,
+                                              Color    => Blue);
    begin
       the_Applet.World.add (the_Wall);
    end add_Wall;
@@ -196,7 +202,7 @@ begin
    declare
       Light : openGL.Light.item := the_Applet.Renderer.new_Light;
    begin
-      Light.Site_is ([0.0, -1000.0, 0.0]);
+      Light.Site_is ([0.0, 0.0, 1.0]);
       the_Applet.Renderer.set (Light);
    end;
 
@@ -280,6 +286,7 @@ begin
       if relaunch_Ball
       then
          the_Ball.Site_is ([0.0, 0.0, 0.0]);
+
          declare
             the_Force : Vector_3 := [gel.Math.Random.random_Real (50.0, 200.0),
                                      gel.Math.Random.random_Real ( 5.0,  20.0),
@@ -291,7 +298,8 @@ begin
             end if;
 
             the_Ball.apply_Force (the_Force);
-            end;
+         end;
+
          relaunch_Ball := False;
       end if;
 

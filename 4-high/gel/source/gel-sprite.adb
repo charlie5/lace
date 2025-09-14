@@ -82,7 +82,8 @@ is
 
 
 
-   procedure rebuild_Solid (Self : in out Item;   at_Site : Vector_3)
+   procedure rebuild_Solid (Self : in out Item;   at_Site  : Vector_3;
+                                                  and_Spin : in Matrix_3x3)
    is
       use Physics.Object;
    begin
@@ -97,12 +98,14 @@ is
                                                                       Self.physics_Model.Restitution,
                                                                       at_Site,
                                                                       Self.is_Kinematic));
+      Self.Solid.Spin_is (and_Spin);
    end rebuild_Solid;
 
 
 
    procedure define (Self : access Item;   World          : in     World_view;
                                            at_Site        : in     Vector_3;
+                                           and_Spin       : in     Matrix_3x3;
                                            graphics_Model : access openGL. Model.item'Class;
                                            physics_Model  : access physics.Model.item'Class;
                                            owns_Graphics  : in     Boolean;
@@ -130,7 +133,7 @@ is
       if Self.physics_Model /= null
       then
          Self.rebuild_Shape;
-         Self.rebuild_Solid (at_Site);
+         Self.rebuild_Solid (at_Site, and_Spin);
       end if;
    end define;
 
@@ -225,7 +228,8 @@ is
 
       function to_Sprite (Name           : in     String;
                           World          : in     World_view;
-                          at_Site        : in     Vector_3;
+                          at_Site        : in     Vector_3           := [0.0, 0.0, 0.0];
+                          and_Spin       : in     Matrix_3x3         := Identity_3x3;
                           graphics_Model : access openGL. Model.item'Class;
                           physics_Model  : access physics.Model.item'Class;
                           owns_Graphics  : in     Boolean;
@@ -237,7 +241,7 @@ is
          return Self : Item := (lace.Subject_and_deferred_Observer.forge.to_Subject_and_Observer (Name)
                                 with others => <>)
          do
-            Self.define (World, at_Site, graphics_Model, physics_Model, owns_Graphics, owns_Physics, is_Kinematic, user_Data);
+            Self.define (World, at_Site, and_Spin, graphics_Model, physics_Model, owns_Graphics, owns_Physics, is_Kinematic, user_Data);
          end return;
       end to_Sprite;
 
@@ -245,7 +249,8 @@ is
 
       function new_Sprite (Name           : in     String;
                            World          : in     World_view;
-                           at_Site        : in     Vector_3;
+                           at_Site        : in     Vector_3           := [0.0, 0.0, 0.0];
+                           and_Spin       : in     Matrix_3x3         := Identity_3x3;
                            graphics_Model : access openGL. Model.item'Class;
                            physics_Model  : access physics.Model.item'Class;
                            owns_Graphics  : in     Boolean            := True;
@@ -256,6 +261,7 @@ is
          Self : constant View := new Item' (to_Sprite (Name,
                                                        World,
                                                        at_Site,
+                                                       and_Spin,
                                                        graphics_Model,
                                                        physics_Model,
                                                        owns_Graphics,

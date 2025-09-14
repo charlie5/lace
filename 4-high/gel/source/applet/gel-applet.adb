@@ -865,16 +865,19 @@ is
                      the_Collision : ray_Collision := the_world_Info.World.cast_Ray (From => the_Camera.Site,
                                                                                      To   => Site_world_space);
                   begin
-                     declare
-                        click_Event  : constant gel.Events.sprite_click_up_Event := (Sprite       => the_Collision.near_Sprite.Id,
-                                                                                     mouse_Button => the_Event.Button,
-                                                                                     world_Site   => Site_world_space);
-                     begin
-                        if the_Collision.near_Sprite /= null
-                        then
-                           the_Collision.near_Sprite.emit (click_Event);
-                        end if;
-                     end;
+                     if the_Collision.near_Sprite /= null
+                     then
+                        declare
+                           click_Event  : constant gel.Events.sprite_click_up_Event := (Sprite       => the_Collision.near_Sprite.Id,
+                                                                                        mouse_Button => the_Event.Button,
+                                                                                        world_Site   => Site_world_space);
+                        begin
+                           if the_Collision.near_Sprite /= null
+                           then
+                              the_Collision.near_Sprite.emit (click_Event);
+                           end if;
+                        end;
+                     end if;
                   end;
 
                when physics.Box2D =>

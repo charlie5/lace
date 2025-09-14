@@ -81,13 +81,13 @@ is
    is
       pragma unreferenced (Textures);
 
-      --  text_Scale : constant Vector_3 := [2.0 * 4.0 / 78.0,                -- TODO: Fix scaling.
-      --                                     2.0 * 4.0 / 95.0,
-      --                                     1.0 / 1.0];
-
-      text_Scale : constant Vector_3 := [1.0 * 1.0 / 78.0,                -- TODO: Fix scaling.
-                                         1.0 * 1.0 / 95.0,
+      text_Scale : constant Vector_3 := [2.0 * 4.0 / 78.0,                -- TODO: Fix scaling.
+                                         2.0 * 4.0 / 95.0,
                                          1.0 / 1.0];
+
+      --  text_Scale : constant Vector_3 := [1.0 * 1.0 / 78.0,                -- TODO: Fix scaling.
+      --                                     1.0 * 1.0 / 95.0,
+      --                                     1.0 / 1.0];
 
    begin
       if Self.Text.all = ""
@@ -289,6 +289,8 @@ is
          the_Geometry.Texture_is   (Texture.Forge.to_Texture (Self.Font.gl_Texture));
          the_Geometry.Model_is     (Self.all'unchecked_Access);
          the_Geometry.is_Transparent;
+
+         --  the_Geometry.texture_Details_is (openGL.texture_Set.to_Details ([1 => to_Asset ("assets/textures/Face1.bmp")]));
 
          return [1 => Geometry.view (the_Geometry)];
       end;

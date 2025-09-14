@@ -1,4 +1,6 @@
 with
+     openGL.Palette,
+
      gel.Window.setup,
      gel.Applet.gui_world,
      gel.World,
@@ -40,8 +42,10 @@ begin
    declare
       use ada.Calendar;
 
-      the_Ball : constant gel.Sprite.view := gel.Forge.new_ball_Sprite (the_Applet.World (1),
-                                                                        Mass => 1.0);
+      the_Ball : constant gel.Sprite.view := gel.Forge.new_ball_Sprite (in_World => the_Applet.World (1),
+                                                                        Mass     => 1.0,
+                                                                        is_Lit   => False,
+                                                                        Color    => (openGL.Palette.Green, openGL.Opaque));
 
 
       type retreat_Sprite is new lace.Response.item with

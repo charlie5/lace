@@ -1,6 +1,7 @@
 with
      openGL.Font,
-     openGL.Geometry;
+     openGL.Geometry,
+     openGL.Model.texturing;
 
 
 package openGL.Model.sphere.textured
@@ -8,7 +9,10 @@ package openGL.Model.sphere.textured
 --  Models a textured sphere.
 --
 is
-   type Item is new Model.sphere.item with private;
+   package textured_Model is new texturing.Mixin (openGL.Model.sphere.item);
+
+   type Item is new textured_Model.textured_item with private;
+   --  type Item is new Model.sphere.item with private;
    type View is access all Item'Class;
 
 
@@ -20,6 +24,7 @@ is
                         lat_Count    : in Positive   := 26;
                         long_Count   : in Positive   := 52;
                         Image        : in asset_Name := null_Asset;
+                        texture_Details : in texture_Set.Details;
                         is_Skysphere : in Boolean    := False) return View;
 
    --------------
@@ -33,7 +38,8 @@ is
 
 private
 
-   type Item is new Model.sphere.item with
+   --  type Item is new Model.sphere.item with
+   type Item is new textured_Model.textured_item with
       record
          Image        : asset_Name := null_Asset;     -- Usually a mercator projection to be mapped onto the sphere.
          is_Skysphere : Boolean    := False;

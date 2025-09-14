@@ -1,7 +1,7 @@
 with
      openGL.texture_Set;
 
-private
+--  private
 with
      openGL.Geometry.texturing;
 
@@ -11,7 +11,11 @@ package openGL.Geometry.lit_colored_textured
 --  Supports 'per-vertex' site, color, texture and lighting.
 --
 is
-   type Item is new openGL.Geometry.item with private;
+   package textured_Geometry is new texturing.Mixin;
+
+
+   --  type Item is new openGL.Geometry.item with private;
+   type Item is new textured_Geometry.item with private;
    type View is access all Item'Class;
 
    function new_Geometry (texture_is_Alpha : in Boolean) return access Geometry.lit_colored_textured.item'Class;
@@ -64,9 +68,6 @@ is
 
 
 private
-
-   package textured_Geometry is new texturing.Mixin;
-
 
    type Item is new textured_Geometry.item with
       record

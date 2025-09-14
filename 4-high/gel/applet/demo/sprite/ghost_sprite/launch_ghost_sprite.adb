@@ -14,7 +14,8 @@ with
 
 pragma unreferenced (gel.window.sdl);
 
-procedure launch_drop_Box_on_Box
+
+procedure launch_ghost_Sprite
 --
 --  Drops a box onto a box 'terrain'.
 --
@@ -25,7 +26,7 @@ is
        ada.Text_IO;
 
    the_Applet : constant gel.Applet.gui_World.view
-     := gel.Forge.new_gui_Applet ("drop Ball on Box");
+     := gel.Forge.new_gui_Applet ("ghost Sprite");
 
 
    the_ground_graphics_Model : constant openGL.Model.box.colored.view
@@ -38,7 +39,8 @@ is
                                                     Right => (Colors => [others => (Magenta, Opaque)])]);
    the_ground_physics_Model : constant physics.Model.view
      := physics.Model.Forge.new_physics_Model (shape_Info => (Kind         => physics.Model.cube,
-                                                              half_Extents => [5.0, 0.25, 5.0]));
+                                                              half_Extents => [5.0, 0.25, 5.0]),
+                                               is_Tangible => False);
 
    the_Ground : constant gel.Sprite.view
      := gel.Sprite.forge.new_Sprite (Name           => "demo.Ground",
@@ -74,10 +76,10 @@ begin
    the_Applet.enable_simple_Dolly (1);                    -- Enable user camera control via keyboards.
    the_Applet.enable_Mouse (detect_Motion => False);      -- Enable the mouse.
 
-   the_Applet.gui_World.add (the_Ground, and_children => False);               -- Add ground.
+   the_Applet.gui_World.add (the_Ground, and_children => False);     -- Add ground.
    the_Ground.Site_is (math.Origin_3D);
 
-   the_Applet.gui_World.add (the_Box, and_Children => False);                  -- Add ball.
+   the_Applet.gui_World.add (the_Box, and_Children => False);        -- Add ball.
    the_Box.Site_is ([0.0, 10.0, 0.0]);
 
    while the_Applet.is_open
@@ -93,4 +95,4 @@ exception
       put_Line ("Unhandled exception in main thread ...");
       put_Line (ada.Exceptions.exception_Information (E));
       new_Line;
-end launch_drop_Box_on_Box;
+end launch_ghost_Sprite;

@@ -408,12 +408,11 @@ is
                                                                                     half_Extents => Size / 2.0),
                                                                     Mass        => 1.0);
             begin
-               new_Sprite := gel.Sprite.Forge.new_Sprite ("Skin Sprite",
-                                                          gel.sprite.World_view (in_World),
-                                                          math.Origin_3D,
-                                                          Model,
-                                                          physics_Model,
-                                                          is_Kinematic => is_Kinematic);
+               new_Sprite := gel.Sprite.Forge.new_Sprite (Name           => "Skin Sprite",
+                                                          World          => gel.sprite.World_view (in_World),
+                                                          graphics_Model => Model,
+                                                          physics_Model  => physics_Model,
+                                                          is_Kinematic   => is_Kinematic);
             end;
 
             new_Sprite.Site_is ([0.0, 0.0, 0.0]);

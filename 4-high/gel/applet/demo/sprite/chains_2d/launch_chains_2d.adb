@@ -6,7 +6,8 @@ with
      gel.Joint,
 
      Physics,
-     openGL.Palette;
+     openGL.Palette,
+     openGL.Light;
 
 pragma unreferenced (gel.Window.sdl);
 
@@ -37,6 +38,15 @@ begin
    the_Applet.Renderer  .Background_is (Grey);
    the_Applet.enable_simple_Dolly      (in_World => gui_World.gui_world_Id);
 
+   -- Set the lights position.
+   --
+   declare
+      Light : openGL.Light.item := the_Applet.Renderer.new_Light;
+   begin
+      Light.Site_is ([0.0, 0.0, 15.0]);
+      the_Applet.Renderer.set (Light);
+   end;
+
    the_Ground.Site_is ([0.0, -40.0, 0.0]);
    the_Applet.gui_World.add (the_Ground, and_Children => False);
 
@@ -44,8 +54,13 @@ begin
    --
    declare
       ball_Count    : constant := 39;
-      the_root_Ball : constant gel.Sprite.view  :=                     new_circle_Sprite (the_Applet.gui_World, Name => "the_root_Ball", Mass =>  0.0);
-      the_Balls     : constant gel.Sprite.views := [1 .. ball_Count => new_circle_Sprite (the_Applet.gui_World, Name => "the_Balls",     Mass =>  1.0)];
+      the_root_Ball : constant gel.Sprite.view  :=                     new_circle_Sprite (in_World => the_Applet.gui_World,
+                                                                                          Name     => "the_root_Ball",
+                                                                                          Mass     =>  0.0);
+      the_Balls     : constant gel.Sprite.views := [1 .. ball_Count => new_circle_Sprite (in_World => the_Applet.gui_World,
+                                                                                          Name     => "the_Balls",
+                                                                                          Color    => (Green, openGL.Opaque),
+                                                                                          Mass     =>  1.0)];
 
       Parent    : gel.Sprite.view := the_root_Ball;
       new_Joint : gel.Joint .view;

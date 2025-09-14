@@ -62,31 +62,28 @@ begin
                                                                  half_Extents => box_Size / 2.0),
                                                   Mass       => 1.0);
       the_Box_1 : constant gel.Sprite.view
-        := gel.Sprite.forge.new_Sprite ("demo.Box.static.1",
-                                        the_Applet.gui_World.all'Access,
-                                        math.Origin_3d,
-                                        the_box_Model.all'Access,
-                                        the_static_box_physics_Model,
-                                        owns_Graphics => False,
-                                        owns_Physics  => True);
+        := gel.Sprite.forge.new_Sprite (Name           => "demo.Box.static.1",
+                                        World          => the_Applet.gui_World.all'Access,
+                                        graphics_Model => the_box_Model.all'Access,
+                                        physics_Model  => the_static_box_physics_Model,
+                                        owns_Graphics  => False,
+                                        owns_Physics   => True);
 
       the_Box_2 : constant gel.Sprite.view
-        := gel.Sprite.forge.new_Sprite ("demo.Box.dynamic.2",
-                                        the_Applet.gui_World.all'Access,
-                                        math.Origin_3d,
-                                        the_box_Model.all'Access,
-                                        the_dynamic_box_physics_Model,
-                                        owns_Graphics => False,
-                                        owns_Physics  => False);
+        := gel.Sprite.forge.new_Sprite (Name           => "demo.Box.dynamic.2",
+                                        World          => the_Applet.gui_World.all'Access,
+                                        graphics_Model => the_box_Model.all'Access,
+                                        physics_Model  => the_dynamic_box_physics_Model,
+                                        owns_Graphics  => False,
+                                        owns_Physics   => False);
 
       the_Box_3 : constant gel.Sprite.view
-        := gel.Sprite.forge.new_Sprite ("demo.Box.dynamic.3",
-                                        the_Applet.gui_World.all'Access,
-                                        math.Origin_3d,
-                                        the_box_Model.all'Access,
-                                        the_dynamic_box_physics_Model,
-                                        owns_Graphics => True,
-                                        owns_Physics  => True);
+        := gel.Sprite.forge.new_Sprite (Name           => "demo.Box.dynamic.3",
+                                        World          => the_Applet.gui_World.all'Access,
+                                        graphics_Model => the_box_Model.all'Access,
+                                        physics_Model  => the_dynamic_box_physics_Model,
+                                        owns_Graphics  => True,
+                                        owns_Physics   => True);
 
       the_Joint_1 : constant gel.hinge_Joint.view := new gel.hinge_Joint.item;
       the_Joint_2 : constant gel.hinge_Joint.view := new gel.hinge_Joint.item;
@@ -101,7 +98,6 @@ begin
       the_Box_1.Site_is ([  0.0,  0.0, 0.0]);
       the_Box_2.Site_is ([ -1.0,  2.0, 0.0]);
       the_Box_3.Site_is ([ 10.0, 10.0, 0.0]);
-      --  the_Box_3.Site_is (( 10.0, 10.0, 0.0));
 
       declare
          use math.Algebra.linear.d3;

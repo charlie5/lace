@@ -13,6 +13,7 @@ is
 
    function new_Capsule (Radius : in Real;
                          Height : in Real;
+                         texture_Details : in texture_Set.Details;
                          Image  : in asset_Name := null_Asset) return View
    is
       Self : constant View := new Item;
@@ -20,6 +21,8 @@ is
       Self.Radius := Radius;
       Self.Height := Height;
       Self.Image  := Image;
+
+      Self.texture_Details_is (texture_Details);
 
       return Self;
    end new_Capsule;
@@ -367,6 +370,10 @@ is
          cap_1_Geometry := new_Cap (is_Fore => True);
          cap_2_Geometry := new_Cap (is_Fore => False);
       end;
+
+      the_shaft_Geometry.Model_is (Self.all'unchecked_Access);
+      cap_1_Geometry    .Model_is (Self.all'unchecked_Access);
+      cap_2_Geometry    .Model_is (Self.all'unchecked_Access);
 
       return (1 => the_shaft_Geometry.all'Access,
               2 =>     cap_1_Geometry.all'Access,

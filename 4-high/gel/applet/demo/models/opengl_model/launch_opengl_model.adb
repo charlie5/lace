@@ -1,3 +1,4 @@
+with openGL.texture_Set;
 with
      gel.Applet.gui_World,
      gel.Window.setup,
@@ -8,6 +9,7 @@ with
 
      openGL.Model.any,
      openGL.Light,
+     openGL.texture_Set,
 
      ada.Calendar,
      ada.Text_IO,
@@ -33,7 +35,8 @@ is
 
    the_human_graphics_Model : constant openGL.Model.any.view
      := openGL.Model.any.new_Model (Model            => openGL.to_Asset ("./assets/opengl/model/human.obj"),
-                                    Texture          => openGL.null_Asset,
+                                    Texture          => openGL.to_Asset ("./assets/opengl/texture/wooden-crate.jpg"),
+                                    texture_Details  => openGL.texture_Set.to_Details ([1 => openGL.to_Asset ("./assets/opengl/texture/wooden-crate.jpg")]),
                                     Texture_is_lucid => False);
 
    the_human_physics_Model : constant physics.Model.view
@@ -52,6 +55,7 @@ is
    the_cobra_graphics_Model : aliased constant openGL.Model.any.view
      := openGL.Model.any.new_Model (Model            => openGL.to_Asset ("./assets/oolite_cobra3.obj"),
                                     Texture          => openGL.to_Asset ("./assets/oolite_cobra3_diffuse.png"),
+                                    texture_Details  => openGL.texture_Set.to_Details ([1 => openGL.to_Asset ("./assets/oolite_cobra3_diffuse.png")]),
                                     Texture_is_lucid => False);
 
    the_cobra_physics_Model : constant physics.Model.view
@@ -82,7 +86,7 @@ begin
    the_Human.Site_is ([0.0, 5.0, 0.0]);                    --
 
    --  the_Applet.gui_World.add (the_Cobra);               -- Add cobra.
-   --  the_Cobra.Site_is ((0.0,  5.0,  0.0));              --
+   the_Cobra.Site_is ((0.0,  5.0,  0.0));              --
 
    the_Applet.gui_Camera.Site_is ([0.0, 1.5, 2.6]);        -- Position the camera.
    --  the_Applet.gui_Camera.Site_is ((0.0, 100.0, 0.0));    -- Position the camera.
@@ -95,7 +99,7 @@ begin
    declare
       Light : openGL.Light.item := the_Applet.Renderer.new_Light;
    begin
-      Light.Site_is ([0.0, 1000.0, 1000.0]);
+      Light.Site_is ([0.0, 15.0, 15.0]);
       the_Applet.Renderer.set (Light);
    end;
 

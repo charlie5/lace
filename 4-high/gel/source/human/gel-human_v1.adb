@@ -1,6 +1,7 @@
 with
      openGL.Model.any,
      openGL.Model.box.colored,
+     openGL.texture_Set,
 --       openGL.Model.box.lit_colored_textured,
 --       gel.cone_twist_Joint,
      gel.Conversions,
@@ -13,7 +14,7 @@ with
 
      opengl.Palette,
      opengl.Geometry.lit_textured_skinned,
-     opengl.Program.lit_textured_skinned,
+     opengl.Program.lit.textured_skinned,
 
      ada.Strings.unbounded,
      ada.unchecked_Deallocation,
@@ -142,7 +143,7 @@ is
    begin
       for Each in Self.bone_Transforms'Range
       loop
-         openGL.Program.lit_textured_skinned.view (Self.Program)
+         openGL.Program.lit.textured_skinned.view (Self.Program)
            .bone_Transform_is (which => controller_joint_Id'Pos (Each) + 1,
                                now   => Self.bone_Transforms (Each));
       end loop;
@@ -577,14 +578,13 @@ is
                                  left  => (colors => (others => (Cyan,    Opaque))),
                                  right => (colors => (others => (Magenta, Opaque)))));
                begin
-                  Self.bone_Sprites (the_Bone) := gel.Sprite.forge.new_Sprite (sprite_Name,
-                                                                               gel.sprite.World_view (World),
-                                                                               Origin_3D,
-                                                                               the_graphics_Model,
-                                                                               the_physics_Model,
-                                                                               owns_graphics => True,
-                                                                               owns_physics  => True,
-                                                                               is_kinematic  => is_Kinematic);
+                  Self.bone_Sprites (the_Bone) := gel.Sprite.forge.new_Sprite (Name           => sprite_Name,
+                                                                               World          => gel.sprite.World_view (World),
+                                                                               graphics_Model => the_graphics_Model,
+                                                                               physics_Model  => the_physics_Model,
+                                                                               owns_graphics  => True,
+                                                                               owns_physics   => True,
+                                                                               is_kinematic   => is_Kinematic);
                   if the_display_Mode = Skin
                   then
                      Self.bone_Sprites (the_Bone).is_Visible (False);
@@ -703,8 +703,9 @@ is
          --
          declare
             the_human_graphics_Model : aliased openGL.Model.any.view
-              := openGL.Model.any.new_Model (Model   => to_Asset (model_Name.all),
-                                             Texture => openGL.null_Asset, -- gel.to_Asset ("assets/collada/gel-human-texture.tga"),
+              := openGL.Model.any.new_Model (Model            => to_Asset (model_Name.all),
+                                             Texture          => openGL.null_Asset, -- gel.to_Asset ("assets/collada/gel-human-texture.tga"),
+                                             texture_Details  => openGL.texture_Set.to_Details ([1 => openGL.to_Asset ("./assets/opengl/texture/wooden-crate.jpg")]),
                                              Texture_is_lucid => False);
 
             the_physics_Model : constant standard.physics.Model.view
@@ -713,14 +714,13 @@ is
                                                                  Mass        => 1.0,
                                                                  is_Tangible => False);
          begin
-            Self.skin_Sprite := gel.Sprite.forge.new_Sprite ("human.skin_Sprite",
-                                                             gel.sprite.World_view (World),
-                                                             Origin_3D,
-                                                             the_human_graphics_Model,
-                                                             the_physics_Model,
-                                                             owns_graphics => True,
-                                                             owns_physics  => True,
-                                                             is_kinematic  => is_Kinematic);
+            Self.skin_Sprite := gel.Sprite.forge.new_Sprite (Name           => "human.skin_Sprite",
+                                                             World          => gel.sprite.World_view (World),
+                                                             graphics_Model => the_human_graphics_Model,
+                                                             physics_Model  =>the_physics_Model,
+                                                             owns_graphics  => True,
+                                                             owns_physics   => True,
+                                                             is_kinematic   => is_Kinematic);
             if the_display_Mode = Bones
             then
                Self.skin_Sprite.is_Visible (False);

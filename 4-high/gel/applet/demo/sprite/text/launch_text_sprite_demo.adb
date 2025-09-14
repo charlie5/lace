@@ -20,22 +20,20 @@ is
    use gel.Math,
        openGL.Palette;
 
-   the_Applet : constant gel.Applet.gui_World.view := gel.forge.new_gui_Applet ("text sprite Demo",
+   the_Applet : constant gel.Applet.gui_World.view := gel.Forge.new_gui_Applet ("text sprite Demo",
                                                                                 space_Kind => physics.Bullet);
 
-   the_Text_1 : constant gel.Sprite.view := gel.forge.new_text_Sprite (the_Applet.gui_World,
-                                                                       Origin_3D,
-                                                                       "Howdy",
-                                                                       the_Applet.Font,
-                                                                       Green);
+   the_Text_1 : constant gel.Sprite.view := gel.Forge.new_text_Sprite (in_World => the_Applet.gui_World,
+                                                                       Text     => "Howdy",
+                                                                       Font     => the_Applet.Font,
+                                                                       Color    => dark_Green);
 
-   the_Text_2 : constant gel.Sprite.view := gel.forge.new_text_Sprite (the_Applet.gui_World,
-                                                                       Origin_3D,
-                                                                       "Doody",
-                                                                       the_Applet.Font,
-                                                                       Green);
-   text_1_Model : constant openGL.Model.text.lit_colored.view
-                                         := openGL.Model.text.lit_colored.view (the_Text_1.graphics_Model);
+   the_Text_2 : constant gel.Sprite.view := gel.Forge.new_text_Sprite (in_World => the_Applet.gui_World,
+                                                                       Text     => "Doody",
+                                                                       Font     => the_Applet.Font,
+                                                                       Color    => dark_Green);
+   text_2_Model : constant openGL.Model.text.lit_colored.view
+                                         := openGL.Model.text.lit_colored.view (the_Text_2.graphics_Model);
 begin
    the_Applet.gui_Camera.Site_is ([0.0, 0.0, 50.0]);      -- Position the camera.
    the_Applet.enable_simple_Dolly (1);                    -- Enable user camera control via keyboards.
@@ -43,15 +41,15 @@ begin
    the_Applet.gui_World.add (the_Text_1);
    the_Applet.gui_World.add (the_Text_2);
 
-   the_Text_2.Site_is ([0.0, 10.0, 0.0]);
+   the_Text_2.Site_is ([0.0, -10.0, 0.0]);
 
    while the_Applet.is_open
    loop
-      if text_1_Model.Text = "Yay"
+      if text_2_Model.Text = "Yay"
       then
-         text_1_Model.Text_is ("Howdy");
+         text_2_Model.Text_is ("Doody");
       else
-         text_1_Model.Text_is ("Yay");
+         text_2_Model.Text_is ("Yay");
       end if;
 
       the_Applet.gui_World.evolve;

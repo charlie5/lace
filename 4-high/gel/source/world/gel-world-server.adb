@@ -110,6 +110,7 @@ is
       the_Sprite := gel.Sprite.forge.new_Sprite ("2Sprite" & the_Pair.sprite_Id'Image,
                                                  sprite.World_view (the_World),
                                                  get_Translation (the_Pair.Transform),
+                                                 get_Rotation    (the_Pair.Transform),
                                                  the_graphics_Model,
                                                  the_physics_Model,
                                                  owns_Graphics => False,
