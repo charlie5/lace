@@ -83,7 +83,7 @@ begin
 
       the_Visuals (4).Site_is ([0.0, 0.0, -50.0]);
 
-      the_Visuals (1).Scale_is ([2.0, 2.0, 1.0]);     -- Text visual.
+      the_Visuals (1).Scale_is ([0.2, 0.2, 1.0]);     -- Text visual.
 
       --  Main loop.
       --

@@ -1,6 +1,7 @@
 with
      openGL.Geometry,
-     openGL.Model.texturing;
+     openGL.Model.texturing,
+     openGL.texture_Set;
 
 
 package openGL.Model.terrain
@@ -25,9 +26,9 @@ is
                          Row, Col        : in Integer;
                          Heights         : in height_Map_view;
                          color_Map       : in asset_Name;
-                         texture_Details : in texture_Set.Details;
+                         texture_Details : in texture_Set.Details  := texture_Set.no_Details;
                          Tiling          : in texture_Transform_2d := (S => (0.0, 1.0),
-                                                                     T => (0.0, 1.0))) return View;
+                                                                       T => (0.0, 1.0))) return View;
    overriding
    procedure destroy (Self : in out Item);
 

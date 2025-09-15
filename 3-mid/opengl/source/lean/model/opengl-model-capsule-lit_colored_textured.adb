@@ -197,6 +197,8 @@ is
          begin
             the_shaft_Geometry.add (Primitive.view (the_Primitive));
          end;
+
+         the_shaft_Geometry.Model_is (Self.all'unchecked_Access);
       end;
 
 
@@ -394,6 +396,8 @@ is
                   cap_Geometry.add (Primitive.view (the_Primitive));
                end;
             end;
+
+            cap_Geometry.Model_is (Self.all'unchecked_Access);
 
             return cap_Geometry;
          end new_Cap;

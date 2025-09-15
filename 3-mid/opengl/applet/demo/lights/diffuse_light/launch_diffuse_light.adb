@@ -1,7 +1,9 @@
+with openGL.Model.texturing;
 with
      openGL.Light,
      openGL.Visual,
      openGL.Model.Box.lit_textured,
+     openGL.texture_Set,
      openGL.Palette,
      openGL.Demo;
 
@@ -38,7 +40,8 @@ begin
                                                             Upper => (texture_Name => the_Texture),
                                                             Lower => (texture_Name => the_Texture),
                                                             Left  => (texture_Name => the_Texture),
-                                                            Right => (texture_Name => the_Texture)));
+                                                            Right => (texture_Name => the_Texture)),
+                                                  texture_Details => openGL.texture_Set.to_Details ([1 => the_Texture]));
       --  The Visual.
       --
       the_Visuals : constant openGL.Visual.views := (1 => new_Visual (the_Box.all'Access));

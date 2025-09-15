@@ -1,5 +1,6 @@
 with
-     openGL.Geometry;
+     openGL.Geometry,
+     openGL.Model.texturing;
 
 
 package openGL.Model.capsule.lit_colored_textured
@@ -7,7 +8,10 @@ package openGL.Model.capsule.lit_colored_textured
 --  Models a lit, colored and textured capsule.
 --
 is
-   type Item is new Model.capsule.item with private;
+   package textured_Model is new texturing.Mixin (openGL.Model.capsule.item);
+
+   --  type Item is new Model.capsule.item with private;
+   type Item is new textured_Model.textured_item with private;
    type View is access all Item'Class;
 
 
@@ -32,7 +36,9 @@ is
 
 private
 
-   type Item is new Model.capsule.item with
+   --  type Item is new Model.capsule.item with
+
+   type Item is new textured_Model.textured_item with
       record
          Radius : Real;
          Height : Real;

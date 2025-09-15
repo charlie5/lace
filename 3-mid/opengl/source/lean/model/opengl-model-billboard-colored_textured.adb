@@ -14,7 +14,8 @@ is
    function new_Billboard (Size    : in Size_t         := default_Size;
                            Plane   : in billboard.Plane;
                            Color   : in lucid_Color;
-                           Texture : in asset_Name) return View
+                           Texture : in asset_Name;
+                           texture_Details : in texture_Set.Details) return View
    is
       Self : constant View := new Item;
    begin
@@ -23,6 +24,7 @@ is
       Self.Plane        := Plane;
       Self.Color        := Color;
       Self.Texture_Name := Texture;
+      Self.texture_Details_is (texture_Details);
 
       return Self;
    end new_Billboard;
@@ -58,6 +60,7 @@ is
          the_Geometry.Vertices_are (Vertices.all);
          the_Geometry.add (the_Primitive);
          the_Geometry.is_Transparent;
+         the_Geometry.Model_is (Self.all'unchecked_Access);
 
          return the_Geometry;
       end new_Face;
@@ -89,6 +92,7 @@ is
       end;
 
       Self.Geometry := the_Face;
+
 
       return [1 => Geometry.view (the_Face)];
    end to_GL_Geometries;

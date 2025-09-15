@@ -60,17 +60,20 @@ is
       use type GLint;
 
    begin
-      for i in 1 .. openGL.texture_Set.texture_Id (for_Model.texture_Count)
-      loop
-         Uniforms.Textures (i).fade_Uniform           .Value_is (Real (for_Model.Fade      (Which => i)));
-         Uniforms.Textures (i).texture_applied_Uniform.Value_is (for_Model.texture_Applied (Which => i));
+      if for_Model.texture_Count > 0
+      then
+         for i in 1 .. openGL.texture_Set.texture_Id (for_Model.texture_Count)
+         loop
+            Uniforms.Textures (i).fade_Uniform           .Value_is (Real (for_Model.Fade      (Which => i)));
+            Uniforms.Textures (i).texture_applied_Uniform.Value_is (for_Model.texture_Applied (Which => i));
 
-         glUniform1i     (Uniforms.Textures (i).texture_Uniform.gl_Variable,
-                          GLint (i) - 1);
-         glActiveTexture (all_texture_Units (i));
-         glBindTexture   (GL_TEXTURE_2D,
-                          texture_Set.Textures (i).Object.Name);
-      end loop;
+            glUniform1i     (Uniforms.Textures (i).texture_Uniform.gl_Variable,
+                             GLint (i) - 1);
+            glActiveTexture (all_texture_Units (i));
+            glBindTexture   (GL_TEXTURE_2D,
+                             texture_Set.Textures (i).Object.Name);
+         end loop;
+      end if;
 
       Uniforms.Count.Value_is (for_Model.texture_Count);
    end enable;

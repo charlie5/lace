@@ -33,7 +33,7 @@ begin
       the_Capsule_Model : constant Model.Capsule.lit_colored_textured.view
         := Model.Capsule.lit_colored_textured.new_Capsule (Radius => 0.5,
                                                            Height => 2.0,
-                                                           Color  => (White, Opaque),
+                                                           Color  => (Green, Opaque),
                                                            Image  => the_Texture);
       --  The Visuals.
       --
@@ -42,6 +42,7 @@ begin
       the_Visuals : constant openGL.Visual.views := [1 => new_Visual (the_Capsule_Model.all'Access)];
    begin
       the_Light.Site_is ([0.0, 5.0, 10.0]);
+      the_Light.ambient_Coefficient_is (0.05);
       Demo.Renderer.set (the_Light);
 
       --  Main loop.

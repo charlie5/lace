@@ -9,9 +9,10 @@ is
    --- Forge
    --
 
-   function new_Box (Size  : in Vector_3;
-                     Faces : in lit_textured.Faces;
-                     texture_Details : in texture_Set.Details) return View
+   function new_Box (Size            : in Vector_3;
+                     Faces           : in lit_textured.Faces;
+                     texture_Details : in texture_Set.Details := texture_Set.no_Details) return View
+
    is
       Self : constant View := new Item;
    begin

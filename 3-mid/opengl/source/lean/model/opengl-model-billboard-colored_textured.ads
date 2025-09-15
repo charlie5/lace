@@ -1,6 +1,7 @@
 with
      openGL.Geometry.colored_textured,
      openGL.Texture,
+     openGL.Model.texturing,
      openGL.Font,
      openGL.Palette;
 
@@ -10,7 +11,11 @@ package openGL.Model.billboard.colored_textured
 --  Models a colored, textured billboard.
 --
 is
-   type Item is new Model.billboard.item with private;
+    package textured_Model is new texturing.Mixin (openGL.Model.billboard.item);
+
+   type Item is new textured_Model.textured_item with private;
+
+   --  type Item is new Model.billboard.item with private;
    type View is access all Item'Class;
 
 
@@ -21,7 +26,8 @@ is
    function new_Billboard (Size    : in Size_t         := default_Size;
                            Plane   : in billboard.Plane;
                            Color   : in lucid_Color;
-                           Texture : in asset_Name) return View;
+                           Texture : in asset_Name;
+                           texture_Details : in texture_Set.Details) return View;
 
    --------------
    --- Attributes
@@ -44,7 +50,8 @@ is
 
 private
 
-   type Item is new Model.billboard.item with
+   type Item is new textured_Model.textured_item with
+   --  type Item is new Model.billboard.item with
       record
          Color          : lucid_Color           := (Palette.White, Opaque);
 

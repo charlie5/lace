@@ -1,7 +1,8 @@
 with
      openGL.Model.any,
      openGL.Visual,
-     openGL.Light.directional,
+     openGL.Light,
+     openGL.texture_Set,
      openGL.Demo;
 
 procedure launch_render_Asteroids
@@ -16,24 +17,30 @@ is
 begin
    Demo.define      ("openGL 'Render Asteroids' Demo");
    Demo.print_Usage ("Use space ' ' to cycle through models.");
-   Demo.Camera.Position_is ((0.0, 0.0, 200.0),
+   Demo.Camera.Position_is ([0.0, 0.0, 200.0],
                             y_Rotation_from (to_Radians (0.0)));
 
    declare
-      the_Light : openGL.Light.directional.item := Demo.Renderer.Light (1);
+      the_Light : openGL.Light.item := Demo.Renderer.new_Light;
    begin
-      the_Light.Site_is ((5_000.0, 2_000.0, 5_000.0));
-      Demo.Renderer.Light_is (1, the_Light);
+      the_Light.Site_is ([5_000.0, 2_000.0, 5_000.0]);
+      the_Light.ambient_Coefficient_is (0.05);
+      Demo.Renderer.set (the_Light);
    end;
 
    declare
       --  The models.
       --
 
+      --  gaspra_Model : constant openGL.Model.any.view := openGL.Model.any.new_Model (Model            => to_Asset ("assets/gaspra.tab"),
+      --                                                                               Texture          => null_Asset,
+      --                                                                               texture_Details  => openGL.texture_Set.no_Details,
+      --                                                                               Texture_is_lucid => False);
       gaspra_Model : constant openGL.Model.any.view := openGL.Model.any.new_Model (Model            => to_Asset ("assets/gaspra.tab"),
-                                                                                   Texture          => null_Asset,
+                                                                                   Texture          => to_Asset ("./assets/opengl/texture/Face1.bmp"),
+                                                                                   texture_Details  => openGL.texture_Set.to_Details ([1 => to_Asset ("./assets/opengl/texture/Face1.bmp")]),
                                                                                    Texture_is_lucid => False);
-      the_Models   : constant openGL.Model.views    := (1 => gaspra_Model.all'unchecked_Access);
+      the_Models   : constant openGL.Model.views    := [1 => gaspra_Model.all'unchecked_Access];
 
       --  The visuals.
       --
@@ -79,7 +86,7 @@ begin
 
          --  Render all visuals.
          --
-         Demo.Camera.render ((1 => the_Visuals (Current)));
+         Demo.Camera.render ([1 => the_Visuals (Current)]);
 
          while not Demo.Camera.cull_Completed
          loop

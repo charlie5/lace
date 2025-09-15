@@ -111,7 +111,7 @@ is
    function to_Details (texture_Assets : in asset_Names;
                         Animation      : in Animation_view := null) return Details;
 
-
+   no_Details : constant Details;
 
 
 
@@ -142,6 +142,8 @@ is
 
 private
 
+
+
    -----------
    --- Streams
    --
@@ -154,6 +156,9 @@ private
 
    for Animation_view'write use write;
    for Animation_view'read  use read;
+
+
+   no_Details : constant Details := (others => <>);
 
 
 end openGL.texture_Set;

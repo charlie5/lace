@@ -1,9 +1,11 @@
 with
      openGL.Model.Terrain,
      openGL.IO,
+     openGL.texture_Set,
 
      ada.unchecked_Deallocation,
      ada.unchecked_Conversion;
+
 
 package body openGL.Terrain
 is
@@ -121,6 +123,7 @@ is
                                                   Col           => Col,
                                                   Heights       => the_Region.all'Access,
                                                   color_Map     => texture_File,
+                                                  texture_Details => texture_Set.to_Details ([1 => texture_File]),
                                                   Tiling        => Tiling);
 
                   the_height_Extents : constant Vector_2    :=      height_Extent (the_Region.all);

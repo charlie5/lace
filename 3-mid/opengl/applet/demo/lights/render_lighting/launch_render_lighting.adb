@@ -3,6 +3,7 @@ with
      openGL.Visual,
      openGL.Model.Sphere.lit_colored_textured,
      openGL.Model.Sphere.lit_colored,
+     openGL.texture_Set,
      openGL.Palette,
      openGL.Demo;
 
@@ -29,8 +30,9 @@ begin
       --  The Models.
       --
       the_Ball_1_Model : constant Model.Sphere.lit_colored_textured.view
-        := openGL.Model.Sphere.lit_colored_textured.new_Sphere (Radius => 1.0,
-                                                                Image  => the_Texture);
+        := openGL.Model.Sphere.lit_colored_textured.new_Sphere (Radius          => 1.0,
+                                                                texture_Details => openGL.texture_Set.to_Details ([1 => the_Texture]),
+                                                                Image           => the_Texture);
       the_Ball_2_Model : constant Model.Sphere.lit_colored.view
         := openGL.Model.Sphere.lit_colored.new_Sphere (Radius => 1.0,
                                                        Color  => (light_Apricot, Opaque));

@@ -1,3 +1,4 @@
+with openGL.texture_Set;
 with
      openGL.Visual,
 
@@ -5,8 +6,10 @@ with
      openGL.Model.Box.textured,
      openGL.Model.Box.lit_colored_textured,
 
+     openGL.texture_Set,
      openGL.Palette,
      openGL.Demo;
+
 
 procedure launch_render_Boxes
 --
@@ -58,7 +61,8 @@ begin
                         Upper => (texture_Name => the_Texture),
                         Lower => (texture_Name => the_Texture),
                         Left  => (texture_Name => the_Texture),
-                        Right => (texture_Name => the_Texture)]);
+                        Right => (texture_Name => the_Texture)],
+              texture_Details => texture_Set.to_Details ([1 => the_Texture]));
 
       --  The Visuals.
       --

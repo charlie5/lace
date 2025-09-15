@@ -3,7 +3,9 @@ with
      openGL.Palette,
      openGL.Font,
      openGL.Model.Text.lit_colored,
+     openGL.texture_Set,
      openGL.Demo;
+
 
 procedure launch_render_Text
 --
@@ -35,16 +37,20 @@ begin
         := Model.Text.lit_colored.new_Text (Text     => "Howdy",
                                             Font     => the_font_Id,
                                             Color    => (Red, Opaque),
+                                            texture_Details => openGL.texture_Set.to_Details ([1 => openGL.to_Asset ("assets/texture/Face1.bmp")]),
                                             Centered => False);
 
       --  The sprites.
       --
       use openGL.Visual.Forge;
 
-      the_Sprites : constant openGL.Visual.views := [1 => new_Visual (the_Text_Model.all'Access)];
-      Current     : constant Integer             := the_Sprites'First;
+      the_Visuals : constant openGL.Visual.views := [1 => new_Visual (the_Text_Model.all'Access)];
+      Current     : constant Integer             := the_Visuals'First;
 
    begin
+      the_Visuals (1).Scale_is ([0.2, 0.2, 1.0]);
+
+
       --  Main loop.
       --
       while not Demo.Done
@@ -78,7 +84,7 @@ begin
 
          --  Render all sprites.
          --
-         Demo.Camera.render ([1 => the_Sprites (Current)]);
+         Demo.Camera.render ([1 => the_Visuals (Current)]);
 
          while not Demo.Camera.cull_Completed
          loop

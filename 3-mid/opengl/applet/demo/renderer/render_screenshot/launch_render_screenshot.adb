@@ -45,6 +45,9 @@ begin
          the_Visuals (i) := new_Visual (the_Models (i));
       end loop;
 
+      the_Visuals (1).Scale_is ([0.2, 0.2, 1.0]);     -- Text visual.
+
+
       --  Main loop.
       --
       while not Demo.Done

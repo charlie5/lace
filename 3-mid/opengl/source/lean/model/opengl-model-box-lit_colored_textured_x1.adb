@@ -90,6 +90,7 @@ is
       the_Primitive : constant Primitive.view := Primitive.indexed            .new_Primitive (Triangles, the_Indices).all'Access;
 
    begin
+      the_Geometry.Model_is     (Self.all'unchecked_Access);
       the_Geometry.Vertices_are (the_Vertices);
       the_Geometry.add          (the_Primitive);
 

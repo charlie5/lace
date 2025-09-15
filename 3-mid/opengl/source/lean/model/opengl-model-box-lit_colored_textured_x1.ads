@@ -1,6 +1,7 @@
 with
      openGL.Geometry,
      openGL.Font,
+     openGL.Model.texturing,
      openGL.Texture;
 
 
@@ -12,7 +13,10 @@ package openGL.Model.Box.lit_colored_textured_x1
 --  All faces use the same texture.
 --
 is
-   type Item is new Model.box.item with private;
+   package textured_Model is new texturing.Mixin (openGL.Model.box.item);
+
+   --  type Item is new Model.box.item with private;
+   type Item is new textured_Model.textured_item with private;
    type View is access all Item'Class;
 
 
@@ -44,7 +48,8 @@ is
 
 private
 
-   type Item is new Model.box.item with
+   --  type Item is new Model.box.item with
+   type Item is new textured_Model.textured_item with
       record
          Faces        : lit_colored_textured_x1.Faces;
          texture_Name : asset_Name := null_Asset;     -- The texture applied to all faces.

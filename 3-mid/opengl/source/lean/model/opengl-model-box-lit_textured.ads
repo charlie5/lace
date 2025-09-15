@@ -1,7 +1,8 @@
 with
      openGL.Geometry,
      openGL.Font,
-     openGL.Model.texturing;
+     openGL.Model.texturing,
+     openGL.texture_Set;
 
 
 package openGL.Model.Box.lit_textured
@@ -30,9 +31,9 @@ is
    --- Forge
    --
 
-   function new_Box (Size  : in Vector_3;
-                     Faces : in lit_textured.Faces;
-                     texture_Details : in texture_Set.Details) return View;
+   function new_Box (Size            : in Vector_3;
+                     Faces           : in lit_textured.Faces;
+                     texture_Details : in texture_Set.Details := texture_Set.no_Details) return View;
 
 
    --------------

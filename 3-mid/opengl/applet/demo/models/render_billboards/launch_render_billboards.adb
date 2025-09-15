@@ -2,6 +2,7 @@ with
      openGL.Visual,
      openGL.Model.Billboard.        textured,
      openGL.Model.Billboard.colored_textured,
+     openGL.texture_Set,
      openGL.Palette,
      openGL.Demo;
 
@@ -27,21 +28,23 @@ begin
       the_Billboard_Model : constant Model.Billboard.textured.view
         := Model.Billboard.textured.forge.new_Billboard (--Scale   => (1.0, 1.0, 1.0),
                                                          Plane   => Billboard.xy,
-                                                         Texture => the_Texture);
+                                                         Texture => the_Texture,
+                                                         texture_Details  => openGL.texture_Set.to_Details ([1 => the_Texture]));
 
       the_colored_Billboard_Model : constant Model.Billboard.colored_textured.view
         := Model.Billboard.colored_textured.new_Billboard (--Scale   => (1.0, 1.0, 1.0),
                                                            Plane   => Billboard.xy,
                                                            Color   => (Palette.Green, Opaque),
-                                                           Texture => the_Texture);
+                                                           Texture => the_Texture,
+                                                           texture_Details  => openGL.texture_Set.to_Details ([1 => the_Texture]));
       --  The Sprites.
       --
       use openGL.Visual.Forge;
 
-      the_Sprites : constant openGL.Visual.views := [new_Visual (        the_Billboard_Model.all'Access),
+      the_Visuals : constant openGL.Visual.views := [new_Visual (        the_Billboard_Model.all'Access),
                                                      new_Visual (the_colored_Billboard_Model.all'Access)];
    begin
-      the_Sprites (2).Site_is ([3.0, 0.0, 0.0]);
+      the_Visuals (2).Site_is ([3.0, 0.0, 0.0]);
 
       --  Main loop.
       --
@@ -54,7 +57,7 @@ begin
 
          --  Render the sprites.
          --
-         Demo.Camera.render (the_Sprites);
+         Demo.Camera.render (the_Visuals);
 
          while not Demo.Camera.cull_Completed
          loop
