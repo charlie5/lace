@@ -1,15 +1,24 @@
-#version 140
+// Include 'version.header'.
+// Include 'texturing-frag.snippet'.
 
-uniform sampler2D   sTexture; 
+in  vec3       frag_Site;
+in  vec4       frag_Color;
+in  vec2       frag_Coords;
 
-varying vec4        vColor;
-varying vec2        vCoords;
+out vec4       final_Color;
 
 
-void main()
+void
+main()
 {
-   gl_FragColor =   mix (texture2D (sTexture, vCoords),
-                         vColor,
-                         0.5);
-}
+    vec4   surface_Color = mix (apply_Texturing (frag_Coords),
+                                frag_Color,
+                                0.5);
 
+    vec3  Gamma = vec3 (1.0 / 2.2);
+    final_Color = vec4 
+    (pow
+     (surface_Color.rgb,     // Final color (after gamma correction).
+                             Gamma),
+                        surface_Color.a);
+}
