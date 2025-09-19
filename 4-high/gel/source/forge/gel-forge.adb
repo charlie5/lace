@@ -529,7 +529,8 @@ is
                                                                               Height => Size (2)),
                                                                   Plane   => openGL.Model.Billboard.xy,
                                                                   Texture => Texture,
-                                                                  Color   => Color);
+                                                                  Color   => Color,
+                                                                  texture_Details => openGL.texture_Set.to_Details ([1 => Texture]));
       the_billboard_physics_Model : constant physics.Model.view
         := physics.Model.Forge.new_physics_Model (shape_Info => (Kind         => physics.Model.Cube,
                                                                  half_Extents => Size / 2.0),
