@@ -127,16 +127,16 @@ is
          initialised    : Boolean          := False;
       end record;
 
-   procedure enable (the_Textures : in out Item;
-                     Program      : in     openGL.Program.view);
+   --  procedure enable (the_Textures : in out Item;
+   --                    Program      : in     openGL.Program.view);
 
 
 
-   procedure Texture_is      (in_Set : in out Item;   Which : texture_ID;   Now : in openGL.Texture.Object);
-   function  Texture         (in_Set : in     Item;   Which : texture_ID)     return openGL.Texture.Object;
+   procedure Texture_is      (in_Set : in out Item;   Which : texture_ID := 1;   Now : in openGL.Texture.Object);
+   function  Texture         (in_Set : in     Item;   Which : texture_ID := 1)     return openGL.Texture.Object;
 
-   procedure Texture_is      (in_Set : in out Item;   Now : in openGL.Texture.Object);
-   function  Texture         (in_Set : in     Item)     return openGL.Texture.Object;
+   --  procedure Texture_is      (in_Set : in out Item;   Now : in openGL.Texture.Object);
+   --  function  Texture         (in_Set : in     Item)     return openGL.Texture.Object;
 
 
 
