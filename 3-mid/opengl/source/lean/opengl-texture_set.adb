@@ -88,7 +88,7 @@ is
    --- Item
    --
 
-   procedure Texture_is (in_Set : in out Item;   Which : texture_ID;   Now : in openGL.Texture.Object)
+   procedure Texture_is (in_Set : in out Item;   Which : texture_ID := 1;   Now : in openGL.Texture.Object)
    is
    begin
       in_Set.Textures (Which).Object := Now;
@@ -105,7 +105,7 @@ is
 
 
 
-   function Texture (in_Set : in  Item;   Which : texture_ID) return openGL.Texture.Object
+   function Texture (in_Set : in  Item;   Which : texture_ID := 1) return openGL.Texture.Object
    is
    begin
       return in_Set.Textures (Which).Object;
@@ -114,27 +114,27 @@ is
 
 
 
-   function Texture (in_Set : in Item) return openGL.Texture.Object
-   is
-   begin
-      return in_Set.Textures (1).Object;
-   end Texture;
-
-
-
-
-   procedure Texture_is (in_Set : in out Item;   Now : in openGL.Texture.Object)
-   is
-   begin
-      in_Set.Textures (1).Object := Now;
-      in_Set.is_Transparent      :=    in_Set.is_Transparent
-                                    or Now .is_Transparent;
-
-      if in_Set.Count = 0
-      then
-         in_Set.Count := 1;
-      end if;
-   end Texture_is;
+   --  function Texture (in_Set : in Item) return openGL.Texture.Object
+   --  is
+   --  begin
+   --     return in_Set.Textures (1).Object;
+   --  end Texture;
+   --
+   --
+   --
+   --
+   --  procedure Texture_is (in_Set : in out Item;   Now : in openGL.Texture.Object)
+   --  is
+   --  begin
+   --     in_Set.Textures (1).Object := Now;
+   --     in_Set.is_Transparent      :=    in_Set.is_Transparent
+   --                                   or Now .is_Transparent;
+   --
+   --     if in_Set.Count = 0
+   --     then
+   --        in_Set.Count := 1;
+   --     end if;
+   --  end Texture_is;
 
 
 
