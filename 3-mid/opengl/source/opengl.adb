@@ -1,6 +1,6 @@
 with
-     ada.Strings.Hash,
-     ada.unchecked_Conversion;
+   ada.Strings.Hash;
+
 
 package body openGL
 is

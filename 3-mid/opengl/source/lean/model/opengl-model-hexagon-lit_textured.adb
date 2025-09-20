@@ -121,7 +121,7 @@ is
           Texture;
 
       the_Sites   :         constant hexagon.Sites := vertex_Sites (Self.Radius);
-      the_Indices : aliased constant Indices       := (1, 2, 3, 4, 5, 6, 7, 2);
+      the_Indices : aliased constant Indices       := [1, 2, 3, 4, 5, 6, 7, 2];
 
 
       function new_Face (Vertices : in geometry.lit_textured.Vertex_array) return Geometry.lit_textured.view
@@ -166,19 +166,19 @@ is
       --
       declare
          the_Vertices : constant Geometry.lit_textured.Vertex_array
-           := (1 => (Site => (0.0, 0.0, 0.0),  Normal => Normal,  Coords => (0.50, 0.50),  Shine => default_Shine),     -- Center.
+           := [1 => (Site => [0.0, 0.0, 0.0],  Normal => Normal,  Coords => (0.50, 0.50),  Shine => default_Shine),     -- Center.
 
                2 => (Site =>   the_Sites (1),  Normal => Normal,  Coords => (1.00, 0.50),  Shine => default_Shine),     -- Mid    right.
                3 => (Site =>   the_Sites (2),  Normal => Normal,  Coords => (0.75, 1.00),  Shine => default_Shine),     -- Bottom right.
                4 => (Site =>   the_Sites (3),  Normal => Normal,  Coords => (0.25, 1.00),  Shine => default_Shine),     -- Bottom left.
                5 => (Site =>   the_Sites (4),  Normal => Normal,  Coords => (0.00, 0.50),  Shine => default_Shine),     -- Mid    left.
                6 => (Site =>   the_Sites (5),  Normal => Normal,  Coords => (0.25, 0.00),  Shine => default_Shine),     -- Top    left.
-               7 => (Site =>   the_Sites (6),  Normal => Normal,  Coords => (0.75, 0.00),  Shine => default_Shine));    -- Top    right.
+               7 => (Site =>   the_Sites (6),  Normal => Normal,  Coords => (0.75, 0.00),  Shine => default_Shine)];    -- Top    right.
       begin
          upper_Face := new_Face (Vertices => the_Vertices);
       end;
 
-      return (1 => upper_Face.all'Access);
+      return [1 => upper_Face.all'Access];
    end to_GL_Geometries;
 
 

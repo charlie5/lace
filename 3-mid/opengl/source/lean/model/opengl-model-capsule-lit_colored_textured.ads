@@ -10,7 +10,6 @@ package openGL.Model.capsule.lit_colored_textured
 is
    package textured_Model is new texturing.Mixin (openGL.Model.capsule.item);
 
-   --  type Item is new Model.capsule.item with private;
    type Item is new textured_Model.textured_item with private;
    type View is access all Item'Class;
 
@@ -36,8 +35,6 @@ is
 
 private
 
-   --  type Item is new Model.capsule.item with
-
    type Item is new textured_Model.textured_item with
       record
          Radius : Real;
@@ -46,5 +43,6 @@ private
          Color  : rgba_Color;
          Image  : asset_Name := null_Asset;
       end record;
+
 
 end openGL.Model.capsule.lit_colored_textured;

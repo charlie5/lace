@@ -73,7 +73,7 @@ is
          the_Vertices : aliased Geometry.lit_colored_textured.Vertex_array
            := [1 => (Site => the_Sites ( Left_Lower_Front),   Normal => front_Normal,   Color => +Self.Faces (Front).Colors (1),   Coords => (0.0, 0.0),   Shine => default_Shine),
                2 => (Site => the_Sites (Right_Lower_Front),   Normal => front_Normal,   Color => +Self.Faces (Front).Colors (2),   Coords => (1.0, 0.0),   Shine => default_Shine),
-               3 => (Site => the_Sites (right_upper_front),   Normal => front_Normal,   Color => +Self.Faces (Front).Colors (3),   Coords => (1.0, 1.0),   Shine => default_Shine),
+               3 => (Site => the_Sites (Right_Upper_front),   Normal => front_Normal,   Color => +Self.Faces (Front).Colors (3),   Coords => (1.0, 1.0),   Shine => default_Shine),
                4 => (Site => the_Sites ( Left_Upper_Front),   Normal => front_Normal,   Color => +Self.Faces (Front).Colors (4),   Coords => (0.0, 1.0),   Shine => default_Shine)];
       begin
          front_Face := new_Face (Vertices => the_Vertices'Access);

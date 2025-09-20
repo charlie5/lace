@@ -9,8 +9,6 @@ with
 
      ada.unchecked_Deallocation;
 
-with ada.Text_IO;
-
 
 package body openGL.Texture
 is
@@ -159,8 +157,7 @@ is
    procedure set_Image (Self : in out Object;   To          : in Image;
                                                 use_Mipmaps : in Boolean := True)
    is
-      use GL.Binding,
-          ada.Text_IO;
+      use GL.Binding;
 
       the_Image  :          Image renames To;
       min_Width  : constant Positive := the_Image'Length (2);

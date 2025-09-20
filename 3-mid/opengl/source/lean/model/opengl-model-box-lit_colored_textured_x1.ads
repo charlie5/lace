@@ -15,7 +15,6 @@ package openGL.Model.Box.lit_colored_textured_x1
 is
    package textured_Model is new texturing.Mixin (openGL.Model.box.item);
 
-   --  type Item is new Model.box.item with private;
    type Item is new textured_Model.textured_item with private;
    type View is access all Item'Class;
 
@@ -48,7 +47,6 @@ is
 
 private
 
-   --  type Item is new Model.box.item with
    type Item is new textured_Model.textured_item with
       record
          Faces        : lit_colored_textured_x1.Faces;

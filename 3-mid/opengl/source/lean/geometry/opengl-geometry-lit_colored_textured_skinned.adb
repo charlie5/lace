@@ -2,12 +2,9 @@ with
      openGL.Shader,
      openGL.Attribute,
      openGL.Buffer.general,
-     openGL.Texture,
-     openGL.Palette,
      openGL.Tasks,
      openGL.Errors,
 
-     GL.Binding,
      GL.lean,
      GL.Pointers,
 
@@ -51,7 +48,6 @@ is
    Attribute_6_Name_ptr : aliased constant C.strings.chars_ptr := C.strings.to_chars_ptr (Attribute_6_Name'Access);
    Attribute_7_Name_ptr : aliased constant C.strings.chars_ptr := C.strings.to_chars_ptr (Attribute_7_Name'Access);
 
-   white_Texture   : openGL.Texture.Object;
 
 
    ----------
@@ -93,8 +89,7 @@ is
 
    procedure define_Program
    is
-      use Palette,
-          Attribute.Forge,
+      use Attribute.Forge,
           GL.lean,
           GL.Pointers,
           System.storage_Elements;
@@ -109,8 +104,6 @@ is
       Attribute_6 : openGL.Attribute.view;
       Attribute_7 : openGL.Attribute.view;
 
-      white_Image : constant openGL.Image := [1 .. 2 => [1 .. 2 => +White]];
-
    begin
       Tasks.check;
 
@@ -123,8 +116,6 @@ is
 
       -- Define the shaders and program.
       --
-      white_Texture := openGL.Texture.Forge.to_Texture (white_Image);
-
       vertex_Shader  .define (Shader.Vertex,   "assets/opengl/shader/lit_colored_textured_skinned.vert");
       fragment_Shader.define (Shader.Fragment, (asset_Names' (1 => to_Asset ("assets/opengl/shader/version.header"),
                                                               2 => to_Asset ("assets/opengl/shader/lighting-frag.snippet"),
@@ -240,6 +231,7 @@ is
                             name    => +Attribute_7_Name_ptr);
       Errors.log;
    end define_Program;
+
 
 
    --------------

@@ -1,6 +1,5 @@
 with
-     openGL.Program.lit.textured_skinned,
-     openGL.texture_Set;
+     openGL.Program.lit.textured_skinned;
 
 private
 with
@@ -64,10 +63,5 @@ private
          null;
       end record;
 
-
-   --  type Item is new Geometry.item with null record;
-   --
-   --  overriding
-   --  procedure enable_Textures (Self : in out Item);
 
 end openGL.Geometry.lit_textured_skinned;

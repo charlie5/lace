@@ -9,10 +9,10 @@ is
    --- Forge
    --
 
-   function new_Box (Size      : in Vector_3;
-                     Faces     : in textured.Faces;
+   function new_Box (Size            : in Vector_3;
+                     Faces           : in textured.Faces;
                      texture_Details : in texture_Set.Details;
-                     is_Skybox : in Boolean := False) return View
+                     is_Skybox       : in Boolean := False) return View
    is
       Self : constant View := new Item;
    begin
@@ -198,48 +198,6 @@ is
               5 =>  left_Face.all'Access,
               6 => right_Face.all'Access];
    end to_GL_Geometries;
-
-
-
-
-   ------------
-   -- Texturing
-   --
-
-   --  overriding
-   --  procedure Fade_is (Self : in out Item;   Which : in texture_Set.texture_Id;
-   --                                           Now   : in texture_Set.fade_Level)
-   --  is
-   --  begin
-   --     null;
-   --  end Fade_is;
-   --
-   --
-   --
-   --  overriding
-   --  function Fade (Self : in Item;   Which : in texture_Set.texture_Id) return texture_Set.fade_Level
-   --  is
-   --  begin
-   --     return 0.0;
-   --  end Fade;
-   --
-   --
-   --
-   --  procedure Texture_is (Self : in out Item;   Which : in texture_Set.texture_Id;
-   --                                              Now   : in openGL.asset_Name)
-   --  is
-   --  begin
-   --     null;
-   --  end Texture_is;
-   --
-   --
-   --
-   --  overriding
-   --  function texture_Count (Self : in Item) return Natural
-   --  is
-   --  begin
-   --     return 1;
-   --  end texture_Count;
 
 
 end openGL.Model.box.textured;

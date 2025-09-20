@@ -3,7 +3,6 @@ with
      opengl.Display        .privvy,
 
      eGL.Binding,
-     interfaces.c.Strings,
      System;
 
 

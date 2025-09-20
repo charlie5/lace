@@ -77,12 +77,12 @@ is
          loop
             Id := texture_Id (i);
 
-            the_Geometry.Fade_is (which => Id,
-                                  now   => Self.texture_Details.Fades (Id));
+            the_Geometry.Fade_is (Which => Id,
+                                  Now   => Self.texture_Details.Fades (Id));
 
-            the_Geometry.Texture_is     (which => Id,
-                                         now   => Textures.fetch (Self.texture_Details.Textures (i)));
-            the_Geometry.is_Transparent (now   => the_Geometry.Texture.is_Transparent);
+            the_Geometry.Texture_is     (Which => Id,
+                                         Now   => Textures.fetch (Self.texture_Details.Textures (i)));
+            the_Geometry.is_Transparent (Now   => the_Geometry.Texture.is_Transparent);
          end loop;
 
          the_Geometry.is_Transparent (True);     -- TODO: Do transparency properly.

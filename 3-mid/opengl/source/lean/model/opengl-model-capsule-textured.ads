@@ -8,7 +8,6 @@ package openGL.Model.capsule.textured
 --  Models a textured capsule.
 --
 is
-   --  type Item is new Model.capsule.item with private;
    package textured_Model is new texturing.Mixin (openGL.Model.capsule.item);
 
    type Item is new textured_Model.textured_item with private;   type View is access all Item'Class;
@@ -35,7 +34,6 @@ is
 
 private
 
-   --  type Item is new Model.capsule.item with
    type Item is new textured_Model.textured_item with
       record
          Radius : Real;
@@ -43,5 +41,6 @@ private
 
          Image  : asset_Name := null_Asset;
       end record;
+
 
 end openGL.Model.capsule.textured;

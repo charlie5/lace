@@ -1,13 +1,5 @@
-with
-     GL.lean,
-     GL.Binding,
-     ada.Strings.fixed;
-
-
 package body openGL.Model.texturing
 is
-   use GL;
-
 
    -------------
    --- Mixin ---

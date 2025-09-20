@@ -1,6 +1,3 @@
-with
-     ada.unchecked_Conversion;
-
 package openGL.Culler.frustum
 --
 -- Provides a frustrum culler.

@@ -1,6 +1,5 @@
-with openGL.Model.texturing;
-with openGL.texture_Set;
 with
+     openGL.texture_Set,
      openGL.Palette,
      openGL.Font,
      openGL.IO,

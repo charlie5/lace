@@ -32,9 +32,6 @@ is
    --- Attributes
    --
 
---     type Geometry_view is access all Geometry.lit_textured.item'Class;
-
-
    overriding
    function to_GL_Geometries (Self : access Item;   Textures : access Texture.name_Map_of_texture'Class;
                                                     Fonts    : in     Font.font_id_Map_of_font) return Geometry.views
@@ -405,47 +402,6 @@ is
               2 =>     cap_1_Geometry.all'Access,
               3 =>     cap_2_Geometry.all'Access];
    end to_GL_Geometries;
-
-
-
-   ------------
-   -- Texturing
-   --
-
-   --  overriding
-   --  procedure Fade_is (Self : in out Item;   Which : in texture_Set.texture_Id;
-   --                                           Now   : in texture_Set.fade_Level)
-   --  is
-   --  begin
-   --     null;
-   --  end Fade_is;
-   --
-   --
-   --
-   --  overriding
-   --  function Fade (Self : in Item;   Which : in texture_Set.texture_Id) return texture_Set.fade_Level
-   --  is
-   --  begin
-   --     return 0.0;
-   --  end Fade;
-   --
-   --
-   --
-   --  procedure Texture_is (Self : in out Item;   Which : in texture_Set.texture_Id;
-   --                                              Now   : in openGL.asset_Name)
-   --  is
-   --  begin
-   --     null;
-   --  end Texture_is;
-   --
-   --
-   --
-   --  overriding
-   --  function texture_Count (Self : in Item) return Natural
-   --  is
-   --  begin
-   --     return 1;
-   --  end texture_Count;
 
 
 end openGL.Model.capsule.lit_textured;

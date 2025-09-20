@@ -4,8 +4,6 @@ with
      GL.Binding,
      ada.Strings.fixed;
 
-with ada.Text_IO;
-
 
 package body openGL.Geometry.texturing
 is
@@ -14,7 +12,7 @@ is
 
    type texture_Units is array (texture_Set.texture_Id) of GLenum;
 
-   all_texture_Units : constant texture_Units := (GL_TEXTURE0,
+   all_texture_Units : constant texture_Units := [GL_TEXTURE0,
                                                   GL_TEXTURE1,
                                                   GL_TEXTURE2,
                                                   GL_TEXTURE3,
@@ -29,7 +27,7 @@ is
                                                   GL_TEXTURE12,
                                                   GL_TEXTURE13,
                                                   GL_TEXTURE14,
-                                                  GL_TEXTURE15);
+                                                  GL_TEXTURE15];
                                                   --  GL_TEXTURE16,
                                                   --  GL_TEXTURE17,
                                                   --  GL_TEXTURE18,

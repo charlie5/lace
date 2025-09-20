@@ -11,11 +11,9 @@ package openGL.Model.billboard.colored_textured
 --  Models a colored, textured billboard.
 --
 is
-    package textured_Model is new texturing.Mixin (openGL.Model.billboard.item);
+   package textured_Model is new texturing.Mixin (openGL.Model.billboard.item);
 
    type Item is new textured_Model.textured_item with private;
-
-   --  type Item is new Model.billboard.item with private;
    type View is access all Item'Class;
 
 
@@ -51,7 +49,6 @@ is
 private
 
    type Item is new textured_Model.textured_item with
-   --  type Item is new Model.billboard.item with
       record
          Color          : lucid_Color           := (Palette.White, Opaque);
 

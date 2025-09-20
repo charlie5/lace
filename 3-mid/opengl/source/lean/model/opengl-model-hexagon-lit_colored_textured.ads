@@ -1,6 +1,7 @@
 with
      openGL.Geometry,
-     openGL.Texture;
+     openGL.Texture,
+     openGL.Model.texturing;
 
 
 package openGL.Model.hexagon.lit_colored_textured
@@ -8,14 +9,16 @@ package openGL.Model.hexagon.lit_colored_textured
 --  Models a lit, colored and textured hexagon.
 --
 is
-   type Item is new Model.item with private;
+   package textured_Model is new texturing.Mixin (Model.hexagon.item);
+
+   type Item is new textured_Model.textured_Item with private;
    type View is access all Item'Class;
 
    type Face is
       record
          center_Color : lucid_Color;                                           --  The color at the center of the hex.
          Colors       : lucid_Colors (1 .. 6);                                 --  The color at each of the hexes 6 vertices.
-         Texture      : openGL.Texture.Object := openGL.Texture.null_Object;   --  The texture to be applied to the hex..
+         Texture      : openGL.Texture.Object := openGL.Texture.null_Object;   --  The texture to be applied to the hex.
       end record;
 
 
@@ -38,7 +41,7 @@ is
 
 private
 
-   type Item is new Model.hexagon.item with
+   type Item is new textured_Model.textured_Item with
       record
          Face : lit_colored_textured.Face;
       end record;

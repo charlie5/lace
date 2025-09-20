@@ -1,6 +1,7 @@
 with
      openGL.Geometry,
-     openGL.Texture;
+     openGL.Texture,
+     openGL.Model.texturing;
 
 
 package openGL.Model.hexagon_Column.lit_colored_textured_faceted
@@ -8,7 +9,10 @@ package openGL.Model.hexagon_Column.lit_colored_textured_faceted
 --  Models a lit, colored and textured column with 6 faceted shaft sides.
 --
 is
-   type Item is new Model.hexagon_Column.Item with private;
+   package textured_Model is new texturing.Mixin (Model.hexagon_Column.item);
+
+
+   type Item is new textured_Model.textured_Item with private;
    type View is access all Item'Class;
 
 
@@ -51,7 +55,7 @@ is
 
 private
 
-   type Item is new Model.hexagon_Column.item with
+   type Item is new textured_Model.textured_Item with
       record
          upper_Face,
          lower_Face : hex_Face;

@@ -116,7 +116,6 @@ is
            --  and False
          then
             declare
-               use ada.Text_IO;
                compile_Log : constant String := Self.shader_info_Log;
             begin
                new_Line;
@@ -149,8 +148,7 @@ is
    procedure define (Self : in out Item;   Kind            : in Shader.Kind;
                                            shader_Snippets : in asset_Names)
    is
-      use ada.Text_IO,
-          interfaces.C;
+      use interfaces.C;
 
       the_Source : aliased constant C.char_array := to_C_char_array (shader_Snippets);
    begin
@@ -251,14 +249,13 @@ is
 
    function read_text_File (Filename : in String) return C.char_array
    is
-      use ada.Text_IO,
-          ada.Strings.unbounded;
+      use ada.Strings.unbounded;
 
       use type interfaces.C.size_t;
 
-      NL        : constant String      := "" & ada.characters.latin_1.LF;
-      the_File  : ada.Text_IO.File_type;
-      Pad       : unbounded_String;
+      NL        : constant String               := "" & ada.characters.latin_1.LF;
+      the_File  :          ada.Text_IO.File_type;
+      Pad       :          unbounded_String;
 
    begin
       if Filename = ""

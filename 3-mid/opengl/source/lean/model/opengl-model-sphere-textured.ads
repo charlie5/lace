@@ -12,7 +12,6 @@ is
    package textured_Model is new texturing.Mixin (openGL.Model.sphere.item);
 
    type Item is new textured_Model.textured_item with private;
-   --  type Item is new Model.sphere.item with private;
    type View is access all Item'Class;
 
 
@@ -38,11 +37,11 @@ is
 
 private
 
-   --  type Item is new Model.sphere.item with
    type Item is new textured_Model.textured_item with
       record
          Image        : asset_Name := null_Asset;     -- Usually a mercator projection to be mapped onto the sphere.
          is_Skysphere : Boolean    := False;
       end record;
+
 
 end openGL.Model.sphere.textured;

@@ -9,11 +9,11 @@ is
    --- Forge
    --
 
-   function new_Sphere (Radius     : in Real;
-                        lat_Count  : in Positive   := default_latitude_Count;
-                        long_Count : in Positive   := default_longitude_Count;
+   function new_Sphere (Radius          : in Real;
+                        lat_Count       : in Positive   := default_latitude_Count;
+                        long_Count      : in Positive   := default_longitude_Count;
                         texture_Details : in texture_Set.Details;
-                        Image      : in asset_Name := null_Asset) return View
+                        Image           : in asset_Name := null_Asset) return View
    is
       Self : constant View := new Item;
    begin
@@ -192,49 +192,6 @@ is
 
       return [1 => Geometry.view (the_Geometry)];
    end to_GL_Geometries;
-
-
-
-
-   ------------
-   -- Texturing
-   --
-
-   --  overriding
-   --  procedure Fade_is (Self : in out Item;   Which : in texture_Set.texture_Id;
-   --                                           Now   : in texture_Set.fade_Level)
-   --  is
-   --  begin
-   --     null;
-   --  end Fade_is;
-   --
-   --
-   --
-   --  overriding
-   --  function Fade (Self : in Item;   Which : in texture_Set.texture_Id) return texture_Set.fade_Level
-   --  is
-   --  begin
-   --     return 0.0;
-   --  end Fade;
-   --
-   --
-   --
-   --  procedure Texture_is (Self : in out Item;   Which : in texture_Set.texture_Id;
-   --                                              Now   : in openGL.asset_Name)
-   --  is
-   --  begin
-   --     Self.Image := Now;
-   --  end Texture_is;
-   --
-   --
-   --
-   --  overriding
-   --  function texture_Count (Self : in Item) return Natural
-   --  is
-   --  begin
-   --     return 1;
-   --  end texture_Count;
-
 
 
 end openGL.Model.sphere.lit_textured;

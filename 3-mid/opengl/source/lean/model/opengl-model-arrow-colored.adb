@@ -99,8 +99,6 @@ is
 
    procedure set_side_Bits (Self : in out Item)
    is
-      use linear_Algebra_3d;
-
       End_1 : Vector_3    renames Self.Vertices (1).Site;
       End_2 : Vector_3    renames Self.Vertices (2).Site;
 

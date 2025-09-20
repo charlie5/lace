@@ -2,9 +2,7 @@ with
      openGL.Buffer.general,
      openGL.Shader,
      openGL.Program,
-     openGL.Palette,
      openGL.Attribute,
-     openGL.Texture,
      openGL.Tasks,
      GL.lean,
      GL.Pointers,
@@ -19,8 +17,6 @@ is
    use GL.lean,
        GL.Pointers,
 
-       openGL.texture_Set,
-
        Interfaces,
        System;
 
@@ -33,7 +29,6 @@ is
    fragment_Shader : aliased Shader.item;
 
    the_Program     : openGL.Program.view;
-   white_Texture   : openGL.Texture.Object;
 
    Name_1 : constant String := "Site";
    Name_2 : constant String := "Coords";
@@ -61,8 +56,7 @@ is
       if the_Program = null
       then   -- Define the shaders and program.
          declare
-            use Palette,
-                Attribute.Forge,
+            use Attribute.Forge,
                 system.Storage_Elements;
 
             Sample : Vertex;
@@ -70,11 +64,7 @@ is
             Attribute_1 : Attribute.view;
             Attribute_2 : Attribute.view;
 
-            white_Image : constant openGL.Image := [1 .. 2 => [1 .. 2 => +White]];
-
          begin
-            white_Texture := openGL.Texture.Forge.to_Texture (white_Image);
-
             vertex_Shader  .define (Shader.vertex,   "assets/opengl/shader/textured.vert");
             fragment_Shader.define (Shader.Fragment, (asset_Names' (1 => to_Asset ("assets/opengl/shader/version.header"),
                                                                     2 => to_Asset ("assets/opengl/shader/texturing-frag.snippet"),
@@ -168,93 +158,6 @@ is
    begin
       raise Error with "opengl geometry textured - 'Indices_are' ~ TODO";
    end Indices_are;
-
-
-
-   --- Texturing
-   --
-
-   --  procedure Fade_is (Self : in out Item;   Which : texture_Set.texture_ID;   Now : in texture_Set.fade_Level)
-   --  is
-   --  begin
-   --     Self.Textures.Textures (Which).Fade := Now;
-   --  end Fade_is;
-   --
-   --
-   --
-   --  function Fade (Self : in     Item;   Which : texture_Set.texture_ID)     return texture_Set.fade_Level
-   --  is
-   --  begin
-   --     return Self.Textures.Textures (Which).Fade;
-   --  end Fade;
-   --
-   --
-   --
-   --  procedure Texture_is (Self : in out Item;   Which : texture_ID;   Now : in openGL.Texture.Object)
-   --  is
-   --  begin
-   --     Texture_is (in_Set => Self.Textures,
-   --                 Which  => Which,
-   --                 Now    => Now);
-   --  end Texture_is;
-   --
-   --
-   --
-   --  function Texture (Self : in Item;   Which : texture_ID) return openGL.Texture.Object
-   --  is
-   --  begin
-   --     return openGL.texture_Set.Texture (in_Set => Self.Textures,
-   --                                      Which  => Which);
-   --  end Texture;
-   --
-   --
-   --
-   --  overriding
-   --  procedure Texture_is (Self : in out Item;   Now : in openGL.Texture.Object)
-   --  is
-   --  begin
-   --     Texture_is (in_Set => Self.Textures,
-   --                 Now    => Now);
-   --  end Texture_is;
-   --
-   --
-   --
-   --  overriding
-   --  function Texture (Self : in Item) return openGL.Texture.Object
-   --  is
-   --  begin
-   --     return openGL.texture_Set.Texture (in_Set => Self.Textures,
-   --                                      which  => 1);
-   --  end Texture;
-   --
-   --
-   --
-   --  overriding
-   --  procedure enable_Textures (Self : in out Item)
-   --  is
-   --  begin
-   --     enable (Self.Textures, Self.Program);
-   --  end enable_Textures;
-
-
-
-   --  overriding
-   --  procedure enable_Texture (Self : in out Item)
-   --  is
-   --     use GL,
-   --         GL.Binding,
-   --         openGL.Texture;
-   --  begin
-   --     Tasks.check;
-   --
-   --     glActiveTexture (gl.GL_TEXTURE0);
-   --     Errors.log;
-   --
-   --     if Self.Texture = openGL.Texture.null_Object
-   --     then   white_Texture.enable;
-   --     else   Self.Texture .enable;
-   --     end if;
-   --  end enable_Texture;
 
 
 end openGL.Geometry.textured;
