@@ -1,5 +1,4 @@
 with
-     openGL.Program,
      openGL.Texture,
      ada.Calendar;
 
@@ -71,7 +70,7 @@ is
    type Animation (frame_Count : Positive) is
       record
          frame_Duration  : Duration          := 0.1;
-         next_frame_Time : ada.Calendar.Time :=  ada.Calendar.Clock;
+         next_frame_Time : ada.Calendar.Time := ada.Calendar.Clock;
 
          Current         : frame_Id          := 1;
          Frames          : texture_Set.Frames (1 .. frame_Count);
@@ -127,22 +126,13 @@ is
          initialised    : Boolean          := False;
       end record;
 
-   --  procedure enable (the_Textures : in out Item;
-   --                    Program      : in     openGL.Program.view);
-
-
 
    procedure Texture_is      (in_Set : in out Item;   Which : texture_ID := 1;   Now : in openGL.Texture.Object);
    function  Texture         (in_Set : in     Item;   Which : texture_ID := 1)     return openGL.Texture.Object;
 
-   --  procedure Texture_is      (in_Set : in out Item;   Now : in openGL.Texture.Object);
-   --  function  Texture         (in_Set : in     Item)     return openGL.Texture.Object;
-
 
 
 private
-
-
 
    -----------
    --- Streams

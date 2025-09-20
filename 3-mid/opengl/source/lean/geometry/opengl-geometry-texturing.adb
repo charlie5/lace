@@ -191,8 +191,6 @@ is
       procedure enable_Textures (Self : in out Item)
       is
       begin
-         --  ada.Text_IO.put_Line (Self.Model'Image);
-
          texturing.enable (for_Model   => Self.Model.all'Access,
                            Uniforms    => texture_Uniforms,
                            texture_Set => Self.texture_Set);

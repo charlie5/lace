@@ -1,6 +1,7 @@
 with
      ada.unchecked_Deallocation;
 
+
 package body openGL.Visual
 is
 
