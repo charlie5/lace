@@ -6,7 +6,6 @@ with
 
      interfaces.C.Strings,
 
-     ada.unchecked_Conversion,
      ada.unchecked_Deallocation,
      ada.Finalization;
 
@@ -23,7 +22,6 @@ is
    --- Utility
    --
 
-   function  to_Flag    is new ada.unchecked_Conversion   (FT_Kerning_Mode, C.unsigned);
    procedure deallocate is new ada.Unchecked_Deallocation (float_Array,     float_Array_view);
 
 
@@ -248,7 +246,7 @@ is
       Self.Err := FT_Get_Kerning (Self.ftFace,
                                   C.unsigned (index1),
                                   C.unsigned (index2),
-                                  to_Flag    (ft_Kerning_unfitted),
+                                  ft_Kerning_unfitted'enum_Rep,
                                   kernAdvance'unchecked_Access);
       if Self.Err /= 0
       then
@@ -323,7 +321,7 @@ is
          loop
             Self.Err := FT_Get_Kerning (Self.ftFace,
                                         i, j,
-                                        to_Flag (ft_Kerning_unfitted),
+                                        ft_Kerning_unfitted'enum_Rep,
                                         kernAdvance'unchecked_Access);
             if Self.Err /= 0
             then

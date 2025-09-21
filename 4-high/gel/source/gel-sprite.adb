@@ -3,14 +3,13 @@ with
      gel.  any_Joint,
      gel.World,
 
-     ada.Tags,
-     ada.unchecked_Deallocation,
-     ada.unchecked_Conversion;
+     ada.unchecked_Deallocation;
+
 
 package body gel.Sprite
 is
-   use ada.Tags,
-       linear_Algebra_3D;
+   use linear_Algebra_3D;
+
 
 
    procedure log (Message : in String)
@@ -1147,45 +1146,6 @@ is
    begin
       return Self.program_Parameters;
    end program_Parameters;
-
-
-   -----------
-   --- Utility
-   --
-
-   function to_Hash (Self : in ada.Tags.Tag) return ada.Containers.Hash_type
-   is
-      function Converted is new ada.unchecked_Conversion (ada.Tags.Tag, ada.Containers.Hash_type);
-   begin
-      return Converted (Self);
-   end to_Hash;
-   pragma Unreferenced (to_Hash);
-
-
-
-   --  protected
-   --  body safe_Matrix_4x4
-   --  is
-   --     function Value return Matrix_4x4
-   --     is
-   --     begin
-   --        return the_Value;
-   --     end Value;
-   --
-   --     procedure Value_is (Now : in Matrix_4x4)
-   --     is
-   --     begin
-   --        the_Value := Now;
-   --     end Value_is;
-   --
-   --     procedure Site_is (Now : in Vector_3)
-   --     is
-   --     begin
-   --        the_Value (4, 1) := Now (1);
-   --        the_Value (4, 2) := Now (2);
-   --        the_Value (4, 3) := Now (3);
-   --     end Site_is;
-   --  end safe_Matrix_4x4;
 
 
 end gel.Sprite;

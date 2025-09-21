@@ -99,8 +99,7 @@ is
 
       type GLvoid_access is access all GLvoid;
 
-      function to_GL is new ada.unchecked_Conversion (attribute.data_Kind, gl.GLenum);          -- TODO: Address different sizes warning.
-      function to_GL is new ada.unchecked_Conversion (storage_Offset,      GLvoid_access);
+      function to_GL is new ada.unchecked_Conversion (storage_Offset, GLvoid_access);
    begin
       Tasks.check;
 
@@ -109,7 +108,7 @@ is
 
       glVertexAttribPointer     (Index      => Self.gl_Location,
                                  Size       => Self.Size,
-                                 the_Type   => to_GL (Self.data_Kind),
+                                 the_Type   => Self.data_Kind'enum_Rep,
                                  Normalized => Self.Normalized,
                                  Stride     => Self.vertex_Stride,
                                  Ptr        => to_GL (Self.Offset));

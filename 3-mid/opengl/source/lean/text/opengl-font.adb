@@ -1,6 +1,6 @@
 with
-     ada.unchecked_Deallocation,
-     ada.unchecked_Conversion;
+     ada.unchecked_Deallocation;
+
 
 package body openGL.Font
 is
@@ -232,13 +232,12 @@ is
                                                 Spacing  : in Vector_3            := Origin_3D;
                                                 Mode     : in fontImpl.RenderMode := fontImpl.RENDER_ALL) return Vector_3
    is
-      function to_Integer is new ada.Unchecked_Conversion (fontImpl.RenderMode, Integer);
    begin
       return Self.impl.Render (Text,
                                Length,
                                Position,
                                Spacing,
-                               to_Integer (Mode));
+                               Mode'enum_Rep);
    end check_Glyphs;
 
 

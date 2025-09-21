@@ -8,8 +8,8 @@ with
      GL.lean,
      GL.Pointers,
 
-     freetype_c.Binding,
-     ada.unchecked_Conversion;
+     freetype_c.Binding;
+
 
 package body openGL.FontImpl.Texture
 is
@@ -167,8 +167,6 @@ is
       use GL,
           GL.Binding;
 
-      function to_Integer is new ada.unchecked_Conversion (fontImpl.RenderMode, Integer);
-
       Tmp : Vector_3;
 
    begin
@@ -180,9 +178,11 @@ is
 
       GlyphImpl.texture.ResetActiveTexture;
 
-      Tmp := FontImpl.item (Self.all).Render (Text,     Length,
-                                              Position, Spacing,
-                                              to_Integer (Mode));
+      Tmp := FontImpl.item (Self.all).Render (Text,
+                                              Length,
+                                              Position,
+                                              Spacing,
+                                              Mode'enum_Rep);
       return Tmp;
    end Render;
 

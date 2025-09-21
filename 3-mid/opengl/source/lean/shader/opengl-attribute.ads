@@ -2,6 +2,7 @@ with
      GL,
      system.storage_Elements;
 
+
 package openGL.Attribute
 --
 --  Models an openGL shader attribute.
@@ -75,6 +76,7 @@ private
          Offset        : system.storage_Elements.storage_Offset;
          Normalized    : gl.GLboolean;
       end record;
+
 
    for data_Kind use (GL_BYTE           => 16#1400#,
                       GL_UNSIGNED_BYTE  => 16#1401#,

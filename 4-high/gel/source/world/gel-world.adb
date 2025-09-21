@@ -1082,8 +1082,8 @@ is
       function to_Hash is new ada.unchecked_Conversion (impact_Filter,   ada.Containers.Hash_type);
       function to_Hash is new ada.unchecked_Conversion (impact_Response, ada.Containers.Hash_type);
    begin
-      return   to_Hash (Self.Filter)
-             + to_Hash (Self.Response);
+      return   to_Hash (Self.Filter)   / 2
+             + to_Hash (Self.Response) / 2;
    end Hash;
 
 
