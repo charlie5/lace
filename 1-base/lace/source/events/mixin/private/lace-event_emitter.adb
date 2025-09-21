@@ -1,8 +1,9 @@
 with
      lace.Observer,
-     lace.Event.Containers,
      lace.Event.utility,
+     lace.event.Containers,
 
+     ada.Containers.indefinite_Holders,
      ada.Text_IO,
      ada.Exceptions,
      ada.unchecked_Deallocation,

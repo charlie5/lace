@@ -1,6 +1,6 @@
 with
-     launch_simple_chat_Client,
-     launch_simple_chat_Registrar,
+--     launch_simple_chat_Client,
+--     launch_simple_chat_Registrar,
      launch_simple_instant_events_demo,
      launch_simple_deferred_events_demo,
 
@@ -47,8 +47,8 @@ with
      --  launch_hello_physics_interface_Demo,
      launch_test_Engine,
 
-     launch_Client,
-     launch_Server,
+--     launch_Client,
+--     launch_Server,
 --     launch_Pong,
      launch_Hello_gel,
      launch_opengl_Model,
@@ -72,8 +72,8 @@ procedure build_all_Lace
 --
 is
 begin
-   launch_simple_chat_Client;
-   launch_simple_chat_Registrar;
+--   launch_simple_chat_Client;
+--   launch_simple_chat_Registrar;
    launch_simple_deferred_events_Demo;
    launch_simple_instant_events_Demo;
 
@@ -120,8 +120,8 @@ begin
    --  launch_hello_physics_interface_Demo;
    launch_Test_Engine;
 
-   launch_Client;
-   launch_Server;
+--   launch_Client;
+--   launch_Server;
 --   launch_Pong;
    launch_Hello_gel;
    launch_opengl_Model;

@@ -6,7 +6,6 @@ with
      openGL.Model.Box.textured,
      openGL.Model.Box.lit_colored_textured,
 
-     openGL.texture_Set,
      openGL.Palette,
      openGL.Demo;
 

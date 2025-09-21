@@ -17,8 +17,7 @@ procedure launch_text_sprite_Demo
 --  Shows a few text sprites.
 --
 is
-   use gel.Math,
-       openGL.Palette;
+   use openGL.Palette;
 
    the_Applet : constant gel.Applet.gui_World.view := gel.Forge.new_gui_Applet ("text sprite Demo",
                                                                                 space_Kind => physics.Bullet);

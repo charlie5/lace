@@ -4,8 +4,6 @@ with
      system.RPC,
      ada.unchecked_Deallocation;
 
-with ada.Text_IO; use ada.Text_IO;
-
 
 package body lace.event.make_Subject
 is

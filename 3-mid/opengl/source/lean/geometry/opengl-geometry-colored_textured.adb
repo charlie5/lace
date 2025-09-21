@@ -3,12 +3,9 @@ with
      openGL.Buffer.general,
      openGL.Program,
      openGL.Attribute,
-     openGL.Texture,
-     openGL.Palette,
      openGL.Tasks,
      openGL.Errors,
 
-     GL.Binding,
      GL.lean,
      GL.Pointers,
 
@@ -29,7 +26,6 @@ is
    vertex_Shader        : aliased Shader.item;
    fragment_Shader      : aliased Shader.item;
    the_Program          :         openGL.Program.view;
-   white_Texture        :         openGL.Texture.Object;
 
    Name_1 : constant String := "Site";
    Name_2 : constant String := "Color";
@@ -64,8 +60,7 @@ is
       if the_Program = null
       then   -- Define the shaders and program.
          declare
-            use Palette,
-                Attribute.Forge;
+            use Attribute.Forge;
 
             Sample : Vertex;
 
@@ -73,10 +68,7 @@ is
             Attribute_2 : Attribute.view;
             Attribute_3 : Attribute.view;
 
-            white_Image : constant Image := [1 .. 2 => [1 .. 2 => +White]];
          begin
-            white_Texture := openGL.Texture.Forge.to_Texture (white_Image);
-
             vertex_Shader  .define (Shader.Vertex,   "assets/opengl/shader/colored_textured.vert");
             fragment_Shader.define (Shader.Fragment, (asset_Names' (1 => to_Asset ("assets/opengl/shader/version.header"),
                                                                     2 => to_Asset ("assets/opengl/shader/texturing-frag.snippet"),

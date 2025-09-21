@@ -1,4 +1,3 @@
-with openGL.texture_Set;
 with
      gel.Applet.gui_World,
      gel.Window.setup,
@@ -8,8 +7,8 @@ with
      physics.Model,
 
      openGL.Model.any,
-     openGL.Light,
      openGL.texture_Set,
+     openGL.Light,
 
      ada.Calendar,
      ada.Text_IO,
@@ -86,7 +85,7 @@ begin
    the_Human.Site_is ([0.0, 5.0, 0.0]);                    --
 
    --  the_Applet.gui_World.add (the_Cobra);               -- Add cobra.
-   the_Cobra.Site_is ((0.0,  5.0,  0.0));              --
+   the_Cobra.Site_is ([0.0,  5.0,  0.0]);              --
 
    the_Applet.gui_Camera.Site_is ([0.0, 1.5, 2.6]);        -- Position the camera.
    --  the_Applet.gui_Camera.Site_is ((0.0, 100.0, 0.0));    -- Position the camera.

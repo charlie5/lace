@@ -1,7 +1,5 @@
 with
-     gel.Events,
      gel.Camera.forge,
-     lace.Event.utility,
      ada.unchecked_Deallocation;
 
 
@@ -11,8 +9,6 @@ is
    procedure define (Self : in gel.Applet.server_world.view;   Name       : in String;
                                                                space_Kind : in physics.space_Kind)
    is
-      use lace.Event.utility;
-
       the_world_Info : constant world_Info_view  := new world_Info;
       the_Camera     : constant gel.Camera.View  := gel.Camera.forge.new_Camera;
    begin

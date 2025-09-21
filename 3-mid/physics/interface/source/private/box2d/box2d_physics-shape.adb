@@ -4,8 +4,8 @@ with
      c_math_c.Vector_2,
      c_math_c.Conversion,
 
-     ada.unchecked_Deallocation,
-     ada.unchecked_Conversion;
+     ada.unchecked_Deallocation;
+
 
 package body box2d_Physics.Shape
 is

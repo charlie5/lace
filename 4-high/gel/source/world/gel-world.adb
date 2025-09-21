@@ -1,7 +1,4 @@
-with any_math.any_Algebra.any_linear.any_d3;
 with
-     gel.Events,
-
      physics.Object,
      physics.Forge,
 
@@ -9,6 +6,7 @@ with
 
      lace.Response,
      lace.Text.Forge,
+     lace.Event,
 
      ada.Text_IO,
      ada.Exceptions,
@@ -1045,8 +1043,7 @@ is
    overriding
    function Sprites (Self : in out Item) return remote.World.sprite_model_Pairs
    is
-      use id_Maps_of_sprite,
-          lace.Text;
+      use id_Maps_of_sprite;
 
       all_Sprites : id_Maps_of_sprite.Map    renames Item'Class (Self).all_Sprites.fetch;
       Cursor      : id_Maps_of_sprite.Cursor :=      all_Sprites.First;

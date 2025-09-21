@@ -13,8 +13,6 @@ with c_math_c.Vector_2;
 with c_math_c.Vector_3;
 with Interfaces.C;
 with swig;
-with Interfaces.C;
-use Interfaces.C;
 
 package box2d_c.Binding is
 

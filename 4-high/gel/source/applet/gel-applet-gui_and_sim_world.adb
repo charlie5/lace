@@ -1,9 +1,6 @@
 with
      gel.World.simple,
-     gel.Camera.forge,
-     gel.Events,
-
-     lace.Event.utility;
+     gel.Camera.forge;
 
 
 package body gel.Applet.gui_and_sim_world
@@ -13,7 +10,6 @@ is
                                            use_Window : in gel.Window.view)
    is
       pragma Unreferenced (use_Window);
-      use lace.Event.utility;
    begin
       declare
          the_world_Info : constant world_Info_view  := new world_Info;

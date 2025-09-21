@@ -1,4 +1,3 @@
-with openGL.texture_Set;
 with
      openGL.Model.text     .lit_colored,
 
@@ -23,12 +22,8 @@ with
      openGL.Model.line     .colored,
      openGL.Model.segment_line,
 
-     openGL.Palette,
-     openGL.texture_Set,
-
      physics.Model,
      gel.Window;
-     --  float_Math.Random;
 
 
 package body gel.Forge

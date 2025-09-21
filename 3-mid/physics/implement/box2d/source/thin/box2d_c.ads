@@ -2,7 +2,6 @@
 --
 with swig;
 with Interfaces.C;
-use Interfaces.C;
 
 package box2d_c is
 

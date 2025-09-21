@@ -2,8 +2,7 @@ with
      ada.Characters.latin_1,
      ada.Directories,
      ada.Direct_IO,
-     ada.Streams.Stream_IO,
-     ada.Text_IO;
+     ada.Streams.Stream_IO;
 
 
 package body lace.Text.forge

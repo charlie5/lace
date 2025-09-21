@@ -81,8 +81,8 @@ is
          vertex_Count  : constant      Index_t :=      Index_t (sides_Count * 2 + 2);   -- 2 triangles per side plus 2 since we cannot share the first and last edge.
          indices_Count : constant long_Index_t := long_Index_t (sides_Count * 2 * 3);   -- 2 triangles per side with 3 vertices per triangle.
 
-         the_Vertices  : aliased Geometry.textured.Vertex_array := (1 .. vertex_Count  => <>);
-         the_Indices   : aliased Indices                        := (1 .. indices_Count => <>);
+         the_Vertices  : aliased Geometry.textured.Vertex_array := [1 .. vertex_Count  => <>];
+         the_Indices   : aliased Indices                        := [1 .. indices_Count => <>];
 
       begin
          ny := 1.0;
@@ -190,14 +190,14 @@ is
             indices_Count : constant long_Index_t := long_Index_t (  (hoop_count - 1) * sides_Count * 2 * 3    -- For each hoop, 2 triangles per side with 3 vertices per triangle
                                                                    + sides_Count * 3);                         -- plus the extra indices for the pole triangles.
 
-            the_Vertices  : aliased Geometry.textured.Vertex_array := (1 ..  vertex_Count => <>);
-            the_Indices   : aliased Indices                        := (1 .. indices_Count => <>);
+            the_Vertices  : aliased Geometry.textured.Vertex_array := [1 ..  vertex_Count => <>];
+            the_Indices   : aliased Indices                        := [1 .. indices_Count => <>];
 
             the_arch_Edges : arch_Edges;
             i              : Index_t   := 1;
 
-            pole_Site      : constant Site := (if is_Fore then (0.0, 0.0,  L + Radius)
-                                                          else (0.0, 0.0, -L - Radius));
+            pole_Site      : constant Site := (if is_Fore then [0.0, 0.0,  L + Radius]
+                                                          else [0.0, 0.0, -L - Radius]);
 
             Degrees_90        : constant := Pi / 2.0;
             Degrees_360       : constant := Pi * 2.0;
@@ -375,9 +375,9 @@ is
       cap_1_Geometry    .Model_is (Self.all'unchecked_Access);
       cap_2_Geometry    .Model_is (Self.all'unchecked_Access);
 
-      return (1 => the_shaft_Geometry.all'Access,
+      return [1 => the_shaft_Geometry.all'Access,
               2 =>     cap_1_Geometry.all'Access,
-              3 =>     cap_2_Geometry.all'Access);
+              3 =>     cap_2_Geometry.all'Access];
    end to_GL_Geometries;
 
 

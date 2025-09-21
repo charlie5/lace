@@ -7,9 +7,9 @@ with
      c_math_c.Triangle,
 
      ada.unchecked_Deallocation,
-     ada.Unchecked_Conversion,
 
      interfaces.C;
+
 
 package body bullet_Physics.Shape
 is

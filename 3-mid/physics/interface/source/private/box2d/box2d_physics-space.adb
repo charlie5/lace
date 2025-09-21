@@ -16,8 +16,6 @@ with
 
      ada.unchecked_Conversion;
 
-with ada.Text_IO; use ada.Text_IO;
-
 
 package body box2d_Physics.Space
 is

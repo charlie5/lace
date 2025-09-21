@@ -2,7 +2,6 @@
 --
 with c_math_c.Vector_3;
 with Interfaces.C;
-use Interfaces.C;
 with Interfaces.C.Pointers;
 
 package box2d_c.b2d_point_Collision is

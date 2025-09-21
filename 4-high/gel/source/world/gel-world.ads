@@ -8,14 +8,11 @@ with
      physics.Space,
      physics.Model,
 
-     lace.Event,
      lace.Observer,
      lace.Subject,
      lace.Subject_and_deferred_Observer,
      lace.Any,
 
-     ada.Streams,
-     ada.Tags.generic_dispatching_Constructor,
      ada.unchecked_Conversion,
      ada.Containers.hashed_Maps;
 

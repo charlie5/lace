@@ -3,8 +3,7 @@ with
      openGL.IO,
      openGL.texture_Set,
 
-     ada.unchecked_Deallocation,
-     ada.unchecked_Conversion;
+     ada.unchecked_Deallocation;
 
 
 package body openGL.Terrain

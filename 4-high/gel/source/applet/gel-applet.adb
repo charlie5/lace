@@ -11,7 +11,6 @@ with
 
      lace.Event.utility,
 
-     ada.unchecked_Conversion,
      ada.unchecked_Deallocation,
      ada.Text_IO;
 

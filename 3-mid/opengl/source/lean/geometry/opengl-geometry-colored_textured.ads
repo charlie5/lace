@@ -1,7 +1,3 @@
-with
-     openGL.texture_Set;
-
-
 private
 with
      openGL.Geometry.texturing;
@@ -53,14 +49,5 @@ private
          null;
       end record;
 
-
-   --  type Item is new Geometry.item with
-   --     record
-   --        null;
-   --     end record;
-   --
-   --
-   --  overriding
-   --  procedure enable_Textures (Self : in out Item);
 
 end openGL.Geometry.colored_textured;

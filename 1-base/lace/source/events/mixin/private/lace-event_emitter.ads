@@ -5,8 +5,6 @@ with
 private
 with
      lace.Subject,
-     lace.event.Containers,
-     ada.Containers.indefinite_Holders,
      ada.Containers.indefinite_Vectors;
 
 
