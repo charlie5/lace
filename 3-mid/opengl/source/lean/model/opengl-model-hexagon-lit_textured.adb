@@ -9,13 +9,13 @@ is
    --- Forge
    --
 
-   function new_Hexagon (Radius : in Real;
-                         Face   : in lit_textured.Face) return View
+   function new_Hexagon (Radius          : in Real;
+                         texture_Details : in texture_Set.Details) return View
    is
       Self : constant View := new Item;
    begin
       Self.Radius := Radius;
-      Self.Face   := Face;
+      Self.texture_Details_is (texture_Details);
 
       return Self;
    end new_Hexagon;
@@ -26,84 +26,6 @@ is
    ------------------
    --- Attributes ---
    ------------------
-
-
-   ------------
-   -- Texturing
-   --
-
-   overriding
-   procedure Fade_is (Self : in out Item;   Which : in texture_Set.texture_Id;
-                                            Now   : in texture_Set.fade_Level)
-   is
-   begin
-      Self.Face.Fades (Which) := Now;
-   end Fade_is;
-
-
-
-   overriding
-   function Fade (Self : in Item;   Which : in texture_Set.texture_Id) return texture_Set.fade_Level
-   is
-   begin
-      return Self.Face.Fades (Which);
-   end Fade;
-
-
-
-   procedure Texture_is (Self : in out Item;   Which : in texture_Set.texture_Id;
-                                               Now   : in openGL.asset_Name)
-   is
-   begin
-      Self.Face.Textures (Positive (Which)) := Now;
-   end Texture_is;
-
-
-
-
-   overriding
-   function texture_Count (Self : in Item) return Natural
-   is
-   begin
-      return Self.Face.texture_Count;
-   end texture_Count;
-
-
-
-
-   overriding
-   function texture_Applied (Self : in Item;   Which : in texture_Set.texture_Id) return Boolean
-   is
-   begin
-      return Self.Face.texture_Applies (Which);
-   end texture_Applied;
-
-
-
-   overriding
-   procedure texture_Applied_is (Self : in out Item;   Which : in texture_Set.texture_Id;
-                                                       Now   : in Boolean)
-   is
-   begin
-      Self.Face.texture_Applies (Which) := Now;
-   end texture_Applied_is;
-
-
-
-   overriding
-   procedure animate (Self : in out Item)
-   is
-      use type texture_Set.Animation_view;
-   begin
-      if Self.Face.Animation = null
-      then
-         return;
-      end if;
-
-      texture_Set.animate (Self.Face.Animation.all,
-                           Self.Face.texture_Applies);
-   end animate;
-
 
 
    ---------------------
@@ -140,16 +62,16 @@ is
          the_Geometry.Vertices_are (Vertices);
          the_Geometry.add          (Primitive.view (the_Primitive));
 
-         for i in 1 .. Self.Face.texture_Count
+         for i in 1 .. Self.texture_Details.texture_Count
          loop
             Id := texture_Id (i);
 
-            the_Geometry.Fade_is (which => Id,
-                                  now   => Self.Face.Fades (Id));
+            the_Geometry.Fade_is (Which => Id,
+                                  Now   => Self.texture_Details.Fades (Id));
 
-            the_Geometry.Texture_is     (which => Id,
-                                         now   => Textures.fetch (Self.Face.Textures (i)));
-            the_Geometry.is_Transparent (now   => the_Geometry.Texture.is_Transparent);
+            the_Geometry.Texture_is     (Which => Id,
+                                         Now   => Textures.fetch (Self.texture_Details.Textures (i)));
+            the_Geometry.is_Transparent (Now   => the_Geometry.Texture.is_Transparent);
          end loop;
 
          the_Geometry.is_Transparent (True);     -- TODO: Do transparency properly.
