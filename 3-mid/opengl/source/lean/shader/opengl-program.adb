@@ -226,6 +226,16 @@ is
 
 
 
+   function uniform_Variable (Self : access Item'Class;   Named : in String) return Variable.uniform.vec2
+   is
+      the_Variable : Variable.uniform.vec2;
+   begin
+      the_Variable.define (Self, Named);
+      return the_Variable;
+   end uniform_Variable;
+
+
+
    function uniform_Variable (Self : access Item'Class;   Named : in String) return Variable.uniform.vec3
    is
       the_Variable : Variable.uniform.vec3;

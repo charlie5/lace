@@ -24,15 +24,14 @@ is
    is
       use ada.Calendar;
 
-      Now           : constant ada.Calendar.Time := Clock;
+      Now : constant ada.Calendar.Time := Clock;
 
    begin
       if Now >= the_Animation.next_frame_Time
       then
          declare
-
             next_frame_Id : constant frame_Id := (if the_Animation.Current < the_Animation.frame_Count then the_Animation.Current + 1
-                                                                                                          else 1);
+                                                                                                       else 1);
             old_Frame     :          Frame renames the_Animation.Frames (the_Animation.Current);
             new_Frame     :          Frame renames the_Animation.Frames (next_frame_Id);
          begin

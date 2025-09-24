@@ -136,6 +136,17 @@ is
 
 
 
+   function Tiling (Self : in     Item;   Which : in texture_Set.texture_ID := 1) return texture_Set.Tiling
+   is
+   begin
+      raise program_Error with "Geometry has no texture.";
+      return (S => 0.0,
+              T => 0.0);
+   end Tiling;
+
+
+
+
    procedure Program_is  (Self : in out Item;   Now : in openGL.Program.view)
    is
    begin

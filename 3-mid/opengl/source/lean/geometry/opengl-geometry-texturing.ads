@@ -22,6 +22,7 @@ is
          texture_Uniform         : openGL.Variable.uniform.sampler2D;
          fade_Uniform            : openGL.Variable.uniform.float;
          texture_applied_Uniform : openGL.Variable.uniform.bool;
+         tiling_Uniform          : openGL.Variable.uniform.vec2;
       end record;
 
 
@@ -50,7 +51,6 @@ is
 
 
 
-
    -------------
    --- Mixin ---
    -------------
@@ -62,7 +62,6 @@ is
 
 
       procedure create_Uniforms (for_Program : in     openGL.Program.view);
-
 
 
       overriding
@@ -85,6 +84,11 @@ is
       overriding
       function  texture_Applied    (Self : in     Item;   Which : in texture_Set.texture_ID := 1) return Boolean;
 
+      overriding
+      procedure Tiling_is          (Self : in out Item;   Now   : in texture_Set.Tiling;
+                                                          Which : in texture_Set.texture_ID := 1);
+      overriding
+      function  Tiling             (Self : in     Item;   Which : in texture_Set.texture_ID := 1) return texture_Set.Tiling;
 
 
       overriding

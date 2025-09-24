@@ -38,28 +38,6 @@ begin
    end;
 
 
-   -- Set the lights initial position to far behind and far to the left.
-   --
---     declare
---        use openGL.Palette;
---
---        initial_Site   : constant openGL.Vector_3 := (0.0, 0.0, 15.0);
---        cone_Direction : constant openGL.Vector_3 := (0.0, 0.0, -1.0);
---
---        Light : openGL.Light.diffuse.item := Demo.Renderer.Light (Id => 1);
---     begin
---        Light.Color_is (Ambient  => (Grey,  Opaque),
---                        Diffuse  => (White, Opaque));
---        --  Specular => (White, Opaque));
---
---        Light.Position_is       (initial_Site);
---        Light.cone_Direction_is (cone_Direction);
---
---        Demo.Renderer.Light_is (Id => 1, Now => Light);
---     end;
-
-
-
    declare
       --  The models.
       --
@@ -78,9 +56,8 @@ begin
          the_Visuals (i) := new_Visual (the_Models (i));
       end loop;
 
-      the_Visuals (4).Site_is ([0.0, 0.0, -50.0]);
-
       the_Visuals (1).Scale_is ([0.2, 0.2, 1.0]);     -- Text visual.
+
 
       --  Main loop.
       --

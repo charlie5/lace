@@ -66,6 +66,10 @@ is
                                                        Which : in texture_Set.texture_ID := 1) is null;
    function  texture_Applied    (Self : in     Item;   Which : in texture_Set.texture_ID := 1) return Boolean;
 
+   procedure Tiling_is          (Self : in out Item;   Now   : in texture_Set.Tiling;
+                                                       Which : in texture_Set.texture_ID := 1) is null;
+   function  Tiling             (Self : in     Item;   Which : in texture_Set.texture_ID := 1) return texture_Set.Tiling;
+
 
 
    procedure Bounds_are      (Self : in out Item'Class;   Now : in Bounds);

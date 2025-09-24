@@ -97,6 +97,20 @@ is
 
 
 
+   --  vec2
+   --
+   procedure Value_is (Self : in vec2;   Now : in Vector_2)
+   is
+   begin
+      Tasks.check;
+      glUniform2fv (Self.gl_Variable,
+                    1,
+                    Now (1)'Address);
+      Errors.log;
+   end Value_is;
+
+
+
    --  vec3
    --
    procedure Value_is (Self : in vec3;   Now : in Vector_3)

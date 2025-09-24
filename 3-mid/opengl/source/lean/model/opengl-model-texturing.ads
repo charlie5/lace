@@ -26,6 +26,13 @@ is
       procedure Fade_is            (Self : in out textured_Item;   Which : in texture_Set.texture_Id;
                                                                    Now   : in texture_Set.fade_Level);
 
+      overriding
+      function  Tiling             (Self : in     textured_Item;   Which : in texture_Set.texture_Id) return texture_Set.Tiling;
+
+      overriding
+      procedure Tiling_is          (Self : in out textured_Item;   Which : in texture_Set.texture_Id;
+                                                                   Now   : in texture_Set.Tiling);
+
       procedure Texture_is         (Self : in out textured_Item;   Which : in texture_Set.texture_Id;
                                                                    Now   : in asset_Name);
 

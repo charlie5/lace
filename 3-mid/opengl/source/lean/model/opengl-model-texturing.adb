@@ -7,12 +7,13 @@ is
 
    package body Mixin
    is
+
       overriding
       procedure Fade_is (Self : in out textured_Item;   Which : in texture_Set.texture_Id;
                                                         Now   : in texture_Set.fade_Level)
       is
       begin
-         Self.texture_Details.Fades (which) := Now;
+         Self.texture_Details.Fades (Which) := Now;
       end Fade_is;
 
 
@@ -21,8 +22,28 @@ is
       function Fade (Self : in textured_Item;   Which : in texture_Set.texture_Id) return texture_Set.fade_Level
       is
       begin
-         return Self.texture_Details.Fades (which);
+         return Self.texture_Details.Fades (Which);
       end Fade;
+
+
+
+      overriding
+      procedure Tiling_is (Self : in out textured_Item;   Which : in texture_Set.texture_Id;
+                                                          Now   : in texture_Set.Tiling)
+      is
+      begin
+         Self.texture_Details.texture_Tilings (Which) := Now;
+      end Tiling_is;
+
+
+
+      overriding
+      function Tiling (Self : in textured_Item;   Which : in texture_Set.texture_Id) return texture_Set.Tiling
+      is
+      begin
+         return Self.texture_Details.texture_Tilings (Which);
+      end Tiling;
+
 
 
 
@@ -30,7 +51,7 @@ is
                                                            Now   : in openGL.asset_Name)
       is
       begin
-         Self.texture_Details.Textures (Positive (which)) := Now;
+         Self.texture_Details.Textures (Positive (Which)) := Now;
       end Texture_is;
 
 

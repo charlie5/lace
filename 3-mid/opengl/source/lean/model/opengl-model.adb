@@ -240,6 +240,25 @@ is
 
 
 
+   procedure Tiling_is (Self : in out Item;   Which : in texture_Set.texture_Id;
+                                              Now   : in texture_Set.Tiling)
+   is
+   begin
+      raise program_Error with External_Tag (Model.item'Class (Self)'Tag) & " Model does not support texturing.";
+   end Tiling_is;
+
+
+
+   function Tiling (Self : in Item;   Which : in texture_Set.texture_Id) return texture_Set.Tiling
+   is
+   begin
+      raise program_Error with External_Tag (Model.item'Class (Self)'Tag) & " Model does not support texturing.";
+      return (S => 0.0,
+              T => 0.0);
+   end Tiling;
+
+
+
    function texture_Count (Self : in Item) return Natural
    is
    begin

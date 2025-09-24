@@ -25,6 +25,14 @@ is
    type texture_Ids is array (Positive range <>) of texture_Id;
 
 
+   type Tiling is     -- The number of times the texture should be wrapped.
+      record
+         S : Real;
+         T : Real;
+      end record;
+
+   type Tilings is array (texture_Id) of Tiling;
+
 
    --------
    --- Fade
@@ -44,6 +52,7 @@ is
          Fade            : fade_Level                       := 0.0;
          Object          : openGL.Texture.Object            := openGL.Texture.null_Object;
          Applied         : Boolean                          := True;                           -- Whether this texture is painted on or not.
+         Tiling          : texture_Set.Tiling               := (1.0, 1.0);
       end record;
 
    type fadeable_Textures is array (texture_Id range 1 .. max_Textures) of fadeable_Texture;
@@ -89,19 +98,13 @@ is
    --- Details
    --
 
-   type Tiling is     -- The number of times the texture should be wrapped.
-      record
-         S : Real;
-         T : Real;
-      end record;
-
    type Details is
       record
          Fades            : fade_Levels                (texture_Id)       := [others => 0.0];
          Textures         : asset_Names (1 .. Positive (texture_Id'Last)) := [others => null_Asset];     -- The textures to be applied to the visual.
          texture_Count    : Natural                                       := 0;
-         texture_Tiling   : Tiling                                        := (S => 1.0,
-                                                                              T => 1.0);
+         texture_Tilings  : Tilings                                       := [others => (S => 1.0,
+                                                                                         T => 1.0)];
          texture_Applies  : texture_Apply_array                           := [1 => True, others => False];
          Animation        : Animation_view;
       end record;

@@ -15,7 +15,7 @@ is
    --  Forge
    --
 
-   procedure define  (Self : in out Item;   Program : access openGL.Program.item'class;
+   procedure define  (Self : in out Item;   Program : access openGL.Program.item'Class;
                                             Name    : in     String);
    overriding
    procedure destroy (Self : in out Item);
@@ -33,6 +33,7 @@ is
    type bool      is new Variable.uniform.item with private;
    type int       is new Variable.uniform.item with private;
    type float     is new Variable.uniform.item with private;
+   type vec2      is new Variable.uniform.item with private;
    type vec3      is new Variable.uniform.item with private;
    type vec4      is new Variable.uniform.item with private;
    type mat3      is new Variable.uniform.item with private;
@@ -43,6 +44,7 @@ is
    procedure Value_is (Self : in bool;    Now : in Boolean);
    procedure Value_is (Self : in int;     Now : in Integer);
    procedure Value_is (Self : in float;   Now : in Real);
+   procedure Value_is (Self : in vec2;    Now : in Vector_2);
    procedure Value_is (Self : in vec3;    Now : in Vector_3);
    procedure Value_is (Self : in vec4;    Now : in Vector_4);
    procedure Value_is (Self : in mat3;    Now : in Matrix_3x3);
@@ -58,6 +60,7 @@ private
    type int       is new Variable.uniform.item with null record;
    type float     is new Variable.uniform.item with null record;
 
+   type vec2      is new Variable.uniform.item with null record;
    type vec3      is new Variable.uniform.item with null record;
    type vec4      is new Variable.uniform.item with null record;
 

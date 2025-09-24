@@ -2,6 +2,7 @@ uniform int         texture_Count;
 uniform sampler2D   Textures        [16];
 uniform float       Fade            [16];
 uniform bool        texture_Applies [16];
+uniform vec2        Tiling          [16];
 
 
 vec4
@@ -14,17 +15,17 @@ apply_Texturing (vec2   Coords)
     {
         if (texture_Applies [i])
         {
-            Color.rgb +=   texture (Textures [i], Coords).rgb
-                         * texture (Textures [i], Coords).a
+            vec2    tiled_Coords;
+            
+            tiled_Coords.s = Coords.s * Tiling [i].s;
+            tiled_Coords.t = Coords.t * Tiling [i].t;
+            
+            Color.rgb +=   texture (Textures [i], tiled_Coords).rgb
+                         * texture (Textures [i], tiled_Coords).a
                          * (1.0 - Fade [i]);
                                       
-//            Color.a    += texture (Textures [i],  Coords).a * (1.0 - Fade [1]);
-
             Color.a    = max (Color.a,
-                              texture (Textures [i],Coords).a * (1.0 - Fade [i]));
-
-//            Color.a    = max (Color.a,
-//                              texture (Textures [i],Coords).a);
+                              texture (Textures [i], tiled_Coords).a * (1.0 - Fade [i]));
         }
     }
     

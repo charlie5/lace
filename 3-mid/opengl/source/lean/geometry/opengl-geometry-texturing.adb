@@ -62,8 +62,10 @@ is
       then
          for i in 1 .. openGL.texture_Set.texture_Id (for_Model.texture_Count)
          loop
-            Uniforms.Textures (i).fade_Uniform           .Value_is (Real (for_Model.Fade      (Which => i)));
-            Uniforms.Textures (i).texture_applied_Uniform.Value_is (for_Model.texture_Applied (Which => i));
+            Uniforms.Textures (i).tiling_Uniform         .Value_is (Vector_2' ((for_Model.Tiling  (Which => i).S,
+                                                                                for_Model.Tiling  (Which => i).T)));
+            Uniforms.Textures (i).fade_Uniform           .Value_is (Real     (for_Model.Fade      (Which => i)));
+            Uniforms.Textures (i).texture_applied_Uniform.Value_is (for_Model.texture_Applied     (Which => i));
 
             glUniform1i     (Uniforms.Textures (i).texture_Uniform.gl_Variable,
                              GLint (i) - 1);
@@ -92,10 +94,12 @@ is
             texture_uniform_Name         : constant String   := "Textures["        & trim (Natural'Image (i - 1), Left) & "]";
             fade_uniform_Name            : constant String   := "Fade["            & trim (Natural'Image (i - 1), Left) & "]";
             texture_applies_uniform_Name : constant String   := "texture_Applies[" & trim (Natural'Image (i - 1), Left) & "]";
+            tiling_uniform_Name          : constant String   := "Tiling["          & trim (Natural'Image (i - 1), Left) & "]";
          begin
             Uniforms.Textures (Id).        texture_Uniform := for_Program.uniform_Variable (Named =>         texture_uniform_Name);
             Uniforms.Textures (Id).           fade_Uniform := for_Program.uniform_Variable (Named =>            fade_uniform_Name);
             Uniforms.Textures (Id).texture_applied_Uniform := for_Program.uniform_Variable (Named => texture_applies_uniform_Name);
+            Uniforms.Textures (Id).tiling_Uniform          := for_Program.uniform_Variable (Named =>          tiling_uniform_Name);
          end;
       end loop;
 
@@ -139,7 +143,7 @@ is
       function Fade (Self : in Item;   Which : in texture_Set.texture_ID := 1) return texture_Set.fade_Level
       is
       begin
-         return Self.texture_Set.Textures (which).Fade;
+         return Self.texture_Set.Textures (Which).Fade;
       end Fade;
 
 
@@ -180,8 +184,31 @@ is
       function  texture_Applied    (Self : in Item;   Which : in texture_Set.texture_ID := 1) return Boolean
       is
       begin
-         return Self.texture_Set.Textures (which).Applied;
+         return Self.texture_Set.Textures (Which).Applied;
       end texture_Applied;
+
+
+
+      overriding
+      procedure Tiling_is (Self : in out Item;   Now   : in texture_Set.Tiling;
+                                                 Which : in texture_Set.texture_ID := 1)
+      is
+      begin
+         Self.texture_Set.Textures (Which).Tiling := Now;
+      end Tiling_is;
+
+
+
+      overriding
+      function Tiling (Self : in     Item;   Which : in texture_Set.texture_ID := 1) return texture_Set.Tiling
+      is
+      begin
+         return Self.texture_Set.Textures (Which).Tiling;
+      end Tiling;
+
+
+
+
 
 
 

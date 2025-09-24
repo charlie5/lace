@@ -61,6 +61,7 @@ is
    function uniform_Variable   (Self : access Item'Class;   Named : in String) return Variable.uniform.bool;
    function uniform_Variable   (Self : access Item'Class;   Named : in String) return Variable.uniform.int;
    function uniform_Variable   (Self : access Item'Class;   Named : in String) return Variable.uniform.float;
+   function uniform_Variable   (Self : access Item'Class;   Named : in String) return Variable.uniform.vec2;
    function uniform_Variable   (Self : access Item'Class;   Named : in String) return Variable.uniform.vec3;
    function uniform_Variable   (Self : access Item'Class;   Named : in String) return Variable.uniform.vec4;
    function uniform_Variable   (Self : access Item'Class;   Named : in String) return Variable.uniform.mat3;
