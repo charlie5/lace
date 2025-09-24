@@ -168,7 +168,7 @@ is
                                                                                                 texture_Applies => [1 => True,    others => <>],
                                                                                                 Textures        => [1 => Texture, others => <>],
                                                                                                 texture_Count   => 1,
-                                                                                                texture_Tiling  => (S => 1.0, T => 1.0),
+                                                                                                texture_Tilings => [others => (S => 1.0, T => 1.0)],
                                                                                                 Animation       => null)).all'Access;
       end if;
 
@@ -189,7 +189,7 @@ is
    function new_polygon_Sprite (in_World       : in gel.World.view;
                                 Name           : in String;
                                 Site           : in math.Vector_3      := math.Origin_3D;
-                                Spin        : in math.Matrix_3x3    := math.Identity_3x3;
+                                Spin           : in math.Matrix_3x3    := math.Identity_3x3;
                                 Mass           : in math.Real          := 1.0;
                                 Friction       : in math.Real          := 0.5;
                                 Bounce         : in math.Real          := 0.5;
@@ -197,7 +197,7 @@ is
                                 Vertices       : in Geometry_2d.Sites;
                                 Color          : in openGL.Color       := opengl.Palette.White;
                                 Texture        : in openGL.asset_Name  := openGL.null_Asset;
-                                texture_Tiling : in openGL.texture_Set.Tiling := (S => 1.0, T => 1.0);
+                                texture_Tiling : in openGL.texture_Set.Tilings := [others => (S => 1.0, T => 1.0)];
                                 user_Data      : in any_user_Data_view := null) return gel.Sprite.view
    is
       use type Geometry_2d.Sites,
@@ -223,7 +223,7 @@ is
                                                                               texture_Details => (Fades           => [1 => 0.0,     others => <>],
                                                                                                   Textures        => [1 => Texture, others => <>],
                                                                                                   texture_Count   => 1,
-                                                                                                  texture_Tiling  => texture_Tiling,
+                                                                                                  texture_Tilings  => texture_Tiling,
                                                                                                   texture_Applies => [others => True],
                                                                                                   Animation       => null)).all'Access;
       end if;
@@ -254,7 +254,7 @@ is
                                   Height         : in math.Real;
                                   Color          : in openGL.Color       := opengl.Palette.White;
                                   Texture        : in openGL.asset_Name  := openGL.null_Asset;
-                                  texture_Tiling : in openGL.texture_Set.Tiling := (S => 1.0, T => 1.0);
+                                  texture_Tiling : in openGL.texture_Set.Tilings := [others => (S => 1.0, T => 1.0)];
                                   user_Data      : in any_user_Data_view := null) return gel.Sprite.view
    is
       use Math;
