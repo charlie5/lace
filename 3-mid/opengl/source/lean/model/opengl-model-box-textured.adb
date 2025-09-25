@@ -51,6 +51,7 @@ is
          the_Primitive : constant Primitive.view         := Primitive.indexed.new_Primitive (triangle_Fan,
                                                                                              the_Indices).all'Access;
       begin
+         the_Geometry.Model_is     (Self.all'unchecked_Access);
          the_Geometry.Vertices_are (Vertices);
          the_Geometry.add          (the_Primitive);
 
@@ -86,7 +87,6 @@ is
          then
             front_Face.Texture_is     (Textures.fetch (Self.Faces (Front).texture_Name));
             front_Face.is_Transparent (now => front_Face.Texture.is_Transparent);
-            front_Face.Model_is       (Self.all'unchecked_Access);
          end if;
       end;
 
@@ -106,7 +106,6 @@ is
          then
             rear_Face.Texture_is     (Textures.fetch (Self.Faces (Front).texture_Name));
             rear_Face.is_Transparent (now => rear_Face.Texture.is_Transparent);
-            rear_Face.Model_is       (Self.all'unchecked_Access);
          end if;
       end;
 
@@ -126,7 +125,6 @@ is
          then
             upper_Face.Texture_is     (Textures.fetch (Self.Faces (Front).texture_Name));
             upper_Face.is_Transparent (now => upper_Face.Texture.is_Transparent);
-            upper_Face.Model_is       (Self.all'unchecked_Access);
          end if;
       end;
 
@@ -146,7 +144,6 @@ is
          then
             lower_Face.Texture_is     (Textures.fetch (Self.Faces (Front).texture_Name));
             lower_Face.is_Transparent (now => lower_Face.Texture.is_Transparent);
-            lower_Face.Model_is       (Self.all'unchecked_Access);
          end if;
       end;
 
@@ -166,7 +163,6 @@ is
          then
             left_Face.Texture_is     (Textures.fetch (Self.Faces (Front).texture_Name));
             left_Face.is_Transparent (now => left_Face.Texture.is_Transparent);
-            left_Face.Model_is       (Self.all'unchecked_Access);
          end if;
       end;
 
@@ -186,7 +182,6 @@ is
          then
             right_Face.Texture_is     (Textures.fetch (Self.Faces (Front).texture_Name));
             right_Face.is_Transparent (now => right_Face.Texture.is_Transparent);
-            right_Face.Model_is       (Self.all'unchecked_Access);
          end if;
       end;
 

@@ -77,6 +77,7 @@ is
                                                the_Indices).all'Access;
 
       begin
+         the_Geometry.Model_is     (Self.all'unchecked_Access);
          the_Geometry.Vertices_are (Vertices);
          the_Geometry.add          (the_Primitive);
 
@@ -99,6 +100,7 @@ is
            := Primitive.indexed.new_Primitive (triangle_Strip,
                                                the_Indices);
       begin
+         the_Geometry.Model_is     (Self.all'unchecked_Access);
          the_Geometry.Vertices_are (Vertices);
          the_Geometry.add          (Primitive.view (the_Primitive));
 

@@ -284,59 +284,16 @@ is
          the_Primitive := Primitive.indexed            .new_Primitive (Triangles, the_Indices);
          the_Geometry  := Geometry.lit_colored_textured.new_Geometry  (texture_is_Alpha => True);
 
+         the_Geometry.Model_is     (Self.all'unchecked_Access);
          the_Geometry.add          (Primitive.view (the_Primitive));
          the_Geometry.Vertices_are (the_Vertices);
          the_Geometry.Texture_is   (Texture.Forge.to_Texture (Self.Font.gl_Texture));
-         the_Geometry.Model_is     (Self.all'unchecked_Access);
          the_Geometry.is_Transparent;
 
-         --  the_Geometry.texture_Details_is (openGL.texture_Set.to_Details ([1 => to_Asset ("assets/textures/Face1.bmp")]));
 
          return [1 => Geometry.view (the_Geometry)];
       end;
    end to_GL_Geometries;
-
-
-
-   ------------
-   -- Texturing
-   --
-
-   --  overriding
-   --  procedure Fade_is (Self : in out Item;   Which : in texture_Set.texture_Id;
-   --                                           Now   : in texture_Set.fade_Level)
-   --  is
-   --  begin
-   --     null;
-   --  end Fade_is;
-   --
-   --
-   --
-   --  overriding
-   --  function Fade (Self : in Item;   Which : in texture_Set.texture_Id) return texture_Set.fade_Level
-   --  is
-   --  begin
-   --     return 0.0;
-   --  end Fade;
-   --
-   --
-   --
-   --  procedure Texture_is (Self : in out Item;   Which : in texture_Set.texture_Id;
-   --                                              Now   : in openGL.asset_Name)
-   --  is
-   --  begin
-   --     null;
-   --  end Texture_is;
-   --
-   --
-   --
-   --
-   --  overriding
-   --  function texture_Count (Self : in Item) return Natural
-   --  is
-   --  begin
-   --     return 1;
-   --  end texture_Count;
 
 
 end openGL.Model.Text.lit_colored;

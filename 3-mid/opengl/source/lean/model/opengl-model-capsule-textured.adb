@@ -38,8 +38,7 @@ is
    is
       pragma unreferenced (Textures, Fonts);
 
-      use --Geometry,
-          Geometry.textured,
+      use Geometry.textured,
           real_Functions;
 
       Length        : constant Real    := Self.Height;
@@ -77,6 +76,8 @@ is
    begin
       --  Define capsule shaft,
       --
+      the_shaft_Geometry.Model_is (Self.all'unchecked_Access);
+
       declare
          vertex_Count  : constant      Index_t :=      Index_t (sides_Count * 2 + 2);   -- 2 triangles per side plus 2 since we cannot share the first and last edge.
          indices_Count : constant long_Index_t := long_Index_t (sides_Count * 2 * 3);   -- 2 triangles per side with 3 vertices per triangle.
@@ -209,7 +210,10 @@ is
             longitude_Spacing : constant Real := Degrees_360 / Real (longitude_Count);
 
             a, b : Real := 0.0;          -- Angular 'cursors' used to track lat/long for texture coords.
+
          begin
+            cap_Geometry.Model_is (Self.all'unchecked_Access);
+
             if not is_Fore
             then
                a := Degrees_360;
@@ -371,9 +375,6 @@ is
          cap_2_Geometry := new_Cap (is_Fore => False);
       end;
 
-      the_shaft_Geometry.Model_is (Self.all'unchecked_Access);
-      cap_1_Geometry    .Model_is (Self.all'unchecked_Access);
-      cap_2_Geometry    .Model_is (Self.all'unchecked_Access);
 
       return [1 => the_shaft_Geometry.all'Access,
               2 =>     cap_1_Geometry.all'Access,

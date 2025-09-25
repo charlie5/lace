@@ -70,6 +70,8 @@ is
       the_Geometry   : constant Geometry.textured.view := Geometry.textured.new_Geometry;
 
    begin
+      the_Geometry.Model_is (Self.all'unchecked_Access);
+
       set_Sites:
       declare
          use linear_Algebra_3d;
@@ -199,7 +201,6 @@ is
          the_Geometry.add (Primitive.view (the_Primitive));
       end;
 
-      the_Geometry.Model_is (Self.all'unchecked_Access);
 
       return [1 => Geometry.view (the_Geometry)];
    end to_GL_Geometries;

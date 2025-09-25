@@ -71,8 +71,9 @@ is
            := Primitive.indexed.new_Primitive (triangle_Fan,
                                                the_Indices);
       begin
+         the_Geometry.Model_is     (Self.all'unchecked_Access);
          the_Geometry.Vertices_are (Vertices.all);
-         the_Geometry.add (Primitive.view (the_Primitive));
+         the_Geometry.add          (Primitive.view (the_Primitive));
 
          return the_Geometry;
       end new_hexagon_Face;
@@ -91,6 +92,7 @@ is
          the_Primitive : constant Primitive.view
            := Primitive.indexed.new_Primitive (triangle_Strip, the_Indices).all'Access;
       begin
+         the_Geometry.Model_is     (Self.all'unchecked_Access);
          the_Geometry.Vertices_are (Vertices.all);
          the_Geometry.add          (the_Primitive);
 

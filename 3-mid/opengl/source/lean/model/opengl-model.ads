@@ -74,6 +74,10 @@ is
    -- Texturing
    --
 
+   function  texture_Object     (Self : in     Item;   Which : in texture_Set.texture_Id) return texture.Object;
+   procedure texture_Object_is  (Self : in out Item;   Which : in texture_Set.texture_Id;
+                                                       Now   : in texture.Object);
+
    function  Fade               (Self : in     Item;   Which : in texture_Set.texture_Id) return texture_Set.fade_Level;
    procedure Fade_is            (Self : in out Item;   Which : in texture_Set.texture_Id;
                                                        Now   : in texture_Set.fade_Level);

@@ -70,6 +70,7 @@ is
          Id : texture_Set.texture_Id;
 
       begin
+         the_Geometry.Model_is     (Self.all'unchecked_Access);
          the_Geometry.Vertices_are (Vertices);
          the_Geometry.add          (Primitive.view (the_Primitive));
 
@@ -77,8 +78,8 @@ is
          loop
             Id := texture_Id (i);
 
-            the_Geometry.Fade_is (Which => Id,
-                                  Now   => Self.texture_Details.Fades (Id));
+            --  the_Geometry.Fade_is (Which => Id,
+            --                        Now   => Self.texture_Details.Fades (Id));
 
             the_Geometry.Texture_is     (Which => Id,
                                          Now   => Textures.fetch (Self.texture_Details.Textures (i)));
@@ -86,7 +87,6 @@ is
          end loop;
 
          the_Geometry.is_Transparent (True);     -- TODO: Do transparency properly.
-         the_Geometry.Model_is       (Self.all'unchecked_Access);
 
          return the_Geometry;
       end new_Geometry;

@@ -48,9 +48,42 @@ is
 
 
 
+   --  procedure enable (for_Model   : in openGL.Model.view;
+   --                    Uniforms    : in texturing.Uniforms;
+   --                    texture_Set : in openGL.texture_Set.Item)
+   --  is
+   --     use GL.Binding,
+   --         GL.lean;
+   --
+   --     use type GLint;
+   --
+   --  begin
+   --     if for_Model.texture_Count > 0
+   --     then
+   --        for i in 1 .. openGL.texture_Set.texture_Id (for_Model.texture_Count)
+   --        loop
+   --           Uniforms.Textures (i).tiling_Uniform         .Value_is (Vector_2' ((for_Model.Tiling  (Which => i).S,
+   --                                                                               for_Model.Tiling  (Which => i).T)));
+   --           Uniforms.Textures (i).fade_Uniform           .Value_is (Real     (for_Model.Fade      (Which => i)));
+   --           Uniforms.Textures (i).texture_applied_Uniform.Value_is (for_Model.texture_Applied     (Which => i));
+   --
+   --           glUniform1i     (Uniforms.Textures (i).texture_Uniform.gl_Variable,
+   --                            GLint (i) - 1);
+   --           glActiveTexture (all_texture_Units (i));
+   --           glBindTexture   (GL_TEXTURE_2D,
+   --                            texture_Set.Textures (i).Object.Name);
+   --        end loop;
+   --     end if;
+   --
+   --     Uniforms.Count.Value_is (for_Model.texture_Count);
+   --  end enable;
+
+
+
+
    procedure enable (for_Model   : in openGL.Model.view;
-                     Uniforms    : in texturing.Uniforms;
-                     texture_Set : in openGL.texture_Set.Item)
+                     Uniforms    : in texturing.Uniforms)
+                     --  texture_Set : in openGL.texture_Set.Item)
    is
       use GL.Binding,
           GL.lean;
@@ -71,7 +104,7 @@ is
                              GLint (i) - 1);
             glActiveTexture (all_texture_Units (i));
             glBindTexture   (GL_TEXTURE_2D,
-                             texture_Set.Textures (i).Object.Name);
+                             for_Model.texture_Object (i).Name);
          end loop;
       end if;
 
@@ -134,7 +167,9 @@ is
                                                Which : in texture_Set.texture_ID := 1)
       is
       begin
-         Self.texture_Set.Textures (Which).Fade := Now;
+         --  Self.texture_Set.Textures (Which).Fade := Now;
+         Self.Model.Fade_is (Which => Which,
+                             Now   => Now);
       end Fade_is;
 
 
@@ -143,7 +178,8 @@ is
       function Fade (Self : in Item;   Which : in texture_Set.texture_ID := 1) return texture_Set.fade_Level
       is
       begin
-         return Self.texture_Set.Textures (Which).Fade;
+         --  return Self.texture_Set.Textures (Which).Fade;
+         return Self.Model.Fade (Which => Which);
       end Fade;
 
 
@@ -153,9 +189,11 @@ is
                                                   Which : in texture_Set.texture_ID := 1)
       is
       begin
-         Texture_is (in_Set => Self.texture_Set,
-                     Which  => Which,
-                     Now    => Now);
+         --  Texture_is (in_Set => Self.texture_Set,
+         --              Which  => Which,
+         --              Now    => Now);
+         Self.Model.texture_Object_is (Which => Which,
+                                       Now   => Now);
       end Texture_is;
 
 
@@ -164,8 +202,9 @@ is
       function Texture (Self : in Item;   Which : texture_Set.texture_ID := 1) return openGL.Texture.Object
       is
       begin
-         return openGL.texture_Set.Texture (in_Set => Self.texture_Set,
-                                            Which  => Which);
+         --  return openGL.texture_Set.Texture (in_Set => Self.texture_Set,
+         --                                     Which  => Which);
+         return Self.Model.texture_Object (Which);
       end Texture;
 
 
@@ -175,7 +214,8 @@ is
                                                           Which : in texture_Set.texture_ID := 1)
       is
       begin
-         Self.texture_Set.Textures (Which).Applied := Now;
+         --  Self.texture_Set.Textures (Which).Applied := Now;
+         Self.Model.texture_Applied_is (Which, Now);
       end texture_Applied_is;
 
 
@@ -184,7 +224,8 @@ is
       function  texture_Applied    (Self : in Item;   Which : in texture_Set.texture_ID := 1) return Boolean
       is
       begin
-         return Self.texture_Set.Textures (Which).Applied;
+         --  return Self.texture_Set.Textures (Which).Applied;
+         return Self.Model.texture_Applied (Which);
       end texture_Applied;
 
 
@@ -194,7 +235,9 @@ is
                                                  Which : in texture_Set.texture_ID := 1)
       is
       begin
-         Self.texture_Set.Textures (Which).Tiling := Now;
+         --  Self.texture_Set.Textures (Which).Tiling := Now;
+         Self.Model.Tiling_is (Which => Which,
+                               Now   => Now);
       end Tiling_is;
 
 
@@ -203,7 +246,8 @@ is
       function Tiling (Self : in     Item;   Which : in texture_Set.texture_ID := 1) return texture_Set.Tiling
       is
       begin
-         return Self.texture_Set.Textures (Which).Tiling;
+         --  return Self.texture_Set.Textures (Which).Tiling;
+         return Self.Model.Tiling (Which);
       end Tiling;
 
 
@@ -216,9 +260,11 @@ is
       procedure enable_Textures (Self : in out Item)
       is
       begin
+         --  texturing.enable (for_Model   => Self.Model.all'Access,
+         --                    Uniforms    => texture_Uniforms,
+         --                    texture_Set => Self.texture_Set);
          texturing.enable (for_Model   => Self.Model.all'Access,
-                           Uniforms    => texture_Uniforms,
-                           texture_Set => Self.texture_Set);
+                           Uniforms    => texture_Uniforms);
       end enable_Textures;
 
 

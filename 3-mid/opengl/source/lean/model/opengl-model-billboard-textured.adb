@@ -60,6 +60,7 @@ is
          the_Primitive : constant Primitive.view         := Primitive.indexed.new_Primitive (triangle_Fan,
                                                                                              the_Indices).all'Access;
       begin
+         the_Geometry.Model_is (Self.all'unchecked_Access);
          the_Geometry.Vertices_are (Vertices);
          the_Geometry.add (the_Primitive);
          the_Geometry.is_Transparent;
@@ -112,8 +113,6 @@ is
             the_Face.Texture_is (Self.Texture);
          end if;
       end;
-
-      the_Face.Model_is (Self.all'unchecked_Access);
 
       return [1 => the_Face.all'Access];
    end to_GL_Geometries;

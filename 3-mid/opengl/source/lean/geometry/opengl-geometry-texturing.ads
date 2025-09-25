@@ -40,9 +40,12 @@ is
    --- Operations
    --
 
+   --  procedure enable (for_Model   : in     openGL.Model.view;
+   --                    Uniforms    : in     texturing.Uniforms;
+   --                    texture_Set : in     openGL.texture_Set.Item);
+
    procedure enable (for_Model   : in     openGL.Model.view;
-                     Uniforms    : in     texturing.Uniforms;
-                     texture_Set : in     openGL.texture_Set.Item);
+                     Uniforms    : in     texturing.Uniforms);
 
 
 
@@ -99,7 +102,7 @@ is
 
       type Item is new Geometry.item with
          record
-            texture_Set : openGL.texture_Set.item;
+            null; --texture_Set : openGL.texture_Set.item;
          end record;
 
    end Mixin;

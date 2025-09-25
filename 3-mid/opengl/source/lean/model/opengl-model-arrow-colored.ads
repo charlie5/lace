@@ -27,7 +27,7 @@ is
    --
 
    overriding
-   function  to_GL_Geometries (Self : access Item;   Textures : access Texture.name_Map_of_texture'Class;
+   function  to_GL_Geometries (Self : access Item;   Textures : access openGL.Texture.name_Map_of_texture'Class;
                                                      Fonts    : in     Font.font_id_Map_of_font) return Geometry.views;
 
    procedure end_Site_is (Self : in out Item;   Now     : in Vector_3;

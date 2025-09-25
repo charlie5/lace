@@ -81,6 +81,8 @@ is
       the_Geometry  : constant Geometry.lit_textured.view := Geometry.lit_textured.new_Geometry;
 
    begin
+      the_Geometry.Model_is (Self.all'unchecked_Access);
+
       set_Sites:
       declare
          vert_Id          :          Index_t  := 0;
@@ -227,8 +229,6 @@ is
       begin
          the_Geometry.add (Primitive.view (the_Primitive));
       end;
-
-      the_Geometry.Model_is (Self.all'unchecked_Access);
 
       return [1 => Geometry.view (the_Geometry)];
    end to_GL_Geometries;

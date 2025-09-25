@@ -9,6 +9,26 @@ is
    is
 
       overriding
+      procedure texture_Object_is (Self : in out textured_Item;   Which : in texture_Set.texture_Id;
+                                                                  Now   : in openGL.texture.Object)
+      is
+      begin
+         Self.texture_Details.Objects (Integer (Which)) := Now;
+      end texture_Object_is;
+
+
+
+      overriding
+      function texture_Object (Self : in textured_Item;   Which : in texture_Set.texture_Id) return openGL.texture.Object
+      is
+      begin
+         return Self.texture_Details.Objects (Integer (Which));
+      end texture_Object;
+
+
+
+
+      overriding
       procedure Fade_is (Self : in out textured_Item;   Which : in texture_Set.texture_Id;
                                                         Now   : in texture_Set.fade_Level)
       is

@@ -104,7 +104,7 @@ is
 
 
 
-   procedure create_GL_Geometries (Self : in out Item'Class;   Textures : access Texture.name_Map_of_texture'Class;
+   procedure create_GL_Geometries (Self : in out Item'Class;   Textures : access openGL.Texture.name_Map_of_texture'Class;
                                                                Fonts    : in     Font.font_id_Map_of_font)
    is
       all_Geometries : constant Geometry.views := Self.to_GL_Geometries (Textures, Fonts);
@@ -220,6 +220,24 @@ is
    --
 
    use ada.Tags;
+
+
+   function texture_Object (Self : in     Item;   Which : in texture_Set.texture_Id) return openGL.texture.Object
+   is
+   begin
+      raise program_Error with External_Tag (Model.item'Class (Self)'Tag) & " Model does not support texturing.";
+      return openGL.Texture.null_Object;
+   end texture_Object;
+
+
+
+   procedure texture_Object_is (Self : in out Item;   Which : in texture_Set.texture_Id;
+                                                      Now   : in openGL.texture.Object)
+   is
+   begin
+      raise program_Error with External_Tag (Model.item'Class (Self)'Tag) & " Model does not support texturing.";
+   end texture_Object_is;
+
 
 
    procedure Fade_is (Self : in out Item;   Which : in texture_Set.texture_Id;

@@ -52,6 +52,7 @@ is
          the_Primitive : constant Primitive.indexed.view
            := Primitive.indexed.new_Primitive (triangle_Fan, the_Indices);
       begin
+         the_Geometry.Model_is     (Self.all'unchecked_Access);
          the_Geometry.Vertices_are (Vertices);
          the_Geometry.add          (Primitive.view (the_Primitive));
 

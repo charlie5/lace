@@ -18,6 +18,13 @@ is
    is
       type textured_Item is abstract new Item with private;
 
+      overriding
+      procedure texture_Object_is  (Self : in out textured_Item;   Which : in texture_Set.texture_Id;
+                                                                   Now   : in openGL.texture.Object);
+
+      overriding
+      function  texture_Object     (Self : in     textured_Item;   Which : in texture_Set.texture_Id) return openGL.texture.Object;
+
 
       overriding
       function  Fade               (Self : in     textured_Item;   Which : in texture_Set.texture_Id) return texture_Set.fade_Level;

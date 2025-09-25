@@ -420,6 +420,9 @@ is
          deallocate (the_Vertices);
          destroy    (the_Model);
 
+         Self.Geometry.Model_is (Self'unchecked_Access);
+
+
          --  Set the geometry texture.
          --
          if Self.Texture /= null_Asset
