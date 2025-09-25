@@ -167,6 +167,7 @@ is
                                                                             texture_Details => (Fades           => [1 => 0.0,     others => <>],
                                                                                                 texture_Applies => [1 => True,    others => <>],
                                                                                                 Textures        => [1 => Texture, others => <>],
+                                                                                                Objects         => [others => <>],
                                                                                                 texture_Count   => 1,
                                                                                                 texture_Tilings => [others => (S => 1.0, T => 1.0)],
                                                                                                 Animation       => null)).all'Access;
@@ -222,6 +223,7 @@ is
          the_graphics_Model := openGL.Model.polygon.lit_textured.new_Polygon (vertex_Sites    => openGL.Vector_2_array (Vertices),
                                                                               texture_Details => (Fades           => [1 => 0.0,     others => <>],
                                                                                                   Textures        => [1 => Texture, others => <>],
+                                                                                                  Objects         => [others => <>],
                                                                                                   texture_Count   => 1,
                                                                                                   texture_Tilings  => texture_Tiling,
                                                                                                   texture_Applies => [others => True],
