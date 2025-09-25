@@ -25,6 +25,10 @@ is
    type texture_Ids is array (Positive range <>) of texture_Id;
 
 
+   ----------
+   --- Tiling
+   --
+
    type Tiling is     -- The number of times the texture should be wrapped.
       record
          S : Real;
@@ -44,19 +48,11 @@ is
    type fade_Levels is array (texture_Id range <>) of fade_Level;
 
 
+   ---------
+   --- Apply
+   --
+
    type texture_Apply_array is array (texture_Set.texture_Id) of Boolean;
-
-
-   type fadeable_Texture is
-      record
-         --  Fade            : fade_Level                       := 0.0;
-         Object          : openGL.Texture.Object            := openGL.Texture.null_Object;
-         --  Applied         : Boolean                          := True;                           -- Whether this texture is painted on or not.
-         --  Tiling          : texture_Set.Tiling               := (1.0, 1.0);
-      end record;
-
-   type fadeable_Textures is array (texture_Id range 1 .. max_Textures) of fadeable_Texture;
-
 
 
    -------------
@@ -92,18 +88,16 @@ is
                       texture_Applies : in out texture_Apply_array);
 
 
-
-
    -----------
    --- Details
    --
 
    type Details is
       record
+         texture_Count    : Natural                                           := 0;
          Fades            : fade_Levels                    (texture_Id)       := [others => 0.0];
          Textures         : asset_Names     (1 .. Positive (texture_Id'Last)) := [others => null_Asset];
          Objects          : texture.Objects (1 .. Positive (texture_Id'Last)) := [others => texture.null_Object];
-         texture_Count    : Natural                                           := 0;
          texture_Tilings  : Tilings                                           := [others => (S => 1.0,
                                                                                              T => 1.0)];
          texture_Applies  : texture_Apply_array                               := [1 => True, others => False];     -- The textures to be applied to the visual.
@@ -115,24 +109,6 @@ is
                         Animation      : in Animation_view := null) return Details;
 
    no_Details : constant Details;
-
-
-
-   --------
-   --- Item
-   --
-
-   type Item is
-      record
-         Textures       : fadeable_Textures;
-         Count          : Natural          := 0;
-         is_Transparent : Boolean          := False;     -- Any of the textures contains lucid colors.
-         --  initialised    : Boolean          := False;
-      end record;
-
-
-   --  procedure Texture_is      (in_Set : in out Item;   Which : texture_ID := 1;   Now : in openGL.Texture.Object);
-   --  function  Texture         (in_Set : in     Item;   Which : texture_ID := 1)     return openGL.Texture.Object;
 
 
 

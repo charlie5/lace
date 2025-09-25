@@ -71,36 +71,6 @@ is
 
 
 
-
-   --------
-   --- Item
-   --
-
-   procedure Texture_is (in_Set : in out Item;   Which : texture_ID := 1;   Now : in openGL.Texture.Object)
-   is
-   begin
-      in_Set.Textures (Which).Object := Now;
-
-      in_Set.is_Transparent   :=    in_Set.is_Transparent
-                                 or Now   .is_Transparent;
-
-      if Natural (Which) > in_Set.Count
-      then
-         in_Set.Count := Natural (Which);
-      end if;
-   end Texture_is;
-
-
-
-
-   function Texture (in_Set : in  Item;   Which : texture_ID := 1) return openGL.Texture.Object
-   is
-   begin
-      return in_Set.Textures (Which).Object;
-   end Texture;
-
-
-
    -----------
    --- Streams
    --
