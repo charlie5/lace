@@ -70,6 +70,69 @@ is
 
 
 
+   --  function to_Set (texture_Assets : in asset_Names;
+   --                   Animation      : in Animation_view := null) return Item
+   --  is
+   --     Result : Item (Count => texture_Assets'Length);
+   --
+   --  begin
+   --     for i in 1 .. Result.Count
+   --     loop
+   --        Result.Details (i).Object         := texture.null_Object;
+   --        Result.Details (i).Texture        := texture_Assets (Integer (i));
+   --        Result.Details (i).Fade           := 0.0;
+   --        Result.Details (i).texture_Tiling := (S => 1.0, T => 1.0);
+   --
+   --        if i = 1
+   --        then
+   --           Result.Details (i).texture_Apply := True;
+   --        else
+   --           Result.Details (i).texture_Apply := False;
+   --        end if;
+   --     end loop;
+   --
+   --     Result.Animation := Animation;
+   --
+   --     return Result;
+   --  end to_Set;
+
+
+
+   --------------
+   --- Attributes
+   --
+
+   --  function get_Details (Self : in Item) return Detail_array
+   --  is
+   --  begin
+   --     return Self.Details;
+   --  end get_Details;
+   --
+   --
+   --
+   --  procedure Details_are (Self : in out Item;   Now : in Detail_array)
+   --  is
+   --  begin
+   --     Self.Details := Now;
+   --  end Details_are;
+   --
+   --
+   --
+   --  function get_Animation (Self : in Item) return Animation_view
+   --  is
+   --  begin
+   --     return Self.Animation;
+   --  end get_Animation;
+   --
+   --
+   --
+   --  procedure Animation_is (Self : in out Item;   Now : in Animation_view)
+   --  is
+   --  begin
+   --     Self.Animation := Now;
+   --  end Animation_is;
+
+
 
    -----------
    --- Streams

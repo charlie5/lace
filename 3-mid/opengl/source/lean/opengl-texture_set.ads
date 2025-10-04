@@ -15,14 +15,26 @@ package openGL.texture_Set
 --
 is
 
+   max_Textures : constant := 16;     -- 32;
+
+
+   type detail_Count is range 0 .. max_Textures;
+
+
+   --  type Item (Count : detail_Count := 1) is private;
+   --
+   --  null_Set : constant Item;
+
+
+
+
    ---------------
    --- Texture Ids
    --
 
-   max_Textures : constant := 16;     -- 32;
-
    type texture_Id  is range 1 .. max_Textures;
    type texture_Ids is array (Positive range <>) of texture_Id;
+
 
 
    ----------
@@ -88,6 +100,20 @@ is
                       texture_Applies : in out texture_Apply_array);
 
 
+
+   type Detail is
+      record
+         Object         : texture.Object;
+         Texture        : asset_Name;
+         Fade           : fade_Level;
+         texture_Tiling : Tiling;
+         texture_Apply  : Boolean;   -- If the textures is to be applied to the visual.
+      end record;
+
+   type Detail_array is array (detail_Count range <>) of Detail;
+
+
+
    -----------
    --- Details
    --
@@ -105,14 +131,42 @@ is
       end record;
 
 
+
+   ---------
+   --- Forge
+   --
+
    function to_Details (texture_Assets : in asset_Names;
                         Animation      : in Animation_view := null) return Details;
 
    no_Details : constant Details;
 
 
+   --  function to_Set (texture_Assets : in asset_Names;
+   --                   Animation      : in Animation_view := null) return Item;
+
+
+   --------------
+   --- Attributes
+   --
+
+   --  function  get_Details   (Self : in     Item)     return Detail_array;
+   --  procedure Details_are   (Self : in out Item;   Now : in Detail_array);
+   --
+   --  function  get_Animation (Self : in     Item)     return Animation_view;
+   --  procedure Animation_is  (Self : in out Item;   Now : in Animation_view);
+
+
 
 private
+
+   --  type Item (Count : detail_Count := 1) is
+   --     record
+   --        Details    : Detail_array (1 .. Count);
+   --        Animation  : Animation_view;
+   --     end record;
+
+
 
    -----------
    --- Streams
@@ -129,6 +183,7 @@ private
 
 
    no_Details : constant Details := (others => <>);
-
+   --  null_Set   : constant Item    := (Count  => 0,
+   --                                    others => <>);
 
 end openGL.texture_Set;
