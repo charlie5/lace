@@ -20,7 +20,7 @@ is
    --
 
    function new_Polygon (vertex_Sites    : in Vector_2_array;
-                         texture_Details : in texture_Set.Details) return View;
+                         texture_Details : in texture_Set.item) return View;
 
    --------------
    --- Attributes

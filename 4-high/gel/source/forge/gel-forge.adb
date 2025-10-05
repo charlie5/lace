@@ -154,7 +154,7 @@ is
          then
             the_graphics_Model := openGL.Model.sphere.lit_colored_textured.new_Sphere (Radius,
                                                                                        Color => Color,
-                                                                                       texture_Details => openGL.texture_Set.to_Details ([1 => Texture]),
+                                                                                       texture_Details => openGL.texture_Set.to_Set ([1 => Texture]),
                                                                                        Image => Texture).all'Access;
          else
             the_graphics_Model := openGL.Model.circle.colored.new_circle (Radius,
@@ -164,13 +164,7 @@ is
 
       else
          the_graphics_Model := openGL.Model.circle.lit_textured.new_Circle (Radius,
-                                                                            texture_Details => (Fades           => [1 => 0.0,     others => <>],
-                                                                                                texture_Applies => [1 => True,    others => <>],
-                                                                                                Textures        => [1 => Texture, others => <>],
-                                                                                                Objects         => [others => <>],
-                                                                                                texture_Count   => 1,
-                                                                                                texture_Tilings => [others => (S => 1.0, T => 1.0)],
-                                                                                                Animation       => null)).all'Access;
+                                                                            texture_Details => openGL.texture_Set.to_Set ([1 => Texture])).all'Access;
       end if;
 
       return gel.Sprite.Forge.new_Sprite (Name,
@@ -221,13 +215,16 @@ is
                                                                              (Color, openGL.Opaque)).all'Access;
       else
          the_graphics_Model := openGL.Model.polygon.lit_textured.new_Polygon (vertex_Sites    => openGL.Vector_2_array (Vertices),
-                                                                              texture_Details => (Fades           => [1 => 0.0,     others => <>],
-                                                                                                  Textures        => [1 => Texture, others => <>],
-                                                                                                  Objects         => [others => <>],
-                                                                                                  texture_Count   => 1,
-                                                                                                  texture_Tilings  => texture_Tiling,
-                                                                                                  texture_Applies => [others => True],
-                                                                                                  Animation       => null)).all'Access;
+                                                                              texture_Details => openGL.texture_Set.to_Set (texture_Assets  => [1 => Texture],
+                                                                                                                            texture_Tilings => texture_Tiling,
+                                                                                                                            Animation       => null)).all'Access;
+                                                                              --  texture_Details => (Fades           => [1 => 0.0,     others => <>],
+                                                                              --                      Textures        => [1 => Texture, others => <>],
+                                                                              --                      Objects         => [others => <>],
+                                                                              --                      texture_Count   => 1,
+                                                                              --                      texture_Tilings => texture_Tiling,
+                                                                              --                      texture_Applies => [others => True],
+                                                                              --                      Animation       => null)).all'Access;
       end if;
 
       return gel.Sprite.Forge.new_Sprite (Name,
@@ -318,7 +315,7 @@ is
             the_graphics_Model := openGL.Model.sphere.lit_colored_textured.new_Sphere (Radius,
                                                                                        lat_Count  => lat_Count,
                                                                                        long_Count => long_Count,
-                                                                                       texture_Details => openGL.texture_Set.to_Details ([1 => Texture]),
+                                                                                       texture_Details => openGL.texture_Set.to_Set ([1 => Texture]),
                                                                                        Image      => Texture).all'Access;
          else
             the_graphics_Model := openGL.Model.sphere.lit_colored.new_Sphere (Radius,
@@ -337,7 +334,7 @@ is
             the_graphics_Model := openGL.Model.sphere.textured.new_Sphere (Radius,
                                                                            lat_Count  => lat_Count,
                                                                            long_Count => long_Count,
-                                                                           texture_Details => openGL.texture_Set.to_Details ([1 => Texture]),
+                                                                           texture_Details => openGL.texture_Set.to_Set ([1 => Texture]),
                                                                            Image      => Texture).all'Access;
          end if;
       end if;
@@ -371,7 +368,7 @@ is
    begin
       the_graphics_Model := openGL.Model.sphere.textured.new_Sphere (Radius,
                                                                      lat_Count    => 180,
-                                                                     texture_Details => openGL.texture_Set.to_Details ([1 => Texture]),
+                                                                     texture_Details => openGL.texture_Set.to_Set ([1 => Texture]),
                                                                      Image        => Texture,
                                                                      is_Skysphere => True).all'Access;
       return gel.Sprite.Forge.new_Sprite ("skysphere_Sprite",
@@ -449,7 +446,7 @@ is
                                                         Lower => (texture_Name => Texture),
                                                         Left  => (texture_Name => Texture),
                                                         Right => (texture_Name => Texture)],
-                                                        texture_Details => openGL.texture_Set.to_Details ([1 => Texture]));
+                                                        texture_Details => openGL.texture_Set.to_Set ([1 => Texture]));
       the_box_physics_Model : constant physics.Model.view
         := physics.Model.Forge.new_physics_Model (shape_Info => (Kind         => physics.Model.Cube,
                                                                  half_Extents => Size / 2.0),
@@ -486,7 +483,7 @@ is
                                                                             Height => Size (2)),
                                                                 Plane   => openGL.Model.Billboard.xy,
                                                                 Texture => Texture,
-                                                                texture_Details => openGL.texture_Set.to_Details ([1 => Texture]));
+                                                                texture_Details => openGL.texture_Set.to_Set ([1 => Texture]));
 
       the_billboard_physics_Model : constant physics.Model.view
         := physics.Model.Forge.new_physics_Model (shape_Info => (Kind         => physics.Model.Cube,
@@ -527,7 +524,7 @@ is
                                                                   Plane   => openGL.Model.Billboard.xy,
                                                                   Texture => Texture,
                                                                   Color   => Color,
-                                                                  texture_Details => openGL.texture_Set.to_Details ([1 => Texture]));
+                                                                  texture_Details => openGL.texture_Set.to_Set ([1 => Texture]));
       the_billboard_physics_Model : constant physics.Model.view
         := physics.Model.Forge.new_physics_Model (shape_Info => (Kind         => physics.Model.Cube,
                                                                  half_Extents => Size / 2.0),
@@ -690,7 +687,7 @@ is
         := openGL.Model.Text.lit_colored.new_Text (Text     => Text,
                                                    Font     => Font,
                                                    Color    => (Color, openGL.Opaque),
-                                                   texture_Details => openGL.texture_Set.to_Details ([1 => the_Texture]),
+                                                   texture_Details => openGL.texture_Set.to_Set ([1 => the_Texture]),
                                                    Centered => True);
 
       the_physics_Model  : physics.Model.view;

@@ -31,7 +31,7 @@ begin
       --
       the_Ball_1_Model : constant Model.Sphere.lit_colored_textured.view
         := openGL.Model.Sphere.lit_colored_textured.new_Sphere (Radius          => 1.0,
-                                                                texture_Details => openGL.texture_Set.to_Details ([1 => the_Texture]),
+                                                                texture_Details => openGL.texture_Set.to_Set ([1 => the_Texture]),
                                                                 Image           => the_Texture);
       the_Ball_2_Model : constant Model.Sphere.lit_colored.view
         := openGL.Model.Sphere.lit_colored.new_Sphere (Radius => 1.0,

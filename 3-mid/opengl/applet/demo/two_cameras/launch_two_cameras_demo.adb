@@ -56,7 +56,7 @@ begin
 
       the_ball_Model : constant Model.Sphere.lit_colored_textured.view
         := Model.Sphere.lit_colored_textured.new_Sphere (radius => 0.5,
-                                                         texture_Details => texture_Set.to_Details ([1 => the_Face]));
+                                                         texture_Details => texture_Set.to_Set ([1 => the_Face]));
 
       --  The Sprites.
       --

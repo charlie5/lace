@@ -25,7 +25,7 @@ is
                            Plane   : in billboard.Plane;
                            Color   : in lucid_Color;
                            Texture : in asset_Name;
-                           texture_Details : in texture_Set.Details) return View;
+                           texture_Details : in texture_Set.item) return View;
 
    --------------
    --- Attributes

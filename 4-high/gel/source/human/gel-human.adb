@@ -479,7 +479,7 @@ is
                                                    Model   => openGL.to_Asset ("assets/gel/collada/mh-human-dae.dae"),
                                                    -- model   => gel.to_Asset ("assets/gel/collada/alfieri.dae"),
                                                    Texture => openGL.null_Asset, -- gel.to_Asset ("assets/collada/gel-human-texture.tga"),
-                                                   texture_Details  => openGL.texture_Set.to_Details ([1 => openGL.to_Asset ("./assets/gel/Face1.bmp")]),
+                                                   texture_Details  => openGL.texture_Set.to_Set ([1 => openGL.to_Asset ("./assets/gel/Face1.bmp")]),
                                                    Texture_is_lucid => False);
                begin
                   Self.bone_Sprites (the_Bone) := gel.Sprite.forge.new_Sprite (Name           => sprite_Name,

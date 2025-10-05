@@ -20,7 +20,7 @@ is
    --
 
    function new_circle (Radius          : in Real;
-                        texture_Details : in texture_Set.Details;
+                        texture_Details : in texture_Set.item;
                         Sides           : in Positive           := 24) return View;
 
 

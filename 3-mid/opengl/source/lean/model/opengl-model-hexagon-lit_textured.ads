@@ -20,7 +20,7 @@ is
    --
 
    function new_Hexagon (Radius          : in Real;
-                         texture_Details : in texture_Set.Details) return View;
+                         texture_Details : in texture_Set.item) return View;
 
 
    --------------

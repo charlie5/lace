@@ -32,7 +32,7 @@ is
 
    function new_Box (Size            : in Vector_3;
                      Faces           : in textured.Faces;
-                     texture_Details : in texture_Set.Details;
+                     texture_Details : in texture_Set.item;
                      is_Skybox       : in Boolean := False) return View;
 
 

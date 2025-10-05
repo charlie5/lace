@@ -29,14 +29,14 @@ begin
         := Model.Billboard.textured.forge.new_Billboard (--Scale   => (1.0, 1.0, 1.0),
                                                          Plane   => Billboard.xy,
                                                          Texture => the_Texture,
-                                                         texture_Details  => openGL.texture_Set.to_Details ([1 => the_Texture]));
+                                                         texture_Details  => openGL.texture_Set.to_Set ([1 => the_Texture]));
 
       the_colored_Billboard_Model : constant Model.Billboard.colored_textured.view
         := Model.Billboard.colored_textured.new_Billboard (--Scale   => (1.0, 1.0, 1.0),
                                                            Plane   => Billboard.xy,
                                                            Color   => (Palette.Green, Opaque),
                                                            Texture => the_Texture,
-                                                           texture_Details  => openGL.texture_Set.to_Details ([1 => the_Texture]));
+                                                           texture_Details  => openGL.texture_Set.to_Set ([1 => the_Texture]));
       --  The Sprites.
       --
       use openGL.Visual.Forge;

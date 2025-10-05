@@ -64,7 +64,7 @@ is
    --- Apply
    --
 
-   type texture_Apply_array is array (texture_Set.texture_Id) of Boolean;
+   --  type texture_Apply_array is array (texture_Set.texture_Id) of Boolean;
 
 
    -------------
@@ -96,8 +96,8 @@ is
    type Animation_view is access all Animation;
 
 
-   procedure animate (the_Animation   : in out Animation;
-                      texture_Applies : in out texture_Apply_array);
+   --  procedure animate (the_Animation   : in out Animation;
+   --                     texture_Applies : in out texture_Apply_array);
 
 
 
@@ -118,17 +118,29 @@ is
    --- Details
    --
 
-   type Details is
+   --  type Details is
+   --     record
+   --        texture_Count    : Natural                                           := 0;
+   --        Fades            : fade_Levels                    (texture_Id)       := [others => 0.0];
+   --        Textures         : asset_Names     (1 .. Positive (texture_Id'Last)) := [others => null_Asset];
+   --        Objects          : texture.Objects (1 .. Positive (texture_Id'Last)) := [others => texture.null_Object];
+   --        texture_Tilings  : Tilings                                           := [others => (S => 1.0,
+   --                                                                                            T => 1.0)];
+   --        texture_Applies  : texture_Apply_array                               := [1 => True, others => False];     -- The textures to be applied to the visual.
+   --        Animation        : Animation_view;
+   --     end record;
+
+
+
+   type Item (Count : detail_Count := 1) is
       record
-         texture_Count    : Natural                                           := 0;
-         Fades            : fade_Levels                    (texture_Id)       := [others => 0.0];
-         Textures         : asset_Names     (1 .. Positive (texture_Id'Last)) := [others => null_Asset];
-         Objects          : texture.Objects (1 .. Positive (texture_Id'Last)) := [others => texture.null_Object];
-         texture_Tilings  : Tilings                                           := [others => (S => 1.0,
-                                                                                             T => 1.0)];
-         texture_Applies  : texture_Apply_array                               := [1 => True, others => False];     -- The textures to be applied to the visual.
-         Animation        : Animation_view;
+         Details    : Detail_array (1 .. Count);
+         Animation  : Animation_view;
       end record;
+
+   null_Set : constant Item;
+
+
 
 
 
@@ -136,19 +148,23 @@ is
    --- Forge
    --
 
-   function to_Details (texture_Assets : in asset_Names;
-                        Animation      : in Animation_view := null) return Details;
+   --  function to_Details (texture_Assets  : in asset_Names;
+   --                       Animation       : in Animation_view := null) return Details;
+   --
+   --  no_Details : constant Details;
 
-   no_Details : constant Details;
 
-
-   --  function to_Set (texture_Assets : in asset_Names;
-   --                   Animation      : in Animation_view := null) return Item;
+   function to_Set (texture_Assets  : in asset_Names;
+                    texture_Tilings : in Tilings        := [others => (S => 1.0,
+                                                                       T => 1.0)];
+                    Animation       : in Animation_view := null) return Item;
 
 
    --------------
    --- Attributes
    --
+
+   procedure animate (Self : in out Item);
 
    --  function  get_Details   (Self : in     Item)     return Detail_array;
    --  procedure Details_are   (Self : in out Item;   Now : in Detail_array);
@@ -159,13 +175,6 @@ is
 
 
 private
-
-   --  type Item (Count : detail_Count := 1) is
-   --     record
-   --        Details    : Detail_array (1 .. Count);
-   --        Animation  : Animation_view;
-   --     end record;
-
 
 
    -----------
@@ -182,8 +191,8 @@ private
    for Animation_view'read  use read;
 
 
-   no_Details : constant Details := (others => <>);
-   --  null_Set   : constant Item    := (Count  => 0,
-   --                                    others => <>);
+   --  no_Details : constant Details := (others => <>);
+   null_Set   : constant Item    := (Count  => 0,
+                                     others => <>);
 
 end openGL.texture_Set;

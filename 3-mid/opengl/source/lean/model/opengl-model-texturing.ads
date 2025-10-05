@@ -58,9 +58,9 @@ is
       procedure animate            (Self : in out textured_Item);
 
 
-      function texture_Details     (Self : in textured_Item) return openGL.texture_Set.Details;
+      function  texture_Details    (Self : in     textured_Item) return openGL.texture_Set.item;
 
-      procedure texture_Details_is (Self : in out textured_Item;   Now : in openGL.texture_Set.Details);
+      procedure texture_Details_is (Self : in out textured_Item;   Now : in openGL.texture_Set.item);
 
 
 
@@ -68,7 +68,7 @@ is
 
       type textured_Item is abstract new Item with
          record
-            texture_Details : openGL.texture_Set.Details;
+            texture_Set : openGL.texture_Set.item;
          end record;
 
    end Mixin;

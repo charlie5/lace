@@ -13,7 +13,7 @@ is
 
    function new_Capsule (Radius : in Real;
                          Height : in Real;
-                         texture_Details : in texture_Set.Details;
+                         texture_Details : in texture_Set.item;
                          Image  : in asset_Name := null_Asset) return View
    is
       Self : constant View := new Item;

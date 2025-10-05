@@ -15,7 +15,7 @@ is
                         lat_Count    : in Positive   := 26;
                         long_Count   : in Positive   := 52;
                         Image        : in asset_Name := null_Asset;
-                        texture_Details : in texture_Set.Details;
+                        texture_Details : in texture_Set.item;
                         is_Skysphere : in Boolean    := False) return View
    is
       Self : constant View := new Item;

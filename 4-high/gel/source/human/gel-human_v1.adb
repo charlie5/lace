@@ -705,7 +705,7 @@ is
             the_human_graphics_Model : aliased openGL.Model.any.view
               := openGL.Model.any.new_Model (Model            => to_Asset (model_Name.all),
                                              Texture          => openGL.null_Asset, -- gel.to_Asset ("assets/collada/gel-human-texture.tga"),
-                                             texture_Details  => openGL.texture_Set.to_Details ([1 => openGL.to_Asset ("./assets/opengl/texture/wooden-crate.jpg")]),
+                                             texture_Details  => openGL.texture_Set.to_Set ([1 => openGL.to_Asset ("./assets/opengl/texture/wooden-crate.jpg")]),
                                              Texture_is_lucid => False);
 
             the_physics_Model : constant standard.physics.Model.view

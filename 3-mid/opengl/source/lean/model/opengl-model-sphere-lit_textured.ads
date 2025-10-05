@@ -20,7 +20,7 @@ is
    function new_Sphere (Radius          : in Real;
                         lat_Count       : in Positive   := default_latitude_Count;
                         long_Count      : in Positive   := default_longitude_Count;
-                        texture_Details : in texture_Set.Details;
+                        texture_Details : in texture_Set.item;
                         Image           : in asset_Name := null_Asset) return View;
 
 

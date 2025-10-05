@@ -61,7 +61,7 @@ begin
                         Lower => (texture_Name => the_Texture),
                         Left  => (texture_Name => the_Texture),
                         Right => (texture_Name => the_Texture)],
-              texture_Details => texture_Set.to_Details ([1 => the_Texture]));
+              texture_Details => texture_Set.to_Set ([1 => the_Texture]));
 
       --  The Visuals.
       --

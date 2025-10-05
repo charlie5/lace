@@ -13,7 +13,7 @@ is
    --
 
    function new_circle (Radius          : in Real;
-                        texture_Details : in texture_Set.Details;
+                        texture_Details : in texture_Set.item;
                         Sides           : in Positive           := 24) return View
    is
       Self : constant View := new Item;
@@ -84,7 +84,7 @@ is
          the_Geometry.Vertices_are (Vertices);
          the_Geometry.add          (Primitive.view (the_Primitive));
 
-         for i in 1 .. Self.texture_Details.texture_Count
+         for i in 1 .. Self.texture_Details.Count
          loop
             put_Line ("KKK" & Self.texture_Details'Image);
 
@@ -94,9 +94,9 @@ is
             --  the_Geometry.Fade_is (which => Id,
             --                        now   => Self.texture_Details.Fades (Id));
 
-            the_Geometry.Texture_is     (which => Id,
-                                         now   => Textures.fetch (Self.texture_Details.Textures (i)));
-            the_Geometry.is_Transparent (now   => the_Geometry.Texture.is_Transparent);
+            the_Geometry.Texture_is     (Which => Id,
+                                         Now   => Textures.fetch (Self.texture_Details.Details (i).Texture));
+            the_Geometry.is_Transparent (Now   => the_Geometry.Texture.is_Transparent);
          end loop;
 
          the_Geometry.is_Transparent (True);     -- TODO: Do transparency properly.

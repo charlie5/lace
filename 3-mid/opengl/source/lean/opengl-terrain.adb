@@ -122,7 +122,7 @@ is
                                                   Col           => Col,
                                                   Heights       => the_Region.all'Access,
                                                   color_Map     => texture_File,
-                                                  texture_Details => texture_Set.to_Details ([1 => texture_File]),
+                                                  texture_Details => texture_Set.to_Set ([1 => texture_File]),
                                                   Tiling        => Tiling);
 
                   the_height_Extents : constant Vector_2    :=      height_Extent (the_Region.all);

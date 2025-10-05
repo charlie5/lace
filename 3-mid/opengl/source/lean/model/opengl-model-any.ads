@@ -24,7 +24,7 @@ is
 
    function new_Model (Model            : in asset_Name;
                        Texture          : in asset_Name;
-                       texture_Details  : in texture_Set.Details;
+                       texture_Details  : in texture_Set.item;
                        Texture_is_lucid : in Boolean) return openGL.Model.any.view;
 
    --------------

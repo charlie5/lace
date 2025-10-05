@@ -35,7 +35,7 @@ is
    the_human_graphics_Model : constant openGL.Model.any.view
      := openGL.Model.any.new_Model (Model            => openGL.to_Asset ("./assets/opengl/model/human.obj"),
                                     Texture          => openGL.to_Asset ("./assets/opengl/texture/wooden-crate.jpg"),
-                                    texture_Details  => openGL.texture_Set.to_Details ([1 => openGL.to_Asset ("./assets/opengl/texture/wooden-crate.jpg")]),
+                                    texture_Details  => openGL.texture_Set.to_Set ([1 => openGL.to_Asset ("./assets/opengl/texture/wooden-crate.jpg")]),
                                     Texture_is_lucid => False);
 
    the_human_physics_Model : constant physics.Model.view
@@ -54,7 +54,7 @@ is
    the_cobra_graphics_Model : aliased constant openGL.Model.any.view
      := openGL.Model.any.new_Model (Model            => openGL.to_Asset ("./assets/oolite_cobra3.obj"),
                                     Texture          => openGL.to_Asset ("./assets/oolite_cobra3_diffuse.png"),
-                                    texture_Details  => openGL.texture_Set.to_Details ([1 => openGL.to_Asset ("./assets/oolite_cobra3_diffuse.png")]),
+                                    texture_Details  => openGL.texture_Set.to_Set ([1 => openGL.to_Asset ("./assets/oolite_cobra3_diffuse.png")]),
                                     Texture_is_lucid => False);
 
    the_cobra_physics_Model : constant physics.Model.view

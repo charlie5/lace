@@ -11,7 +11,7 @@ is
    --
 
    function new_polygon (vertex_Sites    : in Vector_2_array;
-                         texture_Details : in texture_Set.Details) return View
+                         texture_Details : in texture_Set.item) return View
    is
       Self : constant View := new Item;
    begin
@@ -74,7 +74,7 @@ is
          the_Geometry.Vertices_are (Vertices);
          the_Geometry.add          (Primitive.view (the_Primitive));
 
-         for i in 1 .. Self.texture_Details.texture_Count
+         for i in 1 .. Self.texture_Details.Count
          loop
             Id := texture_Id (i);
 
@@ -82,7 +82,7 @@ is
             --                        Now   => Self.texture_Details.Fades (Id));
 
             the_Geometry.Texture_is     (Which => Id,
-                                         Now   => Textures.fetch (Self.texture_Details.Textures (i)));
+                                         Now   => Textures.fetch (Self.texture_Details.Details (i).Texture));
             the_Geometry.is_Transparent (Now   => the_Geometry.Texture.is_Transparent);
          end loop;
 

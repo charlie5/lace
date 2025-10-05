@@ -16,7 +16,7 @@ is
    function new_Text (Text     : in String;
                       Font     : in openGL.Font.font_Id;
                       Color    : in lucid_Color;
-                      texture_Details  : in texture_Set.Details;
+                      texture_Details  : in texture_Set.item;
                       Centered : in Boolean := True) return View
    is
       Font_Name : constant String  := to_String (Font.Name);

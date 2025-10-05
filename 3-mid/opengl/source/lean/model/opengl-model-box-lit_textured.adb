@@ -11,7 +11,7 @@ is
 
    function new_Box (Size            : in Vector_3;
                      Faces           : in lit_textured.Faces;
-                     texture_Details : in texture_Set.Details := texture_Set.no_Details) return View
+                     texture_Details : in texture_Set.item := texture_Set.null_Set) return View
 
    is
       Self : constant View := new Item;

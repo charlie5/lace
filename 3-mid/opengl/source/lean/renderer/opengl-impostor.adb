@@ -84,7 +84,7 @@ is
                                                                                       Height => Height),
                                                                           Plane   => Model.billboard.xy,
                                                                           Texture => null_Asset,
-                                                                          texture_Details => texture_Set.to_Details ([1 => null_Asset])).all'Access);
+                                                                          texture_Details => texture_Set.to_Set ([1 => null_Asset])).all'Access);
       Self.Visual.Transform_is (Target.Transform);
       --  Self.Visual.model_Transform_is (Target.model_Transform);
    end set_Target;

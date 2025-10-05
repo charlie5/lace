@@ -97,7 +97,7 @@ is
                                           Col              => 1,
                                           Heights          => openGL.Model.terrain.height_Map_view (gl_Heights),
                                           color_Map        => terrain_Texture,
-                                           texture_Details => texture_Set.to_Details ([1 => terrain_Texture]),
+                                           texture_Details => texture_Set.to_Set ([1 => terrain_Texture]),
                                           Tiling           => (s => (0.0, 1.0),
                                                                t => (0.0, 1.0)));
 
@@ -170,7 +170,7 @@ begin
          the_ball_Model : constant openGL.Model.sphere.lit_colored_textured.view
            := openGL.Model.sphere.lit_colored_textured.new_Sphere (Radius          => 1.0,
                                                                    Image           => openGL.to_Asset ("assets/gel/golf_green-16x16.tga"),
-                                                                   texture_Details => texture_Set.to_Details ([1 => openGL.to_Asset ("assets/gel/Face1.bmp")]));
+                                                                   texture_Details => texture_Set.to_Set ([1 => openGL.to_Asset ("assets/gel/Face1.bmp")]));
          the_Ball : constant gel.Sprite.view
            := gel.Sprite.forge.new_Sprite (Name           => "demo.Ball",
                                            World          => the_Applet.gui_World.all'Access,
@@ -182,7 +182,7 @@ begin
          the_cone_Model : constant openGL.Model.any.view
            := openGL.Model.any.new_Model (Model            => openGL.to_Asset ("assets/gel/model/unit_cone.obj"),
                                           Texture          => openGL.to_Asset ("assets/gel/Face1.bmp"),
-                                          texture_Details  => texture_Set.to_Details ([1 => openGL.to_Asset ("assets/gel/Face1.bmp")]),
+                                          texture_Details  => texture_Set.to_Set ([1 => openGL.to_Asset ("assets/gel/Face1.bmp")]),
                                           Texture_is_lucid => False);
 
          the_cone_physics_Model : constant physics.Model.view
@@ -198,7 +198,7 @@ begin
          the_cylinder_Model : constant openGL.Model.any.view
            := openGL.Model.any.new_Model (Model            => openGL.to_Asset ("assets/gel/model/unit_cylinder.obj"),
                                           Texture          => openGL.to_Asset ("assets/gel/Face1.bmp"),
-                                          texture_Details  => texture_Set.to_Details ([1 => openGL.to_Asset ("assets/gel/Face1.bmp")]),
+                                          texture_Details  => texture_Set.to_Set ([1 => openGL.to_Asset ("assets/gel/Face1.bmp")]),
                                           Texture_is_lucid => False);
 
          the_cylinder_physics_Model : constant physics.Model.view
@@ -216,7 +216,7 @@ begin
          the_capsule_Model : constant openGL.Model.capsule.textured.view
            := openGL.Model.capsule.textured.new_Capsule (Radius => 0.5,
                                                          Height => 2.0,
-                                                         texture_Details  => texture_Set.to_Details ([1 => openGL.to_Asset ("assets/gel/Face1.bmp")]),
+                                                         texture_Details  => texture_Set.to_Set ([1 => openGL.to_Asset ("assets/gel/Face1.bmp")]),
                                                          Image  => openGL.to_Asset ("assets/gel/Face1.bmp"));
 
 

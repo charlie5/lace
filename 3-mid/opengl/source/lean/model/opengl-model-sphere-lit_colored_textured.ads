@@ -21,7 +21,7 @@ is
                         long_Count : in Positive           := default_longitude_Count;
                         Color      : in openGL.lucid_Color := (openGL.Palette.Grey,
                                                                Opacity => 1.0);
-                        texture_Details : in texture_Set.Details;
+                        texture_Details : in texture_Set.item;
                         Image      : in asset_Name         := null_Asset) return View;
 
 

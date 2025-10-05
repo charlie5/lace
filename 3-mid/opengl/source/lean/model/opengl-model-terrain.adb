@@ -19,7 +19,7 @@ is
                          Row, Col        : in Integer;
                          Heights         : in height_Map_view;
                          color_Map       : in asset_Name;
-                         texture_Details : in texture_Set.Details  := texture_Set.no_Details;
+                         texture_Details : in texture_Set.item  := texture_Set.null_Set;
                          Tiling          : in texture_Transform_2d := (S => (0.0, 1.0),
                                                                        T => (0.0, 1.0))) return View
    is
