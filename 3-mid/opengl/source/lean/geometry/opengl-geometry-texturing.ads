@@ -40,14 +40,8 @@ is
    --- Operations
    --
 
-   --  procedure enable (for_Model   : in     openGL.Model.view;
-   --                    Uniforms    : in     texturing.Uniforms;
-   --                    texture_Set : in     openGL.texture_Set.Item);
-
    procedure enable (for_Model   : in     openGL.Model.view;
                      Uniforms    : in     texturing.Uniforms);
-
-
 
    procedure create (Uniforms    :    out texturing.Uniforms;
                      for_Program : in     openGL.Program.view);
@@ -68,17 +62,17 @@ is
 
 
       overriding
-      procedure Fade_is      (Self : in out Item;   Now   : in texture_Set.fade_Level;
-                                                    Which : in texture_Set.texture_ID := 1);
+      procedure Fade_is           (Self : in out Item;   Now   : in texture_Set.fade_Level;
+                                                         Which : in texture_Set.texture_ID := 1);
       overriding
-      function  Fade         (Self : in     Item;   Which : texture_Set.texture_ID := 1) return texture_Set.fade_Level;
+      function  Fade              (Self : in     Item;   Which : texture_Set.texture_ID := 1) return texture_Set.fade_Level;
 
 
       overriding
-      procedure Texture_is   (Self : in out Item;   Now   : in openGL.Texture.Object;
-                                                    Which : in texture_Set.texture_ID := 1);
+      procedure Texture_is         (Self : in out Item;   Now   : in openGL.Texture.Object;
+                                                          Which : in texture_Set.texture_ID := 1);
       overriding
-      function  Texture      (Self : in     Item;   Which : in texture_Set.texture_ID := 1) return openGL.Texture.Object;
+      function  Texture            (Self : in     Item;   Which : in texture_Set.texture_ID := 1) return openGL.Texture.Object;
 
 
       overriding
@@ -100,13 +94,9 @@ is
 
    private
 
-      type Item is new Geometry.item with
-         record
-            null; --texture_Set : openGL.texture_Set.item;
-         end record;
+      type Item is new Geometry.item with null record;
 
    end Mixin;
-
 
 
 end openGL.Geometry.texturing;

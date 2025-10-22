@@ -6,6 +6,7 @@ with
 
      ada.unchecked_Deallocation;
 
+
 package body openGL.Primitive.short_indexed
 is
    ---------
@@ -25,7 +26,7 @@ is
 
       Self.facet_Kind := Kind;
       Self.Indices    := new Buffer.short_indices.Object' (to_Buffer (buffer_Indices'Access,
-                                                                      usage => Buffer.static_Draw));
+                                                                      Usage => Buffer.static_Draw));
    end define;
 
 
@@ -43,7 +44,7 @@ is
 
       Self.facet_Kind := Kind;
       Self.Indices    := new Buffer.short_indices.Object' (to_Buffer (buffer_Indices'Access,
-                                                                      usage => Buffer.static_Draw));
+                                                                      Usage => Buffer.static_Draw));
    end define;
 
 
@@ -61,7 +62,7 @@ is
 
       Self.facet_Kind := Kind;
       Self.Indices    := new Buffer.short_indices.Object' (to_Buffer (buffer_Indices'Access,
-                                                                      usage => Buffer.static_Draw));
+                                                                      Usage => Buffer.static_Draw));
    end define;
 
 
@@ -110,6 +111,7 @@ is
    end destroy;
 
 
+
    --------------
    --  Attributes
    --
@@ -118,13 +120,14 @@ is
    is
       use Buffer.short_indices;
       buffer_Indices : aliased short_Indices := [Now'Range => <>];
+
    begin
       for Each in buffer_Indices'Range
       loop
          buffer_Indices (Each) := Now (Each) - 1;     -- Adjust indices to zero-based-indexing for GL.
       end loop;
 
-      Self.Indices.set (to => buffer_Indices);
+      Self.Indices.set (To => buffer_Indices);
    end Indices_are;
 
 
@@ -133,13 +136,14 @@ is
    is
       use Buffer.short_indices;
       buffer_Indices : aliased short_Indices := [Now'Range => <>];
+
    begin
       for Each in buffer_Indices'Range
       loop
          buffer_Indices (Each) := short_Index_t (Now (Each) - 1);     -- Adjust indices to zero-based-indexing for GL.
       end loop;
 
-      Self.Indices.set (to => buffer_Indices);
+      Self.Indices.set (To => buffer_Indices);
    end Indices_are;
 
 
@@ -148,13 +152,14 @@ is
    is
       use Buffer.short_indices;
       buffer_Indices : aliased short_Indices := [Now'Range => <>];
+
    begin
       for Each in buffer_Indices'Range
       loop
          buffer_Indices (Each) := short_Index_t (Now (Each) - 1);     -- Adjust indices to zero-based-indexing for GL.
       end loop;
 
-      Self.Indices.set (to => buffer_Indices);
+      Self.Indices.set (To => buffer_Indices);
    end Indices_are;
 
 

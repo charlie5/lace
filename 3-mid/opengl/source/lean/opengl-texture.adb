@@ -28,6 +28,8 @@ is
    begin
       Tasks.check;
       glGenTextures (1, the_Name'Access);
+      Errors.log;
+
       return the_Name;
    end new_texture_Name;
 
@@ -39,7 +41,8 @@ is
    begin
       Tasks.check;
       glDeleteTextures (1, the_Name'Access);
-   end free;
+      Errors.log;
+end free;
 
 
    ---------
@@ -52,6 +55,7 @@ is
       function to_Texture (Name : in texture_Name) return Object
       is
          Self : Texture.Object;
+
       begin
          Self.Name := Name;
          -- TODO: Fill in remaining fields by querying GL.
@@ -72,16 +76,18 @@ is
          Self.Name       := new_texture_Name;
          Self.enable;
 
-         glPixelStorei   (GL_UNPACK_ALIGNMENT, 1);
+         glPixelStorei   (GL_UNPACK_ALIGNMENT, 1);                               Errors.log;
 
-         glTexParameteri (GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
-         glTexParameteri (GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+         glTexParameteri (GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);   Errors.log;
+
+         glTexParameteri (GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);   Errors.log;
 
          --  glTexParameteri (GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
          --  glTexParameteri (GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
 
-         glTexParameteri (GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-         glTexParameteri (GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+         glTexParameteri (GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);      Errors.log;
+
+         glTexParameteri (GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);      Errors.log;
 
          return Self;
       end to_Texture;
@@ -197,13 +203,11 @@ is
                     0,
                     GL_RGB,
                     GL_UNSIGNED_BYTE,
-                    +the_Image (1, 1).Red'Address);
-      Errors.log;
+                    +the_Image (1, 1).Red'Address);                             Errors.log;
 
       if use_Mipmaps
       then
-         glGenerateMipmap (GL_TEXTURE_2D);
-         Errors.log;
+         glGenerateMipmap (GL_TEXTURE_2D);                                      Errors.log;
       end if;
    end set_Image;
 
@@ -242,13 +246,11 @@ is
                     0,
                     GL_RGBA,
                     GL_UNSIGNED_BYTE,
-                    +the_Image (1, 1).Primary.Red'Address);
-      Errors.log;
+                    +the_Image (1, 1).Primary.Red'Address);                     Errors.log;
 
       if use_Mipmaps
       then
-         glGenerateMipmap (GL_TEXTURE_2D);
-         Errors.log;
+         glGenerateMipmap (GL_TEXTURE_2D);                                      Errors.log;
       end if;
    end set_Image;
 
@@ -273,8 +275,7 @@ is
       gl.Binding.glTexParameteri (GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);   Errors.log;
       gl.Binding.glTexParameteri (GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);   Errors.log;
 
-      glBindTexture (GL.GL_TEXTURE_2D, Self.Name);
-      Errors.log;
+      glBindTexture (GL.GL_TEXTURE_2D, Self.Name);                                Errors.log;
    end enable;
 
 
@@ -320,6 +321,7 @@ is
    function fetch (From : access name_Map_of_texture'Class;   texture_Name : in asset_Name) return Object
    is
       Name : constant unbounded_String := to_unbounded_String (to_String (texture_Name));
+
    begin
       if From.Contains (Name)
       then
@@ -391,30 +393,36 @@ is
                         GLsizei (Size.Height),
                         0,
                         GL_RGBA, GL_UNSIGNED_BYTE,
-                        null);                             -- NB: Actual image is not initialised.
+                        null);                                      Errors.log;     -- NB: Actual image is not initialised.
 
-      else     -- No existing, unused texture found, so create a new one.
+      else -- No existing, unused texture found, so create a new one.
          the_Texture.Pool := From.all'unchecked_Access;
          the_Texture.Name := new_texture_Name;
          the_Texture.enable;
 
-         glPixelStorei   (GL_UNPACK_ALIGNMENT, 1);
-         glTexParameteri (GL_TEXTURE_2D, GL_TEXTURE_WRAP_S,
-                          GL_CLAMP_TO_EDGE);
-         glTexParameteri (GL_TEXTURE_2D, GL_TEXTURE_WRAP_T,
-                          GL_CLAMP_TO_EDGE);
+         glPixelStorei   (GL_UNPACK_ALIGNMENT, 1);      Errors.log;
 
-         glTexParameteri (GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER,
+         glTexParameteri (GL_TEXTURE_2D,
+                          GL_TEXTURE_WRAP_S,
+                          GL_CLAMP_TO_EDGE);            Errors.log;
+
+         glTexParameteri (GL_TEXTURE_2D,
+                          GL_TEXTURE_WRAP_T,
+                          GL_CLAMP_TO_EDGE);            Errors.log;
+
+         glTexParameteri (GL_TEXTURE_2D,
+                          GL_TEXTURE_MAG_FILTER,
                           GL_LINEAR);
-         glTexParameteri (GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER,
-                          GL_LINEAR);
+         glTexParameteri (GL_TEXTURE_2D,
+                          GL_TEXTURE_MIN_FILTER,
+                          GL_LINEAR);                   Errors.log;
 
          gltexImage2D  (gl_TEXTURE_2D,  0,  gl_RGBA,
                         GLsizei (Size.Width),
                         GLsizei (Size.Height),
                         0,
                         GL_RGBA, GL_UNSIGNED_BYTE,
-                        null);                             -- NB: Actual image is not initialised.
+                        null);                          Errors.log;   -- NB: Actual image is not initialised.
       end if;
 
       the_Texture.Dimensions := Size;
@@ -428,7 +436,8 @@ is
    is
       use type texture_Name;
    begin
-      if the_Texture.Name = 0 then
+      if the_Texture.Name = 0
+      then
          return;
       end if;
 

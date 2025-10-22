@@ -6,6 +6,7 @@ with
      GL.Binding,
      GL.lean;
 
+
 package body openGL.Primitive.indexed
 is
    ---------
@@ -48,7 +49,7 @@ is
 
       Self.facet_Kind := Kind;
       Self.Indices    := new openGL.Buffer.indices.Object' (to_Buffer (buffer_Indices'Access,
-                                                                       usage => Buffer.static_Draw));
+                                                                       Usage => Buffer.static_Draw));
       Self.line_Width := line_Width;
    end define;
 
@@ -86,6 +87,7 @@ is
       Buffer.free (the_Indices);
       Self.Indices := null;
    end destroy;
+
 
 
    --------------

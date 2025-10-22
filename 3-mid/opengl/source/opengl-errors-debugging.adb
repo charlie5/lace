@@ -3,5 +3,5 @@ separate (openGL.Errors)
 function Debugging return Boolean
 is
 begin
-   return True;
+   return False;
 end Debugging;

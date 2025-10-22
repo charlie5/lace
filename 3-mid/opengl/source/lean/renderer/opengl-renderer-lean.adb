@@ -697,9 +697,9 @@ is
                                  Heap_less_than'unrestricted_Access);
          end if;
 
-         glDisable   (GL_BLEND);
-         glEnable    (GL_DEPTH_TEST);
-         glDepthMask (gl_TRUE);           -- Make depth buffer read/write.
+         glDisable   (GL_BLEND);             Errors.log;
+         glEnable    (GL_DEPTH_TEST);        Errors.log;
+         glDepthMask (gl_TRUE);              Errors.log;             -- Make depth buffer read/write.
 
          for Each in 1 .. opaque_Count
          loop
@@ -709,6 +709,7 @@ is
             then
                current_Program := the_Couple.Geometry.Program;
             end if;
+
 
             current_Program.enable;                                               -- TODO: Only need to do this when program changes ?
             current_Program.mvp_Transform_is (the_Couple.Visual.mvp_Transform);
@@ -759,13 +760,13 @@ is
                                  Heap_less_than'unrestricted_Access);
          end if;
 
-         glDepthMask  (gl_False);     -- Make depth buffer read-only, for correct transparency.
+         glDepthMask  (gl_False);                           Errors.log;     -- Make depth buffer read-only, for correct transparency.
 
-         glEnable     (GL_BLEND);
-         gl.lean.glBlendEquation (gl.lean.GL_FUNC_ADD);
+         glEnable     (GL_BLEND);                           Errors.log;
+         gl.lean.glBlendEquation (gl.lean.GL_FUNC_ADD);     Errors.log;
 
          glBlendFunc (GL_SRC_ALPHA,
-                      GL_ONE_MINUS_SRC_ALPHA);
+                      GL_ONE_MINUS_SRC_ALPHA);              Errors.log;
 
          for Each in 1 .. lucid_Count
          loop
@@ -786,7 +787,7 @@ is
             the_Couple.Geometry.render;
          end loop;
 
-         glDepthMask (gl_True);
+         glDepthMask (gl_True);     Errors.log;
       end;
 
       Errors.log;

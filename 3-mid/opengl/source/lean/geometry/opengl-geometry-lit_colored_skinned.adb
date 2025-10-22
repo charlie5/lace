@@ -2,7 +2,6 @@ with
      openGL.Shader,
      openGL.Attribute,
      openGL.Buffer.general,
-     openGL.Texture,
      openGL.Tasks,
      openGL.Errors,
 
@@ -207,6 +206,7 @@ is
       Errors.log;
 
    end define_Program;
+
 
 
    --------------

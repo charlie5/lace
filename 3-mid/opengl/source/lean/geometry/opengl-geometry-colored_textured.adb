@@ -13,6 +13,7 @@ with
      Interfaces.C.Strings,
      System.storage_Elements;
 
+
 package body openGL.Geometry.colored_textured
 is
    use GL.lean,
@@ -186,25 +187,6 @@ is
    begin
       raise Error with "TODO";
    end Indices_are;
-
-
-   --  overriding
-   --  procedure enable_Textures (Self : in out Item)
-   --  is
-   --     use GL,
-   --         GL.Binding,
-   --         openGL.Texture;
-   --  begin
-   --     Tasks.check;
-   --
-   --     glActiveTexture (gl.GL_TEXTURE0);
-   --     Errors.log;
-   --
-   --     if Self.Texture = openGL.Texture.null_Object
-   --     then   enable (white_Texture);
-   --     else   enable (Self.Texture);
-   --     end if;
-   --  end enable_Textures;
 
 
 end openGL.Geometry.colored_textured;

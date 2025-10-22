@@ -12,6 +12,7 @@ with
      Interfaces.C.Strings,
      System.storage_Elements;
 
+
 package body openGL.Geometry.colored
 is
    use GL.lean, GL.Pointers;

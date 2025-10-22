@@ -4,6 +4,7 @@ with
 
      GL.Pointers;
 
+
 package body openGL.Buffer.general
 is
    --------------------------
@@ -53,6 +54,7 @@ is
                           From'Size / 8,
                          +From (From'First)'Address,
                           to_GL_Enum (Usage));
+            Errors.log;
          end return;
       end to_Buffer;
 
@@ -78,6 +80,7 @@ is
                           Offset =>  GLintptr ((Position - 1) * Vertex_Size_in_bits / 8),
                           Size   =>  new_Vertices'Size / 8,
                           Data   => +new_Vertices (new_Vertices'First)'Address);
+         Errors.log;
       else
          Self.destroy;
 
@@ -89,9 +92,8 @@ is
                        To'Size / 8,
                       +To (To'First)'Address,
                        to_GL_Enum (Self.Usage));
+         Errors.log;
       end if;
-
-      Errors.log;
    end set;
 
 

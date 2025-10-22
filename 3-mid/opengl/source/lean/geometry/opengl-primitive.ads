@@ -5,6 +5,7 @@ private
 with
      ada.unchecked_Conversion;
 
+
 package openGL.Primitive
 --
 --  Provides a base class for openGL primitives.
@@ -28,7 +29,7 @@ is
    --  Forge
    --
 
-   procedure define  (Self : in out Item;   Kind    : in facet_Kind);
+   procedure define  (Self : in out Item;   Kind : in facet_Kind);
    procedure destroy (Self : in out Item) is abstract;
    procedure free    (Self : in out View);
 
@@ -67,7 +68,7 @@ private
          Texture        : openGL.Texture.Object := openGL.Texture.null_Object;
          is_Transparent : Boolean;
          Bounds         : openGL.Bounds;
-         line_Width     : Real := unused_line_Width;
+         line_Width     : Real                  := unused_line_Width;
       end record;
 
 

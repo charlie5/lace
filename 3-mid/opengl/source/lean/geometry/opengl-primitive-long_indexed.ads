@@ -2,6 +2,7 @@ private
 with
      openGL.Buffer.long_indices;
 
+
 package openGL.Primitive.long_indexed
 --
 --  Provides a class for long indexed openGL primitives.
@@ -27,11 +28,13 @@ is
    procedure destroy (Self : in out Item);
 
 
+
    --------------
    --  Attributes
    --
 
    procedure Indices_are (Self : in out Item;   Now : in long_Indices);
+
 
 
    --------------
@@ -49,5 +52,6 @@ private
       record
          Indices : Buffer.long_indices.view;
       end record;
+
 
 end openGL.Primitive.long_indexed;

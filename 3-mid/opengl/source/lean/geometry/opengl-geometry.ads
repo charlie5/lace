@@ -47,20 +47,20 @@ is
    procedure Model_is (Self : in out Item;   Now : in Model_view);
    function  Model    (Self : in     Item)     return Model_view;
 
-   procedure Label_is        (Self : in out Item'Class;   Now : in String);
-   function  Label           (Self : in     Item'Class)     return String;
+   procedure Label_is (Self : in out Item'Class;   Now : in String);
+   function  Label    (Self : in     Item'Class)     return String;
 
 
    --- Texturing
    --
 
-   procedure Fade_is         (Self : in out Item;   Now   : in texture_Set.fade_Level;
-                                                    Which : in texture_Set.texture_ID := 1) is null;
-   function  Fade            (Self : in     Item;   Which : in texture_Set.texture_ID := 1) return texture_Set.fade_Level;
+   procedure Fade_is            (Self : in out Item;   Now   : in texture_Set.fade_Level;
+                                                       Which : in texture_Set.texture_ID := 1) is null;
+   function  Fade               (Self : in     Item;   Which : in texture_Set.texture_ID := 1) return texture_Set.fade_Level;
 
-   procedure Texture_is      (Self : in out Item;   Now   : in openGL.Texture.Object;
-                                                    Which : in texture_Set.texture_ID := 1) is null;
-   function  Texture         (Self : in     Item;   Which : in texture_Set.texture_ID := 1) return openGL.Texture.Object;
+   procedure Texture_is         (Self : in out Item;   Now   : in openGL.Texture.Object;
+                                                       Which : in texture_Set.texture_ID := 1) is null;
+   function  Texture            (Self : in     Item;   Which : in texture_Set.texture_ID := 1) return openGL.Texture.Object;
 
    procedure texture_Applied_is (Self : in out Item;   Now   : in Boolean;
                                                        Which : in texture_Set.texture_ID := 1) is null;
@@ -135,11 +135,15 @@ private
    generic
       type any_Index_t is range <>;
       with function get_Site (Index : in any_Index_t) return Vector_3;
+
    function get_Bounds (Count : in Natural) return openGL.Bounds;
+
 
    generic
       type any_Index_t is range <>;
       with function get_Color (Index : in any_Index_t) return rgba_Color;
+
    function get_Transparency (Count : in Natural) return Boolean;
+
 
 end openGL.Geometry;

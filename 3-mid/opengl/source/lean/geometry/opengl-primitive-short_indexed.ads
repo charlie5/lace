@@ -2,6 +2,7 @@ private
 with
      openGL.Buffer.short_indices;
 
+
 package openGL.Primitive.short_indexed
 --
 --  Provides a class for short indexed openGL primitives.
@@ -12,6 +13,7 @@ is
 
    type    View  is access all Item'Class;
    type    Views is array (Index_t range <>) of View;
+
 
 
    ---------
@@ -37,6 +39,7 @@ is
    procedure destroy (Self : in out Item);
 
 
+
    --------------
    --  Attributes
    --
@@ -44,6 +47,7 @@ is
    procedure Indices_are (Self : in out Item;   Now : in short_Indices);
    procedure Indices_are (Self : in out Item;   Now : in       Indices);
    procedure Indices_are (Self : in out Item;   Now : in  long_Indices);
+
 
 
    --------------
@@ -61,5 +65,6 @@ private
       record
          Indices : Buffer.short_indices.view;
       end record;
+
 
 end openGL.Primitive.short_indexed;

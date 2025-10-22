@@ -3,6 +3,7 @@ with
      openGL.Tasks,
      GL.Binding;
 
+
 package body openGL.Primitive.non_indexed
 is
    ---------
@@ -27,6 +28,7 @@ is
 
       return Self;
    end new_Primitive;
+
 
 
    overriding

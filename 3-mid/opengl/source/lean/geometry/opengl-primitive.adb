@@ -1,7 +1,9 @@
 with
      openGL.Tasks,
+     openGL.Errors,
      GL.Binding,
      ada.unchecked_Deallocation;
+
 
 package body openGL.Primitive
 is
@@ -14,6 +16,7 @@ is
    begin
       Self.facet_Kind := Kind;
    end define;
+
 
 
    procedure free (Self : in out View)
@@ -88,6 +91,7 @@ is
       if Self.line_Width /= unused_line_Width
       then
          glLineWidth (glFloat (Self.line_Width));
+         Errors.log;
       end if;
    end render;
 

@@ -1,9 +1,10 @@
 with
      openGL.Program.lit.colored_skinned;
 
+
 package openGL.Geometry.lit_colored_skinned
 --
---  Supports per-vertex site color, texture, lighting and skinning.
+--  Supports per-vertex site color, lighting and skinning.
 --
 is
    type Item is new openGL.Geometry.item with private;
@@ -28,7 +29,9 @@ is
          bone_Ids     : Vector_4;
          bone_Weights : Vector_4;
       end record;
+
    pragma Convention (C, Vertex);
+
 
    type Vertex_array is array (long_Index_t range <>) of aliased Vertex;
 
@@ -54,5 +57,6 @@ private
 
    overriding
    procedure enable_Textures (Self : in out Item);
+
 
 end openGL.Geometry.lit_colored_skinned;

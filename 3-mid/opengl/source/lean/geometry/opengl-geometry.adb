@@ -45,7 +45,6 @@ is
 
 
 
-
    --------------
    --  Attributes
    --
@@ -112,7 +111,7 @@ is
    function Fade (Self : in Item;   Which : texture_Set.texture_ID := 1) return texture_Set.fade_Level
    is
    begin
-      raise program_Error with "Geometry has no texture.";
+      raise Error with "Geometry has no texture.";
       return texture_Set.fade_Level'Last;
    end Fade;
 
@@ -121,7 +120,7 @@ is
    function Texture (Self : in Item;   Which : in texture_Set.texture_ID := 1) return openGL.Texture.Object
    is
    begin
-      raise program_Error with "Geometry has no texture.";
+      raise Error with "Geometry has no texture.";
       return openGL.Texture.null_Object;
    end Texture;
 
@@ -130,7 +129,7 @@ is
    function texture_Applied (Self : in     Item;   Which : in texture_Set.texture_ID := 1) return Boolean
    is
    begin
-      raise program_Error with "Geometry has no texture.";
+      raise Error with "Geometry has no texture.";
       return False;
    end texture_Applied;
 
@@ -139,7 +138,7 @@ is
    function Tiling (Self : in     Item;   Which : in texture_Set.texture_ID := 1) return texture_Set.Tiling
    is
    begin
-      raise program_Error with "Geometry has no texture.";
+      raise Error with "Geometry has no texture.";
       return (S => 0.0,
               T => 0.0);
    end Tiling;
@@ -162,7 +161,7 @@ is
 
 
 
-   function Bounds (self : in Item'Class) return openGL.Bounds
+   function Bounds (Self : in Item'Class) return openGL.Bounds
    is
    begin
       return Self.Bounds;
@@ -197,7 +196,6 @@ is
 
 
 
-
    --------------
    --  Operations
    --
@@ -229,7 +227,6 @@ is
          Self.Primitives (Each).render;
       end loop;
    end render;
-
 
 
 
@@ -309,6 +306,7 @@ is
    pragma Unreferenced (facet_Count_in);
 
 
+
    ----------
    --  Facets
    --
@@ -327,6 +325,7 @@ is
                            Indices   : in any_Indices) return access Facets;
    --
    --  'Facets_of' returns all non-redundant facets.
+
 
 
    function any_Facets_of (face_Kind : in primitive.facet_Kind;
@@ -361,9 +360,11 @@ is
                is
                   when Triangles
                      | triangle_Fan =>
+
                      the_Facets (Count) := [P1, P2, P3];
 
                   when triangle_Strip =>
+
                      if Each mod 2 = 0
                      then   -- Is an even facet.
                         the_Facets (Count) := [P1, P3, P2];
@@ -386,6 +387,7 @@ is
          return Result;
       end;
    end any_Facets_of;
+
 
 
    function Facets_of is new any_Facets_of (Index_t,
@@ -480,7 +482,7 @@ is
       free (the_Facets);
       free (the_facet_Normals);
 
-      return the_Normals.all'Unchecked_Access;
+      return the_Normals.all'unchecked_Access;
    end any_Normals_of;
 
 
@@ -534,7 +536,6 @@ is
 
       return the_Bounds;
    end get_Bounds;
-
 
 
 

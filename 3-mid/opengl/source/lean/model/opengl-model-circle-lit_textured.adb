@@ -86,9 +86,6 @@ is
 
          for i in 1 .. Self.texture_Details.Count
          loop
-            put_Line ("KKK" & Self.texture_Details'Image);
-
-
             Id := texture_Id (i);
 
             --  the_Geometry.Fade_is (which => Id,

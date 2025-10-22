@@ -1,3 +1,7 @@
+with
+     ada.unchecked_Deallocation;
+
+
 package body openGL.Model.texturing
 is
 
@@ -135,8 +139,16 @@ is
 
       procedure texture_Details_is (Self : in out textured_Item;   Now : in openGL.texture_Set.item)
       is
+         procedure free is new ada.unchecked_Deallocation (Animation, Animation_view);
       begin
+         free (Self.texture_Set.Animation);
+
          Self.texture_Set := Now;
+
+         if Now.Animation /= null
+         then
+            Self.texture_Set.Animation := new texture_Set.Animation' (Now.Animation.all);
+         end if;
       end texture_Details_is;
 
 

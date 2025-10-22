@@ -17,15 +17,7 @@ is
 
    max_Textures : constant := 16;     -- 32;
 
-
    type detail_Count is range 0 .. max_Textures;
-
-
-   --  type Item (Count : detail_Count := 1) is private;
-   --
-   --  null_Set : constant Item;
-
-
 
 
    ---------------
@@ -60,13 +52,6 @@ is
    type fade_Levels is array (texture_Id range <>) of fade_Level;
 
 
-   ---------
-   --- Apply
-   --
-
-   --  type texture_Apply_array is array (texture_Set.texture_Id) of Boolean;
-
-
    -------------
    --- Animation
    --
@@ -96,39 +81,16 @@ is
    type Animation_view is access all Animation;
 
 
-   --  procedure animate (the_Animation   : in out Animation;
-   --                     texture_Applies : in out texture_Apply_array);
-
-
-
    type Detail is
       record
          Object         : texture.Object;
          Texture        : asset_Name;
          Fade           : fade_Level;
          texture_Tiling : Tiling;
-         texture_Apply  : Boolean;   -- If the textures is to be applied to the visual.
+         texture_Apply  : Boolean;   -- If the texture is to be applied to the visual.
       end record;
 
    type Detail_array is array (detail_Count range <>) of Detail;
-
-
-
-   -----------
-   --- Details
-   --
-
-   --  type Details is
-   --     record
-   --        texture_Count    : Natural                                           := 0;
-   --        Fades            : fade_Levels                    (texture_Id)       := [others => 0.0];
-   --        Textures         : asset_Names     (1 .. Positive (texture_Id'Last)) := [others => null_Asset];
-   --        Objects          : texture.Objects (1 .. Positive (texture_Id'Last)) := [others => texture.null_Object];
-   --        texture_Tilings  : Tilings                                           := [others => (S => 1.0,
-   --                                                                                            T => 1.0)];
-   --        texture_Applies  : texture_Apply_array                               := [1 => True, others => False];     -- The textures to be applied to the visual.
-   --        Animation        : Animation_view;
-   --     end record;
 
 
 
@@ -141,18 +103,9 @@ is
    null_Set : constant Item;
 
 
-
-
-
    ---------
    --- Forge
    --
-
-   --  function to_Details (texture_Assets  : in asset_Names;
-   --                       Animation       : in Animation_view := null) return Details;
-   --
-   --  no_Details : constant Details;
-
 
    function to_Set (texture_Assets  : in asset_Names;
                     texture_Tilings : in Tilings        := [others => (S => 1.0,
@@ -161,16 +114,10 @@ is
 
 
    --------------
-   --- Attributes
+   --  Operations
    --
 
    procedure animate (Self : in out Item);
-
-   --  function  get_Details   (Self : in     Item)     return Detail_array;
-   --  procedure Details_are   (Self : in out Item;   Now : in Detail_array);
-   --
-   --  function  get_Animation (Self : in     Item)     return Animation_view;
-   --  procedure Animation_is  (Self : in out Item;   Now : in Animation_view);
 
 
 
@@ -191,7 +138,6 @@ private
    for Animation_view'read  use read;
 
 
-   --  no_Details : constant Details := (others => <>);
    null_Set   : constant Item    := (Count  => 0,
                                      others => <>);
 

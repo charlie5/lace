@@ -1,6 +1,8 @@
 with
      GL.Binding,
-     openGL.Tasks;
+     openGL.Tasks,
+     openGL.Errors;
+
 
 package body openGL.Viewport
 is
@@ -14,7 +16,7 @@ is
    begin
       Tasks.check;
       glGetIntegerv (gl_VIEWPORT,
-                     Extent (1)'unchecked_Access);
+                     Extent (1)'unchecked_Access);      Errors.log;
 
       return (Integer (Extent (3)),
               Integer (Extent (4)));
@@ -29,7 +31,7 @@ is
       Tasks.check;
       glViewport (0, 0,
                   GLint (Now.Width),
-                  GLint (Now.Height));
+                  GLint (Now.Height));      Errors.log;
    end Extent_is;
 
 

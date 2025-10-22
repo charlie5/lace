@@ -3,6 +3,7 @@ with
      GL.lean,
      ada.unchecked_Conversion;
 
+
 package openGL.Buffer
 --
 --  Models a buffer object.
@@ -11,7 +12,7 @@ is
    --------------
    --- Core Types
    --
-   subtype a_Name is GL.GLuint;                                    -- An openGL vertex buffer 'Name', which is a natural integer.
+   subtype a_Name is GL.GLuint;                                    -- An openGL vertex buffer 'Name'.
    type    a_Kind is (array_Buffer, element_array_Buffer);
    type     Usage is (stream_Draw, static_Draw, dynamic_Draw);
 
@@ -120,5 +121,6 @@ private
    --  Support
    --
    procedure verify_Name (Self : in out Object'Class);
+
 
 end openGL.Buffer;

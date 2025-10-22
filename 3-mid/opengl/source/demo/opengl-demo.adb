@@ -157,6 +157,7 @@ is
 
       the_ball_4_Model : constant Model.sphere.lit_colored_textured.view
         := Model.sphere.lit_colored_textured.new_Sphere (Radius => 1.0,
+                                                         Color  => (Green, Opaque),
                                                          texture_Details => texture_Set.to_Set ([1 => the_Texture]),
                                                          Image => the_Texture);
 

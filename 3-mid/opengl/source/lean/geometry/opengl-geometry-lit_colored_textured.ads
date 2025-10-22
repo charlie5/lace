@@ -10,7 +10,6 @@ is
    package textured_Geometry is new texturing.Mixin;
 
 
-   --  type Item is new openGL.Geometry.item with private;
    type Item is new textured_Geometry.item with private;
    type View is access all Item'Class;
 
@@ -46,10 +45,7 @@ is
 
 private
 
-   type Item is new textured_Geometry.item with
-      record
-         null;
-      end record;
+   type Item is new textured_Geometry.item with null record;
 
 
 end openGL.Geometry.lit_colored_textured;

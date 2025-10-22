@@ -10,7 +10,8 @@ package openGL.Model.capsule.textured
 is
    package textured_Model is new texturing.Mixin (openGL.Model.capsule.item);
 
-   type Item is new textured_Model.textured_item with private;   type View is access all Item'Class;
+   type Item is new textured_Model.textured_item with private;
+   type View is access all Item'Class;
 
 
    ---------

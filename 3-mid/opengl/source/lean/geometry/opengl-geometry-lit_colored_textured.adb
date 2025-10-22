@@ -68,6 +68,7 @@ is
 
    type Geometry_view is access all Geometry.lit_colored_textured.item'Class;
 
+
    function new_Geometry (texture_is_Alpha : in Boolean) return access Geometry.lit_colored_textured.item'Class
    is
       use type openGL.Program.lit.view;
@@ -195,6 +196,7 @@ is
          textured_Geometry.create_Uniforms (for_Program => the_Program.Program.all'Access);
       end define;
 
+
       Self : constant Geometry_view := new Geometry.lit_colored_textured.item;
 
    begin
@@ -225,6 +227,7 @@ is
    end new_Geometry;
 
 
+
    ----------
    --  Vertex
    --
@@ -239,6 +242,7 @@ is
    begin
       return my_Transparency (Count => Self'Length);
    end is_Transparent;
+
 
 
    --------------
@@ -257,7 +261,7 @@ is
    begin
       if Self.Vertices = null
       then
-         self.Vertices := new openGL_Buffer_of_geometry_Vertices.Object' (Forge.to_Buffer (Now,
+         Self.Vertices := new openGL_Buffer_of_geometry_Vertices.Object' (Forge.to_Buffer (Now,
                                                                                            usage => Buffer.static_Draw));
       else
          set (openGL_Buffer_of_geometry_Vertices.Object (Self.Vertices.all),

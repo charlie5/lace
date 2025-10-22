@@ -8,6 +8,7 @@ with
      physics.Model,
 
      openGL.Model.box.colored,
+     openGL.Model.sphere.lit_textured,
      openGL.Model.sphere.lit_colored_textured,
      openGL.Model.capsule.lit_colored_textured,
      openGL.Model.capsule.textured,
@@ -89,17 +90,17 @@ is
    hs : constant := 1.0;
 
    gl_Heights : constant openGL.IO.height_Map_view := openGL.IO.to_height_Map (image_Filename => terrain_Heights,
-                                                                               Scale          => 2.0);
+                                                                               Scale          => 10.0);
 
    the_heightfield_Model : constant openGL.Model.terrain.view
-     := openGL.Model.terrain.new_Terrain (heights_Asset    => terrain_Heights,
-                                          Row              => 1,
-                                          Col              => 1,
-                                          Heights          => openGL.Model.terrain.height_Map_view (gl_Heights),
-                                          color_Map        => terrain_Texture,
-                                           texture_Details => texture_Set.to_Set ([1 => terrain_Texture]),
-                                          Tiling           => (s => (0.0, 1.0),
-                                                               t => (0.0, 1.0)));
+     := openGL.Model.terrain.new_Terrain (heights_Asset   => terrain_Heights,
+                                          Row             => 1,
+                                          Col             => 1,
+                                          Heights         => openGL.Model.terrain.height_Map_view (gl_Heights),
+                                          color_Map       => terrain_Texture,
+                                          texture_Details => texture_Set.to_Set ([1 => terrain_Texture]),
+                                          Tiling          => (s => (0.0, 1.0),
+                                                              t => (0.0, 1.0)));
 
    the_heightfield_physics_Model : constant physics.Model.view
      := physics.Model.forge.new_physics_Model (shape_Info => (Kind         => physics.Model.heightfield,
@@ -127,6 +128,8 @@ begin
       Light : openGL.Light.item := the_Applet.Renderer.new_Light;
    begin
       Light.Site_is ([0.0, 1000.0, 0.0]);
+      Light.ambient_Coefficient_is (0.1);
+      --  Light.Kind_is (openGL.Light.Diffuse);
       the_Applet.Renderer.set (Light);
    end;
 
@@ -167,10 +170,18 @@ begin
                                                                     sphere_Radius => 1.0),
                                                      Mass       => 1.0);
 
-         the_ball_Model : constant openGL.Model.sphere.lit_colored_textured.view
-           := openGL.Model.sphere.lit_colored_textured.new_Sphere (Radius          => 1.0,
-                                                                   Image           => openGL.to_Asset ("assets/gel/golf_green-16x16.tga"),
-                                                                   texture_Details => texture_Set.to_Set ([1 => openGL.to_Asset ("assets/gel/Face1.bmp")]));
+         --  the_ball_Model : constant openGL.Model.sphere.lit_colored_textured.view
+         --    := openGL.Model.sphere.lit_colored_textured.new_Sphere (Radius          => 1.0,
+         --                                                            --  Image           => openGL.to_Asset ("assets/gel/golf_green-16x16.tga"),
+         --                                                            Image           => openGL.to_Asset ("assets/gel/texture/earth_map.bmp"),
+         --                                                            --  texture_Details => texture_Set.to_Set ([1 => openGL.to_Asset ("assets/gel/Face1.bmp")]));
+         --                                                            texture_Details => texture_Set.to_Set ([1 => openGL.to_Asset ("assets/gel/texture/earth_map.bmp")]));
+         the_ball_Model : constant openGL.Model.sphere.lit_textured.view
+           := openGL.Model.sphere.lit_textured.new_Sphere (Radius          => 1.0,
+                                                           --  Image           => openGL.to_Asset ("assets/gel/golf_green-16x16.tga"),
+                                                           Image           => openGL.to_Asset ("assets/gel/texture/earth_map.bmp"),
+                                                             --  texture_Details => texture_Set.to_Set ([1 => openGL.to_Asset ("assets/gel/Face1.bmp")]));
+                                                           texture_Details => texture_Set.to_Set ([1 => openGL.to_Asset ("assets/gel/texture/earth_map.bmp")]));
          the_Ball : constant gel.Sprite.view
            := gel.Sprite.forge.new_Sprite (Name           => "demo.Ball",
                                            World          => the_Applet.gui_World.all'Access,
@@ -260,12 +271,12 @@ begin
          s              : constant := 0.5;
          the_hull_Model : constant openGL.Model.box.colored.view
            := openGL.Model.box.colored.new_Box (Size  => [s*2.0, s*2.0, s*2.0],
-                                                Faces => [Front => (Colors => [others => (Shade_of (Grey, 1.0), Opaque)]),
-                                                          Rear  => (Colors => [others => (Shade_of (Grey, 0.5), Opaque)]),
-                                                          Upper => (Colors => [others => (Shade_of (Grey, 0.4), Opaque)]),
-                                                          Lower => (Colors => [others => (Shade_of (Grey, 0.3), Opaque)]),
-                                                          Left  => (Colors => [others => (Shade_of (Grey, 0.2), Opaque)]),
-                                                          Right => (Colors => [others => (Shade_of (Grey, 0.1), Opaque)])]);
+                                                Faces => [Front => (Colors => [others => (Shade_of (Green, 1.0), Opaque)]),
+                                                          Rear  => (Colors => [others => (Shade_of (Green, 0.5), Opaque)]),
+                                                          Upper => (Colors => [others => (Shade_of (Green, 0.4), Opaque)]),
+                                                          Lower => (Colors => [others => (Shade_of (Green, 0.3), Opaque)]),
+                                                          Left  => (Colors => [others => (Shade_of (Green, 0.2), Opaque)]),
+                                                          Right => (Colors => [others => (Shade_of (Green, 0.1), Opaque)])]);
          the_hull_physics_Model : constant physics.Model.view
            := physics.Model.forge.new_physics_Model (shape_Info => (Kind   => physics.Model.hull,
                                                                     Points => new physics.Vector_3_array' ([-s, -s,  s],

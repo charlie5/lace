@@ -3,6 +3,7 @@ with
      ada.Strings.unbounded.Hash,
      ada.Containers.hashed_Maps;
 
+
 package openGL.Texture
 --
 --  Provides openGL textures.
@@ -72,8 +73,6 @@ is
    --  Pool
    --
    --  For rapid allocation/deallocation of texture objects.
-
-   --  TODO: Move this into a child package ?
 
    type Pool      is private;
    type Pool_view is access all Pool;

@@ -5,6 +5,7 @@ with
      openGL.Tasks,
      openGL.Errors;
 
+
 package body openGL.Frame_Buffer
 is
 
@@ -27,17 +28,26 @@ is
          Self.Texture := openGL.Texture.Forge.to_Texture (Dimensions' (Width, Height));
 
          glGenFramebuffers (1, Self.Name'Access);
+         Errors.log;
 
          -- Attach each texture to the first color buffer of an frame buffer object and clear it.
          --
          glBindFramebuffer      (GL_FRAMEBUFFER, Self.Name);
+         Errors.log;
+
          glFramebufferTexture2D (GL_FRAMEBUFFER,
                                  GL_COLOR_ATTACHMENT0,
                                  GL_TEXTURE_2D,
                                  Self.Texture.Name,
                                  0);
+         Errors.log;
+
          glClear                (GL_COLOR_BUFFER_BIT);
+         Errors.log;
+
          glBindFramebuffer      (GL_FRAMEBUFFER, 0);
+         Errors.log;
+
 
          return Self;
       end to_frame_Buffer;
@@ -53,8 +63,10 @@ is
          Self : Item;
       begin
          Tasks.check;
+
          Self.Texture := openGL.Texture.null_Object;
          glGenFramebuffers (1, Self.Name'Access);
+         Errors.log;
 
          return Self;
       end to_frame_Buffer;
@@ -68,7 +80,10 @@ is
       use GL.lean;
    begin
       Tasks.check;
+
       glDeleteFramebuffers (1, Self.Name'Access);
+      Errors.log;
+
       Self.Texture.destroy;
    end destruct;
 
@@ -99,7 +114,6 @@ is
           GL.lean;
    begin
       Tasks.check;
-      openGL.Errors.log;
 
       Self.Texture := Now;
 
@@ -121,7 +135,7 @@ is
 
 
 
-   function is_complete (Self : in Item) return Boolean
+   function is_Complete (Self : in Item) return Boolean
    is
       use GL,
           GL.lean;
@@ -147,6 +161,7 @@ is
       check_is_OK : constant Boolean := Tasks.check with Unreferenced;
    begin
       glBindFramebuffer (GL_FRAMEBUFFER, Self.Name);
+      Errors.log;
 
       if not Self.is_Complete
       then
@@ -163,6 +178,7 @@ is
       check_is_OK : constant Boolean := Tasks.check with Unreferenced;
    begin
       glBindFramebuffer (GL_FRAMEBUFFER, 0);
+      Errors.log;
    end disable;
 
 

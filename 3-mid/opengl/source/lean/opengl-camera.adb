@@ -2,6 +2,7 @@ with
      ada.Text_IO,
      ada.Exceptions;
 
+
 package body openGL.Camera
 is
    use math.Algebra.linear,
@@ -36,7 +37,7 @@ is
    --  Attributes
    --
 
-   function to_World_Site (Self : in Item;   Window_Site : in math.Vector_3) return math.Vector_3
+   function to_World_Site (Self : in Item;   window_Site : in math.Vector_3) return math.Vector_3
    is
       perspective_Transform : constant math.Matrix_4x4 := to_Perspective (FoVy   => Self.FoVy,
                                                                           Aspect => Self.Aspect,
@@ -56,11 +57,11 @@ is
 
 
 
-   procedure Site_is (Self : in out Item;   now : in math.Vector_3)
+   procedure Site_is (Self : in out Item;   Now : in math.Vector_3)
    is
    begin
       Self.world_Transform := to_transform_Matrix ((Self.Spin,
-                                                    now));
+                                                    Now));
       Self.update_View_Transform;
    end Site_is;
 
@@ -87,7 +88,7 @@ is
    procedure Spin_is (Self : in out Item'Class;   now : in math.Matrix_3x3)
    is
    begin
-      set_Rotation (Self.world_Transform, to => now);
+      set_Rotation (Self.world_Transform, To => Now);
       Self.update_View_Transform;
    end Spin_is;
 
@@ -129,10 +130,10 @@ is
    end Aspect;
 
 
-   procedure Aspect_is (Self : in out Item'Class;   now : in math.Real)
+   procedure Aspect_is (Self : in out Item'Class;   Now : in math.Real)
    is
    begin
-      Self.Aspect := now;
+      Self.Aspect := Now;
    end Aspect_is;
 
 
@@ -144,7 +145,7 @@ is
    end near_Plane_Distance;
 
 
-   procedure near_Plane_Distance_is (Self : in out Item'Class;   now : in math.Real)
+   procedure near_Plane_Distance_is (Self : in out Item'Class;   Now : in math.Real)
    is
    begin
       Self.near_Plane_Distance := now;
@@ -159,10 +160,10 @@ is
    end far_Plane_Distance;
 
 
-   procedure far_Plane_Distance_is (Self : in out Item'Class;   now : in math.Real)
+   procedure far_Plane_Distance_is (Self : in out Item'Class;   Now : in math.Real)
    is
    begin
-      Self.far_Plane_Distance := now;
+      Self.far_Plane_Distance := Now;
    end far_Plane_Distance_is;
 
 
@@ -224,7 +225,7 @@ is
    end Viewport;
 
 
-   procedure Renderer_is (Self : in out Item;   now : in Renderer.lean.view)
+   procedure Renderer_is (Self : in out Item;   Now : in Renderer.lean.view)
    is
    begin
       Self.Renderer := now;
@@ -253,7 +254,7 @@ is
    end vanish_Point_Size_min;
 
 
-   procedure vanish_Point_Size_min_is (Self : in out Item'Class;   now : in Real)
+   procedure vanish_Point_Size_min_is (Self : in out Item'Class;   Now : in Real)
    is
    begin
       Self.Culler.vanish_Point_Size_min_is (now);
@@ -271,17 +272,17 @@ is
    end Impostor_Size_min;
 
 
-   procedure Impostor_Size_min_is (Self : in out Item;   now : in Real)
+   procedure Impostor_Size_min_is (Self : in out Item;   Now : in Real)
    is
    begin
-      Self.Impostorer.Impostor_Size_min_is (now);
+      Self.Impostorer.Impostor_Size_min_is (Now);
    end Impostor_Size_min_is;
 
 
-   procedure allow_Impostors (Self : in out Item;   now : in Boolean := True)
+   procedure allow_Impostors (Self : in out Item;   Now : in Boolean := True)
    is
    begin
-      Self.Impostors_allowed := now;
+      Self.Impostors_allowed := Now;
    end allow_Impostors;
 
 
@@ -363,11 +364,11 @@ is
    --
 
    procedure render (Self : in out Item;   Visuals : in Visual.views;
-                                           to      : in Surface.view := null)
+                                           To      : in Surface.view := null)
    is
       pragma Unreferenced (To);     -- TODO: Finish using surfaces.
    begin
-      Self.cull_Engine.cull (Visuals, do_cull => Self.is_Culling);
+      Self.cull_Engine.cull (Visuals, do_Cull => Self.is_Culling);
    end render;
 
 

@@ -3,11 +3,11 @@ with
      openGL.Shader,
      openGL.Program,
      openGL.Attribute,
+     openGL.Errors,
      openGL.Tasks,
      GL.lean,
      GL.Pointers,
 
-     System,
      Interfaces.C.Strings,
      System.storage_Elements;
 
@@ -97,10 +97,12 @@ is
             glBindAttribLocation (program => the_Program.gl_Program,
                                   index   => the_Program.Attribute (named => Name_1).gl_Location,
                                   name    => +Attribute_1_Name_ptr);
+            Errors.log;
 
             glBindAttribLocation (program => the_Program.gl_Program,
                                   index   => the_Program.Attribute (named => Name_2).gl_Location,
                                   name    => +Attribute_2_Name_ptr);
+            Errors.log;
 
             textured_Geometry.create_Uniforms (for_Program => the_Program.all'Access);
          end;
@@ -109,7 +111,6 @@ is
       Self.Program_is (the_Program.all'Access);
       return Self;
    end new_Geometry;
-
 
 
 
@@ -130,13 +131,12 @@ is
                                                                      Element       => Vertex,
                                                                      Element_Array => Vertex_array);
 
-
    procedure Vertices_are (Self : in out Item;   Now : in Vertex_array)
    is
       use openGL_Buffer_of_geometry_Vertices.Forge;
    begin
       Self.Vertices := new openGL_Buffer_of_geometry_Vertices.Object' (to_Buffer (Now,
-                                                                                  usage => Buffer.static_Draw));
+                                                                                  Usage => Buffer.static_Draw));
       -- Set the bounds.
       --
       declare

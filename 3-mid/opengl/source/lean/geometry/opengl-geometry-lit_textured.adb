@@ -71,7 +71,7 @@ is
                                                               4 => to_Asset ("assets/opengl/shader/lit_textured.frag"))));
       the_Program := new openGL.Program.lit.item;
       the_Program.define (  vertex_Shader'Access,
-                            fragment_Shader'Access);
+                          fragment_Shader'Access);
       the_Program.enable;
 
       Attribute_1 := new_Attribute (Name        => Name_1,
@@ -160,7 +160,6 @@ is
 
 
 
-
    ----------
    --  Vertex
    --
@@ -180,7 +179,6 @@ is
    begin
       return False;
    end is_Transparent;
-
 
 
 

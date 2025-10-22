@@ -2,6 +2,7 @@ private
 with
      openGL.Buffer.indices;
 
+
 package openGL.Primitive.indexed
 --
 --  Provides a class for indexed openGL primitives.
@@ -37,12 +38,14 @@ is
    procedure destroy (Self : in out Item);
 
 
+
    --------------
    --  Attributes
    --
 
    procedure Indices_are (Self : in out Item;   Now : in      Indices);
    procedure Indices_are (Self : in out Item;   Now : in long_Indices);
+
 
 
    --------------

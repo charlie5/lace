@@ -37,4 +37,5 @@ private
 
    type Item is new Geometry.item with null record;
 
+
 end openGL.Geometry.lit_colored;

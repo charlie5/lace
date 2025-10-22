@@ -6,6 +6,7 @@ with
 
      ada.unchecked_Deallocation;
 
+
 package body openGL.Primitive.long_indexed
 is
    ---------
@@ -25,7 +26,7 @@ is
 
       Self.facet_Kind := Kind;
       Self.Indices    := new Buffer.long_indices.Object' (to_Buffer (buffer_Indices'Access,
-                                                                     usage => Buffer.static_Draw));
+                                                                     Usage => Buffer.static_Draw));
    end define;
 
 
@@ -52,6 +53,7 @@ is
    end destroy;
 
 
+
    --------------
    --  Attributes
    --
@@ -68,6 +70,7 @@ is
 
       Self.Indices.set (to => buffer_Indices);
    end Indices_are;
+
 
 
    --------------

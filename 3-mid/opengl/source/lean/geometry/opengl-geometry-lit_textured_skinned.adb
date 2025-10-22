@@ -106,7 +106,6 @@ is
       -- Define the shaders and program.
       --
       vertex_Shader  .define (Shader.Vertex,   "assets/opengl/shader/lit_textured_skinned.vert");
-      --  fragment_Shader.define (Shader.Fragment, "assets/opengl/shader/lit_textured_skinned.frag");
       fragment_Shader.define (Shader.Fragment, (asset_Names' (1 => to_Asset ("assets/opengl/shader/version.header"),
                                                               2 => to_Asset ("assets/opengl/shader/lighting-frag.snippet"),
                                                               3 => to_Asset ("assets/opengl/shader/texturing-frag.snippet"),
@@ -252,38 +251,6 @@ is
          Self.Bounds_are (bounding_Box (Count => Now'Length));
       end;
    end Vertices_are;
-
-
-
-   --  overriding
-   --  procedure enable_Textures (Self : in out Item)
-   --  is
-   --     use GL,
-   --         GL.Binding,
-   --         openGL.Texture;
-   --  begin
-   --     Tasks.check;
-   --
-   --     glActiveTexture (gl.GL_TEXTURE0);
-   --     Errors.log;
-   --
-   --     if Self.Texture = openGL.Texture.null_Object
-   --     then
-   --        if not white_Texture.is_Defined
-   --        then
-   --           declare
-   --              use Palette;
-   --              white_Image : constant openGL.Image := [1 .. 2 => [1 .. 2 => +White]];
-   --           begin
-   --              white_Texture := openGL.Texture.Forge.to_Texture (white_Image);
-   --           end;
-   --        end if;
-   --
-   --        white_Texture.enable;
-   --     else
-   --        Self.Texture.enable;
-   --     end if;
-   --  end enable_Textures;
 
 
 end openGL.Geometry.lit_textured_skinned;

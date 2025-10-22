@@ -10,6 +10,7 @@ is
    type    Views is array (Index_t range <>) of View;
 
 
+
    ---------
    --  Forge
    --
@@ -22,6 +23,7 @@ is
 
    function  new_Primitive (Kind         : in facet_Kind;
                             vertex_Count : in Natural) return Primitive.non_indexed.view;
+
 
    --------------
    --  Operations
@@ -38,5 +40,6 @@ private
       record
          vertex_Count : Natural := 0;
       end record;
+
 
 end openGL.Primitive.non_indexed;

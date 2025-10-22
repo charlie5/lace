@@ -37,6 +37,7 @@ is
 
    pragma Convention (C, Vertex);
 
+
    type Vertex_array is array (long_Index_t range <>) of aliased Vertex;
 
 
@@ -58,11 +59,7 @@ private
 
    package textured_Geometry is new texturing.Mixin;
 
-
-   type Item is new textured_Geometry.item with
-      record
-         null;
-      end record;
+   type Item is new textured_Geometry.item with null record;
 
 
 end openGL.Geometry.lit_colored_textured_skinned;

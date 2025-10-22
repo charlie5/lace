@@ -3,6 +3,7 @@ with
      openGL.Tasks,
      ada.unchecked_Deallocation;
 
+
 package body openGL.Buffer
 is
    use type a_Name;
@@ -17,7 +18,7 @@ is
       Name : aliased a_Name;
    begin
       Tasks.check;
-      glGenBuffers (1, Name'unchecked_Access);
+      glGenBuffers (1, Name'unchecked_Access);      Errors.log;
       return Name;
    end new_vbo_Name;
 
@@ -28,8 +29,9 @@ is
       Name : aliased a_Name := vbo_Name;
    begin
       Tasks.check;
-      glDeleteBuffers (1, Name'unchecked_Access);
+      glDeleteBuffers (1, Name'unchecked_Access);      Errors.log;
    end free;
+
    pragma Unreferenced (free);
 
 

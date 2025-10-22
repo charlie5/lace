@@ -5,6 +5,7 @@ generic
    type Element       is private;
    type Element_Array is array (Index range <>) of Element;
 
+
 package openGL.Buffer.general
 --
 --  A generic for producing various types of openGL vertex buffer objects.

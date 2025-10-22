@@ -6,6 +6,7 @@ with
      openGL.Surface,
      openGL.Renderer.lean;
 
+
 package openGL.Camera
 --
 -- Simulates a camera.
@@ -30,12 +31,12 @@ is
    fairly_Far                  : constant         := 1_000_000.0;
    default_field_of_view_Angle : constant Degrees :=        60.0;
 
-   procedure Renderer_is              (Self : in out Item;   now    : in Renderer.lean.view);
+   procedure Renderer_is              (Self : in out Item;         Now    : in Renderer.lean.view);
 
-   procedure Site_is                  (Self : in out Item;         now    : in math.Vector_3);
+   procedure Site_is                  (Self : in out Item;         Now    : in math.Vector_3);
    function  Site                     (Self : in     Item)              return math.Vector_3;
 
-   procedure Spin_is                  (Self : in out Item'Class;   now    : in math.Matrix_3x3);
+   procedure Spin_is                  (Self : in out Item'Class;   Now    : in math.Matrix_3x3);
    function  Spin                     (Self : in     Item'Class)        return math.Matrix_3x3;
 
    procedure Position_is              (Self : in out Item'Class;   Site   : in math.Vector_3;
@@ -46,13 +47,13 @@ is
    procedure FoVy_is                  (Self : in out Item'Class;   Now    : in math.Degrees);
 
    function  Aspect                   (Self : in     Item'Class)        return math.Real;      -- X/Y Aspect ratio.
-   procedure Aspect_is                (Self : in out Item'Class;   now    : in math.Real);
+   procedure Aspect_is                (Self : in out Item'Class;   Now    : in math.Real);
 
    function  near_Plane_Distance      (Self : in     Item'Class)        return math.Real;      -- Distance to the near clipping plane.
    function   far_Plane_Distance      (Self : in     Item'Class)        return math.Real;      -- Distance to the far  clipping plane.
 
-   procedure near_Plane_Distance_is   (Self : in out Item'Class;   now    : in math.Real);
-   procedure  far_Plane_Distance_is   (Self : in out Item'Class;   now    : in math.Real);
+   procedure near_Plane_Distance_is   (Self : in out Item'Class;   Now    : in math.Real);
+   procedure  far_Plane_Distance_is   (Self : in out Item'Class;   Now    : in math.Real);
 
    function        view_Transform     (Self : in     Item'Class)        return math.Matrix_4x4;
    function  projection_Transform     (Self : in     Item'Class)        return math.Matrix_4x4;
@@ -61,7 +62,7 @@ is
    procedure Viewport_is              (Self : in out Item'Class;   Width,
                                                                    Height : in Positive);
 
-   function  to_World_Site            (Self : in     Item;         Window_Site : in math.Vector_3) return math.Vector_3;
+   function  to_World_Site            (Self : in     Item;         window_Site : in math.Vector_3) return math.Vector_3;
    --
    --  Returns the 'window space' site transformed to the equivalent 'world space' site.
 
@@ -69,16 +70,16 @@ is
    procedure disable_cull             (Self : in out Item);
 
    function  vanish_Point_Size_min    (Self : in     Item'Class) return Real;
-   procedure vanish_Point_Size_min_is (Self : in out Item'Class;   now : in Real);
+   procedure vanish_Point_Size_min_is (Self : in out Item'Class;   Now : in Real);
    --
    -- Visuals whose projected size falls below this minimum will be culled.
 
    function  Impostor_Size_min        (Self : in     Item)     return Real;
-   procedure Impostor_Size_min_is     (Self : in out Item;   now : in Real);
+   procedure Impostor_Size_min_is     (Self : in out Item;   Now : in Real);
    --
    -- Visuals whose projected size falls below this minimum will be substituted with impostors.
 
-   procedure allow_Impostors          (Self : in out Item;   now : in Boolean := True);
+   procedure allow_Impostors          (Self : in out Item;   Now : in Boolean := True);
 
 
    --------------
@@ -86,7 +87,7 @@ is
    --
 
    procedure render (Self : in out Item;   Visuals : in Visual.views;
-                                           to      : in Surface.view := null);
+                                           To      : in Surface.view := null);
 
    function  current_Planes (Self : in Item) return Frustum.plane_Array;
    --

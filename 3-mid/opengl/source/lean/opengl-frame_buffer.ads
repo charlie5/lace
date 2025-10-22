@@ -1,6 +1,7 @@
 with
      openGL.Texture;
 
+
 package openGL.Frame_Buffer
 is
 
@@ -26,6 +27,7 @@ is
    --------------
    --- Attributes
    --
+
    subtype Buffer_Name is GL.GLuint;     -- An openGL frame buffer 'Name'.
 
    function  Name        (Self : in     Item)     return Buffer_Name;
@@ -33,7 +35,7 @@ is
    function  Texture     (Self : in     Item)     return openGL.Texture.Object;
    procedure Texture_is  (Self : in out Item;   now : in openGL.Texture.Object);
 
-   function  is_complete (Self : in     Item)     return Boolean;
+   function  is_Complete (Self : in     Item)     return Boolean;
 
 
    --------------

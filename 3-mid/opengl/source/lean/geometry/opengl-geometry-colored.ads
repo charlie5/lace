@@ -35,9 +35,7 @@ is
 
 private
 
-   type Item is new Geometry.item with
-      record
-         null;
-      end record;
+   type Item is new Geometry.item with null record;
+
 
 end openGL.Geometry.colored;
