@@ -85,42 +85,42 @@ is
 
 
 
-   function to_Sprite (the_Pair            : in remote.World.sprite_model_Pair;
-                       the_graphics_Models : in id_Maps_of_graphics_model        .Map;
-                       the_physics_Models  : in Id_Maps_of_physics_Model.Map;
-                       the_World           : in gel.World.view) return gel.Sprite.view
-   is
-      the_graphics_Model : access openGL .Model.item'Class;
-      the_physics_Model  : access physics.Model.item'Class;
-      the_Sprite         :        gel.Sprite.view;
-
-      use openGL;
-   begin
-      log ("gel.world.to_Sprite");
-
-      the_graphics_Model := openGL .Model.view (the_graphics_Models.Element (the_Pair.graphics_Model_Id));
-      the_physics_Model  := physics.Model.view ( the_physics_Models.Element (the_Pair. physics_Model_Id));
-
-      the_Sprite := gel.Sprite.forge.new_Sprite ("Sprite" & the_Pair.sprite_Id'Image,
-                                                 sprite.World_view (the_World),
-                                                 get_Translation (the_Pair.Transform),
-                                                 get_Rotation    (the_Pair.Transform),
-                                                 the_graphics_Model,
-                                                 the_physics_Model,
-                                                 owns_Graphics => False,
-                                                 owns_Physics  => False,
-                                                 is_Kinematic  => the_Pair.Mass /= 0.0);
-
-      the_Sprite.Id_is      (Now => the_Pair.sprite_Id);
-      the_Sprite.is_Visible (Now => the_Pair.is_Visible);
-
-      the_Sprite.Site_is    (get_Translation (the_Pair.Transform));
-      the_Sprite.Spin_is    (get_Rotation    (the_Pair.Transform));
-
-      the_Sprite.desired_Dynamics_are (Site => the_Sprite.Site,
-                                       Spin => to_Quaternion (get_Rotation (the_Sprite.Transform)));
-      return the_Sprite;
-   end to_Sprite;
+   --  function to_Sprite (the_Pair            : in remote.World.sprite_model_Pair;
+   --                      the_graphics_Models : in id_Maps_of_graphics_model        .Map;
+   --                      the_physics_Models  : in Id_Maps_of_physics_Model.Map;
+   --                      the_World           : in gel.World.view) return gel.Sprite.view
+   --  is
+   --     the_graphics_Model : access openGL .Model.item'Class;
+   --     the_physics_Model  : access physics.Model.item'Class;
+   --     the_Sprite         :        gel.Sprite.view;
+   --
+   --     use openGL;
+   --  begin
+   --     log ("gel.world.to_Sprite");
+   --
+   --     the_graphics_Model := openGL .Model.view (the_graphics_Models.Element (the_Pair.graphics_Model_Id));
+   --     the_physics_Model  := physics.Model.view ( the_physics_Models.Element (the_Pair. physics_Model_Id));
+   --
+   --     the_Sprite := gel.Sprite.forge.new_Sprite ("Sprite" & the_Pair.sprite_Id'Image,
+   --                                                sprite.World_view (the_World),
+   --                                                get_Translation (the_Pair.Transform),
+   --                                                get_Rotation    (the_Pair.Transform),
+   --                                                the_graphics_Model,
+   --                                                the_physics_Model,
+   --                                                owns_Graphics => False,
+   --                                                owns_Physics  => False,
+   --                                                is_Kinematic  => the_Pair.Mass /= 0.0);
+   --
+   --     the_Sprite.Id_is      (Now => the_Pair.sprite_Id);
+   --     the_Sprite.is_Visible (Now => the_Pair.is_Visible);
+   --
+   --     the_Sprite.Site_is    (get_Translation (the_Pair.Transform));
+   --     the_Sprite.Spin_is    (get_Rotation    (the_Pair.Transform));
+   --
+   --     the_Sprite.desired_Dynamics_are (Site => the_Sprite.Site,
+   --                                      Spin => to_Quaternion (get_Rotation (the_Sprite.Transform)));
+   --     return the_Sprite;
+   --  end to_Sprite;
 
 
 
