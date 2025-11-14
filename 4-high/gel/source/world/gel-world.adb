@@ -760,6 +760,7 @@ is
             the_Sprite.apply (add_single_Sprite'unrestricted_Access);
             the_Sprite.apply (add_the_Joint    'unrestricted_Access);
          end;
+
       else
          add_single_Sprite (the_Sprite.all);
       end if;
@@ -773,9 +774,10 @@ is
       procedure rid_single_Sprite (Single : in out Sprite.item'Class)
       is
       begin
-         --  Self.Commands.add ((Kind         => rid_Sprite,
-         --                      Sprite       => the_Sprite'unchecked_Access,
-         --                      rid_Children => False));
+         if Single.physics_Model.is_Tangible
+         then
+            Self.physics_Space.rid (physics.Object.view (Single.Solid));
+         end if;
 
          Self.all_Sprites.rid (Single'unchecked_Access);     -- TODO: Handle grandchildren and so on.
       end rid_single_Sprite;
@@ -783,7 +785,22 @@ is
    begin
       if and_Children
       then
-         the_Sprite.apply (rid_single_Sprite'unrestricted_Access);
+         declare
+            procedure rid_the_Joint (the_Sprite : in out Sprite.item'Class)
+            is
+               use type gel.Joint.view;
+               the_Joint : constant gel.Joint.view := the_Sprite.parent_Joint;
+            begin
+               if the_Joint /= null
+               then
+                  Self.physics_Space.rid (the_Joint.Physics.all'Access);
+               end if;
+            end rid_the_Joint;
+         begin
+            the_Sprite.apply (rid_single_Sprite'unrestricted_Access);
+            the_Sprite.apply (rid_the_Joint    'unrestricted_Access);
+         end;
+
       else
          rid_single_Sprite (the_Sprite.all);
       end if;
