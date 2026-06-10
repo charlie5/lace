@@ -3,17 +3,17 @@
 uniform   mat4   mvp_Transform;
 uniform   vec3   Scale;
 
-attribute vec3   Site;
-attribute vec4   Color;
-attribute vec2   Coords;
+in  vec3   Site;
+in  vec4   Color;
+in  vec2   Coords;
 
-varying   vec4   vColor;
-varying   vec2   vCoords;
+out vec4   frag_Color;
+out vec2   frag_Coords;
 
 
 void main()
 {
    gl_Position = mvp_Transform * vec4 (Site * Scale, 1.0);
-   vColor      = Color;
-   vCoords     = Coords;
+   frag_Color  = Color;
+   frag_Coords = Coords;
 }

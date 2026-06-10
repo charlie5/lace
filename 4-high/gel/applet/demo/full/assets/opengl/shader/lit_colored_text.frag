@@ -1,12 +1,14 @@
-#version 140
+#version 410
 
 
 
 // Texturing snippet.
 //
 uniform int         texture_Count;
-uniform sampler2D   Textures [32];
-uniform float       Fade     [32];
+uniform sampler2D   Textures        [16];
+uniform float       Fade            [16];
+uniform bool        texture_Applies [16];
+uniform vec2        Tiling          [16];
 
 vec4
 apply_Texturing (vec2   Coords)
@@ -15,12 +17,20 @@ apply_Texturing (vec2   Coords)
     
     for (int i = 0;   i < texture_Count;   ++i)
     {
-        Color.rgb +=   texture (Textures [i], Coords).rgb
-                     * texture (Textures [i], Coords).a
+      if (texture_Applies [i])
+      {
+           vec2    tiled_Coords;
+            
+           tiled_Coords.s = Coords.s * Tiling [i].s;
+           tiled_Coords.t = Coords.t * Tiling [i].t;
+        
+        Color.rgb +=   texture (Textures [i], tiled_Coords).rgb
+                     * texture (Textures [i], tiled_Coords).a
                      * (1.0 - Fade [i]);
                                       
         Color.a    = max (Color.a, texture (Textures [i],
-                                            Coords).a);
+                                            tiled_Coords).a);
+      }
     }
     
     return Color;
@@ -32,6 +42,7 @@ apply_Texturing (vec2   Coords)
 struct light
 {
    vec4    Site;
+   float   Strength;
    vec3    Color;
    float   Attenuation;
    float   ambient_Coefficient;
@@ -46,7 +57,7 @@ uniform vec3        camera_Site;
 uniform vec3        specular_Color;    // The materials specular color.
 //uniform sampler2D   Texture;
 uniform int         light_Count;
-uniform light       Lights [10];
+uniform light       Lights [50];
 
 
 in  vec3   frag_Site;
@@ -152,6 +163,9 @@ main()
                                      surface_Site,
                                      Surface_to_Camera);
     }
+    
+    // linear_Color.g = 1.0;
+    linear_Color += surface_Color.rgb;
     
     vec3   Gamma = vec3 (1.0 / 2.2);
 

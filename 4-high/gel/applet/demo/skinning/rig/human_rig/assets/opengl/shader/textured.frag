@@ -1,12 +1,11 @@
-#version 140
+// Include 'version.header'.
+// Include 'texturing.frag'.
 
-uniform sampler2D   sTexture; 
-
-varying vec4        vColor;
-varying vec2        vCoords;
+in  vec2   frag_Coords;
+out vec4   final_Color;
 
 
 void main()
 {
-   gl_FragColor = texture2D (sTexture, vCoords)  *  vColor;   // Modulate light color with texture.
+   final_Color = apply_Texturing (frag_Coords);
 }

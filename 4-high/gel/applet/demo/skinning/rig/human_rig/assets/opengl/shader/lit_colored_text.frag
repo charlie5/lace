@@ -1,8 +1,48 @@
-#version 140
+#version 410
+
+
+
+// Texturing snippet.
+//
+uniform int         texture_Count;
+uniform sampler2D   Textures        [16];
+uniform float       Fade            [16];
+uniform bool        texture_Applies [16];
+uniform vec2        Tiling          [16];
+
+vec4
+apply_Texturing (vec2   Coords)
+{
+    vec4   Color = vec4 (0);
+    
+    for (int i = 0;   i < texture_Count;   ++i)
+    {
+      if (texture_Applies [i])
+      {
+           vec2    tiled_Coords;
+            
+           tiled_Coords.s = Coords.s * Tiling [i].s;
+           tiled_Coords.t = Coords.t * Tiling [i].t;
+        
+        Color.rgb +=   texture (Textures [i], tiled_Coords).rgb
+                     * texture (Textures [i], tiled_Coords).a
+                     * (1.0 - Fade [i]);
+                                      
+        Color.a    = max (Color.a, texture (Textures [i],
+                                            tiled_Coords).a);
+      }
+    }
+    
+    return Color;
+}
+
+
+
 
 struct light
 {
    vec4    Site;
+   float   Strength;
    vec3    Color;
    float   Attenuation;
    float   ambient_Coefficient;
@@ -15,9 +55,9 @@ uniform mat4        model_Transform;
 uniform mat3        inverse_model_Rotation;
 uniform vec3        camera_Site;
 uniform vec3        specular_Color;    // The materials specular color.
-uniform sampler2D   Texture;
+//uniform sampler2D   Texture;
 uniform int         light_Count;
-uniform light       Lights [10];
+uniform light       Lights [50];
 
 
 in  vec3   frag_Site;
@@ -95,8 +135,8 @@ apply_Light (light   Light,
 void
 main()
 {
-    vec4   texture_Color = texture (Texture, frag_Coords);
-
+    vec4   texture_Color = apply_Texturing (frag_Coords);   // texture (Texture, frag_Coords);
+   
     vec4   surface_Color = vec4 (mix (texture_Color.rgb,
                                       frag_Color   .rgb,
                                       0.5),
@@ -123,6 +163,9 @@ main()
                                      surface_Site,
                                      Surface_to_Camera);
     }
+    
+    // linear_Color.g = 1.0;
+    linear_Color += surface_Color.rgb;
     
     vec3   Gamma = vec3 (1.0 / 2.2);
 
