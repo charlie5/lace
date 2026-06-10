@@ -1,16 +1,16 @@
 name        = "lace_box2d"
 description = "Provides a thin Ada binding to the 'box2d' C++ project."
-version     = "0.1.1"
+version     = "1.0.0"
 
 authors            = ["Rod Kay"]
 maintainers        = ["Rod Kay <rodakay5@gmail.com>"]
 maintainers-logins = ["charlie5"]
 
 licenses = "ISC"
-website  = "https://github.com/charlie5/lace-alire"
+website  = "https://github.com/charlie5/lace"
 tags     = ["physics", "2d"]
 
 project-files = ["library/box2d_thin.gpr"]
 
 [[depends-on]]
-lace_c_math = "~0.1"
+lace_c_math = "^1.0.0"

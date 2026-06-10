@@ -1,16 +1,16 @@
 name        = "lace_xml"
 description = "Provides simple XML read/write support."
-version     = "0.1.1"
+version     = "1.0.0"
 
 authors            = ["Rod Kay"]
 maintainers        = ["Rod Kay <rodakay5@gmail.com>"]
 maintainers-logins = ["charlie5"]
 
 licenses = "ISC"
-website  = "https://github.com/charlie5/lace-alire"
+website  = "https://github.com/charlie5/lace"
 
 project-files = ["library/xml.gpr"]
 
 [[depends-on]]
-lace_shared = "~0.1"
+lace_shared = "^1.0.0"
 libexpat    = "*"

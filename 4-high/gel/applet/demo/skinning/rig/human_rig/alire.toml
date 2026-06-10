@@ -1,16 +1,16 @@
 name        = "lace_gel_animation_demo"
 description = "A demo of GEL's human animation."
-version     = "0.1.1"
+version     = "1.0.0"
 
 authors            = ["Rod Kay"]
 maintainers        = ["Rod Kay <rodakay5@gmail.com>"]
 maintainers-logins = ["charlie5"]
 
 licenses = "ISC"
-website  = "https://github.com/charlie5/lace-alire"
+website  = "https://github.com/charlie5/lace"
 
 executables   = ["launch_human_rig_demo"]
 project-files = ["human_rig_demo.gpr"]
 
 [[depends-on]]
-lace_gel = "~0.1"
+lace_gel = "^1.0.0"

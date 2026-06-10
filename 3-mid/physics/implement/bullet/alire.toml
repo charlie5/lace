@@ -1,19 +1,19 @@
 name        = "lace_bullet"
 description = "Provides a thin Ada binding to the 'bullet' C++ project."
-version     = "0.1.1"
+version     = "1.0.0"
 
 authors            = ["Rod Kay"]
 maintainers        = ["Rod Kay <rodakay5@gmail.com>"]
 maintainers-logins = ["charlie5"]
 
 licenses = "ISC"
-website  = "https://github.com/charlie5/lace-alire"
+website  = "https://github.com/charlie5/lace"
 tags     = ["physics", "3d"]
 
 project-files = ["library/bullet_thin.gpr"]
 
 [[depends-on]]
-lace_c_math = "~0.1"
+lace_c_math = "^1.0.0"
 libbullet   = "*"
 
 [environment.'case(distribution)'.msys2.C_INCLUDE_PATH]

@@ -1,17 +1,17 @@
 name        = "lace_physics"
 description = "Provides 2D/3D rigid body dynamics simulation."
-version     = "0.1.1"
+version     = "1.0.0"
 
 authors            = ["Rod Kay"]
 maintainers        = ["Rod Kay <rodakay5@gmail.com>"]
 maintainers-logins = ["charlie5"]
 
 licenses = "ISC"
-website  = "https://github.com/charlie5/lace-alire"
+website  = "https://github.com/charlie5/lace"
 
 project-files = ["library/physics.gpr"]
 
 [[depends-on]]
-lace        = "~0.1"
-lace_bullet = "~0.1"
-lace_box2d  = "~0.1"
+lace        = "^1.0.0"
+lace_bullet = "^1.0.0"
+lace_box2d  = "^1.0.0"
