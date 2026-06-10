@@ -4,5 +4,5 @@ with
 
 package float_math.Geometry.d2.Hexagon
 is
-  new float_Math.Geometry.any_d2.any_Hexagon
+  new float_Math.Geometry.d2.any_Hexagon
 with Pure;

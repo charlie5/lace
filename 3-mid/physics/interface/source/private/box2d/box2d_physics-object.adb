@@ -55,7 +55,7 @@ is
                                 box2d_physics.Shape.view (Shape).C);
       Self.Shape := Shape;
       b2d_Object_user_Data_is (Self.C,
-                               to_void_ptr (Self));
+                               to_void_ptr (Any_limited_view (Self)));
       Self.Site_is (at_Site);
       Self.update_Dynamics;
    end define;

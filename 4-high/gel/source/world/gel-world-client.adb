@@ -573,8 +573,8 @@ is
          end;
       end;
 
-      of_World.register (the_Mirror         => Self,
-                         Mirror_as_observer => Self);
+      of_World.register (the_Mirror         => remote.World .view (Self),
+                         Mirror_as_observer => lace.Observer.view (Self));
    end is_a_Mirror;
 
 

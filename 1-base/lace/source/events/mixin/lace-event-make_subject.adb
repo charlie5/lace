@@ -257,7 +257,7 @@ is
       else
          Self.Sender.add (the_Event,
                           for_Observer => to_Observer,
-                          from_Subject => Self);
+                          from_Subject => lace.Subject.view (Self));
       end if;
    end send;
 

@@ -3,6 +3,8 @@ with
      gel.  any_Joint,
      gel.World,
 
+     lace.Observer,
+
      ada.unchecked_Deallocation;
 
 
@@ -903,7 +905,7 @@ is
       Self.child_Joints.append (the_Joint);
 
       the_Child.parent_Joint := the_Joint;
-      the_Child.relay_responseless_Events (To => Self);
+      the_Child.relay_responseless_Events (To => lace.Observer.view (Self));
    end attach;
 
 

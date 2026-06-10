@@ -190,13 +190,14 @@ is
 
                   the_Site := (0.0, 0.0, 0.0);
 
-                  the_Sprite := gel.Sprite.Forge.new_Sprite ("Terrain" & Row'Image & Col'Image,
-                                                             sprite.World_view (World),
-                                                             the_Site,
-                                                             the_ground_Model,
-                                                             the_ground_physics_Model,
-                                                             owns_Graphics => True,
-                                                             owns_Physics  => True);
+                  the_Sprite := gel.Sprite.Forge.new_Sprite (Name           => "Terrain" & Row'Image & Col'Image,
+                                                             World          => sprite.World_view (World),
+                                                             at_Site        => the_Site,
+                                                             and_Spin       => Identity_3x3,
+                                                             graphics_Model => the_ground_Model,
+                                                             physics_Model  => the_ground_physics_Model,
+                                                             owns_Graphics  => True,
+                                                             owns_Physics   => True);
 
                   site_y_Offset := math.Real (  the_height_Extents (1)
                                               + (the_height_Extents (2) - the_height_Extents (1)) / 2.0);
