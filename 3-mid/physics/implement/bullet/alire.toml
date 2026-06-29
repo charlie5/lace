@@ -16,5 +16,5 @@ project-files = ["library/bullet_thin.gpr"]
 lace_c_math = "^1.0.0"
 libbullet   = "*"
 
-[environment.'case(distribution)'.msys2.C_INCLUDE_PATH]
+[environment.'case(distribution)'.msys2.CPATH]
 append = "${DISTRIB_ROOT}/mingw64/include/bullet"
