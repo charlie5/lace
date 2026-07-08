@@ -135,6 +135,13 @@ HelloWorld*
 test_dice
 launch_hexagon_test
 launch_render_hex_grid
+1-base/lace/applet/test/job/test_job
+3-mid/opengl/applet/demo/textures/tiling/launch_tiling_demo
+3-mid/opengl/applet/demo/renderer/render_screenshot/sshot.bmp
+4-high/gel/applet/demo/sprite/ghost_sprite/launch_ghost_sprite
+4-high/gel/applet/demo/distributed/dsa/test/test_client_1/client_partition
+4-high/gel/applet/demo/distributed/dsa/test/test_client_2/client_partition
+4-high/gel/applet/demo/distributed/dsa/test/test_server/server_partition
 
 
 ## Old Code
