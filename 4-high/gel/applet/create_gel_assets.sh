@@ -10,7 +10,7 @@ fi
 mkdir -p assets
 cd       assets
 
-ln -s $LACE/4-high/gel/applet/assets  gel
+ln -sr "$LACE/4-high/gel/applet/assets"  gel
 
 
 echo Done.

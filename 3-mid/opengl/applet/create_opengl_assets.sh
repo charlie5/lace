@@ -10,7 +10,7 @@ fi
 mkdir -p assets
 cd       assets
 
-ln -s $LACE/3-mid/opengl/assets  opengl
+ln -sr "$LACE/3-mid/opengl/assets"  opengl
 
 
 echo Done.
