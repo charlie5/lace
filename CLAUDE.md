@@ -58,7 +58,7 @@ Components are organised into dependency tiers; a component may only depend on c
 |------|-----------|------|
 | `5-all` | build_all | Applet that transitively builds every component and demo |
 | `4-high` | gel | Game Engine Library; windowing backends in `library/sdl` (`gel_sdl.gpr`) and `library/gtk` (`gel_gtk.gpr`) |
-| `3-mid` | opengl | 2D/3D rendering; also `physics` (interface + `bullet`, `box2d`, `c_math`, `vox` implementations) and `impact` |
+| `3-mid` | opengl | 2D/3D rendering; also `physics` (interface + `bullet`, `box2d`, `c_math` implementations) |
 | `2-low` | collada | Collada parser; also `neural` (experimental, gitignored) |
 | `1-base` | lace | Core types, `lace.Events` (task-safe subject/observer, DSA-capable), `lace.Environ`; also `math`, `xml`, `swig` |
 | `0-floor` | lace_shared | Abstract GPR holding shared compiler/style/binder options and scenario variables |

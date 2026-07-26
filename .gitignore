@@ -42,9 +42,6 @@ tom dalling
 2-low/neural/implement
 2-low/neural/applet/test/learn_linear/velocity.net
 
-3-mid/impact/contrib
-3-mid/physics/implement/impact/*
-3-mid/physics/implement/vox/*
 #3-mid/physics/implement/box2d/contrib
 
 4-high/gel/source/platform/sdl/attic
@@ -108,7 +105,6 @@ launch_mixed_joints
 launch_mixed_joints_2d
 launch_mixed_shapes
 launch_text_sprite_demo
-launch_impact_hello_3d_demo
 launch_camera_demo
 launch_render_lighting
 launch_render_capsules
@@ -171,5 +167,4 @@ config/
 ## Projects
 #
 2-low/neural/
-3-mid/impact/
 

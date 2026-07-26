@@ -26,13 +26,6 @@ with
      launch_parse_Box,
 --       launch_learn_Linear,
 
-     launch_impact_hello_2d_Demo,
-     launch_orbs_hello_Demo,
-     launch_impact_hello_3d_Demo,
-     launch_box_box_collision_Test,
-     launch_rigid_body_spin_Test,
-     launch_sphere_sphere_collision_Test,
-
      launch_camera_Demo,
      launch_core_Test,
      launch_large_terrain_Demo,
@@ -55,8 +48,6 @@ with
      launch_freetype_linkage_Test,
      --  launch_egl_linkage_Test,
      --  launch_gl_linkage_Test,
-
-     launch_Test_2d,
 
      launch_hello_physics_interface_2D_Demo,
      launch_hello_physics_interface_3D_Demo,
@@ -124,13 +115,6 @@ begin
    launch_parse_Box;
 --     launch_learn_Linear;
 
-   launch_impact_hello_2d_Demo;
-   launch_orbs_hello_Demo;
-   launch_impact_hello_3d_Demo;
-   launch_box_box_collision_Test;
-   launch_rigid_body_spin_Test;
-   launch_sphere_sphere_collision_Test;
-
    launch_camera_Demo;
    launch_core_Test;
    launch_large_terrain_Demo;
@@ -153,8 +137,6 @@ begin
    --  launch_egl_linkage_Test;
    launch_freetype_linkage_Test;
    --  launch_gl_linkage_Test;
-
-   launch_Test_2D;
 
    launch_hello_physics_interface_2D_Demo;
    launch_hello_physics_interface_3D_Demo;

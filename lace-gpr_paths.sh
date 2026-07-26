@@ -16,7 +16,6 @@ GPR_PROJECT_PATH=$LACE/3-mid/physics/interface/library:$GPR_PROJECT_PATH
 GPR_PROJECT_PATH=$LACE/3-mid/physics/implement/c_math/library:$GPR_PROJECT_PATH
 GPR_PROJECT_PATH=$LACE/3-mid/physics/implement/bullet/library:$GPR_PROJECT_PATH
 GPR_PROJECT_PATH=$LACE/3-mid/physics/implement/box2d/library:$GPR_PROJECT_PATH
-GPR_PROJECT_PATH=$LACE/3-mid/physics/implement/impact/library:$GPR_PROJECT_PATH
 
 
 GPR_PROJECT_PATH=$LACE/4-high/gel/library:$GPR_PROJECT_PATH
