@@ -1,5 +1,6 @@
 with
      "lace",
+     "lace_environ",
      "lace_shared";
 
 project test_Environ_Paths
