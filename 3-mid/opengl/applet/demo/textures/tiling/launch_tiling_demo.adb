@@ -36,7 +36,9 @@ begin
 
    declare
       the_Texture : constant asset_Name                 := to_Asset ("assets/opengl/texture/Face1.bmp");
-      Details     :          openGL.texture_Set.Details := openGL.texture_Set.to_Details ([1 => the_Texture]);
+      Details     : constant openGL.texture_Set.Item   := openGL.texture_Set.to_Set ([1 => the_Texture],
+                                                                                     texture_Tilings => [1      => (S => 5.0, T => 4.0),
+                                                                                                         others => (S => 1.0, T => 1.0)]);
 
       the_Model   : Model.polygon.lit_textured.view;
         --  := Model.polygon.lit_textured.new_Polygon (vertex_Sites    => [[-1.0, -1.0], [1.0, -1.0], [1.0, 1.0], [-1.0, 1.0]],
@@ -50,8 +52,6 @@ begin
       the_Visual : openGL.Visual.view;
 
    begin
-      Details.texture_Tilings (1) := (S => 5.0, T => 4.0);
-
       the_Model  := Model.polygon.lit_textured.new_Polygon (vertex_Sites    => [[-1.0, -1.0], [1.0, -1.0], [1.0, 1.0], [-1.0, 1.0]],
                                                             texture_Details => Details);
       the_Visual := new_Visual (the_Model.all'Access);

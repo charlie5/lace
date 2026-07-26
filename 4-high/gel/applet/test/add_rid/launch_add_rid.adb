@@ -49,6 +49,7 @@ is
                                                                  1536, 864,
                                                                  space_Kind => physics.Box2D);
    the_Ground : gel.Sprite          .view := new_rectangle_Sprite (the_Applet.gui_World,
+                                                                   name   => "the_Ground",
                                                                    mass   =>   0.0,
                                                                    width  => 100.0,
                                                                    height =>   1.0,
@@ -69,9 +70,9 @@ begin
       use Math, math.Algebra.linear.d3, math.Vectors;
 
       ball_Count      : constant                       := 39; -- 256;
-      the_root_Ball   : constant gel.Sprite.view       :=                         new_circle_Sprite (the_Applet.gui_World, mass =>  0.0);
-      the_Balls       : constant gel.Sprite.views      := (1 .. ball_Count - 1 => new_circle_Sprite (the_Applet.gui_World, mass =>  1.0),
-                                                           ball_Count          => new_circle_Sprite (the_Applet.gui_World, mass => 10.0));
+      the_root_Ball   : constant gel.Sprite.view       :=                         new_circle_Sprite (the_Applet.gui_World, name => "the_root_Ball", mass =>  0.0);
+      the_Balls       : constant gel.Sprite.views      := (1 .. ball_Count - 1 => new_circle_Sprite (the_Applet.gui_World, name => "the_Balls",     mass =>  1.0),
+                                                           ball_Count          => new_circle_Sprite (the_Applet.gui_World, name => "the_last_Ball", mass => 10.0));
 
       mid_Ball_Id     : constant Index                 := Index (the_Balls'First + the_Balls'Last) / 2;
       mid_Ball        :          gel.Sprite.view  renames the_Balls (mid_Ball_Id);

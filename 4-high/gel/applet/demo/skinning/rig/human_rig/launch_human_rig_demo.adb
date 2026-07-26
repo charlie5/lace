@@ -55,7 +55,7 @@ begin
       the_Rig       : aliased  gel.Rig.item;
       the_rig_Model : aliased constant openGL.Model.any.view := openGL.Model.any.new_Model (Model            => openGL.to_Asset (model_Name),
                                                                                             Texture          => openGL.null_Asset,
-                                                                                            texture_Details  => openGL.texture_Set.to_Details ([1 => openGL.to_Asset ("assets/gel/Face1.bmp")]),
+                                                                                            texture_Details  => openGL.texture_Set.to_Set ([1 => openGL.to_Asset ("assets/gel/Face1.bmp")]),
                                                                                             Texture_is_lucid => False);
       next_render_Time : ada.calendar.Time := ada.calendar.Clock;
 

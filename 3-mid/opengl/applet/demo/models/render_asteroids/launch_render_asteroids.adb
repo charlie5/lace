@@ -38,7 +38,7 @@ begin
       --                                                                               Texture_is_lucid => False);
       gaspra_Model : constant openGL.Model.any.view := openGL.Model.any.new_Model (Model            => to_Asset ("assets/gaspra.tab"),
                                                                                    Texture          => to_Asset ("./assets/opengl/texture/Face1.bmp"),
-                                                                                   texture_Details  => openGL.texture_Set.to_Details ([1 => to_Asset ("./assets/opengl/texture/Face1.bmp")]),
+                                                                                   texture_Details  => openGL.texture_Set.to_Set ([1 => to_Asset ("./assets/opengl/texture/Face1.bmp")]),
                                                                                    Texture_is_lucid => False);
       the_Models   : constant openGL.Model.views    := [1 => gaspra_Model.all'unchecked_Access];
 

@@ -36,7 +36,7 @@ is
                                                                                      --  Model            => openGL.to_Asset ("./box_3_bone.dae"),
                                                                                      --  Model            => openGL.to_Asset ("./human-default-animated-01_01.dae"),
                                                                                      Texture          => openGL.null_Asset,
-                                                                                     texture_Details  => openGL.texture_Set.to_Details ([1 => openGL.to_Asset ("assets/gel/Face1.bmp")]),
+                                                                                     texture_Details  => openGL.texture_Set.to_Set ([1 => openGL.to_Asset ("assets/gel/Face1.bmp")]),
                                                                                      Texture_is_lucid => False);
    the_Rig          : gel.Rig.item;
    next_render_Time : ada.calendar.Time;

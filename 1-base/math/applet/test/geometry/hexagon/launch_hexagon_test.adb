@@ -10,7 +10,7 @@ is
    procedure log (Message : in String)
                   renames ada.Text_IO.put_Line;
 
-   Hex : constant Hexagon.item := (circumRadius => 1.0);
+   Hex : constant Hexagon.item := Hexagon.to_Hexagon (circumRadius => 1.0);
 begin
    log ("");
    log (Hex'Image);
@@ -36,7 +36,7 @@ begin
 
          for Col in 1 .. the_Grid.Cols
          loop
-            log ("[" & Row'Image & "][" & Col'Image & "] => " & Hexagon.hex_Center (the_Grid, [Row, Col])'Image);
+            log ("[" & Row'Image & "][" & Col'Image & "] => " & Hexagon.hex_Center (the_Grid, (Row, Col))'Image);
          end loop;
 
       end loop;
@@ -55,7 +55,7 @@ begin
 
          for Col in 1 .. the_Grid.Cols
          loop
-            log ("[" & Row'Image & "][" & Col'Image & "] => " & Hexagon.hex_Center (the_Grid, [Row, Col])'Image);
+            log ("[" & Row'Image & "][" & Col'Image & "] => " & Hexagon.hex_Center (the_Grid, (Row, Col))'Image);
          end loop;
 
       end loop;
@@ -74,7 +74,7 @@ begin
 
          for Col in 1 .. the_Grid.Cols
          loop
-            log ("[" & Row'Image & "][" & Col'Image & "] => " & Hexagon.hex_Center (the_Grid, [Row, Col])'Image);
+            log ("[" & Row'Image & "][" & Col'Image & "] => " & Hexagon.hex_Center (the_Grid, (Row, Col))'Image);
          end loop;
 
       end loop;
@@ -93,7 +93,7 @@ begin
 
          for Col in 1 .. the_Grid.Cols
          loop
-            log ("[" & Row'Image & "][" & Col'Image & "] => " & Hexagon.hex_Center (the_Grid, [Row, Col])'Image);
+            log ("[" & Row'Image & "][" & Col'Image & "] => " & Hexagon.hex_Center (the_Grid, (Row, Col))'Image);
          end loop;
 
       end loop;

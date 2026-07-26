@@ -41,7 +41,7 @@ begin
                                                             Lower => (texture_Name => the_Texture),
                                                             Left  => (texture_Name => the_Texture),
                                                             Right => (texture_Name => the_Texture)),
-                                                  texture_Details => openGL.texture_Set.to_Details ([1 => the_Texture]));
+                                                  texture_Details => openGL.texture_Set.to_Set ([1 => the_Texture]));
       --  The Visual.
       --
       the_Visuals : constant openGL.Visual.views := (1 => new_Visual (the_Box.all'Access));
