@@ -329,7 +329,7 @@ is
               the_rounded_hexagon_column_Model.all'Access,
 
                                 the_line_Model.all'Access,
-                             --  the_collada_Model.all'Access,
+--                              the_collada_Model.all'Access,
                            the_wavefront_Model.all'Access,
 
                         the_segment_line_Model.all'Access];

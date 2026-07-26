@@ -57,14 +57,14 @@ is
       --  the_Event : constant gel.events.new_sprite_added_to_world_Event
       --    := gel.events.new_sprite_added_to_world_Event (to_Event);
 
-      the_Sprite : gel.Sprite.view;
+      --  the_Sprite : gel.Sprite.view;
 
    begin
       log ("gel.applet.add_new_Sprite.respond");
       --  the_Sprite := Self.Applet.World (the_Event.World_Id).fetch_Sprite (the_event.Sprite_Id);
 
-      the_Sprite.is_Visible (True);
-      Self.Applet.add (the_Sprite);
+      --  the_Sprite.is_Visible (True);
+      --  Self.Applet.add (the_Sprite);
 
    exception
       when constraint_Error =>
@@ -424,6 +424,7 @@ is
       loop
          declare
             the_world_Info : world_Info renames Element (world_Cursor).all;
+            pragma Unreferenced (the_world_Info);
          begin
             null; -- the_world_Info.World.evolve;
          end;
@@ -916,6 +917,8 @@ is
       the_Event      : gel.mouse.motion_Event renames gel.mouse.motion_Event (to_Event);
       Cursor         : world_Vectors.Cursor   :=      Self.Applet.Worlds.First;
       the_world_Info : world_Info_view;
+
+      pragma Unreferenced (the_Event, Cursor, the_world_Info);
 
    begin
       --  while has_Element (Cursor)

@@ -230,14 +230,10 @@ is
         and Index1 < max_Precomputed     -- TODO: Check this whole function matches C code.
         and Index2 < max_Precomputed
       then
-         declare
-            max_Index : C.ptrdiff_t := C.ptrdiff_t (2 * (Index2 * max_Precomputed + Index1) + 1);     -- TODO: Check this against C code.
-         begin
-            X := Float (Self.kerningCache (C.size_t (2 * (Index2 * max_Precomputed + Index1))));
-            Y := Float (Self.kerningCache (C.size_t (2 * (Index2 * max_Precomputed + Index1) + 1)));
+         X := Float (Self.kerningCache (C.size_t (2 * (Index2 * max_Precomputed + Index1))));
+         Y := Float (Self.kerningCache (C.size_t (2 * (Index2 * max_Precomputed + Index1) + 1)));
 
-            return [X, Y, 0.0];
-         end;
+         return [X, Y, 0.0];
       end if;
 
       kernAdvance.X := 0;

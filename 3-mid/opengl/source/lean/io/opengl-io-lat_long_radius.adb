@@ -18,10 +18,12 @@ is
       face_Count   :          long_Index_t  := 0;
 
    begin
+      pragma Warnings (Off, "condition is always False");     -- 'coord_Count' is a placeholder, pending texturing.
       if coord_Count > 0
       then
          the_Coords := new many_Coordinates_2D (1 .. coord_Count);
       end if;
+      pragma Warnings (On, "condition is always False");
 
       for i in 1 .. Integer (site_Count)
       loop

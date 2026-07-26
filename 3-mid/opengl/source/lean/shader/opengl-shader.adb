@@ -11,7 +11,7 @@ with
 
      interfaces.C.Strings;
 
- use ada.Text_IO;
+use ada.Text_IO;
 
 
 package body openGL.Shader

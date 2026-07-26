@@ -218,9 +218,11 @@ is
       end if;
 
       if texture_is_Alpha
-      then   Self.is_Transparent := True;
-             Self.Program_is (the_Programs (alpha_Texture).Program.all'Access);
-      else   Self.Program_is (the_Programs ( rgba_Texture).Program.all'Access);
+      then
+         Self.is_Transparent := True;
+         Self.Program_is (the_Programs (alpha_Texture).Program.all'Access);
+      else
+         Self.Program_is (the_Programs ( rgba_Texture).Program.all'Access);
       end if;
 
       return Self;

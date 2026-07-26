@@ -22,7 +22,7 @@ package box2d_c.joint_Cursor is
    package C_Pointers is new Interfaces.C.Pointers
      (Index => Interfaces.C.size_t, Element => box2d_c.joint_Cursor.Item,
       Element_Array      => box2d_c.joint_Cursor.Item_Array,
-      Default_Terminator => (others => <>));
+      Default_Terminator => (Joint => null));
 
    subtype Pointer is C_Pointers.Pointer;
 

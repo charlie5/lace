@@ -361,8 +361,6 @@ is
                                                  Now        : in Real)
    is
       use type joint.Degree_of_freedom;
-
-      Span : Real := abs (Now) * 2.0;
    begin
       if for_Degree /= Revolve then
          raise Error with "Invalid degree of freedom:" & for_Degree'Image;

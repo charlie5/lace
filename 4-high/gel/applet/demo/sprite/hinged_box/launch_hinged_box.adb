@@ -30,7 +30,6 @@ is
        ada.Text_IO;
 
    the_Applet : constant gel.Applet.gui_World.view := gel.Forge.new_gui_Applet ("hinged Box", 1536, 864);
-   X          :          float_math.Real           := 0.0;
 
 begin
    the_Applet.gui_Camera.Site_is ([0.0, 4.0, 30.0]);      -- Position the camera.
@@ -107,6 +106,7 @@ begin
          Frame_3 : math.Matrix_4x4 := math.Identity_4x4;
 
          y_Rot   : math.Matrix_3x3 := y_Rotation_from (to_Radians (180.0));
+         pragma Unreferenced (y_Rot);     -- Kept for the disabled rotation variants below.
       begin
          set_Translation (Frame_2, [2.0, 2.0, 0.0]);
          set_Translation (Frame_3, [8.0, 8.0, 0.0]);

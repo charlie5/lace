@@ -5,22 +5,10 @@ with
      gel.Sprite,
      gel.Human_v1,
      gel.Forge,
-     gel.human_Types,
-     gel.human_Types_v1,
-     physics.Model,
 
-     openGL.Model.box.lit_colored_textured,
-     openGL.Model.any,
-     openGL.Model.sphere.lit_colored_textured,
-     opengl.Palette,
-     opengl.IO,
+     ada.Calendar;
 
-     float_Math.algebra.linear.d3,
-
-     ada.Calendar,
-     ada.Strings.fixed,
-     ada.Text_IO,
-     ada.Exceptions;
+pragma Unreferenced (gel.Window.setup);
 
 
 procedure launch_human_Model_v1
@@ -29,12 +17,7 @@ procedure launch_human_Model_v1
 --
 --
 is
-   use gel.Applet,    openGL.Model.box,  gel.Human_v1, gel.human_Types,
-       openGL,        opengl.Palette,
-       float_Math,    float_Math.algebra.linear.d3,
-       ada.Calendar,  ada.Strings,    ada.Strings.fixed, ada.Text_IO, ada.Exceptions;
-
-   use type math.Real,  opengl.Real;
+   use ada.Calendar;
 
    the_Applet : constant gel.Applet.gui_World.view := gel.Forge.new_gui_Applet ("human Model", 1920, 1200);
    the_Ground : constant gel.Sprite.view           := gel.Forge.new_box_Sprite (the_Applet.gui_World,
@@ -59,7 +42,8 @@ is
    my_Human         : aliased gel.Human_v1.item;
    use gel.Human_v1;
 
-   next_render_Time :         ada.calendar.Time;
+   frame_Period     : constant Duration := 0.016_666_667;     -- ~ 1/60th of a second.
+   next_render_Time :          ada.calendar.Time;
 
 begin
    gel.Human_v1.Mode_is (Skin);
@@ -125,7 +109,7 @@ begin
       my_Human  .evolve (the_Applet.gui_World.Age);
       the_Applet.freshen;                              -- Handle any new events and update the screen.
 
-      next_render_Time := next_render_Time + 1.0/60.0;
+      next_render_Time := next_render_Time + frame_Period;
       delay until next_render_Time;
    end loop;
 

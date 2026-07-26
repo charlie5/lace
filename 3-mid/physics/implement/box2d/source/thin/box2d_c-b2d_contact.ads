@@ -25,7 +25,8 @@ package box2d_c.b2d_Contact is
    package C_Pointers is new Interfaces.C.Pointers
      (Index => Interfaces.C.size_t, Element => box2d_c.b2d_Contact.Item,
       Element_Array      => box2d_c.b2d_Contact.Item_Array,
-      Default_Terminator => (others => <>));
+      Default_Terminator => (Object_A | Object_B => null,
+                             Site                => (x | y | z => 0.0)));
 
    subtype Pointer is C_Pointers.Pointer;
 

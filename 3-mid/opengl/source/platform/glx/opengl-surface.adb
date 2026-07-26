@@ -19,6 +19,7 @@ is
                                                                       GLX_STENCIL_SIZE,    8,
                                                                       GLX_DOUBLEBUFFER,    1,
                                                                       0];
+   pragma Unreferenced (visual_Attributes);     -- TODO: Unused until this package is finished.
 
 
    procedure define (Self : in out Item;   Profile   : in surface_Profile.item'Class;

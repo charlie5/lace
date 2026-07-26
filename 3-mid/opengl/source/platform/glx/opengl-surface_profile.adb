@@ -1,6 +1,5 @@
 with
-     interfaces.C,
-     ada.unchecked_Conversion;
+     interfaces.C;
 
 package body openGL.surface_Profile     -- TODO: Finish this package.
 is
@@ -21,6 +20,7 @@ is
                                                                       -- GLX_SAMPLE_BUFFERS  , 1,
                                                                       -- GLX_SAMPLES         , 4,
                                                                       0];
+   pragma Unreferenced (visual_Attributes);     -- TODO: Unused until this package is finished.
 
 
    procedure define (Self : in out Item;   Screen  : access openGL.Screen.item'Class;

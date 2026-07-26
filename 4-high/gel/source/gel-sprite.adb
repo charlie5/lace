@@ -716,6 +716,7 @@ is
    procedure apply_Force (Self : in out Item;   Force  : in Vector_3)
    is
       the_Force : aliased constant Vector_3 := Force;
+      pragma Unreferenced (the_Force);     -- Kept for the disabled 'World.apply_Force' variant below.
    begin
       Self.Solid.apply_Force (Force);
       --  Self.World.apply_Force (Self'unchecked_Access, the_Force);
@@ -1143,7 +1144,7 @@ is
 
 
 
-    function program_Parameters (Self : in Item) return opengl.Program.Parameters_view
+   function program_Parameters (Self : in Item) return opengl.Program.Parameters_view
    is
    begin
       return Self.program_Parameters;

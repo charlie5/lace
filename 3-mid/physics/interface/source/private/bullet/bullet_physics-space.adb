@@ -12,7 +12,8 @@ with
      Swig,
      lace.Any,
      interfaces.C,
-     ada.unchecked_Conversion;
+     ada.unchecked_Conversion,
+     system.storage_Elements;
 
 package body bullet_Physics.Space
 is
@@ -220,9 +221,9 @@ is
    function Hash (the_C_Object : in bullet_c.Pointers.Object_pointer) return ada.Containers.Hash_type
    is
       function convert is new ada.unchecked_Conversion (bullet_c.Pointers.Object_pointer,
-                                                        ada.Containers.Hash_type);
+                                                        system.storage_Elements.integer_Address);
    begin
-      return convert (the_C_Object);
+      return ada.Containers.Hash_type'Mod (convert (the_C_Object));
    end Hash;
 
 
@@ -501,7 +502,10 @@ is
    is
       type Any_limited_view is access all lace.Any.limited_item'Class;
       pragma Unreferenced (Any_limited_view);
-      the_Manifold : physics.space.a_Manifold;
+
+      the_Manifold : constant physics.space.a_Manifold
+        := (Objects => [others => null],
+            Contact => (Site => [others => 0.0]));
    begin
       raise Error with "TODO";
       return the_Manifold;
@@ -553,7 +557,7 @@ is
    is
    begin
       raise Error with "TODO";
-      return joint_Cursor' (others => <>);
+      return joint_Cursor' (physics.Space.joint_Cursor with null record);
    end first_Joint;
 
 

@@ -12,7 +12,6 @@ procedure launch_Camera_Demo
 --
 is
    use openGL,
-       openGL.Model,
        openGL.Model.box,
        openGL.Palette,
        openGL.Math,

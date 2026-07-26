@@ -108,7 +108,7 @@ is
           Geometry_2d;
 
       site_Map_of_vertex_Id : site_Maps_of_vertex_Id.Map;
-        next_free_vertex_Id : Index_t := 0;
+      next_free_vertex_Id   : Index_t := 0;
 
 
       function fetch_Id (S : in geometry_2d.Site) return Index_t
@@ -139,8 +139,8 @@ is
       zigzag_Count : constant Index_t := col_Count + 1;
 
       first_zigzag_vertex_Count  : constant Index_t := row_Count * 2 + 1;
-        mid_zigzag_vertex_Count  : constant Index_t := row_Count * 2 + 2;
-       last_zigzag_vertex_Count  : constant Index_t := row_Count * 2 + 1;
+      mid_zigzag_vertex_Count    : constant Index_t := row_Count * 2 + 2;
+      last_zigzag_vertex_Count   : constant Index_t := row_Count * 2 + 1;
 
       zigzags_vertex_Count       : constant Index_t :=   first_zigzag_vertex_Count
                                                        + (mid_zigzag_vertex_Count) * (zigzag_Count - 2)

@@ -9,8 +9,6 @@ with
 
      openGL.Model.box.colored,
      openGL.Model.sphere.lit_textured,
-     openGL.Model.sphere.lit_colored_textured,
-     openGL.Model.capsule.lit_colored_textured,
      openGL.Model.capsule.textured,
      openGL.Model.any,
      openGL.Model.terrain,
@@ -178,9 +176,9 @@ begin
          --                                                            texture_Details => texture_Set.to_Set ([1 => openGL.to_Asset ("assets/gel/texture/earth_map.bmp")]));
          the_ball_Model : constant openGL.Model.sphere.lit_textured.view
            := openGL.Model.sphere.lit_textured.new_Sphere (Radius          => 1.0,
-                                                           --  Image           => openGL.to_Asset ("assets/gel/golf_green-16x16.tga"),
+--                                                         Image           => openGL.to_Asset ("assets/gel/golf_green-16x16.tga"),
                                                            Image           => openGL.to_Asset ("assets/gel/texture/earth_map.bmp"),
-                                                             --  texture_Details => texture_Set.to_Set ([1 => openGL.to_Asset ("assets/gel/Face1.bmp")]));
+--                                                         texture_Details => texture_Set.to_Set ([1 => openGL.to_Asset ("assets/gel/Face1.bmp")]));
                                                            texture_Details => texture_Set.to_Set ([1 => openGL.to_Asset ("assets/gel/texture/earth_map.bmp")]));
          the_Ball : constant gel.Sprite.view
            := gel.Sprite.forge.new_Sprite (Name           => "demo.Ball",

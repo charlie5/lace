@@ -27,7 +27,8 @@ package box2d_c.b2d_point_Collision is
      (Index              => Interfaces.C.size_t,
       Element            => box2d_c.b2d_point_Collision.Item,
       Element_Array      => box2d_c.b2d_point_Collision.Item_Array,
-      Default_Terminator => (others => <>));
+      Default_Terminator => (near_Object => null,
+                             Site_world  => (x | y | z => 0.0)));
 
    subtype Pointer is C_Pointers.Pointer;
 

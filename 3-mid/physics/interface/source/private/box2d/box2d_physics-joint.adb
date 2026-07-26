@@ -90,6 +90,8 @@ is
 
       c_Frame_A  : aliased c_math_c.Matrix_4x4.item := +Frame_A;
       c_Frame_B  : aliased c_math_c.Matrix_4x4.item := +Frame_B;
+
+      pragma Unreferenced (c_Object_A, c_Object_B, c_Frame_A, c_Frame_B);
    begin
       return null;
    end new_Dof6_Joint;
@@ -907,20 +909,18 @@ is
    overriding
    function Frame_A (Self : in Hinge) return Matrix_4x4
    is
-      c_Frame : aliased c_math_c.Matrix_4x4.item;
    begin
       raise Error with "TODO";
-      return +c_Frame;
+      return [others => [others => 0.0]];
    end Frame_A;
 
 
    overriding
    function Frame_B (Self : in Hinge) return Matrix_4x4
    is
-      c_Frame : aliased c_math_c.Matrix_4x4.item;
    begin
       raise Error with "TODO";
-      return +c_Frame;
+      return [others => [others => 0.0]];
    end Frame_B;
 
 
@@ -958,11 +958,11 @@ is
                                                  DoF : in Degree_of_freedom)
    is
    begin
-      raise Error with "TODO";
-
       if DoF /= 1 then
          raise Error with "Illegal degree of freedom:" & Degree_of_freedom'Image (DoF);
       end if;
+
+      raise Error with "TODO";
    end Velocity_is;
 
 
@@ -970,12 +970,11 @@ is
    function Extent (Self : in Hinge;   DoF : Degree_of_freedom) return Real
    is
    begin
-      raise Error with "TODO";
-
       if DoF /= 1 then
          raise Error with "Illegal degree of freedom:" & Degree_of_freedom'Image (DoF);
       end if;
 
+      raise Error with "TODO";
       return 0.0;
    end Extent;
 

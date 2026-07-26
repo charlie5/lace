@@ -11,7 +11,7 @@ is
    function to_Matrix (Self : in Transform) return collada.Matrix_4x4
    is
       use Math,
-          math.Algebra.linear,
+--        math.Algebra.linear,
           math.Algebra.linear.D3;
    begin
       case Self.Kind
@@ -100,9 +100,11 @@ is
 
    begin
       if Old = null
-      then   Self.Transforms := new Transform_array' (1 =>      the_Transform);
-      else   Self.Transforms := new Transform_array' (Old.all & the_Transform);
-             deallocate (Old);
+      then
+         Self.Transforms := new Transform_array' (1 =>      the_Transform);
+      else
+         Self.Transforms := new Transform_array' (Old.all & the_Transform);
+         deallocate (Old);
       end if;
    end add;
 

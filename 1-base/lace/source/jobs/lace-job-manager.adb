@@ -1,6 +1,3 @@
-with ada.Text_IO; use ada.Text_IO;
-
-
 package body lace.Job.Manager
 is
 

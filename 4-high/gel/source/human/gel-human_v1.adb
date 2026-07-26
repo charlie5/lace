@@ -76,17 +76,6 @@ is
 
 
 
-   function to_Math (From : in collada.Matrix_4x4) return math.Matrix_4x4
-   is
-      use type math.Real;
-   begin
-      return [1 => [From (1, 1),  From (1, 2),  From (1, 3),  From (1, 4)],
-              2 => [From (2, 1),  From (2, 2),  From (2, 3),  From (2, 4)],
-              3 => [From (3, 1),  From (3, 2),  From (3, 3),  From (3, 4)],
-              4 => [From (4, 1),  From (4, 2),  From (4, 3),  From (4, 4)]];
-   end to_Math;
-
-
    to_scene_joint_Id      : array (controller_joint_Id) of scene_joint_Id;
    to_controller_joint_Id : array (scene_joint_Id     ) of controller_joint_Id;
 
@@ -165,8 +154,8 @@ is
       declare
          use type gel.Sprite.view;
 
-         the_bone_Id          : bone_Id    := bone_Id'Value (scene_joint_Id'Image (which_Joint));
-         the_global_Transform : Matrix_4x4 := the_Joint.global_Transform; -- * to_rotate_Matrix (X_Rotation_from (to_Radians (90.0)));
+         the_bone_Id          : constant bone_Id    := bone_Id'Value (scene_joint_Id'Image (which_Joint));
+         the_global_Transform : constant Matrix_4x4 := the_Joint.global_Transform; -- * to_rotate_Matrix (X_Rotation_from (to_Radians (90.0)));
 
          the_controller_Joint :  controller_Joint renames Self.controller_Joints (controller_joint_Id (the_Bone_Id));
 
@@ -319,7 +308,7 @@ is
       the_base_Sprite : gel.Sprite.view := Self.base_Sprite;
 
 
-      procedure free_Model_for (the_Sprite : in out gel.Sprite.view)
+      procedure free_Model_for (the_Sprite : in gel.Sprite.view)
       is
          type Model_view is access all openGL.Model.item'Class;
          procedure deallocate is new ada.unchecked_Deallocation (openGL.Model.item'Class,  Model_view);
@@ -375,14 +364,8 @@ is
 
       use collada.Library,
           collada.Library.visual_scenes,
-          math.Algebra.linear.d3,
           ada.Strings,
           ada.Strings.unbounded;
-
-
-      type gl_Model_view is access all openGL.Model.any.item;
-
---        the_Model : constant gl_Model_view := gl_Model_view (Model);
 
 
       function the_Document return collada.Document.item
@@ -477,9 +460,8 @@ is
       --  Define a sprite for each bone.
       --
       declare
-         use openGL.Model.box.colored, openGL.Model.box,
-             openGL, opengl.Palette,
-             math.Vectors;
+         use openGL.Model.box,
+             openGL, opengl.Palette;
 
          use type math.Degrees;
 
@@ -692,6 +674,7 @@ is
                                                             collide_Connected => False,
                                                             new_Joint         => Self.Joints (joint_Id));
          end attach_via_Hinge;
+         pragma Unreferenced (attach_via_Hinge);
 
          use Math;
 
@@ -702,7 +685,7 @@ is
          --  Skin
          --
          declare
-            the_human_graphics_Model : aliased openGL.Model.any.view
+            the_human_graphics_Model : aliased constant openGL.Model.any.view
               := openGL.Model.any.new_Model (Model            => to_Asset (model_Name.all),
                                              Texture          => openGL.null_Asset, -- gel.to_Asset ("assets/collada/gel-human-texture.tga"),
                                              texture_Details  => openGL.texture_Set.to_Set ([1 => openGL.to_Asset ("./assets/opengl/texture/wooden-crate.jpg")]),
@@ -1095,7 +1078,6 @@ is
             loop
                declare
                   the_Animation   : constant animations.Animation       := the_Animations (Each);
-                  the_Inputs      : access   collada.float_Array        := Inputs_of (the_Animation);
 
                   procedure common_setup (Channel : channel_Id;   scene_Joint : scene_Joint_Id;   Sid : in String)
                   is
@@ -1120,6 +1102,7 @@ is
                      Self.Channels (Channel).initial_Angle := Self.Channels (Channel).Values (1);
                      Self.Channels (Channel).current_Angle := Self.Channels (Channel).initial_Angle;
                   end setup_Rotation;
+                  pragma Unreferenced (setup_Rotation);
 
                   procedure setup_Location (Channel : channel_Id;   scene_Joint : scene_Joint_Id;   Sid : in String)
                   is
@@ -1133,6 +1116,7 @@ is
                                                                Self.Channels (Channel).Values (3)];
                      Self.Channels (Channel).initial_Site  := Self.Channels (Channel).current_Site;
                   end setup_Location;
+                  pragma Unreferenced (setup_Location);
 
                   procedure setup_full_Transform (Channel : channel_Id;   scene_Joint : scene_Joint_Id;   Sid : in String)
                   is
@@ -1146,7 +1130,7 @@ is
                      for i in Self.Channels (Channel).Transforms'Range
                      loop
                         declare
-                           the_Matrix : math.Matrix_4x4 := math.Transpose (Collada.get_Matrix (Self.Channels (Channel).Values.all, which => i));
+                           the_Matrix : constant math.Matrix_4x4 := math.Transpose (Collada.get_Matrix (Self.Channels (Channel).Values.all, which => i));
                         begin
                            Self.Channels (Channel).Transforms (i) := (rotation    => to_Quaternion (get_Rotation    (the_Matrix)),
                                                                       translation =>                get_Translation (the_Matrix));
@@ -1350,7 +1334,7 @@ is
 
    procedure evolve (Self : in out Item'Class;   world_Age : in Duration)
    is
-      use Math, math.Vectors;
+      use Math;
 
 
       function get_root_Transform return math.Matrix_4x4
@@ -1447,6 +1431,7 @@ is
                                                      * joint_Transform_for (the_Proxy)
                                                      * inv_root_Transform);
       end set_proxy_Transform_for;
+      pragma Unreferenced (set_proxy_Transform_for);
 
 
    begin
@@ -1585,6 +1570,7 @@ is
                                      to => to_Radians (math.Degrees (the_Channel.current_Angle)));
          end if;
       end update_rotation_Animation;
+      pragma Unreferenced (update_rotation_Animation);
 
 
 
@@ -1643,6 +1629,7 @@ is
 
          end if;
       end update_location_Animation;
+      pragma Unreferenced (update_location_Animation);
 
 
       procedure update_full_transform_Animation (for_Channel : in channel_Id;
@@ -1747,7 +1734,7 @@ is
 --              function site_Y return math.Real is begin   return the_Channel.Values ((Cursor - 1) * 3 + 2);   end site_Y;
 --              function site_Z return math.Real is begin   return the_Channel.Values ((Cursor - 1) * 3 + 3);   end site_Z;
 
-            desired_Site : math.Vector_3 := the_Channel.Transforms (Cursor + 0).Translation;
+            desired_Site : constant math.Vector_3 := the_Channel.Transforms (Cursor + 0).Translation;
 
          begin
             if Cursor < the_Channel.Times'Last

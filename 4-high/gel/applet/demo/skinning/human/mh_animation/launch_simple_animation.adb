@@ -1,22 +1,16 @@
-with gel.Sprite,
+with
+     gel.Sprite,
      gel.Human_v1,
-     physics.Model,
-     openGL.Model.any,
      gel.Window.setup,
      gel.Applet.gui_world,
-     openGL.Model.box,
-     gel.any_Joint,
      gel.Forge,
 
---       physics.Motor.spring.angular,
      openGL.Palette,
-     float_math.algebra.linear.d3,
      float_math.Random,
 
-     ada.Calendar,
-     ada.Exceptions;
+     ada.Calendar;
 
-with Ada.Text_IO; use Ada.Text_IO;
+pragma Unreferenced (gel.Window.setup);
 
 
 
@@ -27,35 +21,25 @@ procedure launch_simple_Animation
 is
    package Math renames float_Math;
 
-   use openGL.Model.box,       gel.Human_v1,
-       openGL,                 openGL.Palette,
-       Math,                   math.Algebra.linear.d3,
-       ada.Calendar,           ada.Exceptions;
-
-   use type math.Real,  math.Index;
+   use gel.Human_v1,
+       openGL,
+       ada.Calendar;
 
    -- Options
    --
---     add_Balls : Boolean := True;
-   add_Balls : Boolean := False;
+--     add_Balls : constant Boolean := True;
+   add_Balls : constant Boolean := False;
 
 
    -- the Applet
    --
    use gel.Applet.gui_world;
 
-   the_Applet : gel.Applet.gui_World.view := gel.Forge.new_gui_Applet ("Simple Animation", 1800, 1100);
+   the_Applet : constant gel.Applet.gui_World.view := gel.Forge.new_gui_Applet ("Simple Animation", 1800, 1100);
 
-
-   -- the Ground
-   --
-   the_Ground : gel.Sprite.view := gel.Forge.new_box_Sprite (in_world => the_Applet.gui_World,
-                                                             mass     => 0.0,
-                                                             size     => [50.0, 1.0, 50.0]);
-
-     --  human_model_Name : constant String := "assets/human-default-animated-01_01-y_up.dae";
-     human_model_Name : constant String := "assets/human-default-animated-01_01.dae";
-     --  human_model_Name : constant String := "assets/mh-blender-2.dae";
+   --  human_model_Name : constant String := "assets/human-default-animated-01_01-y_up.dae";
+   human_model_Name : constant String := "assets/human-default-animated-01_01.dae";
+   --  human_model_Name : constant String := "assets/mh-blender-2.dae";
 
 
    --  human_model_Name : constant String := "assets/human_animation.dae";
@@ -68,9 +52,9 @@ is
 --  --     human_model_Name : constant String := "assets/human-default-animated-01_04.dae";
 --  --     human_model_Name : constant String := "assets/human-default-animated-01_05.dae";
 
-   next_render_Time : ada.calendar.Time;
-   Now              : ada.calendar.Time := Ada.Calendar.Clock;
-   Counter 	    : Integer           := 0;
+   frame_Period     : constant Duration := 0.016_666_667;     -- ~ 1/60th of a second.
+   next_render_Time :          ada.calendar.Time;
+   Counter          :          Integer  := 0;
 
 begin
    --  gel.Human_v1.Mode_is (Skin);
@@ -89,7 +73,7 @@ begin
    gel.Human_v1.use_Model (human_model_Name);
 
    declare
-      the_Human : gel.Human_v1.view
+      the_Human : constant gel.Human_v1.view
         := gel.Human_v1.Forge.new_Human (the_Applet.gui_World,
                                          null,
                                          null,
@@ -117,10 +101,10 @@ begin
       if add_Balls
       then
          declare
-            the_Balls : array (1 .. 150) of gel.Sprite.view := [others => gel.Forge.new_ball_Sprite (in_World => the_Applet.gui_World,
-                                                                                                    Mass     => 1.0,
-                                                                                                    Radius   => 0.5,
-                                                                                                    Color    => (openGL.Palette.random_Color, Opaque))];
+            the_Balls : constant array (1 .. 150) of gel.Sprite.view := [others => gel.Forge.new_ball_Sprite (in_World => the_Applet.gui_World,
+                                                                                                              Mass     => 1.0,
+                                                                                                              Radius   => 0.5,
+                                                                                                              Color    => (openGL.Palette.random_Color, Opaque))];
             function random_Site return math.Vector_3
             is
                use math.Random;
@@ -130,7 +114,7 @@ begin
                return [random_Real (-half_Extent, half_Extent),
                        0.0,
                        random_Real (-half_Extent, half_Extent)];
-            end;
+            end random_Site;
 
          begin
             for i in the_Balls'Range
@@ -172,7 +156,7 @@ begin
 --              the_Human.evolve (the_Applet.gui_World.Age);
 --           end if;
 
-         next_render_Time := next_render_Time + 1.0/60.0;
+         next_render_Time := next_render_Time + frame_Period;
          --  delay until next_render_Time;
       end loop;
 

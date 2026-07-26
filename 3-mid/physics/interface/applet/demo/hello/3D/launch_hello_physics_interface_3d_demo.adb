@@ -39,7 +39,7 @@ begin
 
    for i in 1 .. 150
    loop
-      the_Space.evolve (by => 1.0/60.0);
+      the_Space.evolve (by => 0.016_666_667);     -- ~ 60 Hz.
 
       put_Line (  "Sites ~ Ball => "   & Image (the_Ball  .Site)
                 & "        Ground => " & Image (the_Ground.Site));

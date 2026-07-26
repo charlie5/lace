@@ -42,8 +42,7 @@ is
    overriding
    procedure render (Self : in out Item)
    is
-      use GL,
-          GL.Binding;
+      use GL.Binding;
    begin
       Tasks.check;
       glDrawArrays (Thin (Self.facet_Kind),

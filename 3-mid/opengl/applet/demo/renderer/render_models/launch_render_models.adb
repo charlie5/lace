@@ -31,7 +31,7 @@ begin
       the_Light.Site_is ([5_000.0, 2_000.0, 5_000.0]);
 --        the_Light.Site_is ((000.0, 5_000.0, 000.0));
 
-          the_Light.Color_is (White);
+      the_Light.Color_is (White);
 --        the_Light.ambient_Coefficient_is (0.91);
 
       Demo.Renderer.set (the_Light);
@@ -100,7 +100,7 @@ begin
          Demo.Renderer.render;
          Demo.FPS_Counter.increment;    -- Frames per second display.
 
-         delay 1.0 / 60.0;
+         delay 0.016_666_667;     -- ~ 1/60th of a second.
       end loop;
    end;
 

@@ -15,8 +15,7 @@ procedure launch_Pong_Tute
 --  Basic pong game.
 --
 is
-   use gel.Applet,
-       gel.Applet.gui_world;
+   use gel.Applet.gui_world;
 
    --- Applet
    --

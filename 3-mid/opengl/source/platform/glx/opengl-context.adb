@@ -8,8 +8,7 @@ is
 
    is
       pragma Unreferenced (Profile);
-      use GlX,
-          glx.Pointers;
+      use glx.Pointers;
    begin
       if Self.glx_Context = null
       then

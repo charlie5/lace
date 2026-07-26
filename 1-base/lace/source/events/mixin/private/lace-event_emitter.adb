@@ -339,17 +339,17 @@ is
    procedure destroy (Self : in out Item)
    is
    begin
-       Self.Delegator.stop;
+      Self.Delegator.stop;
    end destroy;
 
 
 
    procedure add (Self : in out Item;   new_Event : in lace.Event.item'Class)
-                                        --  Sequence  : in event.sequence_Id)
+--                                      Sequence  : in event.sequence_Id)
    is
    begin
       Self.Events.add (new_Event);
-                       --  Sequence);
+--                     Sequence);
    end add;
 
 

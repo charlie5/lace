@@ -264,7 +264,7 @@ begin
                                                                                                            [ s, -s, -s],
                                                                                                            [ s,  s, -s],
                                                                                                            [-s,  s, -s])));
-                                                     the_Hull : constant gel.Sprite.view
+         the_Hull : constant gel.Sprite.view
            := gel.Sprite.forge.new_Sprite (Name           => "demo.Hull",
                                            World          => the_Applet.gui_World.all'Access,
                                            graphics_Model => the_hull_Model.all'Access,

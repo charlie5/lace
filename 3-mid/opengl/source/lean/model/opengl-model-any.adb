@@ -240,10 +240,12 @@ is
                            end if;
 
                            if the_io_Vertex.normal_Id /= null_Id
-                           then   the_gl_Vertex.Normal := the_Model.Normals (the_io_Vertex.normal_Id);
-                                  the_gl_Vertex.Shine  := default_Shine;
-                                  normals_Known        := True;
-                           else   the_gl_Vertex.Normal := [0.0, 0.0, 0.0];
+                           then
+                              the_gl_Vertex.Normal := the_Model.Normals (the_io_Vertex.normal_Id);
+                              the_gl_Vertex.Shine  := default_Shine;
+                              normals_Known        := True;
+                           else
+                              the_gl_Vertex.Normal := [0.0, 0.0, 0.0];
                            end if;
 
                            if    the_Model.Weights        /= null

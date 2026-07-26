@@ -51,7 +51,9 @@ begin
                 & "        Ground => " & Image (the_Ground.Site));
    end loop;
 
+   pragma Warnings (Off, "unreachable code");     -- The demo loop above never exits.
    the_Engine.stop;
+   pragma Warnings (On,  "unreachable code");
 
 
 --     for Count in 1 .. 100

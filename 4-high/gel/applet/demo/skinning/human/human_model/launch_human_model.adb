@@ -1,27 +1,16 @@
-with gel.Window.setup,
+with
+     gel.Window.setup,
      gel.Applet.gui_world,
-     gel.Camera;
-
-with gel.Sprite,
-     openGL.Model.box.lit_colored_textured,
-     openGL.Model.any,
-     openGL.Model.sphere.lit_colored_textured,
+     gel.Camera,
+     gel.Sprite,
      gel.Human,
-     gel.Forge;
+     gel.Forge,
 
-with opengl.Palette,
-     opengl.IO,
-     float_Math,
      ada.Calendar,
-     ada.Strings.fixed;
+     ada.Text_IO,
+     ada.Exceptions;
 
-with float_Math.algebra.linear.d3;   use  float_Math.algebra.linear.d3;
---  with float_Math.algebra.linear.d4;   use  float_Math.algebra.linear.d4;
-
-with ada.Text_IO;
-with GEL.human_Types;
-with physics.Model;
-with ada.Exceptions;
+pragma Unreferenced (gel.Window.setup);
 
 
 
@@ -31,12 +20,9 @@ procedure launch_human_Model
 --
 --
 is
-   use gel.Applet,    openGL.Model.box,  gel.Human,  gel.human_Types,
-       openGL,        opengl.Palette,
-       float_Math,
-       ada.Calendar,  ada.Strings,  ada.Strings.fixed,  ada.Text_IO,  ada.Exceptions;
-
-   use type math.Real,  opengl.Real;
+   use ada.Calendar,
+       ada.Text_IO,
+       ada.Exceptions;
 
    the_Applet : constant gel.Applet.gui_World.view := gel.Forge.new_gui_Applet ("human Model", 1920, 1200);
 
@@ -58,10 +44,10 @@ is
 --  --       := gel.physics_Model.Forge.new_physics_Model (shape_Info => (kind          => gel.physics_Model.a_Sphere,
 --  --                                                                    sphere_radius => 0.2),
 --  --                                                     mass       => 0.5);
-   my_Human         : aliased gel.Human.item;
+   my_Human         : aliased  gel.Human.item;
 
-   Counter          :         Integer          := 0;
-   next_render_Time :         ada.calendar.Time;
+   frame_Period     : constant Duration := 0.016_666_667;     -- ~ 1/60th of a second.
+   next_render_Time :          ada.calendar.Time;
 
 begin
    the_Applet.gui_World.Gravity_is ([0.0, -1.0, 0.0]);
@@ -121,7 +107,7 @@ begin
       the_Applet.freshen;                          -- handle any new events and update the screen
       delay 0.5;
 
-      next_render_Time := next_render_Time + 1.0/60.0;
+      next_render_Time := next_render_Time + frame_Period;
       delay until next_render_Time;
    end loop;
 

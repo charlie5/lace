@@ -773,6 +773,9 @@ is
                            the_xml_Rotates   :                 xml.Elements := the_xml.Children ("rotate");
                            the_xml_Children  :                 xml.Elements := the_xml.Children ("node");
 
+                           pragma Unreferenced (the_xml_Type,    the_xml_Translate, the_xml_Scale,
+                                                the_xml_Rotates, the_xml_Children);     -- TODO: Handle these node elements.
+
                            the_Node : constant Library.visual_scenes.Node_view := new Library.visual_scenes.Node;
 
                         begin

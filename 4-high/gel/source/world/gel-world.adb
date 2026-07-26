@@ -17,7 +17,6 @@ with
 package body gel.World
 is
    use gel.Sprite,
-       linear_Algebra_3D,
 
        --  lace.Event,
 
@@ -39,13 +38,11 @@ is
       deallocate (Self);
    end free;
 
-   procedure free is new ada.unchecked_Deallocation (lace.Any.limited_item'Class, Any_limited_view);
-
-
    procedure define (Self : in out Item'Class;   Name       : in     String;
                                                  Id         : in     world_Id;
                                                  space_Kind : in     physics.space_Kind;
                                                  Renderer   : access openGL.Renderer.lean.item'Class);
+   pragma Unreferenced (define);
 
    overriding
    procedure destroy (Self : in out Item)
@@ -166,6 +163,7 @@ is
       Self.World           := World;
       Self.graphics_Models := graphics_Models;
    end define;
+   pragma Unreferenced (define);
 
 
 
@@ -201,9 +199,6 @@ is
    -------------------------
    --- all_sprite_Transforms
    --
-
-   function to_Integer is new ada.unchecked_Conversion (gel.Sprite.view, Integer);
-
 
    protected
    body all_sprite_Transforms
@@ -291,6 +286,8 @@ is
    --- Collisions
    --
 
+   pragma Warnings (Off);     -- The collision responder machinery is currently dormant.
+
    task
    type impact_Responder
    is
@@ -328,6 +325,7 @@ is
 
    package filtered_impact_Response_Sets is new ada.Containers.hashed_Sets (filtered_impact_Response,
                                                                             Hash,  "=");
+   pragma Warnings (On);
 
 
    protected body Signal_Object
@@ -395,6 +393,7 @@ is
    procedure update_Site (Self : in out Item;   of_Sprite : in gel.Sprite.view;   -- TODO: Probably obsolete.
                                                 To        : in Vector_3)
    is
+      pragma Unreferenced (Self);
    begin
       of_Sprite.Solid.Site_is (To);
 
@@ -416,6 +415,7 @@ is
    procedure set_xy_Spin (Self : in out Item;   of_Sprite : in gel.Sprite.view;     -- TODO: Probably obsolete.
                                                 To        : in Radians)
    is
+      pragma Unreferenced (Self);
    begin
       of_Sprite.Solid.xy_Spin_is (To);
 
@@ -441,6 +441,7 @@ is
    procedure apply_Force (Self : in out Item;   to_Sprite : in gel.Sprite.view;     -- TODO: Probably obsolete.
                                                 Force     : in Vector_3)
    is
+      pragma Unreferenced (Self);
    begin
       to_Sprite.apply_Force (Force);
       --  Self.physics_Engine.apply_Force (to_Sprite.Solid, Force);
@@ -931,6 +932,7 @@ is
 
    procedure handle_broken_Joints (Self : in out Item;   the_Joints :in Joint.views)
    is
+      pragma Unreferenced (Self);
    begin
       for i in the_Joints'Range
       loop
@@ -1096,8 +1098,10 @@ is
    is
       use type ada.Containers.Hash_type;
 
+      pragma Warnings (Off);     -- The conversions hash only the leading bits of fat subprogram-access values.
       function to_Hash is new ada.unchecked_Conversion (impact_Filter,   ada.Containers.Hash_type);
       function to_Hash is new ada.unchecked_Conversion (impact_Response, ada.Containers.Hash_type);
+      pragma Warnings (On);
    begin
       return   to_Hash (Self.Filter)   / 2
              + to_Hash (Self.Response) / 2;

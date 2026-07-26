@@ -130,8 +130,7 @@ is
    overriding
    procedure render (Self : in out Item)
    is
-      use GL,
-          GL.Binding,
+      use GL.Binding,
           GL.lean;
    begin
       Tasks.check;

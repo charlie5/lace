@@ -13,6 +13,8 @@ with
      ada.Text_IO,
      ada.Exceptions;
 
+pragma Unreferenced (gel.Window.setup);
+
 
 package body gel_demo_Client
 is
@@ -61,7 +63,7 @@ is
       loop
          the_Applet.freshen;
 
-         next_render_Time := next_render_Time + 1.0/60.0;
+         next_render_Time := next_render_Time + 0.016_666_667;     -- ~ 1/60th of a second.
          delay until next_render_Time;
       end loop;
 

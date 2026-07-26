@@ -212,6 +212,7 @@ begin
 
       declare
          Added : Boolean := True;
+         pragma Unreferenced (Added);     -- Kept for the disabled add/rid variants below.
       begin
          while the_Applet.is_open
          loop

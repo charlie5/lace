@@ -80,7 +80,7 @@ begin
                   null;
                end case;
             end if;
-          end;
+         end;
 
          --  Render all visuals.
          --

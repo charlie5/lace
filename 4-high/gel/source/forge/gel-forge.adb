@@ -671,6 +671,8 @@ is
                              Centered  : in Boolean            := True;
                              user_Data : in any_user_Data_view := null) return gel.Sprite.view
    is
+      pragma Unreferenced (Centered);
+
       use Math;
       use type Physics.space_Kind;
 

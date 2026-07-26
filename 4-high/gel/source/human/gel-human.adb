@@ -20,7 +20,6 @@ with
      ada.Strings.unbounded;
 
 with ada.Unchecked_Deallocation;
-with Ada.Text_IO; use Ada.Text_IO;
 
 
 
@@ -87,18 +86,6 @@ is
 
       return scene_joint_Id'Value (Pad);
    end to_joint_Id;
-
-
-
-   function to_Math (From : in collada.Matrix_4x4) return math.Matrix_4x4
-   is
-      use type math.Real;
-   begin
-      return [1 => [From (1, 1),  From (1, 2),  From (1, 3),  From (1, 4)],
-              2 => [From (2, 1),  From (2, 2),  From (2, 3),  From (2, 4)],
-              3 => [From (3, 1),  From (3, 2),  From (3, 3),  From (3, 4)],
-              4 => [From (4, 1),  From (4, 2),  From (4, 3),  From (4, 4)]];
-   end to_Math;
 
 
 
@@ -263,7 +250,7 @@ is
       the_base_Sprite : gel.Sprite.view := Self.base_Sprite;
 
 
-      procedure free_Model_for (the_Sprite : in out gel.Sprite.view)
+      procedure free_Model_for (the_Sprite : in gel.Sprite.view)
       is
          type Model_view is access all openGL.Model.item'Class;
          procedure deallocate is new ada.unchecked_Deallocation (openGL.Model.item'Class,  Model_view);
@@ -321,13 +308,7 @@ is
       pragma Unreferenced (Mass);
 
       use collada.Library, collada.Library.visual_scenes,
-          math.Algebra.linear.d3,
-          ada.Strings.unbounded, ada.Strings;
-
-
-      type gl_Model_view is access all openGL.Model.any.item;
-
---        the_Model : constant gl_Model_view := gl_Model_view (Model);
+          ada.Strings.unbounded;
 
 
       function the_Document return collada.Document.item
@@ -417,26 +398,9 @@ is
       --  Define a sprite for each bone.
       --
       declare
-         use openGL.Model.box.lit_colored_textured, openGL.Model.box,
-             openGL, opengl.Palette,
-             math.Vectors;
+         use openGL.Model.box,
+             openGL, opengl.Palette;
          use type math.Degrees;
-
-         the_joint_Model : openGL.Model.box.lit_colored_textured.view
-           := openGL.Model.box.lit_colored_textured.new_Box
-             (Size => [0.1, 0.1, 0.1],
-              Faces => [front => (colors => [others => (Red,     Opaque)],
-                                  texture_Name => openGL.null_Asset),
-                        rear  => (colors => [others => (Blue,    Opaque)],
-                                  texture_Name => openGL.null_Asset),
-                        upper => (colors => [others => (Green,   Opaque)],
-                                  texture_Name => openGL.null_Asset),
-                        lower => (colors => [others => (Yellow,  Opaque)],
-                                  texture_Name => openGL.null_Asset),
-                        left  => (colors => [others => (Cyan,    Opaque)],
-                                  texture_Name => openGL.null_Asset),
-                        right => (colors => [others => (Magenta, Opaque)],
-                                  texture_Name => openGL.null_Asset)]);
 
 
          procedure create_Bone (the_Bone    : in bone_Id;
@@ -473,8 +437,9 @@ is
                                            texture_Name => openGL.null_Asset),
                                  right => (colors => [others => (Black, Opaque)],
                                            texture_Name => openGL.null_Asset)]);
+                  pragma Unreferenced (the_graphics_Model);     -- Kept as an alternative to 'the_human_graphics_Model' below.
 
-                  the_human_graphics_Model : aliased openGL.Model.any.view
+                  the_human_graphics_Model : aliased constant openGL.Model.any.view
                     := openGL.Model.any.new_Model (--model   => gel.to_Asset ("assets/gel/model/gel-human.dae"),
                                                    Model   => openGL.to_Asset ("assets/gel/collada/mh-human-dae.dae"),
                                                    -- model   => gel.to_Asset ("assets/gel/collada/alfieri.dae"),
@@ -841,7 +806,6 @@ is
             for Each in the_Animations'Range loop
                declare
                   the_Animation   : constant animations.Animation       := the_Animations (Each);
-                  the_Inputs      : access collada.float_Array        := Inputs_of (the_Animation);
 
                   procedure setup (Channel : channel_Id;   scene_Joint : scene_Joint_Id;   Sid : in String)
                   is
@@ -1062,7 +1026,6 @@ is
 
    procedure enable_Graphics (Self : in out Item)
    is
-      use ada.Strings;
    begin
       Self.program_Parameters.Program_is (opengl.Program.view (opengl.Geometry.lit_textured_skinned.Program));
       Self.base_Sprite.program_Parameters_are (Self.program_Parameters'Unchecked_Access);
@@ -1124,7 +1087,7 @@ is
 
    procedure evolve (Self : in out Item'Class)
    is
-      use Math, math.Vectors;
+      use Math;
 
       function get_root_Transform return math.Matrix_4x4
       is

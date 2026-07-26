@@ -86,8 +86,6 @@ begin
 
 
 
-      use float_Math;
-
       next_render_Time : ada.calendar.Time;
 
    begin

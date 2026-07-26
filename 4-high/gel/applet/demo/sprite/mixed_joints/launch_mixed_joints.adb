@@ -121,6 +121,7 @@ begin
 
          y_Rot   : math.Matrix_3x3 := y_Rotation_from (to_Radians (45.0));
          x_Rot   : math.Matrix_3x3 := x_Rotation_from (to_Radians (45.0));
+         pragma Unreferenced (y_Rot, x_Rot);     -- Kept for the disabled rotation variants below.
       begin
          set_Translation (Frame_A, [-4.0, 4.0, -4.0]);
          set_Translation (Frame_B, [ 4.0, 0.0,  0.0]);
@@ -151,6 +152,7 @@ begin
 
          y_Rot   : math.Matrix_3x3 := y_Rotation_from (to_Radians (45.0));
          x_Rot   : math.Matrix_3x3 := x_Rotation_from (to_Radians (45.0));
+         pragma Unreferenced (y_Rot, x_Rot);     -- Kept for the disabled rotation variants below.
       begin
 --           set_Translation (Frame_A, (  -4.0, 4.0, -4.0));
          set_Translation (Frame_B, [4.0, 0.0, 0.0]);

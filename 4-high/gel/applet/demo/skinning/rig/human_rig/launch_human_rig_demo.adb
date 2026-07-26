@@ -99,7 +99,7 @@ begin
          the_Rig.assume_Pose;
          the_Applet.freshen;                                                      -- Handle any new events and update the screen.
 
-         next_render_Time := next_render_Time + 1.0/60.0;
+         next_render_Time := next_render_Time + 0.016_666_667;     -- ~ 1/60th of a second.
          delay until next_render_Time;
       end loop;
 

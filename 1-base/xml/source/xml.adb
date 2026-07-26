@@ -40,7 +40,6 @@ is
 
       Line_Max      : constant                  := 800_000;
 
-      Depth         :          Natural          := 0;
       the_XML_File  :          File_Type;
       the_Parser    :          xml.reader.Parser;
       Done          :          Boolean;

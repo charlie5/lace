@@ -138,7 +138,7 @@ is
    is
       pragma Unreferenced (Self);
    begin
-      return (others => <>);     -- TODO
+      return null_Bounds;     -- TODO
    end Bounds;
    pragma Unreferenced (Bounds);
 

@@ -9,8 +9,7 @@ with
 
 private
 with
-     freeType_C.FT_Face,
-     ada.unchecked_Conversion;
+     freeType_C.FT_Face;
 
 package freetype.charMap
 --
@@ -117,7 +116,8 @@ is
 
 private
 
-   function Hash is new ada.unchecked_Conversion (CharacterCode, ada.Containers.Hash_type);
+   function Hash (Code : in CharacterCode) return ada.Containers.Hash_type
+     is (ada.Containers.Hash_type'Mod (Code));
 
    use type CharacterCode,
             GlyphIndex;

@@ -610,14 +610,12 @@ is
             loop
                declare
                   the_Animation : constant animations.Animation := the_Animations (Each);
-                  the_Inputs    : access   collada.float_Array  := Inputs_of (the_Animation);
 
 
                   procedure common_setup (Channel     : in channel_Id;
                                           scene_Joint : in scene_Joint_Id;
                                           Sid         : in String)
                   is
-                     default_scene_Joint : rig.scene_Joint;
                      default_Channel     : animation_Channel;
                   begin
                      Self.Channels.insert (Channel, default_Channel);

@@ -9,6 +9,7 @@ is
        float_Math.Geometry.d3.Modeller.Forge;
 
    the_Modeller : polar_Model := polar_Model_from ("gaspra.tab");
+   pragma Unreferenced (the_Modeller);     -- Constructing the model is the test.
 
 begin
    put_Line ("Done.");

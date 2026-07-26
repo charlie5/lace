@@ -1,7 +1,6 @@
 with
      openGL.Model.hex_grid,
      openGL.Visual,
-     openGL.Light,
      openGL.Palette,
      openGL.IO,
      openGL.Demo;
@@ -25,17 +24,6 @@ begin
 
    Demo.Camera.Position_is ([0.0, 40.0, 0.0],
                             x_Rotation_from (to_Radians (90.0)));
-
-   --  declare
-   --     use openGL.Light;
-   --     the_Light : openGL.Light.item := Demo.Renderer.new_Light;
-   --  begin
-   --     the_Light.Site_is ([5_000.0, 2_000.0, 5_000.0]);
-   --     the_Light.Color_is (White);
-   --
-   --     Demo.Renderer.set (the_Light);
-   --  end;
-
 
    declare
       --  The models.

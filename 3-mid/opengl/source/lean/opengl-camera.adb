@@ -5,8 +5,7 @@ with
 
 package body openGL.Camera
 is
-   use math.Algebra.linear,
-       math.Algebra.linear.d3,
+   use math.Algebra.linear.d3,
        ada.Text_IO;
 
    ---------

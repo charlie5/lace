@@ -359,7 +359,7 @@ is
             end loop;
          end do_engine_Commands;
 
-         Self.Space.evolve (by => 1.0 / 60.0);     -- Evolve the world.
+         Self.Space.evolve (by => 0.016_666_667);     -- Evolve the world at ~ 60 Hz.
 --           free_Objects;
 
       end evolve;
@@ -482,7 +482,7 @@ is
 --              end;
 --           end if;
 
-         next_render_Time := next_render_Time + Duration (1.0 / 60.0);
+         next_render_Time := next_render_Time + 0.016_666_667;     -- ~ 1/60th of a second.
       end loop;
 
    exception

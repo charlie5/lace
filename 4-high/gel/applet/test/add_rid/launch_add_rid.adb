@@ -5,10 +5,10 @@ with
      gel.Sprite,
      gel.Joint,
 
-     physics.Forge,
+     physics,
 
      opengl.Palette,
-     float_math.Algebra.linear.d3,
+     float_math,
 
      ada.Text_IO,
      ada.Exceptions;
@@ -24,15 +24,11 @@ procedure launch_add_rid
 is
    package Math renames float_Math;
 
-   use GEL,
-       gel.Forge,
+   use gel.Forge,
        gel.Applet,
        opengl.Palette,
        gel.Math,
-       gel.linear_Algebra_2D,
        ada.Text_IO;
-
-   use type openGL.Real;
 
    type Tests is (None,
                   add_rid_Joint,
@@ -48,7 +44,7 @@ is
    the_Applet : gel.Applet.gui_World.view := new_gui_Applet     ("Add/Rid Test",
                                                                  1536, 864,
                                                                  space_Kind => physics.Box2D);
-   the_Ground : gel.Sprite          .view := new_rectangle_Sprite (the_Applet.gui_World,
+   the_Ground : constant gel.Sprite.view := new_rectangle_Sprite (the_Applet.gui_World,
                                                                    name   => "the_Ground",
                                                                    mass   =>   0.0,
                                                                    width  => 100.0,
@@ -67,8 +63,6 @@ begin
    --  Add joints.
    --
    declare
-      use Math, math.Algebra.linear.d3, math.Vectors;
-
       ball_Count      : constant                       := 39; -- 256;
       the_root_Ball   : constant gel.Sprite.view       :=                         new_circle_Sprite (the_Applet.gui_World, name => "the_root_Ball", mass =>  0.0);
       the_Balls       : constant gel.Sprite.views      := [1 .. ball_Count - 1 => new_circle_Sprite (the_Applet.gui_World, name => "the_Balls",     mass =>  1.0),
@@ -84,6 +78,7 @@ begin
       declare
          Frame_A   : constant math.Matrix_4x4       := math.Identity_4x4;
          Frame_B   : constant math.Matrix_4x4       := math.Identity_4x4;
+         pragma Unreferenced (Frame_A, Frame_B);     -- Kept for the disabled 'attach_via_Hinge' variant below.
 
          Parent    :          gel.Sprite.view := the_root_Ball;
          new_Joint :          gel.Joint .view;

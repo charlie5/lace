@@ -184,8 +184,11 @@ is
       Pad   : constant String := Token; --(if Token (Token'Last) = latin_1.CR then Token (Token'First .. Token'Last - 1)
                                           --                           else Token);
    begin
-      if Trim then return fixed.Trim (Pad, Both);
-              else return Pad;
+      if Trim
+      then
+         return fixed.Trim (Pad, Both);
+      else
+         return Pad;
       end if;
    end next_Line;
 

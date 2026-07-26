@@ -39,8 +39,7 @@ begin
    -- any
    --
    declare
-      use lace.Dice,
-          lace.Dice.any;
+      use lace.Dice.any;
 
       d100 : constant lace.Dice.any.item := to_Dice (Sides    => 100,
                                                      Rolls    => 1,

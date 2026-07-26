@@ -19,7 +19,7 @@ is
    procedure destroy (Self : in out Item);
 
    procedure add     (Self : in out Item;   new_Event : in lace.Event.item'Class);
-                                            --  Sequence  : in event.sequence_Id);
+--                                          Sequence  : in event.sequence_Id);
 
 
 

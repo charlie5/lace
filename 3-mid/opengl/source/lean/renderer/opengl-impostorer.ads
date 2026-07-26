@@ -10,7 +10,7 @@ with
 private
 with
      ada.Containers.hashed_Maps,
-     ada.unchecked_Conversion;
+     system.storage_Elements;
 
 package openGL.Impostorer
 --
@@ -65,7 +65,8 @@ private
    use type Visual  .view,
             Impostor.view;
 
-   function Hash is new ada.unchecked_Conversion (Visual.view, ada.Containers.Hash_type);
+   function Hash (the_Visual : in Visual.view) return ada.Containers.Hash_type
+     is (ada.Containers.Hash_type'Mod (system.storage_Elements.to_Integer (the_Visual.all'Address)));
 
    package visual_Maps_of_impostor is new ada.Containers.hashed_Maps (Visual  .view,
                                                                       Impostor.view,

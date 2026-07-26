@@ -14,7 +14,9 @@ with
      lace.Any,
 
      ada.unchecked_Conversion,
-     ada.Containers.hashed_Maps;
+     ada.Containers.hashed_Maps,
+
+     system.storage_Elements;
 
 limited
 with
@@ -318,7 +320,7 @@ private
    evolve_Hz            : constant Hertz    := 60.0;
    client_update_Hz     : constant Hertz    := 20.0;     -- Too small will make player movement response time sluggish. Too large consumes much bandwidth.
 
-   evolve_Period        : constant Duration := 1.0 / Duration (evolve_Hz);
+   evolve_Period        : constant Duration := 0.016_666_667;     -- ~ 1.0 / evolve_Hz.
    client_update_Period : constant Duration := 1.0 / Duration (client_update_Hz);
 
    interpolation_Steps  : constant Natural  := Positive (evolve_Hz / client_update_Hz);
@@ -343,7 +345,10 @@ private
    -----------------------------
    --- sprite_Maps_of_transforms
    --
-   function Hash is new ada.unchecked_Conversion (gel.Sprite.view, ada.Containers.Hash_type);
+   function Hash (the_Sprite : in Sprite.view) return ada.Containers.Hash_type
+   is
+      (ada.Containers.Hash_type'Mod (system.storage_Elements.to_Integer (the_Sprite.all'Address)));
+     
    package  sprite_Maps_of_transforms is new ada.Containers.hashed_Maps (Sprite.view,  Matrix_4x4,
                                                                          Hash            => Hash,
                                                                          equivalent_Keys => "=");

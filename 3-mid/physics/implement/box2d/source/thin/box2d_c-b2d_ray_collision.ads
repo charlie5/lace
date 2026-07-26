@@ -29,7 +29,9 @@ package box2d_c.b2d_ray_Collision is
    package C_Pointers is new Interfaces.C.Pointers
      (Index => Interfaces.C.size_t, Element => box2d_c.b2d_ray_Collision.Item,
       Element_Array      => box2d_c.b2d_ray_Collision.Item_Array,
-      Default_Terminator => (others => <>));
+      Default_Terminator => (near_Object                => null,
+                             hit_Fraction               => 0.0,
+                             Normal_world | Site_world  => (x | y | z => 0.0)));
 
    subtype Pointer is C_Pointers.Pointer;
 

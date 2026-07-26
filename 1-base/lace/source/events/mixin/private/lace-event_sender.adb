@@ -312,7 +312,7 @@ is
    procedure destroy (Self : in out Item)
    is
    begin
-       Self.Delegator.stop;
+      Self.Delegator.stop;
    end destroy;
 
 

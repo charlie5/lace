@@ -13,7 +13,6 @@ procedure launch_two_Cameras_Demo
 --
 is
    use openGL,
-       openGL.Model,
        openGL.Model.Box,
        openGL.Palette,
        openGL.Math,

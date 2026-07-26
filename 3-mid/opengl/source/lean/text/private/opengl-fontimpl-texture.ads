@@ -81,22 +81,22 @@ private
 
    use type openGL.Texture.texture_Name;
    package texture_name_Vectors is new ada.Containers.Vectors (Positive, openGL.Texture.texture_Name);
+   subtype texture_name_Vector  is texture_name_Vectors.Vector;
 
 
    type Item is new FontImpl.item with
       record
-         maximumGLTextureSize : aliased gl.GLsizei := 0;   -- The max texture dimension on this openGL implemetation.
+         maximumGLTextureSize : aliased gl.GLsizei := 0;       -- The max texture dimension on this openGL implemetation.
 
-         textureWidth         :         gl.GLsizei := 0;   -- The min texture width  required to hold the glyphs.
-         textureHeight        :         gl.GLsizei := 0;   -- The min texture height required to hold the glyphs.
-         textureIDList        :         texture_name_Vectors.Vector;
-                                                           -- An array of texture ids.
+         textureWidth         :         gl.GLsizei := 0;       -- The min texture width  required to hold the glyphs.
+         textureHeight        :         gl.GLsizei := 0;       -- The min texture height required to hold the glyphs.
+         textureIDList        :         texture_name_Vector;   -- An array of texture ids.
 
-         glyphHeight          :         Integer    := 0;   -- The max height for glyphs in the current font.
-         glyphWidth           :         Integer    := 0;   -- The max width  for glyphs in the current font.
+         glyphHeight          :         Integer    := 0;       -- The max height for glyphs in the current font.
+         glyphWidth           :         Integer    := 0;       -- The max width  for glyphs in the current font.
 
-         Padding              :         Natural    := 3;   -- A value to be added to the height and width to ensure that
-         numGlyphs            :         Natural;           -- glyphs don't overlap in the texture.
+         Padding              :         Natural    := 3;       -- A value to be added to the height and width to ensure that
+         numGlyphs            :         Natural;               -- glyphs don't overlap in the texture.
          remGlyphs            :         Natural;
 
          xOffset, yOffset     :         Integer    := 0;

@@ -22,8 +22,7 @@ procedure launch_drop_Ball_on_Box
 --  Drops a ball onto a box 'terrain'.
 --
 is
-   use gel.Applet,
-       gel.Applet.gui_world,
+   use gel.Applet.gui_world,
        Ada.Text_IO;
 
    the_Applet : gel.Applet.gui_world.view := gel.Forge.new_gui_Applet ("drop Ball on Box",

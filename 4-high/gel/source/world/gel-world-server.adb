@@ -19,7 +19,7 @@ is
 
    procedure log (Message : in String)
                   renames ada.text_IO.put_Line;
-   --  pragma Unreferenced (log);
+   pragma Unreferenced (log);
 
 
    ---------

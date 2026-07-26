@@ -1,4 +1,3 @@
-with openGL.Model.texturing;
 with
      openGL.Light,
      openGL.Visual,
@@ -102,7 +101,7 @@ begin
          Demo.Renderer.render;
          Demo.FPS_Counter.increment;    -- Frames per second display.
 
-         delay 1.0 / 60.0;
+         delay 0.016_666_667;     -- ~ 1/60th of a second.
       end loop;
    end;
 

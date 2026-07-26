@@ -14,7 +14,8 @@ with
      lace.Any,
      interfaces.C,
 
-     ada.unchecked_Conversion;
+     ada.unchecked_Conversion,
+     system.storage_Elements;
 
 
 package body box2d_Physics.Space
@@ -206,9 +207,9 @@ is
    function Hash (the_C_Object : in box2d_c.Pointers.Object_pointer) return ada.Containers.Hash_type
    is
       function convert is new ada.unchecked_Conversion (box2d_c.Pointers.Object_pointer,
-                                                        ada.Containers.Hash_type);
+                                                        system.storage_Elements.integer_Address);
    begin
-      return convert (the_C_Object);
+      return ada.Containers.Hash_type'Mod (convert (the_C_Object));
    end Hash;
 
 

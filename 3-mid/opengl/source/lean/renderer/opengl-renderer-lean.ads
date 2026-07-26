@@ -16,7 +16,8 @@ with
 private
 with
      ada.Containers.hashed_Maps,
-     ada.unchecked_Conversion;
+     ada.unchecked_Conversion,
+     system.storage_Elements;
 
 
 package openGL.Renderer.lean
@@ -161,7 +162,10 @@ private
 
    type Updates_for_Camera_view is access Updates_for_Camera;
 
-   function Hash                   is new ada.unchecked_Conversion   (Camera_view, ada.Containers.Hash_type);
+   function to_Address is new ada.unchecked_Conversion (Camera_view, system.storage_Elements.integer_Address);
+   
+   function Hash (the_Camera : in Camera_view) return ada.Containers.Hash_type
+     is (ada.Containers.Hash_type'Mod (to_Address (the_Camera)));
    package  camera_Maps_of_updates is new ada.Containers.Hashed_Maps (Camera_view,
                                                                       updates_for_Camera_view,
                                                                       Hash,

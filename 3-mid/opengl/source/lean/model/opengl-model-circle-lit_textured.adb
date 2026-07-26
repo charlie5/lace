@@ -3,7 +3,6 @@ with
      openGL.Primitive.indexed,
      openGL.Texture.Coordinates;
 
-with ada.Text_IO;   use ada.Text_IO;
 
 
 package body openGL.Model.circle.lit_textured

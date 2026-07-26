@@ -61,6 +61,6 @@ private
          null;
       end record;
 
-   default_Model_Options : constant Model_Options := (others => <>);
+   default_Model_Options : constant Model_Options := (null record);
 
 end any_Math.any_Geometry;
