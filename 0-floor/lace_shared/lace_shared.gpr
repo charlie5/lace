@@ -22,8 +22,8 @@ is
 
    Binder_Options := ();
 
-   Style_Options  := ("-gnatyk",      --  Check casings: a:attribute, k:keywords, n:package Standard identifiers, p:pragma, r:identifier references.
-                      "-gnatybfhi",   --  Check b:no blanks at end of lines, f:no ff/vtabs, h: no htabs, i:if-then layout, u:no unnecessary blank lines.
+   Style_Options  := ("-gnatyk",      --  Check casings: k:keywords.
+                      "-gnatybfhi",   --  Check b: no blanks at end of lines, f: no ff/vtabs, h: no htabs, i: if-then layout.
                       "-gnatyO",      --  Check that overriding subprograms are explicitly marked as such.
                       "-gnatye",      --  Check that labels on end statements (ending subprograms), and on exit statements (exiting named loops), are present.
                       "-gnatyx");     --  Check x:no extra parens.
@@ -43,12 +43,10 @@ is
    Small_Options := ("-Os",
                      "-gnatp",
                      "-fno-inline",
-                     "-march=i386",
                      "-ffunction-sections",
                      "-falign-jumps=0",
                      "-falign-loops=0",
-                     "-falign-functions=0",
-                     "-mpreferred-stack-boundary=2");
+                     "-falign-functions=0");
 
 
    -- Modify options to cater for the build mode.
@@ -60,7 +58,6 @@ is
          Binder_Options   := Binder_Options   & "-Es";
          Compiler_Options := Compiler_Options & "-O0"
                                               & "-gnata"
-                                              & "-gnato"
                                               & "-gnateE"                -- Extra debug info in 'constraint_Error' messages.
                                               & "-fstack-check"
                                               & "-g";
@@ -118,8 +115,7 @@ is
       when "MacOSX" =>
          Compiler_Options := Compiler_Options & "-gnatf"
                                               & "-gnatE"
-                                              & "-gnatVcfimorst"
-                                              & "-gnatyhiknp";
+                                              & "-gnatVcfimorst";
       when "Linux" =>
          Binder_Options   := Binder_Options   & "-static";
 
