@@ -35,6 +35,10 @@ is
 
       Status := eglBindAPI (EGL_OPENGL_ES_API);
 
+      if Status = egl_False then
+         raise openGL.Error with "Failed to bind the OpenGL ES API with eGL.";
+      end if;
+
       return the_Display;
    end Default;
 
