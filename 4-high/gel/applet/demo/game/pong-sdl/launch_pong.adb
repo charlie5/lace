@@ -16,6 +16,7 @@ with
 
      lace.Event,
      lace.Response,
+     lace.Subject,
      lace.Event.utility,
 
      Ada.Text_IO,
@@ -240,12 +241,12 @@ begin
    -- Connect events.
    --
    connect ( the_Applet.local_Observer,
-             the_Applet.Keyboard.all'Access,
+             lace.Subject.view (the_Applet.Keyboard),
              the_key_press_Response'unchecked_Access,
             +gel.Keyboard.key_press_Event'Tag);
 
    connect ( the_Applet.local_Observer,
-             the_Applet.Keyboard.all'Access,
+             lace.Subject.view (the_Applet.Keyboard),
              the_key_release_Response'unchecked_Access,
             +gel.Keyboard.key_release_Event'Tag);
 
