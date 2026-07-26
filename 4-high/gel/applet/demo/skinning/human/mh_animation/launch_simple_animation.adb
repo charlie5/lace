@@ -51,7 +51,7 @@ is
    --
    the_Ground : gel.Sprite.view := gel.Forge.new_box_Sprite (in_world => the_Applet.gui_World,
                                                              mass     => 0.0,
-                                                             size     => (50.0, 1.0, 50.0));
+                                                             size     => [50.0, 1.0, 50.0]);
 
      --  human_model_Name : constant String := "assets/human-default-animated-01_01-y_up.dae";
      human_model_Name : constant String := "assets/human-default-animated-01_01.dae";
@@ -79,9 +79,9 @@ begin
 
    --- Setup the applet.
    --
-   the_Applet.gui_World.Gravity_is ((0.0, -10.0, 0.0));
+   the_Applet.gui_World.Gravity_is ([0.0, -10.0, 0.0]);
 
-   the_Applet.gui_Camera.Site_is ((0.0, 0.0, 8.0));     -- Position the camera.
+   the_Applet.gui_Camera.Site_is ([0.0, 0.0, 8.0]);     -- Position the camera.
    the_Applet.enable_simple_Dolly (in_World => 1);      -- Enable user camera control via keyboard.
    the_Applet.enable_Mouse (detect_Motion => False);    -- Enable mouse events.
 
@@ -117,19 +117,19 @@ begin
       if add_Balls
       then
          declare
-            the_Balls : array (1 .. 150) of gel.Sprite.view := (others => gel.Forge.new_ball_Sprite (in_World => the_Applet.gui_World,
+            the_Balls : array (1 .. 150) of gel.Sprite.view := [others => gel.Forge.new_ball_Sprite (in_World => the_Applet.gui_World,
                                                                                                     Mass     => 1.0,
                                                                                                     Radius   => 0.5,
-                                                                                                    Color    => (openGL.Palette.random_Color, Opaque)));
+                                                                                                    Color    => (openGL.Palette.random_Color, Opaque))];
             function random_Site return math.Vector_3
             is
                use math.Random;
 
                half_Extent : constant math.Real := 25.0 / 2.0;
             begin
-               return (random_Real (-half_Extent, half_Extent),
+               return [random_Real (-half_Extent, half_Extent),
                        0.0,
-                       random_Real (-half_Extent, half_Extent));
+                       random_Real (-half_Extent, half_Extent)];
             end;
 
          begin

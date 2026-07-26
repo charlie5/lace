@@ -42,7 +42,7 @@ is
 
    the_Ground : constant gel.Sprite.view     := gel.Forge.new_box_Sprite  (the_Applet.gui_World,
                                                                                  mass => 0.0,
-                                                                                 size => (50.0, 1.0, 50.0));
+                                                                                 size => [50.0, 1.0, 50.0]);
 --     the_human_graphics_Model : aliased gel.graphics_Model.open_gl.view
 --       := gel.graphics_Model.open_gl.forge.new_Model (scale   => (1.0, 1.0, 1.0),
 --  --                                                     model   => gel.to_Asset ("assets/gel/model/gel-human.dae"),
@@ -64,9 +64,9 @@ is
    next_render_Time :         ada.calendar.Time;
 
 begin
-   the_Applet.gui_World.Gravity_is ((0.0, -1.0, 0.0));
+   the_Applet.gui_World.Gravity_is ([0.0, -1.0, 0.0]);
 
-   the_Applet.gui_Camera.Site_is ((0.0, 0.0, 40.0));   -- Position the camera
+   the_Applet.gui_Camera.Site_is ([0.0, 0.0, 40.0]);   -- Position the camera
    the_Applet.enable_simple_Dolly (1);                 -- Enable user camera control via keyboards
    the_Applet.enable_Mouse (detect_Motion => False);                            -- Enable mouse events.
 
@@ -78,11 +78,11 @@ begin
                     mass => 1.0);
 
    the_Applet.gui_World.add (my_Human.base_Sprite, and_Children => True);               -- Add the human
-   my_Human.base_Sprite.move ((0.0,  10.0,  0.0));             --
+   my_Human.base_Sprite.move ([0.0,  10.0,  0.0]);             --
 
 
    the_Applet.gui_World.add (the_Ground);                         -- Add the ground
-   the_Ground.Site_is ((0.0,  -10.0,  0.0));                      --
+   the_Ground.Site_is ([0.0,  -10.0,  0.0]);                      --
 
    my_Human.motion_Mode_is (gel.Human.Animation);
    --  the_Human.motion_Mode_is (gel.Human_v1.Physics);

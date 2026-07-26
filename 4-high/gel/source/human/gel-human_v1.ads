@@ -208,7 +208,7 @@ private
 
    type skin_program_Parameters is new opengl.Program.Parameters with
       record
-         bone_Transforms : human_v1.joint_Transforms := (others => opengl.math.Identity_4x4);
+         bone_Transforms : human_v1.joint_Transforms := [others => opengl.math.Identity_4x4];
       end record;
 
    overriding

@@ -23,7 +23,7 @@ is
 begin
    Demo.print_Usage;
    Demo.define ("openGL 'diffuse Light' Demo");
-   Demo.Camera.Position_is ((0.0, 0.0, 10.0),
+   Demo.Camera.Position_is ([0.0, 0.0, 10.0],
                             y_Rotation_from (to_Radians (0.0)));
    declare
       use openGL.Model.box,
@@ -34,25 +34,25 @@ begin
       --  The Model.
       --
       the_Box : constant Model.Box.lit_textured.view
-        := openGL.Model.Box.lit_textured.new_Box (Size  => (4.0, 4.0, 4.0),
-                                                  Faces => (Front => (texture_Name => the_Texture),
+        := openGL.Model.Box.lit_textured.new_Box (Size  => [4.0, 4.0, 4.0],
+                                                  Faces => [Front => (texture_Name => the_Texture),
                                                             Rear  => (texture_Name => the_Texture),
                                                             Upper => (texture_Name => the_Texture),
                                                             Lower => (texture_Name => the_Texture),
                                                             Left  => (texture_Name => the_Texture),
-                                                            Right => (texture_Name => the_Texture)),
+                                                            Right => (texture_Name => the_Texture)],
                                                   texture_Details => openGL.texture_Set.to_Set ([1 => the_Texture]));
       --  The Visual.
       --
-      the_Visuals : constant openGL.Visual.views := (1 => new_Visual (the_Box.all'Access));
+      the_Visuals : constant openGL.Visual.views := [1 => new_Visual (the_Box.all'Access)];
 
 
       -- The Light.
       --
       the_Light      :          openGL.Light.item := Demo.Renderer.new_Light;
-      initial_Site   : constant openGL.Vector_3   := (0.0, 0.0, 15.0);
-      site_Delta     :          openGL.Vector_3   := (1.0, 0.0,  0.0);
-      cone_Direction : constant openGL.Vector_3   := (0.0, 0.0, -1.0);
+      initial_Site   : constant openGL.Vector_3   := [0.0, 0.0, 15.0];
+      site_Delta     :          openGL.Vector_3   := [1.0, 0.0,  0.0];
+      cone_Direction : constant openGL.Vector_3   := [0.0, 0.0, -1.0];
 
    begin
       -- Setup the visual.

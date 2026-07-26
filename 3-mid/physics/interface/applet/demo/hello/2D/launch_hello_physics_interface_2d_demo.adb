@@ -18,23 +18,23 @@ is
    the_Space  : constant physics.Space .view := new_Space (Physics.Box2d);
 
    the_Sphere : constant physics.Shape .view := the_Space.new_circle_Shape;
-   the_Box    : constant physics.Shape .view := the_Space.new_polygon_Shape (Vertices => (1 => (-1.0, -1.0),
-                                                                                          2 => ( 1.0, -1.0),
-                                                                                          3 => ( 1.0,  1.0),
-                                                                                          4 => (-1.0,  1.0)));
+   the_Box    : constant physics.Shape .view := the_Space.new_polygon_Shape (Vertices => [1 => [-1.0, -1.0],
+                                                                                          2 => [ 1.0, -1.0],
+                                                                                          3 => [ 1.0,  1.0],
+                                                                                          4 => [-1.0,  1.0]]);
 
    the_Ball   : constant physics.Object.view := the_Space.new_Object (of_Shape     => the_Sphere,
                                                                       of_Mass      => 1.0,
                                                                       Friction     => 0.5,
                                                                       Restitution  => 0.5,
-                                                                      at_Site      => (0.0,  10.0, 0.0),
+                                                                      at_Site      => [0.0,  10.0, 0.0],
                                                                       is_Kinematic => False);
 
    the_Ground : constant physics.Object.view := the_Space.new_Object (of_Shape     => the_Box,
                                                                       of_Mass      => 0.0,
                                                                       Friction     => 0.5,
                                                                       Restitution  => 0.5,
-                                                                      at_Site      => (0.0, -1.5, 0.0),
+                                                                      at_Site      => [0.0, -1.5, 0.0],
                                                                       is_Kinematic => False);
 begin
    the_Space.add (the_Ball);

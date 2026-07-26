@@ -80,10 +80,10 @@ is
    is
       use type math.Real;
    begin
-      return (1 => (From (1, 1),  From (1, 2),  From (1, 3),  From (1, 4)),
-              2 => (From (2, 1),  From (2, 2),  From (2, 3),  From (2, 4)),
-              3 => (From (3, 1),  From (3, 2),  From (3, 3),  From (3, 4)),
-              4 => (From (4, 1),  From (4, 2),  From (4, 3),  From (4, 4)));
+      return [1 => [From (1, 1),  From (1, 2),  From (1, 3),  From (1, 4)],
+              2 => [From (2, 1),  From (2, 2),  From (2, 3),  From (2, 4)],
+              3 => [From (3, 1),  From (3, 2),  From (3, 3),  From (3, 4)],
+              4 => [From (4, 1),  From (4, 2),  From (4, 3),  From (4, 4)]];
    end to_Math;
 
 
@@ -200,9 +200,9 @@ is
 --  --                 Self.bone_Sprites (the_bone_Id).Spin_is (Rotation);
             else
                Rotation :=  Inverse (get_Rotation (the_global_Transform));
-               Rotation := (1 => ( Rotation (1, 1),  Rotation (1, 2),  Rotation (1, 3)),                  -- Convert from Z-up to Y-up.
-                            2 => ( Rotation (3, 1),  Rotation (3, 2),  Rotation (3, 3)),                 --
-                            3 => (-Rotation (2, 1), -Rotation (2, 2), -Rotation (2, 3)));                  --
+               Rotation := [1 => [ Rotation (1, 1),  Rotation (1, 2),  Rotation (1, 3)],                  -- Convert from Z-up to Y-up.
+                            2 => [ Rotation (3, 1),  Rotation (3, 2),  Rotation (3, 3)],                 --
+                            3 => [-Rotation (2, 1), -Rotation (2, 2), -Rotation (2, 3)]];                  --
 
 --  --                 Rotation :=   Inverse (get_Rotation (Self.bone_Sprites (Hips).Transform))
 --                 Rotation :=   Inverse (get_Rotation (Self.skin_Sprite.Transform)) -- animation_Origin))
@@ -217,11 +217,11 @@ is
 
 --                 Site :=   (Site (1), Site (3), -Site (2))         -- Convert from Z-up to Y-up.
 --                         * get_Rotation (Self.animation_Origin);
-               Site :=   (Site (1), Site (3), -Site (2))         -- Convert from Z-up to Y-up.
+               Site :=   [Site (1), Site (3), -Site (2)]         -- Convert from Z-up to Y-up.
                        * Self.skin_Sprite.Transform; -- animation_Origin);
 --                                                                 * Self.bone_Sprites (Hips).Transform);
 
-               bone_Offset := (bone_Offset (1),  bone_Offset (3),  -bone_Offset (2));
+               bone_Offset := [bone_Offset (1),  bone_Offset (3),  -bone_Offset (2)];
                bone_Offset := bone_Offset *  (Rotation);
 --                 Site := Site - bone_Offset;
 --                 Site := Site + (bone_Offset (1),  bone_Offset (3),  -bone_Offset (2));
@@ -454,9 +454,9 @@ is
 --                 the_Site := (the_Site (1),-- * my_Scale * 1.0,
 --                              the_Site (2),-- * my_Scale * 1.0,
 --                              the_Site (3));-- * my_Scale * 1.0);
-               the_Site := (the_Site (1) * my_Scale * 1.0,
+               the_Site := [the_Site (1) * my_Scale * 1.0,
                             the_Site (2) * my_Scale * 1.0,
-                            the_Site (3) * my_Scale * 1.0);
+                            the_Site (3) * my_Scale * 1.0];
 
                set_Translation (Self.controller_Joints (Each).inverse_bind_Matrix,
                                 the_Site);
@@ -466,7 +466,7 @@ is
 
 
       set_global_Transform_for (Self, the_root_Joint);                              -- Determine all joint transforms, recursively.
-      set_Site_for             (the_root_Joint,  parent_site => (0.0, 0.0, 0.0));   -- Determine all joint sites.
+      set_Site_for             (the_root_Joint,  parent_site => [0.0, 0.0, 0.0]);   -- Determine all joint sites.
 
       Self.Model      := Model; --.all'Unchecked_Access;       -- Remember our model.
       Self.root_Joint := the_root_Joint;                       -- Remember our root joint.
@@ -570,13 +570,13 @@ is
                declare
                   the_graphics_Model : constant openGL.Model.box.colored.view
                     := openGL.Model.Box.colored.new_Box
-                      (Size => (Scale (1) * my_Scale,   Scale (2) * my_Scale,   Scale (3) * my_Scale),
-                       Faces => (front => (colors => (others => (Red,     Opaque))),
-                                 rear  => (colors => (others => (Blue,    Opaque))),
-                                 upper => (colors => (others => (Green,   Opaque))),
-                                 lower => (colors => (others => (Yellow,  Opaque))),
-                                 left  => (colors => (others => (Cyan,    Opaque))),
-                                 right => (colors => (others => (Magenta, Opaque)))));
+                      (Size => [Scale (1) * my_Scale,   Scale (2) * my_Scale,   Scale (3) * my_Scale],
+                       Faces => [front => (colors => [others => (Red,     Opaque)]),
+                                 rear  => (colors => [others => (Blue,    Opaque)]),
+                                 upper => (colors => [others => (Green,   Opaque)]),
+                                 lower => (colors => [others => (Yellow,  Opaque)]),
+                                 left  => (colors => [others => (Cyan,    Opaque)]),
+                                 right => (colors => [others => (Magenta, Opaque)])]);
                begin
                   Self.bone_Sprites (the_Bone) := gel.Sprite.forge.new_Sprite (Name           => sprite_Name,
                                                                                World          => gel.sprite.World_view (World),
@@ -710,7 +710,7 @@ is
 
             the_physics_Model : constant standard.physics.Model.view
               := standard.physics.Model.Forge.new_physics_Model (shape_Info  => (Kind         => standard.physics.Model.Cube,
-                                                                                 half_Extents => (0.1, 0.1, 0.1)),
+                                                                                 half_Extents => [0.1, 0.1, 0.1]),
                                                                  Mass        => 1.0,
                                                                  is_Tangible => False);
          begin
@@ -734,14 +734,14 @@ is
          create_Bone (Hips,
                       Hips,
                       joint_Sites (Spine),
-                      bone_Extent * (1.3, 0.6, 0.6),
+                      bone_Extent * [1.3, 0.6, 0.6],
                       Mass => 1.0);
 
 
          --  Thigh_L
          --
          bone_Extent := 1.0 * Distance (joint_Sites (Thigh_L), to => joint_Sites (Shin_L));
-         create_Bone (Thigh_L,  Thigh_L, joint_Sites (Shin_L),  (0.25, 0.5, 0.25) * bone_Extent,  0.5);
+         create_Bone (Thigh_L,  Thigh_L, joint_Sites (Shin_L),  [0.25, 0.5, 0.25] * bone_Extent,  0.5);
 
          attach_via_Ball (bone_A_Id    => Hips,
                           bone_B_Id    => Thigh_L,
@@ -753,7 +753,7 @@ is
          --  Shin_L
          --
          bone_Extent := 1.0 * Distance (joint_Sites (Shin_L), to => joint_Sites (Foot_L));
-         create_Bone (Shin_L,  Shin_L, joint_Sites (Foot_L),  (0.2, 0.8, 0.2) * bone_Extent,  0.5);
+         create_Bone (Shin_L,  Shin_L, joint_Sites (Foot_L),  [0.2, 0.8, 0.2] * bone_Extent,  0.5);
 
          attach_via_Ball (bone_A_Id    => Thigh_L,
                           bone_B_Id    => Shin_L,
@@ -765,7 +765,7 @@ is
          --  Foot_L
          --
          bone_Extent := 1.0 * Distance (joint_Sites (Foot_L), to => joint_Sites (Toe_L));
-         create_Bone (Foot_L,  Foot_L, joint_Sites (Toe_L),  (0.4, 0.8, 0.2) * bone_Extent,  0.5);
+         create_Bone (Foot_L,  Foot_L, joint_Sites (Toe_L),  [0.4, 0.8, 0.2] * bone_Extent,  0.5);
 
          attach_via_Ball (bone_A_Id    => Shin_L,
                           bone_B_Id    => Foot_L,
@@ -777,7 +777,7 @@ is
          --  Toe_L
          --
          bone_Extent := 1.0 * Distance (joint_Sites (Toe_L), to => joint_Sites (Foot_L));
-         create_Bone (Toe_L,  Toe_L, joint_Sites (Toe_L) + (0.0, -0.05, 0.0),  (0.6, 0.3, 0.1) * bone_Extent,  0.5);
+         create_Bone (Toe_L,  Toe_L, joint_Sites (Toe_L) + [0.0, -0.05, 0.0],  [0.6, 0.3, 0.1] * bone_Extent,  0.5);
 
          attach_via_Ball (bone_A_Id    => Foot_L,
                           bone_B_Id    => Toe_L,
@@ -789,7 +789,7 @@ is
          --  Thigh_R
          --
          bone_Extent := 1.0 * Distance (joint_Sites (Thigh_R), to => joint_Sites (Shin_R));
-         create_Bone (Thigh_R,  Thigh_R, joint_Sites (Shin_R),  (0.25, 0.5, 0.25) * bone_Extent,  0.5);
+         create_Bone (Thigh_R,  Thigh_R, joint_Sites (Shin_R),  [0.25, 0.5, 0.25] * bone_Extent,  0.5);
 
          attach_via_Ball (bone_A_Id    => Hips,
                           bone_B_Id    => Thigh_R,
@@ -801,7 +801,7 @@ is
          --  Shin_R
          --
          bone_Extent := 1.0 * Distance (joint_Sites (Shin_R), to => joint_Sites (Foot_R));
-         create_Bone (Shin_R,  Shin_R, joint_Sites (Foot_R),  (0.2, 0.8, 0.2) * bone_Extent,  0.5);
+         create_Bone (Shin_R,  Shin_R, joint_Sites (Foot_R),  [0.2, 0.8, 0.2] * bone_Extent,  0.5);
 
          attach_via_Ball (bone_A_Id    => Thigh_R,
                           bone_B_Id    => Shin_R,
@@ -813,7 +813,7 @@ is
          --  Foot_R
          --
          bone_Extent := 1.0 * Distance (joint_Sites (Foot_R), to => joint_Sites (Toe_R));
-         create_Bone (Foot_R,  Foot_R, joint_Sites (Toe_R),  (0.4, 0.8, 0.2) * bone_Extent,  0.5);
+         create_Bone (Foot_R,  Foot_R, joint_Sites (Toe_R),  [0.4, 0.8, 0.2] * bone_Extent,  0.5);
 
          attach_via_Ball (bone_A_Id    => Shin_R,
                           bone_B_Id    => Foot_R,
@@ -825,7 +825,7 @@ is
          --  Toe_R
          --
          bone_Extent := 1.0 * Distance (joint_Sites (Toe_R), to => joint_Sites (Foot_R));
-         create_Bone (Toe_R,  Toe_R, joint_Sites (Toe_R) + (0.0, -0.05, 0.0),  (0.6, 0.3, 0.1) * bone_Extent,  0.5);
+         create_Bone (Toe_R,  Toe_R, joint_Sites (Toe_R) + [0.0, -0.05, 0.0],  [0.6, 0.3, 0.1] * bone_Extent,  0.5);
 
          attach_via_Ball (bone_A_Id    => Foot_R,
                           bone_B_Id    => Toe_R,
@@ -837,7 +837,7 @@ is
          --  Spine
          --
          bone_Extent := 1.0 * Distance (joint_Sites (Spine), to => joint_Sites (Chest));
-         create_Bone (Spine,  Spine, joint_Sites (Chest),  (1.4, 0.6, 0.9) * bone_Extent,  0.5);
+         create_Bone (Spine,  Spine, joint_Sites (Chest),  [1.4, 0.6, 0.9] * bone_Extent,  0.5);
 
          attach_via_Ball (bone_A_Id    => Hips,
                           bone_B_Id    => Spine,
@@ -849,7 +849,7 @@ is
          --  Chest
          --
          bone_Extent := 1.0 * Distance (joint_Sites (Chest), to => joint_Sites (Neck));
-         create_Bone (Chest,  Chest, joint_Sites (Neck),  (0.8, 0.2, 0.20) * bone_Extent,  0.5); -- 0.6 * 0.5);
+         create_Bone (Chest,  Chest, joint_Sites (Neck),  [0.8, 0.2, 0.20] * bone_Extent,  0.5); -- 0.6 * 0.5);
 
          attach_via_Ball (bone_A_Id    => Spine,
                           bone_B_Id    => Chest,
@@ -864,7 +864,7 @@ is
          --  Right Clavicle
          --
          bone_Extent := 1.0 * Distance (joint_Sites (Clavicle_R), to => joint_Sites (upper_Arm_R));
-         create_Bone (Clavicle_R,  Clavicle_R, joint_Sites (upper_Arm_R),  (0.25, 0.25, 0.25) * bone_Extent,  0.5);
+         create_Bone (Clavicle_R,  Clavicle_R, joint_Sites (upper_Arm_R),  [0.25, 0.25, 0.25] * bone_Extent,  0.5);
 
          attach_via_Ball (Chest,   Clavicle_R,
                           pitch_limits => (-0.5, 0.5),
@@ -875,7 +875,7 @@ is
          --  Right Upper Arm
          --
          bone_Extent := 1.0 * Distance (joint_Sites (upper_Arm_R), to => joint_Sites (Forearm_R));
-         create_Bone (upper_Arm_R,  upper_Arm_R, joint_Sites (Forearm_R),  (0.2, 0.7, 0.2) * bone_Extent,  0.5);
+         create_Bone (upper_Arm_R,  upper_Arm_R, joint_Sites (Forearm_R),  [0.2, 0.7, 0.2] * bone_Extent,  0.5);
 
          attach_via_Ball (Clavicle_R,   upper_Arm_R,
                           pitch_limits => (-0.5, 0.5),
@@ -886,7 +886,7 @@ is
          --  Right Forearm
          --
          bone_Extent := 1.0 * Distance (joint_Sites (Forearm_R), to => joint_Sites (Hand_R));
-         create_Bone (Forearm_R,  Forearm_R, joint_Sites (Hand_R),  (0.2, 0.8, 0.2) * bone_Extent,  0.5);
+         create_Bone (Forearm_R,  Forearm_R, joint_Sites (Hand_R),  [0.2, 0.8, 0.2] * bone_Extent,  0.5);
 
          attach_via_Ball (upper_Arm_R,   Forearm_R,
                           pitch_limits => (-0.5, 0.5),
@@ -897,7 +897,7 @@ is
          --  Right Hand
          --
          bone_Extent := 1.0 * Distance (joint_Sites (Hand_R), to => joint_Sites (Thumb_02_R));
-         create_Bone (Hand_R,  Hand_R,  joint_Sites (Thumb_02_R) - (0.0, 0.0, 0.0),  (0.8, 0.9, 0.2) * bone_Extent,  0.5);
+         create_Bone (Hand_R,  Hand_R,  joint_Sites (Thumb_02_R) - [0.0, 0.0, 0.0],  [0.8, 0.9, 0.2] * bone_Extent,  0.5);
 
          attach_via_Ball (Forearm_R,   Hand_R,
                           pitch_limits => (-0.5, 0.0),
@@ -951,7 +951,7 @@ is
          --  Left Clavicle
          --
          bone_Extent := 1.0 * Distance (joint_Sites (Clavicle_L), to => joint_Sites (upper_Arm_L));
-         create_Bone (Clavicle_L,  Clavicle_L, joint_Sites (upper_Arm_L),  (0.25, 0.25, 0.25) * bone_Extent,  0.5);
+         create_Bone (Clavicle_L,  Clavicle_L, joint_Sites (upper_Arm_L),  [0.25, 0.25, 0.25] * bone_Extent,  0.5);
 
          attach_via_Ball (Chest,   Clavicle_L,
                           pitch_limits => (-0.5, 0.5),
@@ -962,7 +962,7 @@ is
          --  Left Upper Arm
          --
          bone_Extent := 1.0 * Distance (joint_Sites (upper_Arm_L), to => joint_Sites (Forearm_L));
-         create_Bone (upper_Arm_L,  upper_Arm_L, joint_Sites (Forearm_L),  (0.2, 0.7, 0.2) * bone_Extent,  0.5);
+         create_Bone (upper_Arm_L,  upper_Arm_L, joint_Sites (Forearm_L),  [0.2, 0.7, 0.2] * bone_Extent,  0.5);
 
          attach_via_Ball (Clavicle_L,   upper_Arm_L,
                           pitch_limits => (-0.5, 0.5),
@@ -973,7 +973,7 @@ is
          --  Left Forearm
          --
          bone_Extent := 0.75 * Distance (joint_Sites (Forearm_L), to => joint_Sites (Hand_L));
-         create_Bone (Forearm_L,  Forearm_L, joint_Sites (Hand_L),  (0.2, 0.8, 0.2) * bone_Extent,  0.5);
+         create_Bone (Forearm_L,  Forearm_L, joint_Sites (Hand_L),  [0.2, 0.8, 0.2] * bone_Extent,  0.5);
 
          attach_via_Ball (upper_Arm_L,   Forearm_L,
                           pitch_limits => (-0.5, 0.5),
@@ -984,7 +984,7 @@ is
          --  Left Hand
          --
          bone_Extent := 1.0 * Distance (joint_Sites (Hand_L), to => joint_Sites (Thumb_02_L));
-         create_Bone (Hand_L,  Hand_L,  joint_Sites (Thumb_02_L) - (0.0, 0.0, 0.0),  (0.8, 0.9, 0.2) * bone_Extent,  0.5);
+         create_Bone (Hand_L,  Hand_L,  joint_Sites (Thumb_02_L) - [0.0, 0.0, 0.0],  [0.8, 0.9, 0.2] * bone_Extent,  0.5);
 
          attach_via_Ball (Forearm_L,   Hand_L,
                           pitch_limits => (-0.5, 0.0),
@@ -1036,7 +1036,7 @@ is
          --  Neck
          --
          bone_Extent := 1.0 * Distance (joint_Sites (Neck), to => joint_Sites (Head));
-         create_Bone (Neck,  Neck, joint_Sites (Head),  (0.4, 0.6, 0.4) * bone_Extent,  0.4); -- 0.4 * 0.5);
+         create_Bone (Neck,  Neck, joint_Sites (Head),  [0.4, 0.6, 0.4] * bone_Extent,  0.4); -- 0.4 * 0.5);
 
          attach_via_Ball (bone_A_Id    => Chest,
                           bone_B_Id    => Neck,
@@ -1048,7 +1048,7 @@ is
          --  Head
          --
          bone_Extent := 1.0 * Distance (joint_Sites (Head), to => joint_Sites (Neck));
-         create_Bone (Head,  Head, joint_Sites (Head) + (0.0, 0.0, 0.05),  (0.8, 0.6, 0.7) * bone_Extent,  0.25);
+         create_Bone (Head,  Head, joint_Sites (Head) + [0.0, 0.0, 0.05],  [0.8, 0.6, 0.7] * bone_Extent,  0.25);
 
          attach_via_Ball (bone_A_Id    => Neck,
                           bone_B_Id    => Head,
@@ -1059,7 +1059,7 @@ is
          --  Jaw
          --
          bone_Extent := 1.0 * Distance (joint_Sites (Jaw), to => joint_Sites (Head));
-         create_Bone (Jaw,  Jaw, joint_Sites (Jaw) + (0.0, -0.07, 0.03),  (0.9, 1.0, 0.3) * bone_Extent,  0.25);
+         create_Bone (Jaw,  Jaw, joint_Sites (Jaw) + [0.0, -0.07, 0.03],  [0.9, 1.0, 0.3] * bone_Extent,  0.25);
 
          attach_via_Ball (bone_A_Id    => Head,
                           bone_B_Id    => Jaw,
@@ -1128,9 +1128,9 @@ is
 
                      -- For location interpolation during 'translation' animation.
                      --
-                     Self.Channels (Channel).current_Site  := (Self.Channels (Channel).Values (1),
+                     Self.Channels (Channel).current_Site  := [Self.Channels (Channel).Values (1),
                                                                Self.Channels (Channel).Values (2),
-                                                               Self.Channels (Channel).Values (3));
+                                                               Self.Channels (Channel).Values (3)];
                      Self.Channels (Channel).initial_Site  := Self.Channels (Channel).current_Site;
                   end setup_Location;
 

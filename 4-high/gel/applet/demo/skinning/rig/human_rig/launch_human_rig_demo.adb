@@ -60,7 +60,7 @@ begin
       next_render_Time : ada.calendar.Time := ada.calendar.Clock;
 
    begin
-      the_Applet.gui_Camera.Site_is ((0.0, -10.0, 1.0));                                  -- Position the camera.
+      the_Applet.gui_Camera.Site_is ([0.0, -10.0, 1.0]);                                  -- Position the camera.
       the_Applet.gui_Camera.Spin_is (x_Rotation_from (to_Radians (-90.0)));               -- Rotate   the camera.
 
       the_Applet.enable_simple_Dolly (1);                                                 -- Enable user camera control via keyboard.
@@ -75,7 +75,7 @@ begin
                           153.0 / 255.0,
                           102.0 / 255.0));
 
-         Light.Site_is ((1000.0, 0.0, 1000.0));
+         Light.Site_is ([1000.0, 0.0, 1000.0]);
 
          the_Applet.Renderer.set (Light);
       end;

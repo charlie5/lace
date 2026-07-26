@@ -7,7 +7,7 @@ is
    use Interfaces,
        GLX;
 
-   visual_Attributes : array (Positive range <>) of aliased C.int := (GLX_X_RENDERABLE,    1,
+   visual_Attributes : array (Positive range <>) of aliased C.int := [GLX_X_RENDERABLE,    1,
                                                                       GLX_DRAWABLE_TYPE,   GLX_WINDOW_BIT,
                                                                       GLX_RENDER_TYPE,     GLX_RGBA_BIT,
                                                                       GLX_X_VISUAL_TYPE,   GLX_TRUE_COLOR,
@@ -20,7 +20,7 @@ is
                                                                       GLX_DOUBLEBUFFER,    1,
                                                                       -- GLX_SAMPLE_BUFFERS  , 1,
                                                                       -- GLX_SAMPLES         , 4,
-                                                                      0);
+                                                                      0];
 
 
    procedure define (Self : in out Item;   Screen  : access openGL.Screen.item'Class;
@@ -49,7 +49,7 @@ is
    is
    begin
       raise Program_Error with "TBD";
-      return (1 .. 0 =>  <>);
+      return [1 .. 0 =>  <>];
    end fetch_All;
 
 

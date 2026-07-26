@@ -7,7 +7,7 @@ is
    use Glx,
        Interfaces;
 
-   visual_Attributes : array (Positive range <>) of aliased C.int := (GLX_X_RENDERABLE,    1,
+   visual_Attributes : array (Positive range <>) of aliased C.int := [GLX_X_RENDERABLE,    1,
                                                                       GLX_DRAWABLE_TYPE,   GLX_WINDOW_BIT,
                                                                       GLX_RENDER_TYPE,     GLX_RGBA_BIT,
                                                                       GLX_X_VISUAL_TYPE,   GLX_TRUE_COLOR,
@@ -18,7 +18,7 @@ is
                                                                       GLX_DEPTH_SIZE,      24,
                                                                       GLX_STENCIL_SIZE,    8,
                                                                       GLX_DOUBLEBUFFER,    1,
-                                                                      0);
+                                                                      0];
 
 
    procedure define (Self : in out Item;   Profile   : in surface_Profile.item'Class;
