@@ -1,151 +1,18 @@
 with
-     "gel_sdl";
+     "gel_sdl",
+     "lace_shared";
 
 
-project Human_Model_V1
+project human_Model_v1
 is
-
    for Object_Dir use "build";
-   for Exec_Dir use ".";
-   for Main use ("launch_human_model_v1.adb");
-   for Languages use ("Ada");
-   
-   type Os_Type is
-      ("Windows_NT", "Linux", "MacOSX");
-   Os : Os_Type := external ("OS");
-   
-   type Restrictions is
-      ("xgc", "ravenscar");
-   Restrictions : Restrictions := external ("restrictions");
-   
-   type Platform is
-      ("egl", "glx");
-   Opengl_Platform : Platform := external ("opengl_platform");
-   
-   type Profile is
-      ("safe", "lean", "desk");
-   Opengl_Profile : Profile := external ("opengl_profile");
+   for Exec_Dir   use ".";
+   for Main       use ("launch_human_model_v1.adb");
+   for Languages  use ("Ada");
 
-   package Compiler is
-      for Default_Switches ("ada") use ("-gnato", "-fstack-check", "-g", "-gnata");
-   end Compiler;
+   package Ide      renames Lace_shared.Ide;
+   package Builder  renames Lace_shared.Builder;
+   package Compiler renames Lace_shared.Compiler;
+   package Binder   renames Lace_shared.Binder;
 
-   package Builder is
-
-      case Os is
-
-         when "Windows_NT" =>
-
-         when "Linux" =>
-
-            case Restrictions is
-
-               when "xgc" =>
-
-                  case Opengl_Platform is
-
-                     when "egl" =>
-
-                     when "glx" =>
-
-                        case Opengl_Profile is
-
-                           when "safe" =>
-
-                           when "lean" =>
-                              for Default_Switches ("ada") use ("-j13", "-g", "-k");
-
-                           when "desk" =>
-                              for Default_Switches ("ada") use ("-j13", "-k", "-g");
-                        end case;
-                  end case;
-
-               when "ravenscar" =>
-
-            end case;
-
-         when "MacOSX" =>
-
-      end case;
-   end Builder;
-
-   package Binder is
-
-      case Os is
-
-         when "Windows_NT" =>
-
-         when "Linux" =>
-
-            case Restrictions is
-
-               when "xgc" =>
-
-                  case Opengl_Platform is
-
-                     when "egl" =>
-
-                     when "glx" =>
-
-                        case Opengl_Profile is
-
-                           when "safe" =>
-
-                           when "lean" =>
-                              for Default_Switches ("ada") use ("-E");
-
-                           when "desk" =>
-                              for Default_Switches ("ada") use ("-E");
-                        end case;
-                  end case;
-
-               when "ravenscar" =>
-
-            end case;
-
-         when "MacOSX" =>
-
-      end case;
-   end Binder;
-
-   package Linker is
-
-      case Os is
-
-         when "Windows_NT" =>
-
-         when "Linux" =>
-
-            case Restrictions is
-
-               when "xgc" =>
-
-                  case Opengl_Platform is
-
-                     when "egl" =>
-
-                     when "glx" =>
-
-                        case Opengl_Profile is
-
-                           when "safe" =>
-
-                           when "lean" =>
-                              for Default_Switches ("ada") use ("-g", "-lexpat", "-lGL", "-lX11", "-lm");
-
-                           when "desk" =>
-                              for Default_Switches ("ada") use ("-g", "-lGL", "-lX11", "-lm", "-lexpat");
-                        end case;
-                  end case;
-
-               when "ravenscar" =>
-
-            end case;
-
-         when "MacOSX" =>
-
-      end case;
-   end Linker;
-
-end Human_Model_V1;
-
+end human_Model_v1;
