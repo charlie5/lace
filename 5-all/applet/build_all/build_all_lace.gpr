@@ -7,10 +7,9 @@ with
      "../../../1-base/lace/applet/demo/strings/strings_demo",
 
      "../../../1-base/lace/applet/test/dice/test_dice",
-     -- Environ tests need 'lace_environ' -> 'ashell' -> 'lib_florist', which is not currently available.
---     "../../../1-base/lace/applet/test/environ/compression/test_environ_compression",
---     "../../../1-base/lace/applet/test/environ/general/test_environ_general",
---     "../../../1-base/lace/applet/test/environ/paths/test_environ_paths",
+     "../../../1-base/lace/applet/test/environ/compression/test_environ_compression",
+     "../../../1-base/lace/applet/test/environ/general/test_environ_general",
+     "../../../1-base/lace/applet/test/environ/paths/test_environ_paths",
      "../../../1-base/lace/applet/test/job/test_job",
      "../../../1-base/lace/applet/test/text/test_text",
 

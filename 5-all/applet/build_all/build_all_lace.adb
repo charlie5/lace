@@ -7,9 +7,9 @@ with
      launch_strings_Demo,
 
      test_Dice,
---     test_Environ_compression,
---     test_Environ_general,
---     test_Environ_Paths,
+     test_Environ_compression,
+     test_Environ_general,
+     test_Environ_Paths,
      test_Job,
      test_Text_replace,
 
@@ -96,9 +96,9 @@ begin
    launch_strings_Demo;
 
    test_Dice;
---   test_Environ_compression;
---   test_Environ_general;
---   test_Environ_Paths;
+   test_Environ_compression;
+   test_Environ_general;
+   test_Environ_Paths;
    test_Job;
    test_Text_replace;
 
