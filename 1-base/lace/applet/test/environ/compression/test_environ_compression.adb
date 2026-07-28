@@ -18,7 +18,7 @@ begin
 
    --- Compress single files.
    --
-   save      (+"digits.txt-original", digits_Text, Binary => True);
+   save      (+"digits.txt-original", digits_Text);
    copy_File (+"digits.txt-original", To => +"digits.txt");
 
    for Each in compress_Format
