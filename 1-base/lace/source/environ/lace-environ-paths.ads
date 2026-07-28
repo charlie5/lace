@@ -121,10 +121,8 @@ is
    function  Extension  (Self : in File) return File_Extension;
 
 
-   procedure save (Self : in File;   Text   : in String;
-                                     Binary : in Boolean := False);
-
-   procedure save (Self : in File;   Data   : in environ.Data);
+   procedure save (Self : in File;   Text : in String);
+   procedure save (Self : in File;   Data : in environ.Data);
 
 
    function  load (Self : in File) return String;     -- Raises 'Error' if the file does not exist.

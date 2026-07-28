@@ -581,35 +581,18 @@ is
 
 
 
-   procedure save (Self : in File;   Text   : in String;
-                                     Binary : in Boolean := False)
+   procedure save (Self : in File;   Text : in String)
    is
+      type binary_String is new String (Text'Range);
+
+      package Binary_IO  is new ada.Direct_IO (binary_String);
+      use     Binary_IO;
+
+      File :  File_type;
    begin
-      if Binary
-      then
-         declare
-            type binary_String is new String (Text'Range);
-
-            package Binary_IO  is new ada.Direct_IO (binary_String);
-            use     Binary_IO;
-
-            File :  File_type;
-         begin
-            create (File, out_File, +Self);
-            write  (File, binary_String (Text));
-            close  (File);
-         end;
-
-      else
-         declare
-            use ada.Text_IO;
-            File : File_type;
-         begin
-            create (File, out_File, +Self);
-            put    (File, Text);
-            close  (File);
-         end;
-      end if;
+      create (File, out_File, +Self);
+      write  (File, binary_String (Text));
+      close  (File);
    end save;
 
 
