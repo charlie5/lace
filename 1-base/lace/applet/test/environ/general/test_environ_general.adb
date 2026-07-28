@@ -1,10 +1,10 @@
 with
-     lace.Environ,
+     lace.Environ.Paths,
      ada.Text_IO;
 
 procedure test_Environ_general
 is
-   use lace.Environ,
+   use lace.Environ.Paths,
        ada.Text_IO;
 
    Error : exception;
