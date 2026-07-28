@@ -773,6 +773,7 @@ is
                                Safe.Spin.desired,
                                Safe.Percent);
 
+         pragma Warnings (Off);     -- 'interpolation_Steps' is statically positive, but the guard is kept for safety.
          if gel.World.interpolation_Steps = 0
          then
             Safe.Percent := 100.0;
@@ -781,6 +782,7 @@ is
                                             + to_Percentage (1.0 / Real (gel.World.interpolation_Steps + 1)),
                                               unit_Percentage'Last);
          end if;
+         pragma Warnings (On);
       end get;
 
    end safe_Interpolation;
