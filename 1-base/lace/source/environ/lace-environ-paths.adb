@@ -34,23 +34,23 @@ is
       use ada.Text_IO;
 
       FileName : constant File     := +"/tmp/lace_environ_temporary_shell.sh";
-      File     :          File_Type;
+      File     :          File_type;
    begin
-      create   (File, out_File, +Filename);
+      create   (File, out_File, +FileName);
       put_Line (File, "echo " & GLOB);
       close    (File);
 
-      change_Mode (Path (Filename), to => "a+rwx");
+      change_Mode (Path (FileName), To => "a+rwx");
 
       declare
          use lace.Environ.OS_Commands;
-         Output : constant String := run_OS ("bash " & (+Filename));
+
+         Output : constant String := run_OS ("bash " & (+FileName));
       begin
-         rid_File (Filename);
+         rid_File (FileName);
          return Output;
       end;
    end expand_GLOB;
-
 
 
    ---------
@@ -67,9 +67,10 @@ is
 
    procedure check (Self : in Path'Class)
    is
-      use ada.Tags,
-          ada.Strings.fixed,
-          ada.Characters.handling;
+      use
+           ada.Tags,
+           ada.Strings.fixed,
+           ada.Characters.handling;
 
       Tag_full_Name : constant String := to_Lower (ada.Tags.expanded_Name (Self'Tag));
       Tag_Name      : constant String := (if Self'Tag = Folder'Tag then Tail (Tag_full_Name, 6)
@@ -95,6 +96,7 @@ is
 
       declare
          use lace.Environ.OS_Commands;
+
          Output : constant String := run_OS (  "ln -s "
                                              & (+Self)
                                              & " "
@@ -117,6 +119,7 @@ is
 
       declare
          use lace.Environ.OS_Commands;
+
          Output : constant String := run_OS ("chmod -R " & To & " " & (+Self));
       begin
          if Output /= ""
@@ -136,6 +139,7 @@ is
 
       declare
          use lace.Environ.OS_Commands;
+
          Output : constant String := run_OS ("chown -R " & To & " " & (+Self));
       begin
          if Output /= ""
@@ -217,9 +221,10 @@ is
       check (Self);
 
       declare
-         use Posix,
-             posix.Calendar,
-             posix.File_Status;
+         use
+              posix,
+              posix.Calendar,
+              posix.file_Status;
 
          the_Status : constant Status     := get_File_Status (Pathname => to_posix_String (+Self));
          Time       : constant POSIX_Time := last_modification_Time_of (the_Status);
@@ -235,6 +240,7 @@ is
    begin
       declare
          use ada.Strings;
+
          Index : constant Natural := fixed.Index (+Self, "/", going => Backward);
       begin
          if    Index = 0
@@ -273,6 +279,7 @@ is
 
       declare
          use ada.Strings;
+
          i    : constant Natural := Index  (Self.Name, "/", going => Backward);
          Last : constant Natural := Length (Self.Name);
       begin
@@ -285,7 +292,6 @@ is
          end if;
       end;
    end Simple;
-
 
 
    -----------
@@ -340,22 +346,25 @@ is
    protected folder_Lock
    is
       entry change (To : in Folder);
+
       procedure clear;
    private
       Locked : Boolean := False;
    end folder_Lock;
 
 
+
    protected body folder_Lock
    is
       entry change (To : in Folder)
-            when not Locked
+        when not Locked
       is
       begin
          check (To);
          ada.Directories.set_Directory (+To);
          Locked := True;
       end change;
+
 
 
       procedure clear
@@ -394,20 +403,21 @@ is
    function contents_Count (Self    : in Folder;
                             recurse : in Boolean := False) return Natural
    is
-      use shell.Directories,
-          ada.Directories;
+      use
+           shell.Directories,
+           ada.Directories;
 
       Count : Natural := 0;
    begin
       check (Self);
 
-      for Each of To_Directory (+Self, Recurse)
+      for Each of To_Directory (+Self, recurse)
       loop
          declare
-            Name : constant String := Simple_Name (Each);
+            Name : constant String := simple_Name (Each);
          begin
-            if not (   Name = "."
-                    or Name = "..")
+            if not (        Name = "."
+                    or else Name = "..")
             then
                Count := Count + 1;
             end if;
@@ -433,6 +443,7 @@ is
    begin
       check (Self);
       ada.Directories.delete_Tree (+Self);
+
    exception
       when ada.IO_Exceptions.name_Error =>
          null;
@@ -489,16 +500,16 @@ is
 
    function Relative (Self : in Folder;   To : in Folder'Class) return Folder
    is
-      use lace.Text,
-          lace.Text.utility;
+      use
+           lace.Text,
+           lace.Text.utility;
 
       Filename        : constant lace.Text.item := to_Text (+Self);
-      relative_Folder : constant lace.Text.item := replace (Filename, pattern => +To & "/",
-                                                                      by      => "");
+      relative_Folder : constant lace.Text.item := replace (Filename, Pattern => +To & "/",
+                                                                      By      => "");
    begin
       return to_Folder (+relative_Folder);
    end Relative;
-
 
 
    -------------------
@@ -548,7 +559,6 @@ is
    end pop_All;
 
 
-
    ---------
    --- Files
    --
@@ -585,10 +595,10 @@ is
    is
       type binary_String is new String (Text'Range);
 
-      package Binary_IO  is new ada.Direct_IO (binary_String);
+      package Binary_IO is new ada.Direct_IO (binary_String);
       use     Binary_IO;
 
-      File :  File_type;
+      File : File_type;
    begin
       create (File, out_File, +Self);
       write  (File, binary_String (Text));
@@ -603,15 +613,15 @@ is
       check (Self);
 
       declare
-         type Element_Array is new environ.Data  (Data'Range);
+         type Element_array is new environ.Data  (Data'Range);
 
-         package Binary_IO  is new ada.Direct_IO (Element_Array);
+         package Binary_IO is new ada.Direct_IO (Element_array);
          use     Binary_IO;
 
          File : File_type;
       begin
          create (File, out_File, +Self);
-         write  (File, Element_Array (Data));
+         write  (File, Element_array (Data));
          close  (File);
       end;
    end save;
@@ -661,15 +671,16 @@ is
 
       declare
          use ada.Streams;
+
          Size : constant ada.Directories.File_Size := ada.Directories.Size (+Self);
 
-         type Element_Array is new Data (0 .. Stream_Element_Offset (Size) - 1);
+         type Element_array is new Data (0 .. Stream_Element_Offset (Size) - 1);
 
-         package Binary_IO  is new ada.Direct_IO (Element_Array);
+         package Binary_IO is new ada.Direct_IO (Element_array);
          use     Binary_IO;
 
          File   : Binary_IO.File_type;
-         Result : Element_Array;
+         Result : Element_array;
       begin
          open  (File, out_File, +Self);
          read  (File, Result);
@@ -696,13 +707,14 @@ is
 
    procedure copy_Files (Named : in String;   To : in Folder)
    is
-      use lace.Text,
-          lace.Text.all_Tokens,
-          ada.Strings.fixed;
+      use
+           lace.Text,
+           lace.Text.all_Tokens,
+           ada.Strings.fixed;
 
       all_Files : constant String        := (if Index (Named, "*") /= 0 then expand_GLOB (Named)
                                                                         else Named);
-      file_List : constant Text.items_1k := Tokens (to_Text (all_Files));
+      file_List : constant Text.Items_1k := Tokens (to_Text (all_Files));
    begin
       check (To);
 
@@ -710,6 +722,7 @@ is
       loop
          declare
             use ada.Directories;
+
             Name : constant String := +Each;
          begin
             if Kind (Name) = Directory
@@ -746,13 +759,14 @@ is
       check (To);
 
       declare
-         use lace.Text,
-             lace.Text.all_Tokens,
-             ada.Strings.fixed;
+         use
+              lace.Text,
+              lace.Text.all_Tokens,
+              ada.Strings.fixed;
 
-         all_Files : constant String        := (if Index (Named, "*") /= 0 then Expand_GLOB (Named)
+         all_Files : constant String        := (if Index (Named, "*") /= 0 then expand_GLOB (Named)
                                                                            else Named);
-         file_List : constant Text.items_1k := Tokens (to_Text (all_Files));
+         file_List : constant Text.Items_1k := Tokens (to_Text (all_Files));
       begin
          for Each of file_List
          loop
@@ -760,6 +774,7 @@ is
             then
                declare
                   use ada.Directories;
+
                   Name : constant String := +Each;
                begin
                   if Kind (Name) = Directory
@@ -785,6 +800,7 @@ is
 
       declare
          use ada.Text_IO;
+
          Target : File_type;
       begin
          open  (Target, append_File, Name => +Self);
@@ -826,13 +842,14 @@ is
 
    procedure rid_Files (Named : in String)
    is
-      use lace.Text,
-          lace.Text.all_Tokens,
-          ada.Strings.fixed;
+      use
+           lace.Text,
+           lace.Text.all_Tokens,
+           ada.Strings.fixed;
 
-      all_Files : constant String        := (if Index (Named, "*") /= 0 then Expand_GLOB (Named)
+      all_Files : constant String        := (if Index (Named, "*") /= 0 then expand_GLOB (Named)
                                                                         else Named);
-      file_List : constant Text.items_1k := Tokens (to_Text (all_Files));
+      file_List : constant Text.Items_1k := Tokens (to_Text (all_Files));
 
    begin
       for Each of file_List
@@ -847,6 +864,7 @@ is
    procedure touch (Self : in File)
    is
       use lace.Environ.OS_Commands;
+
       Output : constant String := run_OS ("touch " & (+Self));
    begin
       if Output /= ""
@@ -859,8 +877,9 @@ is
 
    function Relative (Self : in File;   To : in Folder'Class) return File
    is
-      use lace.Text,
-          lace.Text.utility;
+      use
+           lace.Text,
+           lace.Text.utility;
 
       Filename      : constant lace.Text.item := to_Text (+Self);
       relative_File : constant lace.Text.item := replace (Filename, Pattern => +To & "/",
@@ -882,7 +901,6 @@ is
    end rid_Extension;
 
 
-
    ---------------
    --- Compression
    --
@@ -896,11 +914,12 @@ is
 
       function level_Flag return String
       is
-         use ada.Strings,
-             ada.Strings.fixed;
+         use
+              ada.Strings,
+              ada.Strings.fixed;
       begin
          return " -"
-              & Trim (compress_Level'Image (the_Level),
+              & trim (compress_Level'Image (the_Level),
                       Left)
               & " ";
       end level_Flag;
@@ -911,7 +930,7 @@ is
 
       case the_Format
       is
-         when Tar |Tar_Bz2 | Tar_Gz | Tar_Xz =>
+         when Tar | Tar_Bz2 | Tar_Gz | Tar_Xz =>
             declare
                Options : constant String := (case the_Format
                                              is
@@ -980,8 +999,8 @@ is
 
          the_Format : constant compress_Format := (if    Tail (+Name, 4) = ".tar"     then Tar
                                                    elsif Tail (+Name, 8) = ".tar.bz2" then Tar_Bz2
-                                                   elsif Tail (+Name, 7) = ".tar.gz"
-                                                      or Tail (+Name, 4) = ".tgz"     then Tar_Gz
+                                                   elsif Tail (+Name, 7) = ".tar.gz"  then Tar_Gz
+                                                   elsif Tail (+Name, 4) = ".tgz"     then Tar_Gz
                                                    elsif Tail (+Name, 7) = ".tar.xz"  then Tar_Xz
                                                    elsif Tail (+Name, 3) = ".gz"      then Gz
                                                    elsif Tail (+Name, 4) = ".bz2"     then Bz2
@@ -990,60 +1009,59 @@ is
       begin
          case the_Format
          is
-         when Tar |Tar_Bz2 | Tar_Gz | Tar_Xz =>
-            declare
-               Options : aliased constant String := (case the_Format
-                                                     is
-                                                        when Tar     => "-xf",
-                                                        when Tar_Bz2 => "-xjf",
-                                                        when Tar_Gz  => "-xzf",
-                                                        when Tar_Xz  => "-xJf",
-                                                        when others  => raise program_Error);
-               Output  : constant String := run_OS ("tar " & Options & " " & (+Name));
-            begin
-               if Output /= ""
-               then
-                  raise Error with Output;
-               end if;
-            end;
+            when Tar | Tar_Bz2 | Tar_Gz | Tar_Xz =>
+               declare
+                  Options : aliased constant String := (case the_Format
+                                                        is
+                                                           when Tar     => "-xf",
+                                                           when Tar_Bz2 => "-xjf",
+                                                           when Tar_Gz  => "-xzf",
+                                                           when Tar_Xz  => "-xJf",
+                                                           when others  => raise program_Error);
+                  Output  : constant String := run_OS ("tar " & Options & " " & (+Name));
+               begin
+                  if Output /= ""
+                  then
+                     raise Error with Output;
+                  end if;
+               end;
 
-         when Gz =>
-            declare
-               Output : constant String := run_OS ("gunzip --force --keep " & (+Name));
-            begin
-               if Output /= ""
-               then
-                  raise Error with Output;
-               end if;
-            end;
+            when Gz =>
+               declare
+                  Output : constant String := run_OS ("gunzip --force --keep " & (+Name));
+               begin
+                  if Output /= ""
+                  then
+                     raise Error with Output;
+                  end if;
+               end;
 
-         when Bz2 =>
-            declare
-               Output : constant String := run_OS ("bunzip2 --force --keep " & (+Name));
-            begin
-               if Output /= ""
-               then
-                  raise Error with Output;
-               end if;
-            end;
+            when Bz2 =>
+               declare
+                  Output : constant String := run_OS ("bunzip2 --force --keep " & (+Name));
+               begin
+                  if Output /= ""
+                  then
+                     raise Error with Output;
+                  end if;
+               end;
 
-         when Xz =>
-            declare
-               Output : constant String := run_OS ("xz --decompress --force --keep " & (+Name));
-            begin
-               if Output /= ""
-               then
-                  raise Error with Output;
-               end if;
-            end;
+            when Xz =>
+               declare
+                  Output : constant String := run_OS ("xz --decompress --force --keep " & (+Name));
+               begin
+                  if Output /= ""
+                  then
+                     raise Error with Output;
+                  end if;
+               end;
          end case;
       end;
-
    end decompress;
 
 
 
-   function format_Suffix (Format : compress_Format) return String
+   function format_Suffix (Format : in compress_Format) return String
    is
    begin
       case Format
