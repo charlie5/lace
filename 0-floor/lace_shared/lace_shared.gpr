@@ -5,11 +5,9 @@ is
    --
 
    type OS_type           is ("Windows_NT", "Linux", "MacOSX");
-   type Restrictions_type is ("xgc", "ravenscar");
    type build_Mode_type   is ("debug", "fast", "small");
 
    lace_OS           : OS_type           := external ("Lace_OS", "Linux");
-   lace_Restrictions : Restrictions_type := external ("Lace_Restrictions", "xgc");
    lace_build_Mode   : build_Mode_type   := external ("Lace_Build_Mode", "debug");
 
 
