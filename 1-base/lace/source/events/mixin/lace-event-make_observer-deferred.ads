@@ -7,11 +7,11 @@ with
 
 
 generic
-   type T is abstract new lace.event.make_Observer.item with private;
+   type T is abstract new lace.Event.make_Observer.item with private;
 
-package lace.event.make_Observer.deferred
+package lace.Event.make_Observer.deferred
 --
---  Makes a user class T into a deferred event Observer.
+-- Makes a user class T into a deferred event Observer.
 --
 is
    pragma remote_Types;
@@ -24,8 +24,8 @@ is
    procedure destroy (Self : in out Item);
 
 
-   -------------
-   -- Operations
+   --------------
+   --- Operations
    --
 
    overriding
@@ -39,7 +39,7 @@ is
 
 private
 
-   --  pragma Suppress (Container_Checks);     -- Suppress expensive tamper checks.
+   -- pragma Suppress (Container_Checks);     -- Suppress expensive tamper checks.
 
 
    type event_sequence_Pair is
@@ -49,19 +49,20 @@ private
       end record;
 
 
-   ----------------
-   -- Event Vectors
+   -----------------
+   --- Event Vectors
    --
+
    package event_Vectors     is new ada.Containers.Vectors (Positive, event_sequence_Pair);
    subtype event_Vector      is event_Vectors.Vector;
    type    event_Vector_view is access all event_Vector;
 
 
-   --------------
-   -- Safe Events
+   ---------------
+   --- Safe Events
    --
-   protected
-   type safe_Events
+
+   protected type safe_Events
    is
       procedure add   (the_Event  : in     Event.item'Class;
                        Sequence   : in     sequence_Id);
@@ -73,9 +74,10 @@ private
    type safe_Events_view is access all safe_Events;
 
 
-   ------------------------------
-   -- Subject Maps of safe Events
+   -------------------------------
+   --- Subject Maps of safe Events
    --
+
    use type event_Vector;
    package subject_Maps_of_safe_events is new ada.Containers.indefinite_hashed_Maps (Key_type        => Event.subject_Name,
                                                                                      Element_type    => safe_Events_view,
@@ -84,9 +86,10 @@ private
    subtype subject_Map_of_safe_events  is subject_Maps_of_safe_events.Map;
 
 
-   -----------------------
-   -- Subject Events Pairs
+   ------------------------
+   --- Subject Events Pairs
    --
+
    type String_view is access all String;
 
    type subject_events_Pair is
@@ -98,11 +101,11 @@ private
    type subject_events_Pairs is array (Positive range <>) of subject_events_Pair;
 
 
-   ----------------------------------
-   -- safe Subject Map of safe Events
+   -----------------------------------
+   --- safe Subject Map of safe Events
    --
-   protected
-   type safe_subject_Map_of_safe_events
+
+   protected type safe_subject_Map_of_safe_events
    is
       procedure add   (the_Event    : in Event.item'Class;
                        Sequence     : in sequence_Id;
@@ -119,12 +122,14 @@ private
    end safe_subject_Map_of_safe_events;
 
 
-   ----------------
-   -- Observer Item
+   -----------------
+   --- Observer Item
    --
+
    type Item is abstract limited new T with
       record
          pending_Events : safe_subject_Map_of_safe_events;
       end record;
 
-end lace.event.make_Observer.deferred;
+
+end lace.Event.make_Observer.deferred;

@@ -4,7 +4,7 @@ with
      ada.unchecked_Deallocation;
 
 
-package body lace.event.make_Observer.deferred
+package body lace.Event.make_Observer.deferred
 is
    use type Event.Logger.view;
 
@@ -18,8 +18,8 @@ is
    end destroy;
 
 
-   -------------
-   -- Operations
+   --------------
+   --- Operations
    --
 
    overriding
@@ -38,7 +38,8 @@ is
    overriding
    procedure respond (Self : access Item)
    is
-      use Event_Vectors;
+      use
+           Event_Vectors;
 
       my_Name : constant String := Observer.item'Class (Self.all).Name;
 
@@ -53,9 +54,11 @@ is
          while has_Element (Cursor)
          loop
             declare
-               use event_response_Maps,
-                   Event.utility,
-                   ada.Containers;
+               use
+                    event_response_Maps,
+                    Event.utility,
+                    ada.Containers;
+
                use type Observer.view;
 
                the_Event    : constant Event.item'Class           := Element (Cursor).Event.Element;
@@ -63,7 +66,7 @@ is
                Response     : constant event_response_Maps.Cursor := the_Responses.find (to_Kind (the_Event'Tag));
 
             begin
-               --  put_Line ("observer " & my_Name & " from " & from_subject_Name & "     seq" & the_Sequence'Image & "     exp seq " & sequence_Id' (expected_Sequence)'Image);
+               -- put_Line ("observer " & my_Name & " from " & from_subject_Name & "     seq" & the_Sequence'Image & "     exp seq " & sequence_Id' (expected_Sequence)'Image);
 
                if the_Sequence = expected_Sequence
                then
@@ -83,7 +86,7 @@ is
 
                   elsif Self.Responses.relay_Target /= null
                   then
-                     --  Self.relay_Target.notify (the_Event, from_Subject_Name);   -- todo: Re-enable relayed events.
+                     -- Self.relay_Target.notify (the_Event, from_Subject_Name);   -- todo: Re-enable relayed events.
 
                      if Observer.Logger /= null
                      then
@@ -163,20 +166,23 @@ is
    end respond;
 
 
-   --------------
-   -- Safe Events
+   ---------------
+   --- Safe Events
    --
+
    protected
    body safe_Events
    is
       procedure add (the_Event : in Event.item'Class;
                      Sequence  : in sequence_Id)
       is
-         use Containers.event_Holders;
+         use
+              Containers.event_Holders;
       begin
          the_Events.append (event_sequence_Pair' (to_Holder (the_Event),
                                                   Sequence));
       end add;
+
 
 
       procedure fetch (all_Events : out Event_Vector)
@@ -188,9 +194,10 @@ is
    end safe_Events;
 
 
-   ----------------------------------
-   -- safe Subject Map of safe Events
+   -----------------------------------
+   --- safe Subject Map of safe Events
    --
+
    protected
    body safe_subject_Map_of_safe_events
    is
@@ -213,7 +220,8 @@ is
 
       function fetch return subject_events_Pairs
       is
-         use subject_Maps_of_safe_events;
+         use
+              subject_Maps_of_safe_events;
 
          Result : subject_events_Pairs (1 .. Natural (the_Map.Length));
 
@@ -243,7 +251,8 @@ is
       procedure fetch (all_Events : out subject_events_Pairs;
                        Count      : out Natural)
       is
-         use subject_Maps_of_safe_events;
+         use
+              subject_Maps_of_safe_events;
 
          Cursor : subject_Maps_of_safe_events.Cursor := the_Map.First;
          Index  : Natural := 0;
@@ -270,7 +279,8 @@ is
 
       procedure free
       is
-         use subject_Maps_of_safe_events;
+         use
+              subject_Maps_of_safe_events;
 
          procedure deallocate is new ada.unchecked_Deallocation (safe_Events,
                                                                  safe_Events_view);
@@ -290,4 +300,4 @@ is
    end safe_subject_Map_of_safe_events;
 
 
-end lace.event.make_Observer.deferred;
+end lace.Event.make_Observer.deferred;
