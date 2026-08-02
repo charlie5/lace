@@ -29,75 +29,76 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
-package body lace.Strings.Bounded
+package body lace.Strings.bounded
 is
 
    package body Generic_Bounded_Length
    is
-      --  The subprograms in this body are those for which there is no
-      --  Bounded_String input, and hence no implicit information on the
-      --  maximum size. This means that the maximum size has to be passed
-      --  explicitly to the routine in Superbounded.
+      -- The subprograms in this body are those for which there is no
+      -- Bounded_String input, and hence no implicit information on the
+      -- maximum size. This means that the maximum size has to be passed
+      -- explicitly to the routine in Superbounded.
 
-      ---------
-      -- "*" --
-      ---------
 
-      function "*"
-        (Left  : Natural;
-         Right : Character) return Bounded_String
+      -------
+      --- "*"
+      --
+
+      function "*" (Left  : in Natural;
+                    Right : in Character) return Bounded_String
       is
       begin
          return Times (Left, Right, Max_Length);
       end "*";
 
-      function "*"
-        (Left  : Natural;
-         Right : String) return Bounded_String
+      function "*" (Left  : in Natural;
+                    Right : in String) return Bounded_String
       is
       begin
          return Times (Left, Right, Max_Length);
       end "*";
 
-      -----------------
-      -- From_String --
-      -----------------
 
-      function From_String (Source : String) return Bounded_String
+      ---------------
+      --- From_String
+      --
+
+      function From_String (Source : in String) return Bounded_String
       is
       begin
          return To_Super_String (Source, Max_Length, Error);
       end From_String;
 
-      ---------------
-      -- Replicate --
-      ---------------
 
-      function Replicate
-        (Count : Natural;
-         Item  : Character;
-         Drop  : ada.Strings.Truncation := ada.Strings.Error) return Bounded_String
+      -------------
+      --- Replicate
+      --
+
+      function Replicate (Count : in Natural;
+                          Item  : in Character;
+                          Drop  : in ada.Strings.Truncation := ada.Strings.Error) return Bounded_String
       is
       begin
          return Super_Replicate (Count, Item, Drop, Max_Length);
       end Replicate;
 
-      function Replicate
-        (Count : Natural;
-         Item  : String;
-         Drop  : ada.Strings.Truncation := ada.Strings.Error) return Bounded_String
+
+
+      function Replicate (Count : in Natural;
+                          Item  : in String;
+                          Drop  : in ada.Strings.Truncation := ada.Strings.Error) return Bounded_String
       is
       begin
          return Super_Replicate (Count, Item, Drop, Max_Length);
       end Replicate;
 
-      -----------------------
-      -- To_Bounded_String --
-      -----------------------
 
-      function To_Bounded_String
-        (Source : String;
-         Drop   : ada.Strings.Truncation := ada.Strings.Error) return Bounded_String
+      ---------------------
+      --- To_Bounded_String
+      --
+
+      function To_Bounded_String (Source : in String;
+                                  Drop   : in ada.Strings.Truncation := ada.Strings.Error) return Bounded_String
       is
       begin
          return To_Super_String (Source, Max_Length, Drop);
@@ -105,4 +106,5 @@ is
 
    end Generic_Bounded_Length;
 
-end lace.Strings.Bounded;
+
+end lace.Strings.bounded;

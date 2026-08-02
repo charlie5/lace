@@ -12,13 +12,16 @@ is
       end to_Subject;
 
 
+
       function new_Subject (Name : in Event.subject_Name) return View
       is
          Self : constant View := new Item' (to_Subject (Name));
       begin
          return Self;
       end new_Subject;
+
    end Forge;
+
 
 
    overriding
@@ -29,11 +32,13 @@ is
    end destroy;
 
 
+
    overriding
    function Name (Self : in Item) return Event.subject_Name
    is
    begin
       return to_String (Self.Name);
    end Name;
+
 
 end lace.Subject.local;

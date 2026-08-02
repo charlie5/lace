@@ -39,7 +39,7 @@ is
 
 private
 
-   -- pragma Suppress (Container_Checks);     -- Suppress expensive tamper checks.
+   -- pragma suppress (container_Checks);     -- Suppress expensive tamper checks.
 
 
    type event_sequence_Pair is
@@ -62,7 +62,8 @@ private
    --- Safe Events
    --
 
-   protected type safe_Events
+   protected
+   type safe_Events
    is
       procedure add   (the_Event  : in     Event.item'Class;
                        Sequence   : in     sequence_Id);
@@ -105,7 +106,8 @@ private
    --- safe Subject Map of safe Events
    --
 
-   protected type safe_subject_Map_of_safe_events
+   protected
+   type safe_subject_Map_of_safe_events
    is
       procedure add   (the_Event    : in Event.item'Class;
                        Sequence     : in sequence_Id;

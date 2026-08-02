@@ -14,10 +14,12 @@ is
    end Logger_is;
 
 
+
    function Logger return Event.Logger.view
    is
    begin
       return the_Logger;
    end Logger;
+
 
 end lace.Observer;

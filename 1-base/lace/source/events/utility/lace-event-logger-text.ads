@@ -9,17 +9,17 @@ with
      ada.Containers.indefinite_hashed_Sets;
 
 
-package lace.event.Logger.text
+package lace.Event.Logger.text
 --
---  Provides a logger which logs to a text file.
+-- Provides a logger which logs to a text file.
 --
 is
    type Item is limited new Logger.item with private;
    type View is access all Item'Class;
 
 
-   --------
-   -- Forge
+   ---------
+   --- Forge
    --
 
    function  to_Logger (Name : in String) return Item;
@@ -28,11 +28,12 @@ is
    procedure destruct  (Self : in out Item);
 
 
-   -------------
-   -- Operations
+   --------------
+   --- Operations
    --
 
-   -- Logging of event consfiguration.
+
+   --- Logging of event consfiguration.
    --
 
    overriding
@@ -90,7 +91,7 @@ private
    package event_kind_Sets is new ada.Containers.indefinite_hashed_Sets (Event.Kind,
                                                                          Event.Hash,
                                                                          "=");
-   subtype event_kind_Set  is event_kind_Sets.Set;
+   subtype event_kind_Set  is     event_kind_Sets.Set;
 
 
    type Item is limited new Logger.item with
@@ -99,4 +100,5 @@ private
          Ignored : event_kind_Set;
       end record;
 
-end lace.event.Logger.text;
+
+end lace.Event.Logger.text;

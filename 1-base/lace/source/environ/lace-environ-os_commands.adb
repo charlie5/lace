@@ -1,6 +1,5 @@
 with
      shell.Commands.unsafe,
-
      gnat.OS_Lib,
 
      ada.Strings.fixed,
@@ -23,6 +22,22 @@ is
 
 
 
+   function Executable_on_Path (Executable : in Paths.File) return Boolean
+   is
+      use
+           Paths,
+           gnat.OS_Lib;
+
+      File_Path :          String_Access := locate_Exec_on_Path (+Executable);
+      Found     : constant Boolean       := File_Path /= null;
+
+   begin
+      free (File_Path);
+      return Found;
+   end Executable_on_Path;
+
+
+
    procedure run_OS (command_Line : in String;
                      Input        : in String := "")
    is
@@ -38,21 +53,42 @@ is
 
 
    function run_OS (command_Line : in String;
+                    Input        : in String := "") return Data
+   is
+      use
+           Shell,
+           shell.Commands,
+           shell.Commands.unsafe;
+
+      the_Command : unsafe.Command := Forge.to_Command (command_Line);
+
+   begin
+      return Output_of (run (the_Command, +Input));
+
+   exception
+      when E : command_Error =>
+         raise Error with Exception_Message (E);
+   end run_OS;
+
+
+
+   function run_OS (command_Line : in String;
                     Input        : in String  := "";
                     add_Errors   : in Boolean := True) return String
    is
-      use Shell,
-          Shell.Commands,
-          Shell.Commands.unsafe;
-
+      use
+           Shell,
+           shell.Commands,
+           shell.Commands.unsafe;
 
       function trim_LF (Source : in String) return String
       is
-         use ada.Strings.fixed,
-             ada.Strings.Maps,
-             ada.Characters;
+         use
+              ada.Strings.fixed,
+              ada.Strings.Maps,
+              ada.Characters;
 
-         LF_Set : constant Character_Set := to_Set (Latin_1.LF);
+         LF_Set : constant Character_Set := to_Set (latin_1.LF);
       begin
          return trim (Source, LF_Set, LF_Set);
       end trim_LF;
@@ -73,40 +109,6 @@ is
       when E : command_Error =>
          raise Error with Exception_Message (E);
    end run_OS;
-
-
-
-   function run_OS (command_Line : in String;
-                    Input        : in String := "") return Data
-   is
-      use Shell,
-          Shell.Commands,
-          Shell.Commands.unsafe;
-
-      the_Command : unsafe.Command := Forge.to_Command (command_Line);
-
-   begin
-      return Output_of (run (The_Command, +Input));
-
-   exception
-      when E : command_Error =>
-         raise Error with Exception_Message (E);
-   end run_OS;
-
-
-
-   function Executable_on_Path (Executable : Paths.File) return Boolean
-   is
-      use Paths,
-          gnat.OS_Lib;
-
-      File_Path :          String_Access := locate_Exec_on_Path (+Executable);
-      Found     : constant Boolean       := File_Path /= null;
-
-   begin
-      free (File_Path);
-      return Found;
-   end Executable_on_Path;
 
 
 end lace.Environ.OS_Commands;

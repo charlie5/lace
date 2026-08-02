@@ -3,8 +3,17 @@ package lace.wide_Text.utility
 -- Provides utility subprograms.
 --
 is
+
+   --------------
+   --- Attributes
+   --
+
    function  contains (Self : in     wide_Text.item;   Pattern : in wide_String) return Boolean;
 
+
+   --------------
+   --- Operations
+   --
 
    function  replace  (Self : in     wide_Text.item;   Pattern : in wide_String;
                                                        By      : in wide_String) return wide_Text.item;
@@ -17,5 +26,6 @@ is
    --
    -- Replaces all occurences of 'Pattern' with 'By'.
    -- 'Text.Error' will be raised if the replacement exceeds the capacity of 'Self'.
+
 
 end lace.wide_Text.utility;

@@ -7,19 +7,10 @@ is
    the_float_Generator : ada.Numerics.float_Random.Generator;
 
 
-
-   procedure Seed_is (Now : Integer)
-   is
-   begin
-      ada.Numerics.float_Random.reset (the_float_Generator,
-                                       Initiator => Now);
-   end Seed_is;
-
-
-
-   --------
-   -- Forge
+   ---------
+   --- Forge
    --
+
    function to_Dice (Sides    : in Positive := 6;
                      Rolls    : in Positive := 3;
                      Modifier : in Integer  := 0) return Dice.any.item
@@ -31,16 +22,15 @@ is
    end to_Dice;
 
 
-
-   -------------
-   -- Attributes
+   --------------
+   --- Attributes
    --
 
    overriding
    function side_Count (Self : in Item) return Positive
    is
    begin
-      return Self.Side_Count;
+      return Self.side_Count;
    end side_Count;
 
 
@@ -60,8 +50,20 @@ is
                                 + 0.5);
       end loop;
 
-      return the_Roll + self.Modifier;
+      return the_Roll + Self.Modifier;
    end Roll;
+
+
+   --------------
+   --- Operations
+   --
+
+   procedure Seed_is (Now : in Integer)
+   is
+   begin
+      ada.Numerics.float_Random.reset (the_float_Generator,
+                                       Initiator => Now);
+   end Seed_is;
 
 
 begin

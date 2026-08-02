@@ -1,19 +1,25 @@
-
-
-
 package body lace.Dice
 is
+
+   function Extent (Self : in Item'Class) return an_Extent
+   is
+   begin
+      return (Min => Self.roll_Count                   + Self.Modifier,
+              Max => Self.roll_Count * Self.side_Count + Self.Modifier);
+   end Extent;
+
 
 
    function Image (Self : in Item'Class) return String
    is
-      roll_count_Image : constant String := Integer'Image (self.roll_Count);
+      roll_count_Image : constant String := Integer'Image (Self.roll_Count);
 
 
-      function side_count_Image  return String
+      function side_count_Image return String
       is
       begin
-         if Self.side_Count = 6 then
+         if Self.side_Count = 6
+         then
             return "";
          else
             declare
@@ -25,16 +31,19 @@ is
       end side_count_Image;
 
 
-      function modifier_Image  return String
+
+      function modifier_Image return String
       is
       begin
-         if self.Modifier = 0 then
+         if Self.Modifier = 0
+         then
             return "";
          else
             declare
-               the_Image : String := integer'Image (self.Modifier);
+               the_Image : String := Integer'Image (Self.Modifier);
             begin
-               if self.Modifier > 0 then
+               if Self.Modifier > 0
+               then
                   the_Image (the_Image'First) := '+';
                end if;
 
@@ -52,14 +61,4 @@ is
    end Image;
 
 
-
-   function Extent (Self : in Item'Class) return an_Extent
-   is
-   begin
-      return (min => self.roll_Count                   + self.Modifier,
-              max => self.roll_Count * self.side_Count + self.Modifier);
-   end Extent;
-
-
 end lace.Dice;
-

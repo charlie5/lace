@@ -1,7 +1,7 @@
-package body lace.event.Containers
+package body lace.Event.Containers
 is
-   ------------------------
-   -- Safe sequence Id map.
+   -------------------------
+   --- Safe sequence Id map.
    --
 
    protected
@@ -18,6 +18,7 @@ is
       end add;
 
 
+
       procedure rid (Name : in String)
       is
       begin
@@ -25,7 +26,8 @@ is
       end rid;
 
 
-      procedure get_Next (Id       :    out event.sequence_Id;
+
+      procedure get_Next (Id       :    out Event.sequence_Id;
                           for_Name : in     String)
       is
          next_Id : name_Maps_of_sequence_Id.Reference_type renames the_Map (for_Name);
@@ -33,6 +35,7 @@ is
          Id      := next_Id;
          next_Id := next_Id + 1;
       end get_Next;
+
 
 
       procedure decrement (for_Name : in String)
@@ -45,4 +48,4 @@ is
    end safe_sequence_Id_Map;
 
 
-end lace.event.Containers;
+end lace.Event.Containers;

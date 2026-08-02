@@ -1,7 +1,7 @@
 with
      lace.Observer,
      lace.Event.utility,
-     lace.event.Containers,
+     lace.Event.Containers,
 
      ada.Containers.indefinite_Holders,
      ada.Text_IO,
@@ -26,7 +26,6 @@ is
    subtype emitter_Vector  is emitter_Vectors.Vector;
 
 
-
    ------------------
    --- Safe emitters.
    --
@@ -44,8 +43,6 @@ is
    type safe_Emitters_view is access all safe_Emitters;
 
 
-
-
    ------------
    --- Emitter.
    --
@@ -57,17 +54,18 @@ is
                   the_Event    : in lace.Event.item'Class;
                   To           : in lace.Observer.view;
                   from_Subject : in String;
-                  Sequence     : in event.sequence_Id;
+                  Sequence     : in Event.sequence_Id;
                   Emitters     : in safe_Emitters_view);
    end Emitter;
 
 
 
-   task body Emitter
+   task
+   body Emitter
    is
       Myself       : Emitter_view;
-      s_Id         : event.sequence_Id;
-      Event        : lace.event.Containers.event_Holder;
+      s_Id         : Event.sequence_Id;
+      Event        : lace.Event.Containers.event_Holder;
       the_Observer : lace.Observer.view;
       subject_Name : string_Holder;
       emitter_Pool : safe_Emitters_view;
@@ -80,7 +78,7 @@ is
                             the_Event    : in lace.Event.item'Class;
                             To           : in lace.Observer.view;
                             from_Subject : in String;
-                            Sequence     : in lace.event.sequence_Id;
+                            Sequence     : in lace.Event.sequence_Id;
                             Emitters     : in safe_Emitters_view)
                do
                   Event       .replace_Element (the_Event);
@@ -129,13 +127,12 @@ is
    end Emitter;
 
 
-
-
    -------------------
    --- Emit delegator.
    --
 
-   task body emit_Delegator
+   task
+   body emit_Delegator
    is
       the_Subject      :         lace.Subject.view;
       the_subject_Name :         string_Holder;
@@ -144,11 +141,12 @@ is
 
       the_Events       :         safe_Events_view;
       new_Events       :         event_Vector;
-      Done             :         Boolean     := False;
+      Done             :         Boolean         := False;
 
 
       procedure shutdown
       is
+
          procedure free is new ada.unchecked_Deallocation (Emitter,
                                                            Emitter_view);
          the_Emitter : Emitter_view;
@@ -185,8 +183,8 @@ is
          end select;
 
 
-         exit when     Done
-                   and the_Events.is_Empty;
+         exit when          Done
+                   and then the_Events.is_Empty;
 
          the_Events.get (new_Events);
 
@@ -202,7 +200,7 @@ is
                loop
                   declare
                      the_Emitter :          Emitter_view;
-                     Sequence    : constant event.sequence_Id := the_Subject.next_Sequence (for_Observer => each_Observer);
+                     Sequence    : constant Event.sequence_Id := the_Subject.next_Sequence (for_Observer => each_Observer);
 
                   begin
                      the_Emitters.get (the_Emitter);
@@ -218,6 +216,7 @@ is
                                        from_Subject => the_subject_Name.Element,
                                        Sequence     => Sequence,
                                        Emitters     => the_Emitters'unchecked_Access);
+
                   exception
                      when E : others =>
                         ada.Text_IO.new_Line;
@@ -250,20 +249,19 @@ is
    end emit_Delegator;
 
 
-
-
    ----------------
    --- Safe events.
    --
 
-   protected body safe_Events
+   protected
+   body safe_Events
    is
 
       procedure add (new_Event : in lace.Event.item'Class)
-                     --  Sequence  : in event.sequence_Id)
+                     -- Sequence  : in Event.sequence_Id)
       is
-         --  use event_Holders;
-         --  the_Details : constant event_Details := (Event    => to_Holder (new_Event),
+         -- use event_Holders;
+         -- the_Details : constant event_Details := (Event    => to_Holder (new_Event),
          --                                           Sequence => Sequence);
       begin
          all_Events.append (new_Event);
@@ -289,13 +287,12 @@ is
    end safe_Events;
 
 
-
-
    ------------------
    --- Safe emitters.
    --
 
-   protected body safe_Emitters
+   protected
+   body safe_Emitters
    is
 
       procedure add (new_Emitter : in Emitter_view)
@@ -321,8 +318,6 @@ is
    end safe_Emitters;
 
 
-
-
    -----------------------
    --- event_Emitter item.
    --
@@ -345,7 +340,7 @@ is
 
 
    procedure add (Self : in out Item;   new_Event : in lace.Event.item'Class)
---                                      Sequence  : in event.sequence_Id)
+--                                      Sequence  : in Event.sequence_Id)
    is
    begin
       Self.Events.add (new_Event);

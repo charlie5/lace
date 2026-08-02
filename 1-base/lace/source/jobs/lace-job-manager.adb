@@ -1,16 +1,6 @@
 package body lace.Job.Manager
 is
 
-
-   procedure add (Self : in out Item;   the_Job: in Job_view)
-   is
-   begin
-      Self.Jobs.append (the_Job);
-   end add;
-
-
-
-
    function has_Jobs (Self : in Item) return Boolean
    is
    begin
@@ -19,8 +9,17 @@ is
 
 
 
+   procedure add (Self : in out Item;   the_Job : in Job_view)
+   is
+   begin
+      Self.Jobs.append (the_Job);
+   end add;
+
+
+
    procedure do_Jobs (Self : in out Item)
    is
+
       function "<" (Left, Right : in Job_view) return Boolean
       is
       begin
@@ -44,7 +43,6 @@ is
             the_Job : Job_view renames Element (Cursor);
          begin
             exit when the_Job.Due > Now;
-            --  put_Line (the_Job.Due'Image);
 
             if the_Job.Due = Never
             then

@@ -6,15 +6,16 @@ with
 
 package body lace.Event.utility
 is
-   --------------
-   -- Event Kinds
+   ---------------
+   --- Event Kinds
    --
 
    function to_Kind (From : in ada.Tags.Tag) return lace.Event.Kind
    is
    begin
-      return event.Kind (ada.Tags.external_Tag (From));
+      return Event.Kind (ada.Tags.external_Tag (From));
    end to_Kind;
+
 
 
    function Name_of (Kind : in Event.Kind) return String
@@ -24,8 +25,8 @@ is
    end Name_of;
 
 
-   ---------
-   -- Events
+   ----------
+   --- Events
    --
 
    function Kind_of (the_Event : in Event.item'Class) return Event.Kind
@@ -35,6 +36,7 @@ is
    end Kind_of;
 
 
+
    function Name_of (the_Event : in Event.item'Class) return String
    is
    begin
@@ -42,9 +44,8 @@ is
    end Name_of;
 
 
-
-   --------------
-   -- Connections
+   ---------------
+   --- Connections
    --
 
    procedure connect (the_Observer  : in Observer.view;
@@ -77,6 +78,7 @@ is
       begin
          from_Subject.deregister (the_Observer,
                                   to_Event_Kind);
+
       exception
             when system.RPC.communication_Error
                | storage_Error =>
@@ -85,9 +87,8 @@ is
    end disconnect;
 
 
-
-   ----------
-   -- Logging
+   -----------
+   --- Logging
    --
 
    the_Logger : Event.Logger.text.view;
@@ -103,15 +104,16 @@ is
    end use_text_Logger;
 
 
-   function Logger return lace.event.Logger.view
+
+   function Logger return lace.Event.Logger.view
    is
    begin
       return the_Logger.all'Access;
    end Logger;
 
 
-   --------------
-   -- Termination
+   ---------------
+   --- Termination
    --
 
    procedure close

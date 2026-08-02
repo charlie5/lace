@@ -6,11 +6,13 @@ with
 
 package body lace.Event.Logger.text
 is
-   use lace.Event.utility,
-       ada.Text_IO;
+   use
+        lace.Event.utility,
+        ada.Text_IO;
 
-   --------
-   -- Forge
+
+   ---------
+   --- Forge
    --
 
    function to_Logger (Name : in String) return Item
@@ -32,9 +34,8 @@ is
    end destruct;
 
 
-
-   -------------
-   -- Operations
+   --------------
+   --- Operations
    --
 
    overriding
@@ -58,10 +59,12 @@ is
 
       function from_Name return String
       is
+
          function to_Integer is new ada.unchecked_Conversion (Observer.view,
                                                               long_Integer);
       begin
          return From.Name;
+
       exception
          when system.RPC.communication_Error
             | storage_Error =>
@@ -87,6 +90,7 @@ is
                                              To        : in Observer.view;
                                              the_Event : in Event.item'Class)
    is
+
       function to_Name return String
       is
       begin
@@ -117,6 +121,7 @@ is
                                              To        : in Observer.view;
                                              the_Event : in Event.item'Class)
    is
+
       function to_Name return String
       is
       begin
@@ -224,4 +229,5 @@ is
       Self.Ignored.insert (Kind);
    end ignore;
 
-end lace.event.Logger.text;
+
+end lace.Event.Logger.text;

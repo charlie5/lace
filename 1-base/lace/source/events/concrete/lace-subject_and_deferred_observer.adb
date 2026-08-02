@@ -16,13 +16,16 @@ is
       end to_Subject_and_Observer;
 
 
+
       function new_Subject_and_Observer (Name : in String) return View
       is
       begin
          return new Item' (to_Subject_and_Observer (Name));
       end new_Subject_and_Observer;
 
+
    end Forge;
+
 
 
    overriding
@@ -34,13 +37,16 @@ is
    end destroy;
 
 
+
    procedure free (Self : in out View)
    is
+
       procedure deallocate is new ada.unchecked_Deallocation (Item'Class, View);
    begin
       Self.destroy;
       deallocate (Self);
    end free;
+
 
 
    overriding
@@ -49,5 +55,6 @@ is
    begin
       return to_String (Self.Name);
    end Name;
+
 
 end lace.Subject_and_deferred_Observer;

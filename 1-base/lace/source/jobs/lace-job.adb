@@ -17,7 +17,7 @@ is
 
 
 
-   function  performed_Count (Self : in Item) return Natural
+   function performed_Count (Self : in Item) return Natural
    is
    begin
       return Self.performed_Count;

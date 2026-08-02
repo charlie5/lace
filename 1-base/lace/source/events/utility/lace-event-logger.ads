@@ -6,24 +6,26 @@ with
 
 package lace.Event.Logger
 --
---  Provides an event logging interface.
+-- Provides an event logging interface.
 --
 is
    type Item is limited interface;
    type View is access all Item'Class;
 
 
-   --------
-   -- Forge
+   ---------
+   --- Forge
    --
+
    procedure destruct (Self : in out Item) is null;
 
 
-   -------------
-   -- Operations
+   --------------
+   --- Operations
    --
 
-   -- Logging of event configuration.
+
+   --- Logging of event configuration.
    --
 
    procedure log_Connection    (Self : in out Item;   From     : in Observer.view;
@@ -69,7 +71,7 @@ is
    procedure log (Self : in out Item;   Message : in String) is abstract;
 
 
-   -- Log filtering.
+   --- Log filtering.
    --
 
    procedure ignore (Self : in out Item;   Kind : in Event.Kind) is abstract;

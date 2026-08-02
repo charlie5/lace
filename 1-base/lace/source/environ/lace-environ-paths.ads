@@ -12,13 +12,13 @@ package lace.Environ.Paths
 -- A singleton which models an operating system paths, folders and files.
 --
 is
-
    function expand_GLOB (GLOB : in String) return String;
 
 
    ---------
    --- Paths
    --
+
    type Path is abstract tagged private;
 
 
@@ -42,10 +42,10 @@ is
    function  is_Relative  (Self : in Path) return Boolean;
 
 
-
    -----------
    --- Folders
    --
+
    type Folder is new Path with private;
 
 
@@ -76,13 +76,13 @@ is
                              recurse : in Boolean := False) return Natural;
 
    function  Parent   (Self : in Path'Class)                     return Folder;   -- Returns 'no_Folder' if 'Self' has no parent.
-   function  Relative (Self : in Folder;   to : in Folder'Class) return Folder;
-
+   function  Relative (Self : in Folder;   To : in Folder'Class) return Folder;
 
 
    -------------------
    --- Folder Contexts
    --
+
    type folder_Context is limited private;
 
    procedure push_Folder (Context     : in out folder_Context;
@@ -101,10 +101,10 @@ is
    -- Raises 'Error' if no previous folder has been pushed.
 
 
-
    ---------
    --- Files
    --
+
    type File           is new Path with private;
    type File_Extension is new String;
 
@@ -155,9 +155,9 @@ is
    function  rid_Extension (Self : in File)                         return File;
 
 
-
    --- Compression
    --
+
    type           compress_Format is (Tar, Tar_Bz2, Tar_Gz, Tar_Xz, Bz2, Gz, Xz);
    subtype folder_compress_Format is compress_Format range Tar .. Tar_Xz;
 
@@ -193,6 +193,7 @@ private
 
    --- Folder Contexts
    --
+
    use ada.Containers;
 
    package Folder_Vectors is new indefinite_Vectors (Positive, Folder);

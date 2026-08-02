@@ -4,8 +4,8 @@ with
 
 package body lace.wide_Text.all_Tokens
 is
-   ----------------------
-   -- Character Delimiter
+   -----------------------
+   --- Character Delimiter
    --
 
    function next_Token (Self : in Item;   Delimiter : in     wide_Character;
@@ -68,8 +68,8 @@ is
    begin
       declare
          the_Tokens : Array_type (1 .. max_Tokens);
-         Count      : Natural  := 0;
-         From       : Positive := 1;
+         Count      : Natural                     := 0;
+         From       : Positive                    := 1;
       begin
          while From <= Self.Length
          loop
@@ -279,8 +279,9 @@ is
                                       Trim       : in Boolean        := False;
                                       max_Tokens : in Positive       := default_Max) return wide_Text.items_512k renames Tokens_512k;
 
-   -------------------
-   -- String Delimiter
+
+   --------------------
+   --- String Delimiter
    --
 
    generic
@@ -303,9 +304,9 @@ is
    is
       use wide_Text.Cursor;
 
-      mySelf     : aliased Item                  := Self;
-      Cursor     :         wide_Text.Cursor.item := First (mySelf'Access);
-      Count      :         Natural               := 0;
+      mySelf     : aliased Item                        := Self;
+      Cursor     :         wide_Text.Cursor.item       := First (mySelf'Access);
+      Count      :         Natural                     := 0;
       the_Tokens :         Array_type (1 .. max_Tokens);
    begin
       while Cursor.has_Element
@@ -317,7 +318,7 @@ is
       end loop;
 
       return the_Tokens (1 .. Count);
-   end any_Tokens_Str;
+   end any_Tokens_str;
 
 
 
@@ -501,5 +502,6 @@ is
    function Tokens (Self : in Item;   Delimiter  : in wide_String;
                                       Trim       : in Boolean    := False;
                                       max_Tokens : in Positive   := default_Max) return wide_Text.items_512k renames Tokens_512k;
+
 
 end lace.wide_Text.all_Tokens;

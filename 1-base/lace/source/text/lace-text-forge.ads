@@ -1,11 +1,10 @@
-
 package lace.Text.forge
 --
 -- Provides constructors for Text.
 --
 is
-   --------
-   -- Files
+   ---------
+   --- Files
    --
 
    type Filename is new String;
@@ -17,8 +16,8 @@ is
    procedure store (Filename : in forge.Filename;   the_String : in String);
 
 
-   --------------
-   -- Stock Items
+   ---------------
+   --- Stock Items
    --
 
    function to_Text_1 (From : in String)       return Item_1;
@@ -110,5 +109,6 @@ is
 
    function to_Text_512m (From : in String)    return Item_512m;
    function to_Text_512m (From : in Text.item) return Item_512m;
+
 
 end lace.Text.forge;

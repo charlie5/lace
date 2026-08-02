@@ -33,7 +33,7 @@ is
       used_Count :        Natural := 0;
 
       array_Freed       : access Views;
-      array_freed_Count :        Natural:= 0;
+      array_freed_Count :        Natural := 0;
 
       heap_Freed : View_Vector;
       heap_Max   : Natural    := 0;
@@ -41,7 +41,8 @@ is
 
 
 
-   protected body Pool
+   protected
+   body Pool
    is
 
       procedure Size_is (Now : in Positive)
@@ -56,8 +57,9 @@ is
       entry new_Item (the_Item : out View)
         when my_Items /= null
       is
-         use ada.Containers,
-             View_Vectors;
+         use
+              ada.Containers,
+              View_Vectors;
       begin
          if array_freed_Count > 0
          then
@@ -92,7 +94,7 @@ is
          -- Use a fresh heap item.
          --
          the_Item := new Item;
-         heap_max := heap_Max + 1;
+         heap_Max := heap_Max + 1;
       end new_Item;
 
 
@@ -106,8 +108,8 @@ is
          first_Address : constant integer_Address := to_Integer (my_Items (my_Items'First)'Address);
          last_Address  : constant integer_Address := to_Integer (my_Items (my_Items'Last) 'Address);
 
-         is_an_array_Item : constant Boolean :=     item_Address >= first_Address
-                                                and item_Address <=  last_Address;
+         is_an_array_Item : constant Boolean :=          item_Address >= first_Address
+                                                and then item_Address <=  last_Address;
       begin
          if is_an_array_Item
          then
@@ -138,7 +140,6 @@ is
 
 
 
-
    function new_Item return View
    is
       Self : View;
@@ -148,7 +149,6 @@ is
 
       return Self;
    end new_Item;
-
 
 
 
@@ -174,17 +174,18 @@ is
 
 
 
-   type Closure is new ada.finalization.Controlled with null record;
+   type Closure is new ada.Finalization.Controlled with null record;
 
    overriding
    procedure finalize (Self : in out Closure)
    is
-      use ada.Streams,
-          ada.Streams.Stream_IO;
+      use
+           ada.Streams,
+           ada.Streams.Stream_IO;
 
-      HWM  : constant Positive := Pool.max_array_Size + Pool.max_heap_Size;
+      HWM  : constant Positive        := Pool.max_array_Size + Pool.max_heap_Size;
       File :          File_type;
-      S    : access   Root_Stream_Type;
+      S    : access   root_Stream_type;
    begin
       if HWM > prior_HWM     -- TODO: Consider using the median of the last 5 HWM's.
       then
@@ -208,11 +209,12 @@ begin
       actual_pool_Size := initial_pool_Size;
    else
       declare
-         use ada.Streams,
-             ada.Streams.Stream_IO;
+         use
+              ada.Streams,
+              ada.Streams.Stream_IO;
 
          File :        File_type;
-         S    : access Root_Stream_Type;
+         S    : access root_Stream_type;
       begin
          open (File, in_File, HWM_Filename);
 
@@ -226,6 +228,4 @@ begin
    end if;
 
    Pool.Size_is (actual_pool_Size);
-
-
 end lace.array_based_Pool;

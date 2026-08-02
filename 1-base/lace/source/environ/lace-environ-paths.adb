@@ -6,7 +6,6 @@ with
      posix.Calendar,
 
      shell.Directories,
-
      lace.Text.all_Tokens,
 
      ada.Strings.fixed,
@@ -354,7 +353,8 @@ is
 
 
 
-   protected body folder_Lock
+   protected
+   body folder_Lock
    is
       entry change (To : in Folder)
         when not Locked
@@ -714,7 +714,7 @@ is
 
       all_Files : constant String        := (if Index (Named, "*") /= 0 then expand_GLOB (Named)
                                                                         else Named);
-      file_List : constant Text.Items_1k := Tokens (to_Text (all_Files));
+      file_List : constant Text.items_1k := Tokens (to_Text (all_Files));
    begin
       check (To);
 
@@ -766,7 +766,7 @@ is
 
          all_Files : constant String        := (if Index (Named, "*") /= 0 then expand_GLOB (Named)
                                                                            else Named);
-         file_List : constant Text.Items_1k := Tokens (to_Text (all_Files));
+         file_List : constant Text.items_1k := Tokens (to_Text (all_Files));
       begin
          for Each of file_List
          loop
@@ -849,7 +849,7 @@ is
 
       all_Files : constant String        := (if Index (Named, "*") /= 0 then expand_GLOB (Named)
                                                                         else Named);
-      file_List : constant Text.Items_1k := Tokens (to_Text (all_Files));
+      file_List : constant Text.items_1k := Tokens (to_Text (all_Files));
 
    begin
       for Each of file_List

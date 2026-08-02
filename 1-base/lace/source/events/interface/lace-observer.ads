@@ -9,7 +9,7 @@ with
 
 package lace.Observer
 --
---  Provides an interface for an event Observer.
+-- Provides an interface for an event Observer.
 --
 is
    pragma remote_Types;
@@ -22,38 +22,35 @@ is
    type fast_Views is array (Positive range <>) of fast_View;
 
 
-   -------------
-   -- Attributes
+   --------------
+   --- Attributes
    --
 
-   function Name (Self : in Item) return event.observer_Name is abstract;
+   function Name (Self : in Item) return Event.observer_Name is abstract;
 
 
-
-   ------------
-   -- Responses
+   -------------
+   --- Responses
    --
 
    procedure add (Self : access Item;   the_Response : in Response.view;
-                                        to_Kind      : in event.Kind;
-                                        from_Subject : in event.subject_Name) is abstract;
+                                        to_Kind      : in Event.Kind;
+                                        from_Subject : in Event.subject_Name) is abstract;
 
    procedure rid (Self : access Item;   the_Response : in Response.view;
-                                        to_Kind      : in event.Kind;
-                                        from_Subject : in event.subject_Name) is abstract;
+                                        to_Kind      : in Event.Kind;
+                                        from_Subject : in Event.subject_Name) is abstract;
 
-   procedure relay_responseless_Events
-                 (Self : in out Item;   To : in Observer.view) is abstract;
-
+   procedure relay_responseless_Events (Self : in out Item;   To : in Observer.view) is abstract;
 
 
-   -------------
-   -- Operations
+   --------------
+   --- Operations
    --
 
    procedure receive (Self : access Item;   the_Event    : in Event.item'Class;
-                                            from_Subject : in event.subject_Name;
-                                            Sequence     : in event.sequence_Id) is abstract;
+                                            from_Subject : in Event.subject_Name;
+                                            Sequence     : in Event.sequence_Id) is abstract;
    --
    -- Accepts an Event from a Subject.
 
@@ -63,11 +60,12 @@ is
    -- Performs the Response for (and then removes) each pending Event.
 
 
-   ----------
-   -- Logging
+   -----------
+   --- Logging
    --
 
    procedure Logger_is (Now : in Event.Logger.view);
    function  Logger    return    Event.Logger.view;
+
 
 end lace.Observer;

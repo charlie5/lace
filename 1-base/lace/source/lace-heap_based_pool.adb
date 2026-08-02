@@ -8,13 +8,16 @@ is
    is
       entry new_Item (the_Item :    out View);
       entry free     (the_Item : in     View);
+
    private
       Available : Views;
       Count     : Natural := 0;
    end Pool;
 
 
-   protected body Pool
+
+   protected
+   body Pool
    is
       entry new_Item (the_Item : out View)
         when True
@@ -25,9 +28,10 @@ is
             the_Item := new Item;
          else
             the_Item := Available (Count);
-            Count     := Count - 1;
+            Count    := Count - 1;
          end if;
       end new_Item;
+
 
 
       entry free (the_Item : in View)
@@ -57,5 +61,6 @@ is
       Pool.free (Self);
       Self := null;
    end free;
+
 
 end lace.heap_based_Pool;

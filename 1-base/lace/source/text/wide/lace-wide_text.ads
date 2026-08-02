@@ -10,13 +10,11 @@ package lace.wide_Text     -- with Pure
 is
    type Item (Capacity : Natural) is private;
 
-   function Image (Self : in Item) return wide_String;
-
    Error : exception;
 
 
-   --------------
-   -- Stock Items
+   ---------------
+   --- Stock Items
    --
 
    subtype Item_1    is Item (Capacity =>   1);
@@ -53,8 +51,8 @@ is
    subtype Item_512m is Item (Capacity => 512 * 1024 * 1024);
 
 
-   ---------------
-   -- Stock Arrays
+   ----------------
+   --- Stock Arrays
    --
 
    type Items_1    is array (Positive range <>) of aliased Item_1;
@@ -91,8 +89,8 @@ is
    type Items_512m is array (Positive range <>) of aliased Item_512m;
 
 
-   ---------------
-   -- Construction
+   ---------
+   --- Forge
    --
 
    function to_Text (From     : in wide_String;
@@ -105,8 +103,8 @@ is
    function "+"     (From     : in wide_String)      return Item;
 
 
-   -------------
-   -- Attributes
+   --------------
+   --- Attributes
    --
 
    procedure String_is (Self : in out Item;   Now : in wide_String);
@@ -115,6 +113,7 @@ is
 
    function  is_Empty  (Self : in Item) return Boolean;
    function  Length    (Self : in Item) return Natural;
+   function  Image     (Self : in Item) return wide_String;
    function  Hashed    (Self : in Item) return ada.Containers.Hash_type;
 
    overriding
@@ -132,10 +131,10 @@ is
    -- Raises an Error if capacity is exceeded.
 
 
-   function  delete (Self : in     Item;   From    : Positive;
-                                           Through : Natural := Natural'Last) return Item;
-   procedure delete (Self : in out Item;   From    : Positive;
-                                           Through : Natural := Natural'Last);
+   function  delete (Self : in     Item;   From    : in Positive;
+                                           Through : in Natural := Natural'Last) return Item;
+   procedure delete (Self : in out Item;   From    : in Positive;
+                                           Through : in Natural := Natural'Last);
 
 
 
@@ -143,13 +142,13 @@ private
 
    type Item (Capacity : Natural) is
       record
-         Length : Natural := 0;
+         Length : Natural                    := 0;
          Data   : wide_String (1 .. Capacity);
       end record;
 
 
-   ----------
-   -- Streams
+   -----------
+   --- Streams
    --
 
    function  Item_input  (Stream : access ada.Streams.root_Stream_type'Class)              return Item;
@@ -163,5 +162,6 @@ private
 
    for Item'write  use write;
    for Item'read   use read;
+
 
 end lace.wide_Text;

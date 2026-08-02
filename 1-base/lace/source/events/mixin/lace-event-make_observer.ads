@@ -4,7 +4,7 @@ with
 
 private
 with
-     lace.event.Containers,
+     lace.Event.Containers,
      ada.Containers.indefinite_hashed_Maps,
      ada.Strings.Hash;
 
@@ -12,9 +12,9 @@ with
 generic
    type T is abstract tagged limited private;
 
-package lace.event.make_Observer
+package lace.Event.make_Observer
 --
---  Makes a user class T into an event Observer.
+-- Makes a user class T into an event Observer.
 --
 is
    pragma remote_Types;
@@ -24,11 +24,15 @@ is
    type View is access all Item'Class;
 
 
+   ---------
+   --- Forge
+   --
+
    procedure destroy (Self : in out Item);
 
 
-   ------------
-   -- Responses
+   -------------
+   --- Responses
    --
 
    overriding
@@ -43,8 +47,8 @@ is
    procedure relay_responseless_Events (Self : in out Item;   To : in Observer.view);
 
 
-   -------------
-   -- Operations
+   --------------
+   --- Operations
    --
 
    overriding
@@ -58,44 +62,47 @@ is
 
 private
 
-   --  pragma Suppress (Container_Checks);     -- Suppress expensive tamper checks.
+   -- pragma suppress (container_Checks);     -- Suppress expensive tamper checks.
 
 
-   ----------------------
-   -- Event response maps
+   -----------------------
+   --- Event response maps
    --
+
    use type Response.view;
 
-   package event_response_Maps     is new ada.Containers.indefinite_hashed_Maps (key_type        => Event.Kind,
-                                                                                 element_type    => Response.view,
-                                                                                 hash            => Event.Hash,
-                                                                                 equivalent_keys => "=");
+   package event_response_Maps     is new ada.Containers.indefinite_hashed_Maps (Key_type        => Event.Kind,
+                                                                                 Element_type    => Response.view,
+                                                                                 Hash            => Event.Hash,
+                                                                                 equivalent_Keys => "=");
    subtype event_response_Map      is event_response_Maps.Map;
    type    event_response_Map_view is access all event_response_Map;
 
 
-   ----------------------------------
-   -- Subject maps of event responses
+   -----------------------------------
+   --- Subject maps of event responses
    --
 
    package subject_Maps_of_event_responses
-   is new ada.Containers.indefinite_hashed_Maps (key_type        => Event.subject_Name,
-                                                 element_type    => event_response_Map_view,
-                                                 hash            => ada.Strings.Hash,
-                                                 equivalent_keys => "=");
+   is new ada.Containers.indefinite_hashed_Maps (Key_type        => Event.subject_Name,
+                                                 Element_type    => event_response_Map_view,
+                                                 Hash            => ada.Strings.Hash,
+                                                 equivalent_Keys => "=");
    subtype subject_Map_of_event_responses is subject_Maps_of_event_responses.Map;
 
 
-   -----------------
-   -- Safe Responses
+   ------------------
+   --- Safe Responses
    --
+
    protected
    type safe_Responses
    is
       procedure destroy;
 
-      ------------
-      -- Responses
+
+      -------------
+      --- Responses
       --
 
       procedure add (Self         : access Item'Class;
@@ -115,8 +122,9 @@ private
       function  Contains (Subject : in Event.subject_Name) return Boolean;
       function  Element  (Subject : in Event.subject_Name) return event_response_Map;
 
-      -------------
-      -- Operations
+
+      --------------
+      --- Operations
       --
 
       procedure receive (Self         : access Item'Class;
@@ -129,9 +137,10 @@ private
    end safe_Responses;
 
 
-   ----------------
-   -- Observer Item
+   -----------------
+   --- Observer Item
    --
+
    type Item is abstract limited new T
                                  and Observer.item
    with
@@ -141,4 +150,4 @@ private
       end record;
 
 
-end lace.event.make_Observer;
+end lace.Event.make_Observer;

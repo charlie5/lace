@@ -12,9 +12,10 @@ is
       end record;
 
 
-
-   -- Attributes
+   --------------
+   --- Attributes
    --
+
    function side_Count (Self : in Item)       return Positive is abstract;
    function Roll       (Self : in Item)       return Natural  is abstract;
    function Extent     (Self : in Item'Class) return an_Extent;
@@ -30,5 +31,5 @@ private
          Modifier   : Integer;
       end record;
 
-end lace.Dice;
 
+end lace.Dice;

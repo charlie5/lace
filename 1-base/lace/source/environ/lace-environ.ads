@@ -10,12 +10,16 @@ package lace.Environ
 is
    use posix.Permissions;
 
-   function to_octal_Mode (Permissions : in Permission_Set) return String;
-
-
-   subtype Data is ada.Streams.Stream_Element_Array;
-
+   subtype Data is ada.Streams.stream_Element_array;
 
    Error : exception;
+
+
+   ---------
+   --- Forge
+   --
+
+   function to_octal_Mode (Permissions : in permission_Set) return String;
+
 
 end lace.Environ;

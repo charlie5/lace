@@ -12,6 +12,10 @@ generic
 package lace.array_based_Pool
 is
 
+   ---------
+   --- Forge
+   --
+
    function  new_Item     return View;
    procedure free (Self : in out View);
 

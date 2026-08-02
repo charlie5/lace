@@ -7,9 +7,7 @@ with
 
 package body lace.Environ.Users
 is
-
-   function "+" (Source : in unbounded_String) return String
-                 renames to_String;
+   function "+" (Source : in unbounded_String) return String renames to_String;
 
 
 
@@ -26,6 +24,31 @@ is
    begin
       return to_String (Self.Name);
    end Name;
+
+
+
+   function current_User return User
+   is
+      use
+           posix,
+           posix.process_Identification;
+   begin
+      return to_User (to_String (get_Login_Name));
+   end current_User;
+
+
+
+   function home_Folder (Self : in User := current_User) return Paths.Folder
+   is
+      use
+           Paths,
+           posix,
+           posix.user_Database;
+
+      User_in_DB : constant User_Database_item := get_User_Database_item (to_Posix_String (+Self.Name));
+   begin
+      return to_Folder (to_String (initial_Directory_of (User_in_DB)));
+   end home_Folder;
 
 
 
@@ -74,38 +97,16 @@ is
 
    procedure switch_to (Self : in User)
    is
-      use Posix,
-          posix.user_Database,
-          posix.process_Identification;
+      use
+           posix,
+           posix.user_Database,
+           posix.process_Identification;
 
       User_in_DB : constant User_Database_item := get_User_Database_item (to_Posix_String (+Self.Name));
       ID         : constant User_ID            := User_ID_of (User_in_DB);
    begin
       set_User_ID (ID);
    end switch_to;
-
-
-
-   function current_User return User
-   is
-      use Posix,
-          posix.process_Identification;
-   begin
-      return to_User (to_String (get_Login_Name));
-   end current_User;
-
-
-
-   function home_Folder (Self : in User := current_User) return Paths.Folder
-   is
-      use Paths,
-          Posix,
-          posix.user_Database;
-
-      User_in_DB : constant User_Database_item := get_User_Database_item (to_Posix_String (+Self.Name));
-   begin
-      return to_Folder (to_String (initial_Directory_of (User_in_DB)));
-   end home_Folder;
 
 
 end lace.Environ.Users;

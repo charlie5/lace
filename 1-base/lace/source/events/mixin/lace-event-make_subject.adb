@@ -5,7 +5,7 @@ with
      ada.unchecked_Deallocation;
 
 
-package body lace.event.make_Subject
+package body lace.Event.make_Subject
 is
    use type Event.Logger.view;
 
@@ -27,8 +27,8 @@ is
    end destroy;
 
 
-   -------------
-   -- Attributes
+   --------------
+   --- Attributes
    --
 
    overriding
@@ -50,7 +50,7 @@ is
 
 
    overriding
-   function next_Sequence (Self : in out Item;   for_Observer : in Observer.view) return event.sequence_Id
+   function next_Sequence (Self : in out Item;   for_Observer : in Observer.view) return Event.sequence_Id
    is
       Sequence : sequence_Id;
    begin
@@ -60,9 +60,8 @@ is
    end next_Sequence;
 
 
-
-   -------------
-   -- Operations
+   --------------
+   --- Operations
    --
 
    overriding
@@ -99,7 +98,6 @@ is
    end deregister;
 
 
-
    --------
    --- Emit
    --
@@ -122,6 +120,7 @@ is
       then
          declare
             use lace.Event.utility;
+
             my_Observers : constant Subject.Observer_views := Self.Observers (to_Kind (the_Event'Tag));
             Sequence     :          sequence_Id;
          begin
@@ -168,9 +167,10 @@ is
                   return subject.Observer_views
    is
       use lace.Event.utility;
-      my_Observers  : constant Subject.Observer_views := Self.Observers (to_Kind (the_Event'Tag));
+
+      my_Observers  : constant Subject.Observer_views                     := Self.Observers (to_Kind (the_Event'Tag));
       bad_Observers :          Subject.Observer_views (my_Observers'Range);
-      bad_Count     :          Natural := 0;
+      bad_Count     :          Natural                                    := 0;
       s_Id          :          sequence_Id;
 
    begin
@@ -201,8 +201,6 @@ is
 
       return bad_Observers (1 .. bad_Count);
    end emit;
-
-
 
 
    --------
@@ -262,9 +260,8 @@ is
    end send;
 
 
-
-   -----------------
-   -- Safe Observers
+   ------------------
+   --- Safe Observers
    --
 
    protected
@@ -294,8 +291,9 @@ is
       procedure add (the_Observer : in Observer.view;
                      of_Kind      : in Event.Kind)
       is
-         use event_Observer_Vectors,
-             event_kind_Maps_of_event_observers;
+         use
+              event_Observer_Vectors,
+              event_kind_Maps_of_event_observers;
 
          Cursor               : constant event_kind_Maps_of_event_observers.Cursor := the_Observers.find (of_Kind);
          the_event_Observers  :          event_Observer_Vector_view;
@@ -357,7 +355,7 @@ is
          if the_Observers.Contains (of_Kind)
          then
             declare
-               the_event_Observers : constant event_Observer_Vector_view := the_Observers.Element (of_Kind);
+               the_event_Observers : constant event_Observer_Vector_view                                        := the_Observers.Element (of_Kind);
                my_Observers        :          Subject.Observer_views (1 .. Natural (the_event_Observers.Length));
             begin
                for i in my_Observers'Range
@@ -367,6 +365,7 @@ is
 
                return my_Observers;
             end;
+
          else
             return [1 .. 0 => <>];
          end if;
@@ -393,4 +392,4 @@ is
    end safe_Observers;
 
 
-end lace.event.make_Subject;
+end lace.Event.make_Subject;

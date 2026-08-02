@@ -10,9 +10,10 @@ is
    stack_Error : exception;
 
 
-   ----------------------
-   -- Character Delimiter
+   -----------------------
+   --- Character Delimiter
    --
+
    function Tokens (Self : in Item;   Delimiter  : in Character := ' ';
                                       Trim       : in Boolean   := False;
                                       max_Tokens : in Positive  := default_Max) return Text.items_1;
@@ -74,9 +75,11 @@ is
                                       Trim       : in Boolean   := False;
                                       max_Tokens : in Positive  := default_Max) return Text.items_512k;
 
-   -------------------
-   -- String Delimiter
+
+   --------------------
+   --- String Delimiter
    --
+
    function Tokens (Self : in Item;   Delimiter  : in String;
                                       Trim       : in Boolean  := False;
                                       max_Tokens : in Positive := default_Max) return Text.items_1;
@@ -137,5 +140,6 @@ is
    function Tokens (Self : in Item;   Delimiter  : in String;
                                       Trim       : in Boolean  := False;
                                       max_Tokens : in Positive := default_Max) return Text.items_512k;
+
 
 end lace.Text.all_Tokens;

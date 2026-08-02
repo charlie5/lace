@@ -13,33 +13,31 @@ is
 
 
 
+   function get_Count (Self : in Item) return Natural
+   is
+   begin
+      return Natural (Self.Length);
+   end get_Count;
 
-   procedure push (Self : in out Item;   E : in Element_T)
+
+
+   procedure push (Self : in out Item;   the_Item : in Element_t)
    is
       pragma assert (Check   => Self.Capacity >= Count_type (initial_Capacity),
                      Message => "Stack has not been initialised.");
    begin
-      Self.append (E);
+      Self.append (the_Item);
    end push;
 
 
 
-   function pop (Self : in out Item) return Element_T
+   function pop (Self : in out Item) return Element_t
    is
       Top : constant Element_t := Self.last_Element;
    begin
       Self.delete_Last;
       return Top;
    end pop;
-
-
-
-
-   function getCount (Self : in  Item) return Natural
-   is
-   begin
-      return Natural (Self.Length);
-   end getCount;
 
 
 end lace.Stack;

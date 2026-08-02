@@ -1,5 +1,5 @@
 with
-     lace.event.make_Observer,
+     lace.Event.make_Observer,
      lace.Any;
 
 private
@@ -9,7 +9,7 @@ with
 
 package lace.Observer.instant
 --
---  Provides a concrete instant event observer.
+-- Provides a concrete instant event observer.
 --
 is
    type Item is limited new Any.limited_item
@@ -18,11 +18,19 @@ is
    type View is access all Item'Class;
 
 
+   ---------
+   --- Forge
+   --
+
    package Forge
    is
       function new_Observer (Name : in Event.observer_Name) return View;
    end Forge;
 
+
+   --------------
+   --- Attributes
+   --
 
    overriding
    function Name (Self : in Item) return Event.observer_Name;
@@ -30,16 +38,18 @@ is
 
 
 private
+
    use ada.Strings.unbounded;
 
-   --  pragma Suppress (Container_Checks);     -- Suppress expensive tamper checks.
+   -- pragma suppress (container_Checks);     -- Suppress expensive tamper checks.
 
 
-   package Observer is new event.make_Observer (Any.limited_item);
+   package Observer is new Event.make_Observer (Any.limited_item);
 
    type Item is limited new Observer.item with
       record
          Name : unbounded_String;
       end record;
+
 
 end lace.Observer.instant;

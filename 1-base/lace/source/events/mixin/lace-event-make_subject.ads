@@ -2,12 +2,11 @@ with
      lace.Subject,
      lace.Observer;
 
-
 private
 with
      lace.event_Emitter,
      lace.event_Sender,
-     lace.event.Containers,
+     lace.Event.Containers,
 
      ada.Containers.Vectors,
      ada.Containers.indefinite_hashed_Maps;
@@ -16,9 +15,9 @@ with
 generic
    type T is abstract tagged limited private;
 
-package lace.event.make_Subject
+package lace.Event.make_Subject
 --
---  Makes a user class T into an event Subject.
+-- Makes a user class T into an event Subject.
 --
 is
    pragma remote_Types;
@@ -27,12 +26,16 @@ is
                                  and Subject.item with private;
    type View is access all Item'Class;
 
+
+   ---------
+   --- Forge
+   --
+
    procedure destroy (Self : in out Item);
 
 
-
-   -------------
-   -- Attributes
+   --------------
+   --- Attributes
    --
 
    overriding
@@ -42,11 +45,11 @@ is
    function observer_Count (Self : in Item) return Natural;
 
    overriding
-   function next_Sequence (Self : in out Item;   for_Observer : in Observer.view) return event.sequence_Id;
+   function next_Sequence  (Self : in out Item;   for_Observer : in Observer.view) return Event.sequence_Id;
 
 
-   -------------
-   -- Operations
+   --------------
+   --- Operations
    --
 
    overriding
@@ -57,7 +60,7 @@ is
                                                of_Kind      : in Event.Kind);
 
 
-   -- Emit
+   --- Emit
    --
 
    overriding
@@ -85,12 +88,13 @@ is
 
 private
 
-   --  pragma suppress (container_Checks);     -- Suppress expensive tamper checks.
+   -- pragma suppress (container_Checks);     -- Suppress expensive tamper checks.
 
 
-   --------------------------
-   -- Event observer vectors.
+   ---------------------------
+   --- Event observer vectors.
    --
+
    use type Observer.view;
 
    package event_Observer_Vectors     is new ada.Containers.Vectors (Positive, Observer.view);
@@ -98,10 +102,10 @@ private
    type    event_Observer_Vector_view is access all event_Observer_Vector;
 
 
-
-   --------------------------------------
-   -- Event kind Maps of event observers.
+   ---------------------------------------
+   --- Event kind Maps of event observers.
    --
+
    package event_kind_Maps_of_event_observers is new ada.Containers.indefinite_hashed_Maps (Event.Kind,
                                                                                             event_Observer_Vector_view,
                                                                                             Event.Hash,
@@ -109,10 +113,10 @@ private
    subtype event_kind_Map_of_event_observers  is event_kind_Maps_of_event_observers.Map;
 
 
-
-   ------------------
-   -- Safe observers.
+   -------------------
+   --- Safe observers.
    --
+
    protected
    type safe_Observers
    is
@@ -133,10 +137,10 @@ private
    end safe_Observers;
 
 
-
-   ----------------
-   -- Subject Item.
+   -----------------
+   --- Subject Item.
    --
+
    type event_Emitter_view is access all event_Emitter.item'Class;
    type event_Sender_view  is access all event_Sender .item'Class;
 
@@ -150,4 +154,5 @@ private
          Sender          : event_Sender_view;
       end record;
 
-end lace.event.make_Subject;
+
+end lace.Event.make_Subject;

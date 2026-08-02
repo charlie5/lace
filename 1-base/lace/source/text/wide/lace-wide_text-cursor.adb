@@ -4,7 +4,7 @@ with
      ada.Strings.wide_fixed,
      ada.Strings.wide_Maps.wide_Constants;
 
---  with ada.text_IO; use ada.Text_IO;
+-- with ada.text_IO; use ada.Text_IO;
 
 
 package body lace.wide_Text.Cursor
@@ -15,8 +15,8 @@ is
    Float_Numerals   : constant wide_Maps.wide_Character_Set := wide_Maps.to_Set ("+-0123456789.");
 
 
-   --------
-   -- Forge
+   ---------
+   --- Forge
    --
 
    function First (of_Text : access constant wide_Text.item) return Cursor.item
@@ -27,8 +27,8 @@ is
    end First;
 
 
-   -------------
-   -- Attributes
+   --------------
+   --- Attributes
    --
 
    function at_End (Self : in Item) return Boolean
@@ -38,12 +38,14 @@ is
    end at_End;
 
 
+
    function has_Element (Self : in Item) return Boolean
    is
    begin
       return not at_End (Self)
         and      Self.Current <= Self.Target.Length;
    end has_Element;
+
 
 
    procedure advance (Self : in out Item;   Delimiter      : in wide_String := " ";
@@ -56,6 +58,7 @@ is
       loop
          declare
             use ada.wide_Characters.handling;
+
             delimiter_Position : Natural;
          begin
             if match_Case
@@ -63,6 +66,7 @@ is
                delimiter_Position := wide_fixed.Index (Self.Target.Data (1 .. Self.Target.Length),
                                                        Delimiter,
                                                        From => Self.Current);
+
             else
                delimiter_Position := wide_fixed.Index (to_Lower (Self.Target.Data (1 .. Self.Target.Length)),
                                                        to_Lower (Delimiter),
@@ -129,7 +133,7 @@ is
 
 
 
-   function next_Token (Self : in out item;   Delimiter  : in wide_String;
+   function next_Token (Self : in out Item;   Delimiter  : in wide_String;
                                               match_Case : in Boolean    := True;
                                               Trim       : in Boolean    := False) return wide_String
    is
@@ -143,8 +147,9 @@ is
       declare
          function get_String return wide_String
          is
-            use ada.Strings.wide_fixed,
-                ada.Strings.wide_Maps.wide_Constants;
+            use
+                 ada.Strings.wide_fixed,
+                 ada.Strings.wide_Maps.wide_Constants;
 
             delimiter_Position : constant Natural := (if match_Case then Index (Self.Target.Data (Self.Current .. Self.Target.Length),           Delimiter,  from => Self.Current)
                                                                     else Index (Self.Target.Data (Self.Current .. Self.Target.Length), to_Lower (Delimiter), from => Self.Current,
@@ -180,13 +185,16 @@ is
    function next_Line (Self : in out Item;   Trim : in Boolean := False) return wide_String
    is
       use ada.Characters;
+
       Token : constant wide_String := next_Token (Self, Delimiter => wide_latin_1.LF,
                                                         Trim      => Trim);
-      Pad   : constant wide_String := Token; -- (if Token (Token'Last) = latin_1.CR then Token (Token'First .. Token'Last - 1)
-                                             --                                     else Token);
+      Pad   : constant wide_String := Token;
    begin
-      if Trim then return wide_fixed.Trim (Pad, Both);
-              else return Pad;
+      if Trim
+      then
+         return wide_fixed.Trim (Pad, Both);
+      else
+         return Pad;
       end if;
    end next_Line;
 
@@ -213,7 +221,8 @@ is
       Text := Self.Target.Data (Self.Current .. Self.Target.Length);
       find_Token (Text, integer_Numerals, Inside, First, Last);
 
-      if Last = 0 then
+      if Last = 0
+      then
          raise No_Data_Error;
       end if;
 
@@ -235,7 +244,8 @@ is
       Text := Self.Target.Data (Self.Current .. Self.Target.Length);
       find_Token (Text, integer_Numerals, Inside, First, Last);
 
-      if Last = 0 then
+      if Last = 0
+      then
          raise No_Data_Error;
       end if;
 
@@ -257,7 +267,8 @@ is
       Text := Self.Target.Data (Self.Current .. Self.Target.Length);
       find_Token (Text, float_Numerals, Inside, First, Last);
 
-      if Last = 0 then
+      if Last = 0
+      then
          raise No_Data_Error;
       end if;
 

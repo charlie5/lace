@@ -1,13 +1,12 @@
 with
-     --  lace.Strings.fixed,
      ada.wide_Characters.handling,
      ada.Strings.wide_fixed.wide_Hash;
 
 
 package body lace.wide_Text
 is
-   ---------------
-   -- Construction
+   ---------
+   --- Forge
    --
 
    function to_Text (From : in wide_String;
@@ -46,8 +45,8 @@ is
    end "+";
 
 
-   -------------
-   -- Attributes
+   --------------
+   --- Attributes
    --
 
    procedure String_is (Self : in out Item;
@@ -87,10 +86,9 @@ is
    function Image (Self : in Item) return wide_String
    is
    begin
-      return
-        "(Capacity =>"  & Self.Capacity'wide_Image  & "," &
-        " Length =>"    & Self.Length  'wide_Image  & "," &
-        " Data => '"    & to_String (Self)     & "')";
+      return   "(Capacity =>"  & Self.Capacity'wide_Image  & ","
+             & " Length =>"    & Self.Length  'wide_Image  & ","
+             & " Data => '"    & to_String (Self)          & "')";
    end Image;
 
 
@@ -120,6 +118,7 @@ is
    function to_Lowercase (Self : in Item) return Item
    is
       use ada.wide_Characters.handling;
+
       Result : Item := Self;
    begin
       for i in 1 .. Self.Length
@@ -135,13 +134,13 @@ is
    function mono_Spaced (Self : in Item) return Item
    is
       Result : Item (Self.Capacity);
-      Prior  : wide_Character := 'a';
-      Length : Natural        := 0;
+      Prior  : wide_Character      := 'a';
+      Length : Natural             := 0;
    begin
       for i in 1 .. Self.Length
       loop
-         if    Self.Data (i) = ' '
-           and Prior = ' '
+         if         Self.Data (i) = ' '
+           and then Prior = ' '
          then
             null;
          else
@@ -181,13 +180,12 @@ is
    exception
       when constraint_Error =>
          raise Error with "Appending 'Extra'" & Extra'Length'Image & " characters to 'Text's" & Self.Length'Image & " characters exceeds capacity of" & Self.Capacity'Image & ".";
-         --  raise Error with "Appending '" & Extra & "' to '" & to_String (Self) & "' exceeds capacity of" & Self.Capacity'wide_Image & ".";
    end append;
 
 
 
-   function delete (Self : in Item;   From    : Positive;
-                                      Through : Natural := Natural'Last) return Item
+   function delete (Self : in Item;   From    : in Positive;
+                                      Through : in Natural := Natural'Last) return Item
    is
       Result : Item (Self.Capacity);
    begin
@@ -197,8 +195,8 @@ is
 
 
 
-   procedure delete (Self : in out Item;   From    : Positive;
-                                           Through : Natural := Natural'Last)
+   procedure delete (Self : in out Item;   From    : in Positive;
+                                           Through : in Natural := Natural'Last)
    is
       Thru : constant Natural      := Natural'Min (Through, Self.Length);
       Tail : constant wide_String  := Self.Data (Thru + 1 .. Self.Length);
@@ -210,23 +208,8 @@ is
    end delete;
 
 
-
-   --  procedure delete (Self : in out Text.item;   From    : Positive;
-   --                                               Through : Natural := Natural'Last)
-   --  is
-   --     Thru : constant Natural := Natural'Min (Through, Self.Length)
-   --     Tail : constant String  := Self.Data (Through + 1 .. Self.Length);
-   --  begin
-   --     Self.Data (From .. From + Tail'Length - 1) := Tail;
-   --     Self.Length                                :=   Self.Length
-   --                                                   - (Natural'Min (Through,
-   --                                                                   Self.Length) - From + 1);
-   --  end delete;
-
-
-
-   ----------
-   -- Streams
+   -----------
+   --- Streams
    --
 
    function Item_input (Stream : access ada.Streams.root_Stream_type'Class) return Item
@@ -261,23 +244,23 @@ is
 
 
 
-   procedure Write (Stream : access ada.Streams.root_Stream_type'Class;
+   procedure write (Stream : access ada.Streams.root_Stream_type'Class;
                     Self   : in     Item)
    is
    begin
       Natural    'write (Stream, Self.Length);
       wide_String'write (Stream, Self.Data (1 .. Self.Length));
-   end Write;
+   end write;
 
 
 
-   procedure Read (Stream : access ada.Streams.root_Stream_type'Class;
+   procedure read (Stream : access ada.Streams.root_Stream_type'Class;
                    Self   :    out Item)
    is
    begin
       Natural    'read (Stream, Self.Length);
       wide_String'read (Stream, Self.Data (1 .. Self.Length));
-   end Read;
+   end read;
 
 
 end lace.wide_Text;

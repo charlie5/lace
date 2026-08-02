@@ -7,6 +7,10 @@ generic
 package lace.fast_Pool
 is
 
+   ---------
+   --- Forge
+   --
+
    function  new_Item     return View;
    procedure free (Self : in out View);
 

@@ -39,8 +39,6 @@ is
    type safe_Connectors_view is access all safe_Connectors;
 
 
-
-
    --------------
    --- Connector.
    --
@@ -55,10 +53,12 @@ is
 
 
 
-   task body Connector
+   task
+   body Connector
    is
-      use ada.Text_IO,
-          lace.Text;
+      use
+           ada.Text_IO,
+           lace.Text;
 
       Myself         : Connector_view;
       my_Connection  : Connection;
@@ -85,6 +85,7 @@ is
                                            to_Subject    => my_Connection.Subject,
                                            with_Response => my_Connection.Response,
                                            to_Event_Kind => Event.Kind (+my_Connection.Event_Kind));
+
             else
                lace.Event.utility.disconnect (the_Observer  => my_Connection.Observer,
                                               from_Subject  => my_Connection.Subject,
@@ -127,12 +128,12 @@ is
    end Connector;
 
 
-
    -------------------------
    --- Connection delegator.
    --
 
-   task body connection_Delegator
+   task
+   body connection_Delegator
    is
       use ada.Text_IO;
 
@@ -140,30 +141,21 @@ is
       idle_Connectors  : aliased safe_Connectors;
       the_Connections  :         safe_Connections_view;
       new_Connections  :         connection_Vector;
-      Done             :         Boolean          := False;
+      Done             :         Boolean              := False;
 
 
       function all_Connectors_are_idle return Boolean
       is
          use type ada.Containers.Count_type;
-         --  Result : Boolean := True;
       begin
          return all_Connectors.Length = idle_Connectors.Length;
-         --  for Each of all_Connectors
-         --  loop
-         --     if not Each'Callable
-         --     then
-         --        Result := False;
-         --        exit;
-         --     end if;
-         --  end loop;
-         --
-         --  return Result;
       end all_Connectors_are_idle;
+
 
 
       procedure shutdown
       is
+
          procedure free is new ada.unchecked_Deallocation (Connector,
                                                            Connector_view);
          the_Connector : Connector_view;
@@ -195,8 +187,8 @@ is
          end select;
 
 
-         exit when     Done
-                   and the_Connections.is_Empty;
+         exit when          Done
+                   and then the_Connections.is_Empty;
 
          the_Connections.get (new_Connections);
 
@@ -204,6 +196,7 @@ is
          loop
             declare
                use lace.Text;
+
                the_Connector : Connector_view;
             begin
                idle_Connectors.get (the_Connector);
@@ -217,6 +210,7 @@ is
                the_Connector.connect (Self           => the_Connector,
                                       the_Connection => each_Connection,
                                       Connectors     => idle_Connectors'unchecked_Access);
+
             exception
                when E : others =>
                   new_Line;
@@ -258,13 +252,12 @@ is
    end connection_Delegator;
 
 
-
-
    ---------------------
    --- Safe connections.
    --
 
-   protected body safe_Connections
+   protected
+   body safe_Connections
    is
 
       procedure add (new_Connection : in Connection)
@@ -294,13 +287,12 @@ is
    end safe_Connections;
 
 
-
-
    --------------------
    --- Safe connectors.
    --
 
-   protected body safe_Connectors
+   protected
+   body safe_Connectors
    is
 
       procedure add (new_Connector : in Connector_view)
@@ -324,6 +316,7 @@ is
       end get;
 
 
+
       function Length return ada.Containers.Count_type
       is
       begin
@@ -332,8 +325,6 @@ is
 
 
    end safe_Connectors;
-
-
 
 
    -------------------------
@@ -351,7 +342,7 @@ is
    procedure destruct (Self : in out Item)
    is
    begin
-       Self.Delegator.stop;
+      Self.Delegator.stop;
    end destruct;
 
 
@@ -401,17 +392,6 @@ is
 
       Self.Connections.add (new_Disconnection);
    end disconnect;
-
-
-
-
-   --  function is_Busy (Self : in Item) return Boolean
-   --  is
-   --  begin
-   --     return false;
-   --     --  return not (    Self.Connections.is_Empty
-   --                 --  and Self.Delegator  .active_Count = 0);
-   --  end is_Busy;
 
 
 end lace.event_Connector;

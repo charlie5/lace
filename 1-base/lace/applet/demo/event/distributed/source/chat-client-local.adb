@@ -278,7 +278,7 @@ is
    --  procedure last_chance_Handler (Msg  : in system.Address;
    --                                 Line : in Integer);
    --
-   --  pragma Export (C, last_chance_Handler,
+   --  pragma export (C, last_chance_Handler,
    --                 "__gnat_last_chance_handler");
    --
    --  procedure last_chance_Handler (Msg  : in System.Address;

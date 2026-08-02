@@ -10,7 +10,9 @@ is
          return Self;
       end new_Observer;
 
+
    end Forge;
+
 
 
    overriding
@@ -19,5 +21,6 @@ is
    begin
       return to_String (Self.Name);
    end Name;
+
 
 end lace.Observer.instant;

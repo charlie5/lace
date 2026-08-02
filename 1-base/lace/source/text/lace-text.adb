@@ -6,8 +6,8 @@ with
 
 package body lace.Text
 is
-   ---------------
-   -- Construction
+   ---------
+   --- Forge
    --
 
    function to_Text (From : in String;
@@ -44,8 +44,8 @@ is
    end "+";
 
 
-   -------------
-   -- Attributes
+   --------------
+   --- Attributes
    --
 
    procedure String_is (Self : in out Item;
@@ -85,10 +85,9 @@ is
    function Image (Self : in Item) return String
    is
    begin
-      return
-        "(Capacity =>"  & Self.Capacity'Image  & "," &
-        " Length =>"    & Self.Length  'Image  & "," &
-        " Data => '"    & to_String (Self)     & "')";
+      return   "(Capacity =>"  & Self.Capacity'Image  & ","
+             & " Length =>"    & Self.Length  'Image  & ","
+             & " Data => '"    & to_String (Self)     & "')";
    end Image;
 
 
@@ -118,6 +117,7 @@ is
    function to_Lowercase (Self : in Item) return Item
    is
       use ada.Characters.handling;
+
       Result : Item := Self;
    begin
       for i in 1 .. Self.Length
@@ -133,13 +133,13 @@ is
    function mono_Spaced (Self : in Item) return Item
    is
       Result : Item (Self.Capacity);
-      Prior  : Character := 'a';
-      Length : Natural   := 0;
+      Prior  : Character           := 'a';
+      Length : Natural             := 0;
    begin
       for i in 1 .. Self.Length
       loop
-         if    Self.Data (i) = ' '
-           and Prior = ' '
+         if         Self.Data (i) = ' '
+           and then Prior = ' '
          then
             null;
          else
@@ -183,8 +183,8 @@ is
 
 
 
-   function delete (Self : in Text.item;   From    : Positive;
-                                           Through : Natural := Natural'Last) return Text.item
+   function delete (Self : in Text.item;   From    : in Positive;
+                                           Through : in Natural := Natural'Last) return Text.item
    is
       Result : Text.item (Self.Capacity);
    begin
@@ -194,8 +194,8 @@ is
 
 
 
-   procedure delete (Self : in out Text.item;   From    : Positive;
-                                                Through : Natural := Natural'Last)
+   procedure delete (Self : in out Text.item;   From    : in Positive;
+                                                Through : in Natural := Natural'Last)
    is
       Thru : constant Natural := Natural'Min (Through, Self.Length);
       Tail : constant String  := Self.Data (Thru + 1 .. Self.Length);
@@ -207,23 +207,8 @@ is
    end delete;
 
 
-
-   --  procedure delete (Self : in out Text.item;   From    : Positive;
-   --                                               Through : Natural := Natural'Last)
-   --  is
-   --     Thru : constant Natural := Natural'Min (Through, Self.Length)
-   --     Tail : constant String  := Self.Data (Through + 1 .. Self.Length);
-   --  begin
-   --     Self.Data (From .. From + Tail'Length - 1) := Tail;
-   --     Self.Length                                :=   Self.Length
-   --                                                   - (Natural'Min (Through,
-   --                                                                   Self.Length) - From + 1);
-   --  end delete;
-
-
-
-   ----------
-   -- Streams
+   -----------
+   --- Streams
    --
 
    function Item_input (Stream : access ada.Streams.root_Stream_type'Class) return Item
@@ -258,23 +243,23 @@ is
 
 
 
-   procedure Write (Stream : access ada.Streams.root_Stream_type'Class;
+   procedure write (Stream : access ada.Streams.root_Stream_type'Class;
                     Self   : in     Item)
    is
    begin
       Natural'write (Stream, Self.Length);
       String 'write (Stream, Self.Data (1 .. Self.Length));
-   end Write;
+   end write;
 
 
 
-   procedure Read (Stream : access ada.Streams.root_Stream_type'Class;
+   procedure read (Stream : access ada.Streams.root_Stream_type'Class;
                    Self   :    out Item)
    is
    begin
       Natural'read (Stream, Self.Length);
       String 'read (Stream, Self.Data (1 .. Self.Length));
-   end Read;
+   end read;
 
 
 end lace.Text;

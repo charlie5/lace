@@ -7,11 +7,12 @@ is
       is
       begin
          return Self : constant Item := (Deferred.item
-                                         with name => to_unbounded_String (Name))
+                                         with Name => to_unbounded_String (Name))
          do
             null;
          end return;
       end to_Observer;
+
 
 
       function new_Observer (Name : in Event.observer_Name) return View
@@ -21,7 +22,9 @@ is
          return Self;
       end new_Observer;
 
+
    end Forge;
+
 
 
    overriding
@@ -30,5 +33,6 @@ is
    begin
       return to_String (Self.Name);
    end Name;
+
 
 end lace.Observer.deferred;

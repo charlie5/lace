@@ -7,6 +7,10 @@ generic
 package lace.heap_based_Pool
 is
 
+   ---------
+   --- Forge
+   --
+
    function  new_Item     return View;
    procedure free (Self : in out View);
 

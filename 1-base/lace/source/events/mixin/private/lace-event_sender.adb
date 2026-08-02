@@ -20,7 +20,6 @@ is
    subtype sender_Vector  is sender_Vectors.Vector;
 
 
-
    -----------------
    --- Safe senders.
    --
@@ -38,8 +37,6 @@ is
    type safe_Senders_view is access all safe_Senders;
 
 
-
-
    -----------
    --- Sender.
    --
@@ -51,19 +48,20 @@ is
                   the_Event    : in lace.Event.item'Class;
                   To           : in lace.Observer.view;
                   from_Subject : in String;
-                  Sequence     : in event.sequence_Id;
+                  Sequence     : in Event.sequence_Id;
                   Senders      : in safe_Senders_view);
    end Sender;
 
 
 
-   task body Sender
+   task
+   body Sender
    is
       Myself       : Sender_view;
       Event        : event_Holder;
       the_Observer : lace.Observer.view;
       subject_Name : string_Holder;
-      the_Sequence : lace.event.sequence_Id;
+      the_Sequence : lace.Event.sequence_Id;
       sender_Pool  : safe_Senders_view;
    begin
       loop
@@ -73,7 +71,7 @@ is
                             the_Event    : in lace.Event.item'Class;
                             To           : in lace.Observer.view;
                             from_Subject : in String;
-                            Sequence     : in lace.event.sequence_Id;
+                            Sequence     : in lace.Event.sequence_Id;
                             Senders      : in safe_Senders_view)
                do
                   Event       .replace_Element (the_Event);
@@ -120,13 +118,12 @@ is
    end Sender;
 
 
-
-
    -------------------
    --- Send delegator.
    --
 
-   task body send_Delegator
+   task
+   body send_Delegator
    is
       the_subject_Name :         string_Holder;
       the_Senders      : aliased safe_Senders;
@@ -139,6 +136,7 @@ is
 
       procedure shutdown
       is
+
          procedure free is new ada.unchecked_Deallocation (Sender,
                                                            Sender_view);
          the_Sender : Sender_view;
@@ -173,8 +171,8 @@ is
          end select;
 
 
-         exit when     Done
-                   and the_send_Details.is_Empty;
+         exit when          Done
+                   and then the_send_Details.is_Empty;
 
          the_send_Details.get (new_send_Details);
 
@@ -196,6 +194,7 @@ is
                                 from_Subject => the_subject_Name.Element,
                                 Sequence     => Each.Sequence,
                                 Senders      => the_Senders'unchecked_Access);
+
             exception
                when E : others =>
                   ada.Text_IO.new_Line;
@@ -227,13 +226,12 @@ is
    end send_Delegator;
 
 
-
-
    ------------------------
    --- Safe 'send_Details'.
    --
 
-   protected body safe_send_Details
+   protected
+   body safe_send_Details
    is
 
       procedure add (new_send_Details : in send_Details)
@@ -262,13 +260,12 @@ is
    end safe_send_Details;
 
 
-
-
    -----------------
    --- Safe senders.
    --
 
-   protected body safe_Senders
+   protected
+   body safe_Senders
    is
 
       procedure add (new_Sender : in Sender_view)
@@ -292,8 +289,6 @@ is
       end get;
 
    end safe_Senders;
-
-
 
 
    ----------------------

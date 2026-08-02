@@ -11,19 +11,34 @@ package lace.Stack
 is
    type Item is private;
 
-   function  to_Stack return Item;
+
+   ---------
+   --- Forge
+   --
+
+   function to_Stack return Item;
 
 
-   procedure push (Self : in out Item;   E : in Element_T);
-   function  pop  (Self : in out Item)   return Element_T;
+   --------------
+   --- Attributes
+   --
+
+   function get_Count (Self : in Item) return Natural;
 
 
-   function getCount (Self : in  Item)   return Natural;
+   --------------
+   --- Operations
+   --
+
+   procedure push (Self : in out Item;   the_Item : in Element_t);
+   function  pop  (Self : in out Item)          return Element_t;
 
 
 
 private
+
    package Vectors is new ada.Containers.Vectors (Positive, Element_t);
-   type    Item   is new Vectors.Vector with null record;
+   type    Item    is new Vectors.Vector with null record;
+
 
 end lace.Stack;

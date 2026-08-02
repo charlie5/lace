@@ -4,7 +4,7 @@ with
 
 package lace.Event
 --
---  The base class for all derived event types.
+-- The base class for all derived event types.
 --
 is
    pragma Pure;
@@ -16,22 +16,30 @@ is
    subtype observer_Name is String;
 
 
+   type Kind is new String;
+   --
+   -- Uniquely identifies each derived event class.
+   --
+   -- Each derived event class will have its own Kind.
+   --
+   -- Maps to the extended name of 'ada.Tags.Tag_type' value of each derived
+   -- event class (see 'Conversions' section in 'lace.Event.utility').
+
+   type sequence_Id is range 0 .. 2**32 - 1;
+
+
+   ---------
+   --- Forge
+   --
+
    procedure destruct (Self : in out Item) is null;
 
 
-   type Kind is new String;
+   --------------
+   --- Attributes
    --
-   --  Uniquely identifies each derived event class.
-   --
-   --  Each derived event class will have its own Kind.
-   --
-   --  Maps to the extended name of 'ada.Tags.Tag_type' value of each derived
-   --  event class (see 'Conversions' section in 'lace.Event.utility').
 
    function Hash (the_Kind : in Kind) return ada.Containers.Hash_type;
-
-
-   type sequence_Id is range 0 .. 2**32 - 1;
 
 
 end lace.Event;

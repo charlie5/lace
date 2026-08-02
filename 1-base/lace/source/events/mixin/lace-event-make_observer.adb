@@ -5,7 +5,7 @@ with
      ada.unchecked_Deallocation;
 
 
-package body lace.event.make_Observer
+package body lace.Event.make_Observer
 is
    use type Event.Logger.view;
 
@@ -17,9 +17,8 @@ is
    end destroy;
 
 
-
-   ------------
-   -- Responses
+   -------------
+   --- Responses
    --
 
    overriding
@@ -61,9 +60,8 @@ is
    end relay_responseless_Events;
 
 
-
-   -------------
-   -- Operations
+   --------------
+   --- Operations
    --
 
    overriding
@@ -81,6 +79,7 @@ is
    end receive;
 
 
+
    overriding
    procedure respond (Self : access Item)
    is
@@ -89,9 +88,10 @@ is
    end respond;
 
 
-   -----------------
-   -- Safe Responses
+   ------------------
+   --- Safe Responses
    --
+
    protected
    body safe_Responses
    is
@@ -115,8 +115,8 @@ is
       end destroy;
 
 
-      ------------
-      -- Responses
+      -------------
+      --- Responses
       --
 
       procedure add (Self         : access Item'Class;
@@ -143,6 +143,7 @@ is
       end add;
 
 
+
       procedure rid (Self         : access Item'Class;
                      the_Response : in     Response.view;
                      to_Kind      : in     Event.Kind;
@@ -166,11 +167,13 @@ is
       end rid;
 
 
+
       procedure relay_responseless_Events (To : in Observer.view)
       is
       begin
          my_relay_Target := To;
       end relay_responseless_Events;
+
 
 
       function relay_Target return Observer.view
@@ -180,11 +183,13 @@ is
       end relay_Target;
 
 
+
       function Contains (Subject : in Event.subject_Name) return Boolean
       is
       begin
          return my_Responses.Contains (Subject);
       end Contains;
+
 
 
       function Element (Subject : in Event.subject_Name) return event_response_Map
@@ -194,18 +199,19 @@ is
       end Element;
 
 
-      -------------
-      -- Operations
+      --------------
+      --- Operations
       --
 
       procedure receive (Self         : access Item'Class;
                          the_Event    : in     Event.item'Class;
                          from_Subject : in     Event.subject_Name)
       is
-         use event_response_Maps,
-             subject_Maps_of_event_responses,
-             lace.Event.utility,
-             ada.Containers;
+         use
+              event_response_Maps,
+              subject_Maps_of_event_responses,
+              lace.Event.utility,
+              ada.Containers;
 
          use type lace.Observer.view;
 
@@ -229,7 +235,7 @@ is
 
          elsif relay_Target /= null
          then
-            --  Self.relay_Target.notify (the_Event, from_Subject_Name);   -- todo: Re-enable event relays.
+            -- Self.relay_Target.notify (the_Event, from_Subject_Name);   -- todo: Re-enable event relays.
 
             if Observer.Logger /= null
             then
@@ -244,6 +250,7 @@ is
                Observer.Logger.log ("[Warning] ~ Observer " & my_Name & " has no response to " & Name_of (the_Event)
                                     & " from " & from_Subject & ".");
                Observer.Logger.log ("            count of responses =>" & the_Responses.Length'Image);
+
             else
                raise program_Error with "Observer " & my_Name & " has no response to " & Name_of (the_Event)
                                       & " from " & from_Subject & ".";
@@ -263,4 +270,4 @@ is
    end safe_Responses;
 
 
-end lace.event.make_Observer;
+end lace.Event.make_Observer;

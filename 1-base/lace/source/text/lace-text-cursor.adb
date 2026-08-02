@@ -4,10 +4,10 @@ with
      ada.Strings.fixed,
      ada.Strings.Maps.Constants;
 
---  with ada.text_IO; use ada.Text_IO;
+-- with ada.text_IO; use ada.Text_IO;
 
 
-package body lace.text.Cursor
+package body lace.Text.Cursor
 is
    use ada.Strings;
 
@@ -15,8 +15,8 @@ is
    Float_Numerals   : constant maps.character_Set := maps.to_Set ("+-0123456789.");
 
 
-   --------
-   -- Forge
+   ---------
+   --- Forge
    --
 
    function First (of_Text : access constant Text.item) return Cursor.item
@@ -27,8 +27,8 @@ is
    end First;
 
 
-   -------------
-   -- Attributes
+   --------------
+   --- Attributes
    --
 
    function at_End (Self : in Item) return Boolean
@@ -38,12 +38,14 @@ is
    end at_End;
 
 
+
    function has_Element (Self : in Item) return Boolean
    is
    begin
       return not at_End (Self)
         and      Self.Current <= Self.Target.Length;
    end has_Element;
+
 
 
    procedure advance (Self : in out Item;   Delimiter      : in String  := " ";
@@ -56,6 +58,7 @@ is
       loop
          declare
             use ada.Characters.handling;
+
             delimiter_Position : Natural;
          begin
             if match_Case
@@ -63,6 +66,7 @@ is
                delimiter_Position := fixed.Index (Self.Target.Data (1 .. Self.Target.Length),
                                                   Delimiter,
                                                   From => Self.Current);
+
             else
                delimiter_Position := fixed.Index (to_Lower (Self.Target.Data (1 .. Self.Target.Length)),
                                                   to_Lower (Delimiter),
@@ -129,7 +133,7 @@ is
 
 
 
-   function next_Token (Self : in out item;   Delimiter  : in String;
+   function next_Token (Self : in out Item;   Delimiter  : in String;
                                               match_Case : in Boolean := True;
                                               Trim       : in Boolean := False) return String
    is
@@ -143,8 +147,10 @@ is
       declare
          function get_String return String
          is
-            use ada.Strings.fixed,
-                ada.Strings.Maps.Constants;
+            use
+                 ada.Strings.fixed,
+                 ada.Strings.Maps.Constants;
+
             delimiter_Position : constant Natural := (if match_Case then Index (Self.Target.Data (Self.Current .. Self.Target.Length),           Delimiter,  from => Self.Current)
                                                                     else Index (Self.Target.Data (Self.Current .. Self.Target.Length), to_Lower (Delimiter), from => Self.Current,
                                                                                                                                        mapping => lower_case_Map));
@@ -179,10 +185,10 @@ is
    function next_Line (Self : in out Item;   Trim : in Boolean := False) return String
    is
       use ada.Characters;
+
       Token : constant String := next_Token (Self, Delimiter => latin_1.LF,
                                                    Trim      => Trim);
-      Pad   : constant String := Token; --(if Token (Token'Last) = latin_1.CR then Token (Token'First .. Token'Last - 1)
-                                          --                           else Token);
+      Pad   : constant String := Token;
    begin
       if Trim
       then
@@ -215,7 +221,8 @@ is
       Text := Self.Target.Data (Self.Current .. Self.Target.Length);
       find_Token (Text, integer_Numerals, Inside, First, Last);
 
-      if Last = 0 then
+      if Last = 0
+      then
          raise No_Data_Error;
       end if;
 
@@ -237,7 +244,8 @@ is
       Text := Self.Target.Data (Self.Current .. Self.Target.Length);
       find_Token (Text, integer_Numerals, Inside, First, Last);
 
-      if Last = 0 then
+      if Last = 0
+      then
          raise No_Data_Error;
       end if;
 
@@ -259,7 +267,8 @@ is
       Text := Self.Target.Data (Self.Current .. Self.Target.Length);
       find_Token (Text, float_Numerals, Inside, First, Last);
 
-      if Last = 0 then
+      if Last = 0
+      then
          raise No_Data_Error;
       end if;
 
@@ -304,4 +313,4 @@ is
    end peek_Line;
 
 
-end lace.text.Cursor;
+end lace.Text.Cursor;

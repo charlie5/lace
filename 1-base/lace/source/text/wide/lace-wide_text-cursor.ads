@@ -6,13 +6,15 @@ is
    type Item is tagged private;
 
 
-   -- Forge
+   ---------
+   --- Forge
    --
 
    function First (of_Text : access constant wide_Text.item) return Cursor.item;
 
 
-   -- Attributes
+   --------------
+   --- Attributes
    --
 
    function  Length (Self : in Item) return Natural;
@@ -21,13 +23,13 @@ is
 
    function  has_Element (Self : in     Item) return Boolean;
 
-   function  next_Token  (Self : in out item;   Delimiter  : in wide_Character := ' ';
+   function  next_Token  (Self : in out Item;   Delimiter  : in wide_Character := ' ';
                                                 Trim       : in Boolean        := False) return wide_String;
-   function  next_Token  (Self : in out item;   Delimiter  : in wide_String;
+   function  next_Token  (Self : in out Item;   Delimiter  : in wide_String;
                                                 match_Case : in Boolean        := True;
                                                 Trim       : in Boolean        := False) return wide_String;
 
-   function  next_Line   (Self : in out item;   Trim       : in Boolean        := False) return wide_String;
+   function  next_Line   (Self : in out Item;   Trim       : in Boolean        := False) return wide_String;
 
    procedure skip_Token  (Self : in out Item;   Delimiter  : in wide_String    := " ";
                                                 match_Case : in Boolean        := True);
@@ -73,9 +75,10 @@ private
    type Item is tagged
       record
          Target  : access constant wide_Text.item;
-         Current : Natural  := 0;
+         Current : Natural                       := 0;
       end record;
 
    Remaining : constant Natural := Natural'Last;
+
 
 end lace.wide_Text.Cursor;

@@ -1,5 +1,5 @@
 with
-    lace.Environ.Paths;
+     lace.Environ.Paths;
 
 private
 with
@@ -13,12 +13,27 @@ package lace.Environ.Users
 is
    type User is private;
 
+
+   ---------
+   --- Forge
+   --
+
    function  to_User      (Name : in String) return User;
    function  "+"          (Name : in String) return User renames to_User;
+
+
+   --------------
+   --- Attributes
+   --
 
    function  Name         (Self : in User)                 return String;
    function  current_User                                  return User;
    function  home_Folder  (Self : in User := current_User) return Paths.Folder;
+
+
+   --------------
+   --- Operations
+   --
 
    procedure add_User     (Self : in User;   Super : in Boolean := False);
    procedure rid_User     (Self : in User);
@@ -34,5 +49,6 @@ private
       record
          Name : unbounded_String;
       end record;
+
 
 end lace.Environ.Users;

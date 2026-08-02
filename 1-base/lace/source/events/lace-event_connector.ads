@@ -4,7 +4,6 @@ with
      lace.Observer,
      lace.Subject;
 
-
 private
 with
      lace.Text,
@@ -16,12 +15,20 @@ package lace.event_Connector
 --
 --
 is
-
    type Item is tagged limited private;
 
 
+   ---------
+   --- Forge
+   --
+
    procedure define     (Self : in out Item);
    procedure destruct   (Self : in out Item);
+
+
+   --------------
+   --- Operations
+   --
 
    procedure connect    (Self : in out Item;   the_Observer  : in Observer.view;
                                                to_Subject    : in Subject .view;
@@ -34,8 +41,6 @@ is
                                                to_Event_Kind : in Event.Kind;
                                                subject_Name  : in String);
 
-   --  function  is_Busy    (Self : in Item) return Boolean;
-
 
 
 private
@@ -46,7 +51,6 @@ private
 
    type Connector;
    type Connector_view is access Connector;
-
 
 
    ---------------
@@ -64,15 +68,13 @@ private
       end record;
 
 
-
    ---------------
    --- Containers.
    --
 
    package connection_Vectors is new ada.Containers.indefinite_Vectors (Positive,
                                                                         Connection);
-   subtype connection_Vector  is connection_Vectors.Vector;
-
+   subtype connection_Vector  is     connection_Vectors.Vector;
 
 
    ---------------------
@@ -94,7 +96,6 @@ private
    type safe_Connections_view is access all safe_Connections;
 
 
-
    -------------------------
    --- Connection delegator.
    --
@@ -105,7 +106,6 @@ private
       entry start (Connections : in safe_Connections_view);
       entry stop;
    end connection_Delegator;
-
 
 
    ---------

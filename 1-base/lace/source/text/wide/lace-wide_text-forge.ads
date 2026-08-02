@@ -1,11 +1,10 @@
-
 package lace.wide_Text.forge
 --
 -- Provides constructors for wide Text.
 --
 is
-   --------
-   -- Files
+   ---------
+   --- Files
    --
 
    type Filename is new String;
@@ -16,8 +15,8 @@ is
    procedure store     (Filename : in forge.Filename;   the_String : in wide_String);     -- TODO: Should this *really* be here ?
 
 
-   --------------
-   -- Stock Items
+   ---------------
+   --- Stock Items
    --
 
    function to_Text_1    (From : in wide_String)    return Item_1;
@@ -109,5 +108,6 @@ is
 
    function to_Text_512m (From : in wide_String)    return Item_512m;
    function to_Text_512m (From : in wide_Text.item) return Item_512m;
+
 
 end lace.wide_Text.forge;

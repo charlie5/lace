@@ -6,13 +6,13 @@ with
 package body lace.Time
 is
 
-   function to_milliSeconds (From : microSeconds) return milliSeconds
+   function to_milliSeconds (From : in microSeconds) return milliSeconds
    is
       Round_Up : constant Boolean      := From rem 1_000 >= 500;
       Result   :          milliSeconds := milliSeconds (From / 1_000);
    begin
-      if    Round_Up
-        and Result /= 999
+      if          Round_Up
+         and then Result /= 999
       then
          Result := Result + 1;
       end if;
@@ -22,7 +22,7 @@ is
 
 
 
-   function to_microSeconds (From : milliSeconds) return microSeconds
+   function to_microSeconds (From : in milliSeconds) return microSeconds
    is
    begin
       return microSeconds (From) * 1_000;
@@ -33,11 +33,10 @@ is
    function to_Duration (From : in lace.Time.item) return Duration
    is
    begin
-      return
-          Duration (From.Hours   * 60 * 60)
-        + Duration (From.Minutes * 60)
-        + Duration (From.Seconds)
-        + Duration (From.microSeconds) / 1_000_000.0;
+      return   Duration (From.Hours   * 60 * 60)
+             + Duration (From.Minutes * 60)
+             + Duration (From.Seconds)
+             + Duration (From.microSeconds) / 1_000_000.0;
    end to_Duration;
 
 
@@ -75,7 +74,7 @@ is
 
 
 
-   function Image (Time : lace.Time.item) return String
+   function Image (Time : in lace.Time.item) return String
    is
       use gnat.formatted_String;
 
@@ -125,6 +124,7 @@ is
    is
    begin
       return to_Time (to_Duration (Left) + to_Duration (Right));
+
    exception
       when constraint_Error =>
          raise Overflow;
@@ -136,6 +136,7 @@ is
    is
    begin
       return to_Time (to_Duration (Left) - to_Duration (Right));
+
    exception
       when constraint_Error =>
          raise Underflow;
@@ -147,6 +148,7 @@ is
    is
    begin
       return to_Time (to_Duration (Left) + Right);
+
    exception
       when constraint_Error =>
          raise Overflow;
@@ -158,11 +160,11 @@ is
    is
    begin
       return to_Time (to_Duration (Left) - Right);
+
    exception
       when constraint_Error =>
          raise Underflow;
    end "-";
-
 
 
 end lace.Time;

@@ -109,12 +109,13 @@ is
          if Self.Data (First .. Last) = Pattern
          then
             Result.Data (Cursor .. Cursor + By'Length - 1) := By;
-            Cursor := Cursor + By'Length;
-            First  := Last + 1;
+            Cursor                                         := Cursor + By'Length;
+            First                                          := Last + 1;
+
          else
             Result.Data (Cursor) := Self.Data (First);
-            Cursor := Cursor + 1;
-            First  := First  + 1;
+            Cursor               := Cursor + 1;
+            First                := First  + 1;
          end if;
 
          exit when First > Self.Length;

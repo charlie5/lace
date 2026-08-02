@@ -38,8 +38,7 @@ is
    overriding
    procedure respond (Self : access Item)
    is
-      use
-           Event_Vectors;
+      use Event_Vectors;
 
       my_Name : constant String := Observer.item'Class (Self.all).Name;
 
@@ -104,6 +103,7 @@ is
                                              & " from " & from_subject_Name & ".");
                         Observer.Logger.log ("            Count of responses =>"
                                              & the_Responses.Length'Image);
+
                      else
                         raise program_Error with "Observer " & my_Name & " has no response to " & Name_of (the_Event)
                                                & " from " & from_subject_Name & ".";
@@ -146,6 +146,7 @@ is
                actuate     (Self.Responses.Element (subject_Name.all),
                             the_Events,
                             subject_Name.all);
+
             else
                declare
                   Message : constant String := "*** Warning *** ~ " & my_Name & " has no responses for events from " & subject_Name.all & ".";
@@ -176,8 +177,7 @@ is
       procedure add (the_Event : in Event.item'Class;
                      Sequence  : in sequence_Id)
       is
-         use
-              Containers.event_Holders;
+         use Containers.event_Holders;
       begin
          the_Events.append (event_sequence_Pair' (to_Holder (the_Event),
                                                   Sequence));
@@ -220,8 +220,7 @@ is
 
       function fetch return subject_events_Pairs
       is
-         use
-              subject_Maps_of_safe_events;
+         use subject_Maps_of_safe_events;
 
          Result : subject_events_Pairs (1 .. Natural (the_Map.Length));
 
@@ -251,8 +250,7 @@ is
       procedure fetch (all_Events : out subject_events_Pairs;
                        Count      : out Natural)
       is
-         use
-              subject_Maps_of_safe_events;
+         use subject_Maps_of_safe_events;
 
          Cursor : subject_Maps_of_safe_events.Cursor := the_Map.First;
          Index  : Natural := 0;
@@ -279,8 +277,7 @@ is
 
       procedure free
       is
-         use
-              subject_Maps_of_safe_events;
+         use subject_Maps_of_safe_events;
 
          procedure deallocate is new ada.unchecked_Deallocation (safe_Events,
                                                                  safe_Events_view);

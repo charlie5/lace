@@ -12,13 +12,11 @@ is
 
    type Item (Capacity : Natural) is private;
 
-   function Image (Self : in Item) return String;
-
    Error : exception;
 
 
-   --------------
-   -- Stock Items
+   ---------------
+   --- Stock Items
    --
 
    subtype Item_1   is Item (Capacity =>   1);
@@ -55,8 +53,8 @@ is
    subtype Item_512m is Item (Capacity => 512 * 1024 * 1024);
 
 
-   ---------------
-   -- Stock Arrays
+   ----------------
+   --- Stock Arrays
    --
 
    type Items_1   is array (Positive range <>) of aliased Item_1;
@@ -93,8 +91,8 @@ is
    type Items_512m is array (Positive range <>) of aliased Item_512m;
 
 
-   ---------------
-   -- Construction
+   ---------
+   --- Forge
    --
 
    function to_Text (From     : in String;
@@ -107,8 +105,8 @@ is
    function "+"     (From     : in String)           return Item;
 
 
-   -------------
-   -- Attributes
+   --------------
+   --- Attributes
    --
 
    procedure String_is (Self : in out Item;   Now : in String);
@@ -117,6 +115,7 @@ is
 
    function  is_Empty  (Self : in Item) return Boolean;
    function  Length    (Self : in Item) return Natural;
+   function  Image     (Self : in Item) return String;
    function  Hashed    (Self : in Item) return ada.Containers.Hash_type;
 
    overriding
@@ -134,23 +133,24 @@ is
    -- Raises an Error if capacity is exceeded.
 
 
-   function  delete (Self : in     Text.item;   From    : Positive;
-                                                Through : Natural := Natural'Last) return Text.item;
-   procedure delete (Self : in out Text.item;   From    : Positive;
-                                                Through : Natural := Natural'Last);
+   function  delete (Self : in     Text.item;   From    : in Positive;
+                                                Through : in Natural := Natural'Last) return Text.item;
+   procedure delete (Self : in out Text.item;   From    : in Positive;
+                                                Through : in Natural := Natural'Last);
+
 
 
 private
 
    type Item (Capacity : Natural) is
       record
-         Length : Natural := 0;
+         Length : Natural               := 0;
          Data   : String (1 .. Capacity);
       end record;
 
 
-   ----------
-   -- Streams
+   -----------
+   --- Streams
    --
 
    function  Item_input  (Stream : access ada.Streams.root_Stream_type'Class)              return Item;
@@ -164,5 +164,6 @@ private
 
    for Item'write  use write;
    for Item'read   use read;
+
 
 end lace.Text;
