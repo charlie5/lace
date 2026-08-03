@@ -4,7 +4,7 @@ with
      ada.Strings.wide_fixed,
      ada.Strings.wide_Maps.wide_Constants;
 
--- with ada.text_IO; use ada.Text_IO;
+-- with ada.Text_IO; use ada.Text_IO;
 
 
 package body lace.wide_Text.Cursor

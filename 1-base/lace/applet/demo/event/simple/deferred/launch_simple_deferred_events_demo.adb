@@ -22,7 +22,7 @@ is
        lace.event.Utility,
        Lace,
 
-       ada.text_IO,
+       ada.Text_IO,
        ada.Strings.unbounded,
        ada.real_Time;
 

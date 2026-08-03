@@ -744,7 +744,7 @@ is
    begin
       check (Self);
 
-      -- 'Ada.Directories.Rename' fails when the file is moved across a device.
+      -- 'ada.Directories.Rename' fails when the file is moved across a device.
       -- For instance     Rename ("/tmp/a_file", "/home/user/a_file");
 
       ada.Directories.copy_File (+Self, +To);

@@ -390,7 +390,7 @@ is
       -- Private routine used only by Stream_Convert
 
       pragma stream_Convert (Bounded_String, From_String, To_String);
-      -- Provide stream routines without dragging in Ada.Streams
+      -- Provide stream routines without dragging in ada.Streams
 
       Null_Bounded_String : constant Bounded_String := (Max_Length     => Max_Length,
                                Current_Length => 0,
