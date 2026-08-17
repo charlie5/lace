@@ -1,13 +1,14 @@
 package body any_Math.any_Geometry.any_d3
 is
 
-   --------
-   -- Plane
+   ---------
+   --- Plane
    --
 
    procedure normalise (the_Plane : in out Plane)
    is
       use Functions;
+
       inverse_Magnitude : constant Real := 1.0 / SqRt (  the_Plane (1) * the_Plane (1)
                                                        + the_Plane (2) * the_Plane (2)
                                                        + the_Plane (3) * the_Plane (3));
@@ -23,9 +24,8 @@ is
    function Image (the_Model : in a_Model) return String
    is
    begin
-      return
-          "(Site_Count =>" & Integer'Image (the_Model.Site_Count) & ","
-        & " Tri_Count =>"  & Integer'Image (the_Model. Tri_Count) & ")";
+      return   "(Site_Count =>" & Integer'Image (the_Model.Site_Count) & ","
+             & " Tri_Count =>"  & Integer'Image (the_Model. Tri_Count) & ")";
 
    exception
       when others =>
@@ -33,12 +33,11 @@ is
    end Image;
 
 
-
    ----------
-   --  Bounds
+   --- Bounds
    --
 
-   function to_bounding_Box (Self : Sites) return bounding_Box
+   function to_bounding_Box (Self : in Sites) return bounding_Box
    is
       Bounds : bounding_Box := null_Bounds;
    begin
@@ -108,10 +107,10 @@ is
 
 
 
-   function Image (Self : bounding_Box) return String
+   function Image (Self : in bounding_Box) return String
    is
    begin
-      return    "(lower => " & Image (Self.Lower)
+      return   "(lower => " & Image (Self.Lower)
              & ", upper => " & Image (Self.Upper) & ")";
    end Image;
 

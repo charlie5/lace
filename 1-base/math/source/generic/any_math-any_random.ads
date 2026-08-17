@@ -10,4 +10,5 @@ is
 
    function random_Boolean                                      return Boolean;
 
+
 end any_Math.any_Random;

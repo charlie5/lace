@@ -1,7 +1,7 @@
 generic
 package any_Math.any_Geometry.any_d3.any_Modeller.any_Forge
 --
---  Provides constructors for several geometry primitives.
+-- Provides constructors for several geometry primitives.
 --
 is
 
@@ -17,7 +17,7 @@ is
 
    type Vertex is
       record
-         Id   : Positive := no_Id;
+         Id   : Positive                := no_Id;
          Site : any_Geometry.any_d3.Site;
       end record;
 
@@ -28,15 +28,8 @@ is
    type Triangle  is array (Positive range 1 .. 3) of Positive;
    type Triangles is array (Positive range <>)     of Triangle;
 
---     type mesh_Model (num_Vertices  : Positive;
---                      num_Triangles : Positive) is
---        record
---           Vertices  : mesh.Vertices  (1 .. num_Vertices);
---           Triangles : mesh.Triangles (1 .. num_Triangles);
---        end record;
+   function polar_Model_from (Model_Filename : in String)      return polar_Model;
+   function  mesh_Model_from (Model          : in polar_Model) return a_Model;
 
-   function polar_Model_from (Model_Filename : in String)      return polar_model;
-   function  mesh_Model_from (Model          : in polar_Model) return a_Model;      -- mesh_Model;
 
 end any_Math.any_Geometry.any_d3.any_Modeller.any_Forge;
-

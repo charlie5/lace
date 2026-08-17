@@ -17,8 +17,8 @@ is
    function Image (Self : in Triangles) return String;
 
 
-   --------
-   -- Model
+   ---------
+   --- Model
    --
 
    type Model_Options is tagged null record;
@@ -42,9 +42,8 @@ is
    function Image (Self : in Model) return String;
 
 
-
-   ----------------
-   -- Geometry Item
+   -----------------
+   --- Geometry Item
    --
 
    type Item is abstract tagged private;
@@ -62,5 +61,6 @@ private
       end record;
 
    default_Model_Options : constant Model_Options := (null record);
+
 
 end any_Math.any_Geometry;

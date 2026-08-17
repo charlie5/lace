@@ -1,6 +1,7 @@
 with
      ada.Strings.Hash;
 
+
 package body any_Math.any_Geometry.any_d3.any_Modeller
 is
    use ada.Containers;
@@ -25,6 +26,7 @@ is
    --
    is
       use Vertex_Maps_of_Index;
+
       Cursor : constant Vertex_Maps_of_Index.Cursor := Self.Index_Map.find (for_Vertex);
    begin
       if has_Element (Cursor)
@@ -104,7 +106,7 @@ is
    is
    begin
       return Natural (Self.Triangles.Length);
-   end triangle_Count;
+   end Triangle_Count;
 
 
 
@@ -122,6 +124,7 @@ is
 
       declare
          use Index_Triangle_Sets;
+
          Cursor : Index_Triangle_Sets.Cursor := Self.Triangles.First;
       begin
          for i in 1 .. Result.Tri_Count
@@ -152,7 +155,7 @@ is
       end if;
 
       return Self.bounding_sphere_Radius;
-   end bounding_sphere_Radius;
+   end bounding_Sphere_Radius;
 
 
 end any_Math.any_Geometry.any_d3.any_Modeller;

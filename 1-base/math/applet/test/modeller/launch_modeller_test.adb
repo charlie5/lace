@@ -5,8 +5,9 @@ with
 
 procedure launch_modeller_Test
 is
-   use ada.Text_IO,
-       float_Math.Geometry.d3.Modeller.Forge;
+   use
+        ada.Text_IO,
+        float_Math.Geometry.d3.Modeller.Forge;
 
    the_Modeller : polar_Model := polar_Model_from ("gaspra.tab");
    pragma Unreferenced (the_Modeller);     -- Constructing the model is the test.

@@ -3,5 +3,3 @@ with
 
 
 package float_Math.Random is new float_Math.any_Random;
-
-

@@ -6,12 +6,13 @@ package body any_Math.any_fast_Rotation
 is
 
    function to_Matrix_2x2 (m11, m12,
-                           m21, m22 : Real) return Matrix_2x2
+                           m21, m22 : in Real) return Matrix_2x2
    is
    begin
       return (1 => (m11, m12),
               2 => (m21, m22));
    end to_Matrix_2x2;
+
 
 
    package the_Cache is new cached_Rotation (Float_type                 => any_Math.Real,

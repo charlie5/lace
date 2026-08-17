@@ -4,4 +4,5 @@ is
 
    pragma Pure;
 
+
 end any_Math.any_Algebra;

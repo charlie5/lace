@@ -1,6 +1,7 @@
 with
      ada.Numerics.generic_elementary_Functions;
 
+
 package body cached_Trigonometry
 is
    Sin_Cache       : array (0 .. slot_Count - 1) of Float_Type;
@@ -16,7 +17,8 @@ is
    is
       Index : standard.Integer := standard.Integer (Angle * index_Factor) mod slot_Count;
    begin
-      if Index < 0 then
+      if Index < 0
+      then
          Index := Index + slot_Count;
       end if;
 
@@ -29,7 +31,8 @@ is
    is
       Index : standard.Integer := standard.Integer (Angle * index_Factor) mod slot_Count;
    begin
-      if Index < 0 then
+      if Index < 0
+      then
          Index := Index + slot_Count;
       end if;
 
@@ -43,7 +46,8 @@ is
    is
       Index : standard.Integer := standard.Integer (Angle * index_Factor) mod slot_Count;
    begin
-      if Index < 0 then
+      if Index < 0
+      then
          Index := Index + slot_Count;
       end if;
 
@@ -57,7 +61,7 @@ is
    -- TODO: Tan, arcCos, etc
 
 
-   package Functions is new Ada.Numerics.generic_elementary_Functions (Float_Type);
+   package Functions is new ada.Numerics.generic_elementary_Functions (Float_Type);
 
 begin
    for Each in cos_Cache'Range

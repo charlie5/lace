@@ -20,7 +20,7 @@ is
                              [0.0, 1.0, 0.0],
                              [0.0, 0.0, 0.0]);
 
-      --  TODO: Add the rest.
+      -- TODO: Add the rest.
 
       return Modeller.Model;
    end to_Box_Model;
@@ -57,7 +57,7 @@ is
       Modeller  : any_Modeller.item;
 
    begin
-      --  Define cylinder body.
+      -- Define cylinder body.
       --
       ny := 1.0;
       nz := 0.0;              -- Normal vector = (0, ny, nz)
@@ -72,7 +72,7 @@ is
          the_Edges (Each).Aft  (2) :=  nz * Radius;
          the_Edges (Each).Aft  (3) := -L;
 
-         --  Rotate ny, nz.
+         -- Rotate ny, nz.
          --
          tmp := ca * ny  -  sa * nz;
          nz  := sa * ny  +  ca * nz;
@@ -90,6 +90,7 @@ is
             Modeller.add_Triangle (the_Edges (Each + 1).Aft,
                                    the_Edges (Each + 1).Fore,
                                    the_Edges (Each)    .Fore);
+
          else
             Modeller.add_Triangle (the_Edges (Each)       .Fore,
                                    the_Edges (Each)       .Aft,
@@ -101,7 +102,7 @@ is
       end loop;
 
 
-      --  Define fore cylinder cap.
+      -- Define fore cylinder cap.
       --
       declare
          the_arch_Edges : arch_Edges;
@@ -111,13 +112,13 @@ is
 
          for each_Hoop in 1 .. quality_Level
          loop
-            --  Get start_n2 = rotated start_n.
+            -- Get start_n2 = rotated start_n.
             --
             declare
                start_nx2 : constant Real :=  ca * start_nx  +  sa * start_ny;
                start_ny2 : constant Real := -sa * start_nx  +  ca * start_ny;
             begin
-               --  Get n = start_n and n2 = start_n2.
+               -- Get n = start_n and n2 = start_n2.
                --
                ny := start_ny;
                nz := 0.0;
@@ -133,7 +134,7 @@ is
                      the_arch_Edges (each_Hoop)(Each) (2) := nz2 * Radius;
                      the_arch_Edges (each_Hoop)(Each) (3) := nx2 * Radius + L;
 
-                     --  Rotate n, n2.
+                     -- Rotate n, n2.
                      --
                      tmp := ca * ny  -  sa * nz;
                      nz  := sa * ny  +  ca * nz;
@@ -158,6 +159,7 @@ is
                Modeller.add_Triangle (the_Edges (Each)    .Fore,
                                       the_Edges (Each + 1).Fore,
                                       the_arch_Edges (1) (Each));
+
             else
                Modeller.add_Triangle (the_Edges (Each).Fore,
                                       the_Edges (1)   .Fore,
@@ -169,6 +171,7 @@ is
                Modeller.add_Triangle (the_Edges (Each + 1).Fore,
                                       the_arch_Edges (1) (Each + 1),
                                       the_arch_Edges (1) (Each));
+
             else
                Modeller.add_Triangle (the_Edges (1).Fore,
                                       the_arch_Edges (1) (1),
@@ -206,7 +209,7 @@ is
       end;
 
 
-      --  Define aft cylinder cap.
+      -- Define aft cylinder cap.
       --
       declare
          the_arch_Edges : arch_Edges;
@@ -217,12 +220,12 @@ is
          for each_Hoop in 1 .. quality_Level
          loop
             declare
-               --  Get start_n2 = rotated start_n.
+               -- Get start_n2 = rotated start_n.
                --
                start_nx2 : constant Real := ca * start_nx  -  sa * start_ny;
                start_ny2 : constant Real := sa * start_nx  +  ca * start_ny;
             begin
-               --  Get n = start_n and n2 = start_n2.
+               -- Get n = start_n and n2 = start_n2.
                --
                ny := start_ny;
                nz := 0.0;
@@ -238,7 +241,7 @@ is
                      the_arch_Edges (each_Hoop) (Each) (2) := nz2 * Radius;
                      the_arch_Edges (each_Hoop) (Each) (3) := nx2 * Radius - L;
 
-                     --  Rotate n, n2
+                     -- Rotate n, n2
                      --
                      tmp := ca * ny  -  sa * nz;
                      nz  := sa * ny  +  ca * nz;
@@ -263,6 +266,7 @@ is
                Modeller.add_Triangle (the_Edges (Each).Aft,
                                       the_arch_Edges (1) (Each),
                                       the_Edges (Each + 1).Aft);
+
             else
                Modeller.add_Triangle (the_Edges (Each).Aft,
                                       the_arch_Edges (1) (Each),
@@ -274,6 +278,7 @@ is
                Modeller.add_Triangle (The_Edges (Each + 1).Aft,
                                       the_arch_Edges (1) (Each),
                                       the_arch_Edges (1) (Each + 1));
+
             else
                Modeller.add_Triangle (the_Edges (1).Aft,
                                       the_arch_Edges (1) (Each),
@@ -293,7 +298,7 @@ is
                      if Each = sides_Count then return 1;
                      else                       return Each + 1;
                      end if;
-                  end next_hoop_Vertex;
+                  end next_Hoop_Vertex;
                begin
                   Modeller.add_Triangle (the_arch_Edges (each_Hoop)     (Each),
                                          the_arch_Edges (each_Hoop + 1) (Each),
@@ -312,12 +317,10 @@ is
 
 
       return Modeller.Model;
-   end to_capsule_Model;
+   end to_Capsule_Model;
 
 
-
-
-   -- Polar to euclidian shape models.
+   --- Polar to euclidian shape models.
    --
 
    function to_Radians (From : in Latitude) return Radians
@@ -325,6 +328,7 @@ is
    begin
       return Radians (From) * Pi / 180.0;
    end to_Radians;
+
 
 
    function to_Radians (From : in Longitude) return Radians
@@ -337,9 +341,10 @@ is
 
    function polar_Model_from (model_Filename : in String) return polar_Model     -- TODO: Handle different file formats.
    is
-      use Functions,
-          ada.Text_IO,
-          ada.Strings.unbounded;
+      use
+           Functions,
+           ada.Text_IO,
+           ada.Strings.unbounded;
 
       the_File : File_type;
       the_Text : unbounded_String;
@@ -358,8 +363,9 @@ is
 
          function get_Real return Real
          is
-            use ada.Strings,
-                ada.Strings.Maps;
+            use
+                 ada.Strings,
+                 ada.Strings.Maps;
 
             real_Set : constant Character_Set :=    to_Set (Span => (Low  => '0',
                                                                      High => '9'))

@@ -8,7 +8,7 @@ package cached_Trigonometry
 -- Caches trig functions for speed at the cost of precision.
 --
 is
-   pragma Optimize (Time);
+   pragma optimize (Time);
 
    function  Cos (Angle : in Float_type) return Float_type;
    function  Sin (Angle : in Float_type) return Float_type;
@@ -20,10 +20,12 @@ is
    -- TODO: tan, arccos, etc
 
 
+
 private
 
-   pragma Inline_Always (Cos);
-   pragma Inline_Always (Sin);
-   pragma Inline_Always (Get);
+   pragma inline_Always (Cos);
+   pragma inline_Always (Sin);
+   pragma inline_Always (Get);
+
 
 end cached_Trigonometry;

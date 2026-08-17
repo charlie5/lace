@@ -1,7 +1,7 @@
 with Ahven,
      float_Math;
 
---  with Ada.Text_IO; use Ada.Text_IO;
+-- with ada.Text_IO; use ada.Text_IO;
 
 
 package body math_Tests
@@ -15,7 +15,9 @@ is
    procedure counter_Test
    is
       use float_Math;
+
       use type Counter;
+
       Count : Counter := 0;
    begin
       increment (Count);      assert (Count = 1,  "increment () failed !");
@@ -24,8 +26,6 @@ is
       increment (Count, 5);   assert (Count = 5,  "increment (by) failed !");
       decrement (Count, 5);   assert (Count = 0,  "decrement (by) failed !");
    end counter_Test;
-
-
 
 
 
@@ -47,10 +47,9 @@ is
          A : Integer := 1;
          B : Integer := 2;
       begin
-         swap (A, B);          assert (A = 2 and B = 1, "swap () ... failed !");
+         swap (A, B);          assert (A = 2 and then B = 1, "swap () ... failed !");
       end;
    end integer_Test;
-
 
 
 
@@ -60,6 +59,7 @@ is
    begin
       --- almost_Zero
       --
+
       begin
          assert (    almost_Zero (0.0                        ),  "almost_Zero (0.0) ... failed !");
 
@@ -72,8 +72,10 @@ is
                                       - Real'Base'Model_Small),  "not almost_Zero (0.0 - Real'Base'Model_Small - Real'Base'Model_Small) ... failed !");
       end;
 
+
       --- Clamped
       --
+
       begin
          assert (Clamped ( 0.0, -1.0, 1.0) =  0.0,  "Clamped (a) ... failed !");
          assert (Clamped ( 2.0, -1.0, 1.0) =  1.0,  "Clamped (b) ... failed !");
@@ -83,6 +85,7 @@ is
 
       --- clamp
       --
+
       declare
          the_Real : Real;
       begin
@@ -94,6 +97,7 @@ is
 
       --- Image
       --
+
       declare
          the_Real : constant Real := 1.1111_1111;
       begin
@@ -112,6 +116,7 @@ is
    begin
       --- to_Radians
       --
+
       assert (to_Radians (  0.0) =   0.0,                "to_Radians (a) ... failed ! ... " & Image (to_Radians (  0.0), 12));
       assert (to_Radians ( 90.0) =  90.0 * Pi / 180.0,   "to_Radians (b) ... failed ! ... " & Image (to_Radians ( 90.0), 12));
       assert (to_Radians (180.0) = 180.0 * Pi / 180.0,   "to_Radians (c) ... failed ! ... " & Image (to_Radians (180.0), 12));
@@ -121,12 +126,12 @@ is
 
       --- to_Degrees
       --
+
       assert (to_Degrees ( 0.0)       =   0.0,   "to_Degrees (a) ... failed ! ... " & Degrees'Image (to_Degrees (  0.0)));
       assert (to_Degrees ( Pi / 2.00) =  90.0,   "to_Degrees (b) ... failed ! ... " & Degrees'Image (to_Degrees (  0.0)));
       assert (to_Degrees ( Pi)        = 180.0,   "to_Degrees (c) ... failed ! ... " & Degrees'Image (to_Degrees (  0.0)));
       assert (to_Degrees ( Pi * 2.0)  = 360.0,   "to_Degrees (d) ... failed ! ... " & Degrees'Image (to_Degrees (  0.0)));
    end angle_Test;
-
 
 
 
@@ -136,6 +141,7 @@ is
    begin
       --- Sum & Average
       --
+
       assert (Sum     ([0.0, 1.0, 2.0, 3.0])  =  6.0,   "Sum     () ... failed ! ... " & Image (Sum     ([0.0, 1.0, 2.0, 3.0])));
       assert (Average ([0.0, 1.0, 2.0, 3.0])  =  1.5,   "Average () ... failed ! ... " & Image (Average ([0.0, 1.0, 2.0, 3.0])));
 
@@ -143,11 +149,9 @@ is
 
 
 
-
-
-
    overriding
-   procedure Initialize (T : in out Test) is
+   procedure initialize (T : in out Test)
+   is
    begin
       T.set_Name ("Core Math Tests");
 
@@ -156,10 +160,7 @@ is
       Framework.add_test_Routine (T, real_Test   'Access, "real_Test");
       Framework.add_test_Routine (T, angle_Test  'Access, "angle_Test");
       Framework.add_test_Routine (T, vector_Test 'Access, "vector_Test");
-   end Initialize;
-
-
-
+   end initialize;
 
 
 end math_Tests;

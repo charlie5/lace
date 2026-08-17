@@ -1,7 +1,8 @@
 package body cached_Rotation
 is
-   use ada.Numerics,
-       float_elementary_Functions;
+   use
+        ada.Numerics,
+        float_elementary_Functions;
 
 
    the_Cache       : array (0 .. slot_Count - 1) of aliased Matrix_2x2_type;

@@ -5,7 +5,7 @@ is
    --- Vector_3
    --
 
-   function Angle (Point_1, Point_2, Point_3 : Vector_3) return Radians
+   function Angle (Point_1, Point_2, Point_3 : in Vector_3) return Radians
    is
       use Functions;
 
@@ -26,6 +26,7 @@ is
    function Angle_between_pre_Norm (U, V : in Vector_3) return Radians
    is
       use Functions;
+
       Val : Real := U * V;   -- Dot product.
    begin
       if    val < -1.0 then   val := -1.0;   -- Clamp to avoid rounding errors; arcCos will
@@ -67,7 +68,6 @@ is
    end Interpolated;
 
 
-
    --------------
    --- Matrix_3x3
    --
@@ -105,11 +105,12 @@ is
    end right_Direction;
 
 
-   --  Following procedure is from Project Spandex, by Paul Nettle.
+   -- Following procedure is from Project Spandex, by Paul Nettle.
    --
    procedure re_Orthonormalise (Matrix  : in out Matrix_3x3)
    is
       use Functions;
+
       m : Matrix_3x3 renames Matrix;
 
       dot1,
@@ -124,9 +125,9 @@ is
       m (1, 2) := m (1, 2) - dot1 * m (2, 2) - dot2 * m (3, 2);
       m (1, 3) := m (1, 3) - dot1 * m (2, 3) - dot2 * m (3, 3);
 
-      vlen := 1.0 / SqRt (m (1, 1) * m (1, 1) +
-                        m (1, 2) * m (1, 2) +
-                        m (1, 3) * m (1, 3));
+      vlen := 1.0 / SqRt (  m (1, 1) * m (1, 1)
+                          + m (1, 2) * m (1, 2)
+                          + m (1, 3) * m (1, 3));
 
       m (1, 1) := m (1, 1) * vlen;
       m (1, 2) := m (1, 2) * vlen;
@@ -139,9 +140,9 @@ is
       m (2, 2) := m (2, 2) - dot1 * m (1, 2) - dot2 * m (3, 2);
       m (2, 3) := m (2, 3) - dot1 * m (1, 3) - dot2 * m (3, 3);
 
-      vlen := 1.0 / SqRt (m (2, 1) * m (2, 1) +
-                        m (2, 2) * m (2, 2) +
-                        m (2, 3) * m (2, 3));
+      vlen := 1.0 / SqRt (  m (2, 1) * m (2, 1)
+                          + m (2, 2) * m (2, 2)
+                          + m (2, 3) * m (2, 3));
 
       m (2, 1) := m (2, 1) * vlen;
       m (2, 2) := m (2, 2) * vlen;
@@ -180,6 +181,7 @@ is
    function x_Rotation_from (Angle : in Radians) return Matrix_3x3
    is
       use Functions;
+
       A : Radians renames Angle;
    begin
       return [[1.0,      0.0,      0.0],
@@ -189,10 +191,10 @@ is
 
 
 
-
    function y_Rotation_from (Angle : in Radians) return Matrix_3x3
    is
       use Functions;
+
       A : Radians renames Angle;
    begin
       return [[ Cos (A),  0.0,  Sin (A)],
@@ -205,6 +207,7 @@ is
    function z_Rotation_from (Angle : in Radians) return Matrix_3x3
    is
       use Functions;
+
       A : Radians renames Angle;
    begin
       return [[Cos (A),  -Sin (A),  0.0],
@@ -237,7 +240,6 @@ is
    end to_Rotation;
 
 
-
    ---------
    --- Euler
    --
@@ -245,6 +247,7 @@ is
    function to_Rotation (Angles : in Euler) return Matrix_3x3
    is
       use Functions;
+
       A  : constant Real := Cos (Angles (1));
       B  : constant Real := Sin (Angles (1));
       C  : constant Real := Cos (Angles (2));
@@ -261,7 +264,7 @@ is
 
 
 
-   function to_translation_Matrix (Translation : Vector_3) return Matrix_4x4
+   function to_translation_Matrix (Translation : in Vector_3) return Matrix_4x4
    is
    begin
       return [[            1.0,             0.0,             0.0, 0.0],
@@ -269,7 +272,6 @@ is
               [            0.0,             0.0,             1.0, 0.0],
               [Translation (1), Translation (2), Translation (3), 1.0]];
    end to_translation_Matrix;
-
 
 
    -----------
@@ -289,7 +291,7 @@ is
       Cotangent :          Real;
 
    begin
-      if deltaZ = 0.0 or Sine = 0.0 or Aspect = 0.0
+      if deltaZ = 0.0 or else Sine = 0.0 or else Aspect = 0.0
       then
          raise Constraint_Error;   -- tbd: 'mesa' simnply returns here ... ?
       end if;
@@ -304,7 +306,7 @@ is
 
 
 
-   function to_viewport_Transform (Origin : Vector_2;   Extent : Vector_2) return Matrix_4x4
+   function to_viewport_Transform (Origin : in Vector_2;   Extent : in Vector_2) return Matrix_4x4
    is
       SX : constant Real := Extent (1) / 2.0;
       SY : constant Real := Extent (2) / 2.0;
@@ -317,7 +319,7 @@ is
 
 
 
-   function Look_at (Eye, Center, Up : Vector_3) return Matrix_4x4
+   function Look_at (Eye, Center, Up : in Vector_3) return Matrix_4x4
    is
       Forward   : constant Vector_3 := Normalised ([Center (1) - Eye (1),
                                                     Center (2) - Eye (2),
@@ -332,8 +334,7 @@ is
    end Look_at;
 
 
-
-   -----------------
+   ----------------
    --- Transform_3d
    --
 
@@ -377,6 +378,7 @@ is
    function "*" (Left : in Vector_3;   Right : in Matrix_4x4) return Vector_3
    is
       use Vectors;
+
       Result : constant Vector := Vector (Left & 1.0) * Matrix (Right);
    begin
       return Vector_3 (Result (1 .. 3));
@@ -402,7 +404,6 @@ is
    end inverse_Transform;
 
 
-
    ---------------
    --- Quaternions
    --
@@ -410,7 +411,8 @@ is
    function to_Quaternion (Matrix : in Matrix_3x3) return Quaternion
    is
       use Functions;
-      TR     : constant Real := Matrix (1, 1)  +  Matrix (2, 2)  +  Matrix (3, 3);
+
+      TR     : constant Real      := Matrix (1, 1)  +  Matrix (2, 2)  +  Matrix (3, 3);
       S      :          Real;
       Result :          Quaternion;
 
@@ -428,7 +430,7 @@ is
          return Result;
       end if;
 
-      --  Otherwise, find the largest diagonal element and apply the appropriate case.
+      -- Otherwise, find the largest diagonal element and apply the appropriate case.
       --
       declare
          function case_1_Result return Quaternion
@@ -445,6 +447,8 @@ is
             return Result;
          end case_1_Result;
 
+
+
          function case_2_Result return Quaternion
          is
          begin
@@ -458,6 +462,8 @@ is
 
             return Result;
          end case_2_Result;
+
+
 
          function case_3_Result return Quaternion
          is
@@ -473,9 +479,9 @@ is
             return Result;
          end case_3_Result;
 
-         pragma Inline (case_1_Result);
-         pragma Inline (case_2_Result);
-         pragma Inline (case_3_Result);
+         pragma inline (case_1_Result);
+         pragma inline (case_2_Result);
+         pragma inline (case_3_Result);
 
       begin
          if Matrix (2, 2) > Matrix (1, 1)
@@ -502,10 +508,11 @@ is
    procedure set_from_Matrix_3x3 (Quat : out Quaternion;   Matrix : in Matrix_3x3)
    is
       use Functions;
+
       S  :          Real;
-      TR : constant Real := 1.0 + Matrix (1, 1)
-                                + Matrix (2, 2)
-                                + Matrix (3, 3);
+      TR : constant Real :=   1.0 + Matrix (1, 1)
+                            + Matrix (2, 2)
+                            + Matrix (3, 3);
    begin
       if TR > 1.0e-9
       then
@@ -593,11 +600,10 @@ is
    function "+" (Left, Right : in Quaternion) return Quaternion
    is
    begin
-      return
-        (R =>  Left.R     + Right.R,
-         V => [Left.V (1) + Right.V (1),
-               Left.V (2) + Right.V (2),
-               Left.V (3) + Right.V (3)]);
+      return (R =>  Left.R     + Right.R,
+              V => [Left.V (1) + Right.V (1),
+                    Left.V (2) + Right.V (2),
+                    Left.V (3) + Right.V (3)]);
    end "+";
 
 
@@ -605,11 +611,10 @@ is
    function "-" (Left, Right : in Quaternion) return Quaternion
    is
    begin
-      return
-        (R =>  Left.R     - Right.R,
-         V => [Left.V (1) - Right.V (1),
-               Left.V (2) - Right.V (2),
-               Left.V (3) - Right.V (3)]);
+      return (R =>  Left.R     - Right.R,
+              V => [Left.V (1) - Right.V (1),
+                    Left.V (2) - Right.V (2),
+                    Left.V (3) - Right.V (3)]);
    end "-";
 
 
@@ -625,11 +630,10 @@ is
    function "*" (Left, Right : in Quaternion) return Real
    is
    begin
-      return
-           Left.R     * Right.R
-        +  Left.V (1) * Right.V (1)
-        +  Left.V (2) * Right.V (2)
-        +  Left.V (3) * Right.V (3);
+      return   Left.R     * Right.R
+             + Left.V (1) * Right.V (1)
+             + Left.V (2) * Right.V (2)
+             + Left.V (3) * Right.V (3);
    end "*";
 
 
@@ -637,14 +641,13 @@ is
    function "*" (Left, Right : in Quaternion) return Quaternion
    is
    begin
-      return
-        (V => [Left.R * Right.V (1)  +  Left.V (1) * Right.R  +  Left.V (2) * Right.V (3)  -  Left.V (3) * Right.V (2),
-               Left.R * Right.V (2)  +  Left.V (2) * Right.R  +  Left.V (3) * Right.V (1)  -  Left.V (1) * Right.V (3),
-               Left.R * Right.V (3)  +  Left.V (3) * Right.R  +  Left.V (1) * Right.V (2)  -  Left.V (2) * Right.V (1)],
-         R =>    Left.R     * Right.R
-              -  Left.V (1) * Right.V (1)
-              -  Left.V (2) * Right.V (2)
-              -  Left.V (3) * Right.V (3));
+      return (V => [Left.R * Right.V (1)  +  Left.V (1) * Right.R  +  Left.V (2) * Right.V (3)  -  Left.V (3) * Right.V (2),
+                    Left.R * Right.V (2)  +  Left.V (2) * Right.R  +  Left.V (3) * Right.V (1)  -  Left.V (1) * Right.V (3),
+                    Left.R * Right.V (3)  +  Left.V (3) * Right.R  +  Left.V (1) * Right.V (2)  -  Left.V (2) * Right.V (1)],
+              R =>   Left.R     * Right.R
+                   - Left.V (1) * Right.V (1)
+                   - Left.V (2) * Right.V (2)
+                   - Left.V (3) * Right.V (3));
    end "*";
 
 
@@ -660,6 +663,7 @@ is
    function Angle (Quat : in Quaternion) return Real
    is
       use Functions;
+
       Q : Quaternion := Quat;
    begin
       if Q.R > 1.0
@@ -683,11 +687,10 @@ is
    function "*" (Left : in Quaternion;   Right : in Vector_3) return Quaternion
    is
    begin
-      return
-        ( Left.R     * Right (1)  +  Left.V (2) * Right (3)  -  Left.V (3) * Right (2),
-         [Left.R     * Right (2)  +  Left.V (3) * Right (1)  -  Left.V (1) * Right (3),
-          Left.R     * Right (3)  +  Left.V (1) * Right (2)  -  Left.V (2) * Right (1),
-         -Left.V (1) * Right (1)  -  Left.V (2) * Right (2)  -  Left.V (3) * Right (3)]);
+      return ( Left.R     * Right (1)  +  Left.V (2) * Right (3)  -  Left.V (3) * Right (2),
+              [Left.R     * Right (2)  +  Left.V (3) * Right (1)  -  Left.V (1) * Right (3),
+               Left.R     * Right (3)  +  Left.V (1) * Right (2)  -  Left.V (2) * Right (1),
+              -Left.V (1) * Right (1)  -  Left.V (2) * Right (2)  -  Left.V (3) * Right (3)]);
    end "*";
 
 
@@ -695,11 +698,10 @@ is
    function "*" (Left : in Vector_3;   Right : in Quaternion) return Quaternion
    is
    begin
-      return
-        (-Left (1) * Right.V (1) -  Left (2) * Right.V (2)  -  Left (3) * Right.V (3),
-         [Left (1) * Right.R     +  Left (2) * Right.V (3)  -  Left (3) * Right.V (2),
-          Left (2) * Right.R     +  Left (3) * Right.V (1)  -  Left (1) * Right.V (3),
-          Left (3) * Right.R     +  Left (1) * Right.V (2)  -  Left (2) * Right.V (1)]);
+      return (-Left (1) * Right.V (1) -  Left (2) * Right.V (2)  -  Left (3) * Right.V (3),
+              [Left (1) * Right.R     +  Left (2) * Right.V (3)  -  Left (3) * Right.V (2),
+               Left (2) * Right.R     +  Left (3) * Right.V (1)  -  Left (1) * Right.V (3),
+               Left (3) * Right.R     +  Left (1) * Right.V (2)  -  Left (2) * Right.V (1)]);
    end "*";
 
 
@@ -707,11 +709,10 @@ is
    function "*" (Left : in Quaternion;   Right : in Real) return Quaternion
    is
    begin
-      return
-        (R =>  Left.R     * Right,
-         V => [Left.V (1) * Right,
-               Left.V (2) * Right,
-               Left.V (3) * Right]);
+      return (R =>  Left.R     * Right,
+              V => [Left.V (1) * Right,
+                    Left.V (2) * Right,
+                    Left.V (3) * Right]);
    end "*";
 
 
@@ -761,7 +762,7 @@ is
       end if;
 
       declare
-         --  Q1 and Q2 should be unit length or else something broken will happen.
+         -- Q1 and Q2 should be unit length or else something broken will happen.
          Q1  : Quaternion :=      From;
          Q2  : Quaternion renames To;
 
@@ -785,6 +786,7 @@ is
 
          declare
             use Functions;
+
             theta_0 : constant Real       := arcCos (Dot);               -- theta_0 = Angle between input vectors.
             theta   : constant Real       := theta_0 * P;                -- theta   = Angle between Q1 and result.
             Q3      : constant Quaternion := Normalised (Q2 - Q1*Dot);
@@ -795,12 +797,11 @@ is
    end Interpolated;
 
 
-
    ------------
    --- Vector_4
    --
 
-   function "/" (Left, Right : Vector_4) return Vector_4
+   function "/" (Left, Right : in Vector_4) return Vector_4
    is
    begin
       return [Left (1) / Right (1),
@@ -856,7 +857,7 @@ is
 
 
 
-   --  From mesa.
+   -- From mesa.
    --
    function unProject (From       : in Vector_3;
                        Model      : in Matrix_4x4;
@@ -867,7 +868,7 @@ is
       window_Position :          Vector_4   := [From (1), From (2), From (3), 1.0];
       world_Position  :          Vector_4;
    begin
-      --  Map x and y from window coordinates.
+      -- Map x and y from window coordinates.
       --
       window_Position (1) := (window_Position (1) - Real (Viewport.Min (1))) / Real (Viewport.Max (1));
       window_Position (2) := (window_Position (2) - Real (Viewport.Min (2))) / Real (Viewport.Max (2));
@@ -881,7 +882,7 @@ is
       if world_Position (4) = 0.0
       then
          world_Position (4) := Real'Epsilon;
-         --  raise Constraint_Error with "unProject: world_Position (4) = 0.0";     -- TODO: Find out why this happens.
+         -- raise Constraint_Error with "unProject: world_Position (4) = 0.0";     -- TODO: Find out why this happens.
       end if;
 
       world_Position (1) := world_Position (1) / world_Position (4);
@@ -890,7 +891,6 @@ is
 
       return Vector_3 (world_Position (1 .. 3));
    end unProject;
-
 
 
    --------------
@@ -939,7 +939,6 @@ is
               [Rotation (3, 1),  Rotation (3, 2),  Rotation (3, 3),   0.0],
               [Translation (1),  Translation (2),  Translation (3),   1.0]];
    end to_transform_Matrix;
-
 
 
    --------------
@@ -996,7 +995,7 @@ is
 
    function inverse_Rotation (Rotation : in Matrix_3x3) return Matrix_3x3
    is
---        pragma Suppress (all_Checks);          -- For speed.
+--        pragma suppress (all_Checks);          -- For speed.
       m : Matrix_3x3 renames Rotation;
    begin
       return [[m (1,1),  m (2,1),  m (3,1)],
@@ -1008,7 +1007,7 @@ is
 
    function inverse_Transform (Transform : in Matrix_4x4) return Matrix_4x4
    is
---        pragma Suppress (all_Checks);          -- For speed.
+--        pragma suppress (all_Checks);          -- For speed.
 
       m :          Matrix_4x4 renames Transform;
 
@@ -1025,18 +1024,15 @@ is
    end inverse_Transform;
 
 
-
-
-
    ----------------------------
    --- Line/Plane Intersections
    --
 
-   function intersect_Line_and_x0_Plane (Line_p1, Line_p2 : Vector_3) return Vector_3
+   function intersect_Line_and_x0_Plane (Line_p1, Line_p2 : in Vector_3) return Vector_3
    is
    begin
-      if    Line_p1 (1) = 0.0
-        and Line_p2 (1) = 0.0
+      if         Line_p1 (1) = 0.0
+        and then Line_p2 (1) = 0.0
       then
          raise Line_lies_on_Plane;
       end if;
@@ -1054,15 +1050,15 @@ is
       begin
          return Intersect;
       end;
-   end intersect_line_and_x0_plane;
+   end intersect_Line_and_x0_Plane;
 
 
 
-   function intersect_Line_and_y0_Plane (Line_p1, Line_p2 : Vector_3) return Vector_3
+   function intersect_Line_and_y0_Plane (Line_p1, Line_p2 : in Vector_3) return Vector_3
    is
    begin
-      if    Line_p1 (2) = 0.0
-        and Line_p2 (2) = 0.0
+      if         Line_p1 (2) = 0.0
+        and then Line_p2 (2) = 0.0
       then
          raise Line_lies_on_Plane;
       end if;
@@ -1080,15 +1076,15 @@ is
       begin
          return Intersect;
       end;
-   end intersect_line_and_y0_plane;
+   end intersect_Line_and_y0_Plane;
 
 
 
-   function intersect_Line_and_z0_Plane (Line_p1, Line_p2 : Vector_3) return Vector_3
+   function intersect_Line_and_z0_Plane (Line_p1, Line_p2 : in Vector_3) return Vector_3
    is
    begin
-      if    Line_p1 (3) = 0.0
-        and Line_p2 (3) = 0.0
+      if         Line_p1 (3) = 0.0
+        and then Line_p2 (3) = 0.0
       then
          raise Line_lies_on_Plane;
       end if;

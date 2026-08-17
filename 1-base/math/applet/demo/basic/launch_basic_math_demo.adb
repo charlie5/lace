@@ -3,7 +3,7 @@ with
      float_Math.Geometry,
      long_Math,
 
-     ada.text_IO;
+     ada.Text_IO;
 
 
 procedure launch_basic_math_Demo
@@ -11,10 +11,12 @@ procedure launch_basic_math_Demo
 -- A simple demonstration of the Math packages.
 --
 is
-   package   Math renames float_Math;
-   use       Math, math.Geometry;
+   package Math renames float_Math;
+   use
+        Math,
+        math.Geometry;
 
-   procedure log (Message : in String) renames ada.text_IO.put_Line;
+   procedure log (Message : in String) renames ada.Text_IO.put_Line;
 
 begin
    declare
@@ -27,6 +29,7 @@ begin
 
    declare
       use Vectors;
+
       Value : Vector_3 := math.Origin_3d;
    begin
       log (Image (Value));

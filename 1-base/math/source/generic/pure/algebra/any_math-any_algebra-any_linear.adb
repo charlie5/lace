@@ -26,6 +26,7 @@ is
    procedure normalise (Self : in out Vector)
    is
       use Vectors;
+
       inverse_Norm : constant Real := 1.0 / abs Self;
    begin
       for Each in Self'Range
@@ -86,7 +87,7 @@ is
    is
       Min : Vector (Left'Range);
    begin
-      pragma Assert (Left'Length = Right'Length);
+      pragma assert (Left'Length = Right'Length);
 
       for Each in Min'Range
       loop
@@ -103,7 +104,7 @@ is
    is
       Max : Vector (Left'Range);
    begin
-      pragma Assert (Left'Length = Right'Length);
+      pragma assert (Left'Length = Right'Length);
 
       for Each in Max'Range
       loop
@@ -127,7 +128,6 @@ is
 
       return Result;
    end scaled;
-
 
 
    ------------
@@ -183,7 +183,7 @@ is
    function Image (Self : in Matrix) return String
    is
       Image : String (1 .. 1024 * 1024);         -- Handles one megabyte image, excess is truncated.
-      Count : Standard.Natural         := 0;
+      Count : standard.Natural         := 0;
 
       procedure add (Text : in String)
       is
@@ -282,7 +282,6 @@ is
    end invert;
 
 
-
    ---------------
    --- Quaternions
    --
@@ -299,6 +298,7 @@ is
       then
          declare
             use Functions;
+
             half_Angle : constant Real := Angle * 0.5;
          begin
             Result.R     := Cos (half_Angle);
@@ -307,6 +307,7 @@ is
             Result.V (2) := axis_Y * L;
             Result.V (3) := axis_Z * L;
          end;
+
       else
          Result.R     := L;
          Result.V (1) := 0.0;
@@ -329,12 +330,14 @@ is
       then
          declare
             use Functions;
+
             half_Angle : constant Real := Angle * 0.5;
          begin
             Result.R := Cos (half_Angle);
             L        := Sin (half_Angle) * (1.0 / SqRt (L));
             Result.V := Axis * L;
          end;
+
       else
          Result.R := L;
          Result.V := [0.0, 0.0, 0.0];
@@ -491,7 +494,7 @@ is
          return Result;
       end if;
 
-      --  Otherwise, find the largest diagonal element and apply the appropriate case.
+      -- Otherwise, find the largest diagonal element and apply the appropriate case.
       --
       declare
          function case_1_Result return Quaternion
@@ -500,13 +503,15 @@ is
             S            := SqRt (Self (1, 1)  -  (Self (2, 2)  +  Self (3, 3))  +  1.0);
             Result.V (1) := 0.5 * S;
 
-            S                    := 0.5 * (1.0 / S);
+            S            := 0.5 * (1.0 / S);
             Result.V (2) := (Self (1, 2) + Self (2, 1)) * S;
             Result.V (3) := (Self (3, 1) + Self (1, 3)) * S;
             Result.R     := (Self (3, 2) - Self (2, 3)) * S;
 
             return Result;
          end case_1_Result;
+
+
 
          function case_2_Result return Quaternion
          is
@@ -522,13 +527,15 @@ is
             return Result;
          end case_2_Result;
 
+
+
          function case_3_Result return Quaternion
          is
          begin
             S            := SqRt (Self (3, 3)  -  (Self (1, 1) + Self (2, 2))  +  1.0);
             Result.V (3) := 0.5 * S;
 
-            S                    := 0.5 * (1.0 / S);
+            S            := 0.5 * (1.0 / S);
             Result.V (1) := (Self (3, 1) + Self (1, 3)) * S;
             Result.V (2) := (Self (2, 3) + Self (3, 2)) * S;
             Result.R     := (Self (2, 1) - Self (1, 2)) * S;
@@ -536,9 +543,9 @@ is
             return Result;
          end case_3_Result;
 
-         pragma Inline (case_1_Result);
-         pragma Inline (case_2_Result);
-         pragma Inline (case_3_Result);
+         pragma inline (case_1_Result);
+         pragma inline (case_2_Result);
+         pragma inline (case_3_Result);
 
       begin
          if Self (2, 2) > Self (1, 1)
@@ -567,7 +574,7 @@ is
    is
    begin
       return (Self.R, -Self.V);
-   end conjugate;
+   end Conjugate;
 
 
 

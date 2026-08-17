@@ -1,13 +1,16 @@
 package body any_Math.any_Algebra.any_linear.any_d2
 is
 
-   -----------
-   -- Vector_2
+   ------------
+   --- Vector_2
    --
 
    function Angle_between_pre_Norm (U, V : in Vector_2) return Radians
    is
-      use Functions, Vectors;
+      use
+           Functions,
+           Vectors;
+
       Val : Real := U * V;   -- Dot product.
    begin
       if    val < -1.0 then   val := -1.0;   -- Clamp to avoid rounding errors. arcCos will
@@ -47,9 +50,8 @@ is
    end Interpolated;
 
 
-
-   -------------
-   -- Matrix_2x2
+   --------------
+   --- Matrix_2x2
    --
 
    function to_Matrix (Row_1, Row_2 : in Vector_2) return Matrix_2x2
@@ -96,9 +98,8 @@ is
    end to_rotation_Transform;
 
 
-
    -------------
-   -- Transform
+   --- Transform
    --
 
    function to_Transform_2d (From : in Matrix_3x3) return Transform_2d
@@ -118,7 +119,7 @@ is
 
 
 
-   function to_translation_Transform (Translation : Vector_2) return Matrix_3x3
+   function to_translation_Transform (Translation : in Vector_2) return Matrix_3x3
    is
    begin
       return [[            1.0,             0.0,  0.0],
@@ -183,6 +184,7 @@ is
    function "*" (Left : in Vector_2;   Right : in Matrix_3x3) return Vector_2
    is
       use Vectors;
+
       Result : constant Vector := Vector (Left & 1.0) * Matrix (Right);
    begin
       return Vector_2 (Result (1 .. 2));

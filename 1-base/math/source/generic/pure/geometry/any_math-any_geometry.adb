@@ -4,9 +4,10 @@ is
    function Image (Self : in Triangle)  return String
    is
    begin
-      return "(" & Vertex_Id'Image (Self (1)) & ","
-                 & Vertex_Id'Image (Self (2)) & ","
-                 & Vertex_Id'Image (Self (3)) & ")";
+      return   "("
+             & Vertex_Id'Image (Self (1)) & ","
+             & Vertex_Id'Image (Self (2)) & ","
+             & Vertex_Id'Image (Self (3)) & ")";
    end Image;
 
 
@@ -14,7 +15,7 @@ is
    function Image (Self : in Triangles) return String
    is
       Result : String (1 .. 1024);
-      Last   : Standard.Natural  := 0;
+      Last   : standard.Natural  := 0;
    begin
       for Each in Self'Range
       loop

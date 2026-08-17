@@ -1,14 +1,14 @@
 generic
 package any_Math.any_Geometry.any_d2
 --
---  Provides a namespace and core types for 2D geometry.
+-- Provides a namespace and core types for 2D geometry.
 --
 is
    pragma Pure;
 
 
    ---------
-   --  Sites
+   --- Sites
    --
 
    -- Cartesian
@@ -18,7 +18,7 @@ is
    type    Grid  is array (Positive range <>,
                            Positive range <>) of Site;
 
-   function Distance (From, To : Site) return Real;
+   function Distance (From, To : in Site) return Real;
 
 
 
@@ -37,9 +37,8 @@ is
    function Extent   (Self : in Site) return Real;
 
 
-
    ---------
-   --  Lines
+   --- Lines
    --
 
    type Line is private;
@@ -56,9 +55,8 @@ is
    function Gradient (Self   : in Line) return Real;
 
 
-
    ----------
-   --  Bounds
+   --- Bounds
    --
 
    type bounding_Box is
@@ -70,30 +68,29 @@ is
    null_Bounds : constant bounding_Box;
 
 
-   function to_bounding_Box (Self : Sites) return bounding_Box;
+   function to_bounding_Box (Self : in Sites) return bounding_Box;
 
 
    function "or"   (Left : in bounding_Box;   Right : in Site)         return bounding_Box;
    --
-   --  Returns the bounds expanded to include the vector.
+   -- Returns the bounds expanded to include the vector.
 
    function "or"   (Left : in bounding_Box;   Right : in bounding_Box) return bounding_Box;
    --
-   --  Returns the bounds expanded to include both Left and Right.
+   -- Returns the bounds expanded to include both Left and Right.
 
 
    function "+"    (Left : in bounding_Box;   Right : in Vector_2)     return bounding_Box;
    --
-   --  Returns the bounds translated by the vector.
+   -- Returns the bounds translated by the vector.
 
 
    function Extent (Self : in bounding_Box;   Dimension : in Index)    return Real;
    function Image  (Self : in bounding_Box)                            return String;
 
 
-
-   ----------
-   -- Circles
+   -----------
+   --- Circles
    --
 
    type Circle is
@@ -101,13 +98,12 @@ is
          Radius : Real;
       end record;
 
-   function Area      (Self : Circle) return Real;
-   function Perimeter (Self : Circle) return Real;
+   function Area      (Self : in Circle) return Real;
+   function Perimeter (Self : in Circle) return Real;
 
 
-
-   -----------
-   -- Polygons
+   ------------
+   --- Polygons
    --
 
    type Polygon (Vertex_Count : Positive) is
@@ -132,9 +128,8 @@ is
    function  Image        (Self : in     Polygon) return String;
 
 
-
-   ------------
-   -- Triangles
+   -------------
+   --- Triangles
    --
 
    type Triangle is
@@ -173,4 +168,6 @@ private
 
    null_Bounds : constant bounding_Box := (lower => [Real'Last,  Real'Last],
                                            upper => [Real'First, Real'First]);
+
+
 end any_Math.any_Geometry.any_d2;

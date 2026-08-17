@@ -6,7 +6,7 @@ is
 
 
    ----------
-   --  Vector
+   --- Vector
    --
 
    function  Norm_squared (Self : in     Vector)    return Real;     -- Length squared.
@@ -27,7 +27,7 @@ is
 
 
    ----------
-   --  Matrix
+   --- Matrix
    --
 
    function  to_Matrix  (Row_1,
@@ -48,8 +48,9 @@ is
                          start_Row, end_Row : in Index;
                          start_Col, end_Col : in Index) return Matrix;
 
-   ---------------
-   --  Quaternion
+
+   --------------
+   --- Quaternion
    --
 
    function to_Quaternion (axis_X,
@@ -70,13 +71,13 @@ is
 
    function "*"           (Self : in     Quaternion;   By : in Quaternion) return Quaternion;
    --
-   --  Grassmann product.
+   -- Grassmann product.
 
    function  Unit         (Self : in     Quaternion) return Quaternion;
 
    function  Conjugate    (Self : in     Quaternion) return Quaternion;
    --
-   --  (TODO: only for unit quaternions.)
+   -- (TODO: only for unit quaternions.)
 
    function  euler_Angles (Self : in     Quaternion) return Vector_3;
 
@@ -84,8 +85,8 @@ is
    function infinitesimal_Rotation_from
                           (Self : in     Quaternion;   angular_Velocity : in Vector_3) return Quaternion;
    --
-   --  An infinitesimal rotation may be multiplied by a duration and then added to the original attitude
-   --  to produce the attitude at the given time.
+   -- An infinitesimal rotation may be multiplied by a duration and then added to the original attitude
+   -- to produce the attitude at the given time.
 
 
    function  Normalised   (Self : in     Quaternion) return Quaternion;
@@ -95,9 +96,10 @@ is
 
 private
 
-   pragma Inline ("*");
+   pragma inline ("*");
 
-   pragma Inline_Always (Norm_squared);
-   pragma Inline_Always (Normalise);
+   pragma inline_Always (Norm_squared);
+   pragma inline_Always (Normalise);
+
 
 end any_Math.any_Algebra.any_linear;

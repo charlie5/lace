@@ -2,14 +2,15 @@ with
      Ahven,
      float_Math.Algebra.linear.d3;
 
---  with Ada.Text_IO; use Ada.Text_IO;
+-- with ada.Text_IO; use ada.Text_IO;
 
 
 package body math_Tests.linear_Algebra_3d
 is
 
-   use Ahven,
-       float_Math;
+   use
+        Ahven,
+        float_Math;
 
 
    function almost_Equal (Left, Right : in Real) return Boolean
@@ -24,9 +25,9 @@ is
    function almost_Equal (Left, Right : in Vector_3) return Boolean
    is
    begin
-      return almost_Equal (Left (1), Right (1))
-        and  almost_Equal (Left (2), Right (2))
-        and  almost_Equal (Left (3), Right (3));
+      return          almost_Equal (Left (1), Right (1))
+             and then almost_Equal (Left (2), Right (2))
+             and then almost_Equal (Left (3), Right (3));
    end almost_Equal;
 
 
@@ -34,10 +35,10 @@ is
    function almost_Equal (Left, Right : in Quaternion) return Boolean
    is
    begin
-      return almost_Equal (Left.R,     Right.R)
-        and  almost_Equal (Left.V (1), Right.V (1))
-        and  almost_Equal (Left.V (2), Right.V (2))
-        and  almost_Equal (Left.V (3), Right.V (3));
+      return          almost_Equal (Left.R,     Right.R)
+             and then almost_Equal (Left.V (1), Right.V (1))
+             and then almost_Equal (Left.V (2), Right.V (2))
+             and then almost_Equal (Left.V (3), Right.V (3));
    end almost_Equal;
 
 
@@ -149,7 +150,7 @@ is
               Image (To, 16) & "  transform () failed !");
 
       Transform.Translation := [1.0, 0.0, 0.0];
-      To := From * Transform;
+      To                    := From * Transform;
 
       assert (almost_Equal (To, [1.0, 1.0, 0.0]),
               Image (To, 16) & "  transform () failed !");
@@ -213,7 +214,8 @@ is
 
 
    overriding
-   procedure Initialize (T : in out Test) is
+   procedure initialize (T : in out Test)
+   is
    begin
       T.set_Name ("Linear Algebra (3D) Tests");
 
@@ -222,7 +224,7 @@ is
       Framework.add_test_Routine (T,                transform_Test'Access,                "transform_Test");
       Framework.add_test_Routine (T,        inverse_transform_Test'Access,        "inverse_transform_Test");
       Framework.add_test_Routine (T, quaternion_interpolation_Test'Access, "quaternion_interpolation_Test");
-   end Initialize;
+   end initialize;
 
 
 end math_Tests.linear_Algebra_3d;

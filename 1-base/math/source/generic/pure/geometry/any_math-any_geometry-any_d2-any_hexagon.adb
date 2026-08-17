@@ -26,7 +26,6 @@ is
    end next_Vertex;
 
 
-
    -----------
    --- Hexagon
    --
@@ -130,7 +129,6 @@ is
    begin
       return Height (Self);
    end vertical_Distance;
-
 
 
    --------

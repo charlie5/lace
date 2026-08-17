@@ -8,8 +8,9 @@ with
 package body math_Tests.Geometry_2d
 is
 
-   use Ahven,
-       float_Math;
+   use
+        Ahven,
+        float_Math;
 
 
    function almost_Equal (Left, Right : in Real) return Boolean
@@ -33,10 +34,9 @@ is
    is
       Tolerance : constant := 0.000_01;
    begin
-      return     almost_Equal (Left (1), Right (1), Tolerance)
-        and then almost_Equal (Left (2), Right (2), Tolerance);
+      return          almost_Equal (Left (1), Right (1), Tolerance)
+             and then almost_Equal (Left (2), Right (2), Tolerance);
    end almost_Equal;
-
 
 
 
@@ -224,7 +224,8 @@ is
 
 
    overriding
-   procedure Initialize (T : in out Test) is
+   procedure initialize (T : in out Test)
+   is
    begin
       T.set_Name ("Geometry (2D) Tests");
 
@@ -233,7 +234,7 @@ is
       Framework.add_test_Routine (T, hexagon_Measures_Test 'Access, "Hexagon measures Test");
       Framework.add_test_Routine (T, hexagon_Vertices_Test 'Access, "Hexagon vertices Test");
       Framework.add_test_Routine (T, hexagon_Grid_Test     'Access, "Hexagon grid Test");
-   end Initialize;
+   end initialize;
 
 
 end math_Tests.Geometry_2d;

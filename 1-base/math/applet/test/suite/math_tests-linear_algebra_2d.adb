@@ -3,12 +3,12 @@ with
      float_Math.Algebra.linear.d2;
 
 
-
 package body math_Tests.linear_Algebra_2d
 is
 
-   use Ahven,
-       float_Math;
+   use
+        Ahven,
+        float_Math;
 
 
    function almost_Equal (Left, Right : in Real) return Boolean
@@ -20,11 +20,9 @@ is
 
 
 
-
    procedure translation_Matrix_Test
    is
-      use
-          float_Math.Algebra.linear.d2;
+      use float_Math.Algebra.linear.d2;
 
       From : constant Vector_2 := [0.0, 0.0];
       To   : Vector_2;
@@ -67,8 +65,7 @@ is
 
    procedure rotation_Matrix_Test
    is
-      use
-          float_Math.Algebra.linear.d2;
+      use float_Math.Algebra.linear.d2;
 
       From : constant Vector_2 := [1.0, 0.0];
       To   : Vector_2;
@@ -111,8 +108,7 @@ is
 
    procedure transform_Test
    is
-      use
-          float_Math.Algebra.linear.d2;
+      use float_Math.Algebra.linear.d2;
 
       From : constant Vector_2 := [1.0, 0.0];
       To   : Vector_2;
@@ -128,7 +124,7 @@ is
 
 
       Transform.Translation := [1.0, 0.0];
-      To := From * Transform;
+      To                    := From * Transform;
 
       assert (almost_Equal (To (1),  1.0),   Image (To, 16) & "  transform (c) failed !");
       assert (almost_Equal (To (2),  1.0),   Image (To, 16) & "  transform (d) failed !");
@@ -137,14 +133,15 @@ is
 
 
    overriding
-   procedure Initialize (T : in out Test) is
+   procedure initialize (T : in out Test)
+   is
    begin
       T.set_Name ("Linear Algebra (2D) Tests");
 
       Framework.add_test_Routine (T, translation_Matrix_Test'Access, "translation_Matrix_Test");
       Framework.add_test_Routine (T,    rotation_Matrix_Test'Access,    "rotation_Matrix_Test");
       Framework.add_test_Routine (T,          transform_Test'Access,          "transform_Test");
-   end Initialize;
+   end initialize;
 
 
 end math_Tests.linear_Algebra_2d;

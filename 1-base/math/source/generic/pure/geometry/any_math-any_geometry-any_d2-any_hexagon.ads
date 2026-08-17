@@ -17,11 +17,11 @@ is
    -------------
    --- vertex_Id
    --
+
    subtype vertex_Id is any_Geometry.vertex_Id range 1 .. 6;
 
    function prior_Vertex (to_Vertex : in vertex_Id) return vertex_Id;
    function  next_Vertex (to_Vertex : in vertex_Id) return vertex_Id;
-
 
 
    --------
@@ -58,10 +58,10 @@ is
    function   vertical_Distance (Self : in Item) return Real;     -- hexagon centers.
 
 
-
    --------
    --- Grid
    --
+
    -- Origin is at the top left corner.
    -- X increases to the right.
    -- Y increases downwards.
@@ -105,5 +105,6 @@ private
          Centers      : any_d2.Grid (1 .. Rows,
                                      1 .. Cols);
       end record;
+
 
 end any_Math.any_Geometry.any_d2.any_Hexagon;

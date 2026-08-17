@@ -3,6 +3,7 @@ package any_math.any_Algebra.any_linear.any_d3
 is
    pragma Pure;
 
+
    ------------
    --- Vector_3
    --
@@ -63,7 +64,7 @@ is
                           Axis_z   : in Real;
                           Rotation : in Radians)  return Matrix_3x3;
    --
-   --  Returns a rotation matrix describing a given rotation about an axis.
+   -- Returns a rotation matrix describing a given rotation about an axis.
    -- (TODO: Make this obsolescent and use the vector Axis version instead.)
 
 
@@ -73,16 +74,16 @@ is
 
    type Euler is new Vector_3;
    --
-   --  1: Roll
-   --  2: Pitch
-   --  3: Yaw
+   -- 1: Roll
+   -- 2: Pitch
+   -- 3: Yaw
 
 
    function to_Rotation (Angles : in Euler) return Matrix_3x3;
    --
-   --  The euler angles are used to produce a rotation matrix. The euler
-   --  angles are applied in ZYX order. That is, a vector is first rotated
-   --  about X, then Y and then Z.
+   -- The euler angles are used to produce a rotation matrix. The euler
+   -- angles are applied in ZYX order. That is, a vector is first rotated
+   -- about X, then Y and then Z.
 
 
    -----------
@@ -209,7 +210,6 @@ is
    -- Maps the 'From' window space coordinates into object space coordinates using Model, Projection and Viewport.
 
 
-
    ----------------------------
    --- Line/Plane Intersections
    --
@@ -217,9 +217,9 @@ is
    Line_is_parralel_to_Plane : exception;
    Line_lies_on_Plane        : exception;
 
-   function intersect_Line_and_x0_Plane (Line_p1, Line_p2 : Vector_3) return Vector_3;
-   function intersect_Line_and_y0_Plane (Line_p1, Line_p2 : Vector_3) return Vector_3;
-   function intersect_Line_and_z0_Plane (Line_p1, Line_p2 : Vector_3) return Vector_3;
+   function intersect_Line_and_x0_Plane (Line_p1, Line_p2 : in Vector_3) return Vector_3;
+   function intersect_Line_and_y0_Plane (Line_p1, Line_p2 : in Vector_3) return Vector_3;
+   function intersect_Line_and_z0_Plane (Line_p1, Line_p2 : in Vector_3) return Vector_3;
 
 
 
@@ -232,8 +232,9 @@ private
    y_Up_to_z_Up : constant Matrix_3x3 := [[1.0,  0.0,  0.0],
                                           [0.0,  0.0, -1.0],
                                           [0.0,  1.0,  0.0]];
-   pragma Inline ("+");
-   pragma Inline ("-");
-   pragma Inline ("*");
+   pragma inline ("+");
+   pragma inline ("-");
+   pragma inline ("*");
+
 
 end any_math.any_Algebra.any_linear.any_d3;

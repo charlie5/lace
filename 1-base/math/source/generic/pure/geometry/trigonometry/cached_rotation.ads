@@ -8,16 +8,16 @@ generic
 
    with package  float_elementary_Functions is new ada.Numerics.generic_elementary_Functions (Float_type);
    with function to_Matrix_2x2 (m11, m12,
-                                m21, m22 : Float_type) return Matrix_2x2_type;
+                                m21, m22 : in Float_type) return Matrix_2x2_type;
 
-   slot_Count : Standard.Positive;
+   slot_Count : standard.Positive;
 
 package cached_Rotation
 --
 -- Caches 2x2 rotation matrices of angles for speed at the cost of precision.
 --
 is
-   pragma Optimize (Time);
+   pragma optimize (Time);
 
    function to_Rotation (Angle : in Float_type) return access constant Matrix_2x2_type;
 
@@ -25,6 +25,7 @@ is
 
 private
 
-   pragma Inline_Always (to_Rotation);
+   pragma inline_Always (to_Rotation);
+
 
 end cached_Rotation;

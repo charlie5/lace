@@ -4,35 +4,39 @@ with
      ada.Numerics.generic_real_Arrays,
      ada.Containers;
 
+
 generic
    type Real_t is digits <>;
-
 package any_Math
 --
---  Provides math for any given floating point type.
+-- Provides math for any given floating point type.
 --
 is
    pragma Pure;
 
-   ----------
-   -- Indices
+
+   -----------
+   --- Indices
    --
+
    subtype Index   is standard.Integer;
    type    Indices is array (Index range <>) of Index;
 
 
-   -----------
-   -- Counters
+   ------------
+   --- Counters
    --
-   subtype Counter is ada.Containers.Count_Type;
+
+   subtype Counter is ada.Containers.Count_type;
 
    procedure increment (Self : in out Counter;   By : in Counter := 1);
    procedure decrement (Self : in out Counter;   By : in Counter := 1);
 
 
-   -----------
-   -- Integers
+   ------------
+   --- Integers
    --
+
    procedure increment (Self : in out Integer;   By : in Integer := 1);
    procedure decrement (Self : in out Integer;   By : in Integer := 1);
 
@@ -43,9 +47,10 @@ is
    type Positives is array (Index range <>) of aliased Positive;
 
 
-   --------
-   -- Reals
+   ---------
+   --- Reals
    --
+
    subtype Real          is Real_t;
    subtype unit_Interval is Real range 0.0 ..   1.0;
 
@@ -63,9 +68,10 @@ is
    function  Image   (Self  : in     Real;   Precision : in Natural := 5) return String;
 
 
-   -------------
-   -- Percentage
+   --------------
+   --- Percentage
    --
+
    type         Percentage is new Real;
    subtype unit_Percentage is Percentage range 0.0 .. 100.0;
 
@@ -78,21 +84,25 @@ is
    function apply         (Left,
                            Right     : in Percentage) return Percentage;
 
-   ------------
-   -- Functions
+
+   -------------
+   --- Functions
    --
+
    package Functions is new ada.Numerics.generic_elementary_Functions (Real);
 
 
-   ------------------
-   -- Complex Numbers
+   -------------------
+   --- Complex Numbers
    --
+
    package complex_Reals is new ada.Numerics.generic_complex_Types (Real);
 
 
-   ---------
-   -- Angles
+   ----------
+   --- Angles
    --
+
    subtype Radians is     Real;
    type    Degrees is new Real;
 
@@ -100,9 +110,10 @@ is
    function to_Degrees (Self : in Radians) return Degrees;
 
 
-   ----------
-   -- Vectors
+   -----------
+   --- Vectors
    --
+
    package Vectors is new ada.Numerics.generic_real_Arrays (Real'Base);
    subtype Vector  is     Vectors.real_Vector;
 
@@ -122,9 +133,10 @@ is
    type Vector_16 is new Vector (1 .. 16);
 
 
-   -----------
-   -- Vector_2
+   ------------
+   --- Vector_2
    --
+
    function to_Vector_2 (Self : in Vector_3) return Vector_2;
    function Image       (Self : in Vector_2;   Precision : in Natural := 5) return String;
 
@@ -144,9 +156,10 @@ is
    function "/" (Left : in Vector_2;   Right : in Real) return Vector_2;
 
 
-   -----------
-   -- Vector_3
+   ------------
+   --- Vector_3
    --
+
    function to_Vector_3 (Self : in Vector_2;   Z : in Real := 0.0) return Vector_3;
    function Image       (Self : in Vector_3;   Precision : in Natural := 5) return String;
 
@@ -176,8 +189,9 @@ is
    function  almost_Equals (Self, Other : in Vector_3;
                             Tolerance   : in     Real := Real'Base'Model_Small) return Boolean;
 
-   -----------
-   -- Matrices
+
+   ------------
+   --- Matrices
    --
 
    -- Memory layout is row-major.
@@ -194,9 +208,10 @@ is
    function Image (Self : in Matrix) return String;
 
 
-   -------------
-   -- Matrix_2x2
+   --------------
+   --- Matrix_2x2
    --
+
    overriding
    function Transpose (Self : in Matrix_2x2) return Matrix_2x2;
 
@@ -207,9 +222,10 @@ is
    function Col (Self : in Matrix_2x2;   col_Id : in Index)     return Vector_2;
 
 
-   -------------
-   -- Matrix_3x3
+   --------------
+   --- Matrix_3x3
    --
+
    overriding
    function Transpose (Self : in Matrix_3x3) return Matrix_3x3;
 
@@ -220,9 +236,10 @@ is
    function Col (Self : in Matrix_3x3;   col_Id : in Index)     return Vector_3;
 
 
-   -------------
-   -- Matrix_4x4
+   --------------
+   --- Matrix_4x4
    --
+
    overriding
    function Transpose (Self : in Matrix_4x4) return Matrix_4x4;
 
@@ -244,9 +261,10 @@ is
    function to_Matrix_4x4 (Self : in Vector_16)  return Matrix_4x4;
 
 
-   --------------
-   -- Quaternions
+   ---------------
+   --- Quaternions
    --
+
    type Quaternion is
       record
          R : Real;       -- Scalar part.
@@ -267,9 +285,10 @@ is
    function Image (Self : in Quaternion;   Precision : in Natural := 5) return String;
 
 
-   -------------
-   -- Transforms
+   --------------
+   --- Transforms
    --
+
    type Transform_2d is
       record
          Rotation    : aliased Matrix_2x2;
@@ -286,14 +305,15 @@ is
    null_Transform_3d : constant Transform_3d;   --
 
 
-   ------------
-   -- Constants
+   -------------
+   --- Constants
    --
+
    Infinity  : constant Real;
-   Pi        : constant := ada.numerics.Pi;
-   Phi       : constant := 1.6180339887_4989484820_4586834365_6381177203_0917980576_2862135448_6227052604_6281890244_9707207204_1893911374;
+   Pi        : constant     := ada.Numerics.Pi;
+   Phi       : constant     := 1.6180339887_4989484820_4586834365_6381177203_0917980576_2862135448_6227052604_6281890244_9707207204_1893911374;
    --
-   --  The 'Golden' ratio.
+   -- The 'Golden' ratio.
 
    Origin_2D : constant Vector_2;
    Origin_3D : constant Vector_3;
@@ -301,6 +321,7 @@ is
 
 
 private
+
    Infinity     : constant Real := Real'Last;
 
    Origin_2D    : constant Vector_2 := [0.0, 0.0];
@@ -326,8 +347,9 @@ private
                                                  Rotation    => [[1.0, 0.0, 0.0],
                                                                  [0.0, 1.0, 0.0],
                                                                  [0.0, 0.0, 1.0]]);
-   pragma Inline_Always (increment);
-   pragma Inline_Always (decrement);
-   pragma Inline_Always (Clamped);
+   pragma inline_Always (increment);
+   pragma inline_Always (decrement);
+   pragma inline_Always (Clamped);
+
 
 end any_Math;

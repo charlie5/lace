@@ -2,10 +2,10 @@ package body any_Math.any_Geometry.any_d2
 is
 
    ---------
-   --  Sites
+   --- Sites
    --
 
-   function Distance (From, To : Site) return Real
+   function Distance (From, To : in Site) return Real
    is
       use Functions;
    begin
@@ -18,6 +18,7 @@ is
    function to_Polar (Self : in Site) return polar_Site
    is
       use any_Math.complex_Reals;
+
       the_Complex : constant Complex := compose_from_Cartesian (Self (1),
                                                                 Self (2));
    begin
@@ -30,6 +31,7 @@ is
    function to_Site (Self : in polar_Site) return Site
    is
       use any_Math.complex_Reals;
+
       the_Complex : constant Complex := compose_from_Polar (Modulus  => Self.Extent,
                                                             Argument => Self.Angle);
    begin
@@ -42,6 +44,7 @@ is
    function Angle (Self : in Site) return Radians
    is
       use any_Math.complex_Reals;
+
       the_Complex : constant Complex := compose_from_Cartesian (Self (1),
                                                                 Self (2));
    begin
@@ -53,6 +56,7 @@ is
    function Extent (Self : in Site) return Real
    is
       use any_Math.complex_Reals;
+
       the_Complex : constant Complex := compose_from_Cartesian (Self (1),
                                                                 Self (2));
    begin
@@ -60,9 +64,8 @@ is
    end Extent;
 
 
-
    ---------
-   --  Lines
+   --- Lines
    --
 
    function to_Line (Anchor : in Site;
@@ -91,9 +94,8 @@ is
    function X_of (Self : in Line;   Y : in Real) return Real
    is
    begin
-      return
-          (Y - Self.Anchor (2))  /  Self.Gradient
-        + Self.Anchor (1);
+      return   (Y - Self.Anchor (2))  /  Self.Gradient
+             + Self.Anchor (1);
    end X_of;
 
 
@@ -101,9 +103,8 @@ is
    function Y_of (Self : in Line;   X : in Real) return Real
    is
    begin
-      return
-          Self.Gradient * (X - Self.Anchor (1))
-        + Self.Anchor (2);
+      return   Self.Gradient * (X - Self.Anchor (1))
+             + Self.Anchor (2);
    end Y_of;
 
 
@@ -122,12 +123,11 @@ is
    end Gradient;
 
 
-
    ----------
-   --  Bounds
+   --- Bounds
    --
 
-   function to_bounding_Box (Self : Sites) return bounding_Box
+   function to_bounding_Box (Self : in Sites) return bounding_Box
    is
       Result : bounding_Box := null_Bounds;
    begin
@@ -185,7 +185,6 @@ is
 
 
 
-
    function "+" (Left : in bounding_Box;   Right : in Vector_2) return bounding_Box
    is
    begin
@@ -195,25 +194,24 @@ is
 
 
 
-   function Image (Self : bounding_Box) return String
+   function Image (Self : in bounding_Box) return String
    is
    begin
-      return    "(Lower => " & Image (Self.Lower)
+      return   "(Lower => " & Image (Self.Lower)
              & ", Upper => " & Image (Self.Upper) & ")";
    end Image;
 
 
-
-   ------------
-   -- Triangles
+   -------------
+   --- Triangles
    --
 
    procedure check (Self : in Triangle)
    is
    begin
-      if   Self.Vertices (1) = Self.Vertices (2)
-        or Self.Vertices (1) = Self.Vertices (3)
-        or Self.Vertices (2) = Self.Vertices (3)
+      if        Self.Vertices (1) = Self.Vertices (2)
+        or else Self.Vertices (1) = Self.Vertices (3)
+        or else Self.Vertices (2) = Self.Vertices (3)
       then
          raise Degenerate;
       end if;
@@ -227,9 +225,9 @@ is
          M2 : constant Real := Gradient (L2);
          M3 : constant Real := Gradient (L3);
       begin
-         if   M1 = M2
-           or M1 = M3
-           or M2 = M3
+         if        M1 = M2
+           or else M1 = M3
+           or else M2 = M3
          then
             raise Colinear with
                 "  G1: " & Image (M1)
@@ -242,12 +240,12 @@ is
 
 
 
-   --  function Area (Self : in Triangle) return Real
-   --  --
-   --  -- This is an implementation of Heron's formula.
-   --  -- It is numerically unstable with very small angles.
-   --  --
-   --  is
+   -- function Area (Self : in Triangle) return Real
+   -- --
+   -- -- This is an implementation of Heron's formula.
+   -- -- It is numerically unstable with very small angles.
+   -- --
+   -- is
    --     use Functions;
    --
    --     A : constant Real := Distance (Self.Vertices (1),  Self.Vertices (2));
@@ -256,9 +254,9 @@ is
    --
    --     S : constant Real := (A + B + C) / 2.0;                 -- Semi-perimeter.
    --
-   --  begin
+   -- begin
    --     return Real (SqRt (S * (S - A) * (S - B) * (S - C)));   -- Herons formula.
-   --  end Area;
+   -- end Area;
 
 
 
@@ -297,13 +295,12 @@ is
 
 
 
-   function Perimeter (Self : Triangle) return Real
+   function Perimeter (Self : in Triangle) return Real
    is
    begin
-      return
-          Distance (Self.Vertices (1), Self.Vertices (2))
-        + Distance (Self.Vertices (2), Self.Vertices (3))
-        + Distance (Self.Vertices (3), Self.Vertices (1));
+      return   Distance (Self.Vertices (1), Self.Vertices (2))
+             + Distance (Self.Vertices (2), Self.Vertices (3))
+             + Distance (Self.Vertices (3), Self.Vertices (1));
    end Perimeter;
 
 
@@ -349,12 +346,11 @@ is
    end Angle;
 
 
-
-   ----------
-   -- Circles
+   -----------
+   --- Circles
    --
 
-   function Area (Self : Circle) return Real
+   function Area (Self : in Circle) return Real
    is
    begin
       return Pi * Self.Radius**2;
@@ -362,17 +358,15 @@ is
 
 
 
-   function Perimeter (Self : Circle) return Real
+   function Perimeter (Self : in Circle) return Real
    is
    begin
       return 2.0 * Pi * Self.Radius;
    end Perimeter;
 
 
-
-
-   -----------
-   -- Polygons
+   ------------
+   --- Polygons
    --
 
    function Centroid (Self : in Polygon) return Site
@@ -438,8 +432,8 @@ is
       j : constant Site := Self.Vertices (1);
       k : constant Site := Self.Vertices (1);
 
-      z : Real :=    (j (1) - i (1))
-                   * (k (2) - j (2));
+      z : Real :=   (j (1) - i (1))
+                  * (k (2) - j (2));
    begin
       z := z -   (j (2) - i (2))
                * (k (1) - j (1));
@@ -530,7 +524,7 @@ is
 
 
 
-   function Area (Self : Polygon) return Real
+   function Area (Self : in Polygon) return Real
    is
       Result : Real := 0.0;
    begin
@@ -546,7 +540,7 @@ is
 
 
 
-   function Perimeter (Self : Polygon) return Real
+   function Perimeter (Self : in Polygon) return Real
    is
       Result : Real := Distance (Self.Vertices (1),
                                  Self.Vertices (Self.Vertex_Count));

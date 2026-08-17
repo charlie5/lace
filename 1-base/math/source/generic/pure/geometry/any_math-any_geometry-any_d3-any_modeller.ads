@@ -14,8 +14,9 @@ is
 
 
    --------------
-   --  Attributes
+   --- Attributes
    --
+
    procedure add_Triangle   (Self : in out Item;   Vertex_1,
                                                    Vertex_2,
                                                    Vertex_3 : in Site);
@@ -29,8 +30,9 @@ is
 
 
    --------------
-   --  Operations
+   --- Operations
    --
+
    procedure clear (Self : in out Item);
 
 
@@ -42,7 +44,7 @@ private
 
 
    --------------
-   --  Containers
+   --- Containers
    --
 
    function Hash (Site : in my_Vertex) return ada.Containers.Hash_type;
@@ -53,20 +55,20 @@ private
    subtype  Vertex_Map_of_Index         is Vertex_Maps_of_Index.Map;
 
 
-   package  Vertex_Vectors is new Ada.Containers.Vectors (Positive, Vertex);
+   package  Vertex_Vectors is new ada.Containers.Vectors (Positive, Vertex);
    subtype  Vertex_Vector  is Vertex_Vectors.Vector;
 
 
    subtype  Index_Triangle is any_Geometry.Triangle;
    function "<" (Left, Right : in Index_Triangle) return Boolean;
    package  Index_Triangle_Sets is new ada.Containers.ordered_Sets (Element_Type => Index_Triangle,
-                                                                   "<"          => "<",
-                                                                   "="          => "=");
+                                                                    "<"          => "<",
+                                                                    "="          => "=");
    subtype  Index_Triangle_Set  is Index_Triangle_Sets.Set;
 
 
    ------------
-   --  Modeller
+   --- Modeller
    --
 
    type Item is tagged
@@ -77,5 +79,6 @@ private
 
          bounding_Sphere_Radius : Real := Real'First;
       end record;
+
 
 end any_Math.any_Geometry.any_d3.any_Modeller;
