@@ -128,7 +128,10 @@ is
       for i in the_subject_Events'Range
       loop
          declare
-            function  Less_than (L, R : in event_sequence_Pair) return Boolean is (L.Sequence < R.Sequence);
+            function  Less_than (L, R : in event_sequence_Pair) return Boolean
+            is
+               (L.Sequence < R.Sequence);
+
             package   Sorter     is new event_Vectors.generic_Sorting ("<" => Less_than);
             procedure deallocate is new ada.unchecked_Deallocation (String, String_view);
 

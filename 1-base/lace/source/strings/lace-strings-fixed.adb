@@ -151,7 +151,7 @@ is
             return Result_type (Source);
          end;
 
-      elsif From not in Source'Range
+      elsif     From not in Source'Range
         or else Through > Source'Last
       then
          -- In most cases this raises an exception, but the case of deleting
@@ -301,7 +301,8 @@ is
       function Is_Padding (Item : in String) return Boolean;
       -- Check if Item is all Pad characters, return True if so, False if not
 
-      function Is_Padding (Item : in String) return Boolean is
+      function Is_Padding (Item : in String) return Boolean
+      is
       begin
          for J in Item'Range
          loop

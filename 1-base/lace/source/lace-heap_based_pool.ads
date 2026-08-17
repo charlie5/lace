@@ -14,4 +14,5 @@ is
    function  new_Item     return View;
    procedure free (Self : in out View);
 
+
 end lace.heap_based_Pool;

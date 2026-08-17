@@ -393,9 +393,8 @@ is
       -- Provide stream routines without dragging in ada.Streams
 
       Null_Bounded_String : constant Bounded_String := (Max_Length     => Max_Length,
-                               Current_Length => 0,
-                               Data           =>
-                                 [1 .. Max_Length => ASCII.NUL]);
+                                                        Current_Length => 0,
+                                                        Data           => [1 .. Max_Length => ASCII.NUL]);
 
       pragma inline (To_Bounded_String);
 

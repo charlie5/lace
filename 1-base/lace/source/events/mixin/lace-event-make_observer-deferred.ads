@@ -80,6 +80,7 @@ private
    --
 
    use type event_Vector;
+
    package subject_Maps_of_safe_events is new ada.Containers.indefinite_hashed_Maps (Key_type        => Event.subject_Name,
                                                                                      Element_type    => safe_Events_view,
                                                                                      Hash            => ada.Strings.Hash,

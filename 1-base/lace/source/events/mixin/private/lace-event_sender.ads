@@ -35,6 +35,7 @@ is
 private
 
    use type lace.Event.item'Class;
+
    package event_Holders  is new ada.Containers.indefinite_Holders (Element_type => lace.Event.item'Class);
    subtype event_Holder   is     event_Holders.Holder;
 

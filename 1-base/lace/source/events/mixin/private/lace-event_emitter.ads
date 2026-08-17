@@ -44,6 +44,7 @@ private
    --
 
    use type lace.Event.item'Class;
+
    package event_Vectors is new ada.Containers.indefinite_Vectors (Positive,
                                                                    lace.Event.item'Class);
    subtype event_Vector  is     event_Vectors.Vector;

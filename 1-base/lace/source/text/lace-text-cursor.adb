@@ -42,8 +42,8 @@ is
    function has_Element (Self : in Item) return Boolean
    is
    begin
-      return not at_End (Self)
-        and      Self.Current <= Self.Target.Length;
+      return          not at_End (Self)
+             and then Self.Current <= Self.Target.Length;
    end has_Element;
 
 
@@ -104,9 +104,9 @@ is
    is
    begin
       while      has_Element (Self)
-        and then (    Self.Target.Data (Self.Current) = ' '
-                  or  Self.Target.Data (Self.Current) = ada.Characters.Latin_1.LF
-                  or  Self.Target.Data (Self.Current) = ada.Characters.Latin_1.HT)
+        and then (        Self.Target.Data (Self.Current) = ' '
+                  or else Self.Target.Data (Self.Current) = ada.Characters.Latin_1.LF
+                  or else Self.Target.Data (Self.Current) = ada.Characters.Latin_1.HT)
       loop
          Self.Current := Self.Current + 1;
       end loop;

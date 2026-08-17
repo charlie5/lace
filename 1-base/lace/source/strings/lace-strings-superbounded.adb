@@ -135,17 +135,17 @@ is
                  Right : in Super_String) return Boolean
    is
    begin
-      return Left.Current_Length = Right.Current_Length
-        and then Left.Data (1 .. Left.Current_Length) =
-                   Right.Data (1 .. Right.Current_Length);
+      return          Left.Current_Length = Right.Current_Length
+             and then Left .Data (1 .. Left.Current_Length) =
+                      Right.Data (1 .. Right.Current_Length);
    end "=";
 
    function Equal (Left  : in Super_String;
                    Right : in String) return Boolean
    is
    begin
-      return Left.Current_Length = Right'Length
-        and then Left.Data (1 .. Left.Current_Length) = Right;
+      return          Left.Current_Length = Right'Length
+             and then Left.Data (1 .. Left.Current_Length) = Right;
    end Equal;
 
 
@@ -154,8 +154,8 @@ is
                    Right : in Super_String) return Boolean
    is
    begin
-      return Left'Length = Right.Current_Length
-        and then Left = Right.Data (1 .. Right.Current_Length);
+      return          Left'Length = Right.Current_Length
+             and then Left = Right.Data (1 .. Right.Current_Length);
    end Equal;
 
 
@@ -167,8 +167,8 @@ is
                      Right : in Super_String) return Boolean
    is
    begin
-      return Left.Data (1 .. Left.Current_Length) >
-               Right.Data (1 .. Right.Current_Length);
+      return Left .Data (1 .. Left.Current_Length) >
+             Right.Data (1 .. Right.Current_Length);
    end Greater;
 
 
@@ -198,8 +198,8 @@ is
                               Right : in Super_String) return Boolean
    is
    begin
-      return Left.Data (1 .. Left.Current_Length) >=
-               Right.Data (1 .. Right.Current_Length);
+      return Left .Data (1 .. Left.Current_Length) >=
+             Right.Data (1 .. Right.Current_Length);
    end Greater_Or_Equal;
 
 
@@ -229,8 +229,8 @@ is
                   Right : in Super_String) return Boolean
    is
    begin
-      return Left.Data (1 .. Left.Current_Length) <
-               Right.Data (1 .. Right.Current_Length);
+      return Left .Data (1 .. Left.Current_Length) <
+             Right.Data (1 .. Right.Current_Length);
    end Less;
 
 
@@ -260,8 +260,8 @@ is
                            Right : in Super_String) return Boolean
    is
    begin
-      return Left.Data (1 .. Left.Current_Length) <=
-               Right.Data (1 .. Right.Current_Length);
+      return Left .Data (1 .. Left.Current_Length) <=
+             Right.Data (1 .. Right.Current_Length);
    end Less_Or_Equal;
 
 
@@ -441,10 +441,9 @@ is
                   Result.Data := Left.Data;
 
                else
-                  Result.Data (1 .. Llen) := Left.Data (1 .. Llen);
-                  Result.Data (Llen + 1 .. Max_Length) := Right (Right'First .. Right'First - 1 +
-                             Max_Length - Llen);
-
+                  Result.Data (1 .. Llen)              := Left.Data (1 .. Llen);
+                  Result.Data (Llen + 1 .. Max_Length) := Right (Right'First ..
+                                                                 Right'First - 1 + Max_Length - Llen);
                end if;
 
             when ada.Strings.Left =>
@@ -490,14 +489,14 @@ is
                if Llen < Max_Length
                then
                   Source.Data (Llen + 1 .. Max_Length) := New_Item (New_Item'First ..
-                                New_Item'First - 1 + Max_Length - Llen);
+                                                                    New_Item'First - 1 + Max_Length - Llen);
                end if;
 
             when ada.Strings.Left =>
                if Rlen >= Max_Length
                then
                   Source.Data (1 .. Max_Length) := New_Item (New_Item'Last - (Max_Length - 1) ..
-                                New_Item'Last);
+                                                             New_Item'Last);
 
                else
                   Source.Data (1 .. Max_Length - Rlen)              := Source.Data (Llen - (Max_Length - Rlen - 1) .. Llen);
@@ -793,8 +792,7 @@ is
                                Last   : out Natural)
    is
    begin
-      Search.Find_Token
-        (Source.Data (From .. Source.Current_Length), Set, Test, First, Last);
+      Search.Find_Token (Source.Data (From .. Source.Current_Length), Set, Test, First, Last);
    end Super_Find_Token;
 
 
@@ -806,8 +804,7 @@ is
                                Last   : out Natural)
    is
    begin
-      Search.Find_Token
-        (Source.Data (1 .. Source.Current_Length), Set, Test, First, Last);
+      Search.Find_Token (Source.Data (1 .. Source.Current_Length), Set, Test, First, Last);
    end Super_Find_Token;
 
 
@@ -1061,8 +1058,8 @@ is
 
                if Droplen > Alen
                then
-                  Result.Data (Before .. Max_Length) := New_Item (New_Item'First
-                                .. New_Item'First + Max_Length - Before);
+                  Result.Data (Before .. Max_Length) := New_Item (New_Item'First ..
+                                                                  New_Item'First + Max_Length - Before);
                else
                   Result.Data (Before .. Before + Nlen - 1) := New_Item;
                   Result.Data (Before + Nlen .. Max_Length) := Source.Data (Before .. Slen - Droplen);
@@ -1073,12 +1070,11 @@ is
 
                if Droplen >= Blen
                then
-                  Result.Data (1 .. Max_Length - Alen) := New_Item (New_Item'Last - (Max_Length - Alen) + 1
-                                .. New_Item'Last);
+                  Result.Data (1 .. Max_Length - Alen) := New_Item (New_Item'Last - (Max_Length - Alen) + 1 ..
+                                                                    New_Item'Last);
                else
-                  Result.Data
-                    (Blen - Droplen + 1 .. Max_Length - Alen) := New_Item;
-                  Result.Data (1 .. Blen - Droplen) := Source.Data (Droplen + 1 .. Blen);
+                  Result.Data (Blen - Droplen + 1 .. Max_Length - Alen) := New_Item;
+                  Result.Data (1 .. Blen - Droplen)                     := Source.Data (Droplen + 1 .. Blen);
                end if;
 
             when ada.Strings.Error =>
@@ -1109,7 +1105,8 @@ is
    --- Super_Length
    --
 
-   function Super_Length (Source : in Super_String) return Natural is
+   function Super_Length (Source : in Super_String) return Natural
+   is
    begin
       return Source.Current_Length;
    end Super_Length;
@@ -1168,13 +1165,12 @@ is
                if New_Item'Length >= Max_Length
                then
                   Result.Data (1 .. Max_Length) := New_Item (New_Item'Last - Max_Length + 1 ..
-                                New_Item'Last);
+                                                             New_Item'Last);
                   return Result;
 
                else
-                  Result.Data (1 .. Max_Length - New_Item'Length) := Source.Data (Droplen + 1 .. Position - 1);
-                  Result.Data
-                    (Max_Length - New_Item'Length + 1 .. Max_Length) := New_Item;
+                  Result.Data (1 .. Max_Length - New_Item'Length)              := Source.Data (Droplen + 1 .. Position - 1);
+                  Result.Data (Max_Length - New_Item'Length + 1 .. Max_Length) := New_Item;
                   return Result;
                end if;
 
@@ -1222,13 +1218,11 @@ is
                if New_Item'Length > Max_Length
                then
                   Source.Data (1 .. Max_Length) := New_Item (New_Item'Last - Max_Length + 1 ..
-                                New_Item'Last);
+                                                             New_Item'Last);
 
                else
-                  Source.Data (1 .. Max_Length - New_Item'Length) := Source.Data (Droplen + 1 .. Position - 1);
-
-                  Source.Data
-                    (Max_Length - New_Item'Length + 1 .. Max_Length) := New_Item;
+                  Source.Data (1 .. Max_Length - New_Item'Length)              := Source.Data (Droplen + 1 .. Position - 1);
+                  Source.Data (Max_Length - New_Item'Length + 1 .. Max_Length) := New_Item;
                end if;
 
             when ada.Strings.Error =>
@@ -1321,9 +1315,8 @@ is
                      then
                         Result.Data (1 .. Max_Length - Alen) := By (By'Last - (Max_Length - Alen) + 1 .. By'Last);
                      else
-                        Result.Data
-                          (Blen - Droplen + 1 .. Max_Length - Alen) := By;
-                        Result.Data (1 .. Blen - Droplen) := Source.Data (Droplen + 1 .. Blen);
+                        Result.Data (Blen - Droplen + 1 .. Max_Length - Alen) := By;
+                        Result.Data (1 .. Blen - Droplen)                     := Source.Data (Droplen + 1 .. Blen);
                      end if;
 
                   when ada.Strings.Error =>
@@ -1469,7 +1462,7 @@ is
       -- Note: test of High > Length is in accordance with AI95-00128
 
       return R : String (Low .. High) do
-         if Low > Source.Current_Length + 1
+         if        Low > Source.Current_Length + 1
            or else High > Source.Current_Length
          then
             raise index_Error;
@@ -1487,7 +1480,7 @@ is
    is
    begin
       return Result : Super_String (Source.Max_Length) do
-         if Low > Source.Current_Length + 1
+         if        Low > Source.Current_Length + 1
            or else High > Source.Current_Length
          then
             raise index_Error;
@@ -1506,7 +1499,7 @@ is
                           High   : in  Natural)
    is
    begin
-      if Low > Source.Current_Length + 1
+      if        Low > Source.Current_Length + 1
         or else High > Source.Current_Length
       then
          raise index_Error;
@@ -1627,7 +1620,8 @@ is
    --- Super_To_String
    --
 
-   function Super_To_String (Source : in Super_String) return String is
+   function Super_To_String (Source : in Super_String) return String
+   is
    begin
       return R : String (1 .. Source.Current_Length) do
          R := Source.Data (1 .. Source.Current_Length);
@@ -1818,7 +1812,7 @@ is
                      Source.Data (1 .. Source.Current_Length) := Source.Data (First .. Last);
 
                      for J in Source.Current_Length + 1 ..
-                                Source.Max_Length
+                              Source.Max_Length
                      loop
                         Source.Data (J) := ASCII.NUL;
                      end loop;

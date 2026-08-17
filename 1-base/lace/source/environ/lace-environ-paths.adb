@@ -631,6 +631,7 @@ is
    function load (Self : in File) return String
    is
       use type ada.Directories.File_Size;
+
       Size :   ada.Directories.File_Size;
    begin
       check (Self);

@@ -26,7 +26,7 @@ is
       then
          declare
             Result : wide_Text.item (Capacity => Natural'Max (By'Length,
-                                                         Self.Capacity));
+                                                              Self.Capacity));
          begin
             Result.Length                := By'Length;
             Result.Data (1 .. By'Length) := By;
@@ -65,7 +65,7 @@ is
             First  : Positive := 1;
             Last   : Natural;
             Result : wide_Text.item (Capacity => Natural'Max (Size,
-                                                         Self.Capacity));
+                                                              Self.Capacity));
          begin
             for Each of the_Tokens
             loop

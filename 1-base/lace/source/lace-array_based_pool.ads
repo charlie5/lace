@@ -19,4 +19,5 @@ is
    function  new_Item     return View;
    procedure free (Self : in out View);
 
+
 end lace.array_based_Pool;
