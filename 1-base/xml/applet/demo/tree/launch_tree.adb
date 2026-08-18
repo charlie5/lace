@@ -21,14 +21,14 @@ is
    begin
       Depth := Depth + 1;
 
-      for Each in 1 .. Depth-1
+      for Each in 1 .. Depth - 1
       loop
          put ("  ");
       end loop;
 
       put_Line (the_Element.Name);
 
-      for Each in the_Children'range
+      for Each in the_Children'Range
       loop
          show_Element (the_Children (Each).all);
       end loop;

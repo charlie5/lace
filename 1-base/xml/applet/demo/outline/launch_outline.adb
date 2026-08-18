@@ -14,17 +14,17 @@ is
        ada.Strings.unbounded,
        XML.Reader;
 
-   Line_Max      :  constant := 60000;
+   Line_Max      : constant := 60000;
 
-   Depth         :  natural  := 0;
-   XML_File      :  File_Type;
-   MyParser      :  Parser;
-   Done          :  Boolean;
-   Buffer        :  String (1 .. Line_Max);
-   Buffer_Length :  Natural;
+   Depth         : Natural               := 0;
+   XML_File      : File_type;
+   MyParser      : Parser;
+   Done          : Boolean;
+   Buffer        : String (1 .. Line_Max);
+   Buffer_Length : Natural;
 
 
-   procedure Starter (Name : in Unbounded_String;
+   procedure Starter (Name : in unbounded_String;
                       Atts : in XML.Attributes_view)
    is
    begin
@@ -33,11 +33,14 @@ is
          put ("   ");
       end loop;
 
-      Put (To_String (Name));
+      put (to_String (Name));
 
       for Att in Atts'Range
       loop
-         put (" " & Atts (Att).Name & " = " & Atts (Att).Value);
+         put (  " "
+              & Atts (Att).Name
+              & " = "
+              & Atts (Att).Value);
       end loop;
 
       new_Line;
@@ -54,6 +57,7 @@ is
    end Ender;
 
 
+
    procedure my_data_Handler (Data : in unbounded_String)
    is
    begin
@@ -64,7 +68,7 @@ is
 begin
    if Argument_Count < 1
    then
-      Put_Line (Standard_Error, "usage:  outline  xml-file");
+      put_Line (standard_Error, "usage:  outline  xml-file");
    else
       open (XML_File, In_File, Argument (1));
 
@@ -72,12 +76,12 @@ begin
       set_Element_Handler (MyParser, Starter'unrestricted_Access,
                                      Ender  'unrestricted_Access);
 
-      set_Character_Data_Handler (myParser, my_data_Handler'unrestricted_Access);
+      set_Character_Data_Handler (MyParser, my_data_Handler'unrestricted_Access);
 
       loop
          get_Line (XML_File, Buffer, Buffer_Length);
 
-         Done := End_Of_File (XML_File);
+         Done := end_of_File (XML_File);
 
          parse (MyParser,
                 Buffer (1 .. Buffer_Length),

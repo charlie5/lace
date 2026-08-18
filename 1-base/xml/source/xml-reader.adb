@@ -22,7 +22,7 @@ is
    procedure XML_SetUserData (XML_Parser : in XML_Parser_Ptr;
                               Parser_Ptr : in Parser);
 
-   pragma Import (C, XML_SetUserData, "XML_SetUserData");
+   pragma import (C, XML_SetUserData, "XML_SetUserData");
 
 
 
@@ -39,7 +39,8 @@ is
 
       use S, System, System.Storage_Elements;
 
-      procedure Free is new ada.Unchecked_Deallocation (Attributes_t,   Attributes_view);
+      procedure free is new ada.unchecked_Deallocation (Attributes_t,   Attributes_view);
+
       function To_CP is new ada.unchecked_Conversion   (System.Address, Char_Ptr_Ptr);
 
       AA_Size             : Storage_Offset;
@@ -51,7 +52,7 @@ is
    begin
       -- Calculate the size of a single attribute (name or value) pointer.
       --
-      AA_Size := S.Chars_Ptr'Size / System.Storage_Unit;
+      AA_Size := S.chars_ptr'Size / System.Storage_Unit;
 
       -- Count the number of attributes by scanning for a null pointer.
       --
@@ -87,7 +88,7 @@ is
 
       -- Give back the attribute array.
       --
-      Free (the_Attribute_Array);
+      free (the_Attribute_Array);
    end Internal_Start_Handler;
 
 
@@ -118,7 +119,7 @@ is
                                   Data      : in S.chars_ptr;
                                   Len       : in C.int)
    is
-      the_Data : constant unbounded_String := to_unbounded_String (S.Value (Data,  c.size_t (Len)));
+      the_Data : constant unbounded_String := to_unbounded_String (S.Value (Data,  C.size_t (Len)));
 
    begin
       if the_Data /= ""
@@ -132,8 +133,9 @@ is
 
    function Create_Parser return Parser
    is
-      function XML_ParserCreate (Encoding:  in XML_Char_Ptr) return XML_Parser_Ptr;
-      pragma Import (C, XML_ParserCreate, "XML_ParserCreate");
+
+      function XML_ParserCreate (Encoding : in XML_Char_Ptr) return XML_Parser_Ptr;
+      pragma import (C, XML_ParserCreate, "XML_ParserCreate");
 
    begin
       return new Parser_Rec' (XML_ParserCreate (null),
@@ -145,7 +147,7 @@ is
 
 
 
-   procedure Set_Element_Handler (The_Parser    : in Parser;
+   procedure set_Element_Handler (The_Parser    : in Parser;
                                   Start_Handler : in Start_Element_Handler;
                                   End_Handler   : in End_Element_Handler)
    is
@@ -163,7 +165,7 @@ is
       procedure XML_SetElementHandler (XML_Parser    : in XML_Parser_Ptr;
                                        Start_Handler : in Internal_Start_Element_Handler;
                                        End_Handler   : in Internal_End_Element_Handler);
-      pragma Import (C, XML_SetElementHandler, "XML_SetElementHandler");
+      pragma import (C, XML_SetElementHandler, "XML_SetElementHandler");
 
    begin
       XML_SetUserData (The_Parser.XML_Parser,
@@ -174,12 +176,12 @@ is
 
       XML_SetElementHandler (The_Parser.XML_Parser, Internal_Start_Handler'Access,
                                                     Internal_End_Handler  'Access);
-   end Set_Element_Handler;
+   end set_Element_Handler;
 
 
 
 
-   procedure Set_Character_Data_Handler (The_Parser : in Parser;
+   procedure set_Character_Data_Handler (The_Parser : in Parser;
                                          CD_Handler : in Character_Data_Handler)
    is
 
@@ -190,26 +192,27 @@ is
 
       procedure XML_SetCharacterDataHandler (XML_Parser : in XML_Parser_Ptr;
                                              CD_Handler : in Internal_Character_Data_Handler);
-      pragma Import (C, XML_SetCharacterDataHandler, "XML_SetCharacterDataHandler");
+      pragma import (C, XML_SetCharacterDataHandler, "XML_SetCharacterDataHandler");
 
    begin
       XML_SetUserData             (The_Parser.XML_Parser, The_Parser);
       The_Parser.CD_Handler := CD_Handler;
       XML_SetCharacterDataHandler (The_Parser.XML_Parser, Internal_CD_Handler'Access);
-   end Set_Character_Data_Handler;
+   end set_Character_Data_Handler;
 
 
 
 
-   procedure Parse (The_Parser : in Parser;
+   procedure parse (The_Parser : in Parser;
                     XML        : in String;
                     Is_Final   : in Boolean)
    is
+
       function XML_Parse (XML_Parser : in XML_Parser_Ptr;
                           XML        : in S.chars_ptr;
                           Len        : in C.int;
                           Is_Final   : in C.int) return C.int;
-      pragma Import (C, XML_Parse, "XML_Parse");
+      pragma import (C, XML_Parse, "XML_Parse");
 
       use C;
 
@@ -232,13 +235,13 @@ is
                              XML_Data,
                              C.int (XML'Length),
                              Final_Flag);
-      S.Free (XML_Data);
+      S.free (XML_Data);
 
       if Status /= XML_STATUS_OK
       then
          raise XML_Parse_Error;
       end if;
-   end Parse;
+   end parse;
 
 
 end XML.Reader;

@@ -1,7 +1,7 @@
 private
 with
      ada.Strings.unbounded,
-     ada.Containers.vectors;
+     ada.Containers.Vectors;
 
 
 package XML
@@ -12,6 +12,7 @@ package XML
 --
 is
 
+   ------------------
    --- Attribute type
    --
 
@@ -26,6 +27,7 @@ is
 
 
 
+   ----------------
    --- Element type
    --
 
@@ -34,7 +36,7 @@ is
 
 
 
-   -- Construction
+   --- Construction
    --
 
    function to_XML (Filename : in String) return Element;
@@ -43,7 +45,7 @@ is
 
 
 
-   -- Attributes
+   --- Attributes
    --
 
    function  Name       (Self : in     Element) return String;
@@ -55,7 +57,7 @@ is
    -- Returns null if the named attribute does not exist.
 
 
-   -- Hierachy
+   --- Hierachy
    --
 
    function  Parent     (Self : in     Element) return access Element;
@@ -70,8 +72,6 @@ is
    function  Children   (Self : in     Element;   Named : in String) return Elements;
 
    procedure add_Child  (Self : in out Element;   the_Child : access Element);
-
-
 
 
 
@@ -90,8 +90,8 @@ private
 
    type Element_view    is access all Element;
 
-   package element_Vectors is new ada.containers.Vectors (Positive, Element_view);
-   subtype element_Vector  is element_vectors.Vector;
+   package element_Vectors is new ada.Containers.Vectors (Positive, Element_view);
+   subtype element_Vector  is element_Vectors.Vector;
 
 
    type Element is tagged
@@ -103,5 +103,6 @@ private
          Parent     : Element_view;
          Children   : element_Vector;
       end record;
+
 
 end XML;

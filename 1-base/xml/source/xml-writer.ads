@@ -8,28 +8,28 @@ is
    use ada.Strings.unbounded;
 
 
-   procedure Start_Document (F :  in ada.Text_IO.File_Type);
-   procedure End_Document   (F :  in ada.Text_IO.File_Type);
+   procedure start_Document (F : in ada.Text_IO.File_type);
+   procedure end_Document   (F : in ada.Text_IO.File_type);
 
-   procedure Start (F     : in ada.Text_IO.File_Type;
+   procedure start (F     : in ada.Text_IO.File_type;
                     Name  : in String;
                     Atts  : in Attributes_view);
 
-   procedure Start (F     : in ada.Text_IO.File_Type;
+   procedure start (F     : in ada.Text_IO.File_type;
                     Name  : in unbounded_String;
                     Atts  : in Attributes_view);
 
-   procedure Finish (F    : in ada.Text_IO.File_Type;
+   procedure finish (F    : in ada.Text_IO.File_type;
                      Name : in String);
 
-   procedure Finish (F    : in ada.Text_IO.File_Type;
+   procedure finish (F    : in ada.Text_IO.File_type;
                      Name : in unbounded_String);
 
-   procedure Empty (F     : in ada.Text_IO.File_Type;
+   procedure empty (F     : in ada.Text_IO.File_type;
                     Name  : in String;
                     Atts  : in Attributes_view);
 
-   procedure Empty (F     : in ada.Text_IO.File_Type;
+   procedure empty (F     : in ada.Text_IO.File_type;
                     Name  : in unbounded_String;
                     Atts  : in Attributes_view);
 
@@ -46,6 +46,7 @@ is
 
    function MkAtt  (L, R : in Attribute_t)                             return Attributes_view;
    function "&"    (L, R : in Attribute_t)                             return Attributes_view;
-   function "&"    (L    : in Attributes_view;   R:  in Attribute_t)   return Attributes_view;
+   function "&"    (L    : in Attributes_view;   R : in Attribute_t)   return Attributes_view;
+
 
 end XML.Writer;

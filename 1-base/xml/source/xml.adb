@@ -40,8 +40,8 @@ is
 
       Line_Max      : constant                  := 800_000;
 
-      the_XML_File  :          File_Type;
-      the_Parser    :          xml.reader.Parser;
+      the_XML_File  :          File_type;
+      the_Parser    :          xml.Reader.Parser;
       Done          :          Boolean;
       Buffer        :          String (1 .. Line_Max);
       Buffer_Length :          Natural;
@@ -56,21 +56,21 @@ is
       end current_Element;
 
 
-      procedure Starter (Name:  in unbounded_String;
-                         Atts:  in Attributes_view)
+      procedure Starter (Name : in unbounded_String;
+                         Atts : in Attributes_view)
       is
-         new_Element : constant Element_view := new Element' (name       => Name,
-                                                              attributes => new Attributes_t' (Atts.all),
-                                                              data       => <>,
-                                                              parent     => current_Element,
-                                                              children   => <>);
+         new_Element : constant Element_view := new Element' (Name       => Name,
+                                                              Attributes => new Attributes_t' (Atts.all),
+                                                              Data       => <>,
+                                                              Parent     => current_Element,
+                                                              Children   => <>);
       begin
          current_Element.add_Child (new_Element);
          element_Stack  .append    (new_Element);
       end Starter;
 
 
-      procedure Ender (Name:  in unbounded_String)
+      procedure Ender (Name : in unbounded_String)
       is
          pragma Unreferenced (Name);
       begin
@@ -78,7 +78,8 @@ is
       end Ender;
 
 
-      procedure data_Handler (Data:  in unbounded_String)
+
+      procedure data_Handler (Data : in unbounded_String)
       is
       begin
          append (current_Element.Data,  "" & Data);
@@ -96,11 +97,11 @@ is
       set_Character_Data_Handler (the_Parser, data_Handler'unrestricted_Access);
 
       loop
-         Get_Line (the_XML_File, Buffer, Buffer_Length);
+         get_Line (the_XML_File, Buffer, Buffer_Length);
 
-         Done := End_Of_File (the_XML_File);
+         Done := end_of_File (the_XML_File);
 
-         Parse (the_Parser,  Buffer (1 .. Buffer_Length),  Done);
+         parse (the_Parser,  Buffer (1 .. Buffer_Length),  Done);
          exit when Done;
       end loop;
 
@@ -119,7 +120,6 @@ is
 
 
 
-
    function Data (Self : in Element) return String
    is
    begin
@@ -130,7 +130,7 @@ is
 
    function Children (Self : in Element) return Elements
    is
-      the_Children : Elements (1 .. Integer (Self.children.Length));
+      the_Children : Elements (1 .. Integer (Self.Children.Length));
 
    begin
       for Each in the_Children'Range
@@ -145,8 +145,8 @@ is
 
    function Children (Self : in Element;   Named : in String) return Elements
    is
-      the_Children : Elements (1 .. Integer (Self.children.Length));
-      Count        : Natural := 0;
+      the_Children : Elements (1 .. Integer (Self.Children.Length));
+      Count        : Natural                                       := 0;
 
    begin
       for Each in the_Children'Range
@@ -174,7 +174,7 @@ is
    function Child (Self : in Element;   Named : in String) return access Element
    is
       use element_Vectors;
-      Cursor : element_Vectors.Cursor := Self.children.First;
+      Cursor : element_Vectors.Cursor := Self.Children.First;
 
    begin
       while has_Element (Cursor)
@@ -192,7 +192,7 @@ is
 
 
 
-   function  Attributes (Self : in Element) return Attributes_t
+   function Attributes (Self : in Element) return Attributes_t
    is
    begin
       return Self.Attributes.all;
@@ -200,7 +200,7 @@ is
 
 
 
-   function  Attribute (Self : in Element;   Named : in String) return access Attribute_t'Class
+   function Attribute (Self : in Element;   Named : in String) return access Attribute_t'Class
    is
    begin
       for Each in Self.Attributes'Range
@@ -216,7 +216,7 @@ is
 
 
 
-   function  Parent (Self : in Element) return access Element
+   function Parent (Self : in Element) return access Element
    is
    begin
       return Self.Parent;
