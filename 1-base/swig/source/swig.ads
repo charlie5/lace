@@ -2,6 +2,7 @@ with
      interfaces.C,
      System;
 
+
 package Swig
 --
 -- Contains Swig related C type definitions not found in the 'interfaces.C' family.
@@ -10,7 +11,7 @@ is
    pragma Pure;
 
 
-   --  Elementary types.
+   -- Elementary types.
    --
 
    subtype void                  is System.Address;
@@ -41,7 +42,7 @@ is
 
 
 
-   --  Elementary Arrays
+   -- Elementary Arrays
    --
 
    type void_ptr_Array           is array (interfaces.c.size_t range <>) of aliased swig.void_ptr;
@@ -76,5 +77,6 @@ is
    type float_Array              is array (interfaces.c.size_t range <>) of aliased interfaces.c.c_Float;
    type double_Array             is array (interfaces.c.size_t range <>) of aliased interfaces.c.Double;
    type long_double_Array        is array (interfaces.c.size_t range <>) of aliased interfaces.c.long_Double;
+
 
 end Swig;
