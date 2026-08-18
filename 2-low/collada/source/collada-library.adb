@@ -1,7 +1,7 @@
 package body collada.Library
 is
 
-   function find_in (Self : Inputs;   the_Semantic : in library.Semantic) return Input_t
+   function find_in (Self : in Inputs;   the_Semantic : in library.Semantic) return Input_t
    is
    begin
       for i in Self'Range

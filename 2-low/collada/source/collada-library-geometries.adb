@@ -95,7 +95,8 @@ is
       the_Input     : constant Input_t := find_in (the_Primitive.Inputs.all, Normal);
 
    begin
-      if the_Input = null_Input then
+      if the_Input = null_Input
+      then
          return null;
       end if;
 

@@ -3,8 +3,8 @@ package collada.Library.visual_scenes
 -- Models a collada 'visual_scenes' library, which contains node/joint hierachy info.
 --
 is
-   ------------
-   -- Transform
+   -------------
+   --- Transform
    --
 
    type transform_Kind is (Translate, Rotate, Scale, full_Transform);
@@ -80,8 +80,8 @@ is
 
    procedure set_Transform  (Self : in out Node;   To : in math.Matrix_4x4);
 
-   function  Parent    (Self : in     Node)  return Node_view;
-   procedure Parent_is (Self : in out Node;   Now : Node_view);
+   function  Parent    (Self : in     Node)     return Node_view;
+   procedure Parent_is (Self : in out Node;   Now : in Node_view);
 
    function  Children  (Self : in     Node)  return Nodes;
    function  Child     (Self : in     Node;   Which : in Positive) return Node_view;

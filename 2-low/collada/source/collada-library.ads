@@ -7,8 +7,8 @@ is
    type  Text_array_view is access Text_array;
 
 
-   ----------
-   -- Sources
+   -----------
+   --- Sources
    --
 
    type Source is
@@ -64,12 +64,13 @@ is
    null_Input : constant Input_t;
 
 
-   function find_in (Self : Inputs;   the_Semantic : in library.Semantic) return Input_t;
+   function find_in (Self : in Inputs;   the_Semantic : in library.Semantic) return Input_t;
 
 
 
 private
 
    null_Input : constant Input_t := (others => <>);
+
 
 end collada.Library;

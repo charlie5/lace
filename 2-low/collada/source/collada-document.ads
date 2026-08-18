@@ -2,6 +2,7 @@ with
      collada.Asset,
      collada.Libraries;
 
+
 package collada.Document
 --
 -- Models a colada document.
@@ -24,5 +25,6 @@ private
          Asset     : collada.Asset    .item;
          Libraries : collada.Libraries.item;
       end record;
+
 
 end collada.Document;

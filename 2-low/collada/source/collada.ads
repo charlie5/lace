@@ -2,13 +2,14 @@ with
      float_Math,
      ada.Strings.unbounded;
 
+
 package Collada
 --
 -- Provides a namespace and core types for the Collada package family.
 --
 is
-   -------
-   -- Text
+   --------
+   --- Text
    --
 
    subtype Text is ada.Strings.unbounded.unbounded_String;
@@ -23,8 +24,8 @@ is
    type Text_array is array (Positive range <>) of Text;
 
 
-   -------
-   -- Math
+   --------
+   --- Math
    --
 
    -- Collada matrices use column vectors, so the translation vector is the 4th column.
@@ -60,5 +61,6 @@ private
                                                [0.0, 1.0, 0.0, 0.0],
                                                [0.0, 0.0, 1.0, 0.0],
                                                [0.0, 0.0, 0.0, 1.0]];
+
 
 end Collada;

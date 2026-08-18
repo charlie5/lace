@@ -1,6 +1,7 @@
 with
      collada.Document;
 
+
 procedure launch_parse_Box
 --
 -- Loads an xml file, parses it into a collada document.

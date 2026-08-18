@@ -110,9 +110,9 @@ is
 
    function bind_Poses_of (Self : in Skin) return Matrix_4x4_array
    is
-      Raw       : constant access float_Array := raw_bind_Poses_of (Self);
+      Raw       : constant access float_Array            := raw_bind_Poses_of (Self);
       the_Poses : Matrix_4x4_array (1 .. Raw'Length / 16);
-      First     : math.Index := 1;
+      First     : math.Index                             := 1;
 
    begin
       for i in the_Poses'Range

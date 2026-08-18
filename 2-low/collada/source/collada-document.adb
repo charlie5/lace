@@ -17,8 +17,8 @@ is
    use ada.Strings.unbounded;
 
 
-   ------------
-   -- Utilities
+   -------------
+   --- Utilities
    --
 
    function "+" (From : in String) return unbounded_String
@@ -30,7 +30,8 @@ is
       Pad   :          String  := From;
       Index : constant Natural := ada.Strings.fixed.Index (Pad, "T");
    begin
-      if Index /= 0 then
+      if Index /= 0
+      then
          Pad (Index) := ' ';
       end if;
 
@@ -48,7 +49,7 @@ is
       use ada.Strings.fixed;
 
       the_Array : int_Array (1 .. 500_000);
-      Count     : math.Index := 0;
+      Count     : math.Index              := 0;
 
       Start     : Natural := 1;
       Cursor    : Natural := Index (From, " ");
@@ -96,7 +97,7 @@ is
          use ada.Strings.fixed;
 
          the_Array : float_Array (1 .. 500_000);
-         Count     : math.Index := 0;
+         Count     : math.Index                := 0;
 
          Start     : Integer    := 1;
          Cursor    : Integer    := Index (From, " ");
@@ -145,7 +146,7 @@ is
          use ada.Strings.fixed;
 
          the_Array : Text_array (1 .. 40_000);
-         Count     : math.Index := 0;
+         Count     : math.Index              := 0;
 
          Start     : Integer    := 1;
          Cursor    : Integer    := Index (From, " ");
@@ -208,15 +209,15 @@ is
       then
          the_Source.array_Id := +the_xml_float_Array.Attribute ("id").Value;
 
-         the_array_Length    := Natural'Value (the_xml_float_Array.Attribute ("count").Value);
-         the_Source.Floats   := new float_Array' (to_float_Array (the_xml_float_Array.Data));
+         the_array_Length  := Natural'Value (the_xml_float_Array.Attribute ("count").Value);
+         the_Source.Floats := new float_Array' (to_float_Array (the_xml_float_Array.Data));
 
       elsif the_xml_text_Array /= null
       then
          the_Source.array_Id := +the_xml_text_Array.Attribute ("id").Value;
 
-         the_array_Length    := Natural'Value (the_xml_text_Array.Attribute ("count").Value);
-         the_Source.Texts    := new Text_array' (to_Text_array (the_xml_text_Array.Data));
+         the_array_Length := Natural'Value (the_xml_text_Array.Attribute ("count").Value);
+         the_Source.Texts := new Text_array' (to_Text_array (the_xml_text_Array.Data));
       end if;
 
       return the_Source;
@@ -488,8 +489,8 @@ is
    end to_Channel;
 
 
-   ---------------
-   -- Construction
+   ----------------
+   --- Construction
    --
 
    function to_Document (Filename : in String) return Item
@@ -904,7 +905,7 @@ is
 
                      child_Animation   : constant access xml.Element := the_Animations (Each).Child ("animation");
                      the_xml_Animation : constant access xml.Element := (if child_Animation = null then the_Animations (Each) else child_Animation);
-                     --  the_xml_Animation : access xml.Element renames the_Animations (Each); --.Child ("animation");
+                     -- the_xml_Animation : access xml.Element renames the_Animations (Each); --.Child ("animation");
 
                      the_xml_Id   : constant access xml.Attribute_t'Class := the_xml_Animation.Attribute ("id");
                      the_xml_Name : constant access xml.Attribute_t'Class := the_xml_Animation.Attribute ("name");

@@ -4,6 +4,7 @@ with
      collada.Library.animations,
      collada.Library.visual_scenes;
 
+
 package collada.Libraries
 --
 -- Provides a container for the specific collada library packages.
@@ -17,5 +18,6 @@ is
          visual_Scenes : collada.Library.visual_scenes.item;
          Animations    : collada.Library.animations   .item;
       end record;
+
 
 end collada.Libraries;

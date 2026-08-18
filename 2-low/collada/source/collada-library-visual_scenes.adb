@@ -2,6 +2,7 @@ with
      float_Math.Algebra.linear.D3,
      ada.unchecked_Deallocation;
 
+
 package body collada.Library.visual_scenes
 is
    -------------
@@ -49,11 +50,13 @@ is
    end Sid;
 
 
+
    function Id (Self : in Node) return Text
    is
    begin
       return Self.Id;
    end Id;
+
 
 
    function Name (Self : in Node) return Text
@@ -164,7 +167,11 @@ is
          end if;
       end loop;
 
-      raise Transform_not_found with "No " & transform_Kind'Image (of_Kind) & " transform found with sid: " & Sid & ".";
+      raise Transform_not_found with   "No "
+                                     & transform_Kind'Image (of_Kind)
+                                     & " transform found with sid: "
+                                     & Sid
+                                     & ".";
    end find_Transform;
 
 
@@ -287,12 +294,12 @@ is
    is
       Id : Positive;
    begin
-      Id := find_Transform (Self, Rotate, "rotationX");
+      Id                         := find_Transform (Self, Rotate, "rotationX");
       Self.Transforms (Id).Angle := To;
 
    exception
       when Transform_not_found =>
-         Id := find_Transform (Self, Rotate, "rotateX");
+         Id                         := find_Transform (Self, Rotate, "rotateX");
          Self.Transforms (Id).Angle := To;
    end set_x_rotation_Angle;
 
@@ -302,12 +309,12 @@ is
    is
       Id : Positive;
    begin
-      Id := find_Transform (Self, Rotate, "rotationY");
+      Id                         := find_Transform (Self, Rotate, "rotationY");
       Self.Transforms (Id).Angle := To;
 
    exception
       when Transform_not_found =>
-         Id := find_Transform (Self, Rotate, "rotateY");
+         Id                         := find_Transform (Self, Rotate, "rotateY");
          Self.Transforms (Id).Angle := To;
    end set_y_rotation_Angle;
 
@@ -317,12 +324,12 @@ is
    is
       Id : Positive;
    begin
-      Id := find_Transform (Self, Rotate, "rotationZ");
+      Id                         := find_Transform (Self, Rotate, "rotationZ");
       Self.Transforms (Id).Angle := To;
 
    exception
       when Transform_not_found =>
-         Id := find_Transform (Self, Rotate, "rotateZ");
+         Id                         := find_Transform (Self, Rotate, "rotateZ");
          Self.Transforms (Id).Angle := To;
    end set_z_rotation_Angle;
 
@@ -408,7 +415,7 @@ is
 
 
 
-   procedure Parent_is (Self : in out Node;   Now : Node_view)
+   procedure Parent_is (Self : in out Node;   Now : in Node_view)
    is
    begin
       Self.Parent := Now;
