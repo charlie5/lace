@@ -45,8 +45,12 @@ is
    is
    begin
       put_Line (Self.File,   "new Connection => "
-                           & From.Name & " observes " & To.Name
-                           & " for event kind " & Name_of (for_Kind) & ".");
+                           & From.Name
+                           & " observes "
+                           & To.Name
+                           & " for event kind "
+                           & Name_of (for_Kind)
+                           & ".");
    end log_Connection;
 
 
@@ -76,7 +80,9 @@ is
                            & from_Name
                            & " no longer observes "
                            & To.Name
-                           & " for event kind " & Name_of (for_Kind) & ".");
+                           & " for event kind "
+                           & Name_of (for_Kind)
+                           & ".");
    end log_Disconnection;
 
 
@@ -110,8 +116,12 @@ is
 
       new_Line (Self.File);
       put_Line (Self.File,   "Emit     => "
-                           & From.Name & "  emits       " & Name_of (Kind_of (the_Event))
-                           & " to "    & to_Name & ".");
+                           & From.Name
+                           & "  emits       "
+                           & Name_of (Kind_of (the_Event))
+                           & " to "
+                           & to_Name
+                           & ".");
    end log_Emit;
 
 
@@ -141,8 +151,12 @@ is
 
       new_Line (Self.File);
       put_Line (Self.File,   "Send     => "
-                           & From.Name & "  sends       " & Name_of (Kind_of (the_Event))
-                           & " to "    & to_Name & ".");
+                           & From.Name
+                           & "  sends       "
+                           & Name_of (Kind_of (the_Event))
+                           & " to "
+                           & to_Name
+                           & ".");
    end log_Send;
 
 
@@ -153,9 +167,13 @@ is
                                               the_Event : in Event.item'Class)
    is
    begin
-      put_Line (Self.File,  "Relay => "
-                           & From.Name & " relays " & Name_of (Kind_of (the_Event))
-                           & " to "    & To.Name & ".");
+      put_Line (Self.File,   "Relay => "
+                           & From.Name
+                           & " relays "
+                           & Name_of (Kind_of (the_Event))
+                           & " to "
+                           & To.Name
+                           & ".");
    end log_Relay;
 
 
@@ -185,9 +203,13 @@ is
    begin
       put_Line (Self.File,   "rid Response => "
                            & of_Observer.Name
-                           & " no longer responds to " & Name_of (to_Kind)
-                           & " from "                  & from_Subject
-                           & " with "                  & the_Response.Name & ".");
+                           & " no longer responds to "
+                           & Name_of (to_Kind)
+                           & " from "
+                           & from_Subject
+                           & " with "
+                           & the_Response.Name
+                           & ".");
    end log_rid_Response;
 
 
@@ -206,9 +228,13 @@ is
 
       put_Line (Self.File,   "Response => "
                            & of_Observer.Name
-                           & " responds to " & Name_of (to_Kind (to_Event'Tag))
-                           & " from "        & from_Subject
-                           & " with "        & the_Response.Name & ".");
+                           & " responds to "
+                           & Name_of (to_Kind (to_Event'Tag))
+                           & " from "
+                           & from_Subject
+                           & " with "
+                           & the_Response.Name
+                           & ".");
    end log_Response;
 
 

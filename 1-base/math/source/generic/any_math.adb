@@ -438,7 +438,7 @@ is
       end case;
 
    exception
-      when Constraint_Error =>
+      when constraint_Error =>
          return Real'Image (Self);
    end Image;
 
@@ -610,9 +610,11 @@ is
               Left (3) - Right (3)];
 
    exception
-      when Constraint_Error =>
-         raise Constraint_Error with "any_math ""-"" (Left, Right : Vector_3) => "
-                                    & Image (Left) & "   " & Image (Right);
+      when constraint_Error =>
+         raise constraint_Error with   "any_math ""-"" (Left, Right : Vector_3) => "
+                                     & Image (Left)
+                                     & "   "
+                                     & Image (Right);
    end "-";
 
 

@@ -30,7 +30,7 @@ is
       return Result (1 .. Last);
 
    exception
-      when Constraint_Error =>
+      when constraint_Error =>
          declare
             Ellipsis : constant String := " ...";
          begin

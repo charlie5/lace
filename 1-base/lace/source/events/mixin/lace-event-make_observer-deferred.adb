@@ -97,16 +97,24 @@ is
                   else
                      if Observer.Logger /= null
                      then
-                        Observer.Logger.log ("[Warning] ~ Observer "
+                        Observer.Logger.log (  "[Warning] ~ Observer "
                                              & my_Name
-                                             & " has no response to " & Name_of (the_Event)
-                                             & " from " & from_subject_Name & ".");
+                                             & " has no response to "
+                                             & Name_of (the_Event)
+                                             & " from "
+                                             & from_subject_Name
+                                             & ".");
                         Observer.Logger.log ("            Count of responses =>"
                                              & the_Responses.Length'Image);
 
                      else
-                        raise program_Error with "Observer " & my_Name & " has no response to " & Name_of (the_Event)
-                                               & " from " & from_subject_Name & ".";
+                        raise program_Error with   "Observer "
+                                                 & my_Name
+                                                 & " has no response to "
+                                                 & Name_of (the_Event)
+                                                 & " from "
+                                                 & from_subject_Name
+                                                 & ".";
                      end if;
                   end if;
 
@@ -152,7 +160,11 @@ is
 
             else
                declare
-                  Message : constant String := "*** Warning *** ~ " & my_Name & " has no responses for events from " & subject_Name.all & ".";
+                  Message : constant String :=   "*** Warning *** ~ "
+                                               & my_Name
+                                               & " has no responses for events from "
+                                               & subject_Name.all
+                                               & ".";
                begin
                   if Observer.Logger /= null
                   then

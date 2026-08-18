@@ -564,7 +564,7 @@ is
                   Quat.R     := (Matrix (1, 2) - Matrix (2, 1)) * S;
 
                when others =>
-                  raise Program_Error;
+                  raise program_Error;
             end case;
          end;
       end if;

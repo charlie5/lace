@@ -247,13 +247,23 @@ is
          else
             if Observer.Logger /= null
             then
-               Observer.Logger.log ("[Warning] ~ Observer " & my_Name & " has no response to " & Name_of (the_Event)
-                                    & " from " & from_Subject & ".");
+               Observer.Logger.log (  "[Warning] ~ Observer "
+                                    & my_Name
+                                    & " has no response to "
+                                    & Name_of (the_Event)
+                                    & " from "
+                                    & from_Subject
+                                    & ".");
                Observer.Logger.log ("            count of responses =>" & the_Responses.Length'Image);
 
             else
-               raise program_Error with "Observer " & my_Name & " has no response to " & Name_of (the_Event)
-                                      & " from " & from_Subject & ".";
+               raise program_Error with   "Observer "
+                                        & my_Name
+                                        & " has no response to "
+                                        & Name_of (the_Event)
+                                        & " from "
+                                        & from_Subject
+                                        & ".";
             end if;
          end if;
 
@@ -261,9 +271,16 @@ is
          when constraint_Error =>
             if Observer.Logger /= null
             then
-               Observer.Logger.log (my_Name & " has no responses for events from " & from_Subject & ".");
+               Observer.Logger.log (  my_Name
+                                    & " has no responses for events from "
+                                    & from_Subject
+                                    & ".");
+
             else
-               raise Program_Error with my_Name & " has no responses for events from " & from_Subject & ".";
+               raise program_Error with   my_Name
+                                        & " has no responses for events from "
+                                        & from_Subject
+                                        & ".";
             end if;
       end receive;
 

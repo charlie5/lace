@@ -82,7 +82,10 @@ is
 
       if not Exists (Self)
       then
-         raise Error with Tag_Name & " '" & (+Self) & "' does not exist.";
+         raise Error with   Tag_Name
+                          & " '"
+                          & (+Self)
+                          & "' does not exist.";
       end if;
    end check;
 
@@ -119,7 +122,10 @@ is
       declare
          use lace.Environ.OS_Commands;
 
-         Output : constant String := run_OS ("chmod -R " & To & " " & (+Self));
+         Output : constant String := run_OS (  "chmod -R "
+                                             & To
+                                             & " "
+                                             & (+Self));
       begin
          if Output /= ""
          then
@@ -139,7 +145,10 @@ is
       declare
          use lace.Environ.OS_Commands;
 
-         Output : constant String := run_OS ("chown -R " & To & " " & (+Self));
+         Output : constant String := run_OS (  "chown -R "
+                                             & To
+                                             & " "
+                                             & (+Self));
       begin
          if Output /= ""
          then
@@ -458,7 +467,10 @@ is
       check (Self);
       check (To);
 
-      run_OS ("cp -fr " & (+Self) & " " & (+To));
+      run_OS (  "cp -fr "
+              & (+Self)
+              & " "
+              & (+To));
    end copy_Folder;
 
 
@@ -470,7 +482,10 @@ is
       check (Self);
       check (To);
 
-      run_OS ("mv " & (+Self) & " " & (+To));
+      run_OS (  "mv "
+              & (+Self)
+              & " "
+              & (+To));
    end move_Folder;
 
 
@@ -941,9 +956,13 @@ is
                                                 when Tar_Xz  => "-cJf",
                                                 when others  => raise program_Error);
 
-               Output  : constant String := run_OS (  "tar " & Options
-                                                    & " "    & (+the_Path) & format_Suffix (the_Format)
-                                                    & " "    & (+the_Path));
+               Output  : constant String := run_OS (  "tar "
+                                                    & Options
+                                                    & " "
+                                                    & (+the_Path)
+                                                    & format_Suffix (the_Format)
+                                                    & " "
+                                                    & (+the_Path));
             begin
                if Output /= ""
                then
@@ -1019,7 +1038,10 @@ is
                                                            when Tar_Gz  => "-xzf",
                                                            when Tar_Xz  => "-xJf",
                                                            when others  => raise program_Error);
-                  Output  : constant String := run_OS ("tar " & Options & " " & (+Name));
+                  Output  : constant String := run_OS (  "tar "
+                                                       & Options
+                                                       & " "
+                                                       & (+Name));
                begin
                   if Output /= ""
                   then

@@ -173,8 +173,12 @@ is
       loop
          assert (almost_Equal (Hexagon.Site (the_Hex, of_Vertex => Which),
                                expected_Sites (Which)),
-                 "T1 => vertex" & Which'Image & " site should be " & expected_Sites (Which)'Image
-                 & " ... failed !   " & Hexagon.Site (the_Hex, of_Vertex => Which)'Image);
+                   "T1 => vertex"
+                 & Which'Image
+                 & " site should be "
+                 & expected_Sites (Which)'Image
+                 & " ... failed !   "
+                 & Hexagon.Site (the_Hex, of_Vertex => Which)'Image);
       end loop;
 
       assert (Hexagon.next_Vertex  (to_Vertex => 3) = 4,   "T2 => next vertex of 3 should be 4 ... failed !");

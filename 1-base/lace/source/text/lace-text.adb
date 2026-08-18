@@ -160,7 +160,10 @@ is
    begin
       if Index > Self.Length
       then
-         raise Error with "Index" & Index'Image & " exceeds length of" & Self.Length'Image;
+         raise Error with   "Index"
+                          & Index'Image
+                          & " exceeds length of"
+                          & Self.Length'Image;
       end if;
 
       return Self.Data (Index);
@@ -178,7 +181,13 @@ is
 
    exception
       when constraint_Error =>
-         raise Error with "Appending '" & Extra & "' to '" & to_String (Self) & "' exceeds capacity of" & Self.Capacity'Image & ".";
+         raise Error with   "Appending '"
+                          & Extra
+                          & "' to '"
+                          & to_String (Self)
+                          & "' exceeds capacity of"
+                          & Self.Capacity'Image
+                          & ".";
    end append;
 
 
