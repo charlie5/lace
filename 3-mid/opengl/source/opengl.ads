@@ -364,9 +364,9 @@ private
 
    -- NB: Packing these arrays forces compiler to use the correct size for the element type, rather than the most efficient size.  -- TODO: Use 'Size' aspect clauses, instead of 'Pack'.
    --
-   pragma Pack (short_Indices);
-   pragma Pack (      Indices);
-   pragma Pack ( long_Indices);
+   pragma pack (short_Indices);
+   pragma pack (      Indices);
+   pragma pack ( long_Indices);
 
    pragma Assert (GL.GLfloat'Size = Real'Size);
 

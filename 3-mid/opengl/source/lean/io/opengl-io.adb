@@ -425,7 +425,7 @@ is
             SE_Buffer : Stream_Element_array (0 .. Stream_Element_Offset (PicData'Last));
 
             for SE_Buffer'Address use PicData'Address;
-            pragma Import (Ada, SE_Buffer);
+            pragma import (Ada, SE_Buffer);
          begin
             ada.Streams.write (to_Stream.all, SE_Buffer (0 .. Stream_Element_Offset (data_Max)));
          end;

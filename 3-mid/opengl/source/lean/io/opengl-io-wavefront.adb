@@ -329,7 +329,7 @@ is
    begin
       Open (the_File, In_File, model_Path);
 
-      while not End_Of_File (the_File)
+      while not end_of_File (the_File)
       loop
          declare
             use ada.Strings.unbounded;
