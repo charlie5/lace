@@ -69,8 +69,10 @@ is
    end destruct;
 
 
+
    procedure free (the_Object : in out physics.Object.view)
    is
+
       procedure deallocate is new ada.unchecked_Deallocation (physics.Object.item'Class,
                                                               physics.Object.view);
    begin
@@ -79,11 +81,13 @@ is
    end free;
 
 
+
    function C (Self : in Item) return access box2d_C.Object
    is
    begin
       return Self.C;
    end C;
+
 
 
    overriding
@@ -94,12 +98,14 @@ is
    end Model;
 
 
+
    overriding
    procedure Model_is (Self : in out Item;   Now : in physics.Model.view)
    is
    begin
       Self.Model := Now;
    end Model_is;
+
 
 
    overriding
@@ -110,11 +116,13 @@ is
    end Shape;
 
 
+
    procedure Shape_is (Self : in out Item;   Now : in physics.Shape.view)
    is
    begin
       Self.Shape := Now;
    end Shape_is;
+
 
 
    overriding
@@ -124,6 +132,7 @@ is
       raise Error with "TODO";
       return math.Origin_3D;
    end Scale;
+
 
 
    overriding
@@ -137,12 +146,14 @@ is
    end Scale_is;
 
 
+
    overriding
    function is_Active (Self : in Item) return Boolean
    is
    begin
       return True;     -- TODO: Finish this and 'activate' below.
    end is_Active;
+
 
 
    overriding
@@ -154,6 +165,7 @@ is
    end activate;
 
 
+
    overriding
    procedure update_Dynamics (Self : in out Item)
    is
@@ -161,6 +173,7 @@ is
    begin
       Self.Dynamics.set (Dynamics);
    end update_Dynamics;
+
 
 
    overriding
@@ -171,12 +184,14 @@ is
    end get_Dynamics;
 
 
+
    overriding
    function Mass (Self : in Item) return Real
    is
    begin
       return Real (b2d_Object_Mass (Self.C));
    end Mass;
+
 
 
    overriding
@@ -189,6 +204,7 @@ is
    end Site;
 
 
+
    overriding
    procedure Site_is (Self : in out Item;   Now : in Vector_3)
    is
@@ -197,6 +213,7 @@ is
       Self.Site_z := Now (3);
       b2d_Object_Site_is (Self.C, c_Now'unchecked_Access);
    end Site_is;
+
 
 
    overriding
@@ -208,6 +225,7 @@ is
    end Spin;
 
 
+
    overriding
    procedure Spin_is (Self : in out Item;   Now : in Matrix_3x3)
    is
@@ -215,6 +233,7 @@ is
    begin
       b2d_Object_Spin_is (Self.C, c_Now'unchecked_Access);
    end Spin_is;
+
 
 
    overriding
@@ -226,6 +245,7 @@ is
    end xy_Spin;
 
 
+
    overriding
    procedure xy_Spin_is (Self : in out Item;   Now : in Radians)
    is
@@ -233,6 +253,7 @@ is
    begin
       b2d_Object_xy_Spin_is (Self.C, c_Now);
    end xy_Spin_is;
+
 
 
    overriding
@@ -245,6 +266,7 @@ is
    end Transform;
 
 
+
    overriding
    procedure Transform_is (Self : in out Item;   Now : in Matrix_4x4)
    is
@@ -252,6 +274,7 @@ is
    begin
       b2d_Object_Transform_is (Self.C, c_Now'Unchecked_Access);
    end Transform_is;
+
 
 
    overriding
@@ -263,6 +286,7 @@ is
    end Speed;
 
 
+
    overriding
    procedure Speed_is (Self : in out Item;   Now : in Vector_3)
    is
@@ -270,6 +294,7 @@ is
    begin
       b2d_Object_Speed_is (Self.C, c_Now'unchecked_Access);
    end Speed_is;
+
 
 
    overriding
@@ -281,6 +306,7 @@ is
    end Gyre;
 
 
+
    overriding
    procedure Gyre_is (Self : in out Item;   Now : in Vector_3)
    is
@@ -290,12 +316,14 @@ is
    end Gyre_is;
 
 
+
    overriding
    procedure Friction_is (Self : in out Item;   Now : in Real)
    is
    begin
       b2d_Object_Friction_is (Self.C, +Now);
    end Friction_is;
+
 
 
    overriding
@@ -318,6 +346,7 @@ is
    end apply_Torque;
 
 
+
    overriding
    procedure apply_Torque_impulse (Self : in out Item;   Torque : in Vector_3)
    is
@@ -325,6 +354,7 @@ is
    begin
       b2d_Object_apply_Torque_impulse (Self.C, c_Torque'unchecked_Access);
    end apply_Torque_impulse;
+
 
 
    overriding
@@ -345,6 +375,7 @@ is
    begin
       Self.user_Data := Now.all'unchecked_Access;
    end user_Data_is;
+
 
 
    overriding

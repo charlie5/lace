@@ -1,14 +1,14 @@
 with
      physics.Shape,
-
      c_math_c.Pointers,
 
      bullet_c.Pointers,
      bullet_c;
 
+
 package bullet_Physics.Shape
 --
---  Provides glue between a physics shape and a Bullet3D shape.
+-- Provides glue between a physics shape and a Bullet3D shape.
 --
 is
    type Item is abstract new physics.Shape.item with
@@ -23,7 +23,7 @@ is
 
 
    ---------
-   --  Forge
+   --- Forge
    --
 
    overriding
@@ -62,7 +62,7 @@ is
    --
 
    overriding
-   procedure Scale_is (Self : in out Item;   Now : Vector_3);
+   procedure Scale_is (Self : in out Item;   Now : in Vector_3);
 
 
 
@@ -78,5 +78,6 @@ private
    type Sphere      is new Item with null record;
    type convex_Hull is new Item with null record;
    type Mesh        is new Item with null record;
+
 
 end bullet_Physics.Shape;

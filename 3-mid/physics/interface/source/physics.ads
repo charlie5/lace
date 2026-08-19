@@ -3,9 +3,10 @@ with
      float_Math.Geometry.D3,
      float_Math.Algebra.linear.D3;
 
+
 package Physics
 --
---  Provides a physics interface for 2D/3D simulations.
+-- Provides a physics interface for 2D/3D simulations.
 --
 is
    pragma Pure;
@@ -37,8 +38,10 @@ is
    -- Raised when a shape or joint is not supported in a space.
 
 
+
 private
 
    null_model_Id : constant physics.model_Id := 0;
+
 
 end Physics;

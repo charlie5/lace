@@ -7,8 +7,8 @@ with
      physics.Object,
 
      bullet_C.Pointers,
-
      lace.Any;
+
 
 package bullet_Physics.Joint
 --
@@ -75,7 +75,7 @@ private
 
 
    --------
-   --  DoF6
+   --- DoF6
    --
    type DoF6 is new Item
                 and physics.Joint.DoF6.item with
@@ -127,7 +127,7 @@ private
                                                    DoF : in Degree_of_freedom);
 
    ----------
-   --  Slider
+   --- Slider
    --
    type Slider is new Item
                   and physics.Joint.Slider.item with
@@ -179,7 +179,7 @@ private
                                                      DoF : in Degree_of_freedom);
 
    --------------
-   --  cone_Twist
+   --- cone_Twist
    --
    type cone_Twist is new Item
                       and physics.Joint.cone_Twist.item with
@@ -214,7 +214,7 @@ private
    procedure Velocity_is (Self : in out cone_Twist;   Now : in Real;
                                                       DoF : in Degree_of_freedom);
    overriding
-   function  Extent            (Self : in     cone_Twist;   DoF : Degree_of_freedom) return Real;
+   function  Extent            (Self : in     cone_Twist;   DoF : in Degree_of_freedom) return Real;
    overriding
    procedure desired_Extent_is (Self : in out cone_Twist;   Now : in Real;
                                                             DoF : in Degree_of_freedom);
@@ -231,7 +231,7 @@ private
                                                          DoF : in Degree_of_freedom);
 
    --------
-   --  Ball
+   --- Ball
    --
    type Ball is new Item
                 and physics.Joint.Ball.item with
@@ -283,7 +283,7 @@ private
                                                    DoF : in Degree_of_freedom);
 
    ---------
-   --  Hinge
+   --- Hinge
    --
    type Hinge is new Item
                 and physics.Joint.Hinge.item with

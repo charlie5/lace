@@ -16,7 +16,7 @@ is
    type Views is array (Positive range <>) of View;
 
 
-   ----------
+   ---------
    --- Forge
    --
    procedure define (Self : access Item;   Shape       : in physics.Shape.view;
@@ -29,7 +29,7 @@ is
    procedure free     (Self : in out View);
 
 
-   ---------------
+   --------------
    --- Attributes
    --
 
@@ -97,7 +97,7 @@ is
    procedure Restitution_is  (Self : in out Item;   Now : in Real)         is abstract;
 
 
-   ---------------
+   --------------
    --- Operations
    --
 

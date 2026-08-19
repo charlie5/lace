@@ -13,12 +13,14 @@ with
      ada.unchecked_Deallocation,
      ada.Text_IO;
 
+
 package body bullet_Physics.Joint
 is
-   use c_math_c.Conversion,
-       bullet_c.Binding,
-       Interfaces,
-       ada.Text_IO;
+   use
+        c_math_c.Conversion,
+        bullet_c.Binding,
+        Interfaces,
+        ada.Text_IO;
 
 
    type Any_limited_view is access all lace.Any.limited_item'Class;
@@ -29,7 +31,7 @@ is
 
 
    --------------
-   --  Joint.item
+   --- Joint.item
    --
 
    overriding
@@ -41,6 +43,7 @@ is
    end reaction_Force;
 
 
+
    overriding
    function reaction_Torque (Self : in Item) return Real
    is
@@ -50,12 +53,14 @@ is
    end reaction_Torque;
 
 
+
    overriding
    procedure user_Data_is (Self : in out Item;   Now : access lace.Any.limited_item'Class)
    is
    begin
       Self.user_Data := Now;
    end user_Data_is;
+
 
 
    overriding
@@ -67,7 +72,7 @@ is
 
 
    --------
-   --  DoF6
+   --- DoF6
    --
 
    function new_Dof6_Joint (Object_A, Object_B : in physics.Object.view;
@@ -98,6 +103,7 @@ is
    end destruct;
 
 
+
    overriding
    function Object_A (Self : in DoF6) return physics.Object.view
    is
@@ -105,6 +111,7 @@ is
    begin
       return physics.Object.view (to_Any_view (b3d_Object_user_Data (c_Object_A)));
    end Object_A;
+
 
 
    overriding
@@ -116,6 +123,7 @@ is
    end Object_B;
 
 
+
    overriding
    function Frame_A (Self : in DoF6) return Matrix_4x4
    is
@@ -124,12 +132,14 @@ is
    end Frame_A;
 
 
+
    overriding
    function Frame_B (Self : in DoF6) return Matrix_4x4
    is
    begin
       return +b3d_Joint_Frame_B (Self.C);
    end Frame_B;
+
 
 
    overriding
@@ -141,6 +151,7 @@ is
    end Frame_A_is;
 
 
+
    overriding
    procedure Frame_B_is (Self : in out DoF6;   Now : in Matrix_4x4)
    is
@@ -148,6 +159,7 @@ is
    begin
       b3d_Joint_Frame_B_is (Self.C, c_Now'unchecked_Access);
    end Frame_B_is;
+
 
 
    overriding
@@ -165,7 +177,8 @@ is
                                                 DoF : in Degree_of_freedom)
    is
    begin
-      if DoF < 4 then
+      if DoF < 4
+      then
          raise Error with "Illegal degree of freedom:" & DoF'Image & ".";
       end if;
 
@@ -175,10 +188,11 @@ is
 
 
    overriding
-   function Extent (Self : in DoF6;   DoF : Degree_of_freedom) return Real
+   function Extent (Self : in DoF6;   DoF : in Degree_of_freedom) return Real
    is
    begin
-      if DoF < 4 then
+      if DoF < 4
+      then
          raise Error with "Illegal degree of freedom:" & DoF'Image & ".";
       end if;
 
@@ -201,6 +215,7 @@ is
    begin
       return Real (b3d_Joint_6DoF_lower_Limit (Self.C, C.int (DoF)));
    end lower_Limit;
+
 
 
    overriding
@@ -232,7 +247,7 @@ is
 
 
    --------
-   --  Ball
+   --- Ball
    --
 
    function new_Ball_Joint (Object_A,   Object_B   : in physics.Object.view;
@@ -263,6 +278,7 @@ is
    end destruct;
 
 
+
    overriding
    function Object_A (Self : in Ball) return physics.Object.view
    is
@@ -270,6 +286,7 @@ is
    begin
       return physics.Object.view (to_Any_view (b3d_Object_user_Data (c_Object_A)));
    end Object_A;
+
 
 
    overriding
@@ -281,6 +298,7 @@ is
    end Object_B;
 
 
+
    overriding
    function Frame_A (Self : in Ball) return Matrix_4x4
    is
@@ -289,12 +307,14 @@ is
    end Frame_A;
 
 
+
    overriding
    function Frame_B (Self : in Ball) return Matrix_4x4
    is
    begin
       return +b3d_Joint_Frame_B (Self.C);
    end Frame_B;
+
 
 
    overriding
@@ -306,6 +326,7 @@ is
    end Frame_A_is;
 
 
+
    overriding
    procedure Frame_B_is (Self : in out Ball;   Now : in Matrix_4x4)
    is
@@ -313,6 +334,7 @@ is
    begin
       b3d_Joint_Frame_B_is (Self.C, c_Now'unchecked_Access);
    end Frame_B_is;
+
 
 
    overriding
@@ -330,7 +352,8 @@ is
                                                 DoF : in Degree_of_freedom)
    is
    begin
-      if DoF < 4 then
+      if DoF < 4
+      then
          raise Error with "Illegal degree of freedom:" & DoF'Image & ".";
       end if;
 
@@ -343,7 +366,8 @@ is
    function Extent (Self : in Ball;   DoF : in Degree_of_freedom) return Real
    is
    begin
-      if DoF < 4 then
+      if DoF < 4
+      then
          raise Program_Error with "Illegal degree of freedom:" & DoF'Image & ".";
       end if;
 
@@ -367,6 +391,7 @@ is
       raise Error with "TODO";
       return 0.0;
    end lower_Limit;
+
 
 
    overriding
@@ -397,7 +422,7 @@ is
 
 
    ----------
-   --  Slider
+   --- Slider
    --
 
    function new_Slider_Joint (Object_A,   Object_B : in physics.Object.view;
@@ -427,6 +452,7 @@ is
    end destruct;
 
 
+
    overriding
    function Object_A (Self : in  Slider) return physics.Object.view
    is
@@ -434,6 +460,7 @@ is
    begin
       return physics.Object.view (to_Any_view (b3d_Object_user_Data (c_Object_A)));
    end Object_A;
+
 
 
    overriding
@@ -445,6 +472,7 @@ is
    end Object_B;
 
 
+
    overriding
    function Frame_A (Self : in Slider) return Matrix_4x4
    is
@@ -453,12 +481,14 @@ is
    end Frame_A;
 
 
+
    overriding
    function Frame_B (Self : in Slider) return Matrix_4x4
    is
    begin
       return +b3d_Joint_Frame_B (Self.C);
    end Frame_B;
+
 
 
    overriding
@@ -470,6 +500,7 @@ is
    end Frame_A_is;
 
 
+
    overriding
    procedure Frame_B_is (Self : in out Slider;   Now : in Matrix_4x4)
    is
@@ -477,6 +508,7 @@ is
    begin
       b3d_Joint_Frame_B_is (Self.C, c_Now'unchecked_Access);
    end Frame_B_is;
+
 
 
    overriding
@@ -494,7 +526,8 @@ is
                                                   DoF : in Degree_of_freedom)
    is
    begin
-      if DoF < 4 then
+      if DoF < 4
+      then
          raise Error with "Illegal degree of freedom:" & DoF'Image & ".";
       end if;
 
@@ -504,10 +537,11 @@ is
 
 
    overriding
-   function Extent (Self : in Slider;   DoF : Degree_of_freedom) return Real
+   function Extent (Self : in Slider;   DoF : in Degree_of_freedom) return Real
    is
    begin
-      if DoF < 4 then
+      if DoF < 4
+      then
          raise Error with "Illegal degree of freedom:" & DoF'Image & ".";
       end if;
 
@@ -531,6 +565,7 @@ is
       raise Error with "TODO";
       return 0.0;
    end lower_Limit;
+
 
 
    overriding
@@ -561,7 +596,7 @@ is
 
 
    --------------
-   --  cone_Twist
+   --- cone_Twist
    --
 
    function new_cone_Twist_Joint (Object_A,   Object_B   : in physics.Object.view;
@@ -591,6 +626,7 @@ is
    end destruct;
 
 
+
    overriding
    function Object_A (Self : in cone_Twist) return physics.Object.view
    is
@@ -598,6 +634,7 @@ is
    begin
       return physics.Object.view (to_Any_view (b3d_Object_user_Data (c_Object_A)));
    end Object_A;
+
 
 
    overriding
@@ -609,6 +646,7 @@ is
    end Object_B;
 
 
+
    overriding
    function Frame_A (Self : in cone_Twist) return Matrix_4x4
    is
@@ -617,12 +655,14 @@ is
    end Frame_A;
 
 
+
    overriding
    function Frame_B (Self : in cone_Twist) return Matrix_4x4
    is
    begin
       return +b3d_Joint_Frame_B (Self.C);
    end Frame_B;
+
 
 
    overriding
@@ -634,6 +674,7 @@ is
    end Frame_A_is;
 
 
+
    overriding
    procedure Frame_B_is (Self : in out cone_Twist;   Now : in Matrix_4x4)
    is
@@ -643,8 +684,9 @@ is
    end Frame_B_is;
 
 
+
    overriding
-   function is_Limited (Self : in cone_Twist;   DoF : Degree_of_freedom) return Boolean
+   function is_Limited (Self : in cone_Twist;   DoF : in Degree_of_freedom) return Boolean
    is
       use type Swig.bool;
    begin
@@ -658,7 +700,8 @@ is
                                                       DoF : in Degree_of_freedom)
    is
    begin
-      if DoF < 4 then
+      if DoF < 4
+      then
          raise Error with "Illegal degree of freedom:" & DoF'Image & ".";
       end if;
 
@@ -668,10 +711,11 @@ is
 
 
    overriding
-   function Extent (Self : in cone_Twist;   DoF : Degree_of_freedom) return Real
+   function Extent (Self : in cone_Twist;   DoF : in Degree_of_freedom) return Real
    is
    begin
-      if DoF < 4 then
+      if DoF < 4
+      then
          raise Error with "Illegal degree of freedom:" & DoF'Image & ".";
       end if;
 
@@ -695,6 +739,7 @@ is
       raise Error with "TODO";
       return 0.0;
    end lower_Limit;
+
 
 
    overriding
@@ -725,7 +770,7 @@ is
 
 
    ---------
-   --  Hinge
+   --- Hinge
    --
 
    function new_hinge_Joint (Object_A : in physics.Object.view;
@@ -812,6 +857,7 @@ is
    end lower_Limit;
 
 
+
    overriding
    function upper_Limit (Self : in Hinge) return Real
    is
@@ -819,6 +865,7 @@ is
       raise Error with "TODO";
       return 0.0;
    end upper_Limit;
+
 
 
    overriding
@@ -830,6 +877,7 @@ is
    end Angle;
 
 
+
    overriding
    function Object_A (Self : in Hinge) return physics.Object.view
    is
@@ -837,6 +885,7 @@ is
       raise Error with "TODO";
       return null;
    end Object_A;
+
 
 
    overriding
@@ -848,6 +897,7 @@ is
    end Object_B;
 
 
+
    overriding
    function Frame_A (Self : in Hinge) return Matrix_4x4
    is
@@ -857,6 +907,7 @@ is
    end Frame_A;
 
 
+
    overriding
    function Frame_B (Self : in Hinge) return Matrix_4x4
    is
@@ -864,6 +915,7 @@ is
       raise Error with "TODO";
       return [others => [others => 0.0]];
    end Frame_B;
+
 
 
    overriding
@@ -876,6 +928,7 @@ is
    end Frame_A_is;
 
 
+
    overriding
    procedure Frame_B_is (Self : in out Hinge;   Now : in Matrix_4x4)
    is
@@ -886,8 +939,9 @@ is
    end Frame_B_is;
 
 
+
    overriding
-   function is_Limited (Self : in Hinge;   DoF : Degree_of_freedom) return Boolean
+   function is_Limited (Self : in Hinge;   DoF : in Degree_of_freedom) return Boolean
    is
       pragma unreferenced (Self);
    begin
@@ -900,7 +954,8 @@ is
                                                  DoF : in Degree_of_freedom)
    is
    begin
-      if DoF /= 1 then
+      if DoF /= 1
+      then
          raise Error with "Illegal degree of freedom:" & DoF'Image & ".";
       end if;
 
@@ -909,10 +964,11 @@ is
 
 
    overriding
-   function Extent (Self : in Hinge;   DoF : Degree_of_freedom) return Real
+   function Extent (Self : in Hinge;   DoF : in Degree_of_freedom) return Real
    is
    begin
-      if DoF /= 1 then
+      if DoF /= 1
+      then
          raise Error with "Illegal degree of freedom:" & DoF'Image & ".";
       end if;
 
@@ -936,6 +992,7 @@ is
 
    procedure free (the_Joint : in out physics.Joint.view)
    is
+
       procedure deallocate is new ada.unchecked_Deallocation (physics.Joint.item'Class,
                                                               physics.Joint.view);
    begin

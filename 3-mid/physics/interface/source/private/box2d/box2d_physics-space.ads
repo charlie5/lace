@@ -18,6 +18,7 @@ with
 
      ada.Containers.hashed_Maps;
 
+
 package box2d_Physics.Space
 --
 -- Provide a Box2D implementation of a physical space.
@@ -43,8 +44,9 @@ is
 private
 
    function Hash (the_C_Object : in box2d_c.Pointers.Object_Pointer) return ada.Containers.Hash_type;
-   use type box2d_c.Pointers.Object_pointer;
-   use type box2d_Physics.Object.view;
+   use type box2d_c.Pointers.Object_pointer,
+            box2d_Physics.Object.view;
+
    package c_Object_Maps_of_Object is new ada.Containers.hashed_Maps (Key_type        => box2d_c.Pointers.Object_Pointer,
                                                                       Element_type    => box2d_Physics.Object.view,
                                                                       Hash            => Hash,
@@ -74,7 +76,7 @@ private
    function  first_Joint (Self   : in     Item)         return physics.Space.joint_Cursor'Class;
 
 
-   ----------
+   ---------
    --- Forge
    --
 
@@ -118,10 +120,10 @@ private
    overriding
    function  new_convex_hull_Shape (Self : access Item;   Points       : in physics.Vector_3_array)      return physics.Shape.view;
    overriding
-   function         new_mesh_Shape (Self : access Item;   Points       : access Physics.Geometry_3D.a_Model) return physics.Shape .view;
+   function         new_mesh_Shape (Self : access Item;   Points       : access physics.Geometry_3D.a_Model) return physics.Shape .view;
 
 
-   --  2D
+   -- 2D
 
    overriding
    function  new_circle_Shape  (Self : access Item;   Radius   : in Real := 0.5)                    return physics.Shape .view;
@@ -129,7 +131,7 @@ private
    function  new_polygon_Shape (Self : access Item;   Vertices : in physics.Space.polygon_Vertices) return physics.Shape .view;
 
 
-   --  Objects
+   -- Objects
 
    overriding
    function  new_Object (Self : access Item;   of_Shape     : in physics.Shape .view;
@@ -138,7 +140,7 @@ private
                                                Restitution  : in Real;
                                                at_Site      : in Vector_3;
                                                is_Kinematic : in Boolean) return physics.Object.view;
-   --  Joints
+   -- Joints
    --
    overriding
    function new_hinge_Joint      (Self : access Item;   Object_A,
@@ -180,8 +182,8 @@ private
                                                         Object_B         : in physics.Object.view;
                                                         Frame_A,
                                                         Frame_B          : in Matrix_4x4) return physics.Joint.cone_twist.view;
-   -------------
-   -- Attributes
+   --------------
+   --- Attributes
    --
 
    overriding
@@ -190,7 +192,7 @@ private
    procedure Gravity_is (Self : in out Item;   Now : in Vector_3);
 
 
-   ---------------
+   --------------
    --- Operations
    --
 
@@ -211,8 +213,10 @@ private
    overriding
    procedure update_Bounds (Self : in out Item;   of_Obect     : in physics.Object.view);
    overriding
-   procedure set_Joint_local_Anchor
-                           (Self : in out Item;   the_Joint    : in physics.Joint.view;
-                                                  is_Anchor_A  : in Boolean;
-                                                  local_Anchor : in Vector_3);
+   procedure set_Joint_local_Anchor (Self         : in out Item;
+                                     the_Joint    : in     physics.Joint.view;
+                                     is_Anchor_A  : in     Boolean;
+                                     local_Anchor : in     Vector_3);
+
+
 end box2d_Physics.Space;

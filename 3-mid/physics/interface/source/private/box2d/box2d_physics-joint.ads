@@ -4,17 +4,15 @@ with
      physics.Joint.slider,
      physics.Joint.hinge,
      physics.Joint.ball,
-
      physics.Object,
 
      box2d_C.Pointers,
-
      lace.Any;
 
 
 package box2d_Physics.Joint
 --
---  Provides glue between a physics joint and a Box2D joint.
+-- Provides glue between a physics joint and a Box2D joint.
 --
 is
    type Item is abstract limited new physics.Joint.item with     -- TODO: Make private.
@@ -59,7 +57,7 @@ is
 
    procedure free (the_Joint : in out physics.Joint.view);
 
-   --  procedure set_b2d_user_Data (Self : in View);
+   -- procedure set_b2d_user_Data (Self : in View);
 
 
 
@@ -87,7 +85,7 @@ private
    use physics.Joint;
 
    --------
-   --  DoF6
+   --- DoF6
    --
    type DoF6 is new Item
                 and physics.Joint.DoF6.item with
@@ -117,7 +115,7 @@ private
    procedure Frame_B_is  (Self : in out DoF6;   Now : in Matrix_4x4);
 
    overriding
-   function  is_Limited  (Self : in     DoF6;   DoF : Degree_of_freedom) return Boolean;
+   function  is_Limited  (Self : in     DoF6;   DoF : in Degree_of_freedom) return Boolean;
 
    overriding
    procedure Velocity_is (Self : in out DoF6;   Now : in Real;
@@ -140,7 +138,7 @@ private
                                                    DoF : in Degree_of_freedom);
 
    ----------
-   --  Slider
+   --- Slider
    --
    type Slider is new Item
                   and physics.Joint.Slider.item with
@@ -170,7 +168,7 @@ private
    procedure Frame_B_is  (Self : in out Slider;   Now : in Matrix_4x4);
 
    overriding
-   function  is_Limited  (Self : in     Slider;   DoF : Degree_of_freedom) return Boolean;
+   function  is_Limited  (Self : in     Slider;   DoF : in Degree_of_freedom) return Boolean;
 
    overriding
    procedure Velocity_is (Self : in out Slider;   Now : in Real;
@@ -193,7 +191,7 @@ private
                                                      DoF : in Degree_of_freedom);
 
    --------------
-   --  cone_Twist
+   --- cone_Twist
    --
    type cone_Twist is new Item
                       and physics.Joint.cone_Twist.item with
@@ -223,7 +221,7 @@ private
    procedure Frame_B_is  (Self : in out cone_Twist;   Now : in Matrix_4x4);
 
    overriding
-   function  is_Limited  (Self : in     cone_Twist;   DoF : Degree_of_freedom) return Boolean;
+   function  is_Limited  (Self : in     cone_Twist;   DoF : in Degree_of_freedom) return Boolean;
 
    overriding
    procedure Velocity_is (Self : in out cone_Twist;   Now : in Real;
@@ -246,7 +244,7 @@ private
                                                          DoF : in Degree_of_freedom);
 
    --------
-   --  Ball
+   --- Ball
    --
    type Ball is new Item
                 and physics.Joint.Ball.item with
@@ -276,7 +274,7 @@ private
    procedure Frame_B_is  (Self : in out Ball;   Now : in Matrix_4x4);
 
    overriding
-   function  is_Limited  (Self : in     Ball;   DoF : Degree_of_freedom) return Boolean;
+   function  is_Limited  (Self : in     Ball;   DoF : in Degree_of_freedom) return Boolean;
 
    overriding
    procedure Velocity_is (Self : in out Ball;   Now : in Real;
@@ -300,7 +298,7 @@ private
 
 
    ---------
-   --  Hinge
+   --- Hinge
    --
    type Hinge is new Item
                  and physics.Joint.hinge.item with
@@ -330,7 +328,7 @@ private
    procedure Frame_B_is  (Self : in out Hinge;   Now : in Matrix_4x4);
 
    overriding
-   function  is_Limited  (Self : in     Hinge;   DoF : Degree_of_freedom) return Boolean;
+   function  is_Limited  (Self : in     Hinge;   DoF : in Degree_of_freedom) return Boolean;
 
    overriding
    procedure Velocity_is (Self : in out Hinge;   Now : in Real;
@@ -375,5 +373,6 @@ private
 
    overriding
    function max_motor_Torque (Self : in Hinge) return Real;
+
 
 end box2d_Physics.Joint;

@@ -19,4 +19,5 @@ is
    procedure upper_Limit_is (Self : in out Item;   Now : in Real;
                                                    DoF : in Degree_of_freedom)   is abstract;
 
+
 end physics.Joint.ball;

@@ -20,10 +20,11 @@ with
 
 package body box2d_Physics.Space
 is
-   use box2d_c.Binding,
-       box2d_c.Pointers,
-       c_math_c.Conversion,
-       Interfaces;
+   use
+        box2d_c.Binding,
+        box2d_c.Pointers,
+        c_math_c.Conversion,
+        Interfaces;
 
    use type c_math_c.Real;
 
@@ -34,7 +35,7 @@ is
    function to_Object_view is new ada.unchecked_Conversion (swig.void_ptr, physics.Object.view);
 
 
-   ----------
+   ---------
    --- Forge
    --
 
@@ -46,6 +47,7 @@ is
          Self.C := box2d_c.Binding.b2d_new_Space;
       end return;
    end to_Space;
+
 
 
    overriding
@@ -70,7 +72,7 @@ is
    end new_Shape;
 
 
-   --  2d
+   -- 2d
    --
 
    overriding
@@ -81,6 +83,7 @@ is
    begin
       return the_Circle;
    end new_circle_Shape;
+
 
 
    overriding
@@ -103,6 +106,7 @@ is
       raise physics.Space.unsupported_Shape with "Sphere shape not allowed in box2d physics.";
       return null;
    end new_sphere_Shape;
+
 
 
    overriding
@@ -144,7 +148,7 @@ is
    begin
       raise physics.Space.unsupported_Shape with "Cylinder shape not allowed in box2d physics.";
       return null;
-   end New_Cylinder_Shape;
+   end new_cylinder_Shape;
 
 
    overriding
@@ -191,6 +195,7 @@ is
    end new_convex_hull_Shape;
 
 
+
    overriding
    function new_mesh_Shape (Self : access Item;   Points : access physics.Geometry_3D.a_Model) return physics.Shape.view
    is
@@ -201,11 +206,12 @@ is
    end new_mesh_Shape;
 
 
-   --  Objects
+   -- Objects
    --
 
    function Hash (the_C_Object : in box2d_c.Pointers.Object_pointer) return ada.Containers.Hash_type
    is
+
       function convert is new ada.unchecked_Conversion (box2d_c.Pointers.Object_pointer,
                                                         system.storage_Elements.integer_Address);
    begin
@@ -241,7 +247,7 @@ is
    end object_Count;
 
 
-   --  Joints
+   -- Joints
    --
 
    overriding
@@ -314,7 +320,7 @@ is
                                                   Pivot_in_B   : in math.Vector_3) return physics.Joint.ball.view
    is
       pragma unreferenced (Self);
-      the_Joint : constant physics.Joint.ball.view := Standard.box2d_physics.Joint.new_ball_Joint (Object_A,   Object_B,
+      the_Joint : constant physics.Joint.ball.view := standard.box2d_physics.Joint.new_ball_Joint (Object_A,   Object_B,
                                                                                                    Pivot_in_A, Pivot_in_B);
    begin
       return the_Joint;
@@ -349,7 +355,7 @@ is
    end new_cone_twist_Joint;
 
 
-   ---------------
+   --------------
    --- Operations
    --
 
@@ -361,6 +367,7 @@ is
    begin
       null;
    end update_Bounds;
+
 
 
    overriding
@@ -375,7 +382,7 @@ is
                   physics.Model.view;
 
 --           the_Scale : aliased Vector_3;
-         shape_Info : Physics.Model.a_Shape renames the_Object.Model.shape_Info;
+         shape_Info : physics.Model.a_Shape renames the_Object.Model.shape_Info;
       begin
 --           if the_Object.physics_Model = null then
 --              return;
@@ -471,7 +478,6 @@ is
 
 
 
-
    overriding
    procedure evolve (Self : in out Item;   By : in Duration)
    is
@@ -516,6 +522,7 @@ is
    end Gravity_is;
 
 
+
    overriding
    procedure add (Self : in out Item;   the_Joint : in physics.Joint.view)
    is
@@ -523,8 +530,9 @@ is
       the_c_Joint : constant Joint_pointer := box2d_physics.Joint.view (the_Joint).C;
    begin
       b2d_Space_add_Joint (Self.C, the_c_Joint);
-      --  set_b2d_user_Data   (box2d_physics.Joint.view (the_Joint));
+      -- set_b2d_user_Data   (box2d_physics.Joint.view (the_Joint));
    end add;
+
 
 
    overriding
@@ -537,7 +545,7 @@ is
 
 
    ---------------------
-   --  Contact Manifolds
+   --- Contact Manifolds
    --
 
    overriding
@@ -548,18 +556,20 @@ is
    end manifold_Count;
 
 
+
    overriding
    function Manifold (Self : access Item;   Index : in Positive) return physics.space.a_Manifold
    is
       use type C.int;
+
       function to_Any_limited_view is new ada.unchecked_Conversion (Swig.void_ptr, Any_limited_view);
 
       the_Contact  : box2d_c.b2d_Contact.item renames b2d_space_Contact (Self.C, C.int (Index) - 1);
       the_Manifold : physics.space.a_Manifold;
 
    begin
-      the_Manifold.Objects (1)  := physics.Object.view (to_Any_limited_view (b2d_object_user_Data (the_Contact.Object_A)));
-      the_Manifold.Objects (2)  := physics.Object.view (to_Any_limited_view (b2d_object_user_Data (the_Contact.Object_B)));
+      the_Manifold.Objects (1) := physics.Object.view (to_Any_limited_view (b2d_object_user_Data (the_Contact.Object_A)));
+      the_Manifold.Objects (2) := physics.Object.view (to_Any_limited_view (b2d_object_user_Data (the_Contact.Object_B)));
 
       the_Manifold.Contact.Site := +the_Contact.Site;
 
@@ -589,12 +599,14 @@ is
    procedure next (Cursor : in out joint_Cursor)
    is
    begin
-      if Cursor.C.Joint = null then
+      if Cursor.C.Joint = null
+      then
          raise constraint_Error with "Null cursor.";
       end if;
 
       b2d_Space_next_Joint (Cursor.C'unchecked_Access);
    end next;
+
 
 
    overriding
@@ -605,11 +617,13 @@ is
    end has_Element;
 
 
+
    overriding
    function Element (Cursor : in joint_Cursor) return physics.Joint.view
    is
    begin
-      if Cursor.C.Joint = null then
+      if Cursor.C.Joint = null
+      then
          raise constraint_Error with "Null cursor.";
       end if;
 
@@ -620,6 +634,7 @@ is
          return physics.Joint.view (the_raw_Joint);
       end;
    end Element;
+
 
 
    overriding

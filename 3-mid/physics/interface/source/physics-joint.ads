@@ -2,6 +2,7 @@ with
      physics.Object,
      lace.Any;
 
+
 package physics.Joint
 --
 -- Provides an interface for physics joints.
@@ -28,24 +29,24 @@ is
    procedure Frame_B_is  (Self : in out Item;   Now : in Matrix_4x4)     is abstract;
 
 
-   function  is_Limited  (Self : in     Item;   DoF : Degree_of_freedom) return Boolean is abstract;
+   function  is_Limited  (Self : in     Item;   DoF : in Degree_of_freedom) return Boolean is abstract;
 
 
    procedure Velocity_is (Self : in out Item;   Now : in Real;
                                                 DoF : in Degree_of_freedom)             is abstract;
    --
-   --  Sets the spatial or angular velocity for the specified DoF.
+   -- Sets the spatial or angular velocity for the specified DoF.
 
 
-   function  Extent      (Self : in     Item;   DoF : Degree_of_freedom) return Real    is abstract;
+   function  Extent      (Self : in     Item;   DoF : in Degree_of_freedom) return Real    is abstract;
    --
-   --  Returns the current distance or angle (for a spatial or angular DoF, respectively).
+   -- Returns the current distance or angle (for a spatial or angular DoF, respectively).
 
 
    procedure desired_Extent_is (Self : in out Item;   Now : in Real;
                                                       DoF : in Degree_of_freedom)       is abstract;
    --
-   --  Sets the desired spacial or angular extent for a given degree of freedom (DoF).
+   -- Sets the desired spacial or angular extent for a given degree of freedom (DoF).
 
 
    function  reaction_Force  (Self : in     Item) return Vector_3 is abstract;

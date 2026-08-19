@@ -15,4 +15,5 @@ is
    procedure evolve   (Self : in out Item;   By  : in Duration)      is null;
    procedure destruct (Self : in out Item)                           is abstract;
 
+
 end physics.Shape;

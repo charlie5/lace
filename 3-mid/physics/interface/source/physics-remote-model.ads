@@ -1,6 +1,6 @@
 package physics.remote.Model
 --
---  A model describing physical properties, usable with DSA.
+-- A model describing physical properties, usable with DSA.
 --
 is
    pragma remote_Types;
@@ -11,6 +11,5 @@ is
          Scale : Vector_3 := [1.0, 1.0, 1.0];
       end record;
 
+
 end physics.remote.Model;
-
-

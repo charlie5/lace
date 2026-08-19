@@ -50,6 +50,7 @@ is
                                                      is_Anchor_A : in Boolean);
 
 
+
 private
 
    task
@@ -65,7 +66,7 @@ private
    end Evolver;
 
 
-   --  Engine Commands
+   -- Engine Commands
    --
    type Any_limited_view is access all lace.Any.limited_item'Class;
 
@@ -159,7 +160,7 @@ private
          Age      : Duration := 0.0;
 
          Space    : physics.Space.view;
-         Commands : safe_command_Set_view := new safe_command_Set;
+         Commands : safe_command_Set_view       := new safe_command_Set;
          Evolver  : engine.Evolver (Item'Access);
       end record;
 

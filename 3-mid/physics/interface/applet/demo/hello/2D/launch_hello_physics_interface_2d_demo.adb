@@ -6,16 +6,18 @@ with
 
      ada.Text_IO;
 
+
 procedure launch_hello_physics_interface_2D_Demo
 --
 -- Drops a circle onto a rectangle.
 --
 is
-   use physics.Math,
-       physics.Forge,
-       ada.Text_IO;
+   use
+        physics.Math,
+        physics.Forge,
+        ada.Text_IO;
 
-   the_Space  : constant physics.Space .view := new_Space (Physics.Box2d);
+   the_Space  : constant physics.Space .view := new_Space (physics.Box2d);
 
    the_Sphere : constant physics.Shape .view := the_Space.new_circle_Shape;
    the_Box    : constant physics.Shape .view := the_Space.new_polygon_Shape (Vertices => [1 => [-1.0, -1.0],

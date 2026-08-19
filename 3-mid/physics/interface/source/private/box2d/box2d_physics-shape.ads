@@ -3,9 +3,10 @@ with
      box2d_c.Pointers,
      physics.Space;
 
+
 package box2d_Physics.Shape
 --
---  Provides glue between a physics shape and a Box2D shape.
+-- Provides glue between a physics shape and a Box2D shape.
 --
 is
    type Item is abstract new physics.Shape.item with     -- TODO: Make private.
@@ -25,18 +26,18 @@ is
    procedure destruct (Self : in out Item);
 
    overriding
-   procedure Scale_is (Self : in out Item;   Now : Vector_3);
+   procedure Scale_is (Self : in out Item;   Now : in Vector_3);
 
 
    ---------
-   --  Forge
+   --- Forge
    --
 
-   --  Shapes
+   -- Shapes
 
    procedure free (the_Shape : in out physics.Shape.view);
 
-   --  3D
+   -- 3D
 
    function new_box_Shape         (half_Extents : in Vector_3)    return physics.Shape.view;
    function new_capsule_Shape     (Radii        : in Vector_2;
@@ -59,7 +60,7 @@ is
    function new_sphere_Shape      (Radius       : in Real)        return physics.Shape.view;
 
 
-   --  2D
+   -- 2D
 
    function  new_circle_Shape (Radius   : in Real)                           return physics.Shape.view;
    function new_polygon_Shape (Vertices : in physics.Space.polygon_Vertices) return physics.Shape.view;
@@ -95,5 +96,6 @@ private
    type Plane       is new Item with null record;
    type Sphere      is new Item with null record;
    type convex_Hull is new Item with null record;
+
 
 end box2d_Physics.Shape;

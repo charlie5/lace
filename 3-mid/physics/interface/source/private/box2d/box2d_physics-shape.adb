@@ -9,11 +9,12 @@ with
 
 package body box2d_Physics.Shape
 is
-   use c_math_c.Conversion,
-       box2d_c .Binding;
+   use
+        c_math_c.Conversion,
+        box2d_c .Binding;
 
 
-   --  Base Shape
+   -- Base Shape
    --
 
    overriding
@@ -24,6 +25,7 @@ is
    end define;
 
 
+
    overriding
    procedure destruct (Self : in out Item)
    is
@@ -32,8 +34,9 @@ is
    end destruct;
 
 
+
    overriding
-   procedure Scale_is (Self : in out Item;   Now : Vector_3)
+   procedure Scale_is (Self : in out Item;   Now : in Vector_3)
    is
    begin
       b2d_shape_Scale_is (Self.C, (c_math_c.Real (Now (1)),
@@ -41,11 +44,11 @@ is
    end Scale_is;
 
 
-   -----------
-   --  Forge
+   ---------
+   --- Forge
    --
 
-   --  2D
+   -- 2D
    --
 
    type Circle_view is access Circle;
@@ -53,7 +56,7 @@ is
    function new_circle_Shape (Radius : in Real) return physics.Shape.view
    is
       Self : constant Circle_view := new Circle;
-      --  Self : constant access Circle := new Circle;
+      -- Self : constant access Circle := new Circle;
 --        c_Radius : aliased constant c_math_c.Real := +Radius;
    begin
       --        Self.C := b2d_new_Circle (c_Radius);
@@ -61,6 +64,7 @@ is
       Self.define;
       return physics.Shape.view (Self);
    end new_circle_Shape;
+
 
 
    overriding
@@ -77,8 +81,8 @@ is
 
    function new_polygon_Shape (Vertices : in physics.Space.polygon_Vertices) return physics.Shape.view
    is
-      --  P : Polygon (vertex_Count => Vertices'Length);
-      --  Self : constant Polygon_view := new Polygon' (P);
+      -- P : Polygon (vertex_Count => Vertices'Length);
+      -- Self : constant Polygon_view := new Polygon' (P);
       Self : constant Polygon_view := new Polygon (vertex_Count => Vertices'Length);
 --        c_Verts : array (1 .. Vertices'Length) of aliased c_math_c.Vector_2.item;
    begin
@@ -93,6 +97,7 @@ is
       Self.define;
       return physics.Shape.view (Self);
    end new_polygon_Shape;
+
 
 
    overriding
@@ -148,6 +153,7 @@ is
    end new_convex_hull_Shape;
 
 
+
    function new_cylinder_Shape (half_Extents : in Vector_3) return physics.Shape.view
    is
    begin
@@ -195,8 +201,10 @@ is
    end new_sphere_Shape;
 
 
+
    procedure free (the_Shape : in out physics.Shape.view)
    is
+
       procedure deallocate is new ada.unchecked_Deallocation (physics.Shape.item'Class,
                                                               physics.Shape.view);
    begin

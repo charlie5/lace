@@ -1,9 +1,10 @@
 with
      ada.unchecked_Deallocation;
 
+
 package body physics.Model
 is
-   ----------
+   ---------
    --- Forge
    --
 
@@ -15,7 +16,7 @@ is
                                   Mass        : in Real     := 0.0;
                                   Friction    : in Real     := 0.1;
                                   Restitution : in Real     := 0.1;
-                                  --  Site        : in Vector_3 := Origin_3D;
+                                  -- Site        : in Vector_3 := Origin_3D;
                                   is_Tangible : in Boolean  := True) return View
       is
       begin
@@ -26,7 +27,7 @@ is
                            Mass        => Mass,
                            Friction    => Friction,
                            Restitution => Restitution,
-                           --  Site        => Site,
+                           -- Site        => Site,
                            is_Tangible => is_Tangible);
       end new_physics_Model;
    end Forge;
@@ -39,6 +40,7 @@ is
    end define;
 
 
+
    procedure destroy (Self : in out Item)
    is
    begin
@@ -46,8 +48,10 @@ is
    end destroy;
 
 
+
    procedure free (Self : in out View)
    is
+
       procedure deallocate is new ada.unchecked_Deallocation (Item'Class,
                                                               View);
    begin
@@ -56,7 +60,7 @@ is
    end free;
 
 
-   ---------------
+   --------------
    --- Attributes
    --
 
@@ -67,11 +71,13 @@ is
    end Id;
 
 
+
    procedure Id_is (Self : in out Item'Class;   Now : in model_Id)
    is
    begin
       Self.Id := Now;
    end Id_is;
+
 
 
    procedure Scale_is (Self : in out Item'Class;   Now : in Vector_3)

@@ -2,16 +2,18 @@ with
      physics.Object,
      physics.Shape,
      physics.Model,
-     box2d_C;
-with box2d_c.Pointers;
+
+     box2d_C,
+     box2d_c.Pointers;
 
 private
 with
      lace.Any;
 
+
 package box2d_Physics.Object
 --
---  Provides glue between a physics object and a Box2D object.
+-- Provides glue between a physics object and a Box2D object.
 --
 is
    type Item is limited new physics.Object.item with private;
@@ -38,7 +40,7 @@ is
 
    function C                (Self : in     Item) return access box2d_C.Object;
 
-   procedure Shape_is        (Self : in out Item;   Now : in Physics.Shape.view);
+   procedure Shape_is        (Self : in out Item;   Now : in physics.Shape.view);
 
    overriding
    function  Model           (Self : in     Item)     return physics.Model.view;
@@ -56,7 +58,7 @@ private
 
    type Item is limited new physics.Object.item with
       record
-         --  C         : access box2d_C.Object;
+         -- C         : access box2d_C.Object;
          C         : box2d_c.Pointers.Object_pointer;
 
          Shape     :        physics.Shape.view;
@@ -64,7 +66,7 @@ private
          user_Data : access lace.Any.limited_item'Class;
 
          Dynamics  : physics.Object.safe_Dynamics;
-         Site_z    : Real := 0.0;
+         Site_z    : Real                        := 0.0;
       end record;
 
 

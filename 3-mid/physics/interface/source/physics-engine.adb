@@ -5,18 +5,21 @@ with
      ada.Text_IO,
      ada.Exceptions;
 
+
 package body physics.Engine
 is
    use ada.Text_IO;
 
 
-   protected body safe_command_Set
+   protected
+   body safe_command_Set
    is
       function is_Empty return Boolean
       is
       begin
          return the_Count = 0;
       end is_Empty;
+
 
 
       procedure add (the_Command : in Command)
@@ -39,7 +42,8 @@ is
 
 
 
-   task body Evolver
+   task
+   body Evolver
    is
       use type physics.Joint.view,
                ada.Containers.Count_type;
@@ -48,8 +52,8 @@ is
       Cycle            : ada.Containers.Count_type := 0;
       next_render_Time : ada.Calendar.Time;
 
-      --  max_joint_Force,
-      --  max_joint_Torque : Real := 0.0;
+      -- max_joint_Force,
+      -- max_joint_Torque : Real := 0.0;
 
 
       procedure free_Objects
@@ -189,7 +193,7 @@ is
 
                               --                                rebuild_Shape  (the_Object);
                               the_Object.Shape.define;
-                              --  the_Object.define (Shape       => the_Object.Shape,
+                              -- the_Object.define (Shape       => the_Object.Shape,
                               --                     Mass        => the_Object.Model.Mass,
                               --                     Friction    => the_Object.Model.Friction,
                               --                     Restitution => the_Object.Model.Restitution,
@@ -228,6 +232,7 @@ is
                               raise constraint_Error with "no such Object in world";
                               return 0;
                            end find;
+
 
 
                            procedure rid (the_Object : in Object.view)
@@ -490,7 +495,7 @@ is
          new_Line (2);
          put_Line ("Error in physics.Engine.evolver task !");
          new_Line;
-         put_Line (Ada.Exceptions.Exception_Information (E));
+         put_Line (ada.Exceptions.Exception_Information (E));
          put_Line ("Evolver has terminated !");
          new_Line (2);
    end Evolver;
@@ -505,8 +510,10 @@ is
    end start;
 
 
+
    procedure stop (Self : access Item)
    is
+
       procedure free is new ada.unchecked_Deallocation (safe_command_Set, safe_command_Set_view);
    begin
       Self.Evolver.stop;
@@ -523,6 +530,7 @@ is
                           Object       => the_Object,
                           add_Children => False));
    end add;
+
 
 
    procedure rid (Self : in out Item;   the_Object : in Object.view)
@@ -542,6 +550,7 @@ is
                           Object => null,
                           Joint  => the_Joint));
    end add;
+
 
 
    procedure rid (Self : in out Item;   the_Joint : in Joint.view)
@@ -640,5 +649,6 @@ is
                           local_Anchor => To,
                           is_Anchor_A  => is_Anchor_A));
    end set_local_Anchor;
+
 
 end physics.Engine;

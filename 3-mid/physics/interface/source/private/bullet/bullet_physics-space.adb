@@ -15,18 +15,20 @@ with
      ada.unchecked_Conversion,
      system.storage_Elements;
 
+
 package body bullet_Physics.Space
 is
 
-   use bullet_c.Binding,
-       bullet_c.Pointers,
-       c_math_c.Conversion,
-       Interfaces;
+   use
+        bullet_c.Binding,
+        bullet_c.Pointers,
+        c_math_c.Conversion,
+        Interfaces;
 
    function to_Object_view is new ada.unchecked_Conversion (swig.void_ptr,
                                                             physics.Object.view);
 
-   ----------
+   ---------
    --- Forge
    --
 
@@ -38,6 +40,7 @@ is
          Self.C := bullet_c.Binding.b3d_new_Space;
       end return;
    end to_Space;
+
 
 
    overriding
@@ -61,6 +64,7 @@ is
    end new_Shape;
 
 
+
    overriding
    function new_sphere_Shape (Self : access Item;   Radius : in Real := 0.5) return physics.Shape.view
    is
@@ -69,6 +73,7 @@ is
    begin
       return the_Sphere;
    end new_sphere_Shape;
+
 
 
    overriding
@@ -111,7 +116,7 @@ is
       the_Cylinder : constant physics.Shape.view := bullet_physics.Shape.new_cylinder_Shape (half_Extents);
    begin
       return the_Cylinder;
-   end New_Cylinder_Shape;
+   end new_cylinder_Shape;
 
 
    overriding
@@ -153,8 +158,8 @@ is
 
 
    overriding
-   function new_multisphere_Shape (Self : access Item;   Sites   : in physics.vector_3_array;
-                                                          Radii  : in Vector) return physics.Shape.view
+   function new_multisphere_Shape (Self : access Item;   Sites : in physics.vector_3_array;
+                                                         Radii : in Vector) return physics.Shape.view
    is
       pragma unreferenced (Self);
       the_multi_Sphere : constant physics.Shape.view := bullet_physics.Shape.new_multisphere_Shape (Sites, Radii);
@@ -184,8 +189,9 @@ is
    end new_convex_hull_Shape;
 
 
+
    overriding
-   function new_mesh_Shape (Self : access Item;   Points : access Physics.Geometry_3D.a_Model) return physics.Shape.view
+   function new_mesh_Shape (Self : access Item;   Points : access physics.Geometry_3D.a_Model) return physics.Shape.view
    is
       pragma unreferenced (Self);
       the_Mesh : constant physics.Shape.view := bullet_physics.Shape.new_mesh_Shape (Points);
@@ -194,7 +200,7 @@ is
    end new_mesh_Shape;
 
 
-   --  2D
+   -- 2D
    --
 
    overriding
@@ -204,6 +210,7 @@ is
       raise physics.Space.unsupported_Shape with "Circle shape not allowed in bullet physics.";
       return null;
    end new_circle_Shape;
+
 
 
    overriding
@@ -220,6 +227,7 @@ is
    --
    function Hash (the_C_Object : in bullet_c.Pointers.Object_pointer) return ada.Containers.Hash_type
    is
+
       function convert is new ada.unchecked_Conversion (bullet_c.Pointers.Object_pointer,
                                                         system.storage_Elements.integer_Address);
    begin
@@ -326,7 +334,7 @@ is
                                                   Pivot_in_B : in Vector_3) return physics.Joint.ball.view
    is
       pragma unreferenced (Self);
-      the_Joint : constant physics.Joint.ball.view := Standard.bullet_physics.Joint.new_ball_Joint (Object_A,    Object_B,
+      the_Joint : constant physics.Joint.ball.view := standard.bullet_physics.Joint.new_ball_Joint (Object_A,    Object_B,
                                                                                                     Pivot_in_A,  Pivot_in_B);
    begin
       return the_Joint;
@@ -361,7 +369,7 @@ is
    end new_cone_twist_Joint;
 
 
-   ---------------
+   --------------
    --- Operations
    --
 
@@ -375,6 +383,7 @@ is
    end update_Bounds;
 
 
+
    overriding
    procedure add (Self : in out Item;   Object : in physics.Object.view)
    is
@@ -382,6 +391,7 @@ is
    begin
       b3d_Space_add_Object (Self.C, the_c_Object);
    end add;
+
 
 
    overriding
@@ -427,8 +437,6 @@ is
 
 
 
-
-
    overriding
    procedure evolve (Self : in out Item;   By : in Duration)
    is
@@ -453,6 +461,7 @@ is
    end evolve;
 
 
+
    overriding
    function Gravity (Self : in Item) return Vector_3
    is
@@ -460,6 +469,7 @@ is
       raise Error with "TODO";
       return [0.0, 0.0, 0.0];
    end Gravity;
+
 
 
    overriding
@@ -471,6 +481,7 @@ is
    end Gravity_is;
 
 
+
    overriding
    procedure add (Self : in out Item;   Joint : in physics.Joint.view)
    is
@@ -478,6 +489,7 @@ is
    begin
       b3d_Space_add_Joint (Self.C, the_c_Joint);
    end add;
+
 
 
    overriding
@@ -488,6 +500,7 @@ is
    end rid;
 
 
+
    overriding
    function manifold_Count (Self : in Item) return Natural
    is
@@ -495,6 +508,7 @@ is
       raise Error with "TODO";
       return 0;
    end manifold_Count;
+
 
 
    overriding
@@ -534,6 +548,7 @@ is
    end next;
 
 
+
    overriding
    function has_Element (Cursor : in joint_Cursor) return Boolean
    is
@@ -543,6 +558,7 @@ is
    end has_Element;
 
 
+
    overriding
    function Element (Cursor : in joint_Cursor) return physics.Joint.view
    is
@@ -550,6 +566,7 @@ is
       raise Error with "TODO";
       return null;
    end Element;
+
 
 
    overriding

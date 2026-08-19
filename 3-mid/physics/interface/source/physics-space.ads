@@ -8,6 +8,7 @@ with
      physics.Joint.slider,
      physics.Joint.ball;
 
+
 package physics.Space
 --
 -- Models a static/dynamic physics space.
@@ -103,12 +104,12 @@ is
    --- Physical Objects
    --
 
-   function new_Object   (Self : access Item;   of_Shape      : in Shape.view;
-                                                 of_Mass      : in Real;
-                                                 Friction     : in Real;
-                                                 Restitution  : in Real;
-                                                 at_Site      : in Vector_3;
-                                                 is_Kinematic : in Boolean) return Object.view   is abstract;
+   function new_Object   (Self : access Item;   of_Shape     : in Shape.view;
+                                                of_Mass      : in Real;
+                                                Friction     : in Real;
+                                                Restitution  : in Real;
+                                                at_Site      : in Vector_3;
+                                                is_Kinematic : in Boolean) return Object.view   is abstract;
 
    function object_Count (Self : in     Item) return Natural   is abstract;
 
@@ -116,7 +117,7 @@ is
    --- 3D
    --
 
-   --  Shapes
+   -- Shapes
    --
 
    function              new_Shape (Self : access Item;   from_Model : in Model.view)                        return Shape.view   is abstract;
@@ -138,7 +139,7 @@ is
    function         new_mesh_Shape (Self : access Item;   Points       : access Geometry_3D.a_Model)         return Shape.view   is abstract;
 
 
-   --  Joints
+   -- Joints
    --
 
    function new_hinge_Joint      (Self : access Item;   Object_A,
@@ -202,7 +203,7 @@ is
 
 
    ------------
-   --  Dynamics
+   --- Dynamics
    --
 
    function  Gravity    (Self : in     Item)     return Vector_3             is abstract;
@@ -211,9 +212,10 @@ is
    procedure add        (Self : in out Item;   the_Joint    : in Joint.view) is abstract;
    procedure rid        (Self : in out Item;   the_Joint    : in Joint.view) is abstract;
 
-   procedure set_Joint_local_Anchor
-                        (Self : in out Item;   the_Joint    : in Joint.view;
-                                               is_Anchor_A  : in Boolean;
-                                               local_Anchor : in Vector_3)   is abstract;
+   procedure set_Joint_local_Anchor (Self         : in out Item;
+                                     the_Joint    : in     Joint.view;
+                                     is_Anchor_A  : in     Boolean;
+                                     local_Anchor : in     Vector_3) is abstract;
+
 
 end physics.Space;

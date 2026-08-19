@@ -1,6 +1,5 @@
 with
      bullet_c.Binding,
-
      bullet_physics.Shape,
 
      c_math_c.Conversion,
@@ -15,11 +14,13 @@ with
      ada.Unchecked_Conversion,
      ada.Text_IO;
 
+
 package body bullet_Physics.Object
 is
-   use bullet_c.Binding,
-       c_math_c.Conversion,
-       ada.Text_IO;
+   use
+        bullet_c.Binding,
+        c_math_c.Conversion,
+        ada.Text_IO;
 
    type Any_limited_view is access all lace.Any.limited_item'Class;
 
@@ -29,7 +30,7 @@ is
                         Friction     : in Real;
                         Restitution  : in Real;
                         at_Site      : in Vector_3) return View
-                        --  is_Kinematic : in Boolean) return View
+                        -- is_Kinematic : in Boolean) return View
    is
       Self : constant View := new Item;
    begin
@@ -50,13 +51,14 @@ is
                                            at_Site     : in Vector_3)
    is
       use interfaces.C;
+
       function to_void_ptr is new ada.unchecked_Conversion (Any_limited_view, Swig.void_ptr);
 
    begin
       Self.C := b3d_new_Object (c_math_c.Real (Mass),
                                 bullet_physics.Shape.view (Shape).C,
                                 is_Kinematic => Boolean'Pos (False));
-                                --  Boolean'Pos (is_Kinematic));
+                                -- Boolean'Pos (is_Kinematic));
 
       b3d_Object_Friction_is    (Self.C, c_float (Friction));
       b3d_Object_Restitution_is (Self.C, c_float (Restitution));
@@ -76,8 +78,10 @@ is
    end destruct;
 
 
+
    procedure free (the_Object : in out physics.Object.view)
    is
+
       procedure deallocate is new ada.unchecked_Deallocation (physics.Object.item'Class,
                                                               physics.Object.view);
    begin
@@ -86,11 +90,13 @@ is
    end free;
 
 
+
    function C (Self : in Item) return access bullet_C.Object
    is
    begin
       return Self.C;
    end C;
+
 
 
    overriding
@@ -101,12 +107,14 @@ is
    end Model;
 
 
+
    overriding
    procedure Model_is (Self : in out Item;   Now : in physics.Model.view)
    is
    begin
       Self.Model := Now;
    end Model_is;
+
 
 
    overriding
@@ -120,6 +128,7 @@ is
    end Shape;
 
 
+
    overriding
    function Scale (Self : in Item) return Vector_3
    is
@@ -127,6 +136,7 @@ is
       raise Error with "TODO";
       return math.Origin_3D;
    end Scale;
+
 
 
    overriding
@@ -138,6 +148,7 @@ is
    end Scale_is;
 
 
+
    overriding
    procedure update_Dynamics (Self : in out Item)
    is
@@ -145,6 +156,7 @@ is
    begin
       Self.Dynamics.set (Dynamics);
    end update_Dynamics;
+
 
 
    overriding
@@ -155,12 +167,14 @@ is
    end get_Dynamics;
 
 
+
    overriding
    function is_Active (Self : in Item) return Boolean
    is
    begin
       return True;
    end is_Active;
+
 
 
    overriding
@@ -172,12 +186,14 @@ is
    end activate;
 
 
+
    overriding
    function Mass (Self : in Item) return Real
    is
    begin
       return Real (b3d_Object_Mass (Self.C));
    end Mass;
+
 
 
    overriding
@@ -189,6 +205,7 @@ is
    end Site;
 
 
+
    overriding
    procedure Site_is (Self : in out Item;   Now : in Vector_3)
    is
@@ -196,6 +213,7 @@ is
    begin
       b3d_Object_Site_is (Self.C, c_Now'unchecked_Access);
    end Site_is;
+
 
 
    overriding
@@ -210,10 +228,12 @@ is
          begin
             return +the_Spin;
          end;
+
       else
          return Self.Dynamics.get_Spin;
       end if;
    end Spin;
+
 
 
    overriding
@@ -234,6 +254,7 @@ is
    end Spin_is;
 
 
+
    overriding
    function xy_Spin (Self : in Item) return Radians
    is
@@ -243,12 +264,14 @@ is
    end xy_Spin;
 
 
+
    overriding
    procedure xy_Spin_is (Self : in out Item;   Now : in Radians)
    is
    begin
       raise Error with "TODO";
    end xy_Spin_is;
+
 
 
    overriding
@@ -260,6 +283,7 @@ is
    end Transform;
 
 
+
    overriding
    procedure Transform_is (Self : in out Item;   Now : in Matrix_4x4)
    is
@@ -267,6 +291,7 @@ is
    begin
       b3d_Object_Transform_is (Self.C, c_Now'unchecked_Access);
    end Transform_is;
+
 
 
    overriding
@@ -278,6 +303,7 @@ is
    end Speed;
 
 
+
    overriding
    procedure Speed_is (Self : in out Item;   Now : in Vector_3)
    is
@@ -285,6 +311,7 @@ is
    begin
       b3d_Object_Speed_is (Self.C, c_Now'unchecked_Access);
    end Speed_is;
+
 
 
    overriding
@@ -296,6 +323,7 @@ is
    end Gyre;
 
 
+
    overriding
    procedure Gyre_is (Self : in out Item;   Now : in Vector_3)
    is
@@ -305,12 +333,14 @@ is
    end Gyre_is;
 
 
+
    overriding
    procedure Friction_is (Self : in out Item;   Now : in Real)
    is
    begin
       b3d_Object_Friction_is (Self.C, +Now);
    end Friction_is;
+
 
 
    overriding
@@ -333,6 +363,7 @@ is
    end apply_Torque;
 
 
+
    overriding
    procedure apply_Torque_impulse (Self : in out Item;   Torque : in Vector_3)
    is
@@ -340,6 +371,7 @@ is
    begin
       b3d_Object_apply_Torque_impulse (Self.C, c_Torque'unchecked_Access);
    end apply_Torque_impulse;
+
 
 
    overriding
@@ -360,6 +392,7 @@ is
    begin
       Self.user_Data := Now.all'unchecked_Access;
    end user_Data_is;
+
 
 
    overriding

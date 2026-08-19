@@ -6,6 +6,7 @@ with
      c_math_c.Matrix_4x4,
      Interfaces;
 
+
 package c_math_C.Conversion
 --
 -- Provide a set of conversion utilities.
@@ -39,5 +40,5 @@ is
    function to_Math (Self : in c_math_c.Matrix_4x4.item) return math.Matrix_4x4
      renames "+";
 
-end c_math_C.Conversion;
 
+end c_math_C.Conversion;

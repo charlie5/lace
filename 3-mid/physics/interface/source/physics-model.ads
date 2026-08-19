@@ -2,9 +2,10 @@ with
      physics.remote.Model,
      physics.Shape;
 
+
 package physics.Model
 --
---  Provides a model describing physical properties.
+-- Provides a model describing physical properties.
 --
 is
    type Heightfield_view    is access physics.Heightfield;
@@ -53,7 +54,7 @@ is
 
             when Polygon =>
                Vertices      :        Geometry_2d.Sites (1 .. 8);
-               vertex_Count  :        Natural := 0;
+               vertex_Count  :        Natural                   := 0;
 
             when others =>
                null;
@@ -76,7 +77,7 @@ is
    type View is access all Item'Class;
 
 
-   ----------
+   ---------
    --- Forge
    --
 
@@ -96,7 +97,7 @@ is
    procedure free    (Self : in out View);
 
 
-   ---------------
+   --------------
    --- Attributes
    --
 

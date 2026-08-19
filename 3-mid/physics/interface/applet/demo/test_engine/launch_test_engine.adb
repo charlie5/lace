@@ -12,28 +12,29 @@ procedure launch_test_Engine
 -- Simply exercises the physics engine.
 --
 is
-   use physics.Math,
-       physics.Forge,
-       ada.text_IO;
+   use
+        physics.Math,
+        physics.Forge,
+        ada.text_IO;
 
-   the_Space  : constant physics.Space.view  := new_Space (Physics.Box2d);
+   the_Space  : constant physics.Space.view  := new_Space (physics.Box2d);
 
    the_Sphere : constant physics.Shape .view := the_Space.new_circle_Shape;
    the_Box    : constant physics.Shape .view := the_Space.new_circle_Shape;
 
-   the_Ball   : constant physics.Object.view := the_Space.new_Object (of_shape     => the_Sphere,
-                                                             of_mass      => 1.0,
-                                                             friction     => 0.5,
-                                                             restitution  => 0.5,
-                                                             at_site      => [0.0, 10.0, 0.0],
-                                                             is_kinematic => False);
+   the_Ball   : constant physics.Object.view := the_Space.new_Object (of_Shape     => the_Sphere,
+                                                                      of_Mass      => 1.0,
+                                                                      Friction     => 0.5,
+                                                                      Restitution  => 0.5,
+                                                                      at_Site      => [0.0, 10.0, 0.0],
+                                                                      is_Kinematic => False);
 
-   the_Ground : constant physics.Object.view := the_Space.new_Object (of_shape     => the_Box,
-                                                             of_mass      => 0.0,
-                                                             friction     => 0.5,
-                                                             restitution  => 0.5,
-                                                             at_site      => [0.0, 0.0, 0.0],
-                                                             is_kinematic => False);
+   the_Ground : constant physics.Object.view := the_Space.new_Object (of_Shape     => the_Box,
+                                                                      of_Mass      => 0.0,
+                                                                      Friction     => 0.5,
+                                                                      Restitution  => 0.5,
+                                                                      at_Site      => [0.0, 0.0, 0.0],
+                                                                      is_Kinematic => False);
    the_Engine : aliased physics.Engine.item;
 
 begin

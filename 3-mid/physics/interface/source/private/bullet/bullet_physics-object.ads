@@ -9,6 +9,7 @@ with
      bullet_c.Pointers,
      lace.Any;
 
+
 package bullet_Physics.Object
 --
 -- Provides glue between a physics object and a Bullet3D object.
@@ -29,7 +30,7 @@ is
                          Friction     : in     Real;
                          Restitution  : in     Real;
                          at_Site      : in     Vector_3) return View;
-                         --  is_Kinematic : in     Boolean) return View;
+                         -- is_Kinematic : in     Boolean) return View;
 
    overriding
    procedure define (Self : access Item;   Shape       : in physics.Shape.view;

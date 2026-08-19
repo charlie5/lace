@@ -2,15 +2,17 @@
 --
 with c_math_c.Pointers;
 
+
 package c_math_c.pointer_Pointers
 is
 
-   -- Real_Pointer_Pointer
+   --- Real_Pointer_Pointer
    --
    type Real_Pointer_Pointer is access all c_math_c.Pointers.Real_Pointer;
 
-   -- Index_Pointer_Pointer
+   --- Index_Pointer_Pointer
    --
    type Index_Pointer_Pointer is access all c_math_c.Pointers.Index_Pointer;
+
 
 end c_math_c.pointer_Pointers;

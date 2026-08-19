@@ -1,12 +1,11 @@
-
---  with i.physics.Object;
---  with i.physics.Joint;
+-- with i.physics.Object;
+-- with i.physics.Joint;
 
 with ada.strings.unbounded;
 
 
-
-package physics.Motor is
+package physics.Motor
+is
 
 
    type Item is abstract tagged
@@ -20,22 +19,20 @@ package physics.Motor is
    procedure update (Self : in out Item) is abstract;
 
 
---  	class Motor
---  	{
---  	public:
+--      class Motor
+--      {
+--      public:
 --
---  		/// Returns true if this Motor depends on the given Solid.
---  		virtual bool internal_dependsOnSolid(Solid* s);
+--          /// Returns true if this Motor depends on the given Solid.
+--          virtual bool internal_dependsOnSolid(Solid* s);
 --
---  		/// Returns true if this Motor depends on the given Joint.
---  		virtual bool internal_dependsOnJoint(Joint* j);
---  }
+--          /// Returns true if this Motor depends on the given Joint.
+--          virtual bool internal_dependsOnJoint(Joint* j);
+-- }
 --
---  #endif
+-- #endif
 
    procedure dummy;
 
 
 end physics.Motor;
-
-

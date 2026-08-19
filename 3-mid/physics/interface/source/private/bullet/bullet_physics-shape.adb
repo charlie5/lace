@@ -7,18 +7,18 @@ with
      c_math_c.Triangle,
 
      ada.unchecked_Deallocation,
-
      interfaces.C;
 
 
 package body bullet_Physics.Shape
 is
-   use c_math_c.Conversion,
-       bullet_c.Binding,
-       Interfaces;
+   use
+        c_math_c.Conversion,
+        bullet_c.Binding,
+        Interfaces;
 
    ---------
-   --  Forge
+   --- Forge
    --
 
    overriding
@@ -27,6 +27,7 @@ is
    begin
       raise Error with "Bullet shape not supported.";
    end define;
+
 
 
    overriding
@@ -90,7 +91,7 @@ is
 
    function new_convex_hull_Shape (Points : in physics.Vector_3_array) return physics.Shape.view
    is
-      Self     : constant convex_Hull_view := new convex_Hull;
+      Self     : constant convex_Hull_view                                   := new convex_Hull;
       c_Points : array (1 .. Points'Length) of aliased c_math_c.Vector_3.item;
    begin
       for i in c_Points'Range
@@ -111,11 +112,11 @@ is
 
    function new_mesh_Shape (Model : access math.Geometry.d3.a_Model) return physics.Shape.view
    is
-      Self        : constant Mesh_view := new Mesh;
+      Self        : constant Mesh_view                                             := new Mesh;
       c_Points    : array (1 .. Model.site_Count) of aliased c_math_c.Vector_3.item;
 
       type Triangles is array (1 .. Model.tri_Count) of aliased c_math_c.Triangle.item;
-      pragma Pack (Triangles);
+      pragma pack (Triangles);
 
       c_Triangles : Triangles;
 
@@ -190,7 +191,7 @@ is
    function new_multiSphere_Shape (Positions    : in physics.Vector_3_array;
                                    Radii        : in math.Vector) return physics.Shape.view
    is
-      pragma Assert (Positions'Length = Radii'Length);
+      pragma assert (Positions'Length = Radii'Length);
 
       Self : constant multiSphere_view := new multiSphere;
 
@@ -246,7 +247,7 @@ is
    --
 
    overriding
-   procedure Scale_is (Self : in out Item;   Now : Vector_3)
+   procedure Scale_is (Self : in out Item;   Now : in Vector_3)
    is
    begin
       null;
@@ -259,6 +260,7 @@ is
 
    procedure free (the_Shape : in out physics.Shape.view)
    is
+
       procedure deallocate is new ada.unchecked_Deallocation (physics.Shape.item'Class,
                                                               physics.Shape.view);
    begin

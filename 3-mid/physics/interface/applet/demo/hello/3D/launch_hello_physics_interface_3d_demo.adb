@@ -6,14 +6,16 @@ with
 
      ada.Text_IO;
 
+
 procedure launch_hello_physics_interface_3D_Demo
 --
 -- Drops a ball onto a box.
 --
 is
-   use physics.Math,
-       physics.Forge,
-       ada.Text_IO;
+   use
+        physics.Math,
+        physics.Forge,
+        ada.Text_IO;
 
    the_Space  : constant physics.Space .view := new_Space (physics.Bullet);
 

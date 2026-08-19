@@ -35,4 +35,5 @@ is
    function motor_Speed      (Self : in Item) return Real    is abstract;
    function max_motor_Torque (Self : in Item) return Real    is abstract;
 
+
 end physics.Joint.hinge;
