@@ -17,14 +17,16 @@ procedure launch_simple_instant_events_Demo
 -- A simple demonstration of the Lace event system.
 --
 is
-   use lace_demo_Events,
-       Lace,
-       lace.Event,
-       lace.event.Utility,
+   use
+        lace_demo_Events,
 
-       ada.Text_IO,
-       ada.Strings.unbounded,
-       ada.real_Time;
+        Lace,
+        lace.Event,
+        lace.event.Utility,
+
+        ada.Text_IO,
+        ada.Strings.unbounded,
+        ada.real_Time;
 
    -- key_Response
    --

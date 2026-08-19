@@ -79,8 +79,9 @@ is
    overriding
    procedure register_Client (Self : in out Item;   other_Client : in Client.view)
    is
-      use lace.Event.utility,
-          ada.Text_IO;
+      use
+           lace.Event.utility,
+           ada.Text_IO;
    begin
       lace.Event.utility.connect (the_Observer  => Self'unchecked_Access,
                                   to_Subject    => other_Client.as_Subject,
@@ -94,8 +95,9 @@ is
    procedure deregister_Client (Self : in out Item;   other_Client_as_Observer : in lace.Observer.view;
                                                       other_Client_Name        : in String)
    is
-      use lace.Event.utility,
-          ada.Text_IO;
+      use
+           lace.Event.utility,
+           ada.Text_IO;
    begin
       begin
          Self.as_Subject.deregister (other_Client_as_Observer,
@@ -278,8 +280,7 @@ is
    --  procedure last_chance_Handler (Msg  : in system.Address;
    --                                 Line : in Integer);
    --
-   --  pragma export (C, last_chance_Handler,
-   --                 "__gnat_last_chance_handler");
+   --  pragma export (C, last_chance_Handler, --                 "__gnat_last_chance_handler");
    --
    --  procedure last_chance_Handler (Msg  : in System.Address;
    --                                 Line : in Integer)

@@ -15,6 +15,7 @@ is
    use
         physics.Math,
         physics.Forge,
+
         ada.Text_IO;
 
    the_Space  : constant physics.Space .view := new_Space (physics.Box2d);

@@ -299,7 +299,7 @@ is
       Tlength : constant Integer := Target'Length;
 
       function Is_Padding (Item : in String) return Boolean;
-      -- Check if Item is all Pad characters, return True if so, False if not
+      -- Check if Item is all Pad characters, return True if so, False if not.
 
       function Is_Padding (Item : in String) return Boolean
       is

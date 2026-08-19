@@ -9,10 +9,12 @@ with
 
 procedure launch_Outline
 is
-   use ada.command_Line,
-       ada.Text_IO,
-       ada.Strings.unbounded,
-       XML.Reader;
+   use
+        ada.command_Line,
+        ada.Text_IO,
+        ada.Strings.unbounded,
+
+        XML.Reader;
 
    Line_Max      : constant := 60000;
 

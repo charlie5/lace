@@ -11,9 +11,9 @@ is
 
    function to_Matrix (Self : in Transform) return collada.Matrix_4x4
    is
-      use Math,
---        math.Algebra.linear,
-          math.Algebra.linear.D3;
+      use
+           Math,
+           math.Algebra.linear.D3;
    begin
       case Self.Kind
       is

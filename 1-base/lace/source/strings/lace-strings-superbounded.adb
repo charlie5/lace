@@ -1459,7 +1459,7 @@ is
                          High   : in Natural) return String
    is
    begin
-      -- Note: test of High > Length is in accordance with AI95-00128
+      -- Note: test of High > Length is in accordance with AI95-00128.
 
       return R : String (Low .. High) do
          if        Low > Source.Current_Length + 1

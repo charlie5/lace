@@ -251,8 +251,9 @@ is
 
    function to_Vertices (From : in xml.Element) return collada.Library.geometries.Vertices
    is
-      use collada.Library,
-          collada.Library.geometries;
+      use
+           collada.Library,
+           collada.Library.geometries;
 
       the_xml_Id     : constant access xml.Attribute_t := From.Attribute ("id");
       the_xml_Inputs : constant        xml.Elements    := From.Children  ("input");
@@ -275,8 +276,9 @@ is
 
    function to_Polylist (From : in xml.Element) return collada.Library.geometries.Primitive
    is
-      use collada.Library,
-          collada.Library.geometries;
+      use
+           collada.Library,
+           collada.Library.geometries;
 
       the_xml_Count    : constant access xml.Attribute_t := From.Attribute ("count");
       the_xml_Material : constant access xml.Attribute_t := From.Attribute ("material");
@@ -312,8 +314,9 @@ is
 
    function to_Polygon (From : in xml.Element) return collada.Library.geometries.Primitive
    is
-      use collada.Library,
-          collada.Library.geometries;
+      use
+           collada.Library,
+           collada.Library.geometries;
 
       the_xml_Count    : constant access xml.Attribute_t := From.Attribute ("count");
       the_xml_Material : constant access xml.Attribute_t := From.Attribute ("material");
@@ -356,8 +359,9 @@ is
 
    function to_Triangles (From : in xml.Element) return collada.Library.geometries.Primitive
    is
-      use collada.Library,
-          collada.Library.geometries;
+      use
+           collada.Library,
+           collada.Library.geometries;
 
       the_xml_Count    : constant access xml.Attribute_t := From.Attribute ("count");
       the_xml_Material : constant access xml.Attribute_t := From.Attribute ("material");
@@ -400,8 +404,9 @@ is
 
    function to_Joints (From : in xml.Element) return collada.Library.controllers.Joints
    is
-      use collada.Library,
-          collada.Library.controllers;
+      use
+           collada.Library,
+           collada.Library.controllers;
 
       the_xml_Inputs : constant xml.Elements := From.Children  ("input");
       the_Joints     : controllers.Joints;
@@ -420,8 +425,9 @@ is
 
    function to_vertex_Weights (From : in xml.Element) return collada.Library.controllers.vertex_Weights
    is
-      use collada.Library,
-          collada.Library.controllers;
+      use
+           collada.Library,
+           collada.Library.controllers;
 
       the_xml_Count    : constant access xml.Attribute_t := From.Attribute ("count");
 
@@ -450,8 +456,9 @@ is
 
    function to_Sampler (From : in xml.Element) return collada.Library.animations.Sampler
    is
-      use collada.Library,
-          collada.Library.animations;
+      use
+           collada.Library,
+           collada.Library.animations;
 
       the_xml_Id     : constant access xml.Attribute_t := From.Attribute ("id");
       the_xml_Inputs : constant        xml.Elements    := From.Children  ("input");
@@ -474,8 +481,9 @@ is
 
    function to_Channel (From : in xml.Element) return collada.Library.animations.Channel
    is
-      use collada.Library,
-          collada.Library.animations;
+      use
+           collada.Library,
+           collada.Library.animations;
 
       the_xml_Source : constant access xml.Attribute_t := From.Attribute ("source");
       the_xml_Target : constant access xml.Attribute_t := From.Attribute ("target");
@@ -764,18 +772,17 @@ is
                         function to_Node (the_XML : access xml.Element;
                                           Parent  : in     Library.visual_scenes.Node_view) return Library.visual_scenes.Node_view
                         is
-                           the_xml_Sid       : constant access xml.Attribute_t'Class := the_xml.Attribute ("sid");
-                           the_xml_Id        : constant access xml.Attribute_t'Class := the_xml.Attribute ("id");
-                           the_xml_Name      : constant access xml.Attribute_t'Class := the_xml.Attribute ("name");
-                           the_xml_Type      :          access xml.Attribute_t'Class := the_xml.Attribute ("type");
+                           the_xml_Sid       : constant access xml.Attribute_t'Class := the_XML.Attribute ("sid");
+                           the_xml_Id        : constant access xml.Attribute_t'Class := the_XML.Attribute ("id");
+                           the_xml_Name      : constant access xml.Attribute_t'Class := the_XML.Attribute ("name");
+                           the_xml_Type      :          access xml.Attribute_t'Class := the_XML.Attribute ("type");
 
-                           the_xml_Translate :          access xml.Element  := the_xml.Child    ("translate");
-                           the_xml_Scale     :          access xml.Element  := the_xml.Child    ("scale");
-                           the_xml_Rotates   :                 xml.Elements := the_xml.Children ("rotate");
-                           the_xml_Children  :                 xml.Elements := the_xml.Children ("node");
+                           the_xml_Translate :          access xml.Element  := the_XML.Child    ("translate");
+                           the_xml_Scale     :          access xml.Element  := the_XML.Child    ("scale");
+                           the_xml_Rotates   :                 xml.Elements := the_XML.Children ("rotate");
+                           the_xml_Children  :                 xml.Elements := the_XML.Children ("node");
 
-                           pragma Unreferenced (the_xml_Type,    the_xml_Translate, the_xml_Scale,
-                                                the_xml_Rotates, the_xml_Children);     -- TODO: Handle these node elements.
+                           pragma Unreferenced (the_xml_Type,    the_xml_Translate, the_xml_Scale, the_xml_Rotates, the_xml_Children);     -- TODO: Handle these node elements.
 
                            the_Node : constant Library.visual_scenes.Node_view := new Library.visual_scenes.Node;
 

@@ -37,7 +37,11 @@ is
                                      AttAdd    : in System.Address)
    is
 
-      use S, System, System.Storage_Elements;
+      use
+           S,
+
+           System,
+           System.Storage_Elements;
 
       procedure free is new ada.unchecked_Deallocation (Attributes_t,   Attributes_view);
 

@@ -453,8 +453,8 @@ is
       procedure add (Text : in String)
       is
       begin
-         the_Image (Count + 1 .. Count + text'Length) := Text;
-         Count                                        := Count + text'Length;
+         the_Image (Count + 1 .. Count + Text'Length) := Text;
+         Count                                        := Count + Text'Length;
       end add;
 
    begin

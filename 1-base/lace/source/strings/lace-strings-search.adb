@@ -124,7 +124,7 @@ is
          raise pattern_Error;
       end if;
 
-      -- Check for null pointer in case checks are off
+      -- Check for null pointer in case checks are off.
 
       if Mapping = null
       then
@@ -392,14 +392,14 @@ is
          raise pattern_Error;
       end if;
 
-      -- Check for null pointer in case checks are off
+      -- Check for null pointer in case checks are off.
 
       if Mapping = null
       then
          raise constraint_Error;
       end if;
 
-      -- If Pattern longer than Source it can't be found
+      -- If Pattern longer than Source it can't be found.
 
       if Pattern'Length > Source'Length
       then

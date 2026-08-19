@@ -15,8 +15,7 @@ is
    procedure last_chance_Handler (Msg  : in system.Address;
                                   Line : in Integer);
 
-   pragma export (C, last_chance_Handler,
-                  "__gnat_last_chance_handler");
+   pragma export (C, last_chance_Handler, "__gnat_last_chance_handler");
 
    procedure last_chance_Handler (Msg  : in System.Address;
                                   Line : in Integer)

@@ -5,7 +5,9 @@ with
 
 procedure launch_Write
 is
-   use ada.Text_IO, xml.Writer;
+   use
+        ada.Text_IO,
+        xml.Writer;
 
 begin
    start_Document (standard_Output);

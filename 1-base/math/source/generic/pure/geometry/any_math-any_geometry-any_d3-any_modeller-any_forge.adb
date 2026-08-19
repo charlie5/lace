@@ -343,6 +343,7 @@ is
    is
       use
            Functions,
+
            ada.Text_IO,
            ada.Strings.unbounded;
 
@@ -424,7 +425,7 @@ is
                                 tri_Count  => 73 * (16 * 4 + 6));
 
       the_longitude  : Longitude := 0;
-      the_latitude   : Latitude ;
+      the_latitude   : Latitude;
 
       the_Vertex     : Positive := 1;
       the_Triangle   : Positive := 1;

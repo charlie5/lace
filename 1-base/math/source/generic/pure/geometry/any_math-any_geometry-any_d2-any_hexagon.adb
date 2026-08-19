@@ -8,7 +8,7 @@ is
    function prior_Vertex (to_Vertex : in vertex_Id) return vertex_Id
    is
    begin
-      if To_Vertex = 1
+      if to_Vertex = 1
       then   return 6;
       else   return to_Vertex - 1;
       end if;

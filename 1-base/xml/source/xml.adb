@@ -33,8 +33,11 @@ is
 
    function to_XML (Filename : in String) return Element
    is
-      use xml.Reader,   xml.element_Vectors,
-          ada.Text_IO;
+      use
+           xml.Reader,
+           xml.element_Vectors,
+
+           ada.Text_IO;
 
       the_Root      : aliased  Element;
 

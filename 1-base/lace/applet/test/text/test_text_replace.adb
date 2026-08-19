@@ -4,9 +4,11 @@ with
 
 procedure test_Text_replace
 is
-   use lace.Text,
-       lace.Text.utility,
-       ada.Text_IO;
+   use
+        lace.Text,
+        lace.Text.utility,
+
+        ada.Text_IO;
 
    test_Error : exception;
 begin

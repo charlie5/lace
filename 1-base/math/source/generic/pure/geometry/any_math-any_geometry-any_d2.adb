@@ -399,7 +399,7 @@ is
    function prior_Vertex (Self : in Polygon;    to_Vertex : in Positive) return Site
    is
    begin
-      if To_Vertex = 1
+      if to_Vertex = 1
       then   return Self.Vertices (Self.Vertex_Count);
       else   return Self.Vertices (to_Vertex - 1);
       end if;

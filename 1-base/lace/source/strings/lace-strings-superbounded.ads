@@ -352,12 +352,12 @@ is
    function Times (Left       : in Natural;
                    Right      : in Character;
                    Max_Length : in Positive) return Super_String;
-   -- Note the additional parameter Max_Length
+   -- Note the additional parameter Max_Length.
 
    function Times (Left       : in Natural;
                    Right      : in String;
                    Max_Length : in Positive) return Super_String;
-   -- Note the additional parameter Max_Length
+   -- Note the additional parameter Max_Length.
 
    function Times (Left  : in Natural;
                    Right : in Super_String) return Super_String;
@@ -366,13 +366,13 @@ is
                              Item       : in Character;
                              Drop       : in Truncation := Error;
                              Max_Length : in Positive) return Super_String;
-   -- Note the additional parameter Max_Length
+   -- Note the additional parameter Max_Length.
 
    function Super_Replicate (Count      : in Natural;
                              Item       : in String;
                              Drop       : in Truncation := Error;
                              Max_Length : in Positive) return Super_String;
-   -- Note the additional parameter Max_Length
+   -- Note the additional parameter Max_Length.
 
    function Super_Replicate (Count : in Natural;
                              Item  : in Super_String;

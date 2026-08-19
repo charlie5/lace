@@ -17,8 +17,8 @@ with
 package body box2d_Physics.Object
 is
    use
-       box2d_c.Binding,
-       c_math_c.Conversion;
+        box2d_c.Binding,
+        c_math_c.Conversion;
 
    type Any_limited_view is access all lace.Any.limited_item'Class;
 

@@ -188,25 +188,25 @@ is
       procedure add (Text : in String)
       is
       begin
-         Image (Count + 1 .. Count + text'Length) := Text;
-         Count                                    := Count + text'Length;
+         Image (Count + 1 .. Count + Text'Length) := Text;
+         Count                                    := Count + Text'Length;
       end add;
 
    begin
       add ("(");
 
-      for Row in self'Range (1)
+      for Row in Self'Range (1)
       loop
          add ([1 => ada.Characters.latin_1.LF]);
 
-         if Row /= self'First (1)
+         if Row /= Self'First (1)
          then
             add (", ");
          end if;
 
-         for Col in self'Range (2)
+         for Col in Self'Range (2)
          loop
-            if Col /= self'First (2)
+            if Col /= Self'First (2)
             then
                add (", ");
             end if;

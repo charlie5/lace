@@ -4,9 +4,10 @@ with
 
 package body lace_demo_Keyboard
 is
-   use lace_demo_Events,
-       Lace,
-       ada.real_Time;
+   use
+        lace_demo_Events,
+        Lace,
+        ada.real_Time;
 
    --- Simulated Keyboard
    --

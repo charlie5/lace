@@ -4,8 +4,9 @@ with
 
 procedure test_Environ_general
 is
-   use lace.Environ.Paths,
-       ada.Text_IO;
+   use
+        lace.Environ.Paths,
+        ada.Text_IO;
 
    Error : exception;
 begin

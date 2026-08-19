@@ -189,12 +189,12 @@ is
      Pre   => (if Source'Length /= 0 then From in Source'Range),
      Global => null;
    pragma Ada_05 (Index_Non_Blank);
-   -- Returns Index (Source, Maps.To_Set(Space), From, Outside, Going)
+   -- Returns Index (Source, Maps.To_Set(Space), From, Outside, Going).
 
    function Index_Non_Blank (Source : in String;
                              Going  : in Direction := Forward) return Natural
      with Global => null;
-   -- Returns Index (Source, Maps.To_Set(Space), Outside, Going)
+   -- Returns Index (Source, Maps.To_Set(Space), Outside, Going).
 
    function Count (Source  : in String;
                    Pattern : in String;

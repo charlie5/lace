@@ -4,8 +4,9 @@ with
 
 procedure test_Environ_compression
 is
-   use lace.Environ.Paths,
-       ada.Text_IO;
+   use
+        lace.Environ.Paths,
+        ada.Text_IO;
 
    test_Error  : exception;
    digits_Text : constant String := "0123456789";

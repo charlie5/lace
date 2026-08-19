@@ -726,6 +726,7 @@ is
       use
            lace.Text,
            lace.Text.all_Tokens,
+
            ada.Strings.fixed;
 
       all_Files : constant String        := (if Index (Named, "*") /= 0 then expand_GLOB (Named)
@@ -778,6 +779,7 @@ is
          use
               lace.Text,
               lace.Text.all_Tokens,
+
               ada.Strings.fixed;
 
          all_Files : constant String        := (if Index (Named, "*") /= 0 then expand_GLOB (Named)
@@ -861,6 +863,7 @@ is
       use
            lace.Text,
            lace.Text.all_Tokens,
+
            ada.Strings.fixed;
 
       all_Files : constant String        := (if Index (Named, "*") /= 0 then expand_GLOB (Named)

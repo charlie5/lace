@@ -17,14 +17,16 @@ procedure launch_simple_deferred_events_Demo
 -- A simple demonstration of the Lace deferred event system.
 --
 is
-   use lace_demo_Events,
-       lace.Event,
-       lace.event.Utility,
-       Lace,
+   use
+        lace_demo_Events,
 
-       ada.Text_IO,
-       ada.Strings.unbounded,
-       ada.real_Time;
+        lace.Event,
+        lace.event.Utility,
+        Lace,
+
+        ada.Text_IO,
+        ada.Strings.unbounded,
+        ada.real_Time;
 
    -- Key Response
    --
