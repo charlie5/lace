@@ -204,7 +204,6 @@ is
 
    procedure free (the_Shape : in out physics.Shape.view)
    is
-
       procedure deallocate is new ada.unchecked_Deallocation (physics.Shape.item'Class,
                                                               physics.Shape.view);
    begin

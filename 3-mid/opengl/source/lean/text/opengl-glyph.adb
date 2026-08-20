@@ -28,7 +28,6 @@ is
 
    procedure destruct (Self : in out Item)
    is
-
       procedure deallocate is new ada.unchecked_Deallocation (GlyphImpl.item'Class,
                                                               GlyphImpl.view);
    begin

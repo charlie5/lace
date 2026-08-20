@@ -23,7 +23,6 @@ is
 
    procedure destruct (Self : in out Item)
    is
-
       procedure deallocate is new ada.unchecked_Deallocation (impostor_load_Balancer.Slots,
                                                               impostor_load_Balancer.Slots_view);
    begin

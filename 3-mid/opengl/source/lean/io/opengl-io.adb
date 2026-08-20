@@ -59,7 +59,6 @@ is
 
    procedure destroy (Self : in out Face)
    is
-
       procedure free is new ada.unchecked_Deallocation (Vertices, Vertices_view);
    begin
       if Self.Kind = Polygon
@@ -330,7 +329,6 @@ is
 
    procedure destroy (Self : in out Model)
    is
-
       procedure free is new ada.unchecked_Deallocation (bone_Weights,       bone_Weights_view);
 
       procedure free is new ada.unchecked_Deallocation (bone_Weights_array, bone_Weights_array_view);

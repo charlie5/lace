@@ -228,7 +228,6 @@ is
    --
    function Hash (the_C_Object : in bullet_c.Pointers.Object_pointer) return ada.Containers.Hash_type
    is
-
       function convert is new ada.unchecked_Conversion (bullet_c.Pointers.Object_pointer,
                                                         system.storage_Elements.integer_Address);
    begin

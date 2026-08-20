@@ -49,7 +49,6 @@ is
 
    procedure destruct (Self : in out Item)
    is
-
       procedure free is new ada.unchecked_Deallocation (FontImpl.item'Class,
                                                         FontImpl.view);
    begin
@@ -61,7 +60,6 @@ is
 
    procedure free (Self : in out View)
    is
-
       procedure deallocate is new ada.unchecked_Deallocation (Item'Class, View);
    begin
       Self.destruct;

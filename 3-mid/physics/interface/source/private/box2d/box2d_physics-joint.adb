@@ -1114,7 +1114,6 @@ is
 
    procedure free (the_Joint : in out physics.Joint.view)
    is
-
       procedure deallocate is new ada.unchecked_Deallocation (physics.Joint.item'Class,
                                                               physics.Joint.view);
    begin

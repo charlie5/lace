@@ -36,7 +36,6 @@ is
 
    function to_GLchar_access (From : in C.Strings.chars_ptr) return access lean.GLchar
    is
-
       function Convert is new ada.unchecked_Conversion (C.Strings.chars_ptr, GLchar_access);
    begin
       return Convert (From);
@@ -46,7 +45,6 @@ is
 
    function to_GLchar_Pointer_access (From : access C.Strings.chars_ptr_array) return access lean.GLchar_pointer
    is
-
       function Convert is new ada.unchecked_Conversion (chars_ptr_access, GLchar_pointer_access);
    begin
       return Convert (From (From'First)'unchecked_Access);

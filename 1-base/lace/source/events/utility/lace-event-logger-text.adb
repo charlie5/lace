@@ -63,7 +63,6 @@ is
 
       function from_Name return String
       is
-
          function to_Integer is new ada.unchecked_Conversion (Observer.view,
                                                               long_Integer);
       begin

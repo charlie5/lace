@@ -88,7 +88,6 @@ is
 
    procedure free (Self : in out View)
    is
-
       procedure deallocate is new ada.unchecked_Deallocation (Buffer.Object'Class,
                                                               Buffer.view);
    begin

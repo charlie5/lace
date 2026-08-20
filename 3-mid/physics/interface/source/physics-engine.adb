@@ -513,7 +513,6 @@ is
 
    procedure stop (Self : access Item)
    is
-
       procedure free is new ada.unchecked_Deallocation (safe_command_Set, safe_command_Set_view);
    begin
       Self.Evolver.stop;

@@ -31,7 +31,6 @@ is
 
    procedure free (Self : in out View)
    is
-
       procedure deallocate is new ada.unchecked_Deallocation (Item'Class, View);
    begin
       if Self /= null

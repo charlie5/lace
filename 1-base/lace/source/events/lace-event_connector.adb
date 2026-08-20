@@ -155,7 +155,6 @@ is
 
       procedure shutdown
       is
-
          procedure free is new ada.unchecked_Deallocation (Connector,
                                                            Connector_view);
          the_Connector : Connector_view;

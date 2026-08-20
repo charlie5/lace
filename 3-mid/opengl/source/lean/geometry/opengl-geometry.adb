@@ -22,7 +22,6 @@ is
 
    procedure free (Self : in out View)
    is
-
       procedure deallocate is new ada.unchecked_Deallocation (Item'Class, View);
    begin
       if Self = null
@@ -422,7 +421,6 @@ is
                             Indices   : in any_Indices;
                             Sites     : in openGL.Sites) return access Normals
    is
-
       function Facets_of is new any_Facets_of (any_Index_t,
                                                any_Indices);
 
@@ -498,7 +496,6 @@ is
                         Indices   : in openGL.Indices;
                         Sites     : in openGL.Sites) return access Normals
    is
-
       function my_Normals_of is new any_Normals_of (any_Index_t => Index_t,
                                                     any_Indices => openGL.Indices);
    begin
@@ -513,7 +510,6 @@ is
                         Indices   : in openGL.long_Indices;
                         Sites     : in openGL.Sites) return access Normals
    is
-
       function my_Normals_of is new any_Normals_of (any_Index_t => long_Index_t,
                                                     any_Indices => openGL.long_Indices);
    begin

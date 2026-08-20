@@ -136,7 +136,6 @@ is
 
       procedure shutdown
       is
-
          procedure free is new ada.unchecked_Deallocation (Sender,
                                                            Sender_view);
          the_Sender : Sender_view;

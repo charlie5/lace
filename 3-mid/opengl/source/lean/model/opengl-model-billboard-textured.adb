@@ -157,7 +157,6 @@ is
 
    procedure Image_is (Self : in out Item;   Now : in Image)
    is
-
       procedure deallocate is new ada.unchecked_Deallocation (Image,
                                                               Image_view);
    begin
@@ -182,7 +181,6 @@ is
 
    procedure Image_is (Self : in out Item;   Now : in lucid_Image)
    is
-
       procedure deallocate is new ada.unchecked_Deallocation (lucid_Image,
                                                               lucid_Image_view);
    begin

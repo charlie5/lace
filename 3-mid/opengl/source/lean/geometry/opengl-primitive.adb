@@ -21,7 +21,6 @@ is
 
    procedure free (Self : in out View)
    is
-
       procedure deallocate is new ada.Unchecked_Deallocation (Primitive.item'Class,
                                                               Primitive.view);
    begin

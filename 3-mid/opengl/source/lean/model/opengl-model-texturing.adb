@@ -136,7 +136,6 @@ is
 
       procedure texture_Details_is (Self : in out textured_Item;   Now : in openGL.texture_Set.item)
       is
-
          procedure free is new ada.unchecked_Deallocation (Animation, Animation_view);
       begin
          free (Self.texture_Set.Animation);

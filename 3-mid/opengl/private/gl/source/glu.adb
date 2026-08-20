@@ -1193,7 +1193,6 @@ is
                             typeout   : in GLenum;
                             dataout   : in System.Address)
    is
-
       procedure free is new ada.unchecked_Deallocation (GLushort_array, GLushort_array_view);
 
       components  : GLint;

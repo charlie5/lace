@@ -46,7 +46,6 @@ is
    overriding
    procedure destroy (Self : in out Item)
    is
-
       procedure free is new ada.unchecked_Deallocation (Buffer.long_indices.Object'Class,
                                                         Buffer.long_indices.view);
    begin

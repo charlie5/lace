@@ -33,7 +33,6 @@ is
    overriding
    procedure destroy (Self : in out Item)
    is
-
       procedure deallocate is new ada.unchecked_Deallocation (height_Map,
                                                               height_Map_view);
    begin

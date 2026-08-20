@@ -72,7 +72,6 @@ is
 
    procedure free (the_Object : in out physics.Object.view)
    is
-
       procedure deallocate is new ada.unchecked_Deallocation (physics.Object.item'Class,
                                                               physics.Object.view);
    begin

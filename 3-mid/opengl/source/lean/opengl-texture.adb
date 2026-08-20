@@ -351,7 +351,6 @@ end free;
 
    procedure destroy (the_Pool : in out Pool)
    is
-
       procedure deallocate is new ada.unchecked_Deallocation (pool_texture_List,
                                                               pool_texture_List_view);
    begin
