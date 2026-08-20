@@ -105,7 +105,7 @@ is
 
       if Item_not_null
       then
-         Item := new Animation' (Animation'Input (Stream));
+         Item := new Animation' (Animation'input (Stream));
       else
          Item := null;
       end if;

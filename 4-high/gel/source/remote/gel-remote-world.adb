@@ -181,7 +181,7 @@ is
                     the_Event : in              new_graphics_model_Event)
    is
    begin
-      openGL.remote_Model.item'Class'Output (Stream,
+      openGL.remote_Model.item'Class'output (Stream,
                                              the_Event.Model.all);
    end write;
 
@@ -192,7 +192,7 @@ is
    is
    begin
       pragma Warnings (Off, "use of an anonymous access type allocator");
-      the_Event.Model := new openGL.remote_Model.item'Class' (openGL.remote_Model.item'Class'Input (Stream));
+      the_Event.Model := new openGL.remote_Model.item'Class' (openGL.remote_Model.item'Class'input (Stream));
       pragma Warnings (On, "use of an anonymous access type allocator");
    end read;
 
@@ -202,7 +202,7 @@ is
                     the_Event : in              new_physics_model_Event)
    is
    begin
-      physics.Remote.Model.item'Class'Output (Stream, the_Event.Model.all);
+      physics.Remote.Model.item'Class'output (Stream, the_Event.Model.all);
    end Write;
 
 
@@ -212,7 +212,7 @@ is
    is
    begin
       pragma Warnings (Off, "use of an anonymous access type allocator");
-      the_Event.Model := new physics.remote.Model.item'Class' (physics.remote.Model.item'Class'Input (Stream));
+      the_Event.Model := new physics.remote.Model.item'Class' (physics.remote.Model.item'Class'input (Stream));
       pragma Warnings (On, "use of an anonymous access type allocator");
    end Read;
 

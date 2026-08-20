@@ -397,7 +397,7 @@ is
       pPicData :          loc_pointer;
       data_Max : constant Integer    := padded_row_Size * Height - 1;
 
-      -- Workaround for the severe xxx'Read xxx'Write performance
+      -- Workaround for the severe xxx'read xxx'write performance
       -- problems in the GNAT and ObjectAda compilers (as in 2009)
       -- This is possible if and only if Byte = Stream_Element and
       -- arrays types are both packed the same way.
