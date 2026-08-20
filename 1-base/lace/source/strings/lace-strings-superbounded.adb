@@ -15,7 +15,8 @@ is
                     Right : in Super_String) return Super_String
    is
    begin
-      return Result : Super_String (Left.Max_Length) do
+      return Result : Super_String (Left.Max_Length)
+      do
          declare
             Llen : constant Natural := Left.Current_Length;
             Rlen : constant Natural := Right.Current_Length;
@@ -39,7 +40,8 @@ is
                     Right : in String) return Super_String
    is
    begin
-      return Result : Super_String (Left.Max_Length) do
+      return Result : Super_String (Left.Max_Length)
+      do
          declare
             Llen   : constant Natural := Left.Current_Length;
             Nlen   : constant Natural := Llen + Right'Length;
@@ -63,7 +65,8 @@ is
    is
 
    begin
-      return Result : Super_String (Right.Max_Length) do
+      return Result : Super_String (Right.Max_Length)
+      do
          declare
             Llen : constant Natural := Left'Length;
             Rlen : constant Natural := Right.Current_Length;
@@ -87,7 +90,8 @@ is
                     Right : in Character) return Super_String
    is
    begin
-      return Result : Super_String (Left.Max_Length) do
+      return Result : Super_String (Left.Max_Length)
+      do
          declare
             Llen : constant Natural := Left.Current_Length;
          begin
@@ -109,7 +113,8 @@ is
                     Right : in Super_String) return Super_String
    is
    begin
-      return Result : Super_String (Right.Max_Length) do
+      return Result : Super_String (Right.Max_Length)
+      do
          declare
             Rlen : constant Natural := Right.Current_Length;
          begin
@@ -1461,7 +1466,8 @@ is
    begin
       -- Note: test of High > Length is in accordance with AI95-00128.
 
-      return R : String (Low .. High) do
+      return R : String (Low .. High)
+      do
          if        Low > Source.Current_Length + 1
            or else High > Source.Current_Length
          then
@@ -1479,7 +1485,8 @@ is
                          High   : in Natural) return Super_String
    is
    begin
-      return Result : Super_String (Source.Max_Length) do
+      return Result : Super_String (Source.Max_Length)
+      do
          if        Low > Source.Current_Length + 1
            or else High > Source.Current_Length
          then
@@ -1623,7 +1630,8 @@ is
    function Super_To_String (Source : in Super_String) return String
    is
    begin
-      return R : String (1 .. Source.Current_Length) do
+      return R : String (1 .. Source.Current_Length)
+      do
          R := Source.Data (1 .. Source.Current_Length);
       end return;
    end Super_To_String;
