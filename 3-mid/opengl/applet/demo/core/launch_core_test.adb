@@ -5,7 +5,7 @@ with
      sdl.Video.Windows.Makers,
      sdl.Video.gl,
 
-     ada.Task_Identification,
+     ada.task_Identification,
      ada.Text_IO;
 
 
@@ -47,7 +47,7 @@ begin
    sdl.Video.gl.create      (gl_Context, From => Window);
    sdl.Video.gl.set_Current (gl_Context, To   => Window);
 
-   openGL.Tasks.renderer_Task := ada.Task_Identification.current_Task;
+   openGL.Tasks.Renderer_Task := ada.task_Identification.current_Task;
 
 
    ---------

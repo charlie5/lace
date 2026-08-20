@@ -20,7 +20,7 @@ with
 
      ada.Text_IO,
      ada.Exceptions,
-     ada.Task_Identification,
+     ada.task_Identification,
      ada.unchecked_Deallocation;
 
 
@@ -255,7 +255,7 @@ is
             the_Context := Context;     -- TODO: This is not used.
          end start;
 
-         openGL.Tasks.Renderer_Task := ada.Task_Identification.current_Task;
+         openGL.Tasks.Renderer_Task := ada.task_Identification.current_Task;
          -- Self.context_Setter.all;
          Self.Context := the_Context;
 

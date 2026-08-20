@@ -1,5 +1,5 @@
 with
-     ada.Task_Identification;
+     ada.task_Identification;
 
 
 package openGL.Tasks
@@ -8,7 +8,7 @@ package openGL.Tasks
 --
 is
 
-   Renderer_Task : ada.Task_Identification.Task_Id := ada.Task_Identification.null_Task_Id;
+   Renderer_Task : ada.task_Identification.Task_Id := ada.task_Identification.null_Task_Id;
    --
    -- The current renderer task.
 
