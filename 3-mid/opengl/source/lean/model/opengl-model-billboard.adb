@@ -5,12 +5,11 @@ is
    --- Forge
    --
 
-   procedure define (Self : out Item;   Size : Size_t := default_Size)
+   procedure define (Self : out Item;   Size : in Size_t := default_Size)
    is
    begin
       Self.Size := Size;
    end define;
-
 
 
    --------------

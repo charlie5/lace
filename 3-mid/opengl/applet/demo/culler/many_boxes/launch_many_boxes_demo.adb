@@ -8,21 +8,22 @@ with
 
 procedure launch_many_Boxes_Demo
 --
---  Exercise the culler with many boxes.
+-- Exercise the culler with many boxes.
 --
 is
-   use openGL,
-       openGL.Model,
-       openGL.Model.box,
-       openGL.Palette,
-       openGL.Math,
-       openGL.linear_Algebra_3d;
+   use
+        openGL,
+        openGL.Model,
+        openGL.Model.box,
+        openGL.Palette,
+        openGL.Math,
+        openGL.linear_Algebra_3d;
 
 begin
    Demo.print_Usage;
    Demo.define ("openGL 'many Boxes' Demo");
 
-   --  Setup the camera.
+   -- Setup the camera.
    --
    Demo.Camera.Position_is ([0.0, 0.0, 5.0],
                             y_Rotation_from (to_Radians (0.0)));
@@ -61,7 +62,7 @@ begin
       end loop;
 
 
-      --  Main loop.
+      -- Main loop.
       --
       while not Demo.Done
       loop

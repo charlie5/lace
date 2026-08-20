@@ -1,16 +1,17 @@
 with
      GL;
 
+
 package openGL.Variable
 --
---  Models a shader variable.
+-- Models a shader variable.
 --
 is
    type Item  is abstract tagged private;
 
 
    ---------
-   --  Forge
+   --- Forge
    --
 
    procedure define  (Self : in out Item);
@@ -27,5 +28,6 @@ private
       record
          gl_Variable : gl.GLint := null_Variable;
       end record;
+
 
 end openGL.Variable;

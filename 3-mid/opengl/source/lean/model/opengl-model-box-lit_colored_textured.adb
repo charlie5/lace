@@ -34,8 +34,9 @@ is
    is
       pragma unreferenced (Fonts);
 
-      use Geometry.lit_colored_textured,
-          Texture;
+      use
+           Geometry.lit_colored_textured,
+           Texture;
 
       the_Sites    :         constant box.Sites := Self.vertex_Sites;
       the_Indices  : aliased constant Indices   := [1, 2, 3, 4];
@@ -67,13 +68,13 @@ is
       right_Face : Geometry_view;
 
    begin
-      --  Front
+      -- Front
       --
       declare
          the_Vertices : aliased Geometry.lit_colored_textured.Vertex_array
            := [1 => (Site => the_Sites ( Left_Lower_Front),   Normal => front_Normal,   Color => +Self.Faces (Front).Colors (1),   Coords => (0.0, 0.0),   Shine => default_Shine),
                2 => (Site => the_Sites (Right_Lower_Front),   Normal => front_Normal,   Color => +Self.Faces (Front).Colors (2),   Coords => (1.0, 0.0),   Shine => default_Shine),
-               3 => (Site => the_Sites (Right_Upper_front),   Normal => front_Normal,   Color => +Self.Faces (Front).Colors (3),   Coords => (1.0, 1.0),   Shine => default_Shine),
+               3 => (Site => the_Sites (Right_Upper_Front),   Normal => front_Normal,   Color => +Self.Faces (Front).Colors (3),   Coords => (1.0, 1.0),   Shine => default_Shine),
                4 => (Site => the_Sites ( Left_Upper_Front),   Normal => front_Normal,   Color => +Self.Faces (Front).Colors (4),   Coords => (0.0, 1.0),   Shine => default_Shine)];
       begin
          front_Face := new_Face (Vertices => the_Vertices'Access);
@@ -86,7 +87,7 @@ is
       end;
 
 
-      --  Rear
+      -- Rear
       --
       declare
          the_Vertices : aliased Geometry.lit_colored_textured.Vertex_array
@@ -105,7 +106,7 @@ is
       end;
 
 
-      --  Upper
+      -- Upper
       --
       declare
          the_Vertices : aliased Geometry.lit_colored_textured.Vertex_array
@@ -124,7 +125,7 @@ is
       end;
 
 
-      --  Lower
+      -- Lower
       --
       declare
          the_Vertices : aliased Geometry.lit_colored_textured.Vertex_array
@@ -143,7 +144,7 @@ is
       end;
 
 
-      --  Left
+      -- Left
       --
       declare
          the_Vertices : aliased Geometry.lit_colored_textured.Vertex_array
@@ -162,7 +163,7 @@ is
       end;
 
 
-      --  Right
+      -- Right
       --
       declare
          the_Vertices : aliased Geometry.lit_colored_textured.Vertex_array

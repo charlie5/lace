@@ -8,13 +8,14 @@ with
 
 procedure launch_render_Hex_Grid
 --
---  Renders a hexagon grid.
+-- Renders a hexagon grid.
 --
 is
-   use openGL,
-       openGL.Math,
-       openGL.linear_Algebra_3D,
-       openGL.Palette;
+   use
+        openGL,
+        openGL.Math,
+        openGL.linear_Algebra_3D,
+        openGL.Palette;
 
 begin
    Demo.print_Usage;
@@ -26,7 +27,7 @@ begin
                             x_Rotation_from (to_Radians (90.0)));
 
    declare
-      --  The models.
+      -- The models.
       --
 
       heights_File       : constant asset_Name         := to_Asset ("assets/kidwelly-terrain-127x127.png");
@@ -113,7 +114,7 @@ begin
                                     Heights       =>   the_Region_5x5.all'Access,
                                     Color         => Color);
 
-      --  The visual.
+      -- The visual.
       --
       use openGL.Visual.Forge;
 
@@ -149,24 +150,24 @@ begin
       the_Grid_5x5.Site_is ([-10.0, 0.0,   10.0]);
 
 
-      --  Main loop.
+      -- Main loop.
       --
       while not Demo.Done
       loop
          Demo.Dolly.evolve;
          Demo.Done := Demo.Dolly.quit_Requested;
 
-         --  Render all visuals.
+         -- Render all visuals.
          --
 
          Demo.Camera.render ([1 => the_Grid]);
 
-         --  Demo.Camera.render ([1 => the_Grid_1x1]);
-         --  Demo.Camera.render ([1 => the_Grid_2x1]);
-         --  Demo.Camera.render ([1 => the_Grid_1x2]);
-         --  Demo.Camera.render ([1 => the_Grid_3x1]);
+         -- Demo.Camera.render ([1 => the_Grid_1x1]);
+         -- Demo.Camera.render ([1 => the_Grid_2x1]);
+         -- Demo.Camera.render ([1 => the_Grid_1x2]);
+         -- Demo.Camera.render ([1 => the_Grid_3x1]);
 
-         --  Demo.Camera.render ([the_Grid_1x1,
+         -- Demo.Camera.render ([the_Grid_1x1,
          --
          --                       the_Grid_2x1,
          --                       the_Grid_1x2,
@@ -186,7 +187,7 @@ begin
 
          Demo.Renderer.render;
          Demo.FPS_Counter.increment;    -- Frames per second display.
-         --  delay 1.0 / 60.0;
+         -- delay 1.0 / 60.0;
       end loop;
    end;
 

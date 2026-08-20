@@ -2,10 +2,12 @@ with
      openGL.Context,
      interfaces.C;
 
+
 package body openGL.Surface     -- TODO: Finish this package.
 is
-   use Glx,
-       Interfaces;
+   use
+        Glx,
+        Interfaces;
 
    visual_Attributes : array (Positive range <>) of aliased C.int := [GLX_X_RENDERABLE,    1,
                                                                       GLX_DRAWABLE_TYPE,   GLX_WINDOW_BIT,
@@ -33,7 +35,7 @@ is
 
 
 
-   --  Operations
+   -- Operations
    --
 
    procedure swap_Buffers (Self : in Item)

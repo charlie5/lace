@@ -5,11 +5,13 @@ with
 
 package body openGL.Camera
 is
-   use math.Algebra.linear.d3,
-       ada.Text_IO;
+   use
+        math.Algebra.linear.d3,
+        ada.Text_IO;
+
 
    ---------
-   --  Forge
+   --- Forge
    --
 
    procedure define (Self : in out Item)
@@ -25,6 +27,7 @@ is
    end define;
 
 
+
    procedure destroy (Self : in out Item)
    is
    begin
@@ -33,7 +36,7 @@ is
 
 
    --------------
-   --  Attributes
+   --- Attributes
    --
 
    function to_World_Site (Self : in Item;   window_Site : in math.Vector_3) return math.Vector_3
@@ -43,9 +46,9 @@ is
                                                                           zNear  => Self.near_Plane_Distance,
                                                                           zFar   => Self. far_Plane_Distance);
       Viewport              : constant Rectangle := Self.Viewport;
-      Position_window_space : constant Vector_3  := [Window_Site (1),
-                                                     Real (Viewport.Max (2)) - Window_Site (2),
-                                                     Window_Site (3)];
+      Position_window_space : constant Vector_3  := [window_Site (1),
+                                                     Real (Viewport.Max (2)) - window_Site (2),
+                                                     window_Site (3)];
       Site_world_space      : constant Vector_3  := unProject (Position_window_space,
                                                                Model      => Self.view_Transform,
                                                                Projection => perspective_Transform,
@@ -63,6 +66,7 @@ is
                                                     Now));
       Self.update_View_Transform;
    end Site_is;
+
 
 
    function Site (Self : in Item) return math.Vector_3
@@ -84,12 +88,13 @@ is
 
 
 
-   procedure Spin_is (Self : in out Item'Class;   now : in math.Matrix_3x3)
+   procedure Spin_is (Self : in out Item'Class;   Now : in math.Matrix_3x3)
    is
    begin
       set_Rotation (Self.world_Transform, To => Now);
       Self.update_View_Transform;
    end Spin_is;
+
 
 
    function Spin (Self : in Item'Class) return math.Matrix_3x3
@@ -107,11 +112,13 @@ is
    end World_Transform;
 
 
+
    function FoVy (Self : in Item'Class) return math.Degrees
    is
    begin
       return Self.FoVy;
-   end FOVy;
+   end FoVy;
+
 
 
    procedure FoVy_is (Self : in out Item'Class;   Now : in math.Degrees)
@@ -129,6 +136,7 @@ is
    end Aspect;
 
 
+
    procedure Aspect_is (Self : in out Item'Class;   Now : in math.Real)
    is
    begin
@@ -144,10 +152,11 @@ is
    end near_Plane_Distance;
 
 
+
    procedure near_Plane_Distance_is (Self : in out Item'Class;   Now : in math.Real)
    is
    begin
-      Self.near_Plane_Distance := now;
+      Self.near_Plane_Distance := Now;
    end near_Plane_Distance_is;
 
 
@@ -157,6 +166,7 @@ is
    begin
       return Self.far_Plane_Distance;
    end far_Plane_Distance;
+
 
 
    procedure far_Plane_Distance_is (Self : in out Item'Class;   Now : in math.Real)
@@ -172,6 +182,7 @@ is
    begin
       return Self.view_Transform;
    end view_Transform;
+
 
 
    function projection_Transform (Self : in Item'Class) return math.Matrix_4x4
@@ -201,8 +212,8 @@ is
       Self.near_plane_Height := Self.near_plane_Distance * Tan_of_half_FoV_max;
       Self.near_plane_Width  := Self.near_plane_Height   * Self.Aspect;
 
-      Self.far_plane_Height  := Self.far_plane_Distance  * Tan_of_half_FoV_max;
-      Self.far_plane_Width   := Self.far_plane_Height    * Self.Aspect;
+      Self.far_plane_Height := Self.far_plane_Distance  * Tan_of_half_FoV_max;
+      Self.far_plane_Width  := Self.far_plane_Height    * Self.Aspect;
 
       if Self.Aspect > 1.0
       then -- X side angle broader than y side angle.
@@ -224,18 +235,21 @@ is
    end Viewport;
 
 
+
    procedure Renderer_is (Self : in out Item;   Now : in Renderer.lean.view)
    is
    begin
-      Self.Renderer := now;
+      Self.Renderer := Now;
    end Renderer_is;
 
 
-   function cull_completed (Self : in Item) return Boolean
+
+   function cull_Completed (Self : in Item) return Boolean
    is
    begin
       return Boolean (Self.cull_Completed);
-   end cull_completed;
+   end cull_Completed;
+
 
 
    procedure disable_cull (Self : in out Item)
@@ -253,10 +267,11 @@ is
    end vanish_Point_Size_min;
 
 
+
    procedure vanish_Point_Size_min_is (Self : in out Item'Class;   Now : in Real)
    is
    begin
-      Self.Culler.vanish_Point_Size_min_is (now);
+      Self.Culler.vanish_Point_Size_min_is (Now);
    end vanish_Point_Size_min_is;
 
 
@@ -271,11 +286,13 @@ is
    end Impostor_Size_min;
 
 
+
    procedure Impostor_Size_min_is (Self : in out Item;   Now : in Real)
    is
    begin
       Self.Impostorer.Impostor_Size_min_is (Now);
    end Impostor_Size_min_is;
+
 
 
    procedure allow_Impostors (Self : in out Item;   Now : in Boolean := True)
@@ -285,11 +302,12 @@ is
    end allow_Impostors;
 
 
-
    ----------
-   --  Engine
+   --- Engine
    --
-   task body cull_Engine
+
+   task
+   body cull_Engine
    is
       Done             : Boolean := False;
       culling          : Boolean;
@@ -311,7 +329,7 @@ is
                all_visuals_Last                := the_Visuals'Last;
 
                culling             := do_cull;
-               Self.Cull_completed := False;
+               Self.cull_Completed := False;
             end cull;
          end select;
 
@@ -326,6 +344,7 @@ is
                   return Self.Culler.cull (the_Visuals    => all_Visuals (1 .. all_Visuals_last),
                                            Camera_Frustum => Self.current_Planes,
                                            Camera_Site    => Self.Site);
+
                else
                   return all_Visuals (1 .. all_visuals_Last);
                end if;
@@ -343,7 +362,7 @@ is
 
             Self.Renderer.queue_Visuals (the_Visuals, Self);
 
-            Self.Cull_completed := True;
+            Self.cull_Completed := True;
          end;
       end loop;
 
@@ -357,9 +376,8 @@ is
    end cull_Engine;
 
 
-
    --------------
-   --  Operations
+   --- Operations
    --
 
    procedure render (Self : in out Item;   Visuals : in Visual.views;

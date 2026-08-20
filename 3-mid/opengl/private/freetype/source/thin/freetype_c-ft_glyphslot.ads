@@ -1,6 +1,7 @@
 with
      freetype_c.Pointers;
 
+
 package freetype_c.FT_GlyphSlot
 is
 
@@ -12,5 +13,6 @@ is
    type Pointer_array is array (C.Size_t range <>) of aliased freetype_c.FT_GlyphSlot.Pointer;
 
    type pointer_Pointer is access all freetype_c.FT_GlyphSlot.Pointer;
+
 
 end freetype_c.FT_GlyphSlot;

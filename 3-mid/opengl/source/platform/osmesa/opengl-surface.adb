@@ -5,8 +5,9 @@ with
 
 package body openGL.Surface
 is
-   use -- Glx,
-       Interfaces;
+   use
+        -- Glx,
+        Interfaces;
 
 
 --     visual_attribs : array (Positive range <>) of aliased C.int := (GLX_X_RENDERABLE,    1,
@@ -39,7 +40,7 @@ is
 
 
 
-   --  Operations
+   -- Operations
    --
 
    procedure swap_Buffers (Self : in Item)

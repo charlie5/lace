@@ -40,7 +40,7 @@ is
    type Geometry_view is access all Geometry.lit_colored_textured.item'Class;
 
 
-   --  NB: - An extra vertex is required at the end of each latitude ring.
+   -- NB: - An extra vertex is required at the end of each latitude ring.
    --      - This last vertex has the same site as the rings initial vertex.
    --      - The  last    vertex has 's' texture coord of 1.0, whereas
    --        the  initial vertex has 's' texture coord of 0.0.
@@ -77,8 +77,9 @@ is
 
       set_Sites:
       declare
-         use linear_Algebra,
-             linear_Algebra_3d;
+         use
+              linear_Algebra,
+              linear_Algebra_3d;
 
          north_Pole : constant Site := [0.0,  0.5,  0.0];
          south_Pole : constant Site := [0.0, -0.5,  0.0];
@@ -100,11 +101,11 @@ is
 
          the_Sites (the_Vertices'Last) := south_Pole;
 
-         the_Vertices (the_Vertices'Last).Site    := south_Pole;
-         the_Vertices (the_Vertices'Last).Normal  := Normalised (south_Pole);
-         the_Vertices (the_Vertices'Last).Shine   := 0.5;
-         the_Vertices (the_Vertices'Last).Coords  := (S => 0.5, T => 0.0);
-         the_Vertices (the_Vertices'Last).Color   := +Self.Color;
+         the_Vertices (the_Vertices'Last).Site   := south_Pole;
+         the_Vertices (the_Vertices'Last).Normal := Normalised (south_Pole);
+         the_Vertices (the_Vertices'Last).Shine  := 0.5;
+         the_Vertices (the_Vertices'Last).Coords := (S => 0.5, T => 0.0);
+         the_Vertices (the_Vertices'Last).Color  := +Self.Color;
 
          for lat_Id in 2 .. lat_Count - 1
          loop

@@ -10,8 +10,8 @@ with
 
 package body openGL.Model.hex_grid
 is
-   --------
-   -- Forge
+   ---------
+   --- Forge
    --
 
    function new_Grid (heights_Asset : in asset_Name;
@@ -33,6 +33,7 @@ is
    overriding
    procedure destroy (Self : in out Item)
    is
+
       procedure deallocate is new ada.unchecked_Deallocation (height_Map,
                                                               height_Map_view);
    begin
@@ -41,9 +42,8 @@ is
    end destroy;
 
 
-
-   -------------
-   -- Attributes
+   --------------
+   --- Attributes
    --
 
    package hexagon_Geometry renames Geometry_2d.Hexagon;
@@ -67,12 +67,12 @@ is
 
 
 
-   function Equivalent (S1, S2 : Geometry_2d.Site) return Boolean
+   function Equivalent (S1, S2 : in Geometry_2d.Site) return Boolean
    is
       Tolerance : constant := 0.1;
    begin
-      return     abs (S2 (1) - S1 (1)) < Tolerance
-             and abs (S2 (2) - S1 (2)) < Tolerance;
+      return          abs (S2 (1) - S1 (1)) < Tolerance
+             and then abs (S2 (2) - S1 (2)) < Tolerance;
    end Equivalent;
 
 
@@ -82,7 +82,7 @@ is
    type hex_Vertex is
       record
          shared_Hexes : Coordinates_array (1 .. 3);
-         shared_Count : Index_t := 0;
+         shared_Count : Index_t                   := 0;
 
          Site         : Geometry_3d.Site;
       end record;
@@ -103,17 +103,19 @@ is
    is
       pragma Unreferenced (Textures, Fonts);
 
-      use Geometry,
-          Geometry.colored,
-          Geometry_2d;
+      use
+           Geometry,
+           Geometry.colored,
+           Geometry_2d;
 
       site_Map_of_vertex_Id : site_Maps_of_vertex_Id.Map;
-      next_free_vertex_Id   : Index_t := 0;
+      next_free_vertex_Id   : Index_t                   := 0;
 
 
       function fetch_Id (S : in geometry_2d.Site) return Index_t
       is
          use site_Maps_of_vertex_Id;
+
          C : constant Cursor := site_Map_of_vertex_Id.Find (S);
       begin
          if has_Element (C)
@@ -148,7 +150,7 @@ is
       zigzag_joiner_vertex_Count : constant Index_t := col_Count * 2;
 
 
-      vertex_Count  : constant Index_t :=         zigzags_vertex_Count
+      vertex_Count  : constant Index_t :=   zigzags_vertex_Count
                                           + zigzag_joiner_vertex_Count;
 
       hex_Vertices  : hex_Grid.hex_Vertices (1 .. zigzags_vertex_Count);
@@ -184,6 +186,7 @@ is
                loop
                   declare
                      use hexagon_Geometry;
+
                      Site       : constant Geometry_2d.Site := vertex_Site (the_Grid,
                                                                             hex_Id => (Positive (Row),
                                                                                        Positive (Col)),
@@ -220,6 +223,7 @@ is
                loop
                   declare
                      use hexagon_Geometry;
+
                      Site       : constant Geometry_2d.Site := vertex_Site (the_Grid,
                                                                             hex_Id => (Positive (Row),
                                                                                        Positive (Col)),
@@ -265,6 +269,7 @@ is
       begin
          --- Add hex vertices.
          --
+
          for i in hex_Vertices'Range
          loop
             vertex_Id := vertex_Id + 1;
@@ -273,8 +278,10 @@ is
             gl_Vertices (vertex_Id).Color := Color;
          end loop;
 
+
          --- Add joiner vertices.
          --
+
          for i in 1 .. col_Count
          loop
             declare
@@ -326,6 +333,7 @@ is
          end add_zigzag_Vertex;
 
 
+
          procedure add_joiner_vertex_Pair
          is
          begin
@@ -342,6 +350,7 @@ is
       begin
          --- Fist zigzag
          --
+
          add_zigzag_Vertex (Row => 1, Col => 1, hex_Vertex => 5);
 
          for Row in 1 .. Positive (row_Count)
@@ -400,6 +409,7 @@ is
 
          --- Last zigzag
          --
+
          add_zigzag_Vertex (Row => 1, Col => Positive (col_Count), hex_Vertex => 6);
 
          for Row in 1 .. Positive (row_Count)
@@ -425,6 +435,7 @@ is
             loop
                declare
                   use hexagon_Geometry;
+
                   Site : Geometry_2d.Site := vertex_Site (the_Grid,
                                                           hex_Id => (Positive (Row),
                                                                      Positive (Col)),

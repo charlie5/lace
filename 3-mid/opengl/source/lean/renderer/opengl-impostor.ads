@@ -6,6 +6,7 @@ limited
 with
      openGL.Camera;
 
+
 package openGL.Impostor
 --
 -- Contains a 2D image of another openGL visual.
@@ -32,8 +33,8 @@ is
          expand_X, expand_Y               : Real       := 0.03;
 
          never_Updated                    : Boolean    := True;
-         is_Valid                         : Boolean    := True;     -- True when rendered target has both width and height > 0.
-                                                                    -- (NB: Always true for simple impostors.)
+         is_Valid                         : Boolean    := True;      -- True when rendered target has both width and height > 0.
+                                                                     -- (NB: Always true for simple impostors.)
          -- Current state.
          --
          current_pixel_Region   : pixel_Region;

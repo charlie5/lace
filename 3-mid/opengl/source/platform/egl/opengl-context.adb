@@ -10,16 +10,18 @@ with
 
 package body openGL.Context
 is
-   use egl.Binding,
-       System;
+   use
+        egl.Binding,
+        System;
 
 
    procedure define (Self : in out Item;   the_Display         : access opengl.Display.item'class;
                                            the_surface_Profile : in     opengl.surface_Profile.item)
    is
-      use EGL,
-          opengl.Display        .privvy,
-          opengl.surface_Profile.privvy;
+      use
+           EGL,
+           opengl.Display        .privvy,
+           opengl.surface_Profile.privvy;
 
       contextAttribs : EGLint_array := [EGL_CONTEXT_CLIENT_VERSION, 2,
                                         EGL_NONE];
@@ -43,9 +45,11 @@ is
    procedure make_Current (Self : in Item;   read_Surface  : in opengl.Surface.item;
                                              write_Surface : in opengl.Surface.item)
    is
-      use      eGL,
-               opengl.Display.privvy,
-               opengl.Surface.privvy;
+      use
+           eGL,
+           opengl.Display.privvy,
+           opengl.Surface.privvy;
+
       use type EGLBoolean;
 
       Success : constant EGLBoolean := eGLmakeCurrent (to_eGL (Self.Display.all),
@@ -53,7 +57,8 @@ is
                                                        to_eGL (write_Surface),
                                                        Self.egl_Context);
    begin
-      if Success = EGL_FALSE then
+      if Success = EGL_FALSE
+      then
          raise openGL.Error with "unable to make egl Context current";
       end if;
    end make_Current;
@@ -63,7 +68,7 @@ is
    function egl_Context_debug (Self : in Item'Class) return egl.EGLConfig
    is
    begin
-      return self.egl_Context;
+      return Self.egl_Context;
    end egl_Context_debug;
 
 

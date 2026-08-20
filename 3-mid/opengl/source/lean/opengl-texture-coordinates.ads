@@ -19,8 +19,6 @@ is
    -- Maps the vertices to texture coordinates.
 
 
-
-
    --- Generators
    --
 

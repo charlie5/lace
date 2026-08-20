@@ -20,6 +20,7 @@ is
    end Width;
 
 
+
    function Depth (Self : in openGL.height_Map) return math.Real
    is
    begin
@@ -58,7 +59,7 @@ is
       the_Visual_Grid    : Visual.Grid (the_Heightmap_Grid'Range (1),
                                         the_Heightmap_Grid'Range (2));
    begin
-      --  Create each grid elements 'heightmap'.
+      -- Create each grid elements 'heightmap'.
       --
       declare
          row_First, row_Last,
@@ -83,7 +84,7 @@ is
          end loop;
       end;
 
-      --  Create the Visual for each grid element.
+      -- Create the Visual for each grid element.
       --
       declare
          site_X_Offset : Real;
@@ -133,7 +134,7 @@ is
                                                          Scale      => Scale,
                                                          is_Terrain => True);
 
-                  site_Y_Offset :=    the_height_Extents (1)
+                  site_Y_Offset :=   the_height_Extents (1)
                                    + (the_height_Extents (2) - the_height_Extents (1)) / 2.0;
 
                   the_Site := [  site_X_Offset - (total_Width / 2.0),
@@ -147,23 +148,24 @@ is
 
                   if Col /= the_Visual_Grid'Last (2)
                   then
-                     site_X_Offset := site_X_Offset
-                                    + Width (the_Heightmap_Grid (Row, Col    ).all) * Scale (1) / 2.0
-                                    + Width (the_Heightmap_Grid (Row, Col + 1).all) * Scale (1) / 2.0;
+                     site_X_Offset :=   site_X_Offset
+                                      + Width (the_Heightmap_Grid (Row, Col    ).all) * Scale (1) / 2.0
+                                      + Width (the_Heightmap_Grid (Row, Col + 1).all) * Scale (1) / 2.0;
                   end if;
                end;
             end loop;
 
             if Row /= the_Visual_Grid'Last (1)
             then
-               site_Z_Offset := site_Z_Offset + Depth (the_Heightmap_Grid (Row,     1).all) * Scale (3) / 2.0
-                                              + Depth (the_Heightmap_Grid (Row + 1, 1).all) * Scale (3) / 2.0;
+               site_Z_Offset :=   site_Z_Offset
+                                + Depth (the_Heightmap_Grid (Row,     1).all) * Scale (3) / 2.0
+                                + Depth (the_Heightmap_Grid (Row + 1, 1).all) * Scale (3) / 2.0;
             end if;
          end loop;
       end;
 
       declare
-         procedure free is new ada.unchecked_Deallocation (   height_Map,
+         procedure free is new ada.unchecked_Deallocation (height_Map,
                                                            IO.height_Map_view);
       begin
          free (the_Pixels);

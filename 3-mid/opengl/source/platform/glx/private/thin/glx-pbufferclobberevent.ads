@@ -23,4 +23,5 @@ is
    type Items    is array (C.size_t range <>) of aliased Item;
    type Pointers is array (C.size_t range <>) of aliased Pointer;
 
+
 end glx.PbufferClobberEvent;

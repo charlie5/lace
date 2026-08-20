@@ -1,6 +1,6 @@
 package openGL.Server
 --
---  Provides functions to query the GL server.
+-- Provides functions to query the GL server.
 --
 is
 
@@ -12,5 +12,6 @@ is
 
    function Version return a_Version;
    function Version return String;
+
 
 end openGL.Server;

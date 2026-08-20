@@ -38,8 +38,9 @@ is
    is
       pragma unreferenced (Fonts, Textures);
 
-      use Geometry.lit_colored,
-          Model.hexagon;
+      use
+           Geometry.lit_colored,
+           Model.hexagon;
 
       shaft_Height  : constant Real     := Self.Height;
       height_Offset : constant Vector_3 := [0.0, shaft_Height / 2.0, 0.0];
@@ -78,6 +79,7 @@ is
       end new_hexagon_Face;
 
 
+
       function new_shaft_Face (Vertices : access Geometry.lit_colored.Vertex_array)
                                return Geometry.lit_colored.view
       is
@@ -111,7 +113,7 @@ is
          lower_Sites (Each) := lower_Sites (Each) - height_Offset;
       end loop;
 
-      --  Upper
+      -- Upper
       --
       declare
          the_Vertices : aliased Geometry.lit_colored.Vertex_array
@@ -126,7 +128,7 @@ is
          upper_Face := new_hexagon_Face (Vertices => the_Vertices'Access);
       end;
 
-      --  Lower
+      -- Lower
       --
       declare
          the_Vertices : aliased Geometry.lit_colored.Vertex_array
@@ -143,7 +145,7 @@ is
       end;
 
 
-      --  Shaft
+      -- Shaft
       --
       declare
          type shaft_Normals is array (1 .. 6) of Vector_3;

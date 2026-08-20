@@ -24,7 +24,6 @@ is
    end new_polygon;
 
 
-
    --------------------
    --- to_GL_Geometries
    --
@@ -35,17 +34,19 @@ is
    is
       pragma unreferenced (Fonts);
 
-      use Geometry,
-          Geometry.lit_textured,
-          Texture;
+      use
+           Geometry,
+           Geometry.lit_textured,
+           Texture;
 
       the_Sites : Vector_2_array renames Self.vertex_Sites (1 .. Self.vertex_Count);
 
 
       function new_Geometry (Vertices : in geometry.lit_textured.Vertex_array) return Geometry.lit_textured.view
       is
-         use Primitive,
-             texture_Set;
+         use
+              Primitive,
+              texture_Set;
 
 
          function the_Indices return Indices
@@ -78,7 +79,7 @@ is
          loop
             Id := texture_Id (i);
 
-            --  the_Geometry.Fade_is (Which => Id,
+            -- the_Geometry.Fade_is (Which => Id,
             --                        Now   => Self.texture_Details.Fades (Id));
 
             the_Geometry.Texture_is     (Which => Id,
@@ -95,13 +96,13 @@ is
       face_Geometry : Geometry.lit_textured.view;
 
    begin
-      --  Geometry
+      -- Geometry
       --
       declare
          use openGL.Texture.Coordinates;
 
          the_Vertices        :          Geometry.lit_textured.Vertex_array (1 .. the_Sites'Length + 1);
-         Coords_and_Centroid : constant Coords_2D_and_Centroid := to_Coordinates (the_Sites);
+         Coords_and_Centroid : constant Coords_2D_and_Centroid                                        := to_Coordinates (the_Sites);
       begin
          for i in the_Sites'Range
          loop

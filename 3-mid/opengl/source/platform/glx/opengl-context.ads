@@ -3,9 +3,10 @@ with
      openGL.Surface,
      glx.Context;
 
+
 package openGL.Context
 --
---  Models an openGL (GLX) context.
+-- Models an openGL (GLX) context.
 --
 is
    type Item is tagged private;
@@ -27,5 +28,6 @@ private
       record
          glx_Context : aliased glx.Context.item;
       end record;
+
 
 end openGL.Context;

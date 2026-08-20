@@ -1,6 +1,6 @@
 package openGL.Model.billboard
 --
---  Models a rectangle capable of displaying an image.
+-- Models a rectangle capable of displaying an image.
 --
 is
    type Item   is abstract new Model.item with private;
@@ -22,7 +22,7 @@ is
 
    default_Size : constant Size_t;
 
-   procedure define (Self : out Item;   Size : Size_t := default_Size);
+   procedure define (Self : out Item;   Size : in Size_t := default_Size);
 
 
    --------------
@@ -53,5 +53,6 @@ private
    Normal       : constant Vector_3 := [0.0,  0.0,  1.0];
    default_Size : constant Size_t   := (Width  => 1.0,
                                         Height => 1.0);
+
 
 end openGL.Model.billboard;

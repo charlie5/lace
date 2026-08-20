@@ -9,6 +9,7 @@ with
      ada.unchecked_Deallocation,
      ada.Finalization;
 
+
 package body freetype.Face
 is
    -----------
@@ -34,9 +35,11 @@ is
       function to_Face (fontFilePath      : in String;
                         precomputeKerning : in Boolean) return Face.item
       is
-         use freeType_C.Binding,
-             freeType_C.Pointers,
-             C.Strings;
+         use
+              freeType_C.Binding,
+              freeType_C.Pointers,
+              C.Strings;
+
          use type freeType_C.FT_Long;
 
          Self          : Item;
@@ -58,8 +61,8 @@ is
          Self.numGlyphs       := Integer (FT_Face_Get_num_glyphs (Self.ftFace));
          Self.hasKerningTable := FT_Face_HAS_KERNING (Self.ftFace) /= 0;
 
-         if    Self.hasKerningTable
-           and precomputeKerning
+         if        Self.hasKerningTable
+           and then precomputeKerning
          then
             Self.BuildKerningCache;
          end if;
@@ -73,8 +76,10 @@ is
                         bufferSizeInBytes : in     Positive;
                         precomputeKerning : in     Boolean) return Face.item
       is
-         use freeType_C.Binding,
-             freeType_C.Pointers;
+         use
+              freeType_C.Binding,
+              freeType_C.Pointers;
+
          use type FT_Long;
 
          Self : Face.item;
@@ -94,8 +99,8 @@ is
          Self.numGlyphs       := Integer (FT_Face_Get_num_glyphs (Self.ftFace));
          Self.hasKerningTable := FT_Face_HAS_KERNING (Self.ftFace) /= 0;
 
-         if    Self.hasKerningTable
-           and precomputeKerning
+         if        Self.hasKerningTable
+           and then precomputeKerning
          then
             Self.BuildKerningCache;
          end if;
@@ -108,6 +113,7 @@ is
       procedure destruct (Self : in out Item)
       is
          use freeType_C.Binding;
+
          use type Pointers.FT_FaceRec_Pointer;
       begin
          if Self.kerningCache /= null
@@ -128,8 +134,10 @@ is
 
    function attach (Self : access Item;   fontFilePath : in String) return Boolean
    is
-      use freeType_C.Binding,
-          C.Strings;
+      use
+           freeType_C.Binding,
+           C.Strings;
+
       use type FT_Error;
 
       the_font_Path : chars_ptr := new_String (fontFilePath);
@@ -146,13 +154,14 @@ is
                                           bufferSizeInBytes : in     Positive) return Boolean
    is
       use freeType_C.Binding;
+
       use type FT_Error;
    begin
       Self.Err := FT_Face_Attach_Stream (Self.ftFace,
                                          pBufferBytes.all'Access,
                                          C.size_t (bufferSizeInBytes));
       return Self.Err = 0;
-   end Attach;
+   end attach;
 
 
 
@@ -213,22 +222,23 @@ is
                                                Index2 : in Natural) return Vector_3
    is
       use freeType_C.Binding;
+
       use type FT_Error;
 
       X, Y        :         Float;
       kernAdvance : aliased FT_Vector.item;
 
    begin
-      if   not Self.hasKerningTable
-        or Index1 = 0
-        or Index2 = 0
+      if        not Self.hasKerningTable
+        or else Index1 = 0
+        or else Index2 = 0
       then
          return [0.0, 0.0, 0.0];
       end if;
 
-      if    Self.kerningCache /= null
-        and Index1 < max_Precomputed     -- TODO: Check this whole function matches C code.
-        and Index2 < max_Precomputed
+      if         Self.kerningCache /= null
+        and then Index1 < max_Precomputed     -- TODO: Check this whole function matches C code.
+        and then Index2 < max_Precomputed
       then
          X := Float (Self.kerningCache (C.size_t (2 * (Index2 * max_Precomputed + Index1))));
          Y := Float (Self.kerningCache (C.size_t (2 * (Index2 * max_Precomputed + Index1) + 1)));
@@ -240,8 +250,8 @@ is
       kernAdvance.Y := 0;
 
       Self.Err := FT_Get_Kerning (Self.ftFace,
-                                  C.unsigned (index1),
-                                  C.unsigned (index2),
+                                  C.unsigned (Index1),
+                                  C.unsigned (Index2),
                                   ft_Kerning_unfitted'enum_Rep,
                                   kernAdvance'unchecked_Access);
       if Self.Err /= 0
@@ -269,6 +279,7 @@ is
                                          load_Flags : in freeType_C.FT_Int) return FT_GlyphSlot.item
    is
       use freeType_C.Binding;
+
       use type FT_Error,
                FT_Face.item;
    begin
@@ -279,7 +290,8 @@ is
 
       Self.Err := FT_Load_Glyph (Self.ftFace,  FT_UInt (Index),  load_Flags);
 
-      if Self.Err /= 0 then
+      if Self.Err /= 0
+      then
          return null;
       end if;
 
@@ -299,6 +311,7 @@ is
    procedure BuildKerningCache (Self : in out Item)
    is
       use freeType_C.Binding;
+
       use type FT_UInt,
                FT_Error,
                C.C_float;
@@ -333,16 +346,17 @@ is
    end BuildKerningCache;
 
 
-
    -------------------
-   --  Package Closure
+   --- Package Closure
    --
+
    type Closure is new ada.Finalization.controlled with null record;
 
    overriding
    procedure finalize (Object : in out Closure)
    is
       use freeType_C.Binding;
+
       Status : FT_Error with unreferenced;
    begin
       Status := FT_Done_FreeType (the_FT_Library);
@@ -351,11 +365,12 @@ is
    the_Closure : Closure with Unreferenced;
 
 
-
    --------------------------
-   --  Package Initialisation
+   --- Package Initialisation
    --
+
    use freeType_C.Binding;
+
    Status : FT_Error with unreferenced;
 
 begin

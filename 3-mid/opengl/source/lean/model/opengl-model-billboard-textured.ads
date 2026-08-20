@@ -6,7 +6,7 @@ with
 
 package openGL.Model.billboard.textured
 --
---  Models a textured billboard.
+-- Models a textured billboard.
 --
 is
    package textured_Model is new texturing.Mixin (openGL.Model.billboard.item);
@@ -64,5 +64,6 @@ private
             when False =>       Image :       Image_view;
          end case;
       end record;
+
 
 end openGL.Model.billboard.textured;

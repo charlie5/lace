@@ -5,7 +5,7 @@ with
 
 package openGL.Display
 --
---  Models an openGL display.
+-- Models an openGL display.
 --
 is
 
@@ -24,6 +24,5 @@ private
          Version_minor : aliased eGL.EGLint;
       end record;
 
+
 end openGL.Display;
-
-

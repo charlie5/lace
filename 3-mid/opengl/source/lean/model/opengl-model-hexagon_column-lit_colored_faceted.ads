@@ -5,7 +5,7 @@ with
 
 package openGL.Model.hexagon_Column.lit_colored_faceted
 --
---  Models a lit, colored and textured column with 6 faceted shaft sides.
+-- Models a lit, colored and textured column with 6 faceted shaft sides.
 --
 is
    type Item is new Model.hexagon_Column.Item with private;
@@ -38,6 +38,7 @@ is
                                 Lower  : in   hex_Face;
                                 Shaft  : in shaft_Face) return View;
 
+
    --------------
    --- Attributes
    --
@@ -45,6 +46,7 @@ is
    overriding
    function to_GL_Geometries (Self : access Item;   Textures : access Texture.name_Map_of_texture'Class;
                                                     Fonts    : in     Font.font_id_Map_of_font) return Geometry.views;
+
 
 
 private
@@ -55,5 +57,6 @@ private
          lower_Face : hex_Face;
          Shaft      : shaft_Face;
       end record;
+
 
 end openGL.Model.hexagon_Column.lit_colored_faceted;

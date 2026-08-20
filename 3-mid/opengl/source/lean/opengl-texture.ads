@@ -6,10 +6,10 @@ with
 
 package openGL.Texture
 --
---  Provides openGL textures.
+-- Provides openGL textures.
 --
 is
-   --  Object - an openGL texture 'object'
+   -- Object - an openGL texture 'object'
    --
 
    type Object  is tagged private;
@@ -35,6 +35,8 @@ is
                            use_Mipmaps : in Boolean := True)    return Object;
    end Forge;
 
+
+
    procedure destroy (Self : in out Object);
    procedure free    (Self : in out Object);
 
@@ -59,8 +61,8 @@ is
    function  Size           (Self : in     Object) return Texture.Dimensions;
 
 
-   -------
-   -- Maps
+   --------
+   --- Maps
    --
 
    type name_Map_of_texture is tagged private;
@@ -70,9 +72,10 @@ is
 
 
    --------
-   --  Pool
+   --- Pool
    --
-   --  For rapid allocation/deallocation of texture objects.
+
+   -- For rapid allocation/deallocation of texture objects.
 
    type Pool      is private;
    type Pool_view is access all Pool;
@@ -80,23 +83,22 @@ is
    procedure destroy     (the_Pool : in out Pool);
    function  new_Texture (From     : access Pool;   Size : in Dimensions) return Object;
    --
-   --  Returns a texture object of the requested size.
+   -- Returns a texture object of the requested size.
 
    procedure free   (From     : in out Pool;   the_Texture : in Object);
    --
-   --  Frees a texture for future use.
+   -- Frees a texture for future use.
 
    procedure vacuum (the_Pool : in out Pool);
    --
-   --  Releases any allocated, but unused, texture objects.
+   -- Releases any allocated, but unused, texture objects.
 
 
-
-   -----------
-   -- GL Enums
+   ------------
+   --- GL Enums
    --
 
-   --  TexFormatEnm
+   -- TexFormatEnm
    --
    type Format is (ALPHA,
                    RGB,               RGBA,
@@ -119,9 +121,8 @@ is
    function to_GL (From : in pixel_Format) return GL.GLenum;
 
 
-
-   ----------
-   -- Utility
+   -----------
+   --- Utility
    --
 
    function Power_of_2_Ceiling (From : in Positive) return GL.GLsizei;
@@ -139,11 +140,12 @@ private
       end record;
 
 
-   -------
-   -- Maps
+   --------
+   --- Maps
    --
 
-   use Ada.Strings.unbounded;
+   use ada.Strings.unbounded;
+
    package name_Maps_of_texture_id is new ada.Containers.hashed_Maps (unbounded_String,
                                                                       Texture.Object,
                                                                       Hash,
@@ -214,9 +216,8 @@ private
    for pixel_Format'Size use GL.GLenum'Size;
 
 
-
    --------
-   --  Pool
+   --- Pool
    --
 
    type pool_texture_List is
@@ -241,19 +242,21 @@ private
 
 
    -------------
-   --  Constants
+   --- Constants
    --
+
    null_Object : constant Object := (others => <>);
 
 
    ---------------
-   --  Conversions
+   --- Conversions
    --
 
-   function convert_1 is new Ada.Unchecked_Conversion (Format,       GL.GLenum);
-   function convert_2 is new Ada.Unchecked_Conversion (pixel_Format, GL.GLenum);
+   function convert_1 is new ada.Unchecked_Conversion (Format,       GL.GLenum);
+   function convert_2 is new ada.Unchecked_Conversion (pixel_Format, GL.GLenum);
 
    function to_GL (From : in       Format) return GL.GLenum renames convert_1;
    function to_GL (From : in pixel_Format) return GL.GLenum renames convert_2;
+
 
 end openGL.Texture;

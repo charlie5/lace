@@ -31,12 +31,12 @@ is
 
 
 
-
    function Id (Self : in Item) return light.Id_t
    is
    begin
       return Self.Id;
    end Id;
+
 
 
    procedure Id_is (Self : in out Item;   Now : in light.Id_t)
@@ -46,11 +46,13 @@ is
    end Id_is;
 
 
+
    function Kind (Self : in Item) return light.Kind_t
    is
    begin
       return Self.Kind;
    end Kind;
+
 
 
    procedure Kind_is (Self : in out Item;   Now : in light.Kind_t)
@@ -60,11 +62,13 @@ is
    end Kind_is;
 
 
+
    function is_On (Self : in Item) return Boolean
    is
    begin
       return Self.On;
    end is_On;
+
 
 
    procedure is_On (Self : in out Item;   Now : in Boolean := True)
@@ -82,6 +86,7 @@ is
    end Site;
 
 
+
    procedure Site_is (Self : in out Item;   Now : in openGL.Site)
    is
    begin
@@ -95,6 +100,7 @@ is
    begin
       return Self.Strength;
    end Strength;
+
 
 
    procedure Strength_is (Self : in out Item;   Now : in Intensity)
@@ -112,11 +118,13 @@ is
    end Color;
 
 
+
    function Attenuation (Self : in Item) return Real
    is
    begin
       return Self.Attenuation;
    end Attenuation;
+
 
 
    function ambient_Coefficient (Self : in Item) return Real
@@ -126,11 +134,13 @@ is
    end ambient_Coefficient;
 
 
+
    function cone_Angle (Self : in Item) return Degrees
    is
    begin
       return Self.cone_Angle;
    end cone_Angle;
+
 
 
    function cone_Direction (Self : in Item) return Vector_3
@@ -148,11 +158,13 @@ is
    end Color_is;
 
 
+
    procedure Attenuation_is (Self : in out Item;   Now : in Real)
    is
    begin
       Self.Attenuation := Now;
    end Attenuation_is;
+
 
 
    procedure ambient_Coefficient_is (Self : in out Item;   Now : in Real)
@@ -168,6 +180,7 @@ is
    begin
       Self.cone_Angle := Now;
    end cone_Angle_is;
+
 
 
    procedure cone_Direction_is (Self : in out Item;   Now : in Vector_3)

@@ -10,18 +10,20 @@ with
      GL.Pointers,
 
      System,
-     Interfaces.C.Strings,
+     interfaces.C.Strings,
      System.storage_Elements;
 
 
 package body openGL.Geometry.colored_textured
 is
-   use GL.lean,
-       GL.Pointers,
-       Interfaces;
+   use
+        GL.lean,
+        GL.Pointers,
+        Interfaces;
+
 
    -----------
-   --  Globals
+   --- Globals
    --
 
    vertex_Shader        : aliased Shader.item;
@@ -42,15 +44,17 @@ is
 
 
    ---------
-   --  Forge
+   --- Forge
    --
 
    type Geometry_view is access all Geometry.colored_textured.item'Class;
 
    function new_Geometry return access Geometry.colored_textured.item'Class
    is
-      use      System,
-               System.storage_Elements;
+      use
+           System,
+           System.storage_Elements;
+
       use type openGL.Program.view;
 
       Self : constant Geometry_view := new Geometry.colored_textured.item;
@@ -134,11 +138,12 @@ is
 
 
    ----------
-   --  Vertex
+   --- Vertex
    --
 
    function is_Transparent (Self : in Vertex_array) return Boolean
    is
+
       function get_Color (Index : in long_Index_t) return rgba_Color
       is (Self (Index).Color);
 
@@ -150,7 +155,7 @@ is
 
 
    --------------
-   --  Attributes
+   --- Attributes
    --
 
    package openGL_Buffer_of_geometry_Vertices is new Buffer.general (base_Object   => Buffer.array_Object,

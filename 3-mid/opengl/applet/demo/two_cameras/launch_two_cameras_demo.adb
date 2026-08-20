@@ -9,21 +9,22 @@ with
 
 procedure launch_two_Cameras_Demo
 --
---  Exercise the culler with two cameras.
+-- Exercise the culler with two cameras.
 --
 is
-   use openGL,
-       openGL.Model.Box,
-       openGL.Palette,
-       openGL.Math,
-       openGL.linear_Algebra_3d;
+   use
+        openGL,
+        openGL.Model.Box,
+        openGL.Palette,
+        openGL.Math,
+        openGL.linear_Algebra_3d;
 
    Camera_2 : openGL.Camera.item;
 begin
    Demo.print_Usage;
    openGL.Demo.define ("openGL 'Two Cameras' Demo");
 
-   --  Setup the extra camera.
+   -- Setup the extra camera.
    --
    Camera_2.define;
    Camera_2.Renderer_is (Demo.Renderer'unchecked_Access);
@@ -40,7 +41,7 @@ begin
    declare
       use openGL.Math.Functions;
 
-      --  The Models.
+      -- The Models.
       --
       the_Face      : constant asset_Name := to_Asset ("assets/opengl/texture/Face1.bmp");
       the_box_Model : constant Model.box.lit_colored_textured.view
@@ -57,7 +58,7 @@ begin
         := Model.Sphere.lit_colored_textured.new_Sphere (radius => 0.5,
                                                          texture_Details => texture_Set.to_Set ([1 => the_Face]));
 
-      --  The Sprites.
+      -- The Sprites.
       --
       the_Sprites   : constant Visual.views (1 .. 4_000) := [others => Visual.Forge.new_Visual (Model.view ( the_box_Model))];
       the_Sprites_2 : constant Visual.views (1 .. 4_000) := [others => Visual.Forge.new_Visual (Model.view (the_ball_Model))];
@@ -97,7 +98,7 @@ begin
       end loop;
 
 
-      --  Main loop.
+      -- Main loop.
       --
       while not Demo.Done
       loop
@@ -107,8 +108,8 @@ begin
          Demo.Camera.render (the_Sprites);
          Camera_2   .render (the_Sprites_2);
 
-         while not (    Demo.Camera.cull_Completed
-                    and Camera_2   .cull_Completed)
+         while not (         Demo.Camera.cull_Completed
+                    and then Camera_2   .cull_Completed)
          loop
             delay Duration'Small;
          end loop;

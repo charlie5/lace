@@ -5,7 +5,7 @@ with
 
 package openGL.Primitive.indexed
 --
---  Provides a class for indexed openGL primitives.
+-- Provides a class for indexed openGL primitives.
 --
 is
    type    Item  is limited new Primitive.item with private;
@@ -16,7 +16,7 @@ is
 
 
    ---------
-   --  Forge
+   --- Forge
    --
 
    function  new_Primitive (Kind       : in facet_Kind;
@@ -38,18 +38,16 @@ is
    procedure destroy (Self : in out Item);
 
 
-
    --------------
-   --  Attributes
+   --- Attributes
    --
 
    procedure Indices_are (Self : in out Item;   Now : in      Indices);
    procedure Indices_are (Self : in out Item;   Now : in long_Indices);
 
 
-
    --------------
-   --  Operations
+   --- Operations
    --
 
    overriding
@@ -63,5 +61,6 @@ private
       record
          Indices : Buffer.indices.view;
       end record;
+
 
 end openGL.Primitive.indexed;

@@ -5,7 +5,7 @@ with
 package body openGL
 is
    ------------
-   --  Profiles
+   --- Profiles
    --
 
    function Profile return profile_Kind
@@ -13,7 +13,7 @@ is
 
 
    -----------
-   --  Vectors
+   --- Vectors
    --
 
    function Scaled (Self : in Vector_3;   By : in Vector_3) return Vector_3
@@ -40,7 +40,7 @@ is
 
 
 
-   function to_Vector_3_array (Self : Vector_2_array) return Vector_3_array
+   function to_Vector_3_array (Self : in Vector_2_array) return Vector_3_array
    is
       the_Array : Vector_3_array (1 .. Self'Length);
    begin
@@ -54,7 +54,7 @@ is
 
 
    ----------
-   --  Colors
+   --- Colors
    --
 
    function to_color_Value (Self : in Primary) return color_Value
@@ -125,10 +125,8 @@ is
    end to_rgb_Color;
 
 
-
-
    -------------
-   --  Heightmap
+   --- Heightmap
    --
 
    function Scaled (Self : in height_Map;   By : in Real) return height_Map
@@ -138,7 +136,7 @@ is
       do
          scale (Result, By);
       end return;
-   end scaled;
+   end Scaled;
 
 
 
@@ -197,7 +195,7 @@ is
 
 
    ----------
-   --  Assets
+   --- Assets
    --
 
    function to_Asset (Self : in String) return asset_Name
@@ -235,11 +233,11 @@ is
    end Hash;
 
 
-   ---------
-   -- Bounds
+   ----------
+   --- Bounds
    --
 
-   function bounding_Box_of (Self : Sites) return Bounds
+   function bounding_Box_of (Self : in Sites) return Bounds
    is
       Result : Bounds := null_Bounds;
    begin
@@ -270,8 +268,8 @@ is
    end set_Ball_from_Box;
 
 
-   ---------
-   -- Images
+   ----------
+   --- Images
    --
 
    function to_Image (From : in lucid_Image) return Image
@@ -291,8 +289,8 @@ is
    end to_Image;
 
 
-   ------------
-   -- safe_Real
+   -------------
+   --- safe_Real
    --
 
    protected
@@ -304,11 +302,14 @@ is
          the_Value := Now;
       end Value_is;
 
+
+
       function Value return Real
       is
       begin
          return the_Value;
       end Value;
    end safe_Real;
+
 
 end openGL;

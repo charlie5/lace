@@ -17,6 +17,7 @@ is
                                            Indices : in short_Indices)
    is
       use Buffer.short_indices.Forge;
+
       buffer_Indices : aliased short_Indices := [Indices'Range => <>];
    begin
       for Each in buffer_Indices'Range
@@ -35,6 +36,7 @@ is
                                            Indices : in openGL.Indices)
    is
       use Buffer.short_indices.Forge;
+
       buffer_Indices : aliased short_Indices := [Indices'Range => <>];
    begin
       for Each in buffer_Indices'Range
@@ -53,6 +55,7 @@ is
                                            Indices : in long_Indices)
    is
       use Buffer.short_indices.Forge;
+
       buffer_Indices : aliased short_indices := [Indices'Range => <>];
    begin
       for Each in buffer_Indices'Range
@@ -103,6 +106,7 @@ is
    overriding
    procedure destroy (Self : in out Item)
    is
+
       procedure free is new ada.unchecked_Deallocation (Buffer.short_Indices.Object'Class,
                                                         Buffer.short_Indices.view);
    begin
@@ -111,14 +115,14 @@ is
    end destroy;
 
 
-
    --------------
-   --  Attributes
+   --- Attributes
    --
 
    procedure Indices_are (Self : in out Item;   Now : in short_Indices)
    is
       use Buffer.short_indices;
+
       buffer_Indices : aliased short_Indices := [Now'Range => <>];
 
    begin
@@ -135,6 +139,7 @@ is
    procedure Indices_are (Self : in out Item;   Now : in Indices)
    is
       use Buffer.short_indices;
+
       buffer_Indices : aliased short_Indices := [Now'Range => <>];
 
    begin
@@ -151,6 +156,7 @@ is
    procedure Indices_are (Self : in out Item;   Now : in  long_Indices)
    is
       use Buffer.short_indices;
+
       buffer_Indices : aliased short_Indices := [Now'Range => <>];
 
    begin
@@ -163,16 +169,16 @@ is
    end Indices_are;
 
 
-
    --------------
-   --  Operations
+   --- Operations
    --
 
    overriding
    procedure render (Self : in out Item)
    is
-      use GL,
-          GL.Binding;
+      use
+           GL,
+           GL.Binding;
    begin
       Tasks.check;
 

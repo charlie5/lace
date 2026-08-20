@@ -9,17 +9,21 @@ with
      GL.lean,
      GL.Pointers,
 
-     Interfaces.C.Strings,
+     interfaces.C.Strings,
      System.storage_Elements;
 
 
 package body openGL.Geometry.colored
 is
-   use GL.lean, GL.Pointers;
+   use
+        GL.lean,
+        GL.Pointers;
+
    use Interfaces;
 
+
    -----------
-   --  Globals
+   --- Globals
    --
 
    vertex_Shader   : aliased Shader.item;
@@ -37,12 +41,13 @@ is
 
 
    ---------
-   --  Forge
+   --- Forge
    --
 
    function new_Geometry return Geometry.colored.view
    is
-      use      System.storage_Elements;
+      use System.storage_Elements;
+
       use type openGL.Program.view;
 
       Self : constant Geometry.colored.view := new Geometry.colored.item;
@@ -104,11 +109,12 @@ is
 
 
    ------------
-   --  Vertices
+   --- Vertices
    --
 
    function is_Transparent (Self : in Vertex_array) return Boolean
    is
+
       function get_Color (Index : in Index_t) return rgba_Color
       is (Self (Index).Color);
 
@@ -120,7 +126,7 @@ is
 
 
    --------------
-   --  Attributes
+   --- Attributes
    --
 
    package openGL_Buffer_of_geometry_Vertices is new Buffer.general (base_Object   => Buffer.array_Object,
@@ -130,8 +136,9 @@ is
 
    procedure Vertices_are (Self : in out Item;   Now : in Vertex_array)
    is
-      use openGL.Buffer,
-          openGL_Buffer_of_geometry_Vertices.Forge;
+      use
+           openGL.Buffer,
+           openGL_Buffer_of_geometry_Vertices.Forge;
    begin
       free (Self.Vertices);
       Self.Vertices := new openGL_Buffer_of_geometry_Vertices.Object' (to_Buffer (Now,

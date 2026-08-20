@@ -45,8 +45,8 @@ is
       pragma unreferenced (Textures, Fonts);
       use Geometry.colored;
 
-      indices_Count : constant long_Index_t := 2;
-      the_Indices   : aliased  Indices      := [1 .. indices_Count => <>];
+      indices_Count : constant long_Index_t          := 2;
+      the_Indices   : aliased  Indices               := [1 .. indices_Count => <>];
       the_Primitive :          Primitive.indexed.view;
 
    begin
@@ -79,6 +79,7 @@ is
    begin
       return Self.Vertices (for_End).Site;
    end Site;
+
 
 
    procedure Site_is (Self : in out Item;   Now     : in Vector_3;

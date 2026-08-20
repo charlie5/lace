@@ -1,6 +1,6 @@
 package openGL.Program.lit.colored_skinned
 --
---  Provides a program for lit, colored, textured and skinned vertices.
+-- Provides a program for lit, colored, textured and skinned vertices.
 --
 is
    type Item is new openGL.Program.lit.item with private;
@@ -18,6 +18,7 @@ is
                                                   Now   : in Matrix_4x4);
 
 
+
 private
 
    type bone_transform_Uniforms is array (1 .. 120) of Variable.uniform.mat4;
@@ -26,5 +27,6 @@ private
       record
          bone_transform_Uniforms : lit.colored_skinned.bone_transform_Uniforms;
       end record;
+
 
 end openGL.Program.lit.colored_skinned;

@@ -2,6 +2,7 @@ with
      glx.Pointers,
      interfaces.C;
 
+
 package glx.Binding
 is
    function  getCurrentContext  return access ContextRec;
@@ -23,12 +24,13 @@ is
 
 private
 
-   pragma Import (C, getCurrentContext,      "glXGetCurrentContext");
-   pragma Import (C, getCurrentDrawable,     "glXGetCurrentDrawable");
-   pragma Import (C, waitGL,                 "glXWaitGL");
-   pragma Import (C, waitX,                  "glXWaitX");
-   pragma Import (C, useXFont,               "glXUseXFont");
-   pragma Import (C, getCurrentReadDrawable, "glXGetCurrentReadDrawable");
-   pragma Import (C, get_visualid,           "Ada_get_visualid");
+   pragma import (C, getCurrentContext,      "glXGetCurrentContext");
+   pragma import (C, getCurrentDrawable,     "glXGetCurrentDrawable");
+   pragma import (C, waitGL,                 "glXWaitGL");
+   pragma import (C, waitX,                  "glXWaitX");
+   pragma import (C, useXFont,               "glXUseXFont");
+   pragma import (C, getCurrentReadDrawable, "glXGetCurrentReadDrawable");
+   pragma import (C, get_visualid,           "Ada_get_visualid");
+
 
 end glx.Binding;

@@ -5,7 +5,7 @@ with
 
 package openGL.Model.capsule.textured
 --
---  Models a textured capsule.
+-- Models a textured capsule.
 --
 is
    package textured_Model is new texturing.Mixin (openGL.Model.capsule.item);
@@ -22,6 +22,7 @@ is
                          Height : in Real;
                          texture_Details : in texture_Set.item;
                          Image  : in asset_Name := null_Asset) return View;
+
 
    --------------
    --- Attributes

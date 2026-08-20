@@ -20,6 +20,7 @@ is
    ---------
    --- Forge
    --
+
    package Forge
    is
       function new_Visual (Model      : in openGL.Model.view;
@@ -29,7 +30,7 @@ is
 
 
    --------------
-   --  Attributes
+   --- Attributes
    --
 
    procedure Model_is            (Self : in out Item;   Now : in Model.view);
@@ -50,8 +51,8 @@ is
    procedure mvp_Transform_is    (Self : in out Item;   Now : in Matrix_4x4);
    function  mvp_Transform       (Self : in     Item)     return Matrix_4x4;
 
-   --  procedure model_Transform_is  (Self : in out Item;   Now : in Matrix_4x4);
-   --  function  model_Transform     (Self : in     Item)     return Matrix_4x4;
+   -- procedure model_Transform_is  (Self : in out Item;   Now : in Matrix_4x4);
+   -- function  model_Transform     (Self : in     Item)     return Matrix_4x4;
 
    procedure camera_Transform_is (Self : in out Item;   Now : in Matrix_4x4);
    function  camera_Transform    (Self : in     Item)     return Matrix_4x4;
@@ -75,7 +76,7 @@ private
    type Item is tagged
       record
          Model              : openGL.Model.view;
-         Scale              : Vector_3 := [1.0, 1.0, 1.0];
+         Scale              : Vector_3         := [1.0, 1.0, 1.0];
 
          camera_Transform   : Matrix_4x4;
          Transform          : Matrix_4x4;
@@ -88,5 +89,6 @@ private
 
          apparent_Size      : Real;     -- A measure of how large the visual is in screen size.
       end record;
+
 
 end openGL.Visual;

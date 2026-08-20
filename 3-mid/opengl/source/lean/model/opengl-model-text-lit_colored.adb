@@ -57,6 +57,7 @@ is
    end Text_is;
 
 
+
    overriding
    function Text (Self : in Item) return String
    is
@@ -85,7 +86,7 @@ is
                                          2.0 * 4.0 / 95.0,
                                          1.0 / 1.0];
 
-      --  text_Scale : constant Vector_3 := [1.0 * 1.0 / 78.0,                -- TODO: Fix scaling.
+      -- text_Scale : constant Vector_3 := [1.0 * 1.0 / 78.0,                -- TODO: Fix scaling.
       --                                     1.0 * 1.0 / 95.0,
       --                                     1.0 / 1.0];
 
@@ -96,9 +97,10 @@ is
       end if;
 
       declare
-         use Geometry,
-             Geometry.lit_colored_textured,
-             Texture;
+         use
+              Geometry,
+              Geometry.lit_colored_textured,
+              Texture;
 
          num_Characters : constant Positive     := Self.Text.all'Length;
          num_Indices    : constant long_Index_t := long_Index_t (num_Characters) * 2 * 3;   -- For each character, 2 triangles each with 3 indices.
@@ -106,6 +108,7 @@ is
 
          the_Indices    : aliased Indices (1 .. num_Indices);
          the_Vertices   : aliased Geometry.lit_colored_textured.Vertex_array := [1 .. num_Vertices => <>];
+
 
          --- Procedure to 'add' a character.
          --
@@ -125,7 +128,7 @@ is
             --- Add indices.
             --
 
-            --  Triangle 1.
+            -- Triangle 1.
             indices_Count               := indices_Count + 1;
             the_Indices (indices_Count) := vertex_Count  + 1;
 
@@ -136,7 +139,7 @@ is
             the_Indices (indices_Count) := vertex_Count  + 3;
 
 
-            --  Triangle 2.
+            -- Triangle 2.
             indices_Count               := indices_Count + 1;
             the_Indices (indices_Count) := vertex_Count  + 3;
 
@@ -149,6 +152,7 @@ is
 
             --- Scale the Quad sites and advance to pixel units.
             --
+
             the_Quad.NW.Site (1) := the_Quad.NW.Site (1) * text_Scale (1);     -- TODO: Scaling should be done by the shader.
             the_Quad.NW.Site (2) := the_Quad.NW.Site (2) * text_Scale (2);
 
@@ -168,7 +172,7 @@ is
             --- Add vertices.
             --
 
-            --  top left (NW)
+            -- top left (NW)
             --
             vertex_Count := vertex_Count + 1;
             declare
@@ -183,7 +187,7 @@ is
                Self.Bounds.Box := Self.Bounds.Box or the_Vertex.Site;
             end;
 
-            --  bottom left (SW)
+            -- bottom left (SW)
             --
             vertex_Count := vertex_Count + 1;
             declare
@@ -198,7 +202,7 @@ is
                Self.Bounds.Box := Self.Bounds.Box or the_Vertex.Site;
             end;
 
-            --  bottom right (SE)
+            -- bottom right (SE)
             --
             vertex_Count := vertex_Count + 1;
             declare
@@ -213,7 +217,7 @@ is
                Self.Bounds.Box := Self.Bounds.Box or the_Vertex.Site;
             end;
 
-            --  top right (NE)
+            -- top right (NE)
             --
             vertex_Count := vertex_Count + 1;
             declare
@@ -233,7 +237,8 @@ is
          end add;
 
 
-         use      Primitive;
+         use Primitive;
+
          use type openGL.Font.texture.view;
 
          the_Geometry   : Geometry.lit_colored_textured.view;

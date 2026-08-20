@@ -4,6 +4,7 @@ with
 
      ada.unchecked_Deallocation;
 
+
 package body openGL.Impostor.terrain
 is
 
@@ -21,6 +22,7 @@ is
 
    procedure free (Self : in out View)
    is
+
       procedure deallocate is new ada.unchecked_Deallocation (Item'Class, View);
    begin
       destroy    (Self.all);
@@ -47,7 +49,8 @@ is
                                                           camera_projection_Transform => the_Camera.projection_Transform,
                                                           camera_Viewport             => the_Camera.Viewport);
       declare
-         use      GL;
+         use GL;
+
          use type GL.glInt;
 
          update_Required : Boolean    := Self.general_Update_required (the_Camera.Site, Self.current_pixel_Region);
@@ -71,9 +74,9 @@ is
       begin
          if copy_X < 0
          then
-            copy_x_Offset  := -copy_X;
-            copy_X         := 0;
-            copy_Width     := copy_Width - glSizeI (copy_x_Offset);
+            copy_x_Offset := -copy_X;
+            copy_X        := 0;
+            copy_Width    := copy_Width - glSizeI (copy_x_Offset);
 
             Complete_left  := False;
             Complete_right := True;
@@ -105,9 +108,9 @@ is
 
          if copy_Y < 0
          then
-            copy_y_Offset   := -copy_Y;
-            copy_Y          := 0;
-            copy_Height     := copy_Height - glSizeI (copy_y_Offset);
+            copy_y_Offset := -copy_Y;
+            copy_Y        := 0;
+            copy_Height   := copy_Height - glSizeI (copy_y_Offset);
 
             Complete_top    := True;
             Complete_bottom := False;
@@ -173,17 +176,17 @@ is
             Self.current_copy_X_Offset := copy_X_Offset;
             Self.current_copy_Y_Offset := copy_Y_Offset;
 
-            Self.current_copy_X        := copy_X;
-            Self.current_copy_Y        := copy_Y;
+            Self.current_copy_X := copy_X;
+            Self.current_copy_Y := copy_Y;
 
-            Self.current_copy_Width    := copy_Width;
-            Self.current_copy_Height   := copy_Height;
+            Self.current_copy_Width  := copy_Width;
+            Self.current_copy_Height := copy_Height;
 
             Self.current_Complete      := now_Complete;
 
-            Self.prior_copy_Width      := Self.current_copy_Width;               -- Set prior state.
-            Self.prior_copy_Height     := Self.current_copy_Height;
-            Self.prior_Complete        := Self.current_Complete;
+            Self.prior_copy_Width  := Self.current_copy_Width;               -- Set prior state.
+            Self.prior_copy_Height := Self.current_copy_Height;
+            Self.prior_Complete    := Self.current_Complete;
          end if;
 
          Self.is_Valid                        := True;

@@ -6,28 +6,29 @@ with
 
 procedure launch_Model_scaling
 --
---  Exercise the scaling of models.
+-- Exercise the scaling of models.
 --
 is
-   use openGL,
-       openGL.Math,
-       openGL.linear_Algebra_3d;
+   use
+        openGL,
+        openGL.Math,
+        openGL.linear_Algebra_3d;
 begin
    Demo.print_Usage;
    Demo.define ("openGL 'Model Scaling' Demo");
    Demo.Camera.Position_is ([0.0, 0.0, 20.0],
                             y_Rotation_from (to_Radians (0.0)));
    declare
-      --  The models.
+      -- The models.
       --
       the_Models : constant openGL.Model.views := openGL.Demo.Models;
 
-      --  The visuals.
+      -- The visuals.
       --
       the_Visuals : openGL.Visual.views (the_Models'Range);
       ground_Id   : Positive;
 
-      --  Scaling
+      -- Scaling
       --
       scaling_Up  : Boolean       := True;
       Scale       : math.Vector_3 := [1.0, 1.0, 1.0];
@@ -47,7 +48,7 @@ begin
       the_Visuals (ground_Id).Site_is (the_Visuals (ground_Id).Site_of + [0.0, -15.0, 0.0]);
 
 
-      --  Main loop.
+      -- Main loop.
       --
       while not Demo.Done
       loop
@@ -69,7 +70,7 @@ begin
          Demo.Dolly.evolve;
          Demo.Done := Demo.Dolly.quit_Requested;
 
-         --  Render the sprites.
+         -- Render the sprites.
          --
          Demo.Camera.render (the_Visuals);
 

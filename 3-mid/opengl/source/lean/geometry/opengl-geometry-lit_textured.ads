@@ -5,7 +5,7 @@ with
 
 package openGL.Geometry.lit_textured
 --
---  Supports 'per-vertex' site, texture and lighting.
+-- Supports 'per-vertex' site, texture and lighting.
 --
 is
    type Item is new openGL.Geometry.item with private;
@@ -16,7 +16,7 @@ is
 
 
    ----------
-   --  Vertex
+   --- Vertex
    --
 
    type Vertex is
@@ -32,7 +32,7 @@ is
 
 
    --------------
-   --  Attributes
+   --- Attributes
    --
 
    procedure Vertices_are (Self : in out Item;   Now       : in Vertex_array);
@@ -41,6 +41,7 @@ is
    overriding
    procedure Indices_are  (Self : in out Item;   Now       : in Indices;
                                                  for_Facia : in Positive);
+
 
 
 private

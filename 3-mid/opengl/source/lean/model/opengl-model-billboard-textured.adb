@@ -43,9 +43,10 @@ is
    is
       pragma unreferenced (Textures, Fonts);
 
-      use Geometry,
-          Geometry.textured,
-          openGL.Texture;
+      use
+           Geometry,
+           Geometry.textured,
+           openGL.Texture;
 
       the_Indices  : aliased constant Indices         := [1, 2, 3, 4];
       the_Sites    :         constant billboard.Sites := vertex_Sites (Self.Plane,
@@ -96,6 +97,7 @@ is
                   Self.Texture := openGL.Texture.Forge.to_Texture (Self.lucid_Image.all);
                end if;
             end if;
+
          else
             if Self.Image /= null
             then
@@ -126,6 +128,7 @@ is
    end Texture_is;
 
 
+
    function Texture (Self : in Item) return openGL.Texture.Object
    is
    begin
@@ -154,6 +157,7 @@ is
 
    procedure Image_is (Self : in out Item;   Now : in Image)
    is
+
       procedure deallocate is new ada.unchecked_Deallocation (Image,
                                                               Image_view);
    begin
@@ -161,8 +165,8 @@ is
       then
          Self.Image := new Image' (Now);
 
-      elsif Self.Image'Length (1) = Now'Length (1)
-        and Self.Image'Length (2) = Now'Length (2)
+      elsif      Self.Image'Length (1) = Now'Length (1)
+        and then Self.Image'Length (2) = Now'Length (2)
       then
          Self.Image.all := Now;
 
@@ -178,6 +182,7 @@ is
 
    procedure Image_is (Self : in out Item;   Now : in lucid_Image)
    is
+
       procedure deallocate is new ada.unchecked_Deallocation (lucid_Image,
                                                               lucid_Image_view);
    begin
@@ -185,8 +190,8 @@ is
       then
          Self.lucid_Image := new lucid_Image' (Now);
 
-      elsif Self.lucid_Image'Length (1) = Now'Length (1)
-        and Self.lucid_Image'Length (2) = Now'Length (2)
+      elsif      Self.lucid_Image'Length (1) = Now'Length (1)
+        and then Self.lucid_Image'Length (2) = Now'Length (2)
       then
          Self.lucid_Image.all := Now;
 

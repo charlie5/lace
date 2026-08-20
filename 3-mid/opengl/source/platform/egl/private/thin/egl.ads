@@ -1,5 +1,5 @@
 with
-     Interfaces.C,
+     interfaces.C,
      System;
 
 
@@ -7,16 +7,18 @@ package eGL
 is
    use Interfaces;
 
+
    ---------
-   --  Types
+   --- Types
    --
+
    subtype void_Ptr         is System.Address;
    subtype Display          is System.Address;
-   subtype NativeWindowType is Interfaces.C.unsigned_long;
-   subtype NativePixmapType is Interfaces.C.unsigned_long;
-   subtype EGLint           is Interfaces.Integer_32;
-   subtype EGLBoolean       is Interfaces.C.unsigned;
-   subtype EGLenum          is Interfaces.C.unsigned;
+   subtype NativeWindowType is interfaces.C.unsigned_long;
+   subtype NativePixmapType is interfaces.C.unsigned_long;
+   subtype EGLint           is interfaces.Integer_32;
+   subtype EGLBoolean       is interfaces.C.unsigned;
+   subtype EGLenum          is interfaces.C.unsigned;
    subtype EGLConfig        is void_ptr;
    subtype EGLContext       is void_ptr;
    subtype EGLDisplay       is void_ptr;
@@ -38,8 +40,9 @@ is
 
 
    -------------
-   --  Constants
+   --- Constants
    --
+
    EGL_VERSION_1_0                 : constant := 1;
    EGL_VERSION_1_1                 : constant := 1;
    EGL_VERSION_1_2                 : constant := 1;
@@ -206,5 +209,6 @@ is
    EGL_COLORSPACE_LINEAR           : constant := 16#308a#;
    EGL_ALPHA_FORMAT_NONPRE         : constant := 16#308b#;
    EGL_ALPHA_FORMAT_PRE            : constant := 16#308c#;
+
 
 end eGL;

@@ -2,29 +2,31 @@ with
      freeType_c.FT_GlyphSlot,
      openGL.GlyphImpl;
 
+
 package openGL.Glyph
 --
---  Glyph is the base class for openGL glyphs.
+-- Glyph is the base class for openGL glyphs.
 --
---  It provides the interface between Freetype glyphs and their openGL
---  renderable counterparts.
+-- It provides the interface between Freetype glyphs and their openGL
+-- renderable counterparts.
 --
---  This is an abstract class and derived classes must implement the 'Render' function.
+-- This is an abstract class and derived classes must implement the 'Render' function.
 --
 is
    type Item is abstract tagged private;
 
 
    ---------
-   --  Forge
+   --- Forge
    --
 
    procedure destruct (Self : in out Item);
 
 
    --------------
-   --  Attributes
+   --- Attributes
    --
+
    function Advance (Self : in Item) return Real;                   -- Return the advance width for this glyph.
    function BBox    (Self : in Item) return Bounds;                 -- Return the bounding box for this glyph.
    function Error   (Self : in Item) return GlyphImpl.Error_Kind;   -- Return the current error code.
@@ -33,16 +35,17 @@ is
    --------------
    --- Operations
    --
+
    function render (Self : in Item;   Pen        : in Vector_3;
                                       renderMode : in Integer) return Vector_3
                     is abstract;
    --
-   --  Renders this glyph at the current pen position.
+   -- Renders this glyph at the current pen position.
    --
-   --  Pen:        The current pen position.
-   --  renderMode: Render mode to display.
+   -- Pen:        The current pen position.
+   -- renderMode: Render mode to display.
    ---
-   --  Returns the advance distance for this glyph.
+   -- Returns the advance distance for this glyph.
 
 
 
@@ -56,13 +59,14 @@ private
 
    procedure define (Self : in out Item;   glyth_Slot : in freetype_c.FT_GlyphSlot.item);
    --
-   --  glyth_Slot: The Freetype glyph to be processed.
+   -- glyth_Slot: The Freetype glyph to be processed.
 
 
    procedure define (Self : in out Item;   pImpl : in GlyphImpl.view);
    --
-   --  Internal FTGL FTGlyph constructor. For private use only.
+   -- Internal FTGL FTGlyph constructor. For private use only.
    --
-   --  pImpl: An internal implementation object. Will be destroyed upon FTGlyph deletion.
+   -- pImpl: An internal implementation object. Will be destroyed upon FTGlyph deletion.
+
 
 end openGL.Glyph;

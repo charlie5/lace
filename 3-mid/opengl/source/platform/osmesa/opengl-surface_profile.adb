@@ -5,8 +5,9 @@ with
 
 package body openGL.surface_Profile
 is
-   use Interfaces,
-       OSMesa_c;
+   use
+        Interfaces,
+        OSMesa_c;
 
 
 --     visual_attribs : array (Positive range <>) of aliased C.int := (GLX_X_RENDERABLE,    1,
@@ -76,7 +77,8 @@ is
    function value_Image (Value : in Natural) return String
    is
    begin
-      if Value = Irrelevant then
+      if Value = Irrelevant
+      then
          return "Irrelevant";
       else
          return Natural'Image (Value);
@@ -88,13 +90,12 @@ is
    function Image (Self : in color_Buffer) return String
    is
    begin
-      return
-            "Bits_red =>"        & value_Image (Self.Bits_red)
-        & "  Bits_green =>"      & value_Image (Self.Bits_green)
-        & "  Bits_blue =>"       & value_Image (Self.Bits_blue)
-        & "  Bits_luminence =>"  & value_Image (Self.Bits_luminence)
-        & "  Bits_alpha =>"      & value_Image (Self.Bits_alpha)
-        & "  Bits_alpha_mask =>" & value_Image (Self.Bits_alpha_mask);
+      return   "Bits_red =>"          & value_Image (Self.Bits_red)
+             & "  Bits_green =>"      & value_Image (Self.Bits_green)
+             & "  Bits_blue =>"       & value_Image (Self.Bits_blue)
+             & "  Bits_luminence =>"  & value_Image (Self.Bits_luminence)
+             & "  Bits_alpha =>"      & value_Image (Self.Bits_alpha)
+             & "  Bits_alpha_mask =>" & value_Image (Self.Bits_alpha_mask);
    end Image;
 
 
@@ -102,10 +103,9 @@ is
    function Image (Self : in Qualities) return String
    is
    begin
-      return
-          Image (Self.color_Buffer)
-        & "  depth_buffer_Bits =>"    & value_Image (Self.depth_buffer_Bits)
-        & "  stencil_buffer_Bits => " & value_Image (Self.stencil_buffer_Bits);
+      return   Image (Self.color_Buffer)
+             & "  depth_buffer_Bits =>"    & value_Image (Self.depth_buffer_Bits)
+             & "  stencil_buffer_Bits => " & value_Image (Self.stencil_buffer_Bits);
    end Image;
 
 

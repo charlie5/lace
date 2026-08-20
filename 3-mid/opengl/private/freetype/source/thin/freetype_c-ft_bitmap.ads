@@ -21,4 +21,5 @@ is
 
    type pointer_Pointer is access all freetype_c.FT_Bitmap.Pointer;
 
+
 end freetype_c.FT_Bitmap;

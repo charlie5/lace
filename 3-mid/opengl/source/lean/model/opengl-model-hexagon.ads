@@ -1,6 +1,6 @@
 package openGL.Model.hexagon
 --
---  Provides an abstract model of a hexagon.
+-- Provides an abstract model of a hexagon.
 --
 is
    type Item is abstract new Model.item with private;
@@ -23,5 +23,6 @@ private
       end record;
 
    Normal : constant Vector_3 := [0.0, 0.0, 1.0];
+
 
 end openGL.Model.Hexagon;

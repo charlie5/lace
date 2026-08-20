@@ -1,6 +1,7 @@
 with
      openGL.Frustum;
 
+
 package body openGL.Culler.frustum
 is
    ---------
@@ -14,7 +15,6 @@ is
    end define;
 
 
-
    --------------
    --- Attributes
    --
@@ -25,6 +25,7 @@ is
    begin
       null;
    end add;
+
 
 
    overriding
@@ -53,6 +54,7 @@ is
    end vanish_point_size_Min;
 
 
+
    procedure vanish_point_size_Min_is (Self : in out Item'Class;   Now : in Real)
    is
    begin
@@ -67,7 +69,7 @@ is
                                     camera_Site    : in Vector_3) return Visual.views
    is
       visible_Objects : Visual.views (the_Visuals'Range);
-      Last            : Natural := 0;
+      Last            : Natural                         := 0;
 
       the_Object      : Visual.view;
 
@@ -81,8 +83,9 @@ is
          the_Object := the_Visuals (i);
 
          declare
-            use openGL.Frustum,
-                Visual;
+            use
+                 openGL.Frustum,
+                 Visual;
 
             the_Size      : constant Real := the_Object.Model.Bounds.Ball;
             the_Distance  : constant Real := abs (camera_Site - Site_of (the_Object.all));
@@ -98,22 +101,22 @@ is
                                                  + camera_Frustum (Which) (4);
             begin
                return plane_Distance + the_Size > 0.0;
-            end is_visible_for_plane;
+            end is_visible_for_Plane;
 
          begin
-            if    the_Distance /= 0.0        -- The visual is on same site as camera.
-              and the_Size     /= 0.0        -- The visual bounds are known.
+            if         the_Distance /= 0.0        -- The visual is on same site as camera.
+              and then the_Size     /= 0.0        -- The visual bounds are known.
             then
                apparent_Size := the_Size / the_Distance;
             else
                apparent_Size := Real'Last;
             end if;
 
-            if    apparent_Size > the_vanish_point_size_Min
-              and is_visible_for_Plane (Left)
-              and is_visible_for_Plane (Right)
-              and is_visible_for_Plane (High)
-              and is_visible_for_Plane (Low)
+            if         apparent_Size > the_vanish_point_size_Min
+              and then is_visible_for_Plane (Left)
+              and then is_visible_for_Plane (Right)
+              and then is_visible_for_Plane (High)
+              and then is_visible_for_Plane (Low)
             then
                Last                   := Last + 1;
                visible_Objects (Last) := the_Object;

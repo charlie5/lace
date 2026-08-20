@@ -4,7 +4,6 @@ with
      openGL.Texture.Coordinates;
 
 
-
 package body openGL.Model.circle.lit_textured
 is
    ---------
@@ -25,7 +24,6 @@ is
    end new_circle;
 
 
-
    ------------------
    --- Attributes ---
    ------------------
@@ -41,9 +39,10 @@ is
    is
       pragma unreferenced (Fonts);
 
-      use Geometry,
-          Geometry.lit_textured,
-          Texture;
+      use
+           Geometry,
+           Geometry.lit_textured,
+           Texture;
 
 
       function to_Indices return Indices
@@ -68,8 +67,9 @@ is
 
       function new_Geometry (Vertices : in geometry.lit_textured.Vertex_array) return Geometry.lit_textured.view
       is
-         use Primitive,
-             texture_Set;
+         use
+              Primitive,
+              texture_Set;
 
          the_Geometry  : constant Geometry.lit_textured.view
            := Geometry.lit_textured.new_Geometry;
@@ -87,7 +87,7 @@ is
          loop
             Id := texture_Id (i);
 
-            --  the_Geometry.Fade_is (which => Id,
+            -- the_Geometry.Fade_is (which => Id,
             --                        now   => Self.texture_Details.Fades (Id));
 
             the_Geometry.Texture_is     (Which => Id,
@@ -109,7 +109,7 @@ is
       declare
          use Texture.Coordinates;
 
-         the_Coords   : constant Texture.Coordinates.Coords_2D_and_Centroid := to_Coordinates (the_Sites);
+         the_Coords   : constant Texture.Coordinates.Coords_2D_and_Centroid                        := to_Coordinates (the_Sites);
          the_Vertices :          Geometry.lit_textured.Vertex_array (1 .. Index_t (Self.Sides + 1));
       begin
          -- Center.

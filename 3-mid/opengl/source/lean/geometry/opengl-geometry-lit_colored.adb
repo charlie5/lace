@@ -9,19 +9,21 @@ with
      GL.lean,
      GL.Pointers,
 
-     Interfaces.C.Strings,
+     interfaces.C.Strings,
      System.storage_Elements;
 
 
 package body openGL.Geometry.lit_colored
 is
-   use GL.lean,
-       GL.Pointers,
-       Interfaces,
-       System;
+   use
+        GL.lean,
+        GL.Pointers,
+        Interfaces,
+        System;
+
 
    ------------------
-   --  Shader Program
+   --- Shader Program
    --
 
    type Program is
@@ -56,12 +58,13 @@ is
 
 
    ---------
-   --  Forge
+   --- Forge
    --
 
    function new_Geometry return View
    is
-      use      System.storage_Elements;
+      use System.storage_Elements;
+
       use type openGL.Program.lit.view;
 
       procedure define (the_Program : access Program)
@@ -151,7 +154,7 @@ is
    begin
       Tasks.check;
 
-      if the_Program.Program = null     --  Define the shaders and program, if required.
+      if the_Program.Program = null     -- Define the shaders and program, if required.
       then
          define (the_Program'Access);
       end if;
@@ -162,11 +165,12 @@ is
 
 
    ----------
-   --  Vertex
+   --- Vertex
    --
 
    function is_Transparent (Self : in Vertex_array) return Boolean
    is
+
       function get_Color (Index : in Index_t) return rgba_Color
       is (Self (Index).Color);
 
@@ -178,7 +182,7 @@ is
 
 
    --------------
-   --  Attributes
+   --- Attributes
    --
 
    package openGL_Buffer_of_geometry_Vertices is new Buffer.general (base_Object   => Buffer.array_Object,
@@ -193,7 +197,7 @@ is
       Buffer.free (Self.Vertices);
 
       Self.is_Transparent := False;
-      self.Vertices       := new openGL_Buffer_of_geometry_Vertices.Object' (to_Buffer (Now,
+      Self.Vertices       := new openGL_Buffer_of_geometry_Vertices.Object' (to_Buffer (Now,
                                                                                         usage => Buffer.static_Draw));
       Self.is_Transparent := is_Transparent (Now);
 

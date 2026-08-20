@@ -5,7 +5,7 @@ with
 
 package openGL.Model.line.colored
 --
---  Models a colored line.
+-- Models a colored line.
 --
 is
    type Item is new Model.line.item with private;
@@ -45,5 +45,6 @@ private
          Vertices :        Geometry.colored.Vertex_array (end_Id);
          Geometry : access Geometry.colored.item'Class;
       end record;
+
 
 end openGL.Model.line.colored;

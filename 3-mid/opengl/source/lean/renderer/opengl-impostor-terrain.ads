@@ -11,8 +11,7 @@ is
    procedure set_Target      (Self : in out Item;   Target       : in     openGL.Visual.view);
 
    overriding
-   function current_Camera_look_at_Rotation
-                             (Self : in Item) return Matrix_3x3;
+   function current_Camera_look_at_Rotation (Self : in Item) return Matrix_3x3;
 
    overriding
    function  update_Required (Self : access Item;   the_Camera   : access Camera.item'Class) return Boolean;
@@ -42,5 +41,6 @@ private
 
          current_Camera_look_at_Rotation : Matrix_3x3 := Identity_3x3;
       end record;
+
 
 end openGL.Impostor.terrain;

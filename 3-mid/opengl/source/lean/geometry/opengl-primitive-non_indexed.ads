@@ -1,6 +1,6 @@
 package openGL.Primitive.non_indexed
 --
---  Provides a class for non-indexed openGL primitives.
+-- Provides a class for non-indexed openGL primitives.
 --
 is
    type    Item  is limited new Primitive.item with private;
@@ -10,9 +10,8 @@ is
    type    Views is array (Index_t range <>) of View;
 
 
-
    ---------
-   --  Forge
+   --- Forge
    --
 
    overriding
@@ -26,7 +25,7 @@ is
 
 
    --------------
-   --  Operations
+   --- Operations
    --
 
    overriding

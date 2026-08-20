@@ -8,10 +8,12 @@ is
    end Viewer_is;
 
 
+
    function Viewer (Self : in Item'Class) return Renderer.lean.view
    is
    begin
       return Self.Viewer;
    end Viewer;
+
 
 end openGL.Culler;

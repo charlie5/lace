@@ -1,10 +1,10 @@
 with
-     Interfaces.C;
+     interfaces.C;
 
 
 package openGL.Display
 --
---  Models an openGL display.
+-- Models an openGL display.
 --
 is
 
@@ -25,6 +25,5 @@ private
          screen_Id  : aliased interfaces.C.int;
       end record;
 
+
 end openGL.Display;
-
-

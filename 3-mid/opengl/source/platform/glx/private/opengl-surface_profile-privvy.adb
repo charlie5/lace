@@ -7,4 +7,5 @@ is
       return Self.glx_Config;
    end to_GLX;
 
+
 end openGL.surface_Profile.privvy;

@@ -37,8 +37,9 @@ is
    overriding
    procedure set_Uniforms (Self : in Item)
    is
-      use openGL.Conversions,
-          linear_Algebra_3d;
+      use
+           openGL.Conversions,
+           linear_Algebra_3d;
 
       the_model_transform_Uniform        : constant Variable.uniform.mat4 := Self.uniform_Variable ("model_Transform");
       the_inverse_model_rotation_Uniform : constant Variable.uniform.mat3 := Self.uniform_Variable ("inverse_model_Rotation");
@@ -67,8 +68,9 @@ is
 
             function light_Name return String
             is
-               use ada.Strings,
-                   ada.Strings.fixed;
+               use
+                    ada.Strings,
+                    ada.Strings.fixed;
             begin
                return "Lights[" & Trim (Integer'Image (i - 1), Left) & "]";
             end light_Name;
@@ -104,7 +106,6 @@ is
    begin
       Self.specular_Color := Now;
    end specular_Color_is;
-
 
 
 end openGL.Program.lit;

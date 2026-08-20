@@ -1,6 +1,6 @@
 package openGL.Screen
 --
---  Models an openGL screen.
+-- Models an openGL screen.
 --
 is
 
@@ -20,5 +20,6 @@ private
       end record;
 
    procedure dummy;
+
 
 end openGL.Screen;

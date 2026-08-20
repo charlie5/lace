@@ -6,20 +6,21 @@ with
 
 procedure launch_render_Arrows
 --
---  Exercise the render of arrow models.
+-- Exercise the render of arrow models.
 --
 is
-   use openGL,
-       openGL.Model,
-       openGL.Math,
-       openGL.linear_Algebra_3d;
+   use
+        openGL,
+        openGL.Model,
+        openGL.Math,
+        openGL.linear_Algebra_3d;
 begin
    Demo.print_Usage;
    Demo.define ("openGL 'Render Arrows' Demo");
    Demo.Camera.Position_is ([0.0, 0.0, 10.0],
                             y_Rotation_from (to_Radians (0.0)));
    declare
-      --  The Models.
+      -- The Models.
       --
       the_Arrow_Model         : constant Model.Arrow.colored.view
         := Model.Arrow.colored.new_Arrow (End_2 => [0.0, 5.0, 0.0]);
@@ -27,18 +28,18 @@ begin
       the_spinner_Arrow_Model : constant Model.Arrow.colored.view
         := Model.Arrow.colored.new_Arrow (End_1 => [0.0, -2.5, 0.0],
                                           End_2 => [0.0,  2.5, 0.0]);
-      --  The Sprites.
+      -- The Sprites.
       --
       use openGL.Visual.Forge;
 
       the_Sprites : constant openGL.Visual.views := [new_Visual (        the_Arrow_Model.all'Access),
                                                      new_Visual (the_spinner_Arrow_Model.all'Access)];
-      Angle : Radians := 0.0;
+      Angle : Radians        := 0.0;
       Site  : openGL.Vector_2;
 
       use openGL.Geometry_2d;
    begin
-      --  Main loop.
+      -- Main loop.
       --
       while not Demo.Done
       loop
@@ -55,7 +56,7 @@ begin
          Demo.Dolly.evolve;
          Demo.Done := Demo.Dolly.quit_Requested;
 
-         --  Render the sprites.
+         -- Render the sprites.
          --
          Demo.Camera.render (the_Sprites);
 

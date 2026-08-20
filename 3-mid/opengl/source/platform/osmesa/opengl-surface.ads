@@ -2,8 +2,8 @@ with
      openGL.surface_Profile,
      openGL.Display;
 
---  private
---  with
+-- private
+-- with
 --       Glx;
 
 limited
@@ -13,7 +13,7 @@ with
 
 package openGL.Surface
 --
---  Models an openGL surface.
+-- Models an openGL surface.
 --
 is
 
@@ -29,7 +29,7 @@ is
                                            Window_Id       : in Natural);
 
 
-   --  Operations
+   -- Operations
    --
    procedure swap_Buffers (Self : in Item);
 
@@ -43,5 +43,6 @@ private
          Context     : access openGL.Context.item'Class;
          Display     :        openGL.Display.item;
       end record;
+
 
 end openGL.Surface;

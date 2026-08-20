@@ -2,6 +2,7 @@ with
      freeType_C.Binding,
      freeType_C.Pointers;
 
+
 package body freetype.face_Size
 is
    use freeType_C;
@@ -16,7 +17,8 @@ is
                                             x_Resolution,
                                             y_Resolution : in Natural) return Boolean
    is
-      use      freeType_C.Binding;
+      use freeType_C.Binding;
+
       use type FT_Error,
                FT_F26Dot6;
    begin
@@ -26,7 +28,7 @@ is
       then
          Self.Err := FT_Set_Char_Size (Face,
                                        0,
-                                       FT_F26Dot6 (point_size) * 64,
+                                       FT_F26Dot6 (point_Size) * 64,
                                        FT_UInt (Self.xResolution),
                                        FT_UInt (Self.yResolution));
          if Self.Err = 0
@@ -54,8 +56,9 @@ is
 
    function Ascender (Self : in Item) return Float
    is
-      use freeType_C.Binding,
-          freeType_C.Pointers;
+      use
+           freeType_C.Binding,
+           freeType_C.Pointers;
    begin
       if Self.ftSize = null
       then   return 0.0;
@@ -67,8 +70,9 @@ is
 
    function Descender (Self : in Item) return Float
    is
-      use freeType_C.Binding,
-          freeType_C.Pointers;
+      use
+           freeType_C.Binding,
+           freeType_C.Pointers;
    begin
       if Self.ftSize = null
       then   return 0.0;
@@ -80,8 +84,10 @@ is
 
    function Height (Self : in Item) return Float
    is
-      use      freeType_C.Binding,
-               freeType_C.Pointers;
+      use
+           freeType_C.Binding,
+           freeType_C.Pointers;
+
       use type FT_Long;
 
    begin
@@ -103,8 +109,10 @@ is
 
    function Width (Self : in Item) return Float
    is
-      use      freeType_C.Binding,
-               freeType_C.Pointers;
+      use
+           freeType_C.Binding,
+           freeType_C.Pointers;
+
       use type FT_Long;
    begin
       if Self.ftSize = null

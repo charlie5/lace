@@ -13,9 +13,10 @@ is
 
    function to_Model (model_Path : in String) return IO.Model
    is
-      use std_Collada.Library,
-          std_Collada.Library.geometries,
-          ada.Text_IO;
+      use
+           std_Collada.Library,
+           std_Collada.Library.geometries,
+           ada.Text_IO;
 
       use type std_Collada.Library.controllers.Controller_array_view;
 
@@ -48,8 +49,8 @@ is
       normal_Count : constant long_Index_t  := collada_Normals  'Length / 3;
       coord_Count  : constant long_Index_t  := get_coord_Count;
 
-      the_Sites    : constant many_Sites_view    := new many_Sites   (1 ..  site_Count);
-      the_Normals  : constant many_Normals_view  := new many_Normals (1 .. normal_Count);
+      the_Sites    : constant many_Sites_view        := new many_Sites   (1 ..  site_Count);
+      the_Normals  : constant many_Normals_view      := new many_Normals (1 .. normal_Count);
       the_Coords   :          many_Coords_view;
       the_Weights  :          bone_Weights_array_view;
 
@@ -85,7 +86,7 @@ is
          end loop;
       end if;
 
-      --  Skinning
+      -- Skinning
       --
       if         the_Document.Libraries.Controllers.Contents       /= null
         and then the_Document.Libraries.Controllers.Contents'Length > 0
@@ -132,7 +133,7 @@ is
       end if;
 
 
-      --  Primitives
+      -- Primitives
       --
       case the_Primitive.Kind
       is
@@ -176,8 +177,9 @@ is
                         if collada_Coords /= null
                         then
                            the_Vertices (vertex_Id).coord_Id :=   1
-                                                                + long_Index_t (  P_Indices (Base
-                                                                                + coord_Offset_of (the_Primitive)));
+                                                                + long_Index_t (P_Indices (  Base
+                                                                                           + coord_Offset_of (the_Primitive)));
+
                         else
                            the_Vertices (vertex_Id).coord_Id := null_Id;
                         end if;
@@ -211,7 +213,7 @@ is
                   declare
                      P_Indices    : std_Collada.Int_array renames the_Primitive.P_List (Each).all;
 
-                     vertex_Count : constant Natural := P_Indices'Length / inputs_Count;
+                     vertex_Count : constant Natural                           := P_Indices'Length / inputs_Count;
                      the_Vertices : Vertices (1 .. long_Index_t (vertex_Count));
 
                      the_Face     : IO.Face;
@@ -234,6 +236,7 @@ is
                            the_Vertices (vertex_Id).coord_Id :=   1
                                                                 + long_Index_t (P_Indices (  Base
                                                                                            + coord_Offset_of (the_Primitive)));
+
                         else
                            the_Vertices (vertex_Id).coord_Id := null_Id;
                         end if;
@@ -267,7 +270,7 @@ is
                for each_Tri in 1 .. the_Primitive.Count
                loop
                   declare
-                     vertex_Count : constant := 3;
+                     vertex_Count : constant                    := 3;
                      the_Vertices : Vertices (1 .. vertex_Count);
 
                      the_Face     : IO.Face;
@@ -285,6 +288,7 @@ is
                            the_Vertices (vertex_Id).coord_Id :=   1
                                                                 + long_Index_t (P_Indices (  Base
                                                                                            + coord_Offset_of (the_Primitive)));
+
                         else
                            the_Vertices (vertex_Id).coord_Id := null_Id;
                         end if;

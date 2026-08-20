@@ -1,4 +1,4 @@
---  with
+-- with
 --       Glx;
 
 
@@ -8,4 +8,6 @@ is
 --     function to_glx (Self : in Surface.item'Class) return glx.GLXDrawable;
 
    procedure dummy;
+
+
 end openGL.Surface.privvy;

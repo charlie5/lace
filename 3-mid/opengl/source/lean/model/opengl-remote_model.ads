@@ -1,6 +1,6 @@
 package openGL.remote_Model with remote_Types
 --
---  Provides a DSA friendly base class for 3D models.
+-- Provides a DSA friendly base class for 3D models.
 --
 is
 
@@ -10,6 +10,5 @@ is
          Shine : openGL.Shine := 1.0;
       end record;
 
+
 end openGL.remote_Model;
-
-

@@ -22,9 +22,9 @@ is
    --- Forge
    --
 
-   function to_grid_Model (Color  : openGL.Color;
-                           Width  : Integer;
-                           Height : Integer) return Item
+   function to_grid_Model (Color  : in openGL.Color;
+                           Width  : in Integer;
+                           Height : in Integer) return Item
    is
       Self : Item;
 
@@ -48,14 +48,14 @@ is
    end to_grid_Model;
 
 
-   function new_grid_Model (Color  : openGL.Color;
-                            Width  : Integer;
-                            Height : Integer) return View
+
+   function new_grid_Model (Color  : in openGL.Color;
+                            Width  : in Integer;
+                            Height : in Integer) return View
    is
    begin
       return new Item' (to_grid_Model (Color, Width, Height));
    end new_grid_Model;
-
 
 
    --------------
@@ -68,8 +68,9 @@ is
    is
       pragma unreferenced (Textures, Fonts);
 
-      use Palette,
-          Geometry.colored;
+      use
+           Palette,
+           Geometry.colored;
 
       the_Primitive : Primitive.non_indexed.view;
 
@@ -111,15 +112,15 @@ is
                Color := +White;
             end if;
 
-            vertex_Count                       := vertex_Count + 1;
-            Self.Vertices (vertex_Count).Site  := [-half_Width,
+            vertex_Count                      := vertex_Count + 1;
+            Self.Vertices (vertex_Count).Site := [-half_Width,
                                                    Real (Row - 1) - half_Height + y_Adjust,
                                                    0.16];
             Self.Vertices (vertex_Count).Color := (primary => Color,
                                                    Alpha => opaque_Value);
 
-            vertex_Count                       := vertex_Count + 1;
-            Self.Vertices (vertex_Count).Site  := [half_Width,
+            vertex_Count                      := vertex_Count + 1;
+            Self.Vertices (vertex_Count).Site := [half_Width,
                                                    Real (Row - 1) - half_Height + y_Adjust,
                                                    0.16];
             Self.Vertices (vertex_Count).Color := (primary => Color,
@@ -137,15 +138,15 @@ is
                Color := +White;
             end if;
 
-            vertex_Count                       := vertex_Count + 1;
-            Self.Vertices (vertex_Count).Site  := [Real (Col - 1) - half_Width + x_Adjust,
+            vertex_Count                      := vertex_Count + 1;
+            Self.Vertices (vertex_Count).Site := [Real (Col - 1) - half_Width + x_Adjust,
                                                    -half_Height,
                                                    0.16];
             Self.Vertices (vertex_Count).Color := (primary => Color,
                                                    Alpha   => opaque_Value);
 
-            vertex_Count                       := vertex_Count + 1;
-            Self.Vertices (vertex_Count).Site  := [Real (Col - 1) - half_Width + x_Adjust,
+            vertex_Count                      := vertex_Count + 1;
+            Self.Vertices (vertex_Count).Site := [Real (Col - 1) - half_Width + x_Adjust,
                                                    half_Height,
                                                    0.16];
             Self.Vertices (vertex_Count).Color := (primary => Color,

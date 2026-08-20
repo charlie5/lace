@@ -41,9 +41,10 @@ is
    is
       pragma unreferenced (Textures, Fonts);
 
-      use Geometry,
-          Geometry.lit_colored_textured,
-          real_Functions;
+      use
+           Geometry,
+           Geometry.lit_colored_textured,
+           real_Functions;
 
       Length        : constant Real    := Self.Height;
       Radius        : constant Real    := Self.Radius;
@@ -78,7 +79,7 @@ is
       cap_2_Geometry : Geometry_view;
 
    begin
-      --  Define capsule shaft,
+      -- Define capsule shaft,
       --
       the_shaft_Geometry.Model_is (Self.all'unchecked_Access);
 
@@ -113,7 +114,7 @@ is
                the_Edges (Each).Aft  (2) :=  nz * Radius;
                the_Edges (Each).Aft  (3) := -L;
 
-               --  Rotate ny, nz.
+               -- Rotate ny, nz.
                --
                tmp := ca * ny  -  sa * nz;
                nz  := sa * ny  +  ca * nz;
@@ -183,6 +184,7 @@ is
             set_Texture:
             declare
                use Texture;
+
                the_Image   : constant Image          := IO.to_Image      (Self.Image);
                the_Texture : constant Texture.object := Forge.to_Texture (the_Image);
             begin
@@ -203,7 +205,7 @@ is
 
 
       declare
-         function new_Cap (is_Fore : Boolean) return Geometry_view
+         function new_Cap (is_Fore : in Boolean) return Geometry_view
          is
             use linear_Algebra;
 
@@ -250,7 +252,7 @@ is
 
             for each_Hoop in 1 .. quality_Level
             loop
-               --  Get n=start_n.
+               -- Get n=start_n.
                --
                nx := start_nx;
                ny := start_ny;
@@ -262,7 +264,7 @@ is
                   the_arch_Edges (each_Hoop) (Each) (2) :=  nz * Radius;
                   the_arch_Edges (each_Hoop) (Each) (3) :=  (if is_Fore then nx * Radius + L
                                                                         else nx * Radius - L);
-                  --  Rotate ny, nz.
+                  -- Rotate ny, nz.
                   --
                   tmp := ca * ny  -  sa * nz;
                   nz  := sa * ny  +  ca * nz;
@@ -337,11 +339,13 @@ is
                               the_Indices (i) := Start;              i := i + 1;
                               the_Indices (i) := next_hoop_Vertex;   i := i + 1;
                               the_Indices (i) := pole_Index;         i := i + 1;
+
                            else
                               the_Indices (i) := Start;              i := i + 1;
                               the_Indices (i) := pole_Index;         i := i + 1;
                               the_Indices (i) := next_hoop_Vertex;   i := i + 1;
                            end if;
+
                         else
                            declare
                               v1 : constant Index_t := Start;
@@ -358,6 +362,7 @@ is
                                  the_Indices (i) := v2;   i := i + 1;
                                  the_Indices (i) := v4;   i := i + 1;
                                  the_Indices (i) := v3;   i := i + 1;
+
                               else
                                  the_Indices (i) := v1;   i := i + 1;
                                  the_Indices (i) := v3;   i := i + 1;
@@ -382,6 +387,7 @@ is
                   set_the_Texture:
                   declare
                      use Texture;
+
                      the_Image   : constant Image          := IO.to_Image      (Self.Image);
                      the_Texture : constant Texture.object := Forge.to_Texture (the_Image);
                   begin

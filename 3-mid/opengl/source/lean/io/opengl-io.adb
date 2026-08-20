@@ -19,14 +19,15 @@ with
 
 package body openGL.IO
 is
-   use ada.Characters.handling,
-       ada.Streams.Stream_IO;
+   use
+        ada.Characters.handling,
+        ada.Streams.Stream_IO;
 
    use type Index_t;
 
 
    --------
-   --  Face
+   --- Face
    --
 
    function Vertices_of (Self : in Face) return Vertices
@@ -58,6 +59,7 @@ is
 
    procedure destroy (Self : in out Face)
    is
+
       procedure free is new ada.unchecked_Deallocation (Vertices, Vertices_view);
    begin
       if Self.Kind = Polygon
@@ -67,16 +69,17 @@ is
    end destroy;
 
 
-   -------------
-   -- Operations
+   --------------
+   --- Operations
    --
 
    function current_Frame return Image
    is
-      use GL,
-          GL.Binding,
-          GL.Pointers,
-          Texture;
+      use
+           GL,
+           GL.Binding,
+           GL.Pointers,
+           Texture;
 
       Extent  : constant Extent_2d := openGL.Viewport.Extent;
       Frame   :          Image (1 .. Index_t (Extent.Width),
@@ -93,15 +96,15 @@ is
 
 
    ---------
-   --  Forge
+   --- Forge
    --
 
    function to_height_Map (image_Filename : in asset_Name;
                            Scale          : in Real  := 1.0) return height_Map_view
    is
-      File    :          Ada.Streams.Stream_IO.File_Type;
+      File    :          ada.Streams.Stream_IO.File_Type;
       Image   :          GID.Image_Descriptor;
-      up_Name : constant String              := To_Upper (to_String (image_Filename));
+      up_Name : constant String                         := To_Upper (to_String (image_Filename));
 
       next_Frame : ada.Calendar.Day_Duration := 0.0;
 
@@ -113,11 +116,10 @@ is
                              try_tga =>          image_Filename'Length >= 4
                                         and then up_Name (up_Name'Last - 3 .. up_Name'Last) = ".TGA");
       declare
-         image_Width  : constant Positive := GID.Pixel_Width  (Image);
-         image_Height : constant Positive := GID.Pixel_Height (Image);
+         image_Width  : constant Positive := GID.Pixel_width  (Image);
+         image_Height : constant Positive := GID.Pixel_height (Image);
 
-         the_Heights  : constant access height_Map := new height_Map' (1 .. Index_t (image_height) =>
-                                                                         (1 .. Index_t (image_width) => <>));
+         the_Heights  : constant access height_Map := new height_Map' (1 .. Index_t (image_Height) => (1 .. Index_t (image_Width) => <>));
          procedure load_raw_Image
          is
             subtype primary_Color_range is GL.GLubyte;
@@ -125,18 +127,19 @@ is
             Row, Col : Index_t;
 
 
-            procedure set_X_Y (x, y : Natural)
+            procedure set_X_Y (x, y : in Natural)
             is
             begin
-               Col := Index_t (X + 1);
-               Row := Index_t (Y + 1);
-            end Set_X_Y;
+               Col := Index_t (x + 1);
+               Row := Index_t (y + 1);
+            end set_X_Y;
 
 
-            procedure put_Pixel (Red, Green, Blue : primary_Color_range;
-                                 Alpha            : primary_Color_range)
+
+            procedure put_Pixel (Red, Green, Blue : in primary_Color_range;
+                                 Alpha            : in primary_Color_range)
             is
-               pragma Warnings (Off, alpha); -- Alpha is just ignored.
+               pragma Warnings (Off, Alpha); -- Alpha is just ignored.
                use type GL.GLubyte, Real;
             begin
                the_Heights (Row, Col) :=   (Real (Red) + Real (Green) + Real (Blue))
@@ -151,11 +154,12 @@ is
                   Col := Col + 1;
                end if;
 
-               --  ^ GID requires us to look to next pixel on the right for next time.
+               -- ^ GID requires us to look to next pixel on the right for next time.
             end put_Pixel;
 
 
-            procedure Feedback (Percents : Natural) is null;
+
+            procedure Feedback (Percents : in Natural) is null;
 
             procedure load_Image is new GID.load_Image_contents (primary_Color_range,
                                                                  set_X_Y,
@@ -164,7 +168,7 @@ is
                                                                  GID.fast);
          begin
             load_Image (Image, next_Frame);
-         end load_Raw_image;
+         end load_raw_Image;
 
       begin
          load_raw_Image;
@@ -188,7 +192,7 @@ is
    function to_Image (image_Filename : in asset_Name)  return Image
    is
       File    :          ada.Streams.Stream_IO.File_type;
-      up_Name : constant String := to_Upper (to_String (image_Filename));
+      up_Name : constant String                         := to_Upper (to_String (image_Filename));
    begin
       open (File, In_File, to_String (image_Filename));
 
@@ -219,7 +223,7 @@ is
    is
       File      :          ada.Streams.Stream_IO.File_type;
       the_Image :          GID.Image_Descriptor;
-      up_Name   : constant String := to_Upper (to_String (image_Filename));
+      up_Name   : constant String                         := to_Upper (to_String (image_Filename));
 
       next_Frame :          ada.Calendar.Day_Duration := 0.0;
 
@@ -231,8 +235,8 @@ is
                              try_TGA =>          image_Filename'Length >= 4
                                         and then up_Name (up_Name'Last - 3 .. up_Name'Last) = ".TGA");
       declare
-         image_Width  : constant Positive := GID.Pixel_Width  (the_Image);
-         image_Height : constant Positive := GID.Pixel_Height (the_Image);
+         image_Width  : constant Positive := GID.Pixel_width  (the_Image);
+         image_Height : constant Positive := GID.Pixel_height (the_Image);
 
          Frame : lucid_Image (1 .. Index_t (image_Height),
                               1 .. Index_t (image_Width));
@@ -244,16 +248,17 @@ is
             Row, Col : Index_t;
 
 
-            procedure set_X_Y (X, Y : Natural)
+            procedure set_X_Y (x, y : in Natural)
             is
             begin
-               Col := Index_t (X + 1);
-               Row := Index_t (Y + 1);
+               Col := Index_t (x + 1);
+               Row := Index_t (y + 1);
             end set_X_Y;
 
 
-            procedure put_Pixel (Red, Green, Blue : primary_Color_range;
-                                 Alpha            : primary_Color_range)
+
+            procedure put_Pixel (Red, Green, Blue : in primary_Color_range;
+                                 Alpha            : in primary_Color_range)
             is
                use type GL.GLubyte, Real;
             begin
@@ -274,7 +279,8 @@ is
             end put_Pixel;
 
 
-            procedure Feedback (Percents : Natural) is null;
+
+            procedure Feedback (Percents : in Natural) is null;
 
             procedure load_Image is new GID.load_Image_contents (primary_Color_range,
                                                                  set_X_Y,
@@ -283,7 +289,7 @@ is
                                                                  GID.fast);
          begin
             load_Image (the_Image, next_Frame);
-         end Load_raw_image;
+         end load_raw_Image;
 
       begin
          is_Lucid.all := False;
@@ -324,7 +330,9 @@ is
 
    procedure destroy (Self : in out Model)
    is
+
       procedure free is new ada.unchecked_Deallocation (bone_Weights,       bone_Weights_view);
+
       procedure free is new ada.unchecked_Deallocation (bone_Weights_array, bone_Weights_array_view);
    begin
       free (Self.Sites);
@@ -350,7 +358,6 @@ is
    end destroy;
 
 
-
    --------------------
    --- Raw Image Frames
    --
@@ -359,9 +366,10 @@ is
                               Width, Height : in Natural;
                               with_Alpha    : in Boolean)
    is
-      use GL,
-          GL.Binding,
-          Texture;
+      use
+           GL,
+           GL.Binding,
+           Texture;
 
       -- 4-byte padding for .bmp/.avi formats is the same as GL's default
       -- padding: see glPixelStore, GL_[UN]PACK_ALIGNMENT = 4 as initial value.
@@ -373,7 +381,7 @@ is
 
       type temp_Bitmap_type is array (Natural range <>) of aliased gl.GLUbyte;
 
-      PicData : temp_Bitmap_type (0 .. (padded_row_size + 4) * (height + 4) - 1);
+      PicData : temp_Bitmap_type (0 .. (padded_row_size + 4) * (Height + 4) - 1);
       --
       -- No dynamic allocation needed!
       -- The "+4" are there to avoid parity address problems when GL writes
@@ -409,8 +417,8 @@ is
       pPicData:= convert (PicData (0)'Address);
 
       GLReadPixels (0, 0,
-                    GLSizei (width),
-                    GLSizei (height),
+                    GLSizei (Width),
+                    GLSizei (Height),
                     (if with_Alpha then to_GL (openGL.Texture.BGRA)
                                    else to_GL (openGL.Texture.BGR)),
                     GL.GL_UNSIGNED_BYTE,
@@ -437,9 +445,8 @@ is
    end write_raw_Frame;
 
 
-
-   --------------
-   -- Bitmap File
+   ---------------
+   --- Bitmap File
    --
 
    type U8  is mod 2 **  8;   for U8 'Size use  8;
@@ -536,9 +543,10 @@ is
                                Width, Height : in GL.GLint;
                                with_Alpha    : in Boolean)
    is
-      use GL,
-          GL.Binding,
-          Texture;
+      use
+           GL,
+           GL.Binding,
+           Texture;
 
       FileHeader : BitMapFileHeader;
       FileInfo   : BitMapV4Header;
@@ -636,17 +644,17 @@ is
    end write_BMP_Header;
 
 
-
-   -------------
-   -- Save Image
+   --------------
+   --- Save Image
    --
 
    procedure save (image_Filename : in String;
                    the_Image      : in Image)
    is
-      use GL,
-          GL.Binding,
-          ada.Streams.Stream_IO;
+      use
+           GL,
+           GL.Binding,
+           ada.Streams.Stream_IO;
 
       File : ada.Streams.Stream_IO.File_type;
       S    : ada.Streams.Stream_IO.Stream_access;
@@ -685,19 +693,20 @@ is
          end if;
 
          raise;
-   end Save;
+   end save;
 
 
-   -------------
-   -- Screenshot
+   --------------
+   --- Screenshot
    --
 
    procedure Screenshot (Filename   : in String;
                          with_Alpha : in Boolean := False)
    is
-      use GL,
-          GL.Binding,
-          ada.Streams.Stream_IO;
+      use
+           GL,
+           GL.Binding,
+           ada.Streams.Stream_IO;
 
       File     : ada.Streams.Stream_IO.File_type;
       S        : ada.Streams.Stream_IO.Stream_access;
@@ -737,13 +746,12 @@ is
    end Screenshot;
 
 
-
-   ----------------
-   -- Video Capture
+   -----------------
+   --- Video Capture
    --
 
-   --  We define global variables since it is not expected
-   --  that more that one capture is taken at the same time.
+   -- We define global variables since it is not expected
+   -- that more that one capture is taken at the same time.
    --
    avi           : ada.Streams.Stream_IO.File_type;
    frames        : Natural;
@@ -753,11 +761,11 @@ is
 
    procedure write_RIFF_Headers
    is
-      --  Written 1st time to take place (but # of frames unknown)
-      --  Written 2nd time for setting # of frames, sizes, etc.
+      -- Written 1st time to take place (but # of frames unknown)
+      -- Written 2nd time for setting # of frames, sizes, etc.
       --
       calc_bmp_size    : constant U32           := U32 (((width)) * height * 3);
-      --  !! stuff to multiple of 4 !!
+      -- !! stuff to multiple of 4 !!
       index_size       : constant U32           := U32 (frames) * 16;
       movie_size       : constant U32           := 4 + U32 (frames) * (calc_bmp_size + 8);
       second_list_size : constant U32           := 4 + 64 + 48;
@@ -766,6 +774,7 @@ is
       Stream           : constant Stream_access := ada.Streams.Stream_IO.Stream (avi);
 
       procedure write_Intel is new write_Intel_x86_Number (U16, Stream);
+
       procedure write_Intel is new write_Intel_x86_Number (U32, Stream);
 
       microseconds_per_frame : constant U32 := U32 (1_000_000.0 / long_Float (rate));
@@ -781,7 +790,7 @@ is
       String'write (Stream, "avih");
       write_Intel  (U32' (56));
 
-      --  Begin of AVI Header
+      -- Begin of AVI Header
       write_Intel (microseconds_per_frame);
       write_Intel (U32'(0));      -- MaxBytesPerSec
       write_Intel (U32'(0));      -- Reserved1
@@ -796,13 +805,13 @@ is
       write_Intel (U32'(0));      -- Rate
       write_Intel (U32'(0));      -- Start
       write_Intel (U32'(0));      -- Length
-      --  End of AVI Header
+      -- End of AVI Header
 
       String'write (Stream, "LIST");
       write_Intel  (second_list_size);
       String'write (Stream, "strl");
 
-      --  Begin of Str
+      -- Begin of Str
       String'write (Stream, "strh");
       write_Intel  (U32'(56));
       String'write (Stream, "vids");
@@ -820,12 +829,12 @@ is
       write_Intel  (U32'(0));
       write_Intel  (U16 (width));
       write_Intel  (U16 (height));
-      --  End of Str
+      -- End of Str
 
       String'write (Stream, "strf");
       write_Intel (U32'(40));
 
-      --  Begin of BMI
+      -- Begin of BMI
       write_Intel (U32'(40));    -- BM header size (like BMP)
       write_Intel (U32 (width));
       write_Intel (U32 (height));
@@ -837,20 +846,22 @@ is
       write_Intel (U32'(3780));  -- YPelsPerMeter
       write_Intel (U32'(0));     -- ClrUsed
       write_Intel (U32'(0));     -- ClrImportant
-      --  End of BMI
+      -- End of BMI
 
       String'write (Stream, "LIST");
       write_Intel  (movie_size);
       String'write (Stream, "movi");
-   end Write_RIFF_headers;
+   end write_RIFF_Headers;
 
 
 
-   procedure start_Capture (AVI_Name   : String;
-                            frame_Rate : Positive)
+   procedure start_Capture (AVI_Name   : in String;
+                            frame_Rate : in Positive)
    is
-      use GL,
-          GL.Binding;
+      use
+           GL,
+           GL.Binding;
+
       Viewport : array (0 .. 3) of aliased GLint;
    begin
       Tasks.check;
@@ -866,7 +877,7 @@ is
 
       Width  := Positive (Viewport (2));
       Height := Positive (Viewport (3));
-      --  NB: GL viewport resizing should be blocked during the video capture !
+      -- NB: GL viewport resizing should be blocked during the video capture !
       write_RIFF_Headers;
    end start_Capture;
 
@@ -875,7 +886,8 @@ is
    procedure capture_Frame
    is
       S : constant Stream_Access := Stream (Avi);
-      procedure Write_Intel is new Write_Intel_x86_number (U32, s);
+
+      procedure write_Intel is new write_Intel_x86_Number (U32, s);
    begin
       String'write    (S, "00db");
       write_Intel     (bmp_Size);
@@ -894,7 +906,7 @@ is
 
       procedure write_Intel is new write_Intel_x86_Number (U32, S);
    begin
-      --  Write the index section
+      -- Write the index section
       --
       String'write (S, "idx1");
       write_Intel (index_Size);

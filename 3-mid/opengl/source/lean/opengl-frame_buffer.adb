@@ -15,10 +15,11 @@ is
       function to_Frame_Buffer (Width,
                                 Height : in Positive) return Item
       is
-         use openGL.Texture,
-             GL,
-             GL.Binding,
-             GL.lean;
+         use
+              openGL.Texture,
+              GL,
+              GL.Binding,
+              GL.lean;
 
          Self : Item;
 
@@ -50,15 +51,16 @@ is
 
 
          return Self;
-      end to_frame_Buffer;
+      end to_Frame_Buffer;
 
 
 
       function to_Frame_Buffer return Item
       is
-         use openGL.Texture,
-             GL,
-             GL.lean;
+         use
+              openGL.Texture,
+              GL,
+              GL.lean;
 
          Self : Item;
       begin
@@ -69,7 +71,7 @@ is
          Errors.log;
 
          return Self;
-      end to_frame_Buffer;
+      end to_Frame_Buffer;
 
    end Forge;
 
@@ -88,7 +90,6 @@ is
    end destruct;
 
 
-
    --------------
    --- Attributes
    --
@@ -100,6 +101,7 @@ is
    end Name;
 
 
+
    function Texture (Self : in Item) return openGL.Texture.Object
    is
    begin
@@ -107,11 +109,13 @@ is
    end Texture;
 
 
+
    procedure Texture_is (Self : in out Item;   Now : in openGL.Texture.Object)
    is
-      use GL,
-          GL.Binding,
-          GL.lean;
+      use
+           GL,
+           GL.Binding,
+           GL.lean;
    begin
       Tasks.check;
 
@@ -137,8 +141,10 @@ is
 
    function is_Complete (Self : in Item) return Boolean
    is
-      use GL,
-          GL.lean;
+      use
+           GL,
+           GL.lean;
+
       use type GL.GLenum;
 
       check_is_OK : constant Boolean := Tasks.check with Unreferenced;
@@ -146,8 +152,7 @@ is
    begin
       openGL.Errors.log;
       return Result;
-   end is_complete;
-
+   end is_Complete;
 
 
    --------------
@@ -156,8 +161,10 @@ is
 
    procedure enable (Self : in Item)
    is
-      use GL,
-          GL.lean;
+      use
+           GL,
+           GL.lean;
+
       check_is_OK : constant Boolean := Tasks.check with Unreferenced;
    begin
       glBindFramebuffer (GL_FRAMEBUFFER, Self.Name);
@@ -173,8 +180,10 @@ is
 
    procedure disable (Self : in Item)
    is
-      use GL,
-          GL.lean;
+      use
+           GL,
+           GL.lean;
+
       check_is_OK : constant Boolean := Tasks.check with Unreferenced;
    begin
       glBindFramebuffer (GL_FRAMEBUFFER, 0);

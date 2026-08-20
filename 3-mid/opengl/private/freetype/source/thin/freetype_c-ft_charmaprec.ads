@@ -17,4 +17,5 @@ is
 
    type pointer_Pointer is access all FT_CharMapRec.Pointer;
 
+
 end freetype_c.FT_CharMapRec;

@@ -38,9 +38,10 @@ is
    is
       pragma unreferenced (Fonts);
 
-      use Geometry.lit_textured,
-          Model.hexagon,
-          Texture;
+      use
+           Geometry.lit_textured,
+           Model.hexagon,
+           Texture;
 
       shaft_Height  : constant Real     := Self.Height;
       height_Offset : constant Vector_3 := (0.0, shaft_Height / 2.0, 0.0);
@@ -79,6 +80,7 @@ is
       end new_hexagon_Face;
 
 
+
       function new_shaft_Face (Vertices : access Geometry.lit_textured.Vertex_array)
                                return Geometry.lit_textured.view
       is
@@ -112,7 +114,7 @@ is
          lower_Sites (Each) := lower_Sites (Each) - height_Offset;
       end loop;
 
-      --  Upper
+      -- Upper
       --
       declare
          the_Vertices : aliased Geometry.lit_textured.Vertex_array
@@ -132,7 +134,7 @@ is
          end if;
       end;
 
-      --  Lower
+      -- Lower
       --
       declare
          the_Vertices : aliased Geometry.lit_textured.Vertex_array
@@ -154,7 +156,7 @@ is
       end;
 
 
-      --  Shaft
+      -- Shaft
       --
       declare
          type shaft_Normals is array (1 .. 6) of Vector_3;

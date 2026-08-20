@@ -26,7 +26,6 @@ is
    end new_Box;
 
 
-
    --------------
    --- Attributes
    --
@@ -37,9 +36,10 @@ is
    is
       pragma unreferenced (Fonts);
 
-      use Geometry.lit_colored_textured,
-          Primitive,
-          Texture;
+      use
+           Geometry.lit_colored_textured,
+           Primitive,
+           Texture;
 
       the_Sites    :         constant box.Sites := Self.vertex_Sites;
       the_Indices  : aliased constant Indices   := [ 1,  2,  3,   3,  4,  1,      -- Front

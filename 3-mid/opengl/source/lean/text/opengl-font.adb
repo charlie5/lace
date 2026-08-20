@@ -5,7 +5,7 @@ with
 package body openGL.Font
 is
    -----------
-   --  Utility
+   --- Utility
    --
 
    function Hash (the_Id : in font_Id) return ada.Containers.Hash_type
@@ -17,7 +17,7 @@ is
 
 
    ---------
-   --  Forge
+   --- Forge
    --
 
    procedure define (Self : in out Item;   fontFilePath : in String)
@@ -26,6 +26,7 @@ is
       Self.Impl := new FontImpl.item;
       Self.Impl.define (Self'Access, fontFilePath);
    end define;
+
 
 
    procedure define (Self : in out Item;   pBufferBytes      : in FontImpl.unsigned_char_Pointer;
@@ -37,6 +38,7 @@ is
    end define;
 
 
+
    procedure define (Self : in out Item;   pImpl : in FontImpl.view)
    is
    begin
@@ -44,8 +46,10 @@ is
    end define;
 
 
+
    procedure destruct (Self : in out Item)
    is
+
       procedure free is new ada.unchecked_Deallocation (FontImpl.item'Class,
                                                         FontImpl.view);
    begin
@@ -54,8 +58,10 @@ is
    end destruct;
 
 
+
    procedure free (Self : in out View)
    is
+
       procedure deallocate is new ada.unchecked_Deallocation (Item'Class, View);
    begin
       Self.destruct;
@@ -64,7 +70,7 @@ is
 
 
    --------------
-   --  Attributes
+   --- Attributes
    --
 
    function CharMap (Self : in Item;   Encoding : in freetype_c.FT_Encoding) return Boolean
@@ -74,11 +80,13 @@ is
    end CharMap;
 
 
+
    function CharMapCount (Self : in Item) return Natural
    is
    begin
       return Self.impl.CharMapCount;
    end CharMapCount;
+
 
 
    function CharMapList (Self : access Item) return freetype.face.FT_Encodings_view
@@ -88,11 +96,13 @@ is
    end CharMapList;
 
 
+
    function Ascender (Self : in Item) return Real
    is
    begin
       return Self.impl.Ascender;
    end Ascender;
+
 
 
    function Descender (Self : in Item) return Real
@@ -102,11 +112,13 @@ is
    end Descender;
 
 
+
    function LineHeight (Self : in Item) return Real
    is
    begin
       return Self.impl.LineHeight;
    end LineHeight;
+
 
 
    function FaceSize (Self : access Item;   Size          : in Natural;
@@ -117,11 +129,13 @@ is
    end FaceSize;
 
 
+
    function FaceSize (Self : in Item) return Natural
    is
    begin
       return Self.impl.FaceSize;
    end FaceSize;
+
 
 
    procedure Depth (Self : in out Item;   Depth : in Real)
@@ -131,11 +145,13 @@ is
    end Depth;
 
 
+
    procedure Outset (Self : in out Item;   Outset : in Real)
    is
    begin
       Self.impl.Outset (Outset);
    end Outset;
+
 
 
    procedure Outset (Self : in out Item;   Front : in Real;
@@ -144,6 +160,7 @@ is
    begin
       Self.impl.Outset (Front, Back);
    end Outset;
+
 
 
    function BBox (Self : access Item;   Text     : in String;
@@ -156,6 +173,7 @@ is
    end BBox;
 
 
+
    function Error (Self : in Item) return freetype_c.FT_Error
    is
    begin
@@ -164,14 +182,15 @@ is
 
 
    --------------
-   --  Operations
+   --- Operations
    --
 
    function attach (Self : in Item;   Font_File_Path : in String) return Boolean
    is
    begin
       return Self.impl.attach (Font_File_Path);
-   end Attach;
+   end attach;
+
 
 
    function attach (Self : in Item;   pBufferBytes      : in FontImpl.unsigned_char_Pointer;
@@ -179,7 +198,8 @@ is
    is
    begin
       return Self.impl.Attach (pBufferBytes, bufferSizeInBytes);
-   end Attach;
+   end attach;
+
 
 
    procedure glyph_load_Flags (Self : in out Item;   Flags : in freetype_c.FT_Int)
@@ -187,6 +207,7 @@ is
    begin
       Self.impl.GlyphLoadFlags (Flags);
    end glyph_load_Flags;
+
 
 
    function Advance (Self : access Item;   Text    : in String;
@@ -198,11 +219,13 @@ is
    end Advance;
 
 
+
    function kern_Advance (Self : in Item;   From, To : in Character) return Real
    is
    begin
       return Self.impl.kern_Advance (From, To);
    end kern_Advance;
+
 
 
    function x_PPEM (Self : in Item) return Real
@@ -212,6 +235,7 @@ is
    end x_PPEM;
 
 
+
    function x_Scale (Self : in Item) return Real
    is
    begin
@@ -219,11 +243,13 @@ is
    end x_Scale;
 
 
+
    function y_Scale (Self : in Item) return Real
    is
    begin
       return Self.impl.y_Scale;
    end y_Scale;
+
 
 
    function check_Glyphs (Self : access Item;   Text     : in String;

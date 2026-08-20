@@ -8,19 +8,19 @@ with
      GL.lean,
      GL.Pointers,
 
-     Interfaces.C.Strings,
+     interfaces.C.Strings,
      System.storage_Elements;
 
 
 package body openGL.Geometry.lit_colored_skinned
 is
-   --  Globals
+   -- Globals
    --
    vertex_Shader   : aliased Shader.item;
    fragment_Shader : aliased Shader.item;
 
    the_Program     : aliased openGL.Program.lit.colored_skinned.item;
-   is_Defined      :         Boolean := False;
+   is_Defined      :         Boolean                                := False;
 
    Name_1 : constant String := "Site";
    Name_2 : constant String := "Normal";
@@ -47,7 +47,7 @@ is
 
 
    ----------
-   --  Vertex
+   --- Vertex
    --
 
    function is_Transparent (Self : in Vertex_array) return Boolean   -- TODO: Replace this with the generic (check that all similar functions use the generic).
@@ -67,7 +67,7 @@ is
 
 
    ---------
-   --  Forge
+   --- Forge
    --
 
    function new_Geometry return Geometry.lit_colored_skinned.view
@@ -82,10 +82,11 @@ is
 
    procedure define_Program
    is
-      use Attribute.Forge,
-          GL.lean,
-          GL.Pointers,
-          System.storage_Elements;
+      use
+           Attribute.Forge,
+           GL.lean,
+           GL.Pointers,
+           System.storage_Elements;
 
       Sample : Vertex;
 
@@ -112,7 +113,7 @@ is
       fragment_Shader.define (Shader.Fragment, (asset_Names' (1 => to_Asset ("assets/opengl/shader/version.header"),
                                                               2 => to_Asset ("assets/opengl/shader/lighting-frag.snippet"),
                                                               3 => to_Asset ("assets/opengl/shader/lit_colored.frag"))));
-      the_Program.define (  vertex_Shader'Access,
+      the_Program.define (vertex_Shader  'Access,
                           fragment_Shader'Access);
       the_Program.enable;
 
@@ -208,9 +209,8 @@ is
    end define_Program;
 
 
-
    --------------
-   --  Attributes
+   --- Attributes
    --
 
    function Program return openGL.Program.lit.colored_skinned.view

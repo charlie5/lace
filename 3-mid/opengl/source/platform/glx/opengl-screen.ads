@@ -1,6 +1,6 @@
 package openGL.Screen
 --
---  Models an openGL screen.
+-- Models an openGL screen.
 --
 is
 
@@ -14,5 +14,6 @@ private
       record
          null;
       end record;
+
 
 end openGL.Screen;

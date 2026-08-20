@@ -1,6 +1,7 @@
 with
      ada.unchecked_Deallocation;
 
+
 package body openGL.Glyph.Container
 is
    ---------
@@ -25,6 +26,7 @@ is
       use Glyph_Vectors;
 
       procedure deallocate is new ada.unchecked_Deallocation (openGL.Glyph.item'Class,     Glyph_view);
+
       procedure deallocate is new ada.unchecked_Deallocation (freetype.charMap.item'Class, charMap_view);
 
       Cursor    : Glyph_Vectors.Cursor := Self.Glyphs.First;
@@ -47,7 +49,7 @@ is
 
 
    --------------
-   --  Attributes
+   --- Attributes
    --
 
    function CharMap (Self : access Item;   Encoding : in freeType_c.FT_Encoding) return Boolean
@@ -81,6 +83,7 @@ is
    function Glyph (Self : in Item;   Character : in freetype.charMap.characterCode) return Glyph_view
    is
       use type freetype.charMap.glyphIndex;
+
       Index : constant freetype.charMap.glyphIndex := Self.charMap.GlyphListIndex (Character);
    begin
       if Index = -1
@@ -119,7 +122,7 @@ is
 
 
    --------------
-   --  Operations
+   --- Operations
    --
 
    function render (Self : access Item;   Character         : in freetype.charMap.characterCode;
@@ -146,12 +149,13 @@ is
          Index       := Self.charMap.GlyphListIndex (Character);
          kernAdvance := kernAdvance + Self.Glyphs.Element (Integer (Index)).Render (penPosition,
                                                                                     renderMode);
+
       else
          raise openGL.Error with "Unable to render character '" & Character'Image & "'";
       end if;
 
       return kernAdvance;
-   end Render;
+   end render;
 
 
 end openGL.Glyph.Container;

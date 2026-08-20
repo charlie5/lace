@@ -11,7 +11,7 @@ with
 
 package openGL.Program
 --
---  Models an openGL program.
+-- Models an openGL program.
 --
 is
    type Item is tagged limited private;
@@ -34,15 +34,15 @@ is
 
 
    ----------------------
-   --  Program Parameters
+   --- Program Parameters
    --
 
-   --  These are used by individual visuals which require program Uniforms to vary from visual to visual.
-   --  The Parmaters type is extended to contain the required varying data and 'enable' is overridden to
-   --  apply the varying data to the programs Uniforms. 'enable' is called as part of the rendering process
-   --  just prior to the visuals geometry being rendered.
+   -- These are used by individual visuals which require program Uniforms to vary from visual to visual.
+   -- The Parmaters type is extended to contain the required varying data and 'enable' is overridden to
+   -- apply the varying data to the programs Uniforms. 'enable' is called as part of the rendering process
+   -- just prior to the visuals geometry being rendered.
    --
-   --  (See 'gel.Human' for an example of usage.)
+   -- (See 'gel.Human' for an example of usage.)
 
    type Parameters      is limited new openGL.Parameters with private;
    type Parameters_view is access all Parameters'Class;
@@ -53,7 +53,7 @@ is
 
 
    --------------
-   --  Attributes
+   --- Attributes
    --
 
    function is_defined         (Self : in     Item'Class) return Boolean;
@@ -75,7 +75,7 @@ is
 
 
    --------------
-   --  Operations
+   --- Operations
    --
 
    procedure add               (Self : in out Item;   Attribute : in openGL.Attribute.view);
@@ -84,7 +84,7 @@ is
 
 
    ------------
-   --  Uniforms
+   --- Uniforms
    --
 
    procedure mvp_Transform_is            (Self : in out Item;   Now : in Matrix_4x4);
@@ -95,8 +95,8 @@ is
    procedure set_Uniforms                (Self : in     Item);
 
 
-   ----------
-   --  Privvy   TODO: move this to privvy child package.
+   -----------------------------------------------------
+   --- Privvy   TODO: move this to privvy child package.
    --
 
    subtype a_gl_Program is gl.GLuint;
@@ -108,20 +108,20 @@ private
 
    type Item is tagged limited
       record
-         gl_Program      : gl.GLuint := 0;
+         gl_Program      : gl.GLuint  := 0;
          vertex_Shader   : Shader.view;
          fragment_Shader : Shader.view;
 
          Attributes      : openGL.Attribute.views (1 .. 8);
-         attribute_Count : Natural := 0;
+         attribute_Count : Natural                        := 0;
 
          mvp_Transform   : Matrix_4x4;
-         Scale           : Vector_3 := [1.0, 1.0, 1.0];
+         Scale           : Vector_3  := [1.0, 1.0, 1.0];
       end record;
 
 
-   -------------
-   -- Parameters
+   --------------
+   --- Parameters
    --
 
    type Parameters is limited new openGL.Parameters with

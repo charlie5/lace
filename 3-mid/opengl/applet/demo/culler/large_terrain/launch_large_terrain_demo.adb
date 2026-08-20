@@ -7,18 +7,19 @@ with
 
 procedure launch_large_Terrain_Demo
 --
---  Exercise the culler with a large terrain grid.
+-- Exercise the culler with a large terrain grid.
 --
 is
-   use openGL,
-       openGL.Math,
-       openGL.linear_Algebra_3d;
+   use
+        openGL,
+        openGL.Math,
+        openGL.linear_Algebra_3d;
 
 begin
    Demo.print_Usage;
    Demo.define ("openGL 'Large Terrain' Demo");
 
-   --  Setup the camera.
+   -- Setup the camera.
    --
    Demo.Camera.Position_is ([0.0, 100.0, 500.0],
                             y_Rotation_from (to_Radians (0.0)));
@@ -27,6 +28,7 @@ begin
    --
    declare
       use openGL.Light;
+
       the_Light : openGL.Light.item := Demo.Renderer.new_Light;
    begin
       the_Light.Site_is ([0.0, 1000.0, 0.0]);
@@ -43,7 +45,7 @@ begin
                                                                            Scale        => [1.0, 25.0, 1.0]);
       Count   : constant Positive :=   Terrain'Length (1)
                                      * Terrain'Length (2);
-      Last    : Natural := 0;
+      Last    : Natural                         := 0;
       Sprites : openGL.Visual.views (1 .. Count);
 
    begin
@@ -57,7 +59,7 @@ begin
       end loop;
 
 
-      --  Main loop.
+      -- Main loop.
       --
       while not Demo.Done
       loop

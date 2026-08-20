@@ -10,8 +10,9 @@ with
 
 package body openGL.Program
 is
-   use gl.lean,
-       Interfaces;
+   use
+        gl.lean,
+        Interfaces;
 
    compiling_in_debug_Mode : constant Boolean := True;
 
@@ -19,7 +20,7 @@ is
 
 
    --------------
-   --  Parameters
+   --- Parameters
    --
 
    procedure Program_is (Self : in out Parameters;   Now : in openGL.Program.view)
@@ -27,6 +28,7 @@ is
    begin
       Self.Program := Now;
    end Program_is;
+
 
 
    function Program (Self : in Parameters) return openGL.Program.view
@@ -58,6 +60,7 @@ is
 
       declare
          use type C.int;
+
          Status : aliased gl.glInt;
       begin
          glGetProgramiv (Self.gl_Program,
@@ -87,13 +90,14 @@ is
                                            use_fragment_Shader_File : in String)
    is
       use openGL.Shader;
+
       the_vertex_Shader   : constant Shader_view := new openGL.Shader.item;
       the_fragment_Shader : constant Shader_view := new openGL.Shader.item;
    begin
       the_vertex_Shader  .define (openGL.Shader.vertex,     use_vertex_Shader_File);
       the_fragment_Shader.define (openGL.Shader.fragment, use_fragment_Shader_File);
 
-      Self.define (  the_vertex_Shader.all'Access,
+      Self.define (the_vertex_Shader  .all'Access,
                    the_fragment_Shader.all'Access);
    end define;
 
@@ -108,7 +112,7 @@ is
 
 
    --------------
-   --  Attributes
+   --- Attributes
    --
 
    function Attribute (Self : access Item'Class;   Named : in String) return openGL.Attribute.view
@@ -129,7 +133,8 @@ is
 
    function attribute_Location (Self : access Item'Class;   Named : in String) return gl.GLuint
    is
-      use      gl.Pointers;
+      use gl.Pointers;
+
       use type gl.GLint;
 
       attribute_Name : C.strings.chars_ptr := C.Strings.new_String (Named & ada.characters.Latin_1.NUL);
@@ -165,7 +170,9 @@ is
 
    function ProgramInfoLog (Self : in Item) return String
    is
-      use C, GL;
+      use
+           C,
+           GL;
 
       info_log_Length : aliased glInt   := 0;
       chars_Written   : aliased glSizei := 0;
@@ -177,12 +184,14 @@ is
                       GL_INFO_LOG_LENGTH,
                       info_log_Length'unchecked_Access);
 
-      if info_log_Length = 0 then
+      if info_log_Length = 0
+      then
          return "";
       end if;
 
       declare
          use GL.Pointers;
+
          info_Log     : aliased  C.char_array        := C.char_array' [1 .. C.size_t (info_log_Length) => <>];
          info_Log_ptr : constant C.strings.chars_ptr := C.strings.to_chars_ptr (info_Log'unchecked_Access);
       begin
@@ -275,6 +284,7 @@ is
    end uniform_Variable;
 
 
+
    function uniform_Variable (Self : access Item'Class;   Named : in String) return Variable.uniform.sampler2D
    is
       the_Variable : Variable.uniform.sampler2D;
@@ -285,7 +295,7 @@ is
 
 
    --------------
-   --  Operations
+   --- Operations
    --
 
    procedure add (Self : in out Item;   Attribute : in openGL.Attribute.view)
@@ -308,7 +318,7 @@ is
          Item'Class (Self).define;     -- TODO: This appears to do nothing.
       end if;
 
-      glUseProgram (self.gl_Program);
+      glUseProgram (Self.gl_Program);
    end enable;
 
 
@@ -351,7 +361,7 @@ is
 
 
 
-   --  Privvy
+   -- Privvy
    --
 
    function gl_Program (Self : in Item) return a_gl_Program

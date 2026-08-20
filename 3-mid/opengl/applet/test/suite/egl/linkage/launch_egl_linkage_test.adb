@@ -4,15 +4,17 @@ with
      interfaces.C.Strings,
      System;
 
+
 procedure launch_egl_linkage_Test
 --
---  Tests linkage to eGL functions.
---  Is not meant to be run.
+-- Tests linkage to eGL functions.
+-- Is not meant to be run.
 --
 is
-   use eGL,
-       eGL.Binding,
-       System;
+   use
+        eGL,
+        eGL.Binding,
+        System;
 
    an_EGLint     : EGLint;
    an_EGLdisplay : EGLdisplay;
@@ -64,7 +66,7 @@ begin
    an_EGLboolean := eglWaitNative        (0);
    an_EGLboolean := eglSwapBuffers       (null_Address, null_Address);
    an_EGLboolean := eglCopyBuffers       (null_Address, null_Address, 0);
-   a_void_ptr    := eglGetProcAddress    (Interfaces.C.Strings.null_ptr);
+   a_void_ptr    := eglGetProcAddress    (interfaces.C.Strings.null_ptr);
    an_EGLdisplay_pointer
                  := egl_DEFAULT_DISPLAY;
    an_EGLcontext := egl_NO_CONTEXT;

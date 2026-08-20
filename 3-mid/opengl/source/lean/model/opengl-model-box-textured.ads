@@ -7,9 +7,9 @@ with
 
 package openGL.Model.Box.textured
 --
---  Models a textured box.
+-- Models a textured box.
 --
---  Each face may have a separate texture.
+-- Each face may have a separate texture.
 --
 is
    package textured_Model is new texturing.Mixin (openGL.Model.box.item);
@@ -45,12 +45,13 @@ is
                                                     Fonts    : in     Font.font_id_Map_of_font) return Geometry.views;
 
 
+
 private
 
    type Item is new textured_Model.textured_item with
       record
          Faces     : textured.Faces;
-         is_Skybox : Boolean := False;
+         is_Skybox : Boolean       := False;
       end record;
 
 

@@ -5,7 +5,7 @@ with
 
 package openGL.Geometry.textured
 --
---  Supports 'per-vertex' site and texture.
+-- Supports 'per-vertex' site and texture.
 --
 is
    type Item is new openGL.Geometry.item with private;
@@ -16,8 +16,9 @@ is
 
 
    ----------
-   --  Vertex
+   --- Vertex
    --
+
    type Vertex is
       record
          Site   : Vector_3;
@@ -28,7 +29,7 @@ is
 
 
    --------------
-   --  Attributes
+   --- Attributes
    --
 
    overriding
@@ -39,6 +40,7 @@ is
    overriding
    procedure Indices_are    (Self : in out Item;   Now       : in Indices;
                                                    for_Facia : in Positive);
+
 
 
 private

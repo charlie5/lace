@@ -1,18 +1,18 @@
 with
-     Interfaces.C.Pointers,
+     interfaces.C.Pointers,
      System;
 
 
 package GL.safe
 --
---  Provides types, constants and functions specific to the openGL 'Safety Critical' profile.
+-- Provides types, constants and functions specific to the openGL 'Safety Critical' profile.
 --
 is
    ---------
-   --  Types
+   --- Types
    --
 
-   --  GLubyte_Pointer
+   -- GLubyte_Pointer
    --
    package GLubyte_Pointers is new C.Pointers (Index              => C.size_t,
                                                Element            => GLubyte,
@@ -21,7 +21,7 @@ is
    subtype GLubyte_Pointer  is GLubyte_Pointers.Pointer;
 
 
-   --  GLint_Pointer
+   -- GLint_Pointer
    --
    package GLint_Pointers is new C.Pointers (Index              => C.size_t,
                                              Element            => GLint,
@@ -30,7 +30,7 @@ is
    subtype GLint_Pointer  is GLint_Pointers.Pointer;
 
 
-   --  GLfloat_Pointer
+   -- GLfloat_Pointer
    --
    package GLfloat_Pointers is new C.Pointers (Index              => C.size_t,
                                                Element            => GLfloat,
@@ -39,7 +39,7 @@ is
    subtype GLfloat_Pointer  is GLfloat_Pointers.Pointer;
 
 
-   --  GLvoid_Pointer
+   -- GLvoid_Pointer
    --
    package GLvoid_Pointers is new C.Pointers (Index              => C.size_t,
                                               Element            => GLvoid,
@@ -48,7 +48,7 @@ is
    subtype GLvoid_Pointer  is GLvoid_Pointers.Pointer;
 
 
-   --  GLvoid_Pointer_Pointer
+   -- GLvoid_Pointer_Pointer
    --
    type    GLvoid_Pointer_array    is array (C.size_t range <>) of aliased GLvoid_Pointer;
    package GLvoid_Pointer_Pointers is new C.Pointers (Index              => C.size_t,
@@ -58,9 +58,8 @@ is
    subtype GLvoid_Pointer_Pointer  is GLvoid_Pointer_Pointers.Pointer;
 
 
-
    -------------
-   --  Constants
+   --- Constants
    --
 
    GL_ADD                            : constant := 16#0104#;
@@ -310,72 +309,75 @@ is
                                     Stride         : in     GLsizei;
                                     Ptr            : in     GLvoid_Pointer);
 
+
+
 private
 
-   pragma Import (StdCall, glAlphaFunc,           "glAlphaFunc");
-   pragma Import (StdCall, glBegin,               "glBegin");
-   pragma Import (StdCall, glBitmap,              "glBitmap");
-   pragma Import (StdCall, glCallLists,           "glCallLists");
-   pragma Import (StdCall, glClientActiveTexture, "glClientActiveTexture");
-   pragma Import (StdCall, glColor4f,             "glColor4f");
-   pragma Import (StdCall, glColor4fv,            "glColor4fv");
-   pragma Import (StdCall, glColor4ub,            "glColor4ub");
-   pragma Import (StdCall, glColorPointer,        "glColorPointer");
-   pragma Import (StdCall, glCopyPixels,          "glCopyPixels");
-   pragma Import (StdCall, glDisableClientState,  "glDisableClientState");
-   pragma Import (StdCall, glDrawPixels,          "glDrawPixels");
-   pragma Import (StdCall, glEnableClientState,   "glEnableClientState");
-   pragma Import (StdCall, glEnd,                 "glEnd");
-   pragma Import (StdCall, glEndList,             "glEndList");
-   pragma Import (StdCall, glFrustumf,            "glFrustumf");
-   pragma Import (StdCall, glGenLists,            "glGenLists");
-   pragma Import (StdCall, glGetLightfv,          "glGetLightfv");
-   pragma Import (StdCall, glGetMaterialfv,       "glGetMaterialfv");
-   pragma Import (StdCall, glGetPointerv,         "glGetPointerv");
-   pragma Import (StdCall, glGetPolygonStipple,   "glGetPolygonStipple");
-   pragma Import (StdCall, glGetTexEnvfv,         "glGetTexEnvfv");
-   pragma Import (StdCall, glGetTexEnviv,         "glGetTexEnviv");
-   pragma Import (StdCall, glLightModelfv,        "glLightModelfv");
-   pragma Import (StdCall, glLightfv,             "glLightfv");
-   pragma Import (StdCall, glLineStipple,         "glLineStipple");
-   pragma Import (StdCall, glListBase,            "glListBase");
-   pragma Import (StdCall, glLoadIdentity,        "glLoadIdentity");
-   pragma Import (StdCall, glLoadMatrixf,         "glLoadMatrixf");
-   pragma Import (StdCall, glMaterialf,           "glMaterialf");
-   pragma Import (StdCall, glMaterialfv,          "glMaterialfv");
-   pragma Import (StdCall, glMatrixMode,          "glMatrixMode");
-   pragma Import (StdCall, glMultMatrixf,         "glMultMatrixf");
-   pragma Import (StdCall, glMultiTexCoord2f,     "glMultiTexCoord2f");
-   pragma Import (StdCall, glMultiTexCoord2fv,    "glMultiTexCoord2fv");
-   pragma Import (StdCall, glNewList,             "glNewList");
-   pragma Import (StdCall, glNormal3f,            "glNormal3f");
-   pragma Import (StdCall, glNormal3fv,           "glNormal3fv");
-   pragma Import (StdCall, glNormalPointer,       "glNormalPointer");
-   pragma Import (StdCall, glOrthof,              "glOrthof");
-   pragma Import (StdCall, glPointSize,           "glPointSize");
-   pragma Import (StdCall, glPolygonStipple,      "glPolygonStipple");
-   pragma Import (StdCall, glPopMatrix,           "glPopMatrix");
-   pragma Import (StdCall, glPushMatrix,          "glPushMatrix");
-   pragma Import (StdCall, glRasterPos3f,         "glRasterPos3f");
-   pragma Import (StdCall, glRotatef,             "glRotatef");
-   pragma Import (StdCall, glScalef,              "glScalef");
-   pragma Import (StdCall, glShadeModel,          "glShadeModel");
-   pragma Import (StdCall, glTexCoordPointer,     "glTexCoordPointer");
-   pragma Import (StdCall, glTexEnvfv,            "glTexEnvfv");
-   pragma Import (StdCall, glTexEnvi,             "glTexEnvi");
-   pragma Import (StdCall, glTranslatef,          "glTranslatef");
-   pragma Import (StdCall, glVertex2f,            "glVertex2f");
-   pragma Import (StdCall, glVertex2fv,           "glVertex2fv");
-   pragma Import (StdCall, glVertex3f,            "glVertex3f");
-   pragma Import (StdCall, glVertex3fv,           "glVertex3fv");
-   pragma Import (StdCall, glVertexPointer,       "glVertexPointer");
+   pragma import (StdCall, glAlphaFunc,           "glAlphaFunc");
+   pragma import (StdCall, glBegin,               "glBegin");
+   pragma import (StdCall, glBitmap,              "glBitmap");
+   pragma import (StdCall, glCallLists,           "glCallLists");
+   pragma import (StdCall, glClientActiveTexture, "glClientActiveTexture");
+   pragma import (StdCall, glColor4f,             "glColor4f");
+   pragma import (StdCall, glColor4fv,            "glColor4fv");
+   pragma import (StdCall, glColor4ub,            "glColor4ub");
+   pragma import (StdCall, glColorPointer,        "glColorPointer");
+   pragma import (StdCall, glCopyPixels,          "glCopyPixels");
+   pragma import (StdCall, glDisableClientState,  "glDisableClientState");
+   pragma import (StdCall, glDrawPixels,          "glDrawPixels");
+   pragma import (StdCall, glEnableClientState,   "glEnableClientState");
+   pragma import (StdCall, glEnd,                 "glEnd");
+   pragma import (StdCall, glEndList,             "glEndList");
+   pragma import (StdCall, glFrustumf,            "glFrustumf");
+   pragma import (StdCall, glGenLists,            "glGenLists");
+   pragma import (StdCall, glGetLightfv,          "glGetLightfv");
+   pragma import (StdCall, glGetMaterialfv,       "glGetMaterialfv");
+   pragma import (StdCall, glGetPointerv,         "glGetPointerv");
+   pragma import (StdCall, glGetPolygonStipple,   "glGetPolygonStipple");
+   pragma import (StdCall, glGetTexEnvfv,         "glGetTexEnvfv");
+   pragma import (StdCall, glGetTexEnviv,         "glGetTexEnviv");
+   pragma import (StdCall, glLightModelfv,        "glLightModelfv");
+   pragma import (StdCall, glLightfv,             "glLightfv");
+   pragma import (StdCall, glLineStipple,         "glLineStipple");
+   pragma import (StdCall, glListBase,            "glListBase");
+   pragma import (StdCall, glLoadIdentity,        "glLoadIdentity");
+   pragma import (StdCall, glLoadMatrixf,         "glLoadMatrixf");
+   pragma import (StdCall, glMaterialf,           "glMaterialf");
+   pragma import (StdCall, glMaterialfv,          "glMaterialfv");
+   pragma import (StdCall, glMatrixMode,          "glMatrixMode");
+   pragma import (StdCall, glMultMatrixf,         "glMultMatrixf");
+   pragma import (StdCall, glMultiTexCoord2f,     "glMultiTexCoord2f");
+   pragma import (StdCall, glMultiTexCoord2fv,    "glMultiTexCoord2fv");
+   pragma import (StdCall, glNewList,             "glNewList");
+   pragma import (StdCall, glNormal3f,            "glNormal3f");
+   pragma import (StdCall, glNormal3fv,           "glNormal3fv");
+   pragma import (StdCall, glNormalPointer,       "glNormalPointer");
+   pragma import (StdCall, glOrthof,              "glOrthof");
+   pragma import (StdCall, glPointSize,           "glPointSize");
+   pragma import (StdCall, glPolygonStipple,      "glPolygonStipple");
+   pragma import (StdCall, glPopMatrix,           "glPopMatrix");
+   pragma import (StdCall, glPushMatrix,          "glPushMatrix");
+   pragma import (StdCall, glRasterPos3f,         "glRasterPos3f");
+   pragma import (StdCall, glRotatef,             "glRotatef");
+   pragma import (StdCall, glScalef,              "glScalef");
+   pragma import (StdCall, glShadeModel,          "glShadeModel");
+   pragma import (StdCall, glTexCoordPointer,     "glTexCoordPointer");
+   pragma import (StdCall, glTexEnvfv,            "glTexEnvfv");
+   pragma import (StdCall, glTexEnvi,             "glTexEnvi");
+   pragma import (StdCall, glTranslatef,          "glTranslatef");
+   pragma import (StdCall, glVertex2f,            "glVertex2f");
+   pragma import (StdCall, glVertex2fv,           "glVertex2fv");
+   pragma import (StdCall, glVertex3f,            "glVertex3f");
+   pragma import (StdCall, glVertex3fv,           "glVertex3fv");
+   pragma import (StdCall, glVertexPointer,       "glVertexPointer");
+
 
 end GL.safe;
 
 -- TODO:  Bind these missing functions, if needed.
 --
---  GLAPI void   APIENTRY glColorSubTableEXT    (GLenum target, GLsizei start, GLsizei count, GLenum format, GLenum type, const GLvoid *table);
---  GLAPI void   APIENTRY glColorTableEXT       (GLenum target, GLenum internalformat, GLsizei width, GLenum format, GLenum type, const GLvoid *table);
---  GLAPI void   APIENTRY glGetColorTableEXT    (GLenum target, GLenum format, GLenum type, GLvoid *table);
---  GLAPI void   APIENTRY glGetColorTableParameterivEXT
+-- GLAPI void   APIENTRY glColorSubTableEXT    (GLenum target, GLsizei start, GLsizei count, GLenum format, GLenum type, const GLvoid *table);
+-- GLAPI void   APIENTRY glColorTableEXT       (GLenum target, GLenum internalformat, GLsizei width, GLenum format, GLenum type, const GLvoid *table);
+-- GLAPI void   APIENTRY glGetColorTableEXT    (GLenum target, GLenum format, GLenum type, GLvoid *table);
+-- GLAPI void   APIENTRY glGetColorTableParameterivEXT
 --                                              (GLenum target, GLenum pname, GLint *params);

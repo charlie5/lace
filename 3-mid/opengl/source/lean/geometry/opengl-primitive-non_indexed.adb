@@ -7,7 +7,7 @@ with
 package body openGL.Primitive.non_indexed
 is
    ---------
-   --  Forge
+   --- Forge
    --
 
    overriding
@@ -16,6 +16,7 @@ is
    begin
       Self.facet_Kind := Kind;
    end define;
+
 
 
    function new_Primitive (Kind         : in facet_Kind;
@@ -36,7 +37,7 @@ is
 
 
    --------------
-   --  Operations
+   --- Operations
    --
 
    overriding

@@ -1,9 +1,10 @@
---  with
+-- with
 --       glx.Pointers;
 
 with
      OSMesa_C.Binding,
      System;
+
 
 package body openGL.Context
 is
@@ -17,6 +18,7 @@ is
 --            glx.Pointers;
 
       use OSMesa_C.Binding;
+
       use type System.Address;
 
    begin

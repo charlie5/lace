@@ -8,7 +8,7 @@ with
 package body openGL.Primitive
 is
    ---------
-   --  Forge
+   --- Forge
    --
 
    procedure define (Self : in out Item;   Kind : in facet_Kind)
@@ -21,6 +21,7 @@ is
 
    procedure free (Self : in out View)
    is
+
       procedure deallocate is new ada.Unchecked_Deallocation (Primitive.item'Class,
                                                               Primitive.view);
    begin
@@ -30,7 +31,7 @@ is
 
 
    --------------
-   --  Attributes
+   --- Attributes
    --
 
    function Texture (Self : in Item) return openGL.Texture.Object
@@ -38,6 +39,7 @@ is
    begin
       return Self.Texture;
    end Texture;
+
 
 
    procedure Texture_is (Self : in out Item;   Now : in openGL.Texture.Object)
@@ -48,11 +50,12 @@ is
 
 
 
-   function Bounds (self : in Item) return openGL.Bounds
+   function Bounds (Self : in Item) return openGL.Bounds
    is
    begin
       return Self.Bounds;
    end Bounds;
+
 
 
    procedure Bounds_are (Self : in out Item;   Now : in openGL.Bounds)
@@ -63,11 +66,12 @@ is
 
 
 
-   function is_Transparent (self : in Item) return Boolean
+   function is_Transparent (Self : in Item) return Boolean
    is
    begin
       return Self.is_Transparent;
    end is_Transparent;
+
 
 
    procedure is_Transparent (Self : in out Item;   Now : in Boolean := True)
@@ -83,8 +87,9 @@ is
 
    procedure render (Self : in out Item)
    is
-      use GL,
-          GL.Binding;
+      use
+           GL,
+           GL.Binding;
    begin
       Tasks.check;
 

@@ -8,7 +8,7 @@ with
 
 package openGL.Primitive
 --
---  Provides a base class for openGL primitives.
+-- Provides a base class for openGL primitives.
 --
 is
    type    Item  is abstract tagged limited private;
@@ -19,14 +19,16 @@ is
 
 
    ----------
-   --  Facets
+   --- Facets
    --
+
    type facet_Kind is (Points,
                        Lines,     line_Loop,      line_Strip,
                        Triangles, triangle_Strip, triangle_Fan);
 
+
    ---------
-   --  Forge
+   --- Forge
    --
 
    procedure define  (Self : in out Item;   Kind : in facet_Kind);
@@ -35,14 +37,14 @@ is
 
 
    --------------
-   --  Attributes
+   --- Attributes
    --
 
    function  Texture        (Self : in     Item)     return openGL.Texture.Object;
    procedure Texture_is     (Self : in out Item;   Now : in openGL.Texture.Object);
 
    procedure Bounds_are     (Self : in out Item;   Now : in openGL.Bounds);
-   function  Bounds         (self : in     Item)     return openGL.Bounds;
+   function  Bounds         (Self : in     Item)     return openGL.Bounds;
    --
    -- Returns the bounds in object space.
 
@@ -50,7 +52,7 @@ is
    function  is_Transparent (Self : in     Item)     return Boolean;
 
 
-   ---------------
+   --------------
    --- Operations
    --
 
@@ -73,7 +75,7 @@ private
 
 
    ----------
-   --  Facets
+   --- Facets
    --
 
    function Thin (Self : in facet_Kind) return gl.GLenum;

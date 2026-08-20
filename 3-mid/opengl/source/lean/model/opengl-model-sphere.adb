@@ -5,12 +5,11 @@ is
    --- Forge
    --
 
-   procedure define (Self : out Item;   Radius : Real)
+   procedure define (Self : out Item;   Radius : in Real)
    is
    begin
       Self.Radius := Radius;
    end define;
-
 
 
    --------------

@@ -12,18 +12,20 @@ with
 
 package body openGL.Texture
 is
-   use GL,
-       GL.lean,
-       GL.Pointers;
+   use
+        GL,
+        GL.lean,
+        GL.Pointers;
 
 
    ----------------
-   --  Texture Name
+   --- Texture Name
    --
 
    function new_texture_Name return texture_Name
    is
       use GL.Binding;
+
       the_Name : aliased texture_Name;
    begin
       Tasks.check;
@@ -46,7 +48,7 @@ end free;
 
 
    ---------
-   --  Forge
+   --- Forge
    --
 
    package body Forge
@@ -64,9 +66,11 @@ end free;
       end to_Texture;
 
 
+
       function to_Texture (Dimensions : in Texture.Dimensions) return Object
       is
          use GL.Binding;
+
          Self : aliased Texture.Object;
 
       begin
@@ -82,8 +86,8 @@ end free;
 
          glTexParameteri (GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);   Errors.log;
 
-         --  glTexParameteri (GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
-         --  glTexParameteri (GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+         -- glTexParameteri (GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+         -- glTexParameteri (GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
 
          glTexParameteri (GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);      Errors.log;
 
@@ -91,6 +95,7 @@ end free;
 
          return Self;
       end to_Texture;
+
 
 
       function to_Texture (the_Image   : in Image;
@@ -103,6 +108,7 @@ end free;
 
          return Self;
       end to_Texture;
+
 
 
       function to_Texture (the_Image   : in lucid_Image;
@@ -152,6 +158,7 @@ end free;
    end set_Name;
 
 
+
    function Name (Self : in Object) return texture_Name
    is
    begin
@@ -175,19 +182,19 @@ end free;
       Self.Dimensions.Width  := min_Width;
       Self.Dimensions.Height := min_Height;
 
-      --  new_Line (3);
-      --  put_Line ("openGL.Texture.set_Image ~ GLsizei (Self.Dimensions.Width)  =>" & GLsizei (Self.Dimensions.Width) 'Image);
-      --  put_Line ("                         ~ GLsizei (Self.Dimensions.Height) =>" & GLsizei (Self.Dimensions.Height)'Image);
-      --  put_Line ("                         ~ the_Image                        =>");
-      --  put_Line (the_Image'Image);
-      --  new_Line (3);
+      -- new_Line (3);
+      -- put_Line ("openGL.Texture.set_Image ~ GLsizei (Self.Dimensions.Width)  =>" & GLsizei (Self.Dimensions.Width) 'Image);
+      -- put_Line ("                         ~ GLsizei (Self.Dimensions.Height) =>" & GLsizei (Self.Dimensions.Height)'Image);
+      -- put_Line ("                         ~ the_Image                        =>");
+      -- put_Line (the_Image'Image);
+      -- new_Line (3);
 
       Self.enable;
 
       glPixelStorei   (GL_UNPACK_ALIGNMENT, 1);                                 Errors.log;
 
-      --  glTexParameteri (GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);     Errors.log;
-      --  glTexParameteri (GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);     Errors.log;
+      -- glTexParameteri (GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);     Errors.log;
+      -- glTexParameteri (GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);     Errors.log;
 
       glTexParameteri (GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);            Errors.log;
       glTexParameteri (GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);            Errors.log;
@@ -267,8 +274,10 @@ end free;
    procedure enable (Self : in Object)
    is
       use GL.Binding;
+
       use type GL.GLuint;
-      pragma Assert (Self.Name > 0);
+
+      pragma assert (Self.Name > 0);
    begin
       Tasks.check;
 
@@ -313,9 +322,8 @@ end free;
    end Size;
 
 
-
-   -----------------------
-   -- Name Maps of Texture
+   ------------------------
+   --- Name Maps of Texture
    --
 
    function fetch (From : access name_Map_of_texture'Class;   texture_Name : in asset_Name) return Object
@@ -337,13 +345,13 @@ end free;
    end fetch;
 
 
-
    --------
-   --  Pool
+   --- Pool
    --
 
    procedure destroy (the_Pool : in out Pool)
    is
+
       procedure deallocate is new ada.unchecked_Deallocation (pool_texture_List,
                                                               pool_texture_List_view);
    begin

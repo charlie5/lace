@@ -11,7 +11,7 @@ with
 
 package openGL
 --
---  Provides a namespace and set of core types.
+-- Provides a namespace and set of core types.
 --
 is
    pragma Pure;
@@ -20,7 +20,7 @@ is
 
 
    ------------
-   --  Profiles
+   --- Profiles
    --
 
    type profile_Kind is (Safe, Lean, Desk);
@@ -29,7 +29,7 @@ is
 
 
    ----------
-   --  Models
+   --- Models
    --
 
    Model_too_complex : exception;
@@ -41,7 +41,7 @@ is
 
 
    -----------
-   --  Indices
+   --- Indices
    --
 
    type short_Index_t is range 0 .. 2**8  - 1;
@@ -54,11 +54,11 @@ is
 
 
    --------
-   --  Math
+   --- Math
    --
 
    package Math renames float_Math;
-   use     Math;
+   use Math;
 
    package linear_Algebra    renames float_Math.Algebra.linear;
    package linear_Algebra_2d renames float_Math.Algebra.linear.d2;
@@ -68,16 +68,18 @@ is
 
 
    --------
-   --  Real
+   --- Real
    --
+
    subtype Real is math.Real;
 
    package real_Functions renames math.Functions;
 
 
    -------------
-   --  Safe Real
+   --- Safe Real
    --
+
    protected
    type safe_Real
    is
@@ -89,8 +91,9 @@ is
 
 
    -----------
-   --  Extents
+   --- Extents
    --
+
    type Extent_2D is
       record
          Width  : Natural;
@@ -99,8 +102,9 @@ is
 
 
    -----------
-   --  Vectors
+   --- Vectors
    --
+
    subtype Vector   is math.Vector;
 
    subtype Vector_2 is math.Vector_2;
@@ -118,8 +122,9 @@ is
 
 
    ------------
-   --  Matrices
+   --- Matrices
    --
+
    subtype Matrix     is math.Matrix;
 
    subtype Matrix_2x2 is math.Matrix_2x2;
@@ -128,8 +133,9 @@ is
 
 
    ---------------
-   --  Height Maps
+   --- Height Maps
    --
+
    type height_Map is array (Index_t range <>,
                              Index_t range <>) of aliased Real;
 
@@ -138,19 +144,20 @@ is
 
    function  height_Extent (Self : in height_Map) return Vector_2;
    --
-   --  Returns the min and max height.
+   -- Returns the min and max height.
 
 
    type index_Pair is array (1 .. 2) of Index_t;
 
    function  Region (Self : in height_Map;   Rows, Cols : in index_Pair) return height_Map;
    --
-   --  Returns the submatrix indicated via Rows & Cols.
+   -- Returns the submatrix indicated via Rows & Cols.
 
 
    ------------
-   --  Geometry
+   --- Geometry
    --
+
    subtype      Site    is Vector_3;                   -- A position in 3d space.
    subtype      Sites   is Vector_3_array;
    subtype many_Sites   is Vector_3_large_array;
@@ -167,12 +174,12 @@ is
 
    null_Bounds : constant Bounds;
 
-   function  bounding_Box_of   (Self : Sites) return Bounds;
+   function  bounding_Box_of   (Self : in Sites) return Bounds;
    procedure set_Ball_from_Box (Self : in out Bounds);
 
 
    ---------
-   --  Color
+   --- Color
    --
 
    -- RGB
@@ -241,10 +248,10 @@ is
    default_Shine : constant Shine;     -- Defaults to no shine.
 
 
-
    ----------
-   --  Images
+   --- Images
    --
+
    type  grey_Image is array (Index_t range <>, Index_t range <>) of aliased grey_Value;
    type       Image is array (Index_t range <>, Index_t range <>) of aliased  rgb_Color;
    type lucid_Image is array (Index_t range <>, Index_t range <>) of aliased rgba_Color;
@@ -252,12 +259,11 @@ is
    function to_Image (From : in lucid_Image) return Image;
 
 
-
    -----------
-   --  Texture
+   --- Texture
    --
 
-   --  Coordinates
+   -- Coordinates
    --
 
    type Coordinate_1D is
@@ -291,7 +297,7 @@ is
    type many_Coordinates_4D is array (long_Index_t range <>) of aliased Coordinate_4D;
 
 
-   --  Transforms
+   -- Transforms
    --
 
    type texture_Transform is
@@ -328,12 +334,12 @@ is
 
 
    ----------
-   --  Assets
+   --- Assets
    --
 
    type asset_Name is new String (1 .. 128);
    --
-   --  Name of a file containing textures, images, fonts, shaders, shader_snippets or other resources.
+   -- Name of a file containing textures, images, fonts, shaders, shader_snippets or other resources.
 
    type asset_Names is array (Positive range <>) of asset_Name;
 
@@ -346,15 +352,16 @@ is
 
 
    -----------------------------
-   --  Shader Program Parameters
+   --- Shader Program Parameters
    --
+
    type Parameters is tagged limited private;
 
 
-
    ---------------
-   --  Task Safety
+   --- Task Safety
    --
+
    type safe_Boolean is new Boolean;
    pragma Atomic (safe_Boolean);
 
@@ -368,7 +375,7 @@ private
    pragma pack (      Indices);
    pragma pack ( long_Indices);
 
-   pragma Assert (GL.GLfloat'Size = Real'Size);
+   pragma assert (GL.GLfloat'Size = Real'Size);
 
 
    null_Asset    : constant asset_Name := (others => ' ');
@@ -376,9 +383,12 @@ private
    null_Bounds   : constant Bounds     := (ball => 0.0,
                                            box  => (lower => [Real'Last,  Real'Last,  Real'Last],
                                                     upper => [Real'First, Real'First, Real'First]));
+
+
    -----------
-   --  Opacity
+   --- Opacity
    --
+
    Opaque   : constant Opaqueness := 1.0;
    Lucid    : constant Opaqueness := 0.0;
 
@@ -387,8 +397,9 @@ private
 
 
    ---------
-   --  Color
+   --- Color
    --
+
    no_Color : constant Color := (Red   => null_Primary,
                                  Green => null_Primary,
                                  Blue  => null_Primary);
@@ -426,9 +437,11 @@ private
    function "+"            (From : in       Color) return   rgb_Color renames  to_rgb_Color;
 
 
-   ----------------------------
-   -- Shader Program Parameters
+   -----------------------------
+   --- Shader Program Parameters
    --
+
    type Parameters is tagged limited null record;
+
 
 end openGL;

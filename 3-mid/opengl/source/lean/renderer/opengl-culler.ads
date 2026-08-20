@@ -3,6 +3,7 @@ with
      openGL.Visual,
      openGL.Frustum;
 
+
 package openGL.Culler
 --
 -- Provides a base class for cullers.
@@ -26,7 +27,7 @@ is
 
 
    --------------
-   --  Operations
+   --- Operations
    --
 
    function cull (Self : in Item;   the_Visuals    : in Visual.views;
@@ -35,11 +36,13 @@ is
                   is abstract;
 
 
+
 private
 
    type Item is abstract tagged limited
       record
          Viewer : Renderer.lean.view;
       end record;
+
 
 end openGL.Culler;

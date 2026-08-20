@@ -5,7 +5,7 @@ with
 
 package openGL.Program.lit
 --
---  Models an openGL program which uses lighting.
+-- Models an openGL program which uses lighting.
 --
 is
    type Item is new openGL.Program.item with private;
@@ -13,7 +13,7 @@ is
 
 
    ------------
-   --  Uniforms
+   --- Uniforms
    --
 
    overriding
@@ -37,8 +37,8 @@ private
    type Item is new openGL.Program.item with
       record
          Lights          : Light.items (1 .. 50);
-         light_Count     : Natural := 0;
-         specular_Color  : Color      := Palette.Grey;     -- The materials specular color.
+         light_Count     : Natural              := 0;
+         specular_Color  : Color                := Palette.Grey;     -- The materials specular color.
 
          camera_Site     : Vector_3;
          model_Transform : Matrix_4x4 := Identity_4x4;

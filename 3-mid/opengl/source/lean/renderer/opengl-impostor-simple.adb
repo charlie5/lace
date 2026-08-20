@@ -4,11 +4,13 @@ with
 
      ada.unchecked_Deallocation;
 
+
 package body openGL.Impostor.simple
 is
 
    procedure free (Self : in out View)
    is
+
       procedure deallocate is new ada.unchecked_Deallocation (Item'Class, View);
    begin
       if Self /= null
@@ -38,7 +40,7 @@ is
       --
       Self.current_Camera_look_at_Rotation := get_Rotation (look_at (the_Camera.Site,
                                                                      get_Translation (Self.Target.Transform),
-                                                                     --  get_Translation (Self.Target.model_Transform),
+                                                                     -- get_Translation (Self.Target.model_Transform),
                                                                      [0.0, 1.0, 0.0]));
       Self.current_pixel_Region := Self.get_pixel_Region (camera_Spin                 => Self.current_Camera_look_at_Rotation,
                                                           camera_Site                 => the_Camera.Site,
@@ -59,11 +61,11 @@ is
             Self.current_Width_pixels  := Self.current_pixel_Region.Width;       -- Cache current state.
             Self.current_Height_pixels := Self.current_pixel_Region.Height;
 
-            Self.current_copy_X        := Self.current_pixel_Region.X;
-            Self.current_copy_Y        := Self.current_pixel_Region.Y;
+            Self.current_copy_X := Self.current_pixel_Region.X;
+            Self.current_copy_Y := Self.current_pixel_Region.Y;
 
-            Self.current_copy_Width    := Self.current_pixel_Region.Width;
-            Self.current_copy_Height   := Self.current_pixel_Region.Height;
+            Self.current_copy_Width  := Self.current_pixel_Region.Width;
+            Self.current_copy_Height := Self.current_pixel_Region.Height;
          end if;
 
          return update_Required;

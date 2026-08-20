@@ -36,8 +36,9 @@ is
    is
       pragma unreferenced (Fonts);
 
-      use Geometry.textured,
-          Texture;
+      use
+           Geometry.textured,
+           Texture;
 
       the_Sites    : constant box.Sites := Self.vertex_Sites;
       the_Indices  : aliased  Indices   := [1, 2, 3, 4];
@@ -72,7 +73,7 @@ is
          the_Indices := [4, 3, 2, 1];
       end if;
 
-      --  Front
+      -- Front
       --
       declare
          the_Vertices : constant Geometry.textured.Vertex_array
@@ -91,7 +92,7 @@ is
       end;
 
 
-      --  Rear
+      -- Rear
       --
       declare
          the_Vertices : constant Geometry.textured.Vertex_array
@@ -110,7 +111,7 @@ is
       end;
 
 
-      --  Upper
+      -- Upper
       --
       declare
          the_Vertices : constant Geometry.textured.Vertex_array
@@ -129,7 +130,7 @@ is
       end;
 
 
-      --  Lower
+      -- Lower
       --
       declare
          the_Vertices : constant Geometry.textured.Vertex_array
@@ -148,7 +149,7 @@ is
       end;
 
 
-      --  Left
+      -- Left
       --
       declare
          the_Vertices : constant Geometry.textured.Vertex_array
@@ -167,7 +168,7 @@ is
       end;
 
 
-      --  Right
+      -- Right
       --
       declare
          the_Vertices : constant Geometry.textured.Vertex_array

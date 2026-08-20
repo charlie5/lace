@@ -28,7 +28,6 @@ is
    type texture_Ids is array (Positive range <>) of texture_Id;
 
 
-
    ----------
    --- Tiling
    --
@@ -74,7 +73,7 @@ is
          frame_Duration  : Duration          := 0.1;
          next_frame_Time : ada.Calendar.Time := ada.Calendar.Clock;
 
-         Current         : frame_Id          := 1;
+         Current         : frame_Id                             := 1;
          Frames          : texture_Set.Frames (1 .. frame_Count);
       end record;
 
@@ -114,7 +113,7 @@ is
 
 
    --------------
-   --  Operations
+   --- Operations
    --
 
    procedure animate (Self : in out Item);
@@ -140,5 +139,6 @@ private
 
    null_Set   : constant Item    := (Count  => 0,
                                      others => <>);
+
 
 end openGL.texture_Set;

@@ -17,7 +17,7 @@ is
 
 
    ---------
-   --  Forge
+   --- Forge
    --
 
    procedure define  (Self : in out Item);
@@ -25,7 +25,7 @@ is
 
 
    --------------
-   --  Attributes
+   --- Attributes
    --
 
    fairly_Far                  : constant         := 1_000_000.0;
@@ -64,12 +64,12 @@ is
 
    function  to_World_Site            (Self : in     Item;         window_Site : in math.Vector_3) return math.Vector_3;
    --
-   --  Returns the 'window space' site transformed to the equivalent 'world space' site.
+   -- Returns the 'window space' site transformed to the equivalent 'world space' site.
 
-   function  cull_completed           (Self : in     Item) return Boolean;
+   function  cull_Completed           (Self : in     Item) return Boolean;
    procedure disable_cull             (Self : in out Item);
 
-   function  vanish_Point_Size_min    (Self : in     Item'Class) return Real;
+   function  vanish_Point_Size_min    (Self : in     Item'Class) return     Real;
    procedure vanish_Point_Size_min_is (Self : in out Item'Class;   Now : in Real);
    --
    -- Visuals whose projected size falls below this minimum will be culled.
@@ -83,7 +83,7 @@ is
 
 
    --------------
-   --  Operations
+   --- Operations
    --
 
    procedure render (Self : in out Item;   Visuals : in Visual.views;
@@ -108,11 +108,11 @@ private
    type Item is tagged limited
       record
          cull_Engine          : camera.cull_Engine (Item'Access);
-         cull_Completed       : safe_Boolean := False;
+         cull_Completed       : safe_Boolean                    := False;
          Culler               : openGL.Culler.frustum.item;
 
          Impostorer           : openGL.Impostorer.item;
-         Impostors_allowed    : Boolean      := False;
+         Impostors_allowed    : Boolean               := False;
 
          Renderer             : openGL.Renderer.lean.view;
 
@@ -121,8 +121,8 @@ private
          projection_Transform : math.Matrix_4x4;
 
          Viewport             : linear_Algebra_3d.Rectangle;
-         FoVy                 : math.Degrees := default_field_of_view_Angle; -- Field of view angle (deg) in the y direction.
-         Aspect               : math.Real    := 1.0;                         -- X/Y aspect ratio.
+         FoVy                 : math.Degrees               := default_field_of_view_Angle; -- Field of view angle (deg) in the y direction.
+         Aspect               : math.Real                  := 1.0;                         -- X/Y aspect ratio.
 
          near_Plane_Distance  : math.Real    := 0.1;                         -- Distance to the near clipping plane.
          near_Plane_Width     : math.Real;

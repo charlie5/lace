@@ -12,6 +12,7 @@ is
    function Extent return Extent_2d
    is
       use GL.Binding;
+
       Extent : array (1 .. 4) of aliased gl.glInt;
    begin
       Tasks.check;

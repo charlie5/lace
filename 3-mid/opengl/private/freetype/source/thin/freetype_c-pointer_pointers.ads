@@ -1,7 +1,8 @@
 with
      freetype_c.Pointers;
 
-package freetype_c.pointer_Pointers 
+
+package freetype_c.pointer_Pointers
 is
    use freetype_c.Pointers;
 
@@ -24,5 +25,6 @@ is
    type FT_FaceRec_Pointer_Pointer      is access all FT_FaceRec_Pointer;
    type FT_Kerning_Mode_Pointer_Pointer is access all FT_Kerning_Mode_Pointer;
    type FT_SizeRec_Pointer_Pointer      is access all FT_SizeRec_Pointer;
+
 
 end freetype_c.pointer_Pointers;

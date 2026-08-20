@@ -51,6 +51,7 @@ is
    end my_context_Setter;
 
 
+
    procedure my_Swapper
    is
       use sdl.Video.GL;
@@ -60,14 +61,15 @@ is
 
 
 
-
    procedure define (Name   : in String;
                      Width  : in Positive := 1366;
                      Height : in Positive :=  768)
    is
-      use Palette,
-          linear_Algebra_3d,
-          SDL;
+      use
+           Palette,
+           linear_Algebra_3d,
+           SDL;
+
       use type sdl.Video.Windows.Window_Flags;
 
       null_Context : SDL.Video.GL.Contexts;
@@ -107,17 +109,17 @@ is
 
       declare
          use openGL.Light;
+
          the_Light : openGL.Light.item := Demo.Renderer.new_Light;
       begin
          the_Light. Site_is ([5_000.0, 2_000.0, 5_000.0]);
          the_Light.Color_is (Grey);
-         --  the_Light.Color_is (Black);
+         -- the_Light.Color_is (Black);
 
          Demo.Renderer.set (the_Light);
       end;
 
    end define;
-
 
 
 
@@ -131,11 +133,11 @@ is
 
 
 
-
    function Models return openGL.Model.views
    is
-      use Model,
-          Palette;
+      use
+           Model,
+           Palette;
 
       the_Texture : constant asset_Name   :=  to_Asset ("assets/opengl/texture/Face1.bmp");
       the_font_Id : constant Font.font_Id := (to_Asset ("assets/opengl/font/LiberationMono-Regular.ttf"),
@@ -245,7 +247,7 @@ is
 
       -- The collada model requires 'Desktop' openGL build mode.
       --
-      --  the_collada_Model : constant Model.any.view
+      -- the_collada_Model : constant Model.any.view
       --    := Model.any.new_Model (--Scale            => (1.0, 1.0, 1.0),
       --                            Model            => to_Asset ("assets/opengl/model/human.dae"),
       --                            Texture          => the_Texture,
@@ -337,7 +339,6 @@ is
 
 
 
-
    procedure layout (the_Visuals : in Visual.views)
    is
       initial_X : constant openGL.Real := -6.0;
@@ -356,6 +357,8 @@ is
          i := i + 1;
          X := X + Pad;
       end set_next_Visual_Site;
+
+
 
       procedure new_Line
       is
@@ -399,6 +402,7 @@ is
       new_Line;
       set_next_Visual_Site;
    end layout;
+
 
 
    procedure print_Usage (append_Message : in String := "")

@@ -27,8 +27,9 @@ is
    is
       pragma unreferenced (Textures, Fonts);
 
-      use Geometry,
-          Geometry.lit_colored;
+      use
+           Geometry,
+           Geometry.lit_colored;
 
       vertex_Count  : constant      Index_t :=      Index_t (Self.vertex_Count);
       indices_Count : constant long_Index_t := long_Index_t (Self.vertex_Count);
@@ -51,8 +52,10 @@ is
          end loop;
       end set_Vertices;
 
+
       --- Set Indices.
       --
+
       for i in the_Indices'Range
       loop
          the_Indices (i) := Index_t (i);

@@ -34,4 +34,5 @@ private
          camera_world_Rotation_original  : Matrix_3x3;
       end record;
 
+
 end openGL.Impostor.simple;

@@ -7,6 +7,5 @@ is
       return Self.Thin;
    end to_eGL;
 
+
 end opengl.Display.privvy;
-
-

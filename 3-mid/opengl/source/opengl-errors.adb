@@ -16,6 +16,7 @@ is
       then
          declare
             use GL.Binding;
+
             check_is_OK : constant Boolean   := openGL.Tasks.Check;   pragma Unreferenced (check_is_OK);
             the_Error   : constant GL.GLenum := glGetError;
          begin
@@ -37,7 +38,6 @@ is
 
       return "";
    end Current;
-
 
 
 
@@ -71,13 +71,14 @@ is
 
 
 
-   procedure log (Prefix : in String := "";   Error_occurred : out Boolean)
+   procedure log (Prefix : in String := "";   error_Occurred : out Boolean)
    is
    begin
       if Debugging
       then
          declare
             use ada.Text_IO;
+
             current_Error : constant String := Current;
          begin
             if current_Error = "no error"
@@ -95,7 +96,6 @@ is
          end;
       end if;
    end log;
-
 
 
 

@@ -6,6 +6,7 @@ with
      ada.Containers.generic_Array_sort,
      ada.unchecked_Deallocation;
 
+
 package body openGL.Impostorer
 is
    ---------
@@ -22,14 +23,16 @@ is
 
    procedure destruct (Self : in out Item)
    is
+
       procedure deallocate is new ada.unchecked_Deallocation (impostor_load_Balancer.Slots,
                                                               impostor_load_Balancer.Slots_view);
    begin
       deallocate (Self.impostor_load_Slots);
 
       declare
-         use Impostor,
-             visual_Maps_of_impostor;
+         use
+              Impostor,
+              visual_Maps_of_impostor;
 
          the_Impostor : Impostor.view;
          Cursor       : visual_Maps_of_impostor.Cursor := Self.visual_Map_of_imposter.First;
@@ -64,6 +67,7 @@ is
    end impostor_size_Min;
 
 
+
    procedure impostor_size_Min_is (Self : in out Item'Class;   Now : in Real)
    is
    begin
@@ -77,6 +81,7 @@ is
    begin
       return Self.Camera;
    end Camera;
+
 
 
    procedure Camera_is (Self : in out Item'Class;   Now : access openGL.Camera.item'Class)
@@ -94,6 +99,7 @@ is
    end Renderer;
 
 
+
    procedure Renderer_is (Self : in out Item'Class;   Now : in openGL.Renderer.lean.view)
    is
    begin
@@ -102,7 +108,7 @@ is
 
 
    --------------
-   --  Operations
+   --- Operations
    --
 
    procedure substitute (Self : in out Item;   the_Visuals : in out openGL.Visual.views;
@@ -115,7 +121,7 @@ is
          transposed_camera_Attitude : constant Matrix_3x3 := Transpose (Camera.Spin);
 
          Impostor_updates           :          openGL.Renderer.lean.impostor_Updates (1 .. 20_000);
-         impostor_updates_Last      :          Natural    := 0;
+         impostor_updates_Last      :          Natural                                            := 0;
 
          procedure add (the_Impostor : in Impostor.view)
          is
@@ -161,6 +167,7 @@ is
                      use visual_Maps_of_impostor;
                   begin
                      the_Impostor := Self.visual_Map_of_imposter.Element (the_Visual);
+
                   exception
                      when constraint_Error =>   -- No impostor exists for this visual yet, so create one.
                         if the_Visual.is_Terrain
@@ -191,7 +198,7 @@ is
                      then
                         if Impostor_update_required
                         then
-                           the_Impostor.target_camera_Distance_less_frame_Count :=         the_Impostor.target_camera_Distance
+                           the_Impostor.target_camera_Distance_less_frame_Count :=   the_Impostor.target_camera_Distance
                                                                                    - Real (the_Impostor.frame_Count_since_last_update);
                            if Impostor_never_updated
                            then

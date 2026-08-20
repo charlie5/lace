@@ -13,13 +13,14 @@ is
       if Debugging
       then
          declare
-            use Ada,
-                ada.Task_Identification;
+            use
+                 Ada,
+                 ada.Task_Identification;
 
             calling_Task : constant Task_Id := Task_Identification.current_Task;
 
-            --  TODO: Use the assert instead of the exception for performance.
-            --  pragma assert (Renderer_Task = calling_Task,
+            -- TODO: Use the assert instead of the exception for performance.
+            -- pragma assert (Renderer_Task = calling_Task,
             --                   "Calling task '"      & Task_Identification.Image (current_Task)  & "'"
             --                 & " /= Renderer task '" & Task_Identification.Image (Renderer_Task) & "'");
          begin
@@ -44,5 +45,6 @@ is
 
       return True;
    end check;
+
 
 end openGL.Tasks;

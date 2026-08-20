@@ -39,9 +39,10 @@ is
    is
       pragma unreferenced (Fonts);
 
-      use Geometry.lit_textured,
-          Model.hexagon,
-          Texture;
+      use
+           Geometry.lit_textured,
+           Model.hexagon,
+           Texture;
 
       shaft_Height  : constant Real     := Self.Height;
       height_Offset : constant Vector_3 := (0.0,  shaft_Height / 2.0,  0.0);
@@ -115,7 +116,7 @@ is
          lower_Sites (i) := lower_Sites (i) - height_Offset;
       end loop;
 
-      --  Upper
+      -- Upper
       --
       declare
          the_Vertices : constant Geometry.lit_textured.Vertex_array
@@ -135,7 +136,7 @@ is
          end if;
       end;
 
-      --  Lower
+      -- Lower
       --
       declare
          the_Vertices : constant Geometry.lit_textured.Vertex_array
@@ -156,8 +157,10 @@ is
          end if;
       end;
 
+
       --- Shaft
       --
+
       declare
          type shaft_Normals is array (1 .. 6) of Vector_3;
 
@@ -165,8 +168,8 @@ is
          is
             use linear_Algebra_3D;
 
-            Rotation   : constant Matrix_3x3 := y_Rotation_from (-math.to_Radians (60.0));
-            the_Normal :          Vector_3   := (1.0, 0.0, 0.0);
+            Rotation   : constant Matrix_3x3   := y_Rotation_from (-math.to_Radians (60.0));
+            the_Normal :          Vector_3     := (1.0, 0.0, 0.0);
             Result     :          shaft_Normals;
          begin
             Result (1) := the_Normal;

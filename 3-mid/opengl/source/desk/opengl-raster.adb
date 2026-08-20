@@ -10,4 +10,5 @@ is
       raise Program_Error with "TODO: unimplemented";
    end set_Window_Position;
 
+
 end openGL.Raster;

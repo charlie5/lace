@@ -7,12 +7,13 @@ with
 
 procedure launch_render_Screenshot
 --
---  Take a screenshot.
+-- Take a screenshot.
 --
 is
-   use openGL,
-       openGL.Math,
-       openGL.linear_Algebra_3d;
+   use
+        openGL,
+        openGL.Math,
+        openGL.linear_Algebra_3d;
 
 begin
    Demo.print_Usage ("Use 't' or 'T' to take a screenshot.");
@@ -28,16 +29,16 @@ begin
    end;
 
    declare
-      --  The models.
+      -- The models.
       --
       the_Models : constant openGL.Model.views := openGL.Demo.Models;
 
-      --  The visuals.
+      -- The visuals.
       --
       use openGL.Visual.Forge;
 
       the_Visuals : openGL.Visual.views (the_Models'Range);
-      Current     : Integer := the_Visuals'First;
+      Current     : Integer                               := the_Visuals'First;
 
    begin
       for i in the_Visuals'Range
@@ -48,7 +49,7 @@ begin
       the_Visuals (1).Scale_is ([0.2, 0.2, 1.0]);     -- Text visual.
 
 
-      --  Main loop.
+      -- Main loop.
       --
       while not Demo.Done
       loop
@@ -82,7 +83,7 @@ begin
             end if;
          end;
 
-         --  Render all visuals.
+         -- Render all visuals.
          --
          Demo.Camera.render ([1 => the_Visuals (Current)]);
 

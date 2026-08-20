@@ -6,28 +6,30 @@ with
      openGL.Model.box.colored,
      openGL.Demo;
 
+
 procedure launch_Camera_Demo
 --
---  Exercise the camera.
+-- Exercise the camera.
 --
 is
-   use openGL,
-       openGL.Model.box,
-       openGL.Palette,
-       openGL.Math,
-       openGL.linear_Algebra_3d;
+   use
+        openGL,
+        openGL.Model.box,
+        openGL.Palette,
+        openGL.Math,
+        openGL.linear_Algebra_3d;
 
 begin
    Demo.print_Usage;
    Demo.define ("openGL 'Camera' Demo");
 
-   --  Setup the camera.
+   -- Setup the camera.
    --
    Demo.Camera.Position_is ([5.0, 0.0, 10.0],
                             y_Rotation_from (to_Radians (0.0)));
 
    declare
-      --  The Model.
+      -- The Model.
       --
       the_box_Model : constant openGL.Model.Box.colored.view
         := openGL.Model.Box.colored.new_Box (size  => [0.5, 0.5, 0.5],
@@ -44,14 +46,14 @@ begin
    begin
       the_Sprite.Site_is ([10.0, 0.0, 0.0]);
 
-      --  Main loop.
+      -- Main loop.
       --
       while not Demo.Done
       loop
          Demo.Dolly.evolve;
          Demo.Done := Demo.Dolly.quit_Requested;
 
-         --  Render all sprites.
+         -- Render all sprites.
          --
          Demo.Camera.render (Visuals => [1 => the_Sprite]);
 

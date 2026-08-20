@@ -1,6 +1,6 @@
 package openGL.Model.sphere
 --
---  Provides an abstract model of a sphere.
+-- Provides an abstract model of a sphere.
 --
 is
    type Item is abstract new Model.item with private;
@@ -15,7 +15,7 @@ is
    --- Forge
    --
 
-   procedure define (Self : out Item;   Radius : Real);
+   procedure define (Self : out Item;   Radius : in Real);
 
 
    --------------

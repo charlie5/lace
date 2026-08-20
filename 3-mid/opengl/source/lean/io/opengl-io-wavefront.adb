@@ -4,9 +4,10 @@ with
      ada.Strings.fixed,
      ada.Strings.unbounded;
 
+
 package body openGL.IO.wavefront
 is
-   package real_Text_IO is new Ada.Text_IO.Float_IO (openGL.Real);
+   package real_Text_IO is new ada.Text_IO.Float_IO (openGL.Real);
 
    function to_Text (Self : in String) return Text
    is
@@ -56,8 +57,8 @@ is
       normal_Id    : Integer;
 
       the_Vertices : Vertices (1 .. 5_000);
-      vertex_Count : long_Index_t := 0;
-      Last         : Natural      := Self'First - 1;
+      vertex_Count : long_Index_t         := 0;
+      Last         : Natural              := Self'First - 1;
    begin
       loop
          get (Self (Last + 1 .. Self'Last),
@@ -66,7 +67,7 @@ is
 
          if        Last            = Self'Last
            or else Self (Last + 1) = ' '
-         then     --  Both texture coord and normal are absent.
+         then     -- Both texture coord and normal are absent.
             coord_Id  := Integer (null_Id);
             normal_Id := Integer (null_Id);
 
@@ -93,6 +94,7 @@ is
                   get (Self (Last + 2 .. Self'Last),
                        normal_Id,
                        Last);
+
                else
                   raise Constraint_Error with "Invalid indices: " & Self & ".";
                end if;
@@ -129,8 +131,9 @@ is
 
    function to_Model (model_File : in String) return IO.Model
    is
-      use ada.Strings.fixed,
-          ada.Text_IO;
+      use
+           ada.Strings.fixed,
+           ada.Text_IO;
 
       the_File     : File_Type;
 
@@ -223,7 +226,6 @@ is
    end to_Model;
 
 
-
    ----------
    --- Images
    --
@@ -255,15 +257,16 @@ is
             then
                append (the_Image, "/");
             end if;
+
          else
             append (the_Image, "/" & id_Image (the_Vertices (i).coord_Id));
          end if;
 
-         --  if the_Vertices (i).normal_Id /= null_Id
-         --  then
+         -- if the_Vertices (i).normal_Id /= null_Id
+         -- then
          --     append (the_Image,
          --             "/" & id_Image (the_Vertices (i).normal_Id));
-         --  end if;
+         -- end if;
 
          append (the_Image, " ");
       end loop;
@@ -304,8 +307,9 @@ is
 
    function to_Model (model_Path : in String) return wavefront.Model
    is
-      use ada.Strings.fixed,
-          ada.Text_IO;
+      use
+           ada.Strings.fixed,
+           ada.Text_IO;
 
       the_material_Library : Text;
       the_material_Name    : Text;
@@ -313,13 +317,13 @@ is
       the_group_Name       : Text;
 
       the_Sites    : Sites (1 .. 50_000);
-      site_Count   : Index_t := 0;
+      site_Count   : Index_t            := 0;
 
       the_Coords   : Coordinates_2D (1 .. 50_000);
-      coord_Count  : Index_t := 0;
+      coord_Count  : Index_t                     := 0;
 
       the_Normals  : Normals (1 .. 50_000);
-      normal_Count : Index_t := 0;
+      normal_Count : Index_t              := 0;
 
       the_Faces    : wf_Faces_view := new Faces' (1 .. 100_000 => <>);
       face_Count   : long_Index_t  := 0;
@@ -333,56 +337,68 @@ is
       loop
          declare
             use ada.Strings.unbounded;
+
             the_Line : constant String := Get_Line (the_File);
          begin
-            if the_Line'Length = 0 or else the_Line (1) = '#' then
+            if the_Line'Length = 0 or else the_Line (1) = '#'
+            then
                null;
 
-            elsif Head (the_Line, 6) = "mtllib" then
+            elsif Head (the_Line, 6) = "mtllib"
+            then
                the_material_Library := to_unbounded_String (the_Line (8 .. the_Line'Last));
 
-            elsif Head (the_Line, 6) = "usemtl" then
+            elsif Head (the_Line, 6) = "usemtl"
+            then
                the_material_Name := to_unbounded_String (the_Line (8 .. the_Line'Last));
 
-            elsif Head (the_Line, 2) = "f " then
+            elsif Head (the_Line, 2) = "f "
+            then
                face_Count             := face_Count + 1;
                the_Faces (face_Count) := (a_Facet,
                                           to_Facet (the_Line (3 .. the_Line'Last)));
 
-            elsif Head (the_Line, 2) = "v " then
+            elsif Head (the_Line, 2) = "v "
+            then
                site_Count             := site_Count + 1;
                the_Sites (site_Count) := to_Vector_3 (the_Line (3 .. the_Line'Last));
 
-            elsif Head (the_Line, 3) = "vt " then
+            elsif Head (the_Line, 3) = "vt "
+            then
                coord_Count              := coord_Count + 1;
                the_Coords (coord_Count) := to_Coordinate (the_Line (4 .. the_Line'Last));
 
-            elsif Head (the_Line, 3) = "vn " then
+            elsif Head (the_Line, 3) = "vn "
+            then
                normal_Count               := normal_Count + 1;
                the_Normals (normal_Count) := to_Vector_3 (the_Line (4 .. the_Line'Last));
 
-            elsif Head (the_Line, 2) = "o " then
+            elsif Head (the_Line, 2) = "o "
+            then
                the_object_Name := to_unbounded_String (the_Line (3 .. the_Line'Last));
-               --  face_Count             := face_Count + 1;
-               --  the_Faces (face_Count) := (a_Group,
+               -- face_Count             := face_Count + 1;
+               -- the_Faces (face_Count) := (a_Group,
                --                             (object_Name,
                --                              object_Name => to_Text (the_Line (3 .. the_Line'Last))));
 
-            elsif Head (the_Line, 2) = "g " then
+            elsif Head (the_Line, 2) = "g "
+            then
                the_group_Name := to_unbounded_String (the_Line (3 .. the_Line'Last));
-               --  face_Count             := face_Count + 1;
-               --  the_Faces (face_Count) := (a_Group,
+               -- face_Count             := face_Count + 1;
+               -- the_Faces (face_Count) := (a_Group,
                --                             (group_Name,
                --                              group_Name => to_Text (the_Line (3 .. the_Line'Last))));
 
-            elsif Head (the_Line, 2) = "s " then
+            elsif Head (the_Line, 2) = "s "
+            then
                declare
-                  use Ada.Integer_Text_IO;
+                  use ada.Integer_Text_IO;
 
                   the_Id : Natural;
                   Last   : Natural;
                begin
-                  if Head (the_Line, 5) = "s off" then
+                  if Head (the_Line, 5) = "s off"
+                  then
                      the_Id := 0;
                   else
                      Get (the_Line (3 .. the_Line'Last), the_Id, Last);
@@ -395,7 +411,11 @@ is
                end;
 
             else
-               put_Line ("openGL.io.wavefront ~ Unhandled line in " &  model_Path & ": '" & the_Line & "'");
+               put_Line (  "openGL.io.wavefront ~ Unhandled line in "
+                         & model_Path
+                         & ": '"
+                         & the_Line
+                         & "'");
             end if;
          end;
       end loop;
@@ -404,7 +424,7 @@ is
 
 
       declare
-         procedure free is new Ada.Unchecked_Deallocation (Faces,  wf_Faces_view);
+         procedure free is new ada.Unchecked_Deallocation (Faces,  wf_Faces_view);
 
          used_Faces : constant wf_Faces_view := new wavefront.Faces'(the_Faces (1 .. face_Count));
       begin
@@ -426,8 +446,9 @@ is
 
    procedure write (the_Model : in wavefront.Model;   to_File : in String)
    is
-      use ada.Strings.unbounded,
-          ada.Text_IO;
+      use
+           ada.Strings.unbounded,
+           ada.Text_IO;
 
       the_File : File_type;
 
@@ -447,7 +468,7 @@ is
          new_Line (the_File);
       end if;
 
-      --  Write sites.
+      -- Write sites.
       --
       for Each in the_Model.Sites'Range
       loop
@@ -463,7 +484,7 @@ is
 
       New_Line (the_File);
 
-      --  Write texture coords.
+      -- Write texture coords.
       --
       for Each in the_Model.Coords'Range
       loop
@@ -475,12 +496,12 @@ is
          New_Line (the_File);
       end loop;
 
-      --  New_Line (the_File);
+      -- New_Line (the_File);
 
-      --  Write normals.
+      -- Write normals.
       --
-      --  for Each in the_Model.Normals'Range
-      --  loop
+      -- for Each in the_Model.Normals'Range
+      -- loop
       --     Put (the_File,  "vn ");
       --     Put (the_File,  the_Model.Normals (Each) (1), Aft => 19, Exp => 0);
       --     Put (the_File,  " ");
@@ -489,11 +510,11 @@ is
       --     Put (the_File,  the_Model.Normals (Each) (3), Aft => 19, Exp => 0);
       --
       --     New_Line (the_File);
-      --  end loop;
+      -- end loop;
 
       New_Line (the_File);
 
-      --  Write faces.
+      -- Write faces.
       --
       if the_Model.group_Name /= ""
       then

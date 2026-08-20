@@ -10,7 +10,7 @@ is
 
 
    ---------------
-   --  Buffer Name
+   --- Buffer Name
    --
 
    function new_vbo_Name return a_Name
@@ -36,13 +36,14 @@ is
 
 
    ----------
-   --  Object
+   --- Object
    --
 
    procedure verify_Name (Self : in out Object'Class)
    is
    begin
-      if Self.Name = 0 then
+      if Self.Name = 0
+      then
          Self.Name := new_vbo_Name;
       end if;
    end verify_Name;
@@ -87,6 +88,7 @@ is
 
    procedure free (Self : in out View)
    is
+
       procedure deallocate is new ada.unchecked_Deallocation (Buffer.Object'Class,
                                                               Buffer.view);
    begin
@@ -107,7 +109,7 @@ is
 
 
    -------------------------
-   --  'array' Buffer Object
+   --- 'array' Buffer Object
    --
 
    overriding
@@ -119,9 +121,8 @@ is
    end Kind;
 
 
-
    ---------------------------------
-   --  'element array' Buffer object
+   --- 'element array' Buffer object
    --
 
    overriding

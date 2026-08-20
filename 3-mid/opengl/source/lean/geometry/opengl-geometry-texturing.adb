@@ -29,31 +29,32 @@ is
                                                   GL_TEXTURE13,
                                                   GL_TEXTURE14,
                                                   GL_TEXTURE15];
-                                                  --  GL_TEXTURE16,
-                                                  --  GL_TEXTURE17,
-                                                  --  GL_TEXTURE18,
-                                                  --  GL_TEXTURE19,
-                                                  --  GL_TEXTURE20,
-                                                  --  GL_TEXTURE21,
-                                                  --  GL_TEXTURE22,
-                                                  --  GL_TEXTURE23,
-                                                  --  GL_TEXTURE24,
-                                                  --  GL_TEXTURE25,
-                                                  --  GL_TEXTURE26,
-                                                  --  GL_TEXTURE27,
-                                                  --  GL_TEXTURE28,
-                                                  --  GL_TEXTURE29,
-                                                  --  GL_TEXTURE30,
-                                                  --  GL_TEXTURE31);
+                                                  -- GL_TEXTURE16,
+                                                  -- GL_TEXTURE17,
+                                                  -- GL_TEXTURE18,
+                                                  -- GL_TEXTURE19,
+                                                  -- GL_TEXTURE20,
+                                                  -- GL_TEXTURE21,
+                                                  -- GL_TEXTURE22,
+                                                  -- GL_TEXTURE23,
+                                                  -- GL_TEXTURE24,
+                                                  -- GL_TEXTURE25,
+                                                  -- GL_TEXTURE26,
+                                                  -- GL_TEXTURE27,
+                                                  -- GL_TEXTURE28,
+                                                  -- GL_TEXTURE29,
+                                                  -- GL_TEXTURE30,
+                                                  -- GL_TEXTURE31);
 
 
 
    procedure enable (for_Model   : in openGL.Model.view;
                      Uniforms    : in texturing.Uniforms)
-                     --  texture_Set : in openGL.texture_Set.Item)
+                     -- texture_Set : in openGL.texture_Set.Item)
    is
-      use GL.Binding,
-          GL.lean;
+      use
+           GL.Binding,
+           GL.lean;
 
       use type GLint;
 
@@ -80,7 +81,6 @@ is
 
 
 
-
    procedure create (Uniforms    :    out texturing.Uniforms;
                      for_Program : in     openGL.Program.view)
    is
@@ -88,8 +88,10 @@ is
       for Id in texture_Set.texture_Id'Range
       loop
          declare
-            use ada.Strings,
-                ada.Strings.fixed;
+            use
+                 ada.Strings,
+                 ada.Strings.fixed;
+
             i                            : constant Positive := Positive (Id);
             texture_uniform_Name         : constant String   := "Textures["        & trim (Natural'Image (i - 1), Left) & "]";
             fade_uniform_Name            : constant String   := "Fade["            & trim (Natural'Image (i - 1), Left) & "]";
@@ -106,8 +108,6 @@ is
 
       Uniforms.Count := for_Program.uniform_Variable ("texture_Count");
    end create;
-
-
 
 
    -------------
@@ -159,7 +159,7 @@ is
 
 
       overriding
-      function Texture (Self : in Item;   Which : texture_Set.texture_ID := 1) return openGL.Texture.Object
+      function Texture (Self : in Item;   Which : in texture_Set.texture_ID := 1) return openGL.Texture.Object
       is
       begin
          return Self.Model.texture_Object (Which);

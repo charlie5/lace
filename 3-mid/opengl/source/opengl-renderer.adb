@@ -5,10 +5,12 @@ with
      openGL.Errors,
      interfaces.C;
 
+
 package body openGL.Renderer
 is
-   use GL,
-       interfaces.C;
+   use
+        GL,
+        interfaces.C;
 
 
    procedure Background_is (Self : in out Item;   Now     : in openGL.Color;
@@ -32,6 +34,7 @@ is
    procedure clear_Frame (Self : in Item)
    is
       use GL.Binding;
+
       check_is_OK : constant Boolean := openGL.Tasks.Check with Unreferenced;
    begin
       glClearColor (GLfloat (to_Primary (Self.Background.Primary.Red)),

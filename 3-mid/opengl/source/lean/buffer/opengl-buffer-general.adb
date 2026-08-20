@@ -8,7 +8,7 @@ with
 package body openGL.Buffer.general
 is
    --------------------------
-   --  'vertex buffer' Object
+   --- 'vertex buffer' Object
    --
 
    package body Forge
@@ -34,6 +34,7 @@ is
             Errors.log;
          end return;
       end to_Buffer;
+
 
 
       function to_Buffer (From  : in Element_Array;
@@ -81,6 +82,7 @@ is
                           Size   =>  new_Vertices'Size / 8,
                           Data   => +new_Vertices (new_Vertices'First)'Address);
          Errors.log;
+
       else
          Self.destroy;
 

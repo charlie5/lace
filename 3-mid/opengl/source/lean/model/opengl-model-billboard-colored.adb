@@ -36,9 +36,10 @@ is
    is
       pragma unreferenced (Textures, Fonts);
 
-      use Geometry,
-          Geometry.colored,
-          Texture;
+      use
+           Geometry,
+           Geometry.colored,
+           Texture;
 
       the_Indices  : aliased constant Indices         := (1, 2, 3, 4);
       the_Sites    :         constant billboard.Sites := vertex_Sites (Self.Plane,
@@ -124,6 +125,7 @@ is
       Self.Geometry.Vertices_are (Self.Vertices.all);
       Self.is_Modified := False;
    end modify;
+
 
 
    overriding

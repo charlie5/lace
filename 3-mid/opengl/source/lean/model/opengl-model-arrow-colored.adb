@@ -1,6 +1,7 @@
 with
      openGL.Primitive.indexed;
 
+
 package body openGL.Model.arrow.colored
 is
    ---------
@@ -29,6 +30,7 @@ is
    end to_Arrow;
 
 
+
    function new_Arrow (Color      : in openGL.Color := Palette.White;
                        line_Width : in Real         := 1.0;
                        End_1,
@@ -51,9 +53,9 @@ is
 
       use openGL.Geometry.colored;
 
-      Color         : constant openGL.rgb_Color := +Self.Color;
-      indices_Count : constant long_Index_t     := 2;
-      the_Indices   : aliased  Indices          := [1 .. indices_Count => <>];
+      Color         : constant openGL.rgb_Color      := +Self.Color;
+      indices_Count : constant long_Index_t          := 2;
+      the_Indices   : aliased  Indices               := [1 .. indices_Count => <>];
       the_Primitive :          Primitive.indexed.view;
    begin
       Geometry.free (Self.Geometry);
@@ -128,6 +130,7 @@ is
    end End_Site;
 
 
+
    procedure End_Site_is (Self : in out Item;   Now     : in Vector_3;
                                                 for_End : in Integer)
    is
@@ -147,6 +150,7 @@ is
       Self.set_Bounds;
       Self.is_Modified := False;
    end modify;
+
 
 
    overriding

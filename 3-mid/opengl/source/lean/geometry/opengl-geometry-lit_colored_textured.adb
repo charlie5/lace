@@ -9,19 +9,21 @@ with
      GL.lean,
      GL.Pointers,
 
-     Interfaces.C.Strings,
+     interfaces.C.Strings,
      System.storage_Elements;
 
 
 package body openGL.Geometry.lit_colored_textured
 is
-   use GL.lean,
-       GL.Pointers,
-       Interfaces,
-       System;
+   use
+        GL.lean,
+        GL.Pointers,
+        Interfaces,
+        System;
+
 
    ------------------
-   --  Shader Program
+   --- Shader Program
    --
 
    type program_Id is (rgba_Texture, alpha_Texture);
@@ -61,9 +63,8 @@ is
    Attribute_5_Name_ptr : aliased constant C.strings.chars_ptr := C.strings.to_chars_ptr (Attribute_5_Name'Access);
 
 
-
    ---------
-   --  Forge
+   --- Forge
    --
 
    type Geometry_view is access all Geometry.lit_colored_textured.item'Class;
@@ -77,8 +78,9 @@ is
       procedure define (the_Program         : access Program;
                         use_fragment_Shader : in     String)
       is
-         use Attribute.Forge,
-             system.Storage_Elements;
+         use
+              Attribute.Forge,
+              system.Storage_Elements;
 
          Sample : Vertex;
 
@@ -99,10 +101,11 @@ is
 
             -- TODO: The below code produces ugly text. Investigate and fix.
             --
-            --  the_Program.fragment_Shader.define (Shader.Fragment, (asset_Names' (1 => to_Asset ("assets/opengl/shader/version.header"),
+            -- the_Program.fragment_Shader.define (Shader.Fragment, (asset_Names' (1 => to_Asset ("assets/opengl/shader/version.header"),
             --                                                                      2 => to_Asset ("assets/opengl/shader/texturing-frag.snippet"),
             --                                                                      3 => to_Asset ("assets/opengl/shader/lighting-frag.snippet"),
             --                                                                      4 => to_Asset ("assets/opengl/shader/lit_colored_textured.frag"))));
+
          else
             the_Program.fragment_Shader.define (Shader.Fragment, (asset_Names' (1 => to_Asset ("assets/opengl/shader/version.header"),
                                                                                 2 => to_Asset ("assets/opengl/shader/texturing-frag.snippet"),
@@ -202,13 +205,14 @@ is
    begin
       Tasks.check;
 
-      if texture_is_Alpha     --  Define the shaders and program, if required.
+      if texture_is_Alpha     -- Define the shaders and program, if required.
       then
          if the_Programs (alpha_Texture).Program = null
          then
             define (the_Programs (alpha_Texture)'Access,
                     use_fragment_Shader => "assets/opengl/shader/lit_colored_text.frag");
          end if;
+
       else
          if the_Programs (rgba_Texture).Program = null
          then
@@ -229,13 +233,13 @@ is
    end new_Geometry;
 
 
-
    ----------
-   --  Vertex
+   --- Vertex
    --
 
    function is_Transparent (Self : in Vertex_array) return Boolean
    is
+
       function get_Color (Index : in Index_t) return rgba_Color
       is (Self (Index).Color);
 
@@ -246,9 +250,8 @@ is
    end is_Transparent;
 
 
-
    --------------
-   --  Attributes
+   --- Attributes
    --
 
    package openGL_Buffer_of_geometry_Vertices is new Buffer.general (base_Object   => Buffer.array_Object,
@@ -258,7 +261,8 @@ is
 
    procedure Vertices_are (Self : in out Item;   Now : in Vertex_array)
    is
-      use      openGL_Buffer_of_geometry_Vertices;
+      use openGL_Buffer_of_geometry_Vertices;
+
       use type Buffer.view;
    begin
       if Self.Vertices = null

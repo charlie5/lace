@@ -5,18 +5,19 @@ with
      sdl.Video.Windows.Makers,
      sdl.Video.gl,
 
-     ada.Task_identification,
+     ada.Task_Identification,
      ada.Text_IO;
 
 
 procedure launch_core_Test
 --
---  Exercise basic subprograms common to all GL profiles.
+-- Exercise basic subprograms common to all GL profiles.
 --
---  TODO: Complete this.
+-- TODO: Complete this.
 --
 is
    use ada.Text_IO;
+
    use type sdl.Video.Windows.window_Flags;
 
    Error : exception;
@@ -46,7 +47,8 @@ begin
    sdl.Video.gl.create      (gl_Context, From => Window);
    sdl.Video.gl.set_Current (gl_Context, To   => Window);
 
-   openGL.Tasks.renderer_Task := ada.Task_identification.current_Task;
+   openGL.Tasks.renderer_Task := ada.Task_Identification.current_Task;
+
 
    ---------
    --- Tests

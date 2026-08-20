@@ -21,6 +21,8 @@ is
                                 Height : in Positive) return Item;
    end Forge;
 
+
+
    procedure destruct (Self : in out Item);
 
 
@@ -59,5 +61,6 @@ private
 
    null_Buffer : constant Item := (Name    => 0,
                                    Texture => openGL.Texture.null_Object);
+
 
 end openGL.Frame_Buffer;

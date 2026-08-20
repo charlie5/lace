@@ -13,9 +13,10 @@ private
 with
      freetype.face_Size;
 
+
 package openGL.FontImpl
 --
---  Implements an openGL font.
+-- Implements an openGL font.
 --
 is
    type Item is tagged limited private;
@@ -23,7 +24,7 @@ is
 
 
    ---------
-   --  Types
+   --- Types
    --
 
    type RenderMode is (RENDER_FRONT, RENDER_BACK, RENDER_SIDE, RENDER_ALL);
@@ -41,7 +42,7 @@ is
                           ALIGN_JUSTIFY => 3);
 
 
-   --  unsigned_char_Pointer
+   -- unsigned_char_Pointer
    --
 
    use Interfaces;
@@ -56,7 +57,7 @@ is
 
 
    ---------
-   --  Forge
+   --- Forge
    --
 
    procedure define   (Self : access Item;   ftFont            : access Font.item'Class;
@@ -68,8 +69,8 @@ is
    procedure destruct (Self : in out Item);
 
 
-   ---------------
-   --  'Protected' ~ For derived class use only.
+   ---------------------------------------------
+   --- 'Protected' ~ For derived class use only.
    --
 
    function  Err            (Self : in     Item) return freetype_c.FT_Error;
@@ -121,6 +122,7 @@ is
                                                    renderMode : in Integer) return Vector_3;
 
 
+
 private
 
    type glyph_Container_view is access all openGL.Glyph.Container.item'Class;
@@ -143,11 +145,11 @@ private
 
    function CheckGlyph (Self : access Item;   Character : in freetype.charmap.CharacterCode) return Boolean;
    --
-   --  Check that the glyph at <code>chr</code> exist. If not load it.
+   -- Check that the glyph at <code>chr</code> exist. If not load it.
    --
-   --  Character: The character index.
+   -- Character: The character index.
    --
-   --  Returns true if the glyph can be created.
+   -- Returns true if the glyph can be created.
 
 
 end openGL.FontImpl;

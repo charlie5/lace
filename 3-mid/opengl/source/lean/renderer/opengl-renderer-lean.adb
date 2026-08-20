@@ -14,7 +14,7 @@ with
      GL.Binding,
      GL.lean,
 
-     Interfaces.C,
+     interfaces.C,
      gnat.heap_Sort,
      System,
 
@@ -26,10 +26,12 @@ with
 
 package body openGL.Renderer.lean
 is
-   use GL,
-       Program,
-       Interfaces.C,
-       ada.Text_IO;
+   use
+        GL,
+        Program,
+        interfaces.C,
+        ada.Text_IO;
+
 
    ---------
    --- Forge
@@ -72,6 +74,7 @@ is
 
    procedure free (Self : in out View)
    is
+
       procedure deallocate is new ada.unchecked_Deallocation (Item'Class, View);
    begin
       Self.destroy;
@@ -186,6 +189,7 @@ is
    procedure free_old_Models (Self : in out Item)
    is
       use Model;
+
       Last : Natural;
 
    begin
@@ -199,10 +203,10 @@ is
 
 
 
-
    procedure free_old_Impostors (Self : in out Item)
    is
       use Impostor;
+
       Last : Natural;
    begin
       Self.obsolete_Impostors.fetch (Self.free_Impostors, Last);
@@ -214,17 +218,19 @@ is
    end free_old_Impostors;
 
 
-   ---------
-   -- Engine
+   ----------
+   --- Engine
    --
 
-   protected body gl_Lock
+   protected
+   body gl_Lock
    is
       entry acquire when not Locked
       is
       begin
          Locked := True;
       end acquire;
+
 
 
       entry release when Locked
@@ -237,10 +243,11 @@ is
 
 
 
-   task body Engine
+   task
+   body Engine
    is
       the_Context : Context.view; -- with unreferenced;
-      Done        : Boolean := False;
+      Done        : Boolean     := False;
 
    begin
       select
@@ -250,10 +257,10 @@ is
          end start;
 
          openGL.Tasks.Renderer_Task := ada.Task_Identification.current_Task;
-         --  Self.context_Setter.all;
+         -- Self.context_Setter.all;
          Self.Context := the_Context;
 
-         --  put_Line ("openGL Server version: " & Server.Version);
+         -- put_Line ("openGL Server version: " & Server.Version);
 
       or
          accept Stop
@@ -262,7 +269,7 @@ is
          end Stop;
       end select;
 
-      --  put_Line ("renderer CONTEXT 1 " & Self.Context'Image);
+      -- put_Line ("renderer CONTEXT 1 " & Self.Context'Image);
 
       gl_Lock.acquire;
       Self.context_Setter.all;
@@ -316,22 +323,22 @@ is
             exit when Done;
 
 
-            --  declare
+            -- declare
             --     use gl.Binding;
-            --  begin
+            -- begin
             --     gl_Lock.acquire;
             --     --gl_Context.make_Current;
             --     Self.context_Setter.all;
             --     glClearColor (0.0, 1.0, 0.0, 0.0);
             --     glClear      (GL_COLOR_BUFFER_BIT or GL_DEPTH_BUFFER_BIT);
-            --     --  Gdk.GLContext.clear_Current;
+            --     -- Gdk.GLContext.clear_Current;
             --     Self.context_Clearer.all;
             --     gl_Lock.release;
-            --  end;
+            -- end;
 
-            --  gl_Lock.acquire;
-            --  Self.context_Setter.all;
-            --  put_Line ("renderer CONTEXT 2 " & Self.Context'Image);
+            -- gl_Lock.acquire;
+            -- Self.context_Setter.all;
+            -- put_Line ("renderer CONTEXT 2 " & Self.Context'Image);
 
             if new_font_Name /= null_Asset
             then
@@ -356,8 +363,8 @@ is
 
                Self.update_Impostors_and_draw_Visuals (all_Updates (1 .. Length));
 
-               if    Self.Swapper /= null
-                 and Self.swap_Required
+               if         Self.Swapper /= null
+                 and then Self.swap_Required
                then
                   Self.Swapper.all;
                end if;
@@ -372,8 +379,8 @@ is
 
             end if;
 
-            --  Self.context_Clearer.all;
-            --  gl_Lock.release;
+            -- Self.context_Clearer.all;
+            -- gl_Lock.release;
          end;
       end loop;
 
@@ -386,8 +393,10 @@ is
       while not Self.Fonts.is_Empty
       loop
          declare
-            use Font,
-                Font.font_id_Maps_of_font;
+            use
+                 Font,
+                 Font.font_id_Maps_of_font;
+
             the_Cursor : Cursor    := Self.Fonts.First;
             the_Font   : Font.view := Element (the_Cursor);
          begin
@@ -415,6 +424,7 @@ is
    end start_Engine;
 
 
+
    procedure stop_Engine (Self : in out Item)
    is
    begin
@@ -429,6 +439,7 @@ is
    begin
       Self.Engine.render;
    end render;
+
 
 
    procedure add_Font (Self : in out Item;   font_Id : in Font.font_Id)
@@ -475,9 +486,10 @@ is
       for i in the_Updates'Range
       loop
          declare
-            use Texture,
-                Visual,
-                GL.Binding;
+            use
+                 Texture,
+                 Visual,
+                 GL.Binding;
 
             the_Update     : impostor_Update renames the_Updates (i);
             the_Impostor   : Impostor.view   renames the_Update.Impostor;
@@ -574,9 +586,9 @@ is
 
       function get_on_Lights return openGL.Light.items
       is
-         all_Lights : constant openGL.Light.items := Self.Lights.fetch;
+         all_Lights : constant openGL.Light.items                   := Self.Lights.fetch;
          lit_Lights :          openGL.Light.items (all_Lights'Range);
-         Count      :          Natural            := 0;
+         Count      :          Natural                              := 0;
       begin
          for i in all_Lights'Range
          loop
@@ -600,11 +612,12 @@ is
          Self.clear_Frame;
       end if;
 
+
       ---------------------
       --- Draw the visuals.
       --
 
-      --  Collect opaque geometry (for state sorting) and collect lucid geometry (for depth sorting).
+      -- Collect opaque geometry (for state sorting) and collect lucid geometry (for depth sorting).
       --
       for Each in the_Visuals'Range
       loop
@@ -615,12 +628,12 @@ is
             the_Visual : Visual.view renames the_Visuals (Each);
 
          begin
-            if    the_Visual.Model.needs_Rebuild
-               or (    the_Visual.Model.opaque_Geometries = null
-                   and the_Visual.Model. lucid_Geometries = null)
+            if        the_Visual.Model.needs_Rebuild
+              or else (         the_Visual.Model.opaque_Geometries = null
+                       and then the_Visual.Model. lucid_Geometries = null)
             then
                the_Visual.Model.create_GL_Geometries (Self.Textures'Access, Self.Fonts);
-               --  put_Line ("Rebuild");
+               -- put_Line ("Rebuild");
 
             elsif the_Visual.Model.is_Modified
             then
@@ -658,7 +671,7 @@ is
       end loop;
 
 
-      --  State sort opaque geometries and render them.
+      -- State sort opaque geometries and render them.
       --
       declare
          use GL.Binding;
@@ -672,9 +685,11 @@ is
          end Heap_swap;
 
 
+
          function Heap_less_than (Left, Right : in Natural) return Boolean
          is
             use System;
+
             L_Geometry : openGL.Geometry.view renames Self.all_opaque_Couples (Left) .Geometry;
             R_Geometry : openGL.Geometry.view renames Self.all_opaque_Couples (Right).Geometry;
          begin
@@ -718,7 +733,8 @@ is
             current_Program.Lights_are       (Lights);
             current_Program.Scale_is         (the_Couple.Visual.Scale);
 
-            if the_Couple.Visual.program_Parameters /= null then
+            if the_Couple.Visual.program_Parameters /= null
+            then
                the_Couple.Visual.program_Parameters.enable;
             end if;
 
@@ -728,7 +744,7 @@ is
 
       Errors.log;
 
-      --  Depth sort lucid geometries and render them.
+      -- Depth sort lucid geometries and render them.
       --
       declare
          use GL.Binding;
@@ -740,6 +756,7 @@ is
             Self.all_lucid_Couples (Left)  := Self.all_lucid_Couples (Right);
             Self.all_lucid_Couples (Right) := Pad;
          end Heap_swap;
+
 
 
          function Heap_less_than (Left, Right : in Natural) return Boolean
@@ -780,7 +797,8 @@ is
             current_Program.Lights_are       (Lights);
             current_Program.Scale_is         (the_Couple.Visual.Scale);
 
-            if the_Couple.Visual.program_Parameters /= null then
+            if the_Couple.Visual.program_Parameters /= null
+            then
                the_Couple.Visual.program_Parameters.enable;
             end if;
 
@@ -794,9 +812,8 @@ is
    end draw;
 
 
-
-   -----------------------------
-   -- safe_camera_Map_of_updates
+   ------------------------------
+   --- safe_camera_Map_of_updates
    --
 
    protected
@@ -809,9 +826,11 @@ is
       end define;
 
 
+
       procedure destruct
       is
          use camera_Maps_of_updates;
+
          procedure deallocate is new ada.unchecked_Deallocation (updates_for_Camera,
                                                                  updates_for_Camera_view);
 
@@ -841,6 +860,7 @@ is
       end destruct;
 
 
+
       procedure add (the_Updates : in impostor_Updates;
                      the_Camera  : in Camera_view)
       is
@@ -850,6 +870,7 @@ is
       begin
          begin
             the_camera_Updates := current_Map.Element (our_Camera);
+
          exception
             when constraint_Error =>     -- No element exists for this camera yet.
                the_camera_Updates := new updates_for_Camera;
@@ -866,6 +887,7 @@ is
       end add;
 
 
+
       procedure add (the_Visuals : in Visual.views;
                      the_Camera  : in Camera_view)
       is
@@ -875,6 +897,7 @@ is
       begin
          begin
             the_camera_Updates := current_Map.Element (our_Camera);
+
          exception
             when constraint_Error =>     -- No element exists for this camera yet.
                the_camera_Updates := new updates_for_Camera;
@@ -891,13 +914,14 @@ is
       end add;
 
 
+
       procedure fetch_all_Updates (the_Updates : out camera_updates_Couples;
                                    Length      : out Natural)
       is
          use camera_Maps_of_updates;
 
          the_Couples : camera_updates_Couples (1 .. Integer (current_Map.Length));
-         Cursor      : camera_Maps_of_updates.Cursor := current_Map.First;
+         Cursor      : camera_Maps_of_updates.Cursor                             := current_Map.First;
 
       begin
          for i in the_Couples'Range
@@ -920,9 +944,8 @@ is
    end safe_camera_Map_of_updates;
 
 
-
-   --------------
-   -- safe_Models
+   ---------------
+   --- safe_Models
    --
 
    protected
@@ -934,6 +957,8 @@ is
          my_Count             := my_Count + 1;
          my_Models (my_Count) := the_Model;
       end add;
+
+
 
       procedure fetch (the_Models : out graphics_Models;
                        Count      : out Natural)
@@ -954,8 +979,8 @@ is
    end free;
 
 
-   -----------------
-   -- safe_Impostors
+   ------------------
+   --- safe_Impostors
    --
 
    protected
@@ -967,6 +992,8 @@ is
          the_Count                 := the_Count + 1;
          the_Impostors (the_Count) := the_Impostor;
       end add;
+
+
 
       procedure fetch (Impostors : out Impostor_Set;
                        Count     : out Natural)
@@ -987,8 +1014,8 @@ is
    end free;
 
 
-   ---------
-   -- Lights
+   ----------
+   --- Lights
    --
 
    function Hash (Id : in openGL.Light.Id_t) return ada.Containers.Hash_type
@@ -996,6 +1023,7 @@ is
    begin
       return ada.Containers.Hash_type (Id);
    end Hash;
+
 
 
    protected
@@ -1009,12 +1037,14 @@ is
       end add;
 
 
+
       procedure set (Light : in openGL.Light.item)
       is
       begin
          the_Lights.replace (Light.Id,
                              Light);
       end set;
+
 
 
       procedure rid (Light : in openGL.Light.item)
@@ -1024,11 +1054,13 @@ is
       end rid;
 
 
+
       function Exists (Id : in openGL.light.Id_t) return Boolean
       is
       begin
          return the_Lights.Contains (Id);
       end Exists;
+
 
 
       function get (Id : in openGL.Light.Id_t) return openGL.Light.item
@@ -1038,10 +1070,11 @@ is
       end get;
 
 
+
       function fetch return openGL.Light.items
       is
          all_Lights : openGL.Light.items (1 .. Natural (the_Lights.Length));
-         i          : Natural := 0;
+         i          : Natural                                              := 0;
       begin
          for Each of the_Lights
          loop
@@ -1068,11 +1101,13 @@ is
    end new_Light;
 
 
+
    procedure add (Self : in out Item;   the_Light : in openGL.Light.item)
    is
    begin
       Self.Lights.add (the_Light);
    end add;
+
 
 
    procedure set (Self : in out Item;   the_Light : in openGL.Light.item)
@@ -1082,11 +1117,13 @@ is
    end set;
 
 
+
    procedure rid (Self : in out Item;   the_Light : in openGL.Light.item)
    is
    begin
       Self.Lights.rid (the_Light);
    end rid;
+
 
 
    function Exists (Self : in out Item;   Id : in openGL.light.Id_t) return Boolean
@@ -1096,11 +1133,13 @@ is
    end Exists;
 
 
+
    function Light (Self : in out Item;   Id : in openGL.light.Id_t) return openGL.Light.item
    is
    begin
       return Self.Lights.get (Id);
    end Light;
+
 
 
    function fetch (Self : in out Item) return openGL.Light.items

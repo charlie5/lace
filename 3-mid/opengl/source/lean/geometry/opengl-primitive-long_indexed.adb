@@ -17,6 +17,7 @@ is
                                            Indices : in long_Indices)
    is
       use Buffer.long_indices.Forge;
+
       buffer_Indices : aliased long_Indices := [Indices'Range => <>];
    begin
       for Each in buffer_Indices'Range
@@ -45,6 +46,7 @@ is
    overriding
    procedure destroy (Self : in out Item)
    is
+
       procedure free is new ada.unchecked_Deallocation (Buffer.long_indices.Object'Class,
                                                         Buffer.long_indices.view);
    begin
@@ -53,14 +55,14 @@ is
    end destroy;
 
 
-
    --------------
-   --  Attributes
+   --- Attributes
    --
 
    procedure Indices_are  (Self : in out Item;   Now : in long_Indices)
    is
       use Buffer.long_indices;
+
       buffer_Indices : aliased long_Indices := [Now'Range => <>];
    begin
       for Each in buffer_Indices'Range
@@ -72,16 +74,16 @@ is
    end Indices_are;
 
 
-
    --------------
-   --  Operations
+   --- Operations
    --
 
    overriding
    procedure render (Self : in out Item)
    is
-      use GL,
-          GL.Binding;
+      use
+           GL,
+           GL.Binding;
    begin
       Tasks.check;
       openGL.Primitive.item (Self).render;   -- Do base class render.

@@ -42,5 +42,4 @@ is
    end to_Vector_3;
 
 
-
 end openGL.Conversions;

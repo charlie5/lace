@@ -7,7 +7,7 @@ with
 package body openGL.Geometry
 is
    ---------
-   --  Forge
+   --- Forge
    --
 
    procedure destroy (Self : in out Item)
@@ -19,17 +19,21 @@ is
    end destroy;
 
 
+
    procedure free (Self : in out View)
    is
+
       procedure deallocate is new ada.unchecked_Deallocation (Item'Class, View);
    begin
-      if Self = null then
+      if Self = null
+      then
          return;
       end if;
 
       Self.destroy;
       deallocate (Self);
    end free;
+
 
 
    procedure free_Primitives (Self : in out Item)
@@ -44,9 +48,8 @@ is
    end free_Primitives;
 
 
-
    --------------
-   --  Attributes
+   --- Attributes
    --
 
    procedure Model_is (Self : in out Item;   Now : in Model_view)
@@ -54,6 +57,7 @@ is
    begin
       Self.Model := Now;
    end Model_is;
+
 
 
    function Model (Self : in Item) return Model_view
@@ -69,6 +73,7 @@ is
    begin
       return to_String (Self.Label);
    end Label;
+
 
 
    procedure Label_is (Self : in out Item'Class;   Now : in String)
@@ -87,6 +92,7 @@ is
    begin
       the_Primitive.Indices_are (Now);
    end Indices_are;
+
 
 
    procedure Indices_are  (Self : in out Item;   Now       : in long_Indices;
@@ -108,7 +114,7 @@ is
 
 
 
-   function Fade (Self : in Item;   Which : texture_Set.texture_ID := 1) return texture_Set.fade_Level
+   function Fade (Self : in Item;   Which : in texture_Set.texture_ID := 1) return texture_Set.fade_Level
    is
    begin
       raise Error with "Geometry has no texture.";
@@ -145,12 +151,12 @@ is
 
 
 
-
    procedure Program_is  (Self : in out Item;   Now : in openGL.Program.view)
    is
    begin
       Self.Program := Now;
    end Program_is;
+
 
 
    function Program (Self : in Item) return openGL.Program.view
@@ -168,6 +174,7 @@ is
    end Bounds;
 
 
+
    procedure Bounds_are (Self : in out Item'Class;   Now : in openGL.Bounds)
    is
    begin
@@ -180,12 +187,13 @@ is
    is
    begin
       return    Self.is_Transparent;
-             --  or Self.Textures.Textures (1).Object.is_Transparent
-             --  or Self.Textures.Textures (2).Object.is_Transparent;     -- TODO: Loop over all textures.
-      --  --  return    Self.is_Transparent
+             -- or Self.Textures.Textures (1).Object.is_Transparent
+             -- or Self.Textures.Textures (2).Object.is_Transparent;     -- TODO: Loop over all textures.
+      --  -- return    Self.is_Transparent
       --  --    or Self.Texture_1.is_Transparent
       --  --    or Self.Texture_2.is_Transparent;
    end is_Transparent;
+
 
 
    procedure is_Transparent (Self : in out Item;   Now : in Boolean := True)
@@ -195,16 +203,15 @@ is
    end is_Transparent;
 
 
-
    --------------
-   --  Operations
+   --- Operations
    --
 
    procedure add (Self : in out Item'Class;   the_Primitive : in Primitive.view)
    is
    begin
       Self.primitive_Count                   := Self.primitive_Count + 1;
-      Self.Primitives (self.primitive_Count) := the_Primitive;
+      Self.Primitives (Self.primitive_Count) := the_Primitive;
    end add;
 
 
@@ -222,16 +229,15 @@ is
       Self.Vertices.enable;
       Self.Program .enable_Attributes;
 
-      for Each in 1 .. self.primitive_Count     -- Render each primitive.
+      for Each in 1 .. Self.primitive_Count     -- Render each primitive.
       loop
          Self.Primitives (Each).render;
       end loop;
    end render;
 
 
-
    -----------
-   --  Normals
+   --- Normals
    --
 
    generic
@@ -278,7 +284,7 @@ is
    function any_facet_Count_in (face_Kind : in primitive.facet_Kind;
                                 Indices   : in any_Indices) return long_Index_t;
    --
-   --  Returns the maximum possible facet count, which includes redundant facets.
+   -- Returns the maximum possible facet count, which includes redundant facets.
 
 
    function any_facet_Count_in (face_Kind : in primitive.facet_Kind;
@@ -301,15 +307,16 @@ is
    end any_facet_Count_in;
 
 
+
    function facet_Count_in is new any_facet_Count_in (any_Index_t => Index_t,
                                                       any_Indices => Indices);
    pragma Unreferenced (facet_Count_in);
 
 
-
    ----------
-   --  Facets
+   --- Facets
    --
+
    type Facet  is array (     Index_t range 1 .. 3) of Index_t;     -- An 'indexed' triangle.
    type Facets is array (long_Index_t range   <>  ) of Facet;
 
@@ -324,7 +331,7 @@ is
    function any_Facets_of (face_Kind : in primitive.facet_Kind;
                            Indices   : in any_Indices) return access Facets;
    --
-   --  'Facets_of' returns all non-redundant facets.
+   -- 'Facets_of' returns all non-redundant facets.
 
 
 
@@ -350,9 +357,9 @@ is
             P2 : constant Index_t := Index_t (vertex_Id_in (face_Kind, Indices,  Each, 2));
             P3 : constant Index_t := Index_t (vertex_Id_in (face_Kind, Indices,  Each, 3));
          begin
-            if not (   P1 = P2
-                    or P1 = P3
-                    or P2 = P3)
+            if not (        P1 = P2
+                    or else P1 = P3
+                    or else P2 = P3)
             then
                Count := Count + 1;
 
@@ -395,11 +402,10 @@ is
    pragma Unreferenced (Facets_of);
 
 
-
-
    -----------
-   --  Normals
+   --- Normals
    --
+
    type Normals_view is access Normals;
 
 
@@ -416,6 +422,7 @@ is
                             Indices   : in any_Indices;
                             Sites     : in openGL.Sites) return access Normals
    is
+
       function Facets_of is new any_Facets_of (any_Index_t,
                                                any_Indices);
 
@@ -433,7 +440,7 @@ is
       length_N          : Real;
 
    begin
-      --  Calculate normal at each facet.
+      -- Calculate normal at each facet.
       --
       for Each in the_Facets'Range
       loop
@@ -448,7 +455,7 @@ is
          end if;
       end loop;
 
-      --  Calculate normal at each vertex.
+      -- Calculate normal at each vertex.
       --
       declare
          Id     : Index_t;
@@ -491,6 +498,7 @@ is
                         Indices   : in openGL.Indices;
                         Sites     : in openGL.Sites) return access Normals
    is
+
       function my_Normals_of is new any_Normals_of (any_Index_t => Index_t,
                                                     any_Indices => openGL.Indices);
    begin
@@ -505,6 +513,7 @@ is
                         Indices   : in openGL.long_Indices;
                         Sites     : in openGL.Sites) return access Normals
    is
+
       function my_Normals_of is new any_Normals_of (any_Index_t => long_Index_t,
                                                     any_Indices => openGL.long_Indices);
    begin
@@ -514,15 +523,14 @@ is
    end Normals_of;
 
 
-
-
-   ---------
-   -- Bounds
+   ----------
+   --- Bounds
    --
 
    function get_Bounds (Count : in Natural) return openGL.Bounds
    is
       use Geometry_3D;
+
       the_Bounds : openGL.Bounds := null_Bounds;
    begin
       for i in 1 .. any_Index_t (Count)
@@ -538,9 +546,8 @@ is
    end get_Bounds;
 
 
-
-   ---------------
-   -- Transparency
+   ----------------
+   --- Transparency
    --
 
    function get_Transparency (Count : in Natural) return Boolean

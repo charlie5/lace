@@ -2,6 +2,7 @@ with
      openGL.Camera,
      ada.Characters.latin_1;
 
+
 package openGL.Dolly
 --
 -- A utility which moves a camera via the keyboard.
@@ -19,6 +20,7 @@ is
                                                        Available     : out Boolean);
 
 
+
 private
 
    type Item (Camera : openGL.Camera.view) is tagged
@@ -27,5 +29,6 @@ private
          last_Character : Character := ada.Characters.Latin_1.NUL;
          Speed          : Real      := 1.0;
       end record;
+
 
 end openGL.Dolly;

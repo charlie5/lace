@@ -5,7 +5,7 @@ with
 
 package openGL.Model.capsule.lit_colored_textured
 --
---  Models a lit, colored and textured capsule.
+-- Models a lit, colored and textured capsule.
 --
 is
    package textured_Model is new texturing.Mixin (openGL.Model.capsule.item);
@@ -22,6 +22,7 @@ is
                          Height : in Real;
                          Color  : in lucid_Color;
                          Image  : in asset_Name := null_Asset) return View;
+
 
    --------------
    --- Attributes

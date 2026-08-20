@@ -37,7 +37,7 @@ is
    --- Attributes
    --
 
-   --  NB: - An extra vertex is required at the end of each latitude ring.
+   -- NB: - An extra vertex is required at the end of each latitude ring.
    --      - This last vertex has the same site as the rings initial vertex.
    --      - The  last    vertex has 's' texture coord of 1.0, whereas
    --        the  initial vertex has 's' texture coord of 0.0.
@@ -48,8 +48,9 @@ is
    is
       pragma unreferenced (Textures, Fonts);
 
-      use Geometry,
-          Geometry.textured;
+      use
+           Geometry,
+           Geometry.textured;
 
       lat_Count      : Positive renames Self.lat_Count;
       long_Count     : Positive renames Self.long_Count;
@@ -89,8 +90,8 @@ is
          the_Vertices (the_Vertices'First).Site   := north_Pole;
          the_Vertices (the_Vertices'First).Coords := (S => 0.5, T => 1.0);
 
-         the_Vertices (the_Vertices'Last).Site    := south_Pole;
-         the_Vertices (the_Vertices'Last).Coords  := (S => 0.5, T => 0.0);
+         the_Vertices (the_Vertices'Last).Site   := south_Pole;
+         the_Vertices (the_Vertices'Last).Coords := (S => 0.5, T => 0.0);
 
          for lat_Id in 2 .. lat_Count - 1
          loop
@@ -183,6 +184,7 @@ is
          set_Texture:
          declare
             use Texture;
+
             the_Image   : constant Image          := IO   .to_Image   (Self.Image);
             the_Texture : constant Texture.object := Forge.to_Texture ( the_Image);
          begin

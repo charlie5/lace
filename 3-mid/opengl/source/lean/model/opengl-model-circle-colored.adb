@@ -24,7 +24,6 @@ is
    end new_circle;
 
 
-
    ---------------------
    --- openGL Geometries
    --
@@ -35,8 +34,9 @@ is
    is
       pragma unreferenced (Fonts);
 
-      use Geometry,
-          Geometry.colored;
+      use
+           Geometry,
+           Geometry.colored;
 
 
       function to_Indices return Indices
@@ -78,7 +78,7 @@ is
       upper_Face : Geometry.colored.view;
 
    begin
-      --  Upper Face
+      -- Upper Face
       --
       declare
          the_Vertices : Geometry.colored.Vertex_array (1 .. Index_t (Self.Sides));

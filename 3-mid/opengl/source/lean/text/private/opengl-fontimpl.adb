@@ -8,28 +8,33 @@ with
 
      ada.unchecked_Deallocation;
 
+
 package body openGL.FontImpl
 is
    use freetype_c.Pointers;
 
+
    -----------
-   --  Utility
+   --- Utility
    --
 
    procedure deallocate is new ada.unchecked_Deallocation (Glyph.Container.item'Class,
                                                            glyph_Container_view);
 
+
    ---------
-   --  Forge
+   --- Forge
    --
 
    procedure define (Self : access Item;   ftFont       : access Font.item'Class;
                                            fontFilePath : in     String)
    is
-      use freetype.Face,
-          openGL.Glyph.container,
-          Freetype_C,
-          Freetype_C.Binding;
+      use
+           freetype.Face,
+           openGL.Glyph.container,
+           Freetype_C,
+           Freetype_C.Binding;
+
       use type FT_Error;
 
    begin
@@ -52,10 +57,12 @@ is
                                            pBufferBytes      : access  C.unsigned_char;
                                            bufferSizeInBytes : in      Integer)
    is
-      use freetype.Face,
-          openGL.Glyph.container,
-          Freetype_C,
-          Freetype_c.Binding;
+      use
+           freetype.Face,
+           openGL.Glyph.container,
+           Freetype_C,
+           freetype_c.Binding;
+
       use type FT_Error;
    begin
       Self.Face       := Forge.to_Face (pBufferBytes, bufferSizeInBytes, precomputeKerning => True);
@@ -83,7 +90,7 @@ is
 
 
    --------------
-   --  Attributes
+   --- Attributes
    --
 
    function Err (Self : in Item) return freetype_c.FT_Error
@@ -186,7 +193,8 @@ is
    function FaceSize (Self : access Item;   Size         : in Natural;
                                             x_Res, y_Res : in Natural) return Boolean
    is
-      use      Glyph.Container;
+      use Glyph.Container;
+
       use type freetype_c.FT_Error;
 
    begin
@@ -199,7 +207,8 @@ is
       Self.charSize := Self.Face.Size (Size, x_Res, y_Res);
       Self.Err      := Self.Face.Error;
 
-      if Self.Err /= 0 then
+      if Self.Err /= 0
+      then
          return False;
       end if;
 
@@ -276,14 +285,15 @@ is
 
       if tempGlyph = null
       then
-         if Self.Err = 0 then
+         if Self.Err = 0
+         then
             Self.Err := 16#13#;
          end if;
 
          return False;
       end if;
 
-      if Self.glyphList.Glyph (character) = null
+      if Self.glyphList.Glyph (Character) = null
       then
          Self.glyphList.add (tempGlyph, Character);
       end if;
@@ -300,8 +310,9 @@ is
    is
       pragma unreferenced (Length);
 
-      use freetype.charMap,
-          Geometry_3d;
+      use
+           freetype.charMap,
+           Geometry_3d;
 
       Pos       : Vector_3 := Position;
       totalBBox : Bounds   := null_Bounds;
@@ -314,11 +325,11 @@ is
          return totalBBox;
       end if;
 
-      --  Only compute the bounds if string is non-empty.
+      -- Only compute the bounds if string is non-empty.
       --
       if Text'Length > 0     -- TODO: Rid this useless check.
       then
-         --  For multibyte, we can't rely on sizeof (T) == character
+         -- For multibyte, we can't rely on sizeof (T) == character
          --
          declare
             use type freetype.charMap.characterCode;
@@ -327,7 +338,7 @@ is
             nextChar : Character;
 
          begin
-            --  Expand totalBox by each glyph in string
+            -- Expand totalBox by each glyph in string
             --
             for i in Text'Range
             loop
@@ -346,7 +357,7 @@ is
                      tempBBox.Box  := tempBBox.Box + Pos;
                      totalBBox.Box := totalBBox.Box or tempBBox.Box;
 
-                     Pos := Pos  +  spacing;
+                     Pos := Pos  +  Spacing;
                      Pos := Pos  +  Vector_3' (Self.glyphList.Advance (to_characterCode (thisChar),
                                                                        to_characterCode (nextChar)),
                                                0.0,
@@ -424,7 +435,8 @@ is
       while i < Text'Length
       loop
          declare
-            use      freetype.charMap;
+            use freetype.charMap;
+
             use type freetype.charmap.characterCode;
 
             thisChar : constant Character := Text (ustr);
@@ -511,7 +523,7 @@ is
       end loop;
 
       return Pos;
-   end Render;
+   end render;
 
 
 end openGL.FontImpl;

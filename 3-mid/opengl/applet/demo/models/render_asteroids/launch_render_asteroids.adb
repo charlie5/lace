@@ -5,14 +5,16 @@ with
      openGL.texture_Set,
      openGL.Demo;
 
+
 procedure launch_render_Asteroids
 --
---  Render with a few asteroids.
+-- Render with a few asteroids.
 --
 is
-   use openGL,
-       openGL.Math,
-       openGL.linear_Algebra_3d;
+   use
+        openGL,
+        openGL.Math,
+        openGL.linear_Algebra_3d;
 
 begin
    Demo.define      ("openGL 'Render Asteroids' Demo");
@@ -29,10 +31,10 @@ begin
    end;
 
    declare
-      --  The models.
+      -- The models.
       --
 
-      --  gaspra_Model : constant openGL.Model.any.view := openGL.Model.any.new_Model (Model            => to_Asset ("assets/gaspra.tab"),
+      -- gaspra_Model : constant openGL.Model.any.view := openGL.Model.any.new_Model (Model            => to_Asset ("assets/gaspra.tab"),
       --                                                                               Texture          => null_Asset,
       --                                                                               texture_Details  => openGL.texture_Set.no_Details,
       --                                                                               Texture_is_lucid => False);
@@ -42,12 +44,12 @@ begin
                                                                                    Texture_is_lucid => False);
       the_Models   : constant openGL.Model.views    := [1 => gaspra_Model.all'unchecked_Access];
 
-      --  The visuals.
+      -- The visuals.
       --
       use openGL.Visual.Forge;
 
       the_Visuals : openGL.Visual.views (the_Models'Range);
-      Current     : Integer := the_Visuals'First;
+      Current     : Integer                               := the_Visuals'First;
 
    begin
       for i in the_Visuals'Range
@@ -55,7 +57,7 @@ begin
          the_Visuals (i) := new_Visual (the_Models (i));
       end loop;
 
-      --  Main loop.
+      -- Main loop.
       --
       while not Demo.Done
       loop
@@ -84,7 +86,7 @@ begin
             end if;
          end;
 
-         --  Render all visuals.
+         -- Render all visuals.
          --
          Demo.Camera.render ([1 => the_Visuals (Current)]);
 

@@ -1,6 +1,6 @@
 package openGL.Model.box
 --
---  Provides an abstract model of a box.
+-- Provides an abstract model of a box.
 --
 is
    type Item is abstract new Model.item with private;
@@ -21,10 +21,10 @@ private
       end record;
 
 
-   type site_Id is ( Left_Lower_Front, Right_Lower_Front,
+   type site_Id is (Left_Lower_Front,   Right_Lower_Front,
                     Right_Upper_Front,  Left_Upper_Front,
                     Right_Lower_Rear,   Left_Lower_Rear,
-                     Left_Upper_Rear,  Right_Upper_Rear);
+                    Left_Upper_Rear,    Right_Upper_Rear);
 
    type Sites is array (site_Id) of Site;
 
@@ -37,5 +37,6 @@ private
    right_Normal : constant Vector_3 := [ 1.0,  0.0,  0.0];
 
    function vertex_Sites (Self : in Item'Class) return Sites;
+
 
 end openGL.Model.box;

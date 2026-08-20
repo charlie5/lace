@@ -5,14 +5,14 @@ with
 
 package openGL.Variable.uniform
 --
---  Models a uniform variable for shaders.
+-- Models a uniform variable for shaders.
 --
 is
    type Item is abstract new Variable.item with private;
 
 
    ---------
-   --  Forge
+   --- Forge
    --
 
    procedure define  (Self : in out Item;   Program : access openGL.Program.item'Class;
@@ -25,9 +25,8 @@ is
    function gl_Variable (Self : in Item) return GL.GLint;
 
 
-
    -----------
-   --  Actuals
+   --- Actuals
    --
 
    type bool      is new Variable.uniform.item with private;
@@ -72,5 +71,6 @@ private
 
 
    null_Uniform : constant gl.GLint := gl.GLint'Last;     -- TODO: Use 'GL.GL_MAX_UNIFORM_LOCATIONS', when GL bindings is updated.
+
 
 end openGL.Variable.uniform;

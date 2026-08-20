@@ -44,7 +44,6 @@ is
    end animate;
 
 
-
    ---------
    --- Forge
    --
@@ -78,12 +77,11 @@ is
    end to_Set;
 
 
-
    -----------
    --- Streams
    --
 
-   procedure write (Stream : not null access Ada.Streams.Root_Stream_Type'Class;
+   procedure write (Stream : not null access ada.Streams.Root_Stream_Type'Class;
                     Item   : in              Animation_view)
    is
    begin
@@ -98,7 +96,7 @@ is
 
 
 
-   procedure read (Stream : not null access Ada.Streams.Root_Stream_Type'Class;
+   procedure read (Stream : not null access ada.Streams.Root_Stream_Type'Class;
                    Item   : out             Animation_view)
    is
       Item_not_null : Boolean;

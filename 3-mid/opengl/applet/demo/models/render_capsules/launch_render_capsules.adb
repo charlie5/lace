@@ -8,13 +8,14 @@ with
 
 procedure launch_render_Capsules
 --
---  Exercise the render of capsule models.
+-- Exercise the render of capsule models.
 --
 is
-   use openGL,
-       openGL.Model,
-       openGL.Math,
-       openGL.linear_Algebra_3d;
+   use
+        openGL,
+        openGL.Model,
+        openGL.Math,
+        openGL.linear_Algebra_3d;
 begin
    Demo.print_Usage;
    Demo.define ("openGL 'Render Capsules' Demo");
@@ -28,14 +29,14 @@ begin
       the_Light   : openGL.Light.item   := Demo.Renderer.new_Light;
       the_Texture : constant asset_Name := to_Asset ("assets/opengl/texture/Face1.bmp");
 
-      --  The Models.
+      -- The Models.
       --
       the_Capsule_Model : constant Model.Capsule.lit_colored_textured.view
         := Model.Capsule.lit_colored_textured.new_Capsule (Radius => 0.5,
                                                            Height => 2.0,
                                                            Color  => (Green, Opaque),
                                                            Image  => the_Texture);
-      --  The Visuals.
+      -- The Visuals.
       --
       use openGL.Visual.Forge;
 
@@ -45,7 +46,7 @@ begin
       the_Light.ambient_Coefficient_is (0.05);
       Demo.Renderer.set (the_Light);
 
-      --  Main loop.
+      -- Main loop.
       --
       while not Demo.Done
       loop
@@ -54,7 +55,7 @@ begin
          Demo.Dolly.evolve;
          Demo.Done := Demo.Dolly.quit_Requested;
 
-         --  Render the sprites.
+         -- Render the sprites.
          --
          Demo.Camera.render (the_Visuals);
 

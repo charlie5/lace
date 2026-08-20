@@ -6,7 +6,7 @@ with
 
 package openGL.Model.arrow.colored
 --
---  Models a colored arrow.
+-- Models a colored arrow.
 --
 is
    type Item is new openGL.Model.arrow.item with private;
@@ -21,6 +21,7 @@ is
                        line_Width : in Real         := 1.0;
                        End_1,
                        End_2      : in Vector_3     := Origin_3D) return View;
+
 
    --------------
    --- Attributes

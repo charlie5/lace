@@ -6,7 +6,7 @@ with
 
 package openGL.Model.circle.lit_textured
 --
---  Models a lit and textured circle.
+-- Models a lit and textured circle.
 --
 is
    package textured_Model is new texturing.Mixin (Model.circle.item);
@@ -31,6 +31,7 @@ is
    overriding
    function to_GL_Geometries (Self : access Item;   Textures : access Texture.name_Map_of_texture'Class;
                                                     Fonts    : in     Font.font_id_Map_of_font) return Geometry.views;
+
 
 
 private

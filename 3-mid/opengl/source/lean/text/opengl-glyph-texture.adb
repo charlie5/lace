@@ -2,7 +2,7 @@ package body openGL.Glyph.texture
 is
 
    ---------
-   --  Forge
+   --- Forge
    --
 
    function to_Glyph (glyth_Slot       : in freetype_c.FT_GlyphSlot.item;
@@ -21,6 +21,7 @@ is
    end to_Glyph;
 
 
+
    function new_Glyph (glyth_Slot       : in freetype_c.FT_GlyphSlot.item;
                        texture_Id       : in openGL.Texture.texture_Name;
                        xOffset, yOffset : in Integer;
@@ -35,7 +36,7 @@ is
 
 
    --------------
-   --  Attributes
+   --- Attributes
    --
 
    function Quad (Self : in Item;   Pen : in Vector_3) return GlyphImpl.texture.Quad_t
@@ -46,11 +47,12 @@ is
 
 
    --------------
-   --  Operations
+   --- Operations
    --
 
-   overriding function render (Self : in Item;   Pen        : in Vector_3;
-                                                 renderMode : in Integer) return Vector_3
+   overriding
+   function render (Self : in Item;   Pen        : in Vector_3;
+                                      renderMode : in Integer) return Vector_3
    is
    begin
       return GlyphImpl.texture.view (Self.Impl).renderImpl (Pen, renderMode);

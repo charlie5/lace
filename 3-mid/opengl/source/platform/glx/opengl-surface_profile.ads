@@ -2,9 +2,10 @@ with
      openGL.Screen,
      GLX;
 
+
 package openGL.surface_Profile
 --
---  Models an openGL surface profile.
+-- Models an openGL surface profile.
 --
 is
    type Item  is tagged private;
@@ -15,7 +16,7 @@ is
 
 
    -------------------
-   --  Surface Quality
+   --- Surface Quality
    --
 
    Irrelevant : constant Natural := Natural'Last;
@@ -48,7 +49,7 @@ is
 
 
    ---------
-   --  Forge
+   --- Forge
    --
 
    desired_Qualitites_unavailable : exception;
@@ -60,7 +61,7 @@ is
 
 
    --------------
-   --  Attributes
+   --- Attributes
    --
 
    function  Quality    (Self : in Item) return Qualities;
@@ -87,4 +88,6 @@ private
                                                                       Bits_alpha_mask => Irrelevant),
                                               depth_buffer_Bits   => 24,
                                               stencil_buffer_Bits => Irrelevant);
+
+
 end openGL.surface_Profile;

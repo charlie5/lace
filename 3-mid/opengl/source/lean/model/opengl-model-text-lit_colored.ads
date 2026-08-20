@@ -6,13 +6,13 @@ with
 
 package openGL.Model.Text.lit_colored
 --
---  Models lit and colored text.
+-- Models lit and colored text.
 --
 is
    package textured_Model is new texturing.Mixin (openGL.Model.text.item);
 
    type Item is new textured_Model.textured_item with private;
-   --  type Item is new Model.text.item with private;
+   -- type Item is new Model.text.item with private;
    type View is access all Item'Class;
 
 
@@ -43,28 +43,28 @@ is
    function  Font    (Self : in     Item) return openGL.Font.view;
 
 
-   ------------
-   -- Texturing
+   -------------
+   --- Texturing
    --
 
-   --  overriding
-   --  function  Fade       (Self : in     Item;   Which : in texture_Set.texture_Id) return texture_Set.fade_Level;
+   -- overriding
+   -- function  Fade       (Self : in     Item;   Which : in texture_Set.texture_Id) return texture_Set.fade_Level;
    --
-   --  overriding
-   --  procedure Fade_is    (Self : in out Item;   Which : in texture_Set.texture_Id;
+   -- overriding
+   -- procedure Fade_is    (Self : in out Item;   Which : in texture_Set.texture_Id;
    --                                              Now   : in texture_Set.fade_Level);
    --
-   --  procedure Texture_is (Self : in out Item;   Which : in texture_Set.texture_Id;
+   -- procedure Texture_is (Self : in out Item;   Which : in texture_Set.texture_Id;
    --                                              Now   : in asset_Name);
    --
-   --  overriding
-   --  function  texture_Count (Self : in Item) return Natural;
+   -- overriding
+   -- function  texture_Count (Self : in Item) return Natural;
 
 
 
 private
 
-   --  type Item is new Model.text.item with
+   -- type Item is new Model.text.item with
    type Item is new textured_Model.textured_item with
       record
          Text     : String_view;
@@ -75,5 +75,6 @@ private
          Color    : rgba_Color;
          Centered : Boolean;
       end record;
+
 
 end openGL.Model.Text.lit_colored;

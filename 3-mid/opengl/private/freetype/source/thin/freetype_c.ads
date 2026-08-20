@@ -5,7 +5,7 @@ with
 
 package Freetype_C
 --
---  Provides core types for the Freetype C library.
+-- Provides core types for the Freetype C library.
 --
 is
    use Interfaces;

@@ -21,8 +21,6 @@ is
    end new_Hexagon;
 
 
-
-
    ------------------
    --- Attributes ---
    ------------------
@@ -38,9 +36,10 @@ is
    is
       pragma unreferenced (Fonts);
 
-      use Geometry,
-          Geometry.lit_textured,
-          Texture;
+      use
+           Geometry,
+           Geometry.lit_textured,
+           Texture;
 
       the_Sites   :         constant hexagon.Sites := vertex_Sites (Self.Radius);
       the_Indices : aliased constant Indices       := [1, 2, 3, 4, 5, 6, 7, 2];
@@ -48,8 +47,9 @@ is
 
       function new_Face (Vertices : in geometry.lit_textured.Vertex_array) return Geometry.lit_textured.view
       is
-         use Primitive,
-             texture_Set;
+         use
+              Primitive,
+              texture_Set;
 
          the_Geometry  : constant Geometry.lit_textured.view
            := Geometry.lit_textured.new_Geometry;
@@ -68,7 +68,7 @@ is
          loop
             Id := texture_Id (i);
 
-            --  the_Geometry.Fade_is (Which => Id,
+            -- the_Geometry.Fade_is (Which => Id,
             --                        Now   => Self.texture_Details.Fades (Id));
 
             the_Geometry.Texture_is     (Which => Id,
@@ -85,7 +85,7 @@ is
       upper_Face : Geometry.lit_textured.view;
 
    begin
-      --  Upper Face
+      -- Upper Face
       --
       declare
          the_Vertices : constant Geometry.lit_textured.Vertex_array

@@ -4,7 +4,7 @@ with
 
 package openGL.Model.capsule.lit_colored
 --
---  Models a lit and colored capsule.
+-- Models a lit and colored capsule.
 --
 is
    type Item is new Model.capsule.item with private;
@@ -18,6 +18,7 @@ is
    function new_Capsule (Radius : in Real;
                          Height : in Real;
                          Color  : in lucid_Color) return View;
+
 
    --------------
    --- Attributes
@@ -37,5 +38,6 @@ private
          Height : Real;
          Color  : rgba_Color;
       end record;
+
 
 end openGL.Model.capsule.lit_colored;

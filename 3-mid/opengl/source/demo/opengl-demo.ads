@@ -22,7 +22,7 @@ is
    Camera      : aliased openGL.Camera.item;
    Dolly       :         openGL.Dolly.item (camera => Camera'unchecked_Access);
    FPS_Counter :         openGL.frame_Counter.item;
-   Done        :         Boolean := False;
+   Done        :         Boolean                                              := False;
 
    function Models return openGL.Model.views;
    --
@@ -39,5 +39,6 @@ is
                      Width  : in Positive := 1366;
                      Height : in Positive :=  768);
    procedure destroy;
+
 
 end openGL.Demo;

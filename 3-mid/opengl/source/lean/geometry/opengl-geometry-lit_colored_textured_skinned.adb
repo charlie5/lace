@@ -8,19 +8,19 @@ with
      GL.lean,
      GL.Pointers,
 
-     Interfaces.C.Strings,
+     interfaces.C.Strings,
      System.storage_Elements;
 
 
 package body openGL.Geometry.lit_colored_textured_skinned
 is
-   --  Globals
+   -- Globals
    --
    vertex_Shader   : aliased Shader.item;
    fragment_Shader : aliased Shader.item;
 
    the_Program     : aliased openGL.Program.lit.colored_textured_skinned.item;
-   is_Defined      :         Boolean := False;
+   is_Defined      :         Boolean                                         := False;
 
    Name_1 : constant String := "Site";
    Name_2 : constant String := "Normal";
@@ -49,9 +49,8 @@ is
    Attribute_7_Name_ptr : aliased constant C.strings.chars_ptr := C.strings.to_chars_ptr (Attribute_7_Name'Access);
 
 
-
    ----------
-   --  Vertex
+   --- Vertex
    --
 
    function is_Transparent (Self : in Vertex_array) return Boolean   -- TODO: Replace this with the generic (check that all similar functions use the generic).
@@ -70,9 +69,8 @@ is
    end is_Transparent;
 
 
-
    ---------
-   --  Forge
+   --- Forge
    --
 
    type Geometry_view is access all Geometry.lit_colored_textured_skinned.item'Class;
@@ -90,10 +88,11 @@ is
 
    procedure define_Program
    is
-      use Attribute.Forge,
-          GL.lean,
-          GL.Pointers,
-          System.storage_Elements;
+      use
+           Attribute.Forge,
+           GL.lean,
+           GL.Pointers,
+           System.storage_Elements;
 
       Sample : Vertex;
 
@@ -122,9 +121,9 @@ is
                                                               2 => to_Asset ("assets/opengl/shader/lighting-frag.snippet"),
                                                               3 => to_Asset ("assets/opengl/shader/texturing-frag.snippet"),
                                                               4 => to_Asset ("assets/opengl/shader/lit_colored_textured.frag"))));
-      --  fragment_Shader.define (Shader.Fragment, "assets/opengl/shader/lit_colored_textured_skinned.frag");
+      -- fragment_Shader.define (Shader.Fragment, "assets/opengl/shader/lit_colored_textured_skinned.frag");
 
-      the_Program.define (  vertex_Shader'Access,
+      the_Program.define (vertex_Shader  'Access,
                           fragment_Shader'Access);
       the_Program.enable;
 
@@ -234,9 +233,8 @@ is
    end define_Program;
 
 
-
    --------------
-   --  Attributes
+   --- Attributes
    --
 
    function Program return openGL.Program.lit.colored_textured_skinned.view

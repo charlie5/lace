@@ -11,6 +11,7 @@ private
 with
      freeType_C.FT_Face;
 
+
 package freetype.charMap
 --
 --   'charMap' takes care of specifying the encoding for a font and mapping
@@ -26,8 +27,9 @@ is
 
 
    ---------
-   --  Types
+   --- Types
    --
+
    use Interfaces;
 
    subtype GlyphIndex    is C.long;
@@ -37,7 +39,7 @@ is
 
 
    ---------
-   --  Forge
+   --- Forge
    --
 
    function  to_charMap (parent_Face : access Face.item'Class) return Item;
@@ -45,21 +47,21 @@ is
 
 
    --------------
-   --  Attributes
+   --- Attributes
    --
 
    function  Encoding (Self : in     Item) return freeType_C.FT_Encoding;
    --
-   --  Queries for the current character map code.
+   -- Queries for the current character map code.
    --
-   --  Returns the current character map code.
+   -- Returns the current character map code.
 
 
    function  CharMap  (Self : access Item;   Encoding : in freeType_C.FT_Encoding) return Boolean;
    --
-   --  Sets the character map for the face. If an error occurs the object is not modified.
+   -- Sets the character map for the face. If an error occurs the object is not modified.
    --
-   --  Valid encodings as at Freetype 2.0.4
+   -- Valid encodings as at Freetype 2.0.4
    --  - ft_encoding_none
    --  - ft_encoding_symbol
    --  - ft_encoding_unicode
@@ -74,43 +76,43 @@ is
    --  - ft_encoding_adobe_custom
    --  - ft_encoding_apple_roman
    --
-   --  Encoding: The Freetype encoding symbol.
+   -- Encoding: The Freetype encoding symbol.
    --
-   --  Returns true if charmap was valid and set correctly.
+   -- Returns true if charmap was valid and set correctly.
 
 
    function  GlyphListIndex (Self : in    Item;   Character : in CharacterCode) return GlyphIndex;
    --
-   --  Get the Glyph Container index of the input character.
+   -- Get the Glyph Container index of the input character.
    --
-   --  Character: The character code of the requested glyph in the current encoding (eg apple roman).
+   -- Character: The character code of the requested glyph in the current encoding (eg apple roman).
    --
-   --  Returns the FTGlyphContainer index for the character or zero if it wasn't found.
+   -- Returns the FTGlyphContainer index for the character or zero if it wasn't found.
 
 
    function  FontIndex      (Self : in     Item;   Character : in characterCode) return GlyphIndex;
    --
-   --  Get the font glyph index of the input character.
+   -- Get the font glyph index of the input character.
    --
-   --  Character: The character code of the requested glyph in the current encoding (eg apple roman).
+   -- Character: The character code of the requested glyph in the current encoding (eg apple roman).
    --
-   --  Returns the glyph index for the character.
+   -- Returns the glyph index for the character.
 
 
    procedure insertIndex    (Self : in out Item;   Character      : in characterCode;
                                                    ContainerIndex : in ada.Containers.Count_type);
    --
-   --  Set the FTGlyphContainer index of the character code.
+   -- Set the FTGlyphContainer index of the character code.
    --
-   --  Character:      The character code of the requested glyph in the current encoding eg apple roman.
-   --  containerIndex: The index into the Glyph Container of the character code.
+   -- Character:      The character code of the requested glyph in the current encoding eg apple roman.
+   -- containerIndex: The index into the Glyph Container of the character code.
 
 
    function  Error (Self : in Item) return freeType_C.FT_Error;
    --
-   --  Queries for errors.
+   -- Queries for errors.
    --
-   --  Returns the current error code. Zero means no error.
+   -- Returns the current error code. Zero means no error.
 
 
 
@@ -128,7 +130,7 @@ private
                                                                        "=");
    subtype char_Map_of_glyph_index is char_Maps_of_glyph_index.Map;
    --
-   --  A structure that maps glyph indices to character codes/
+   -- A structure that maps glyph indices to character codes/
 
 
    max_Precomputed : constant := 128;
@@ -146,5 +148,6 @@ private
 
          Err            : freeType_C.FT_Error;              -- Current error code.
       end record;
+
 
 end freetype.charMap;

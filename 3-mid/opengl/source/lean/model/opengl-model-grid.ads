@@ -4,9 +4,9 @@ with
 
 package openGL.Model.grid
 --
---  Models a grid.
+-- Models a grid.
 --
---  TODO: Rename to 'line_Grid'.
+-- TODO: Rename to 'line_Grid'.
 is
    type Item is new Model.item with private;
    type View is access all Item'Class;
@@ -16,9 +16,10 @@ is
    --- Forge
    --
 
-   function new_grid_Model (Color  : openGL.Color;
-                            Width  : Integer;
-                            Height : Integer) return View;
+   function new_grid_Model (Color  : in openGL.Color;
+                            Width  : in Integer;
+                            Height : in Integer) return View;
+
 
    --------------
    --- Attributes
@@ -27,6 +28,7 @@ is
    overriding
    function to_GL_Geometries (Self : access Item;   Textures : access Texture.name_Map_of_texture'Class;
                                                     Fonts    : in     Font.font_id_Map_of_font) return Geometry.views;
+
 
 
 private
@@ -39,5 +41,6 @@ private
          Width,
          Height   : Positive;
       end record;
+
 
 end openGL.Model.grid;

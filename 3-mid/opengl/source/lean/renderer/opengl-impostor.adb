@@ -5,6 +5,7 @@ with
 
      ada.unchecked_Deallocation;
 
+
 package body openGL.Impostor
 is
    ---------
@@ -13,9 +14,10 @@ is
 
    procedure destroy (Self : in out Item)
    is
-      use openGL.Visual,
-          Model,
-          Texture;
+      use
+           openGL.Visual,
+           Model,
+           Texture;
 
       the_Model   : Model.view     := Self.Visual.Model;
       the_Texture : Texture.Object := Model.billboard.textured.view (the_Model).Texture;
@@ -26,16 +28,18 @@ is
    end destroy;
 
 
+
    procedure free (Self : in out View)
    is
+
       procedure deallocate is new ada.unchecked_Deallocation (Item'Class, View);
    begin
-      if Self /= null then
+      if Self /= null
+      then
          destroy (Self.all);
          deallocate (Self);
       end if;
    end free;
-
 
 
    --------------
@@ -47,6 +51,7 @@ is
    begin
       Self.Visual := Now;
    end Visual_is;
+
 
 
    function Visual (Self : access Item) return openGL.Visual.view
@@ -62,6 +67,7 @@ is
    begin
       return Self.Target;
    end get_Target;
+
 
 
    procedure set_Target (Self : in out Item;   Target : in openGL.Visual.view)
@@ -86,7 +92,7 @@ is
                                                                           Texture => null_Asset,
                                                                           texture_Details => texture_Set.to_Set ([1 => null_Asset])).all'Access);
       Self.Visual.Transform_is (Target.Transform);
-      --  Self.Visual.model_Transform_is (Target.model_Transform);
+      -- Self.Visual.model_Transform_is (Target.model_Transform);
    end set_Target;
 
 
@@ -98,11 +104,13 @@ is
    end target_camera_Distance;
 
 
+
    function is_Valid (Self : in Item'Class) return Boolean
    is
    begin
       return Self.is_Valid;
    end is_Valid;
+
 
 
    function never_Updated (Self : in Item'Class) return Boolean
@@ -112,11 +120,13 @@ is
    end never_Updated;
 
 
+
    function frame_Count_since_last_update (Self : in Item'Class) return Natural
    is
    begin
       return Natural (Self.freshen_Count);
    end frame_Count_since_last_update;
+
 
 
    function face_Count (Self : in Item) return Natural
@@ -127,11 +137,13 @@ is
    end face_Count;
 
 
+
    procedure set_Alpha (Self : in out Item;   Alpha : in Real)
    is
    begin
       null;   -- TODO
    end set_Alpha;
+
 
 
    function Bounds (Self : in Item) return openGL.Bounds
@@ -161,6 +173,7 @@ is
    end set_freshen_count_update_trigger_Mod;
 
 
+
    function get_freshen_count_update_trigger_Mod (Self : in Item) return Positive
    is
    begin
@@ -174,6 +187,7 @@ is
    begin
       Self.size_update_trigger_Delta := gl.glSizeI (To);
    end set_size_update_trigger_Delta;
+
 
 
    function get_size_update_trigger_Delta (Self : in Item) return Positive
@@ -190,11 +204,12 @@ is
       pragma unreferenced (the_pixel_Region);
 
       use linear_Algebra_3d;
+
       use type gl.GLsizei;
 
       Camera_has_moved : constant Boolean :=  the_Camera_Site                         /= Self.prior_camera_Position;
       Target_has_moved : constant Boolean :=  get_Translation (Self.Target.Transform) /= Self.prior_target_Position;
-      --  Target_has_moved : constant Boolean :=  get_Translation (Self.Target.model_Transform) /= Self.prior_target_Position;
+      -- Target_has_moved : constant Boolean :=  get_Translation (Self.Target.model_Transform) /= Self.prior_target_Position;
 
    begin
       Self.freshen_Count := Self.freshen_Count + 1;
@@ -214,7 +229,7 @@ is
 
       if         Target_has_moved
         and then abs (Angle (get_Translation (Self.Target.Transform),
-        --  and then abs (Angle (get_Translation (Self.Target.model_Transform),
+        -- and then abs (Angle (get_Translation (Self.Target.model_Transform),
                              Self.prior_camera_Position,
                              Self.prior_target_Position)) > to_Radians (15.0)
       then
@@ -225,7 +240,7 @@ is
       if         Self.prior_pixel_Region.Width  >  40                -- Ignore target rotation triggered updates when target is small on screen.
         and then Self.prior_pixel_Region.Height >  40                --
         and then Self.prior_target_Rotation    /= get_Rotation (Self.Target.Transform)
-        --  and then Self.prior_target_Rotation    /= get_Rotation (Self.Target.model_Transform)
+        -- and then Self.prior_target_Rotation    /= get_Rotation (Self.Target.model_Transform)
       then
          return True;
       end if;
@@ -237,11 +252,12 @@ is
 
    function size_Update_required (Self : access Item;   the_pixel_Region : in pixel_Region) return Boolean
    is
-      use      GL;
+      use GL;
+
       use type gl.GLsizei;
    begin
-      return     abs (the_pixel_Region.Width  - Self.prior_Width_Pixels)  > Self.size_update_trigger_Delta
-             or  abs (the_pixel_Region.Height - Self.prior_Height_pixels) > Self.size_update_trigger_Delta;
+      return         abs (the_pixel_Region.Width  - Self.prior_Width_Pixels)  > Self.size_update_trigger_Delta
+             or else abs (the_pixel_Region.Height - Self.prior_Height_pixels) > Self.size_update_trigger_Delta;
    end size_Update_required;
 
 
@@ -253,7 +269,7 @@ is
    is
       use linear_Algebra_3D;
 
-      --  target_Centre           : constant Vector_3 := camera_Spin * (  get_Translation (Self.Target.model_Transform)
+      -- target_Centre           : constant Vector_3 := camera_Spin * (  get_Translation (Self.Target.model_Transform)
       target_Centre           : constant Vector_3 := camera_Spin * (  get_Translation (Self.Target.Transform)
                                                                     - camera_Site);
 
@@ -309,7 +325,7 @@ is
 
 
    --------------
-   --  Operations
+   --- Operations
    --
 
    procedure update (Self : in out Item;   the_Camera   : access Camera.item'Class;

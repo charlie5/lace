@@ -9,13 +9,14 @@ with
 
 procedure launch_diffuse_Light
 --
---  Exercise the rendering of models with a diffuse light.
+-- Exercise the rendering of models with a diffuse light.
 --
 is
-   use openGL,
-       openGL.Model,
-       openGL.Math,
-       openGL.linear_Algebra_3d;
+   use
+        openGL,
+        openGL.Model,
+        openGL.Math,
+        openGL.linear_Algebra_3d;
 
    the_Texture : constant asset_Name := to_Asset ("assets/opengl/texture/Face1.bmp");
 
@@ -25,12 +26,13 @@ begin
    Demo.Camera.Position_is ([0.0, 0.0, 10.0],
                             y_Rotation_from (to_Radians (0.0)));
    declare
-      use openGL.Model.box,
-          openGL.Visual.Forge,
-          openGL.Light,
-          openGL.Palette;
+      use
+           openGL.Model.box,
+           openGL.Visual.Forge,
+           openGL.Light,
+           openGL.Palette;
 
-      --  The Model.
+      -- The Model.
       --
       the_Box : constant Model.Box.lit_textured.view
         := openGL.Model.Box.lit_textured.new_Box (Size  => [4.0, 4.0, 4.0],
@@ -41,7 +43,7 @@ begin
                                                             Left  => (texture_Name => the_Texture),
                                                             Right => (texture_Name => the_Texture)],
                                                   texture_Details => openGL.texture_Set.to_Set ([1 => the_Texture]));
-      --  The Visual.
+      -- The Visual.
       --
       the_Visuals : constant openGL.Visual.views := [1 => new_Visual (the_Box.all'Access)];
 
@@ -71,7 +73,7 @@ begin
 
       Demo.Renderer.set (the_Light);
 
-      --  Main loop.
+      -- Main loop.
       --
       while not Demo.Done
       loop
@@ -89,7 +91,7 @@ begin
          the_Light.Site_is (the_Light.Site + site_Delta);
          Demo.Renderer.set (the_Light);
 
-         --  Render the sprites.
+         -- Render the sprites.
          --
          Demo.Camera.render (the_Visuals);
 

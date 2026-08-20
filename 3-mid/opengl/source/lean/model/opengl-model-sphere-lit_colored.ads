@@ -5,7 +5,7 @@ with
 
 package openGL.Model.sphere.lit_colored
 --
---  Models a lit, colored sphere.
+-- Models a lit, colored sphere.
 --
 is
    type Item is new Model.sphere.item with private;
@@ -38,5 +38,6 @@ private
       record
          Color : lucid_Color;
       end record;
+
 
 end openGL.Model.sphere.lit_colored;

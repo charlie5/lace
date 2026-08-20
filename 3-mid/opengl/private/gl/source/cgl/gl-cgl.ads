@@ -1,25 +1,29 @@
---  Copyright (c) 2011, Felix Krause <flyx@isobeef.org>
+-- Copyright (c) 2011, Felix Krause <flyx@isobeef.org>
 --
---  Permission to use, copy, modify, and/or distribute this software for any
---  purpose with or without fee is hereby granted, provided that the above
---  copyright notice and this permission notice appear in all copies.
+-- Permission to use, copy, modify, and/or distribute this software for any
+-- purpose with or without fee is hereby granted, provided that the above
+-- copyright notice and this permission notice appear in all copies.
 --
---  THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL WARRANTIES
---  WITH REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF
---  MERCHANTABILITY AND FITNESS. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR
---  ANY SPECIAL, DIRECT, INDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES
---  WHATSOEVER RESULTING FROM LOSS OF USE, DATA OR PROFITS, WHETHER IN AN
---  ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF
---  OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
+-- THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL WARRANTIES
+-- WITH REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF
+-- MERCHANTABILITY AND FITNESS. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR
+-- ANY SPECIAL, DIRECT, INDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES
+-- WHATSOEVER RESULTING FROM LOSS OF USE, DATA OR PROFITS, WHETHER IN AN
+-- ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF
+-- OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
 
-with System;
-with Interfaces.C.Pointers;
-with Interfaces.C.Extensions;
-with Interfaces.C.Strings;
+with
+     interfaces.C.Pointers,
+     interfaces.C.Extensions,
+     interfaces.C.Strings,
 
-package GL.CGL is
+     System;
 
-   --  CGL types and constants
+
+package GL.CGL
+is
+
+   -- CGL types and constants
 
    subtype CGLContextObject      is System.Address;
    subtype CGLPixelFormatObject  is System.Address;
@@ -215,158 +219,160 @@ package GL.CGL is
      aliased CGLPixelFormatAttribute;
 
 
-   --  Pixel format functions
+   -- Pixel format functions
 
    function CGLChoosePixelFormat (attribs : access CGLPixelFormatAttribute;
                                   pix     : access CGLPixelFormatObject;
                                   npix    : access GLint) return CGLError;
 
-   function CGLDestroyPixelFormat (pix : CGLPixelFormatObject) return CGLError;
+   function CGLDestroyPixelFormat (pix : in CGLPixelFormatObject) return CGLError;
 
-   function CGLDescribePixelFormat (pix : CGLPixelFormatObject; pix_num : GLint;
-                                    attrib : CGLPixelFormatAttribute;
+   function CGLDescribePixelFormat (pix : in CGLPixelFormatObject; pix_num : in GLint;
+                                    attrib : in CGLPixelFormatAttribute;
                                     value : access GLint) return CGLError;
 
    procedure CGLReleasePixelFormat (pix : in CGLPixelFormatObject);
 
-   function CGLRetainPixelFormat (pix : CGLPixelFormatObject)
+   function CGLRetainPixelFormat (pix : in CGLPixelFormatObject)
                                   return CGLPixelFormatObject;
 
-   function CGLGetPixelFormatRetainCount (pix : CGLPixelFormatObject)
+   function CGLGetPixelFormatRetainCount (pix : in CGLPixelFormatObject)
                                           return GLuint;
 
-   function CGLQueryRendererInfo (display_mask : GLuint;
+   function CGLQueryRendererInfo (display_mask : in GLuint;
                                   rend : access CGLRendererInfoObject;
                                   nrend : access GLint) return CGLError;
 
-   function CGLDestroyRendererInfo (rend : CGLRendererInfoObject)
+   function CGLDestroyRendererInfo (rend : in CGLRendererInfoObject)
                                     return CGLError;
 
-   function CGLDescribeRenderer (rend : CGLRendererInfoObject; rend_num : GLint;
-                                 prop : CGLRendererProperty;
+   function CGLDescribeRenderer (rend : in CGLRendererInfoObject; rend_num : in GLint;
+                                 prop : in CGLRendererProperty;
                                  value : access GLint) return CGLError;
 
-   function CGLCreateContext (pix : CGLPixelFormatObject;
-                              share : CGLContextObject;
+   function CGLCreateContext (pix : in CGLPixelFormatObject;
+                              share : in CGLContextObject;
                               ctx : access CGLContextObject) return CGLError;
 
-   function CGLDestroyContext (ctx : CGLContextObject) return CGLError;
+   function CGLDestroyContext (ctx : in CGLContextObject) return CGLError;
 
-   function CGLCopyContext (src, dst : CGLContextObject;
-                            mask : GLbitfield) return CGLError;
+   function CGLCopyContext (src, dst : in CGLContextObject;
+                            mask : in GLbitfield) return CGLError;
 
-   function CGLRetainContext (ctx : CGLContextObject) return CGLContextObject;
+   function CGLRetainContext (ctx : in CGLContextObject) return CGLContextObject;
 
    procedure CGLReleaseContext (ctx : in CGLContextObject);
 
-   function CGLGetContextRetainCount (ctx : CGLContextObject) return GLuint;
+   function CGLGetContextRetainCount (ctx : in CGLContextObject) return GLuint;
 
-   function CGLGetPixelFormat (ctx : CGLContextObject) return CGLPixelFormatObject;
+   function CGLGetPixelFormat (ctx : in CGLContextObject) return CGLPixelFormatObject;
 
-   function CGLCreatePBuffer (width, height : GLsizei;
-                              target, internalFormat : GLenum;
-                              max_level : GLint;
+   function CGLCreatePBuffer (width, height : in GLsizei;
+                              target, internalFormat : in GLenum;
+                              max_level : in GLint;
                               pbuffer : access CGLPBufferObject)
                               return CGLError;
 
-   function CGLDestroyPBuffer (pbuffer : CGLPBufferObject) return CGLError;
+   function CGLDestroyPBuffer (pbuffer : in CGLPBufferObject) return CGLError;
 
-   function CGLDescribePBuffer (obj : CGLPBufferObject;
+   function CGLDescribePBuffer (obj : in CGLPBufferObject;
                                 width, height : access GLsizei;
                                 target, internalFormat : access GLenum;
                                 mipmap : access GLint) return CGLError;
 
-   function CGLTexImagePBuffer (ctx : CGLContextObject;
-                                pbuffer : CGLPBufferObject;
-                                source : GLenum) return CGLError;
+   function CGLTexImagePBuffer (ctx : in CGLContextObject;
+                                pbuffer : in CGLPBufferObject;
+                                source : in GLenum) return CGLError;
 
-   function CGLRetainPBuffer (pbuffer : CGLPBufferObject)
+   function CGLRetainPBuffer (pbuffer : in CGLPBufferObject)
                               return CGLPBufferObject;
 
    procedure CGLReleasePBuffer (pbuffer : in CGLPBufferObject);
 
-   function CGLGetPBufferRetainCount (pbuffer : CGLPBufferObject) return GLuint;
+   function CGLGetPBufferRetainCount (pbuffer : in CGLPBufferObject) return GLuint;
 
-   function CGLSetOffScreen (ctx : CGLContextObject;
-                             width, height : GLsizei;
-                             rowbytes : GLint;
-                             baseaddr : Interfaces.C.Extensions.void_ptr)
+   function CGLSetOffScreen (ctx : in CGLContextObject;
+                             width, height : in GLsizei;
+                             rowbytes : in GLint;
+                             baseaddr : in interfaces.C.Extensions.void_ptr)
                              return CGLError;
 
-   function CGLGetOffScreen (ctx : CGLContextObject;
+   function CGLGetOffScreen (ctx : in CGLContextObject;
                              width, height : access GLsizei;
                              rowbytes : access GLint;
-                             baseaddr : access Interfaces.C.Extensions.void_ptr)
+                             baseaddr : access interfaces.C.Extensions.void_ptr)
                              return CGLError;
 
-   function CGLSetFullScreen (ctx : CGLContextObject) return CGLError;
+   function CGLSetFullScreen (ctx : in CGLContextObject) return CGLError;
 
-   function CGLSetFullScreenOnDisplay (ctx : CGLContextObject;
-                                       display_mask : GLuint) return CGLError;
+   function CGLSetFullScreenOnDisplay (ctx : in CGLContextObject;
+                                       display_mask : in GLuint) return CGLError;
 
-   function CGLSetPBuffer (ctx : CGLContextObject;
-                           pbuffer : CGLPBufferObject;
-                           face : GLenum;
-                           level, screen : GLint) return CGLError;
+   function CGLSetPBuffer (ctx : in CGLContextObject;
+                           pbuffer : in CGLPBufferObject;
+                           face : in GLenum;
+                           level, screen : in GLint) return CGLError;
 
-   function CGLGetPBuffer (ctx : CGLContextObject;
+   function CGLGetPBuffer (ctx : in CGLContextObject;
                            pbuffer : access CGLPBufferObject;
                            face : access GLenum;
                            level, screen : access GLint) return CGLError;
 
-   function CGLClearDrawable (ctx : CGLContextObject) return CGLError;
+   function CGLClearDrawable (ctx : in CGLContextObject) return CGLError;
 
-   function CGLFlushDrawable (ctx : CGLContextObject) return CGLError;
+   function CGLFlushDrawable (ctx : in CGLContextObject) return CGLError;
 
-   function CGLEnable (ctx : CGLContextObject; pname : CGLContextEnable)
+   function CGLEnable (ctx : in CGLContextObject; pname : in CGLContextEnable)
                        return CGLError;
 
-   function CGLDisable (ctx : CGLContextObject; pname : CGLContextEnable)
+   function CGLDisable (ctx : in CGLContextObject; pname : in CGLContextEnable)
                         return CGLError;
 
-   function CGLIsEnabled (ctx : CGLContextObject; pname : CGLContextEnable;
+   function CGLIsEnabled (ctx : in CGLContextObject; pname : in CGLContextEnable;
                           enable : access GLint) return CGLError;
 
-   function CGLSetParameter (ctx : CGLContextObject;
-                             pname : CGLContextParameter;
+   function CGLSetParameter (ctx : in CGLContextObject;
+                             pname : in CGLContextParameter;
                              params : access constant GLint) return CGLError;
 
-   function CGLGetParameter (ctx : CGLContextObject;
-                             pname : CGLContextParameter;
+   function CGLGetParameter (ctx : in CGLContextObject;
+                             pname : in CGLContextParameter;
                              params : access GLint) return CGLError;
 
-   function CGLSetVirtualScreen (ctx : CGLContextObject; screen : GLint)
+   function CGLSetVirtualScreen (ctx : in CGLContextObject; screen : in GLint)
                                  return CGLError;
 
-   function CGLGetVirtualScreen (ctx : CGLContextObject; screen : access GLint)
+   function CGLGetVirtualScreen (ctx : in CGLContextObject; screen : access GLint)
                                  return CGLError;
 
-   function CGLUpdateContext (ctx : CGLContextObject) return CGLError;
+   function CGLUpdateContext (ctx : in CGLContextObject) return CGLError;
 
-   function CGLSetGlobalOption (pname : CGLGlobalOption;
+   function CGLSetGlobalOption (pname : in CGLGlobalOption;
                                 params : access constant GLint) return CGLError;
 
-   function CGLGetGlobalOption (pname : CGLGlobalOption;
+   function CGLGetGlobalOption (pname : in CGLGlobalOption;
                                 params : access GLint) return CGLError;
 
-   function CGLSetOption (pname : CGLGlobalOption; param : GLint)
+   function CGLSetOption (pname : in CGLGlobalOption; param : in GLint)
                           return CGLError;
 
-   function CGLGetOption (pname : CGLGlobalOption;
+   function CGLGetOption (pname : in CGLGlobalOption;
                           param : access GLint) return CGLError;
 
-   function CGLLockContext (ctx : CGLContextObject) return CGLError;
+   function CGLLockContext (ctx : in CGLContextObject) return CGLError;
 
-   function CGLUnlockContext (ctx : CGLContextObject) return CGLError;
+   function CGLUnlockContext (ctx : in CGLContextObject) return CGLError;
 
    procedure CGLGetVersion (majorvers, minorvers : out GLint);
 
-   function CGLErrorString (error : CGLError)
-                            return Interfaces.C.Strings.chars_ptr;
+   function CGLErrorString (error : in CGLError)
+                            return interfaces.C.Strings.chars_ptr;
 
-   function CGLSetCurrentContext (ctx : CGLContextObject) return CGLError;
+   function CGLSetCurrentContext (ctx : in CGLContextObject) return CGLError;
 
    function CGLGetCurrentContext return CGLContextObject;
+
+
 
 private
    C_Enum_Size : constant := 32;
@@ -476,7 +482,7 @@ private
                                 kCGLCPGPUVertexProcessing    => 310,
                                 kCGLCPGPUFragmentProcessing  => 311,
                                 kCGLCPHasDrawable            => 314,
-                                kCGLCPMPSwapsInFlight	     => 315
+                                kCGLCPMPSwapsInFlight        => 315
                                );
    for CGLContextParameter'Size use C_Enum_Size;
    pragma Convention (C, CGLContextParameter);
@@ -520,64 +526,66 @@ private
    for CGLError'Size use C_Enum_Size;
    pragma Convention (C, CGLError);
 
-   pragma Import (C, CGLChoosePixelFormat, "CGLChoosePixelFormat");
-   pragma Import (C, CGLDestroyPixelFormat, "CGLDestroyPixelFormat");
-   pragma Import (C, CGLDescribePixelFormat, "CGLDescribePixelFormat");
-   pragma Import (C, CGLReleasePixelFormat, "CGLReleasePixelFormat");
-   pragma Import (C, CGLRetainPixelFormat, "CGLRetainPixelFormat");
-   pragma Import (C, CGLGetPixelFormatRetainCount, "CGLGetPixelFormatRetainCount");
+   pragma import (C, CGLChoosePixelFormat,         "CGLChoosePixelFormat");
+   pragma import (C, CGLDestroyPixelFormat,        "CGLDestroyPixelFormat");
+   pragma import (C, CGLDescribePixelFormat,       "CGLDescribePixelFormat");
+   pragma import (C, CGLReleasePixelFormat,        "CGLReleasePixelFormat");
+   pragma import (C, CGLRetainPixelFormat,         "CGLRetainPixelFormat");
+   pragma import (C, CGLGetPixelFormatRetainCount, "CGLGetPixelFormatRetainCount");
 
-   pragma Import (C, CGLQueryRendererInfo, "CGLQueryRendererInfo");
-   pragma Import (C, CGLDestroyRendererInfo, "CGLDestroyRendererInfo");
-   pragma Import (C, CGLDescribeRenderer, "CGLDescribeRenderer");
+   pragma import (C, CGLQueryRendererInfo,   "CGLQueryRendererInfo");
+   pragma import (C, CGLDestroyRendererInfo, "CGLDestroyRendererInfo");
+   pragma import (C, CGLDescribeRenderer,    "CGLDescribeRenderer");
 
-   pragma Import (C, CGLCreateContext, "CGLCreateContext");
-   pragma Import (C, CGLDestroyContext, "CGLDestroyContext");
-   pragma Import (C, CGLCopyContext, "CGLCopyContext");
-   pragma Import (C, CGLRetainContext, "CGLRetainContext");
-   pragma Import (C, CGLReleaseContext, "CGLReleaseContext");
-   pragma Import (C, CGLGetContextRetainCount, "CGLGetContextRetainCount");
-   pragma Import (C, CGLGetPixelFormat, "CGLGetPixelFormat");
+   pragma import (C, CGLCreateContext,         "CGLCreateContext");
+   pragma import (C, CGLDestroyContext,        "CGLDestroyContext");
+   pragma import (C, CGLCopyContext,           "CGLCopyContext");
+   pragma import (C, CGLRetainContext,         "CGLRetainContext");
+   pragma import (C, CGLReleaseContext,        "CGLReleaseContext");
+   pragma import (C, CGLGetContextRetainCount, "CGLGetContextRetainCount");
+   pragma import (C, CGLGetPixelFormat,        "CGLGetPixelFormat");
 
-   pragma Import (C, CGLCreatePBuffer, "CGLCreatePBuffer");
-   pragma Import (C, CGLDestroyPBuffer, "CGLDestroyPBuffer");
-   pragma Import (C, CGLDescribePBuffer, "CGLDescribePBuffer");
-   pragma Import (C, CGLTexImagePBuffer, "CGLTexImagePBuffer");
-   pragma Import (C, CGLRetainPBuffer, "CGLRetainPBuffer");
-   pragma Import (C, CGLReleasePBuffer, "CGLReleasePBuffer");
-   pragma Import (C, CGLGetPBufferRetainCount, "CGLGetPBufferRetainCount");
+   pragma import (C, CGLCreatePBuffer,         "CGLCreatePBuffer");
+   pragma import (C, CGLDestroyPBuffer,        "CGLDestroyPBuffer");
+   pragma import (C, CGLDescribePBuffer,       "CGLDescribePBuffer");
+   pragma import (C, CGLTexImagePBuffer,       "CGLTexImagePBuffer");
+   pragma import (C, CGLRetainPBuffer,         "CGLRetainPBuffer");
+   pragma import (C, CGLReleasePBuffer,        "CGLReleasePBuffer");
+   pragma import (C, CGLGetPBufferRetainCount, "CGLGetPBufferRetainCount");
 
-   pragma Import (C, CGLSetOffScreen, "CGLSetOffScreen");
-   pragma Import (C, CGLGetOffScreen, "CGLGetOffScreen");
-   pragma Import (C, CGLSetFullScreen, "CGLSetFullScreen");
-   pragma Import (C, CGLSetFullScreenOnDisplay, "CGLSetFullScreenOnDisplay");
-   pragma Import (C, CGLSetPBuffer, "CGLSetPBuffer");
-   pragma Import (C, CGLGetPBuffer, "CGLGetPBuffer");
-   pragma Import (C, CGLClearDrawable, "CGLClearDrawable");
-   pragma Import (C, CGLFlushDrawable, "CGLFlushDrawable");
+   pragma import (C, CGLSetOffScreen,           "CGLSetOffScreen");
+   pragma import (C, CGLGetOffScreen,           "CGLGetOffScreen");
+   pragma import (C, CGLSetFullScreen,          "CGLSetFullScreen");
+   pragma import (C, CGLSetFullScreenOnDisplay, "CGLSetFullScreenOnDisplay");
+   pragma import (C, CGLSetPBuffer,             "CGLSetPBuffer");
+   pragma import (C, CGLGetPBuffer,             "CGLGetPBuffer");
+   pragma import (C, CGLClearDrawable,          "CGLClearDrawable");
+   pragma import (C, CGLFlushDrawable,          "CGLFlushDrawable");
 
-   pragma Import (C, CGLEnable, "CGLEnable");
-   pragma Import (C, CGLDisable, "CGLDisable");
-   pragma Import (C, CGLIsEnabled, "CGLIsEnabled");
-   pragma Import (C, CGLSetParameter, "CGLSetParameter");
-   pragma Import (C, CGLGetParameter, "CGLGetParameter");
+   pragma import (C, CGLEnable,       "CGLEnable");
+   pragma import (C, CGLDisable,      "CGLDisable");
+   pragma import (C, CGLIsEnabled,    "CGLIsEnabled");
+   pragma import (C, CGLSetParameter, "CGLSetParameter");
+   pragma import (C, CGLGetParameter, "CGLGetParameter");
 
-   pragma Import (C, CGLSetVirtualScreen, "CGLSetVirtualScreen");
-   pragma Import (C, CGLGetVirtualScreen, "CGLGetVirtualScreen");
-   pragma Import (C, CGLUpdateContext, "CGLUpdateContext");
+   pragma import (C, CGLSetVirtualScreen, "CGLSetVirtualScreen");
+   pragma import (C, CGLGetVirtualScreen, "CGLGetVirtualScreen");
+   pragma import (C, CGLUpdateContext,    "CGLUpdateContext");
 
-   pragma Import (C, CGLSetGlobalOption, "CGLSetGlobalOption");
-   pragma Import (C, CGLGetGlobalOption, "CGLGetGlobalOption");
-   pragma Import (C, CGLSetOption, "CGLSetOption");
-   pragma Import (C, CGLGetOption, "CGLGetOption");
+   pragma import (C, CGLSetGlobalOption, "CGLSetGlobalOption");
+   pragma import (C, CGLGetGlobalOption, "CGLGetGlobalOption");
+   pragma import (C, CGLSetOption,       "CGLSetOption");
+   pragma import (C, CGLGetOption,       "CGLGetOption");
 
-   pragma Import (C, CGLLockContext, "CGLLockContext");
-   pragma Import (C, CGLUnlockContext, "CGLUnlockContext");
+   pragma import (C, CGLLockContext,   "CGLLockContext");
+   pragma import (C, CGLUnlockContext, "CGLUnlockContext");
 
 
-   pragma Import (C, CGLGetVersion, "CGLGetVersion");
-   pragma Import (C, CGLErrorString, "CGLErrorString");
+   pragma import (C, CGLGetVersion,  "CGLGetVersion");
+   pragma import (C, CGLErrorString, "CGLErrorString");
 
-   pragma Import (C, CGLSetCurrentContext, "CGLSetCurrentContext");
-   pragma Import (C, CGLGetCurrentContext, "CGLGetCurrentContext");
+   pragma import (C, CGLSetCurrentContext, "CGLSetCurrentContext");
+   pragma import (C, CGLGetCurrentContext, "CGLGetCurrentContext");
+
+
 end GL.CGL;

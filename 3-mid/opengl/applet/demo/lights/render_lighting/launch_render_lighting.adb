@@ -10,13 +10,14 @@ with
 
 procedure launch_render_Lighting
 --
---  Exercise the rendering of lit models.
+-- Exercise the rendering of lit models.
 --
 is
-   use openGL,
-       openGL.Model,
-       openGL.Math,
-       openGL.linear_Algebra_3d;
+   use
+        openGL,
+        openGL.Model,
+        openGL.Math,
+        openGL.linear_Algebra_3d;
 
    the_Texture : constant asset_Name := to_Asset ("assets/opengl/texture/Face1.bmp");
 begin
@@ -27,7 +28,7 @@ begin
    declare
       use openGL.Palette;
 
-      --  The Models.
+      -- The Models.
       --
       the_Ball_1_Model : constant Model.Sphere.lit_colored_textured.view
         := openGL.Model.Sphere.lit_colored_textured.new_Sphere (Radius          => 1.0,
@@ -37,7 +38,7 @@ begin
         := openGL.Model.Sphere.lit_colored.new_Sphere (Radius => 1.0,
                                                        Color  => (light_Apricot, Opaque));
 
-      --  The Visuals.
+      -- The Visuals.
       --
       use openGL.Visual.Forge;
 
@@ -61,7 +62,7 @@ begin
       Demo.Renderer.set (the_Light);
 
 
-      --  Main loop.
+      -- Main loop.
       --
       while not Demo.Done
       loop
@@ -88,7 +89,7 @@ begin
 
          Demo.Renderer.set (the_Light);
 
-         --  Render the sprites.
+         -- Render the sprites.
          --
          Demo.Camera.render (the_Visuals);
 

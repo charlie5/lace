@@ -57,7 +57,7 @@ is
       upper_Face : Geometry.lit_colored.view;
 
    begin
-      --  Upper Face
+      -- Upper Face
       --
       declare
          the_Vertices : constant Geometry.lit_colored.Vertex_array

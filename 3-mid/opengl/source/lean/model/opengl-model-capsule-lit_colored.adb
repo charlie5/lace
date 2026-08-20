@@ -34,9 +34,10 @@ is
    is
       pragma unreferenced (Textures, Fonts);
 
-      use Geometry,
-          Geometry.lit_colored,
-          real_Functions;
+      use
+           Geometry,
+           Geometry.lit_colored,
+           real_Functions;
 
       Length        : constant Real    := Self.Height;
       Radius        : constant Real    := Self.Radius;
@@ -72,7 +73,7 @@ is
       cap_2_Geometry : Geometry.lit_colored.view;
 
    begin
-      --  Define capsule shaft,
+      -- Define capsule shaft,
       --
       declare
          vertex_Count  : constant      Index_t :=      Index_t (sides_Count * 2 + 2);   -- 2 triangles per side plus 2 since we cannot share the first and last edge.
@@ -105,7 +106,7 @@ is
                the_Edges (Each).Aft  (2) :=  nz * Radius;
                the_Edges (Each).Aft  (3) := -L;
 
-               --  Rotate ny, nz.
+               -- Rotate ny, nz.
                --
                tmp := ca * ny  -  sa * nz;
                nz  := sa * ny  +  ca * nz;
@@ -115,15 +116,15 @@ is
                the_Vertices (i).Normal := Normalised ((the_Vertices (i).Site (1),
                                                        the_Vertices (i).Site (2),
                                                        0.0));
-               the_Vertices (i).Color  := Self.Color;
-               the_Vertices (i).Shine  := 0.5;
-               i := i + 1;
+               the_Vertices (i).Color := Self.Color;
+               the_Vertices (i).Shine := 0.5;
+               i                      := i + 1;
 
                the_Vertices (i).Site   := the_Edges (Each).Aft;
                the_Vertices (i).Normal := the_Vertices (i - 1).Normal;
                the_Vertices (i).Color  := Self.Color;
                the_Vertices (i).Shine  := 0.5;
-               i := i + 1;
+               i                       := i + 1;
 
                S := S + S_delta;
             end loop;
@@ -132,9 +133,9 @@ is
             the_Vertices (i).Normal := Normalised ((the_Vertices (i).Site (1),
                                                     the_Vertices (i).Site (2),
                                                     0.0));
-            the_Vertices (i).Color  := Self.Color;
-            the_Vertices (i).Shine  := 0.5;
-            i := i + 1;
+            the_Vertices (i).Color := Self.Color;
+            the_Vertices (i).Shine := 0.5;
+            i                      := i + 1;
 
             the_Vertices (i).Site   := the_Edges (1).Aft;
             the_Vertices (i).Normal := the_Vertices (i - 1).Normal;
@@ -175,7 +176,7 @@ is
 
 
       declare
-         function new_Cap (is_Fore : Boolean) return Geometry.lit_colored.view
+         function new_Cap (is_Fore : in Boolean) return Geometry.lit_colored.view
          is
             use linear_Algebra;
 
@@ -184,8 +185,8 @@ is
 
             hoop_Count     : constant      Index_t := quality_Level;
             vertex_Count   : constant      Index_t :=      Index_t (Edges'Length * hoop_Count + 1);             -- A vertex for each edge of each hoop, + 1 for the pole.
-            indices_Count  : constant long_Index_t := long_Index_t (  (hoop_count - 1) * sides_Count * 2 * 3    -- For each hoop, 2 triangles per side with 3 vertices per triangle
-                                                                   + sides_Count * 3);                         -- plus the extra indices for the pole triangles.
+            indices_Count  : constant long_Index_t := long_Index_t (  (hoop_Count - 1) * sides_Count * 2 * 3    -- For each hoop, 2 triangles per side with 3 vertices per triangle
+                                                                    + sides_Count * 3);                        -- plus the extra indices for the pole triangles.
 
             the_Vertices   : aliased Geometry.lit_colored.Vertex_array := (1 ..  vertex_Count => <>);
             the_Indices    : aliased Indices                           := (1 .. indices_Count => <>);
@@ -219,7 +220,7 @@ is
 
             for each_Hoop in 1 .. quality_Level
             loop
-               --  Get n=start_n.
+               -- Get n=start_n.
                --
                nx := start_nx;
                ny := start_ny;
@@ -231,7 +232,7 @@ is
                   the_arch_Edges (each_Hoop) (Each) (2) :=  nz * Radius;
                   the_arch_Edges (each_Hoop) (Each) (3) :=  (if is_Fore then nx * Radius + L
                                                                         else nx * Radius - L);
-                  --  Rotate ny, nz.
+                  -- Rotate ny, nz.
                   --
                   tmp := ca * ny  -  sa * nz;
                   nz  := sa * ny  +  ca * nz;
@@ -242,10 +243,10 @@ is
                                                           the_Vertices (i).Site (2),
                                                           (if is_Fore then the_Vertices (i).Site (3) - L
                                                                       else the_Vertices (i).Site (3) + L)));
-                  the_Vertices (i).Color  := Self.Color;
-                  the_Vertices (i).Shine  := 0.5;
-                  i := i + 1;
-                  a := (if is_Fore then a + longitude_Spacing
+                  the_Vertices (i).Color := Self.Color;
+                  the_Vertices (i).Shine := 0.5;
+                  i                      := i + 1;
+                  a                      := (if is_Fore then a + longitude_Spacing
                                    else a - longitude_Spacing);
                end loop;
 
@@ -303,11 +304,13 @@ is
                               the_Indices (i) := Start;              i := i + 1;
                               the_Indices (i) := next_hoop_Vertex;   i := i + 1;
                               the_Indices (i) := pole_Index;         i := i + 1;
+
                            else
                               the_Indices (i) := Start;              i := i + 1;
                               the_Indices (i) := pole_Index;         i := i + 1;
                               the_Indices (i) := next_hoop_Vertex;   i := i + 1;
                            end if;
+
                         else
                            declare
                               v1 : constant Index_t := Start;
@@ -324,6 +327,7 @@ is
                                  the_Indices (i) := v2;   i := i + 1;
                                  the_Indices (i) := v4;   i := i + 1;
                                  the_Indices (i) := v3;   i := i + 1;
+
                               else
                                  the_Indices (i) := v1;   i := i + 1;
                                  the_Indices (i) := v3;   i := i + 1;

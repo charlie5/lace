@@ -1,18 +1,20 @@
 with
      GL_Types,
-     Interfaces.C;
+     interfaces.C;
+
 
 package GL
 --
---  Provides types and constants common to all openGL profiles.
+-- Provides types and constants common to all openGL profiles.
 --
 is
    pragma Pure;
 
    use Interfaces;
 
+
    ---------
-   --  Types
+   --- Types
    --
 
    -- GLvoid
@@ -86,19 +88,19 @@ is
 
 
    -------------
-   --  Constants
+   --- Constants
    --
 
-   --  ClearBufferMask
+   -- ClearBufferMask
    GL_DEPTH_BUFFER_BIT   : constant := 16#100#;
    GL_STENCIL_BUFFER_BIT : constant := 16#400#;
    GL_COLOR_BUFFER_BIT   : constant := 16#4000#;
 
-   --  Boolean
+   -- Boolean
    GL_FALSE : constant := 0;
    GL_TRUE  : constant := 1;
 
-   --  BeginMode
+   -- BeginMode
    GL_POINTS         : constant := 16#0#;
    GL_LINES          : constant := 16#1#;
    GL_LINE_LOOP      : constant := 16#2#;
@@ -107,12 +109,12 @@ is
    GL_TRIANGLE_STRIP : constant := 16#5#;
    GL_TRIANGLE_FAN   : constant := 16#6#;
 
-   --  BlendingFactorDest
+   -- BlendingFactorDest
    GL_ZERO                : constant := 0;
    GL_ONE                 : constant := 1;
    GL_ONE_MINUS_SRC_ALPHA : constant := 16#303#;
 
-   --  BlendingFactorSrc
+   -- BlendingFactorSrc
    GL_SRC_ALPHA          : constant := 16#302#;
    GL_SRC_ALPHA_SATURATE : constant := 16#308#;
 
@@ -130,7 +132,7 @@ is
    GL_SCISSOR_TEST        : constant := 16#c11#;
    GL_POLYGON_OFFSET_FILL : constant := 16#8037#;
 
-   --  ErrorCode
+   -- ErrorCode
    GL_NO_ERROR                      : constant := 0;
    GL_INVALID_ENUM                  : constant := 16#500#;
    GL_INVALID_VALUE                 : constant := 16#501#;
@@ -141,12 +143,12 @@ is
    GL_INVALID_FRAMEBUFFER_OPERATION : constant := 16#506#;
    GL_CONTEXT_LOST                  : constant := 16#507#;
 
-   --  FrontFaceDirection
+   -- FrontFaceDirection
    GL_CW  : constant := 16#900#;
    GL_CCW : constant := 16#901#;
 
 
-   --  TODO: As above, categorise and add category comment for the following ...
+   -- TODO: As above, categorise and add category comment for the following ...
    --
 
    GL_LINE_WIDTH : constant := 16#b21#;
@@ -284,5 +286,6 @@ is
    GL_ACTIVE_TEXTURE : constant := 16#84e0#;
    GL_REPEAT         : constant := 16#2901#;
    GL_CLAMP_TO_EDGE  : constant := 16#812f#;
+
 
 end GL;

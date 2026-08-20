@@ -10,8 +10,9 @@ package body openGL.Attribute
 is
    use GL.lean;
 
+
    ---------
-   --  Forge
+   --- Forge
    --
 
    procedure define  (Self : in out Item)
@@ -21,11 +22,13 @@ is
    end define;
 
 
+
    procedure destroy (Self : in out Item)
    is
    begin
       null;
    end destroy;
+
 
 
    package body Forge
@@ -47,6 +50,7 @@ is
                  Offset        => Offset,
                  Normalized    => Boolean'Pos (Normalized));
       end to_Attribute;
+
 
 
       function new_Attribute (Name        : in String;
@@ -71,7 +75,7 @@ is
 
 
    --------------
-   --  Attributes
+   --- Attributes
    --
 
    function Name (Self : in Item'Class) return String
@@ -79,6 +83,7 @@ is
    begin
       return Self.Name.all;
    end Name;
+
 
 
    function gl_Location (Self : in Item'Class) return gl.GLuint
@@ -89,13 +94,14 @@ is
 
 
    --------------
-   --  Operations
+   --- Operations
    --
 
    procedure enable (Self : in Item)
    is
-      use GL,
-          system.Storage_Elements;
+      use
+           GL,
+           system.Storage_Elements;
 
       type GLvoid_access is access all GLvoid;
 

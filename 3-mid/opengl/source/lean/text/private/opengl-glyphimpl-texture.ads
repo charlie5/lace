@@ -8,9 +8,10 @@ with
      openGL.Primitive.indexed,
      GL;
 
+
 package openGL.GlyphImpl.texture
 --
---  Implements a texture-based glyph.
+-- Implements a texture-based glyph.
 --
 is
    type Item is new GlyphImpl.item with private;
@@ -18,7 +19,7 @@ is
 
 
    ---------
-   --  Types
+   --- Types
    --
 
    type Vertex is
@@ -36,47 +37,48 @@ is
 
 
    ---------
-   --  Forge
+   --- Forge
    --
+
    function new_GlyphImpl (glyth_Slot       : in freetype_c.FT_GlyphSlot.item;
                            texture_Id       : in openGL.Texture.texture_Name;
                            xOffset, yOffset : in Integer;
                            Width,   Height  : in Integer) return GlyphImpl.texture.view;
    --
-   --  glyth_Slot:       The Freetype glyph to be processed.
-   --  texture_Id:       The Id of the texture that this glyph will be drawn in.
-   --  xOffset, yOffset: The x any y offset into the parent texture to draw this glyph.
-   --  Width,   Height:  The width and height (number of rows) of the parent texture.
+   -- glyth_Slot:       The Freetype glyph to be processed.
+   -- texture_Id:       The Id of the texture that this glyph will be drawn in.
+   -- xOffset, yOffset: The x any y offset into the parent texture to draw this glyph.
+   -- Width,   Height:  The width and height (number of rows) of the parent texture.
 
 
    --------------
-   --  Attributes
+   --- Attributes
    --
 
    function Quad (Self : in Item;   Pen : in Vector_3) return Quad_t;
 
 
    --------------
-   --  Operations
+   --- Operations
    --
 
    function renderImpl (Self : in Item;   Pen        : in Vector_3;
                                           renderMode : in Integer) return Vector_3;
    --
-   --  Pen:         The current pen position.
-   --  renderMode:  Render mode to display.
+   -- Pen:         The current pen position.
+   -- renderMode:  Render mode to display.
    --
-   --  Returns the advance distance for this glyph.
+   -- Returns the advance distance for this glyph.
 
 
-   -------------
-   --  Protected - for derived class use only.
+   -------------------------------------------
+   --- Protected - for derived class use only.
    --
 
    procedure ResetActiveTexture;
    --
-   --  Reset the currently active texture to zero to get into a known
-   --  state before drawing a string. This is to get around possible threading issues.
+   -- Reset the currently active texture to zero to get into a known
+   -- state before drawing a string. This is to get around possible threading issues.
 
 
 
@@ -95,5 +97,6 @@ private
          Geometry    : access Geometry.lit_textured.item;
          Primitive   :        openGL.Primitive.indexed.view;
       end record;
+
 
 end openGL.GlyphImpl.texture;

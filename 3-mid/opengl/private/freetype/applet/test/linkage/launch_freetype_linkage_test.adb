@@ -7,15 +7,17 @@ with
      freetype_C.FT_CharMapRec,
      interfaces.C.Strings;
 
+
 procedure launch_freetype_linkage_Test
 --
---  Tests linkage to Freetype functions.
---  Is not meant to be run.
+-- Tests linkage to Freetype functions.
+-- Is not meant to be run.
 --
 is
-   use Freetype_C,
-       freetype_C.Binding,
-       Interfaces;
+   use
+        Freetype_C,
+        freetype_C.Binding,
+        Interfaces;
 
    an_Error           :        FT_Error;
    pragma Unreferenced (an_Error);
@@ -51,17 +53,17 @@ is
 begin
    FT_Outline_Get_CBox (null, null);
 
-   an_Error      := FT_Init_FreeType  (null);
-   an_Error      := FT_Done_FreeType  (null);
-   an_Error      := FT_Render_Glyph   (null, FT_RENDER_MODE_NORMAL);
-   an_Error      := FT_Set_Char_Size  (null, 0, 0, 0, 0);
-   an_Error      := FT_Done_Face      (null);
-   an_Error      := FT_Attach_File    (null, Interfaces.C.Strings.null_ptr);
-   an_Error      := FT_Set_Charmap    (null, null);
-   an_Error      := FT_Select_Charmap (null, 0);
+   an_Error := FT_Init_FreeType  (null);
+   an_Error := FT_Done_FreeType  (null);
+   an_Error := FT_Render_Glyph   (null, FT_RENDER_MODE_NORMAL);
+   an_Error := FT_Set_Char_Size  (null, 0, 0, 0, 0);
+   an_Error := FT_Done_Face      (null);
+   an_Error := FT_Attach_File    (null, interfaces.C.Strings.null_ptr);
+   an_Error := FT_Set_Charmap    (null, null);
+   an_Error := FT_Select_Charmap (null, 0);
 
-   an_FT_uint    := FT_Get_Char_Index (null, 0);
-   an_Error      := FT_Get_Kerning    (null, 0, 0, 0, null);
+   an_FT_uint := FT_Get_Char_Index (null, 0);
+   an_Error   := FT_Get_Kerning    (null, 0, 0, 0, null);
 
    an_Error      := FT_Load_Glyph                 (null, 0, 0);
    an_FT_Outline := FT_GlyphSlot_Get_Outline      (null);

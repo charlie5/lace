@@ -9,13 +9,14 @@ with
 
 procedure launch_render_Text
 --
---  Render updated text.
+-- Render updated text.
 --
 is
-   use openGL,
-       openGL.Palette,
-       openGL.Math,
-       openGL.linear_Algebra_3d;
+   use
+        openGL,
+        openGL.Palette,
+        openGL.Math,
+        openGL.linear_Algebra_3d;
 
    the_font_Id : constant openGL.Font.font_Id := (to_Asset ("assets/opengl/font/LiberationMono-Regular.ttf"), 24);
 
@@ -23,7 +24,7 @@ begin
    Demo.print_Usage ("Use space ' ' to cycle the text.");
    openGL.Demo.define ("openGL 'Render Text' Demo");
 
-   --  Setup the camera.
+   -- Setup the camera.
    --
    Demo.Camera.Position_is ([3.0, 0.0, 10.0],
                             y_Rotation_from (to_Radians (0.0)));
@@ -31,7 +32,7 @@ begin
    Demo.Renderer.add_Font (the_font_Id);
 
    declare
-      --  The model.
+      -- The model.
       --
       the_Text_Model : constant Model.Text.lit_colored.view
         := Model.Text.lit_colored.new_Text (Text     => "Howdy",
@@ -40,7 +41,7 @@ begin
                                             texture_Details => openGL.texture_Set.to_Set ([1 => openGL.to_Asset ("assets/texture/Face1.bmp")]),
                                             Centered => False);
 
-      --  The sprites.
+      -- The sprites.
       --
       use openGL.Visual.Forge;
 
@@ -51,7 +52,7 @@ begin
       the_Visuals (1).Scale_is ([0.2, 0.2, 1.0]);
 
 
-      --  Main loop.
+      -- Main loop.
       --
       while not Demo.Done
       loop
@@ -82,7 +83,7 @@ begin
             end if;
          end;
 
-         --  Render all sprites.
+         -- Render all sprites.
          --
          Demo.Camera.render ([1 => the_Visuals (Current)]);
 

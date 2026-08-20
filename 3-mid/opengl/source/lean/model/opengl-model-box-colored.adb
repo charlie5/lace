@@ -38,8 +38,9 @@ is
 
       function new_Face (Vertices : access Geometry.colored.Vertex_array) return Geometry.colored.view
       is
-         use Geometry.colored,
-             Primitive;
+         use
+              Geometry.colored,
+              Primitive;
 
          the_Geometry  : constant Geometry.colored .view := Geometry.colored.new_Geometry;
          the_Primitive : constant Primitive.indexed.view := Primitive.indexed.new_Primitive (triangle_Fan,
@@ -61,7 +62,7 @@ is
       right_Face : Geometry.colored.view;
 
    begin
-      --  Front
+      -- Front
       --
       declare
          the_Vertices : aliased Geometry.colored.Vertex_array
@@ -73,7 +74,7 @@ is
          front_Face := new_Face (Vertices => the_Vertices'Access);
       end;
 
-      --  Rear
+      -- Rear
       --
       declare
          the_Vertices : aliased Geometry.colored.Vertex_array
@@ -85,7 +86,7 @@ is
          rear_Face := new_Face (Vertices => the_Vertices'Access);
       end;
 
-      --  Upper
+      -- Upper
       --
       declare
          the_Vertices : aliased Geometry.colored.Vertex_array
@@ -97,7 +98,7 @@ is
          upper_Face := new_Face (Vertices => the_Vertices'Access);
       end;
 
-      --  Lower
+      -- Lower
       --
       declare
          the_Vertices : aliased Geometry.colored.Vertex_array
@@ -109,7 +110,7 @@ is
          lower_Face := new_Face (Vertices => the_Vertices'Access);
       end;
 
-      --  Left
+      -- Left
       --
       declare
          the_Vertices : aliased Geometry.colored.Vertex_array
@@ -121,7 +122,7 @@ is
          left_Face := new_Face (Vertices => the_Vertices'Access);
       end;
 
-      --  Right
+      -- Right
       --
       declare
          the_Vertices : aliased Geometry.colored.Vertex_array

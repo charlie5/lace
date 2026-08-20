@@ -5,7 +5,7 @@ with
 
 package openGL.Attribute
 --
---  Models an openGL shader attribute.
+-- Models an openGL shader attribute.
 --
 is
    type Item  is tagged private;
@@ -16,6 +16,8 @@ is
                       GL_SHORT, GL_UNSIGNED_SHORT,
                       GL_INT,   GL_UNSIGNED_INT,
                       GL_FLOAT, GL_FIXED);
+
+
    ---------
    --- Forge
    --
@@ -86,5 +88,6 @@ private
                       GL_UNSIGNED_INT   => 16#1405#,
                       GL_FLOAT          => 16#1406#,
                       GL_FIXED          => 16#140c#);
+
 
 end openGL.Attribute;

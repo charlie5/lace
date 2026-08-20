@@ -5,7 +5,7 @@ with
 
 package openGL.Model.capsule.lit_textured
 --
---  Models a lit and textured capsule.
+-- Models a lit and textured capsule.
 --
 is
    package textured_Model is new texturing.Mixin (openGL.Model.capsule.item);
@@ -23,6 +23,7 @@ is
                          texture_Details : in texture_Set.item;
                          Image  : in asset_Name := null_Asset) return View;
 
+
    --------------
    --- Attributes
    --
@@ -30,6 +31,7 @@ is
    overriding
    function to_GL_Geometries (Self : access Item;   Textures : access Texture.name_Map_of_texture'Class;
                                                     Fonts    : in     Font.font_id_Map_of_font) return Geometry.views;
+
 
 
 private

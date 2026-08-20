@@ -1,6 +1,7 @@
 with
      glx.Pointers;
 
+
 package GLX.Pointer_Pointers
 is
    use glx.Pointers;
@@ -20,5 +21,6 @@ is
    type ContextID_Pointer_Pointer   is access all ContextID_Pointer;
    type GLXWindow_Pointer_Pointer   is access all Window_Pointer;
    type PBuffer_Pointer_Pointer     is access all PBuffer_Pointer;
+
 
 end GLX.Pointer_Pointers;

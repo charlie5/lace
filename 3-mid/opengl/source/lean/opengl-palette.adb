@@ -34,10 +34,11 @@ is
    function Mixed (Self : in Color;   Other : in Color;
                                       Mix   : in mix_Factor := 0.5) return Color
    is
+
       function Interpolate (Value_1, Value_2 : in Primary) return Primary     -- Linear interpolate.
       is
       begin
-         return    Value_1
+         return   Value_1
                 + (Value_2 - Value_1) * Primary (Mix);
       end Interpolate;
 
@@ -53,12 +54,12 @@ is
                                            Similarity : in Primary := default_Similarity) return Boolean
    is
    begin
-      return     Self.Red   <= to.Red   + Similarity
-        and then Self.Red   >= to.Red   - Similarity
-        and then Self.Green <= to.Green + Similarity
-        and then Self.Green >= to.Green - Similarity
-        and then Self.Blue  <= to.Blue  + Similarity
-        and then Self.Blue  >= to.Blue  - Similarity;
+      return          Self.Red   <= To.Red   + Similarity
+             and then Self.Red   >= To.Red   - Similarity
+             and then Self.Green <= To.Green + Similarity
+             and then Self.Green >= To.Green - Similarity
+             and then Self.Blue  <= To.Blue  + Similarity
+             and then Self.Blue  >= To.Blue  - Similarity;
    end is_Similar;
 
 

@@ -9,18 +9,20 @@ with
      GL.lean,
      GL.Pointers,
 
-     Interfaces.C.Strings,
+     interfaces.C.Strings,
      System.storage_Elements;
 
 
 package body openGL.Geometry.lit_textured
 is
-   use GL.lean,
-       GL.Pointers,
-       Interfaces;
+   use
+        GL.lean,
+        GL.Pointers,
+        Interfaces;
+
 
    -----------
-   --  Globals
+   --- Globals
    --
 
    vertex_Shader        : aliased Shader.item;
@@ -44,15 +46,15 @@ is
    Attribute_4_Name_ptr : aliased constant C.strings.chars_ptr := C.strings.to_chars_ptr (Attribute_4_Name'Access);
 
 
-
    ---------
-   --  Forge
+   --- Forge
    --
 
    procedure create_Program
    is
-      use Attribute.Forge,
-          System.storage_Elements;
+      use
+           Attribute.Forge,
+           System.storage_Elements;
 
       use type system.Address;
 
@@ -70,7 +72,7 @@ is
                                                               3 => to_Asset ("assets/opengl/shader/lighting-frag.snippet"),
                                                               4 => to_Asset ("assets/opengl/shader/lit_textured.frag"))));
       the_Program := new openGL.Program.lit.item;
-      the_Program.define (  vertex_Shader'Access,
+      the_Program.define (vertex_Shader  'Access,
                           fragment_Shader'Access);
       the_Program.enable;
 
@@ -139,7 +141,6 @@ is
 
 
 
-
    function new_Geometry return View
    is
       use type openGL.Program.lit.view;
@@ -159,9 +160,8 @@ is
    end new_Geometry;
 
 
-
    ----------
-   --  Vertex
+   --- Vertex
    --
 
    function is_Transparent (Self : in Vertex_array) return Boolean     -- TODO: Do these properly.
@@ -181,9 +181,8 @@ is
    end is_Transparent;
 
 
-
    --------------
-   --  Attributes
+   --- Attributes
    --
 
    package openGL_Buffer_of_geometry_Vertices       is new Buffer.general (base_Object   => Buffer.array_Object,
@@ -219,13 +218,12 @@ is
 
 
 
-
    procedure Vertices_are (Self : in out Item;   Now : in Vertex_large_array)
    is
       use openGL_large_Buffer_of_geometry_Vertices.Forge;
    begin
       Self.Vertices       := new openGL_large_Buffer_of_geometry_Vertices.Object' (to_Buffer (Now,
-                                                                                   usage => Buffer.static_Draw));
+                                                                                              usage => Buffer.static_Draw));
       Self.is_Transparent := is_Transparent (Now);
 
       -- Set the bounds.
@@ -239,7 +237,6 @@ is
          Self.Bounds_are (bounding_Box (Count => Now'Length));
       end;
    end Vertices_are;
-
 
 
 

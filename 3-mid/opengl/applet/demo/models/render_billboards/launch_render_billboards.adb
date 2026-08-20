@@ -8,13 +8,14 @@ with
 
 procedure launch_render_Billboards
 --
---  Exercise the render of billboard models.
+-- Exercise the render of billboard models.
 --
 is
-   use openGL,
-       openGL.Model,
-       openGL.Math,
-       openGL.linear_Algebra_3d;
+   use
+        openGL,
+        openGL.Model,
+        openGL.Math,
+        openGL.linear_Algebra_3d;
 
    the_Texture : constant openGL.asset_Name :=  to_Asset ("assets/opengl/texture/Face1.bmp");
 begin
@@ -23,7 +24,7 @@ begin
    Demo.Camera.Position_is ([0.0, 0.0, 10.0],
                             y_Rotation_from (to_Radians (0.0)));
    declare
-      --  The Models.
+      -- The Models.
       --
       the_Billboard_Model : constant Model.Billboard.textured.view
         := Model.Billboard.textured.forge.new_Billboard (--Scale   => (1.0, 1.0, 1.0),
@@ -37,7 +38,7 @@ begin
                                                            Color   => (Palette.Green, Opaque),
                                                            Texture => the_Texture,
                                                            texture_Details  => openGL.texture_Set.to_Set ([1 => the_Texture]));
-      --  The Sprites.
+      -- The Sprites.
       --
       use openGL.Visual.Forge;
 
@@ -46,7 +47,7 @@ begin
    begin
       the_Visuals (2).Site_is ([3.0, 0.0, 0.0]);
 
-      --  Main loop.
+      -- Main loop.
       --
       while not Demo.Done
       loop
@@ -55,7 +56,7 @@ begin
          Demo.Dolly.evolve;
          Demo.Done := Demo.Dolly.quit_Requested;
 
-         --  Render the sprites.
+         -- Render the sprites.
          --
          Demo.Camera.render (the_Visuals);
 

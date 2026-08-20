@@ -1,6 +1,6 @@
 package openGL.Model.hexagon_Column
 --
---  Models a column with six sides.
+-- Models a column with six sides.
 --
 is
 
@@ -17,5 +17,6 @@ private
       end record;
 
    Normal : constant Vector_3 := [0.0, 0.0, 1.0];
+
 
 end openGL.Model.hexagon_Column;

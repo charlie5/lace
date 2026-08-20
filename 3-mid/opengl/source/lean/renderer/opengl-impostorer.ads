@@ -12,6 +12,7 @@ with
      ada.Containers.hashed_Maps,
      system.storage_Elements;
 
+
 package openGL.Impostorer
 --
 -- Provides an impostoring system.
@@ -50,11 +51,12 @@ is
 
 
    --------------
-   --  Operations
+   --- Operations
    --
 
    procedure substitute (Self : in out Item;   the_Visuals : in out Visual.views;
                                                Camera      : access openGL.Camera.item'Class);
+
 
 
 private
@@ -86,7 +88,7 @@ private
             max_Updates : Positive;
 
             Impostors       : Impostor.views (1 .. 20_000);
-            impostors_Count : Natural := 0;
+            impostors_Count : Natural                     := 0;
          end record;
 
       type Slots      is array (Positive range <>) of Slot;

@@ -4,7 +4,7 @@ with
 
 package openGL.Geometry.lit_colored_textured
 --
---  Supports 'per-vertex' site, color, texture and lighting.
+-- Supports 'per-vertex' site, color, texture and lighting.
 --
 is
    package textured_Geometry is new texturing.Mixin;
@@ -17,7 +17,7 @@ is
 
 
    ----------
-   --  Vertex
+   --- Vertex
    --
 
    type Vertex is
@@ -33,7 +33,7 @@ is
 
 
    --------------
-   --  Attributes
+   --- Attributes
    --
 
    procedure Vertices_are   (Self : in out Item;   Now       : in Vertex_array);
@@ -41,6 +41,7 @@ is
    overriding
    procedure Indices_are    (Self : in out Item;   Now       : in Indices;
                                                    for_Facia : in Positive);
+
 
 
 private

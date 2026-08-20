@@ -33,7 +33,6 @@ is
 
 
 
-
       overriding
       procedure Fade_is (Self : in out textured_Item;   Which : in texture_Set.texture_Id;
                                                         Now   : in texture_Set.fade_Level)
@@ -72,14 +71,12 @@ is
 
 
 
-
       procedure Texture_is (Self : in out textured_Item;   Which : in texture_Set.texture_Id;
                                                            Now   : in openGL.asset_Name)
       is
       begin
          Self.texture_Set.Details (detail_Count (Which)).Texture := Now;
       end Texture_is;
-
 
 
 
@@ -111,18 +108,17 @@ is
 
 
 
-
       overriding
       procedure animate (Self : in out textured_Item)
       is
-         --  use type texture_Set.Animation_view;
+         -- use type texture_Set.Animation_view;
       begin
          if Self.texture_Details.Animation = null
          then
             return;
          end if;
 
-         --  texture_Set.animate (Self.texture_Set.Animation.all,
+         -- texture_Set.animate (Self.texture_Set.Animation.all,
          --                       Self.texture_Set.texture_Applies);
 
          texture_Set.animate (Self.texture_Set);
@@ -137,8 +133,10 @@ is
       end texture_Details;
 
 
+
       procedure texture_Details_is (Self : in out textured_Item;   Now : in openGL.texture_Set.item)
       is
+
          procedure free is new ada.unchecked_Deallocation (Animation, Animation_view);
       begin
          free (Self.texture_Set.Animation);
@@ -153,7 +151,6 @@ is
 
 
    end Mixin;
-
 
 
 end openGL.Model.texturing;

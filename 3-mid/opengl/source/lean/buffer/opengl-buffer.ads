@@ -6,20 +6,22 @@ with
 
 package openGL.Buffer
 --
---  Models a buffer object.
+-- Models a buffer object.
 --
 is
    --------------
    --- Core Types
    --
+
    subtype a_Name is GL.GLuint;                                    -- An openGL vertex buffer 'Name'.
    type    a_Kind is (array_Buffer, element_array_Buffer);
    type     Usage is (stream_Draw, static_Draw, dynamic_Draw);
 
 
    -----------------
-   --  Buffer Object
+   --- Buffer Object
    --
+
    type Object is abstract tagged limited private;
    type View   is access all Object'Class;
 
@@ -28,7 +30,7 @@ is
 
 
    --------------
-   --  Attributes
+   --- Attributes
    --
 
    function Name   (Self : in Object) return Buffer.a_Name;
@@ -37,38 +39,38 @@ is
 
 
    --------------
-   --  Operations
+   --- Operations
    --
 
    procedure enable (Self : in Object'Class);
 
 
    -----------------------------------------------
-   --  Derived 'array' and 'element array' Classes
+   --- Derived 'array' and 'element array' Classes
    --
 
    type         array_Object is new Object with private;
    type element_array_Object is new Object with private;
 
    --
-   --  Refer to child packages, for specific buffers:
+   -- Refer to child packages, for specific buffers:
    --
    --  - gl.Buffer.vertex
    --  - gl.Buffer.texture_coords
    --  - gl.Buffer.normals
    --  - gl.Buffer.indices
    --
-   --  (TODO: pixel pack/unpack buffers)
+   -- (TODO: pixel pack/unpack buffers)
 
 
    ----------
-   --  Errors
+   --- Errors
    --
 
    no_platform_Support : exception;
    --
-   --  Raised by buffer 'Map' functions when OS platform does not
-   --  support GL Buffer objects.
+   -- Raised by buffer 'Map' functions when OS platform does not
+   -- support GL Buffer objects.
 
 
 
@@ -76,7 +78,7 @@ private
    use GL.lean;
 
 
-   --  Buffer Kinds
+   -- Buffer Kinds
    --
 
    for a_Kind use (array_Buffer         => GL_ARRAY_BUFFER,
@@ -87,7 +89,7 @@ private
    function to_GL_Enum is new ada.unchecked_Conversion (a_Kind, gl.GLenum);
 
 
-   --  Usage
+   -- Usage
    --
    for Usage use (stream_Draw  => GL_STREAM_DRAW,
                   static_Draw  => GL_STATIC_DRAW,
@@ -99,7 +101,7 @@ private
 
 
    ----------
-   --  Object
+   --- Object
    --
 
    type Object is abstract tagged limited
@@ -118,7 +120,7 @@ private
    type element_array_Object is new Object with null record;
 
 
-   --  Support
+   -- Support
    --
    procedure verify_Name (Self : in out Object'Class);
 

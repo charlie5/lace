@@ -1,10 +1,10 @@
 package openGL.IO.wavefront
 --
---  Provides a function to convert a Wavefront model file (*.obj) to an openGL IO model.
+-- Provides a function to convert a Wavefront model file (*.obj) to an openGL IO model.
 --
 is
    ---------
-   --  Group
+   --- Group
    --
 
    type group_Kind is (object_Name,     group_Name,
@@ -25,7 +25,7 @@ is
 
 
    --------
-   --  Face
+   --- Face
    --
 
    type face_Kind is (a_Group, a_Facet);
@@ -69,7 +69,7 @@ is
 
 
    -----------
-   --  Utility
+   --- Utility
    --
 
    function to_Vector_3   (Self : in String) return Vector_3;

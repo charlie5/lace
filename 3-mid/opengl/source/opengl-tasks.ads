@@ -1,9 +1,10 @@
 with
      ada.Task_Identification;
 
+
 package openGL.Tasks
 --
---  Allow checking that a GL operation is called only in the GL renderer engine task.
+-- Allow checking that a GL operation is called only in the GL renderer engine task.
 --
 is
 

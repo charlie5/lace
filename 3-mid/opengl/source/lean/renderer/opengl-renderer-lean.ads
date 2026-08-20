@@ -63,7 +63,7 @@ is
 
 
    --------------
-   --  Operations
+   --- Operations
    --
 
    type impostor_Update
@@ -95,9 +95,9 @@ is
                                                             the_Camera    : access Camera.item'Class);
 
 
-
    --- Engine
    --
+
    protected gl_Lock
    is
       entry acquire;
@@ -105,6 +105,8 @@ is
    private
       Locked : Boolean := False;
    end gl_Lock;
+
+
 
    procedure start_Engine (Self : in out Item);
    procedure  stop_Engine (Self : in out Item);
@@ -125,7 +127,7 @@ is
                                                  clear_Frame            : in Boolean;
                                                  to_Surface             : in Surface.view := null);
    --
-   --  Raises buffer_Overflow if the renderer is unable to cope with the new 'draw'.
+   -- Raises buffer_Overflow if the renderer is unable to cope with the new 'draw'.
 
 
    procedure free (Self : in out Item;   the_Model    : in Model   .view);
@@ -147,23 +149,23 @@ private
    procedure no_context_Clearer is null;
 
 
-   ----------
-   -- Updates
+   -----------
+   --- Updates
    --
 
    type updates_for_Camera is
       record
          impostor_Updates      : lean.impostor_Updates (1 .. max_Visuals);
-         impostor_updates_Last : Natural := 0;
+         impostor_updates_Last : Natural                                 := 0;
 
          Visuals               : Visual.views (1 .. max_Visuals);
-         visuals_Last          : Natural := 0;
+         visuals_Last          : Natural                        := 0;
       end record;
 
    type Updates_for_Camera_view is access Updates_for_Camera;
 
    function to_Address is new ada.unchecked_Conversion (Camera_view, system.storage_Elements.integer_Address);
-   
+
    function Hash (the_Camera : in Camera_view) return ada.Containers.Hash_type
      is (ada.Containers.Hash_type'Mod (to_Address (the_Camera)));
    package  camera_Maps_of_updates is new ada.Containers.Hashed_Maps (Camera_view,
@@ -253,7 +255,7 @@ private
                        Count        :    out Natural);
    private
       the_Impostors : Impostor_Set;
-      the_Count     : Natural := 0;
+      the_Count     : Natural     := 0;
    end safe_Impostors;
 
 
@@ -334,12 +336,11 @@ private
          context_Clearer    :         lean.context_Clearer := no_context_Clearer'Access;
          Swapper            :         lean.Swapper;
          swap_Required      :         Boolean;
-         is_Busy            :         Boolean := False;
+         is_Busy            :         Boolean            := False;
       end record;
 
 
-   procedure update_Impostors_and_draw_Visuals
-                                (Self : in out Item;   all_Updates : in camera_updates_Couples);
+   procedure update_Impostors_and_draw_Visuals (Self : in out Item;   all_Updates : in camera_updates_Couples);
 
    procedure update_Impostors   (Self : in out Item;   the_Updates            : in impostor_Updates;
                                                        camera_world_Transform : in Matrix_4x4;

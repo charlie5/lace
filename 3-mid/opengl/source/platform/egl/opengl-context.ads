@@ -4,12 +4,13 @@ with
      openGL.Surface,
      EGL;
 
+
 package openGL.Context
 --
---  Models an openGL context.
+-- Models an openGL context.
 --
 is
-   --  pragma Pure;
+   -- pragma Pure;
 
    type Item is tagged private;
    type View is access all Item'Class;
@@ -21,8 +22,7 @@ is
    procedure make_Current (Self : in     Item;   read_Surface        : in     opengl.Surface.item;
                                                  write_Surface       : in     opengl.Surface.item);
 
-   function  egl_Context_debug
-                          (Self : in     Item'Class) return egl.EGLConfig;   -- tbd: move this to privvy pkg.
+   function egl_Context_debug (Self : in     Item'Class) return egl.EGLConfig;   -- tbd: move this to privvy pkg.
 
 
 
@@ -33,5 +33,6 @@ private
          egl_Context : aliased egl.EGLContext;
          Display     : access  opengl.Display.item'Class;
       end record;
+
 
 end openGL.Context;

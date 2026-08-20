@@ -6,7 +6,7 @@ with
 
 package openGL.surface_Profile
 --
---  Models an openGL surface profile.
+-- Models an openGL surface profile.
 --
 is
 
@@ -16,9 +16,8 @@ is
    type Items is array (Positive range <>) of Item;
 
 
-
    -------------------
-   --  Surface Quality
+   --- Surface Quality
    --
 
    Irrelevant : constant Natural := Natural'Last;
@@ -50,9 +49,8 @@ is
    function Image (Self : in Qualities) return String;
 
 
-
    ---------
-   --  Forge
+   --- Forge
    --
 
    desired_Qualitites_unavailable : exception;
@@ -64,15 +62,12 @@ is
    function  fetch_All (the_Display : access openGL.Display.item'class) return surface_Profile.items;
 
 
-
    --------------
-   --  Attributes
+   --- Attributes
    --
 
    function  Quality    (Self : in Item) return Qualities;
 --     function  get_Visual (Self : in Item) return access GLX.XVisualInfo;
-
-
 
 
 
@@ -96,5 +91,6 @@ private
                                                                       Bits_alpha_mask => Irrelevant),
                                               depth_buffer_Bits   => 24,
                                               stencil_buffer_Bits => Irrelevant);
+
 
 end openGL.surface_Profile;

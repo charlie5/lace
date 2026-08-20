@@ -3,7 +3,6 @@ with
      openGL.GlyphImpl.texture,
 
      freetype_c.FT_GlyphSlot,
-
      ada.Containers.Vectors;
 
 private
@@ -13,7 +12,7 @@ with
 
 package openGL.FontImpl.texture
 --
---  Implements a texture font.
+-- Implements a texture font.
 --
 is
    type Item is new FontImpl.item with private;
@@ -21,7 +20,7 @@ is
 
 
    ---------
-   --  Forge
+   --- Forge
    --
 
    function  to_FontImpl_texture (ftFont            : access openGL.Font.item'Class;
@@ -42,7 +41,7 @@ is
 
 
    --------------
-   --  Attributes
+   --- Attributes
    --
 
    overriding
@@ -50,9 +49,9 @@ is
                                             x_Res,
                                             y_Res    : in Natural := 72) return Boolean;
    --
-   --  Set the char size for the current face.
+   -- Set the char size for the current face.
    --
-   --  Returns True if size was set correctly.
+   -- Returns True if size was set correctly.
 
 
    function render   (Self : access Item;   Text     : in String;
@@ -70,7 +69,7 @@ is
 
    function MakeGlyphImpl (Self : access Item;   ftGlyph : in freetype_c.FT_GlyphSlot.item) return access Glyph.item'Class;
    --
-   --  Create an FTTextureGlyph object for the base class.
+   -- Create an FTTextureGlyph object for the base class.
 
 
    function gl_Texture    (Self : in     Item) return openGL.Texture.texture_Name;
@@ -80,6 +79,7 @@ is
 private
 
    use type openGL.Texture.texture_Name;
+
    package texture_name_Vectors is new ada.Containers.Vectors (Positive, openGL.Texture.texture_Name);
    subtype texture_name_Vector  is texture_name_Vectors.Vector;
 
@@ -88,8 +88,8 @@ private
       record
          maximumGLTextureSize : aliased gl.GLsizei := 0;       -- The max texture dimension on this openGL implemetation.
 
-         textureWidth         :         gl.GLsizei := 0;       -- The min texture width  required to hold the glyphs.
-         textureHeight        :         gl.GLsizei := 0;       -- The min texture height required to hold the glyphs.
+         textureWidth         :         gl.GLsizei         := 0;       -- The min texture width  required to hold the glyphs.
+         textureHeight        :         gl.GLsizei         := 0;       -- The min texture height required to hold the glyphs.
          textureIDList        :         texture_name_Vector;   -- An array of texture ids.
 
          glyphHeight          :         Integer    := 0;       -- The max height for glyphs in the current font.
@@ -105,17 +105,17 @@ private
 
    procedure CalculateTextureSize (Self : in out Item);
    --
-   --  Get the size of a block of memory required to layout the glyphs
+   -- Get the size of a block of memory required to layout the glyphs
    --
-   --  Calculates a width and height based on the glyph sizes and the
-   --  number of glyphs. It over estimates.
+   -- Calculates a width and height based on the glyph sizes and the
+   -- number of glyphs. It over estimates.
 
 
    function CreateTexture (Self : access Item) return openGL.Texture.texture_Name;
    --
-   --  Creates a 'blank' openGL texture object.
+   -- Creates a 'blank' openGL texture object.
    --
-   --  The format is GL_ALPHA and the params are
+   -- The format is GL_ALPHA and the params are
    --     * GL_TEXTURE_WRAP_S = GL_CLAMP
    --     * GL_TEXTURE_WRAP_T = GL_CLAMP
    --     * GL_TEXTURE_MAG_FILTER = GL_LINEAR
@@ -124,5 +124,6 @@ private
 
 
    procedure free_Textures (Self : in out Item);
+
 
 end openGL.FontImpl.Texture;

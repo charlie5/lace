@@ -6,7 +6,7 @@ with
 
 package openGL.Model.hexagon.lit_textured
 --
---  Models a lit and textured hexagon.
+-- Models a lit and textured hexagon.
 --
 is
    package textured_Model is new texturing.Mixin (Model.hexagon.item);
@@ -30,6 +30,7 @@ is
    overriding
    function to_GL_Geometries (Self : access Item;   Textures : access Texture.name_Map_of_texture'Class;
                                                     Fonts    : in     Font.font_id_Map_of_font) return Geometry.views;
+
 
 
 private

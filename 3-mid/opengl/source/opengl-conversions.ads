@@ -7,4 +7,5 @@ is
    function to_Vector_3 (From : in rgb_Color)   return Vector_3;
    function to_Vector_3 (From : in Color)       return Vector_3;
 
+
 end openGL.Conversions;

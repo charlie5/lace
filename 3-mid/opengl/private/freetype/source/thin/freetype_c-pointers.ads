@@ -42,4 +42,5 @@ is
    type FT_Kerning_Mode_Pointer_array is array (C.Size_t range <>) of aliased FT_Kerning_Mode_Pointer;
    type FT_SizeRec_Pointer_array      is array (C.Size_t range <>) of aliased FT_SizeRec_Pointer;
 
+
 end freetype_c.Pointers;

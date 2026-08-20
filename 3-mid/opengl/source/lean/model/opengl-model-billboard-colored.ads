@@ -7,7 +7,7 @@ with
 
 package openGL.Model.billboard.colored
 --
---  Models a colored, textured billboard.
+-- Models a colored, textured billboard.
 --
 is
    type Item is new Model.billboard.item with private;
@@ -22,6 +22,7 @@ is
                            Plane   : in billboard.Plane;
                            Color   : in lucid_Color;
                            Texture : in asset_Name) return View;
+
 
    --------------
    --- Attributes
@@ -57,5 +58,6 @@ private
          Vertices : access Geometry.colored.Vertex_array := new geometry.colored.Vertex_array (1 .. 4);
          Geometry : access Geometry.colored.item'Class;
       end record;
+
 
 end openGL.Model.billboard.colored;

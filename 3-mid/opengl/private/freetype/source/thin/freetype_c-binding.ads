@@ -11,18 +11,19 @@ with
      freetype_c.FT_CharMap,
      freetype_c.Pointers,
 
-     Interfaces.C.Pointers,
-     Interfaces.C.Strings;
+     interfaces.C.Pointers,
+     interfaces.C.Strings;
+
 
 package freetype_c.Binding
 --
---  Provides the Freetype library functions.
+-- Provides the Freetype library functions.
 --
 is
    use freetype_c.Pointers;
 
 
-   --  unsigned_char_Pointer
+   -- unsigned_char_Pointer
    --
    type    unsigned_char_Array      is array (C.size_t range <>) of aliased C.unsigned_Char;
    package c_unsigned_char_Pointers is new C.Pointers (Index              => C.size_t,
@@ -33,7 +34,7 @@ is
 
 
    ---------------
-   --  Subprograms
+   --- Subprograms
    --
 
    procedure FT_Outline_Get_CBox (Outline     : in FT_Outline_Pointer;
@@ -149,72 +150,72 @@ is
 
 private
 
-   pragma Import (C, FT_Outline_Get_CBox,             "FT_Outline_Get_CBox");
-   pragma Import (C, FT_Init_FreeType,                "FT_Init_FreeType");
-   pragma Import (C, FT_Done_FreeType,                "FT_Done_FreeType");
-   pragma Import (C, FT_Render_Glyph,                 "FT_Render_Glyph");
-   pragma Import (C, FT_Set_Char_Size,                "FT_Set_Char_Size");
-   pragma Import (C, FT_Done_Face,                    "FT_Done_Face");
-   pragma Import (C, FT_Attach_File,                  "FT_Attach_File");
-   pragma Import (C, FT_Set_Charmap,                  "FT_Set_Charmap");
-   pragma Import (C, FT_Select_Charmap,               "FT_Select_Charmap");
-   pragma Import (C, FT_Get_Char_Index,               "FT_Get_Char_Index");
-   pragma Import (C, FT_Get_Kerning,                  "FT_Get_Kerning");
-   pragma Import (C, FT_Load_Glyph,                   "FT_Load_Glyph");
-   pragma Import (C, FT_GlyphSlot_Get_Outline,        "FT_GlyphSlot_Get_Outline");
-   pragma Import (C, FT_GlyphSlot_Get_Advance,        "FT_GlyphSlot_Get_Advance");
-   pragma Import (C, FT_GlyphSlot_Get_Bitmap,         "FT_GlyphSlot_Get_Bitmap");
-   pragma Import (C, FT_GlyphSlot_Get_bitmap_left,    "FT_GlyphSlot_Get_bitmap_left");
-   pragma Import (C, FT_GlyphSlot_Get_bitmap_top,     "FT_GlyphSlot_Get_bitmap_top");
-   pragma Import (C, FT_GlyphSlot_Get_Format,         "FT_GlyphSlot_Get_Format");
-   pragma Import (C, FT_Size_Get_Metrics,             "FT_Size_Get_Metrics");
-   pragma Import (C, new_FT_Face,                     "new_FT_Face");
-   pragma Import (C, new_FT_Memory_Face,              "new_FT_Memory_Face");
-   pragma Import (C, FT_Face_Get_Size,                "FT_Face_Get_Size");
-   pragma Import (C, FT_Face_IS_SCALABLE,             "FT_Face_IS_SCALABLE");
-   pragma Import (C, FT_Face_HAS_KERNING,             "FT_Face_HAS_KERNING");
-   pragma Import (C, FT_Face_Get_BBox,                "FT_Face_Get_BBox");
-   pragma Import (C, FT_Face_Get_units_per_EM,        "FT_Face_Get_units_per_EM");
-   pragma Import (C, FT_Face_Get_num_glyphs,          "FT_Face_Get_num_glyphs");
-   pragma Import (C, FT_Face_Get_charmap,             "FT_Face_Get_charmap");
-   pragma Import (C, FT_Face_Get_charmap_at,          "FT_Face_Get_charmap_at");
-   pragma Import (C, FT_Face_Get_num_charmaps,        "FT_Face_Get_num_charmaps");
-   pragma Import (C, FT_Face_Get_glyph,               "FT_Face_Get_glyph");
-   pragma Import (C, FT_Face_Attach_Stream,           "FT_Face_Attach_Stream");
-   pragma Import (C, get_FT_GLYPH_FORMAT_NONE,        "get_FT_GLYPH_FORMAT_NONE");
-   pragma Import (C, get_FT_GLYPH_FORMAT_COMPOSITE,   "get_FT_GLYPH_FORMAT_COMPOSITE");
-   pragma Import (C, get_FT_GLYPH_FORMAT_BITMAP,      "get_FT_GLYPH_FORMAT_BITMAP");
-   pragma Import (C, get_FT_GLYPH_FORMAT_OUTLINE,     "get_FT_GLYPH_FORMAT_OUTLINE");
-   pragma Import (C, get_FT_GLYPH_FORMAT_PLOTTER,     "get_FT_GLYPH_FORMAT_PLOTTER");
-   pragma Import (C, FT_ENCODING_NONE_enum,           "FT_ENCODING_NONE_enum");
-   pragma Import (C, FT_ENCODING_MS_SYMBOL_enum,      "FT_ENCODING_MS_SYMBOL_enum");
-   pragma Import (C, FT_ENCODING_UNICODE_enum,        "FT_ENCODING_UNICODE_enum");
-   pragma Import (C, FT_ENCODING_SJIS_enum,           "FT_ENCODING_SJIS_enum");
-   pragma Import (C, FT_ENCODING_GB2312_enum,         "FT_ENCODING_GB2312_enum");
-   pragma Import (C, FT_ENCODING_BIG5_enum,           "FT_ENCODING_BIG5_enum");
-   pragma Import (C, FT_ENCODING_WANSUNG_enum,        "FT_ENCODING_WANSUNG_enum");
-   pragma Import (C, FT_ENCODING_JOHAB_enum,          "FT_ENCODING_JOHAB_enum");
-   pragma Import (C, FT_ENCODING_ADOBE_STANDARD_enum, "FT_ENCODING_ADOBE_STANDARD_enum");
-   pragma Import (C, FT_ENCODING_ADOBE_EXPERT_enum,   "FT_ENCODING_ADOBE_EXPERT_enum");
-   pragma Import (C, FT_ENCODING_ADOBE_CUSTOM_enum,   "FT_ENCODING_ADOBE_CUSTOM_enum");
-   pragma Import (C, FT_ENCODING_ADOBE_LATIN_1_enum,  "FT_ENCODING_ADOBE_LATIN_1_enum");
-   pragma Import (C, FT_ENCODING_OLD_LATIN_2_enum,    "FT_ENCODING_OLD_LATIN_2_enum");
-   pragma Import (C, FT_ENCODING_APPLE_ROMAN_enum,    "FT_ENCODING_APPLE_ROMAN_enum");
-   pragma Import (C, FT_LOAD_DEFAULT_flag,            "FT_LOAD_DEFAULT_flag");
-   pragma Import (C, FT_LOAD_NO_SCALE_flag,           "FT_LOAD_NO_SCALE_flag");
-   pragma Import (C, FT_LOAD_NO_HINTING_flag,         "FT_LOAD_NO_HINTING_flag");
-   pragma Import (C, FT_LOAD_RENDER_flag,             "FT_LOAD_RENDER_flag");
-   pragma Import (C, FT_LOAD_NO_BITMAP_flag,          "FT_LOAD_NO_BITMAP_flag");
-   pragma Import (C, FT_LOAD_VERTICAL_LAYOUT_flag,    "FT_LOAD_VERTICAL_LAYOUT_flag");
-   pragma Import (C, FT_LOAD_FORCE_AUTOHINT_flag,     "FT_LOAD_FORCE_AUTOHINT_flag");
-   pragma Import (C, FT_LOAD_CROP_BITMAP_flag,        "FT_LOAD_CROP_BITMAP_flag");
-   pragma Import (C, FT_LOAD_PEDANTIC_flag,           "FT_LOAD_PEDANTIC_flag");
-   pragma Import (C, FT_LOAD_IGNORE_GLOBAL_ADVANCE_WIDTH_flag,
-                                                      "FT_LOAD_IGNORE_GLOBAL_ADVANCE_WIDTH_flag");
-   pragma Import (C, FT_LOAD_NO_RECURSE_flag,         "FT_LOAD_NO_RECURSE_flag");
-   pragma Import (C, FT_LOAD_IGNORE_TRANSFORM_flag,   "FT_LOAD_IGNORE_TRANSFORM_flag");
-   pragma Import (C, FT_LOAD_MONOCHROME_flag,         "FT_LOAD_MONOCHROME_flag");
-   pragma Import (C, FT_LOAD_LINEAR_DESIGN_flag,      "FT_LOAD_LINEAR_DESIGN_flag");
-   pragma Import (C, FT_LOAD_NO_AUTOHINT_flag,        "FT_LOAD_NO_AUTOHINT_flag");
+   pragma import (C, FT_Outline_Get_CBox,                      "FT_Outline_Get_CBox");
+   pragma import (C, FT_Init_FreeType,                         "FT_Init_FreeType");
+   pragma import (C, FT_Done_FreeType,                         "FT_Done_FreeType");
+   pragma import (C, FT_Render_Glyph,                          "FT_Render_Glyph");
+   pragma import (C, FT_Set_Char_Size,                         "FT_Set_Char_Size");
+   pragma import (C, FT_Done_Face,                             "FT_Done_Face");
+   pragma import (C, FT_Attach_File,                           "FT_Attach_File");
+   pragma import (C, FT_Set_Charmap,                           "FT_Set_Charmap");
+   pragma import (C, FT_Select_Charmap,                        "FT_Select_Charmap");
+   pragma import (C, FT_Get_Char_Index,                        "FT_Get_Char_Index");
+   pragma import (C, FT_Get_Kerning,                           "FT_Get_Kerning");
+   pragma import (C, FT_Load_Glyph,                            "FT_Load_Glyph");
+   pragma import (C, FT_GlyphSlot_Get_Outline,                 "FT_GlyphSlot_Get_Outline");
+   pragma import (C, FT_GlyphSlot_Get_Advance,                 "FT_GlyphSlot_Get_Advance");
+   pragma import (C, FT_GlyphSlot_Get_Bitmap,                  "FT_GlyphSlot_Get_Bitmap");
+   pragma import (C, FT_GlyphSlot_Get_bitmap_left,             "FT_GlyphSlot_Get_bitmap_left");
+   pragma import (C, FT_GlyphSlot_Get_bitmap_top,              "FT_GlyphSlot_Get_bitmap_top");
+   pragma import (C, FT_GlyphSlot_Get_Format,                  "FT_GlyphSlot_Get_Format");
+   pragma import (C, FT_Size_Get_Metrics,                      "FT_Size_Get_Metrics");
+   pragma import (C, new_FT_Face,                              "new_FT_Face");
+   pragma import (C, new_FT_Memory_Face,                       "new_FT_Memory_Face");
+   pragma import (C, FT_Face_Get_Size,                         "FT_Face_Get_Size");
+   pragma import (C, FT_Face_IS_SCALABLE,                      "FT_Face_IS_SCALABLE");
+   pragma import (C, FT_Face_HAS_KERNING,                      "FT_Face_HAS_KERNING");
+   pragma import (C, FT_Face_Get_BBox,                         "FT_Face_Get_BBox");
+   pragma import (C, FT_Face_Get_units_per_EM,                 "FT_Face_Get_units_per_EM");
+   pragma import (C, FT_Face_Get_num_glyphs,                   "FT_Face_Get_num_glyphs");
+   pragma import (C, FT_Face_Get_charmap,                      "FT_Face_Get_charmap");
+   pragma import (C, FT_Face_Get_charmap_at,                   "FT_Face_Get_charmap_at");
+   pragma import (C, FT_Face_Get_num_charmaps,                 "FT_Face_Get_num_charmaps");
+   pragma import (C, FT_Face_Get_glyph,                        "FT_Face_Get_glyph");
+   pragma import (C, FT_Face_Attach_Stream,                    "FT_Face_Attach_Stream");
+   pragma import (C, get_FT_GLYPH_FORMAT_NONE,                 "get_FT_GLYPH_FORMAT_NONE");
+   pragma import (C, get_FT_GLYPH_FORMAT_COMPOSITE,            "get_FT_GLYPH_FORMAT_COMPOSITE");
+   pragma import (C, get_FT_GLYPH_FORMAT_BITMAP,               "get_FT_GLYPH_FORMAT_BITMAP");
+   pragma import (C, get_FT_GLYPH_FORMAT_OUTLINE,              "get_FT_GLYPH_FORMAT_OUTLINE");
+   pragma import (C, get_FT_GLYPH_FORMAT_PLOTTER,              "get_FT_GLYPH_FORMAT_PLOTTER");
+   pragma import (C, FT_ENCODING_NONE_enum,                    "FT_ENCODING_NONE_enum");
+   pragma import (C, FT_ENCODING_MS_SYMBOL_enum,               "FT_ENCODING_MS_SYMBOL_enum");
+   pragma import (C, FT_ENCODING_UNICODE_enum,                 "FT_ENCODING_UNICODE_enum");
+   pragma import (C, FT_ENCODING_SJIS_enum,                    "FT_ENCODING_SJIS_enum");
+   pragma import (C, FT_ENCODING_GB2312_enum,                  "FT_ENCODING_GB2312_enum");
+   pragma import (C, FT_ENCODING_BIG5_enum,                    "FT_ENCODING_BIG5_enum");
+   pragma import (C, FT_ENCODING_WANSUNG_enum,                 "FT_ENCODING_WANSUNG_enum");
+   pragma import (C, FT_ENCODING_JOHAB_enum,                   "FT_ENCODING_JOHAB_enum");
+   pragma import (C, FT_ENCODING_ADOBE_STANDARD_enum,          "FT_ENCODING_ADOBE_STANDARD_enum");
+   pragma import (C, FT_ENCODING_ADOBE_EXPERT_enum,            "FT_ENCODING_ADOBE_EXPERT_enum");
+   pragma import (C, FT_ENCODING_ADOBE_CUSTOM_enum,            "FT_ENCODING_ADOBE_CUSTOM_enum");
+   pragma import (C, FT_ENCODING_ADOBE_LATIN_1_enum,           "FT_ENCODING_ADOBE_LATIN_1_enum");
+   pragma import (C, FT_ENCODING_OLD_LATIN_2_enum,             "FT_ENCODING_OLD_LATIN_2_enum");
+   pragma import (C, FT_ENCODING_APPLE_ROMAN_enum,             "FT_ENCODING_APPLE_ROMAN_enum");
+   pragma import (C, FT_LOAD_DEFAULT_flag,                     "FT_LOAD_DEFAULT_flag");
+   pragma import (C, FT_LOAD_NO_SCALE_flag,                    "FT_LOAD_NO_SCALE_flag");
+   pragma import (C, FT_LOAD_NO_HINTING_flag,                  "FT_LOAD_NO_HINTING_flag");
+   pragma import (C, FT_LOAD_RENDER_flag,                      "FT_LOAD_RENDER_flag");
+   pragma import (C, FT_LOAD_NO_BITMAP_flag,                   "FT_LOAD_NO_BITMAP_flag");
+   pragma import (C, FT_LOAD_VERTICAL_LAYOUT_flag,             "FT_LOAD_VERTICAL_LAYOUT_flag");
+   pragma import (C, FT_LOAD_FORCE_AUTOHINT_flag,              "FT_LOAD_FORCE_AUTOHINT_flag");
+   pragma import (C, FT_LOAD_CROP_BITMAP_flag,                 "FT_LOAD_CROP_BITMAP_flag");
+   pragma import (C, FT_LOAD_PEDANTIC_flag,                    "FT_LOAD_PEDANTIC_flag");
+   pragma import (C, FT_LOAD_IGNORE_GLOBAL_ADVANCE_WIDTH_flag, "FT_LOAD_IGNORE_GLOBAL_ADVANCE_WIDTH_flag");
+   pragma import (C, FT_LOAD_NO_RECURSE_flag,                  "FT_LOAD_NO_RECURSE_flag");
+   pragma import (C, FT_LOAD_IGNORE_TRANSFORM_flag,            "FT_LOAD_IGNORE_TRANSFORM_flag");
+   pragma import (C, FT_LOAD_MONOCHROME_flag,                  "FT_LOAD_MONOCHROME_flag");
+   pragma import (C, FT_LOAD_LINEAR_DESIGN_flag,               "FT_LOAD_LINEAR_DESIGN_flag");
+   pragma import (C, FT_LOAD_NO_AUTOHINT_flag,                 "FT_LOAD_NO_AUTOHINT_flag");
+
 
 end freetype_c.Binding;

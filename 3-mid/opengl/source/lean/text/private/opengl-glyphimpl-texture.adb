@@ -14,16 +14,16 @@ with
 package body openGL.GlyphImpl.texture
 is
    -----------
-   --  Globals
+   --- Globals
    --
 
    activeTextureID : openGL.texture.texture_Name;     -- TODO: Check C source for how this is used.
    pragma Unreferenced (activeTextureID);
    --
-   --  The texture index of the currently active texture
+   -- The texture index of the currently active texture
    --
-   --  We keep track of the currently active texture to try to reduce the
-   --  number of texture bind operations.
+   -- We keep track of the currently active texture to try to reduce the
+   -- number of texture bind operations.
 
    procedure ResetActiveTexture
    is
@@ -33,7 +33,7 @@ is
 
 
    ---------
-   --  Forge
+   --- Forge
    --
 
    function new_GlyphImpl (glyth_Slot       : in freetype_c.FT_GlyphSlot.item;
@@ -41,10 +41,11 @@ is
                            xOffset, yOffset : in Integer;
                            Width,   Height  : in Integer) return GlyphImpl.texture.view
    is
-      use freetype_C,
-          freetype_C.Binding,
-          GL,
-          GL.Binding;
+      use
+           freetype_C,
+           freetype_C.Binding,
+           GL,
+           GL.Binding;
 
       use type interfaces.C.unsigned,
                GLint;
@@ -72,6 +73,7 @@ is
 
       declare
          use GL.Pointers;
+
          Bitmap : constant freetype_C.FT_Bitmap.item := FT_GlyphSlot_Get_Bitmap (glyth_Slot);
       begin
          Self.destWidth  := Bitmap.Width;
@@ -114,6 +116,7 @@ is
                         0.0];
       declare
          use openGL.Primitive;
+
          the_Indices : constant openGL.Indices := [1, 2, 3, 4];
       begin
          Self.Primitive := Primitive.indexed.new_Primitive (triangle_Fan, the_Indices);
@@ -124,7 +127,7 @@ is
 
 
    --------------
-   --  Attributes
+   --- Attributes
    --
 
    function Quad (Self : in Item;   Pen : in Vector_3) return Quad_t
@@ -163,7 +166,7 @@ is
 
 
    --------------
-   --  Operations
+   --- Operations
    --
 
    function renderImpl (Self : in Item;   Pen        : in Vector_3;
@@ -175,4 +178,4 @@ is
    end renderImpl;
 
 
-end openGL.GlyphImpl.Texture;
+end openGL.GlyphImpl.texture;

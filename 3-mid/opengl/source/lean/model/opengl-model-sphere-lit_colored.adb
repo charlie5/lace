@@ -30,7 +30,7 @@ is
    --- Attributes
    --
 
-   --  NB: - An extra vertex is required at the end of each latitude ring.
+   -- NB: - An extra vertex is required at the end of each latitude ring.
    --      - This last vertex has the same site as the rings initial vertex.
    --      - The  last    vertex has 's' texture coord of 1.0, whereas
    --        the  initial vertex has 's' texture coord of 0.0.
@@ -41,8 +41,9 @@ is
    is
       pragma unreferenced (Textures, Fonts);
 
-      use Geometry,
-          Geometry.lit_colored;
+      use
+           Geometry,
+           Geometry.lit_colored;
 
       lat_Count      : Positive renames Self.lat_Count;
       long_Count     : Positive renames Self.long_Count;
@@ -66,8 +67,9 @@ is
    begin
       set_Sites:
       declare
-         use linear_Algebra,
-             linear_Algebra_3D;
+         use
+              linear_Algebra,
+              linear_Algebra_3D;
 
          north_Pole : constant Site := [0.0,  0.5,  0.0];
          south_Pole : constant Site := [0.0, -0.5,  0.0];
@@ -89,10 +91,10 @@ is
 
          the_Sites (the_Vertices'Last)            := south_Pole;
 
-         the_Vertices (the_Vertices'Last).Site    := south_Pole;
-         the_Vertices (the_Vertices'Last).Normal  := Normalised (south_Pole);
-         the_Vertices (the_Vertices'Last).Color   := Color;
-         the_Vertices (the_Vertices'Last).Shine   := 0.5;
+         the_Vertices (the_Vertices'Last).Site   := south_Pole;
+         the_Vertices (the_Vertices'Last).Normal := Normalised (south_Pole);
+         the_Vertices (the_Vertices'Last).Color  := Color;
+         the_Vertices (the_Vertices'Last).Shine  := 0.5;
 
 
          for lat_Id in 2 .. lat_Count - 1
@@ -162,7 +164,8 @@ is
             end loop;
 
 
-            if lat_Strip = 1 then
+            if lat_Strip = 1
+            then
                Upper := 2;
             end if;
 

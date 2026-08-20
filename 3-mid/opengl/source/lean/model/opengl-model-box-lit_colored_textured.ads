@@ -7,10 +7,10 @@ with
 
 package openGL.Model.Box.lit_colored_textured
 --
---  Models a lit, colored and textured box.
+-- Models a lit, colored and textured box.
 --
---  Each face may be separately colored via each of its 4 vertices.
---  Each face may have a separate texture.
+-- Each face may be separately colored via each of its 4 vertices.
+-- Each face may have a separate texture.
 --
 is
    package textured_Model is new texturing.Mixin (openGL.Model.box.item);
@@ -22,7 +22,7 @@ is
    type Face is
       record
          Colors       : lucid_Colors (1 .. 4);      -- The color of each faces 4 vertices.
-         texture_Name : asset_Name := null_Asset;   -- The texture applied to the face.
+         texture_Name : asset_Name           := null_Asset;   -- The texture applied to the face.
       end record;
 
    type Faces is array (Side) of Face;
@@ -45,11 +45,13 @@ is
                                                     Fonts    : in     Font.font_id_Map_of_font) return Geometry.views;
 
 
+
 private
 
    type Item is new textured_Model.textured_item with
       record
          Faces : lit_colored_textured.Faces;
       end record;
+
 
 end openGL.Model.Box.lit_colored_textured;

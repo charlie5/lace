@@ -9,7 +9,7 @@ with
 
 package openGL.Context
 --
---  Models an openGL (GLX) context.
+-- Models an openGL (GLX) context.
 --
 is
 
@@ -37,5 +37,6 @@ private
          Context :        OSMesa_C.OSMesaContext;
          Display : access openGL.Display.item'Class;
       end record;
+
 
 end openGL.Context;

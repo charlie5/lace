@@ -1,6 +1,6 @@
 package openGL.Light with Pure
 --
---  Models a light.
+-- Models a light.
 --
 is
    type Item  is tagged private;
@@ -32,6 +32,7 @@ is
    --------------
    --- Attributes
    --
+
    function  Id          (Self : in     Item)     return light.Id_t;
    procedure Id_is       (Self : in out Item;   Now : in light.Id_t);
 
@@ -79,5 +80,6 @@ private
          cone_Angle          : Degrees      := 90.0;
          cone_Direction      : Vector_3     := [0.0, 0.0, -1.0];
       end record;
+
 
 end openGL.Light;

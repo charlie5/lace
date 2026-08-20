@@ -12,13 +12,14 @@ with
 
 procedure launch_render_Boxes
 --
---  Exercise the rendering of box models.
+-- Exercise the rendering of box models.
 --
 is
-   use openGL,
-       openGL.Model,
-       openGL.Math,
-       openGL.linear_Algebra_3d;
+   use
+        openGL,
+        openGL.Model,
+        openGL.Math,
+        openGL.linear_Algebra_3d;
 
    the_Texture : constant openGL.asset_Name := to_Asset ("assets/opengl/texture/Face1.bmp");
 begin
@@ -27,10 +28,11 @@ begin
    Demo.Camera.Position_is ([0.0, 0.0, 10.0],
                             y_Rotation_from (to_Radians (0.0)));
    declare
-      use openGL.Model.box,
-          openGL.Palette;
+      use
+           openGL.Model.box,
+           openGL.Palette;
 
-      --  The Models.
+      -- The Models.
       --
       the_Box_1_Model : constant Model.Box.colored.view
         := Model.Box.colored.new_Box
@@ -63,7 +65,7 @@ begin
                         Right => (texture_Name => the_Texture)],
               texture_Details => texture_Set.to_Set ([1 => the_Texture]));
 
-      --  The Visuals.
+      -- The Visuals.
       --
       use openGL.Visual.Forge;
 
@@ -75,7 +77,7 @@ begin
       the_Visuals (2).Site_is ([ 0.0, 0.0, 0.0]);
       the_Visuals (3).Site_is ([ 3.0, 0.0, 0.0]);
 
-      --  Main loop.
+      -- Main loop.
       --
       while not Demo.Done
       loop
@@ -84,7 +86,7 @@ begin
          Demo.Dolly.evolve;
          Demo.Done := Demo.Dolly.quit_Requested;
 
-         --  Render the sprites.
+         -- Render the sprites.
          --
          Demo.Camera.render (the_Visuals);
 

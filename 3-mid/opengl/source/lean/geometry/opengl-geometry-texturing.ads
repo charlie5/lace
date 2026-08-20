@@ -36,7 +36,6 @@ is
       end record;
 
 
-
    --- Operations
    --
 
@@ -45,7 +44,6 @@ is
 
    procedure create (Uniforms    :    out texturing.Uniforms;
                      for_Program : in     openGL.Program.view);
-
 
 
    -------------
@@ -65,7 +63,7 @@ is
       procedure Fade_is           (Self : in out Item;   Now   : in texture_Set.fade_Level;
                                                          Which : in texture_Set.texture_ID := 1);
       overriding
-      function  Fade              (Self : in     Item;   Which : texture_Set.texture_ID := 1) return texture_Set.fade_Level;
+      function  Fade              (Self : in     Item;   Which : in texture_Set.texture_ID := 1) return texture_Set.fade_Level;
 
 
       overriding

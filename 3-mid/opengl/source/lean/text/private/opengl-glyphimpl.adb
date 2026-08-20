@@ -3,10 +3,11 @@ with
      freetype_c.FT_BBox,
      freetype_c.FT_Vector;
 
+
 package body openGL.GlyphImpl
 is
    -----------
-   --  Utility
+   --- Utility
    --
 
    function Bounds_of (glyth_Slot : in freetype_c.FT_GlyphSlot.item) return Bounds
@@ -34,7 +35,7 @@ is
 
 
    ---------
-   --  Forge
+   --- Forge
    --
 
    procedure define (Self : in out Item;   glyth_Slot : in freetype_c.FT_GlyphSlot.item)
@@ -49,6 +50,7 @@ is
 
          declare
             use freetype_c.Binding;
+
             the_Advance : constant freetype_c.FT_Vector.item := FT_GlyphSlot_Get_Advance (glyth_Slot);
          begin
             Self.Advance := [Real (the_Advance.x) / 64.0,
@@ -59,6 +61,7 @@ is
    end define;
 
 
+
    procedure destruct (Self : in out Item)
    is
    begin
@@ -67,7 +70,7 @@ is
 
 
    --------------
-   --  Attributes
+   --- Attributes
    --
 
    function Advance (Self : in Item) return Real
@@ -77,11 +80,13 @@ is
    end Advance;
 
 
+
    function BBox (Self : in Item) return Bounds
    is
    begin
       return Self.bBox;
    end BBox;
+
 
 
    function Error (Self : in Item) return error_Kind

@@ -9,13 +9,14 @@ with
 
 procedure launch_tiling_Demo
 --
---  Exercise the renderer with an example of all the models.
+-- Exercise the renderer with an example of all the models.
 --
 is
-   use openGL,
-       openGL.Math,
-       openGL.linear_Algebra_3D,
-       openGL.Palette;
+   use
+        openGL,
+        openGL.Math,
+        openGL.linear_Algebra_3D,
+        openGL.Palette;
 
 begin
    Demo.print_Usage ("Use space ' ' to cycle through models.");
@@ -25,6 +26,7 @@ begin
 
    declare
       use openGL.Light;
+
       the_Light : openGL.Light.item := Demo.Renderer.new_Light;
    begin
       the_Light.Site_is ([0.0, 0.0, 5.0]);
@@ -41,11 +43,11 @@ begin
                                                                                                          others => (S => 1.0, T => 1.0)]);
 
       the_Model   : Model.polygon.lit_textured.view;
-        --  := Model.polygon.lit_textured.new_Polygon (vertex_Sites    => [[-1.0, -1.0], [1.0, -1.0], [1.0, 1.0], [-1.0, 1.0]],
+        -- := Model.polygon.lit_textured.new_Polygon (vertex_Sites    => [[-1.0, -1.0], [1.0, -1.0], [1.0, 1.0], [-1.0, 1.0]],
         --                                             texture_Details => openGL.texture_Set.to_Details ([1 => the_Texture]));
 
 
-      --  The visuals.
+      -- The visuals.
       --
       use openGL.Visual.Forge;
 
@@ -56,7 +58,7 @@ begin
                                                             texture_Details => Details);
       the_Visual := new_Visual (the_Model.all'Access);
 
-      --  Main loop.
+      -- Main loop.
       --
       while not Demo.Done
       loop
@@ -64,7 +66,7 @@ begin
          Demo.Done := Demo.Dolly.quit_Requested;
 
 
-         --  Render all visuals.
+         -- Render all visuals.
          --
          Demo.Camera.render ([1 => the_Visual]);
 

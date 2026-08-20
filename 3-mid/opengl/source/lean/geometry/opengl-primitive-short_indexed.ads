@@ -5,7 +5,7 @@ with
 
 package openGL.Primitive.short_indexed
 --
---  Provides a class for short indexed openGL primitives.
+-- Provides a class for short indexed openGL primitives.
 --
 is
    type    Item  is limited new Primitive.item with private;
@@ -15,9 +15,8 @@ is
    type    Views is array (Index_t range <>) of View;
 
 
-
    ---------
-   --  Forge
+   --- Forge
    --
 
    function  new_Primitive (Kind    : in facet_Kind;
@@ -39,9 +38,8 @@ is
    procedure destroy (Self : in out Item);
 
 
-
    --------------
-   --  Attributes
+   --- Attributes
    --
 
    procedure Indices_are (Self : in out Item;   Now : in short_Indices);
@@ -49,9 +47,8 @@ is
    procedure Indices_are (Self : in out Item;   Now : in  long_Indices);
 
 
-
    --------------
-   --  Operations
+   --- Operations
    --
 
    overriding

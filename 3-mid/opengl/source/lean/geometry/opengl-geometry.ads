@@ -16,11 +16,11 @@ with
 
 package openGL.Geometry
 --
---  Provides a base class for openGL geometry.
---  A Geometry is composed of up to 5 primitives.
---  Each primitive has its own set of GL indices and a facet kind.
---  All primitives share a common set of vertices.
---  Subclasses may be created to provide for the various possible variants of an openGL vertex.
+-- Provides a base class for openGL geometry.
+-- A Geometry is composed of up to 5 primitives.
+-- Each primitive has its own set of GL indices and a facet kind.
+-- All primitives share a common set of vertices.
+-- Subclasses may be created to provide for the various possible variants of an openGL vertex.
 --
 is
    type    Item  is abstract tagged limited private;
@@ -39,7 +39,7 @@ is
 
 
    --------------
-   --  Attributes
+   --- Attributes
    --
 
    type Model_view is access all openGL.Model.item'Class;
@@ -73,7 +73,7 @@ is
 
 
    procedure Bounds_are      (Self : in out Item'Class;   Now : in Bounds);
-   function  Bounds          (self : in     Item'Class)     return Bounds;   -- Returns the bounds in object space.
+   function  Bounds          (Self : in     Item'Class)     return Bounds;   -- Returns the bounds in object space.
 
    procedure is_Transparent  (Self : in out Item;         Now : in Boolean := True);
    function  is_Transparent  (Self : in     Item)           return Boolean;
@@ -91,8 +91,9 @@ is
    procedure Indices_are     (Self : in out Item;   Now       : in long_Indices;
                                                     for_Facia : in Positive);
 
+
    --------------
-   --  Operations
+   --- Operations
    --
 
    procedure render          (Self : in out Item'Class);
@@ -100,7 +101,7 @@ is
 
 
    -----------
-   --  Normals
+   --- Normals
    --
 
    function Normals_of (face_Kind : in primitive.facet_Kind;
@@ -124,9 +125,9 @@ private
          Vertices        : Buffer.view;
 
          Primitives      : Primitive.views (1 .. 5);
-         primitive_Count : Index_t := 0;
+         primitive_Count : Index_t                 := 0;
 
-         is_Transparent  : Boolean := False;     -- Geometry contains lucid colors.
+         is_Transparent  : Boolean      := False;     -- Geometry contains lucid colors.
          Bounds          : openGL.Bounds;
       end record;
 

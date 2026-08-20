@@ -1,6 +1,7 @@
 with
      float_Math.Geometry.d3.Modeller.Forge;
 
+
 package body openGL.IO.lat_long_Radius
 is
 
@@ -23,6 +24,7 @@ is
       then
          the_Coords := new many_Coordinates_2D (1 .. coord_Count);
       end if;
+
       pragma Warnings (On, "condition is always False");
 
       for i in 1 .. Integer (site_Count)
@@ -31,7 +33,7 @@ is
       end loop;
 
 
-      --  Primitives
+      -- Primitives
       --
       declare
          the_Vertices : Vertices (1 .. long_Index_t (math_Model.tri_Count * 3));

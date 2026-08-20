@@ -1,6 +1,6 @@
 package openGL.Geometry.colored
 --
---  Supports per-vertex site and color.
+-- Supports per-vertex site and color.
 --
 is
    type Item is new Geometry.item with private;
@@ -12,7 +12,7 @@ is
 
 
    ------------
-   --  Vertices
+   --- Vertices
    --
 
    type Vertex is
@@ -26,7 +26,7 @@ is
 
 
    --------------
-   --  Attributes
+   --- Attributes
    --
 
    procedure Vertices_are (Self : in out Item;   Now : in Vertex_array);

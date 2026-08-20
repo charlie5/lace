@@ -9,7 +9,7 @@ with
 
 package openGL.Model.segment_line
 --
---  Models a segmented line.
+-- Models a segmented line.
 --
 is
    type Item is new Model.item with private;
@@ -82,5 +82,6 @@ private
 
          Geometry     : openGL.Geometry.colored.view;
       end record;
+
 
 end openGL.Model.segment_line;

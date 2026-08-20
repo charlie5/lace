@@ -2,9 +2,10 @@ with
      openGL.Texture,
      openGL.GlyphImpl.texture;
 
+
 package openGL.Font.texture
 --
---  A texture font is a specialisation of the font class for handling texture mapped fonts.
+-- A texture font is a specialisation of the font class for handling texture mapped fonts.
 --
 is
    type Item is new Font.item with private;
@@ -12,13 +13,13 @@ is
 
 
    ---------
-   --  Forge
+   --- Forge
    --
 
    function to_Font_texture  (fontFilePath : in String) return Font.texture.item;
    --
    --
-   --  Open and read a font file. Sets Error flag.
+   -- Open and read a font file. Sets Error flag.
 
 
    function new_Font_texture (fontFilePath : in String) return Font.texture.view;
@@ -27,13 +28,13 @@ is
    function to_Font_texture (pBufferBytes      : in FontImpl.unsigned_char_Pointer;
                              bufferSizeInBytes : in Natural) return Font.texture.item;
    --
-   --  Open and read a font from a buffer in memory. Sets Error flag.
+   -- Open and read a font from a buffer in memory. Sets Error flag.
    --
-   --  The buffer is owned by the client and is NOT copied by FTGL. The
-   --  pointer must be valid while using FTGL.
+   -- The buffer is owned by the client and is NOT copied by FTGL. The
+   -- pointer must be valid while using FTGL.
    --
-   --  pBufferBytes:      The in-memory buffer.
-   --  bufferSizeInBytes: The length of the buffer in bytes.
+   -- pBufferBytes:      The in-memory buffer.
+   -- bufferSizeInBytes: The length of the buffer in bytes.
 
    overriding
    procedure destruct (Self : in out Item);
@@ -42,7 +43,7 @@ is
 
 
    --------------
-   --  Attributes
+   --- Attributes
    --
 
    function gl_Texture (Self : in Item)                                 return openGL.Texture.texture_Name;
@@ -58,11 +59,12 @@ private
    overriding
    function MakeGlyph (Self : access Item;   Slot : in freetype_c.FT_GlyphSlot.item) return glyph.Container.Glyph_view;
    --
-   --  Construct a glyph of the correct type.
+   -- Construct a glyph of the correct type.
    --
-   --  Clients must override the function and return their specialised FTGlyph.
-   --  Returns an FTGlyph or null on failure.
+   -- Clients must override the function and return their specialised FTGlyph.
+   -- Returns an FTGlyph or null on failure.
    --
-   --  Slot: A FreeType glyph slot.
+   -- Slot: A FreeType glyph slot.
+
 
 end openGL.Font.texture;

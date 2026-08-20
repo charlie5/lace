@@ -4,7 +4,7 @@ with
 
 package openGL.Model.text
 --
---  Provides an abstract model for rendering text.
+-- Provides an abstract model for rendering text.
 --
 is
    type Item is abstract new Model.item with private;
@@ -23,10 +23,12 @@ is
      is (True);
 
 
+
 private
 
    type Item is abstract new Model.item with null record;
 
    type String_view is access String;
+
 
 end openGL.Model.text;

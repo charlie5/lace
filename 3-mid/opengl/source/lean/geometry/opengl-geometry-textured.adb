@@ -8,21 +8,21 @@ with
      GL.lean,
      GL.Pointers,
 
-     Interfaces.C.Strings,
+     interfaces.C.Strings,
      System.storage_Elements;
 
 
 package body openGL.Geometry.textured
 is
-   use GL.lean,
-       GL.Pointers,
-
-       Interfaces,
-       System;
+   use
+        GL.lean,
+        GL.Pointers,
+        Interfaces,
+        System;
 
 
    -----------
-   --  Globals
+   --- Globals
    --
 
    vertex_Shader   : aliased Shader.item;
@@ -41,7 +41,7 @@ is
 
 
    ---------
-   --  Forge
+   --- Forge
    --
 
    function new_Geometry return View
@@ -56,8 +56,9 @@ is
       if the_Program = null
       then   -- Define the shaders and program.
          declare
-            use Attribute.Forge,
-                system.Storage_Elements;
+            use
+                 Attribute.Forge,
+                 system.Storage_Elements;
 
             Sample : Vertex;
 
@@ -71,7 +72,7 @@ is
                                                                     3 => to_Asset ("assets/opengl/shader/textured.frag"))));
             the_Program := new openGL.Program.item;
 
-            the_Program.define (  vertex_Shader'Access,
+            the_Program.define (vertex_Shader  'Access,
                                 fragment_Shader'Access);
             the_Program.enable;
 
@@ -113,9 +114,8 @@ is
    end new_Geometry;
 
 
-
    --------------
-   --  Attributes
+   --- Attributes
    --
 
    overriding
@@ -124,6 +124,7 @@ is
    begin
       return Self.is_Transparent;
    end is_Transparent;
+
 
 
    package openGL_Buffer_of_geometry_Vertices is new Buffer.general (base_Object   => Buffer.array_Object,

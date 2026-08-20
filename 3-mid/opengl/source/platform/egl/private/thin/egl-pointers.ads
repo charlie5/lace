@@ -25,4 +25,5 @@ is
    type EGLSurface_Pointer_array       is array (C.size_t range <>) of aliased EGLSurface_Pointer;
    type EGLClientBuffer_Pointer_array  is array (C.size_t range <>) of aliased EGLClientBuffer_Pointer;
 
+
 end eGL.Pointers;

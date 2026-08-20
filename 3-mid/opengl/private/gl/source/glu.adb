@@ -2,29 +2,31 @@ with
 GL.Binding,
      GL.lean,
 
-     Interfaces.c.Pointers,
+     interfaces.c.Pointers,
      ada.unchecked_Conversion,
      ada.unchecked_Deallocation;
 
+
 package body GLU
 --
---  This is a direct port of parts of Mesa GLU 'mipmap.c' file.
+-- This is a direct port of parts of Mesa GLU 'mipmap.c' file.
 --
---  Only declarations involved in 'gluScaleImage' are currently ported.
---  Other areas may be later ported at need.
+-- Only declarations involved in 'gluScaleImage' are currently ported.
+-- Other areas may be later ported at need.
 --
---  Currently supports only GL datatypes allowed in the 'lean' profile.
+-- Currently supports only GL datatypes allowed in the 'lean' profile.
 --
 is
-   use GL.lean,
-       Interfaces;
+   use
+        GL.lean,
+        Interfaces;
 
    use type GLint,
             GLenum,
             GLfloat;
 
 
-   --  GLubyte
+   -- GLubyte
    --
    type GLubtye_array is array (C.size_t range <>) of aliased GLubyte;
 
@@ -38,7 +40,7 @@ is
 
 
 
-   --  GLushort
+   -- GLushort
    --
    package GLushort_Pointers is new C.Pointers (Index              => C.size_t,
                                                 Element            => GLushort,
@@ -53,13 +55,13 @@ is
    type GLushort_array_view is access all GLushort_array;
 
 
-   --  GLbyte
+   -- GLbyte
    --
    type GLbyte_view is access all GLbyte;
    function to_GLbyte_view is new ada.unchecked_Conversion (GLubyte_view, GLbyte_view);
 
 
-   --  Pixel storage modes
+   -- Pixel storage modes
    --
    type PixelStorageModes is
       record
@@ -184,17 +186,17 @@ is
 
       -- 3_3_2/2_3_3_REV & 5_6_5/5_6_5_REV are only compatible with RGB
       --
-      if    gl_Type = GL_UNSIGNED_SHORT_5_6_5
-        and format /= GL_RGB
+      if         gl_Type = GL_UNSIGNED_SHORT_5_6_5
+        and then format /= GL_RGB
       then
          return False;
       end if;
 
       -- 4_4_4_4 & 5_5_5_1 are only compatible with RGBA.
       --
-      if    (   gl_Type = GL_UNSIGNED_SHORT_4_4_4_4
-             or gl_Type = GL_UNSIGNED_SHORT_5_5_5_1)
-        and format /= GL_RGBA
+      if         (        gl_Type = GL_UNSIGNED_SHORT_4_4_4_4
+                    or else gl_Type = GL_UNSIGNED_SHORT_5_5_5_1)
+        and then format /= GL_RGBA
       then
          return False;
       end if;
@@ -234,9 +236,9 @@ is
    begin
       -- If the type is packedpixels then answer is 1 (ignore format).
       --
-      if   gl_Type = GL_UNSIGNED_SHORT_5_6_5
-        or gl_Type = GL_UNSIGNED_SHORT_4_4_4_4
-        or gl_Type = GL_UNSIGNED_SHORT_5_5_5_1
+      if        gl_Type = GL_UNSIGNED_SHORT_5_6_5
+        or else gl_Type = GL_UNSIGNED_SHORT_4_4_4_4
+        or else gl_Type = GL_UNSIGNED_SHORT_5_5_5_1
       then
          return 1;
       end if;
@@ -296,6 +298,7 @@ is
    function GLU_SWAP_2_BYTES (s : in system.Address) return GLushort
    is
       use GLubyte_Pointers;
+
       s0 : constant GLubyte_view := to_GLubyte_view (s) + 0;
       s1 : constant GLubyte_view := to_GLubyte_view (s) + 1;
    begin
@@ -303,14 +306,15 @@ is
                           or             Unsigned_16 (s0.all));
    end GLU_SWAP_2_BYTES;
 
-   --  #define __GLU_SWAP_2_BYTES(s)\
-   --  (GLushort) (  ((GLushort)  ((const GLubyte*) (s)) [1]) << 8  |  ((const GLubyte*) (s)) [0]  )
+   -- #define __GLU_SWAP_2_BYTES(s)\
+   -- (GLushort) (  ((GLushort)  ((const GLubyte*) (s)) [1]) << 8  |  ((const GLubyte*) (s)) [0]  )
 
 
 
    function GLU_SWAP_4_BYTES (s : in system.Address) return GLushort
    is
       use GLubyte_Pointers;
+
       s0 : constant GLubyte_view := to_GLubyte_view (s) + 0;
       s1 : constant GLubyte_view := to_GLubyte_view (s) + 1;
       s2 : constant GLubyte_view := to_GLubyte_view (s) + 2;
@@ -322,8 +326,8 @@ is
                           or             Unsigned_32 (s0.all));
    end GLU_SWAP_4_BYTES;
 
-   --  #define __GLU_SWAP_4_BYTES(s)\
-   --  (GLuint)(((GLuint)((const GLubyte*)(s))[3])<<24 | \
+   -- #define __GLU_SWAP_4_BYTES(s)\
+   -- (GLuint)(((GLuint)((const GLubyte*)(s))[3])<<24 | \
    --          ((GLuint)((const GLubyte*)(s))[2])<<16 | \
    --          ((GLuint)((const GLubyte*)(s))[1])<<8  |
    --                   ((const GLubyte*)(s))[0])
@@ -336,9 +340,11 @@ is
                          extractComponents :    out GLfloat_array)
    is
       use type GLushort;
+
       ushort : GLushort;
    begin
-      if isSwap /= 0 then
+      if isSwap /= 0
+      then
          ushort := GLU_SWAP_2_BYTES (packedPixel);
       else
          ushort := to_GLushort_view (packedPixel).all;
@@ -360,9 +366,11 @@ is
                           extractComponents :    out GLfloat_array)
    is
       use type GLushort;
+
       ushort : GLushort;
    begin
-      if isSwap /= 0 then
+      if isSwap /= 0
+      then
          ushort := GLU_SWAP_2_BYTES (packedPixel);
       else
          ushort := to_GLushort_view (packedPixel).all;
@@ -386,9 +394,11 @@ is
                           extractComponents :    out GLfloat_array)
    is
       use type GLushort;
+
       ushort : GLushort;
    begin
-      if isSwap /= 0 then
+      if isSwap /= 0
+      then
          ushort := GLU_SWAP_2_BYTES (packedPixel);
       else
          ushort := to_GLushort_view (packedPixel).all;
@@ -412,7 +422,9 @@ is
                        packedPixel     : in system.Address)
    is
       use GLushort_Pointers;
+
       use type GLushort;
+
       the_Pixel : constant GLushort_view := to_GLushort_view (packedPixel) + C.ptrdiff_t (index);
    begin
       -- 11111000,00000000 == 0xf800
@@ -437,7 +449,9 @@ is
                         packedPixel     : in system.Address)
    is
       use GLushort_Pointers;
+
       use type GLushort;
+
       the_Pixel : constant GLushort_view := to_GLushort_view (packedPixel) + C.ptrdiff_t (index);
    begin
       pragma assert (0.0 <= shoveComponents (0) and shoveComponents (0) <= 1.0);
@@ -460,7 +474,9 @@ is
                         packedPixel     : in system.Address)
    is
       use GLushort_Pointers;
+
       use type GLushort;
+
       the_Pixel : constant GLushort_view := to_GLushort_view (packedPixel) + C.ptrdiff_t (index);
    begin
       -- 11111000,00000000 == 0xf800
@@ -494,8 +510,9 @@ is
                          userdata      : in System.Address;
                          newimage      : in GLushort_array_view)
    is
-      use GLubyte_Pointers,
-          GLushort_Pointers;
+      use
+           GLubyte_Pointers,
+           GLushort_Pointers;
 
       use type GLushort;
 
@@ -519,7 +536,8 @@ is
       myswap_bytes := psm.unpack_swap_bytes;
       components   := elements_per_group (format, gl_Type);
 
-      if psm.unpack_row_length > 0 then
+      if psm.unpack_row_length > 0
+      then
          groups_per_line := psm.unpack_row_length;
       else
          groups_per_line := width;
@@ -528,14 +546,16 @@ is
       element_size := GLint (bytes_per_element (gl_Type));
       group_size   := element_size * components;
 
-      if element_size = 1 then
+      if element_size = 1
+      then
          myswap_bytes := 0;
       end if;
 
       rowsize := groups_per_line * group_size;
       padding := rowsize mod psm.unpack_alignment;
 
-      if padding /= 0 then
+      if padding /= 0
+      then
          rowsize := rowsize + psm.unpack_alignment - padding;
       end if;
 
@@ -560,7 +580,8 @@ is
                case gl_Type
                is
                when GL_UNSIGNED_BYTE =>
-                  if index_format then
+                  if index_format
+                  then
                      iter2.all := GLushort (iter.all);
                      iter2     := iter2 + 1;
                   else
@@ -569,7 +590,8 @@ is
                   end if;
 
                when GL_BYTE =>
-                  if index_format then
+                  if index_format
+                  then
                      iter2.all := GLushort (to_GLbyte_view (iter).all);
                      iter2     := iter2 + 1;
                   else
@@ -580,28 +602,32 @@ is
 
                when GL_UNSIGNED_SHORT_5_6_5 =>
                   extract565 (myswap_bytes, iter.all'Address, extractComponents);
-                  for k in C.size_t' (0) .. 2 loop
+                  for k in C.size_t' (0) .. 2
+                  loop
                      iter2.all := GLushort (extractComponents (k) * 65535.0);
                      iter2     := iter2 + 1;
                   end loop;
 
                when GL_UNSIGNED_SHORT_4_4_4_4 =>
                   extract4444 (myswap_bytes, iter.all'Address, extractComponents);
-                  for k in C.size_t' (0) .. 3 loop
+                  for k in C.size_t' (0) .. 3
+                  loop
                      iter2.all := GLushort (extractComponents (k) * 65535.0);
                      iter2     := iter2 + 1;
                   end loop;
 
                when GL_UNSIGNED_SHORT_5_5_5_1 =>
                   extract5551 (myswap_bytes, iter.all'Address, extractComponents);
-                  for k in C.size_t' (0) .. 3 loop
+                  for k in C.size_t' (0) .. 3
+                  loop
                      iter2.all := GLushort (extractComponents (k) * 65535.0);
                      iter2     := iter2 + 1;
                   end loop;
 
                when GL_UNSIGNED_SHORT
                   | GL_SHORT =>
-                  if myswap_bytes /= 0 then
+                  if myswap_bytes /= 0
+                  then
                      widget.ub (0) := GLubyte_view (iter + 1).all;
                      widget.ub (1) := GLubyte_view (iter + 0).all;
                   else
@@ -609,8 +635,10 @@ is
                      widget.ub (1) := GLubyte_view (iter + 1).all;
                   end if;
 
-                  if gl_Type = GL_SHORT then
-                     if index_format then
+                  if gl_Type = GL_SHORT
+                  then
+                     if index_format
+                     then
                         iter2.all := GLushort (widget.s (0));
                         iter2     := iter2 + 1;
                      else
@@ -618,6 +646,7 @@ is
                         iter2.all := GLushort (widget.s(0)) * 2;
                         iter2     := iter2 + 1;
                      end if;
+
                   else
                      iter2.all := widget.us (0);
                      iter2     := iter2 + 1;
@@ -626,11 +655,13 @@ is
                when GL_INT
                   | GL_UNSIGNED_INT
                   | GL_FLOAT =>
-                  if myswap_bytes /= 0 then
+                  if myswap_bytes /= 0
+                  then
                      widget.ub(0) := GLubyte_view (iter + 3).all;
                      widget.ub(1) := GLubyte_view (iter + 2).all;
                      widget.ub(2) := GLubyte_view (iter + 1).all;
                      widget.ub(3) := GLubyte_view (iter + 0).all;
+
                   else
                      widget.ub(0) := GLubyte_view (iter + 0).all;
                      widget.ub(1) := GLubyte_view (iter + 1).all;
@@ -638,24 +669,31 @@ is
                      widget.ub(3) := GLubyte_view (iter + 3).all;
                   end if;
 
-                  if gl_Type = GL_FLOAT then
-                     if index_format then
+                  if gl_Type = GL_FLOAT
+                  then
+                     if index_format
+                     then
                         iter2.all := GLushort (widget.f);
                         iter2     := iter2 + 1;
                      else
                         iter2.all := GLushort (65535.0 * widget.f);
                         iter2     := iter2 + 1;
                      end if;
-                  elsif gl_Type = GL_UNSIGNED_INT then
-                     if index_format then
+
+                  elsif gl_Type = GL_UNSIGNED_INT
+                  then
+                     if index_format
+                     then
                         iter2.all := GLushort (widget.ui);
                         iter2     := iter2 + 1;
                      else
                         iter2.all := GLushort (shift_Right (Unsigned_32 (widget.ui), 16));
                         iter2     := iter2 + 1;
                      end if;
+
                   else
-                     if index_format then
+                     if index_format
+                     then
                         iter2.all := GLushort (widget.i);
                         iter2     := iter2 + 1;
                      else
@@ -680,15 +718,16 @@ is
 
       -- iterators should be one byte past end
       --
-      if not isTypePackedPixel (gl_Type) then
+      if not isTypePackedPixel (gl_Type)
+      then
          pragma assert (iter2 = newimage (C.size_t (width * height * components))'Access);
       else
          pragma assert (iter2 = newimage (C.size_t (width * height * elements_per_group (format, 0)))'Access);
       end if;
 
       pragma assert (iter = to_GLubyte_view (userdata) + C.ptrdiff_t (  rowsize * height
-                     + psm.unpack_skip_rows   * rowsize
-                     + psm.unpack_skip_pixels * group_size));
+                                                                      + psm.unpack_skip_rows   * rowsize
+                                                                      + psm.unpack_skip_pixels * group_size));
    end fill_image;
 
 
@@ -706,8 +745,9 @@ is
                           userdata      : in System.Address)
 
    is
-      use GLubyte_Pointers,
-          GLushort_Pointers;
+      use
+           GLubyte_Pointers,
+           GLushort_Pointers;
 
       use type GLushort;
 
@@ -729,7 +769,8 @@ is
       myswap_bytes := psm.pack_swap_bytes;
       components   := elements_per_group (format, gl_Type);
 
-      if psm.pack_row_length > 0 then
+      if psm.pack_row_length > 0
+      then
          groups_per_line := psm.pack_row_length;
       else
          groups_per_line := width;
@@ -738,14 +779,16 @@ is
       element_size := GLint (bytes_per_element (gl_Type));
       group_size   := element_size * components;
 
-      if element_size = 1 then
+      if element_size = 1
+      then
          myswap_bytes := 0;
       end if;
 
       rowsize := groups_per_line * group_size;
       padding := (rowsize mod psm.pack_alignment);
 
-      if padding /= 0 then
+      if padding /= 0
+      then
          rowsize := rowsize + psm.pack_alignment - padding;
       end if;
 
@@ -768,32 +811,36 @@ is
                case gl_Type
                is
                when GL_UNSIGNED_BYTE =>
-                  if index_format then
+                  if index_format
+                  then
                      iter.all := GLubyte (iter2.all);
-                     iter2     := iter2 + 1;
+                     iter2    := iter2 + 1;
                   else
                      iter.all := GLubyte (shift_Right (Unsigned_16 (iter2.all), 8));
-                     iter2     := iter2 + 1;
+                     iter2    := iter2 + 1;
                   end if;
 
                when GL_BYTE =>
-                  if index_format then
+                  if index_format
+                  then
                      to_GLbyte_view (iter).all := GLbyte (iter2.all);
-                     iter2     := iter2 + 1;
+                     iter2                     := iter2 + 1;
                   else
                      to_GLbyte_view (iter).all := GLbyte (shift_Right (Unsigned_16 (iter2.all), 9));
-                     iter2     := iter2 + 1;
+                     iter2                     := iter2 + 1;
                   end if;
 
                when GL_UNSIGNED_SHORT_5_6_5 =>
-                  for k in C.size_t' (0) .. 2 loop
+                  for k in C.size_t' (0) .. 2
+                  loop
                      shoveComponents (k) := GLfloat (iter2.all) / 65535.0;
-                     iter2     := iter2 + 1;
+                     iter2               := iter2 + 1;
                   end loop;
 
                   shove565 (shoveComponents, 0, widget.us (0)'Address);
 
-                  if myswap_bytes /= 0 then
+                  if myswap_bytes /= 0
+                  then
                      GLubyte_view (iter + 0).all := widget.ub (1);
                      GLubyte_view (iter + 1).all := widget.ub (0);
                   else
@@ -801,14 +848,16 @@ is
                   end if;
 
                when GL_UNSIGNED_SHORT_4_4_4_4 =>
-                  for k in C.size_t' (0) .. 3 loop
+                  for k in C.size_t' (0) .. 3
+                  loop
                      shoveComponents (k) := GLfloat (iter2.all) / 65535.0;
                      iter2               := iter2 + 1;
                   end loop;
 
                   shove4444 (shoveComponents, 0, widget.us (0)'Address);
 
-                  if myswap_bytes /= 0 then
+                  if myswap_bytes /= 0
+                  then
                      GLubyte_view (iter + 0).all := widget.ub (1);
                      GLubyte_view (iter + 1).all := widget.ub (0);
                   else
@@ -816,14 +865,16 @@ is
                   end if;
 
                when GL_UNSIGNED_SHORT_5_5_5_1 =>
-                  for k in C.size_t' (0) .. 3 loop
+                  for k in C.size_t' (0) .. 3
+                  loop
                      shoveComponents (k) := GLfloat (iter2.all) / 65535.0;
                      iter2               := iter2 + 1;
                   end loop;
 
                   shove5551 (shoveComponents, 0, widget.us (0)'Address);
 
-                  if myswap_bytes /= 0 then
+                  if myswap_bytes /= 0
+                  then
                      GLubyte_view (iter + 0).all := widget.ub (1);
                      GLubyte_view (iter + 1).all := widget.ub (0);
                   else
@@ -832,20 +883,24 @@ is
 
                when GL_UNSIGNED_SHORT
                   | GL_SHORT =>
-                  if gl_Type = GL_SHORT then
-                     if index_format then
+                  if gl_Type = GL_SHORT
+                  then
+                     if index_format
+                     then
                         widget.s (0) := GLshort (iter2.all);
                         iter2        := iter2 + 1;
                      else
                         widget.s (0) := GLshort (shift_Right (Unsigned_16 (iter2.all), 1));
                         iter2        := iter2 + 1;
                      end if;
+
                   else
                      widget.us (0) := iter2.all;
                      iter2         := iter2 + 1;
                   end if;
 
-                  if myswap_bytes /= 0 then
+                  if myswap_bytes /= 0
+                  then
                      GLubyte_view (iter + 0).all := widget.ub (1);
                      GLubyte_view (iter + 1).all := widget.ub (0);
                   else
@@ -856,24 +911,31 @@ is
                when GL_INT
                   | GL_UNSIGNED_INT
                   | GL_FLOAT =>
-                  if gl_Type = GL_FLOAT then
-                     if index_format then
+                  if gl_Type = GL_FLOAT
+                  then
+                     if index_format
+                     then
                         widget.f := GLfloat (iter2.all);
                         iter2    := iter2 + 1;
                      else
                         widget.f := GLfloat (iter2.all) / 65535.0;
                         iter2    := iter2 + 1;
                      end if;
-                  elsif gl_Type = GL_UNSIGNED_INT then
-                     if index_format then
+
+                  elsif gl_Type = GL_UNSIGNED_INT
+                  then
+                     if index_format
+                     then
                         widget.ui := GLuint (iter2.all);
                         iter2     := iter2 + 1;
                      else
                         widget.ui := GLuint (iter2.all) * 65537;
                         iter2     := iter2 + 1;
                      end if;
+
                   else
-                     if index_format then
+                     if index_format
+                     then
                         widget.i := GLint (iter2.all);
                         iter2    := iter2 + 1;
                      else
@@ -882,11 +944,13 @@ is
                      end if;
                   end if;
 
-                  if myswap_bytes /= 0 then
+                  if myswap_bytes /= 0
+                  then
                      GLubyte_view (iter + 3).all := widget.ub (0);
                      GLubyte_view (iter + 2).all := widget.ub (1);
                      GLubyte_view (iter + 1).all := widget.ub (2);
                      GLubyte_view (iter + 0).all := widget.ub (3);
+
                   else
                      GLubyte_view (iter + 0).all := widget.ub (0);
                      GLubyte_view (iter + 1).all := widget.ub (1);
@@ -900,7 +964,7 @@ is
 
                iter := iter + C.ptrdiff_t (element_size);
             end;
-         end loop;  --  for j
+         end loop;  -- for j
 
          start := start + C.ptrdiff_t (rowsize);
 
@@ -911,15 +975,16 @@ is
 
       -- iterators should be one byte past end
       --
-      if not isTypePackedPixel (gl_Type) then
+      if not isTypePackedPixel (gl_Type)
+      then
          pragma assert (iter2 = oldimage (C.size_t (width * height * components))'Access);
       else
          pragma assert (iter2 = oldimage (C.size_t (width * height * elements_per_group (format, 0)))'Access);
       end if;
 
       pragma assert ( iter = to_GLubyte_view (userdata) + C.ptrdiff_t (  rowsize * height
-                      + psm.pack_skip_rows   * rowsize
-                      + psm.pack_skip_pixels * group_size) );
+                                                                       + psm.pack_skip_rows   * rowsize
+                                                                       + psm.pack_skip_pixels * group_size) );
    end empty_image;
 
 
@@ -931,6 +996,7 @@ is
                          dataout    : in GLushort_view)
    is
       use GLushort_Pointers;
+
       use type GLushort;
 
       newwidth,
@@ -959,8 +1025,8 @@ is
                              + GLushort_view (t + C.ptrdiff_t (the_delta + components)).all
                              + 2)
                  / 4;
-               s     := s + 1;
-               t     := t + 1;
+               s := s + 1;
+               t := t + 1;
             end loop;
 
             t := t + C.ptrdiff_t (components);
@@ -993,8 +1059,8 @@ is
       yint, xint, xindex, yindex : GLint;
       temp                       : GLint;
    begin
-      if    widthin  = widthout  * 2
-        and heightin = heightout * 2
+      if         widthin  = widthout  * 2
+        and then heightin = heightout * 2
       then
          halveImage (components,
                      GLuint (widthin),
@@ -1012,7 +1078,8 @@ is
       for i in 0 .. heightout - 1
       loop
          y := convy * (GLfloat (i) + 0.5);
-         if heightin > heightout then
+         if heightin > heightout
+         then
             highy := y + halfconvy;
             lowy  := y - halfconvy;
          else
@@ -1024,7 +1091,8 @@ is
          loop
             x := convx * (GLfloat (j) + 0.5);
 
-            if widthin > widthout then
+            if widthin > widthout
+            then
                highx := x + halfconvx;
                lowx  := x - halfconvx;
             else
@@ -1045,7 +1113,8 @@ is
             loop
                yindex := (yint + heightin) mod heightin;
 
-               if highy < GLfloat (yint + 1) then
+               if highy < GLfloat (yint + 1)
+               then
                   ypercent := highy - y;
                else
                   ypercent := GLfloat (yint + 1) - y;
@@ -1058,7 +1127,8 @@ is
                loop
                   xindex := (xint + widthin) mod widthin;
 
-                  if highx < GLfloat (xint + 1) then
+                  if highx < GLfloat (xint + 1)
+                  then
                      xpercent := highx - x;
                   else
                      xpercent := GLfloat (xint + 1) - x;
@@ -1068,7 +1138,8 @@ is
                   area    := area + percent;
                   temp    := (xindex + (yindex * widthin)) * components;
 
-                  for k in 0 .. C.size_t (components - 1) loop
+                  for k in 0 .. C.size_t (components - 1)
+                  loop
                      totals (k) := totals (k) +   GLfloat (GLushort_view (datain + C.ptrdiff_t (temp) + C.ptrdiff_t (k)).all)
                        * percent;
                   end loop;
@@ -1076,13 +1147,15 @@ is
                   xint := xint + 1;
                   x    := GLfloat (xint);
                end loop;
+
                yint := yint + 1;
                y    := GLfloat (yint);
             end loop;
 
             temp := (j + (i * widthout)) * components;
 
-            for k in 0 .. C.size_t (components - 1) loop
+            for k in 0 .. C.size_t (components - 1)
+            loop
                declare
                   Data : GLfloat := (totals (k) + 0.5) / area;   -- totals[] should be rounded in the case of enlarging an RGB
                   -- ramp when the type is 332 or 4444
@@ -1101,11 +1174,13 @@ is
    end scale_internal;
 
 
+
    function is_index (format : in GLenum) return Boolean   -- TODO: Remove this, it doesn't apply to 'lean' GL types.
    is
    begin
       return False; -- format == GL_COLOR_INDEX || format = GL_STENCIL_INDEX;
    end is_index;
+
 
 
    procedure gluScaleImage (format    : in GLenum;
@@ -1118,6 +1193,7 @@ is
                             typeout   : in GLenum;
                             dataout   : in System.Address)
    is
+
       procedure free is new ada.unchecked_Deallocation (GLushort_array, GLushort_array_view);
 
       components  : GLint;
@@ -1125,25 +1201,25 @@ is
       afterImage  : GLushort_array_view;
       psm         : PixelStorageModes;
    begin
-      if   widthin   = 0
-        or heightin  = 0
-        or widthout  = 0
-        or heightout = 0
+      if        widthin   = 0
+        or else heightin  = 0
+        or else widthout  = 0
+        or else heightout = 0
       then
          return;
       end if;
 
-      if   widthin   < 0
-        or heightin  < 0
-        or widthout  < 0
-        or heightout < 0
+      if        widthin   < 0
+        or else heightin  < 0
+        or else widthout  < 0
+        or else heightout < 0
       then
          raise GLU_INVALID_VALUE;
       end if;
 
-      if   not legalFormat (format)
-        or not legalType   (typein)
-        or not legalType   (typeout)
+      if        not legalFormat (format)
+        or else not legalType   (typein)
+        or else not legalType   (typeout)
       then
          raise GLU_INVALID_ENUM;
       end if;

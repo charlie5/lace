@@ -5,16 +5,17 @@ with
      ada.Streams.Stream_IO,
      ada.unchecked_Deallocation;
 
+
 package openGL.IO
 --
---  Provides I/O functions for openGL.
+-- Provides I/O functions for openGL.
 --
 is
    subtype Text is ada.Strings.unbounded.unbounded_String;
 
 
    ------------------
-   --  General Vertex
+   --- General Vertex
    --
 
    null_Id : constant long_Index_t;
@@ -32,7 +33,7 @@ is
 
 
    --------
-   --  Face
+   --- Face
    --
 
    type facet_Kind is (Triangle, Quad, Polygon);
@@ -56,8 +57,9 @@ is
    procedure set_Vertex_in (Self : in out Face;   Which : in long_Index_t;
                                                   To    : in Vertex);
 
+
    --------------------
-   --  Rigging/Skinning
+   --- Rigging/Skinning
    --
 
    type bone_Id is range 0 .. 200;
@@ -74,7 +76,7 @@ is
 
 
    ---------
-   --  Views
+   --- Views
    --
 
    type              many_Sites_view is access all openGL.many_Sites;
@@ -106,7 +108,7 @@ is
 
 
    --------------
-   --  Heightmaps
+   --- Heightmaps
    --
 
    type height_Map_view is access all height_Map;
@@ -114,8 +116,9 @@ is
    function to_height_Map (image_Filename : in asset_Name;
                            Scale          : in Real := 1.0) return height_Map_view;
 
+
    ----------
-   --  Images
+   --- Images
    --
 
    function fetch_Image (Stream  : in ada.Streams.Stream_IO.Stream_access;
@@ -132,35 +135,35 @@ is
 
 
    ------------
-   --  Textures
+   --- Textures
    --
 
    function to_Texture (image_Filename : in asset_Name) return Texture.Object;
 
 
    ---------------
-   --  Screenshots
+   --- Screenshots
    --
 
    function  current_Frame return Image;
 
    procedure Screenshot (Filename : in String;   with_Alpha : in Boolean := False);
    --
-   --  Stores the image of the current, active viewport (in RGB or RGBA Bitmap format).
+   -- Stores the image of the current, active viewport (in RGB or RGBA Bitmap format).
 
 
    -----------------
-   --  Video Capture
+   --- Video Capture
    --
 
    procedure start_capture (AVI_Name   : in String;
                             frame_Rate : in Positive);
    --
-   --  Prepare for video capture (RGB uncompressed, AVI format).
+   -- Prepare for video capture (RGB uncompressed, AVI format).
 
    procedure capture_Frame;
    --
-   --  Captures the current active viewport.
+   -- Captures the current active viewport.
 
    procedure stop_capture;
 
@@ -168,4 +171,6 @@ is
 
 private
    null_Id : constant long_Index_t := 0;
+
+
 end openGL.IO;

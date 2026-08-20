@@ -2,12 +2,13 @@ with
      GL,
      System;
 
+
 package GLU
    with Obsolescent
 --
---  Provides a subset of the functions in GLU, tailored to be suitable for use with the openGL 'Embedded' profile.
+-- Provides a subset of the functions in GLU, tailored to be suitable for use with the openGL 'Embedded' profile.
 --
---  Currently only 'gluScaleImage' is ported.
+-- Currently only 'gluScaleImage' is ported.
 --
 is
    use GL;
@@ -26,5 +27,6 @@ is
    GLU_INVALID_TYPE,
    GLU_INVALID_OPERATION,
    GLU_OUT_OF_MEMORY : exception;
+
 
 end GLU;

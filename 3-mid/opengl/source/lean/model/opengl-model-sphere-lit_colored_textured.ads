@@ -7,7 +7,7 @@ with
 
 package openGL.Model.sphere.lit_colored_textured
 --
---  Models a lit, colored, textured sphere.
+-- Models a lit, colored, textured sphere.
 --
 is
    package textured_Model is new texturing.Mixin (openGL.Model.sphere.item);
@@ -30,12 +30,14 @@ is
                                                     Fonts    : in     Font.font_id_Map_of_font) return Geometry.views;
 
 
+
 private
 
    type Item is new textured_Model.textured_item with
       record
          Color : openGL.lucid_Color;
-         Image : asset_Name := null_Asset;     -- Usually a mercator projection to be mapped onto the sphere.
+         Image : asset_Name        := null_Asset;     -- Usually a mercator projection to be mapped onto the sphere.
       end record;
+
 
 end openGL.Model.sphere.lit_colored_textured;

@@ -8,7 +8,7 @@ generic
 
 package openGL.Buffer.general
 --
---  A generic for producing various types of openGL vertex buffer objects.
+-- A generic for producing various types of openGL vertex buffer objects.
 --
 is
    type Object is new base_Object with private;
@@ -16,7 +16,7 @@ is
 
 
    ---------
-   --  Forge
+   --- Forge
    --
 
    package Forge
@@ -30,7 +30,7 @@ is
 
 
    --------------
-   --  Operations
+   --- Operations
    --
 
    procedure set (Self : in out Object;   Position : in              Positive     := 1;
@@ -48,7 +48,8 @@ private
          Usage : Buffer.Usage;
       end record;
 
-   default_Terminator : Element;       -- No 'Interfaces.C.Pointers' subprogram is called which uses the default terminator, so
-                                       -- a default 'Element' should suffice.
+   default_Terminator : Element;       -- No 'Interfaces.C.Pointers' subprogram is called which uses the default terminator.
+                                       -- A default 'Element' should suffice.
+
 
 end openGL.Buffer.general;

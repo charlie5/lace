@@ -5,7 +5,7 @@ with
 
 package openGL.Model.hex_grid
 --
---  Models a regular hexagon grid.
+-- Models a regular hexagon grid.
 --
 is
    type Item is new Model.item with private;
@@ -34,6 +34,7 @@ is
    overriding
    function to_GL_Geometries (Self : access Item;   Textures : access Texture.name_Map_of_texture'Class;
                                                     Fonts    : in     Font.font_id_Map_of_font) return Geometry.views;
+
 
 
 private

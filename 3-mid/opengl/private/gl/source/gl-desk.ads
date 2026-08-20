@@ -1,24 +1,27 @@
 with
      GL.safe,
-     Interfaces.C.Pointers;
+     interfaces.C.Pointers;
+
 
 package gl.Desk
 --
---  Provides types, constants and functions specific to the openGL 'Desktop' profile.
+-- Provides types, constants and functions specific to the openGL 'Desktop' profile.
 --
 is
-   use GL.safe,
-       Interfaces;
+   use
+        GL.safe,
+        Interfaces;
+
 
    ---------
-   --  Types
+   --- Types
    --
 
    subtype GLclampd is GL_Types.GLclampd;
    subtype GLdouble is GL_Types.GLdouble;
 
 
-   --  GLclampf_Pointer
+   -- GLclampf_Pointer
    --
    type    GLclampf_array    is array (C.size_t range <>) of aliased GLclampf;
    package GLclampf_Pointers is new C.Pointers (Index              => C.size_t,
@@ -28,7 +31,7 @@ is
    subtype GLclampf_Pointer  is GLclampf_Pointers.Pointer;
 
 
-   --  GLboolean_Pointer
+   -- GLboolean_Pointer
    --
    package GLboolean_Pointers is new C.Pointers (Index              => C.size_t,
                                                  Element            => GLboolean,
@@ -37,7 +40,7 @@ is
    subtype GLboolean_Pointer  is GLboolean_Pointers.Pointer;
 
 
-   --  GLbyte_Pointer
+   -- GLbyte_Pointer
    --
    package GLbyte_Pointers is new C.Pointers (Index              => C.size_t,
                                               Element            => GLbyte,
@@ -46,7 +49,7 @@ is
    subtype GLbyte_Pointer  is GLbyte_Pointers.Pointer;
 
 
-   --  GLshort_Pointer
+   -- GLshort_Pointer
    --
    package GLshort_Pointers is new C.Pointers (Index              => C.size_t,
                                                Element            => GLshort,
@@ -55,7 +58,7 @@ is
    subtype GLshort_Pointer  is GLshort_Pointers.Pointer;
 
 
-   --  GLushort_Pointer
+   -- GLushort_Pointer
    --
    package GLushort_Pointers is new C.Pointers (Index              => C.size_t,
                                                 Element            => GLushort,
@@ -64,7 +67,7 @@ is
    subtype GLushort_Pointer  is GLushort_Pointers.Pointer;
 
 
-   --  GLuint_Pointer
+   -- GLuint_Pointer
    --
    package GLuint_Pointers is new C.Pointers (Index              => C.size_t,
                                               Element            => GLuint,
@@ -73,7 +76,7 @@ is
    subtype GLuint_Pointer  is GLuint_Pointers.Pointer;
 
 
-   --  GLdouble_Pointer
+   -- GLdouble_Pointer
    --
    type    GLdouble_array    is array (C.size_t range <>) of aliased GLdouble;
    package GLdouble_Pointers is new C.Pointers (Index              => C.size_t,
@@ -84,7 +87,7 @@ is
 
 
    -------------
-   --  Constants
+   --- Constants
    --
 
    GL_2D                                       : constant := 16#0600#;
@@ -660,7 +663,7 @@ is
 
 
    -------------
-   --  Functions
+   --- Functions
    --
 
    procedure glAccum                      (Op             : in     GLenum;
@@ -1662,369 +1665,370 @@ is
 
 private
 
-   pragma Import (StdCall, glAccum,                      "glAccum");
-   pragma Import (StdCall, glActiveTextureARB,           "glActiveTextureARB");
-   pragma Import (StdCall, glAreTexturesResident,        "glAreTexturesResident");
-   pragma Import (StdCall, glArrayElement,               "glArrayElement");
-   pragma Import (StdCall, glBlendColor,                 "glBlendColor");
-   pragma Import (StdCall, glBlendEquation,              "glBlendEquation");
-   pragma Import (StdCall, glBlendEquationSeparate,      "glBlendEquationSeparate");
-   pragma Import (StdCall, glBlendEquationSeparateATI,   "glBlendEquationSeparateATI");
-   pragma Import (StdCall, glCallList,                   "glCallList");
-   pragma Import (StdCall, glClearAccum,                 "glClearAccum");
-   pragma Import (StdCall, glClearDepth,                 "glClearDepth");
-   pragma Import (StdCall, glClearIndex,                 "glClearIndex");
-   pragma Import (StdCall, glClientActiveTextureARB,     "glClientActiveTextureARB");
-   pragma Import (StdCall, glClipPlane,                  "glClipPlane");
-   pragma Import (StdCall, glColor3b,                    "glColor3b");
-   pragma Import (StdCall, glColor3bv,                   "glColor3bv");
-   pragma Import (StdCall, glColor3d,                    "glColor3d");
-   pragma Import (StdCall, glColor3dv,                   "glColor3dv");
-   pragma Import (StdCall, glColor3f,                    "glColor3f");
-   pragma Import (StdCall, glColor3fv,                   "glColor3fv");
-   pragma Import (StdCall, glColor3i,                    "glColor3i");
-   pragma Import (StdCall, glColor3iv,                   "glColor3iv");
-   pragma Import (StdCall, glColor3s,                    "glColor3s");
-   pragma Import (StdCall, glColor3sv,                   "glColor3sv");
-   pragma Import (StdCall, glColor3ub,                   "glColor3ub");
-   pragma Import (StdCall, glColor3ubv,                  "glColor3ubv");
-   pragma Import (StdCall, glColor3ui,                   "glColor3ui");
-   pragma Import (StdCall, glColor3uiv,                  "glColor3uiv");
-   pragma Import (StdCall, glColor3us,                   "glColor3us");
-   pragma Import (StdCall, glColor3usv,                  "glColor3usv");
-   pragma Import (StdCall, glColor4b,                    "glColor4b");
-   pragma Import (StdCall, glColor4bv,                   "glColor4bv");
-   pragma Import (StdCall, glColor4d,                    "glColor4d");
-   pragma Import (StdCall, glColor4dv,                   "glColor4dv");
-   pragma Import (StdCall, glColor4i,                    "glColor4i");
-   pragma Import (StdCall, glColor4iv,                   "glColor4iv");
-   pragma Import (StdCall, glColor4s,                    "glColor4s");
-   pragma Import (StdCall, glColor4sv,                   "glColor4sv");
-   pragma Import (StdCall, glColor4ubv,                  "glColor4ubv");
-   pragma Import (StdCall, glColor4ui,                   "glColor4ui");
-   pragma Import (StdCall, glColor4uiv,                  "glColor4uiv");
-   pragma Import (StdCall, glColor4us,                   "glColor4us");
-   pragma Import (StdCall, glColor4usv,                  "glColor4usv");
-   pragma Import (StdCall, glColorMaterial,              "glColorMaterial");
-   pragma Import (StdCall, glColorSubTable,              "glColorSubTable");
-   pragma Import (StdCall, glColorTable,                 "glColorTable");
-   pragma Import (StdCall, glColorTableParameterfv,      "glColorTableParameterfv");
-   pragma Import (StdCall, glColorTableParameteriv,      "glColorTableParameteriv");
-   pragma Import (StdCall, glCompressedTexImage1D,       "glCompressedTexImage1D");
-   pragma Import (StdCall, glCompressedTexImage3D,       "glCompressedTexImage3D");
-   pragma Import (StdCall, glCompressedTexSubImage1D,    "glCompressedTexSubImage1D");
-   pragma Import (StdCall, glCompressedTexSubImage3D,    "glCompressedTexSubImage3D");
-   pragma Import (StdCall, glConvolutionFilter1D,        "glConvolutionFilter1D");
-   pragma Import (StdCall, glConvolutionFilter2D,        "glConvolutionFilter2D");
-   pragma Import (StdCall, glConvolutionParameterf,      "glConvolutionParameterf");
-   pragma Import (StdCall, glConvolutionParameterfv,     "glConvolutionParameterfv");
-   pragma Import (StdCall, glConvolutionParameteri,      "glConvolutionParameteri");
-   pragma Import (StdCall, glConvolutionParameteriv,     "glConvolutionParameteriv");
-   pragma Import (StdCall, glCompressedTexImage2D,       "glCompressedTexImage2D");
-   pragma Import (StdCall, glCompressedTexSubImage2D,    "glCompressedTexSubImage2D");
-   pragma Import (StdCall, glCopyTexImage2D,             "glCopyTexImage2D");
-   pragma Import (StdCall, glCopyTexSubImage2D,          "glCopyTexSubImage2D");
-   pragma Import (StdCall, glCopyColorSubTable,          "glCopyColorSubTable");
-   pragma Import (StdCall, glCopyColorTable,             "glCopyColorTable");
-   pragma Import (StdCall, glCopyConvolutionFilter1D,    "glCopyConvolutionFilter1D");
-   pragma Import (StdCall, glCopyConvolutionFilter2D,    "glCopyConvolutionFilter2D");
-   pragma Import (StdCall, glCopyTexImage1D,             "glCopyTexImage1D");
-   pragma Import (StdCall, glCopyTexSubImage1D,          "glCopyTexSubImage1D");
-   pragma Import (StdCall, glCopyTexSubImage3D,          "glCopyTexSubImage3D");
-   pragma Import (StdCall, glDeleteLists,                "glDeleteLists");
-   pragma Import (StdCall, glDeleteTextures,             "glDeleteTextures");
-   pragma Import (StdCall, glDepthRange,                 "glDepthRange");
-   pragma Import (StdCall, glDisableClientState,         "glDisableClientState");
-   pragma Import (StdCall, glDrawBuffer,                 "glDrawBuffer");
-   pragma Import (StdCall, glDrawRangeElements,          "glDrawRangeElements");
-   pragma Import (StdCall, glEdgeFlag,                   "glEdgeFlag");
-   pragma Import (StdCall, glEdgeFlagPointer,            "glEdgeFlagPointer");
-   pragma Import (StdCall, glEdgeFlagv,                  "glEdgeFlagv");
-   pragma Import (StdCall, glEvalCoord1d,                "glEvalCoord1d");
-   pragma Import (StdCall, glEvalCoord1dv,               "glEvalCoord1dv");
-   pragma Import (StdCall, glEvalCoord1f,                "glEvalCoord1f");
-   pragma Import (StdCall, glEvalCoord1fv,               "glEvalCoord1fv");
-   pragma Import (StdCall, glEvalCoord2d,                "glEvalCoord2d");
-   pragma Import (StdCall, glEvalCoord2dv,               "glEvalCoord2dv");
-   pragma Import (StdCall, glEvalCoord2f,                "glEvalCoord2f");
-   pragma Import (StdCall, glEvalCoord2fv,               "glEvalCoord2fv");
-   pragma Import (StdCall, glEvalMesh1,                  "glEvalMesh1");
-   pragma Import (StdCall, glEvalMesh2,                  "glEvalMesh2");
-   pragma Import (StdCall, glEvalPoint1,                 "glEvalPoint1");
-   pragma Import (StdCall, glEvalPoint2,                 "glEvalPoint2");
-   pragma Import (StdCall, glFeedbackBuffer,             "glFeedbackBuffer");
-   pragma Import (StdCall, glFogf,                       "glFogf");
-   pragma Import (StdCall, glFogfv,                      "glFogfv");
-   pragma Import (StdCall, glFogi,                       "glFogi");
-   pragma Import (StdCall, glFogiv,                      "glFogiv");
-   pragma Import (StdCall, glFramebufferTextureLayerEXT, "glFramebufferTextureLayerEXT");
-   pragma Import (StdCall, glFrustum,                    "glFrustum");
-   pragma Import (StdCall, glGetClipPlane,               "glGetClipPlane");
-   pragma Import (StdCall, glGetColorTable,              "glGetColorTable");
-   pragma Import (StdCall, glGetColorTableParameterfv,   "glGetColorTableParameterfv");
-   pragma Import (StdCall, glGetColorTableParameteriv,   "glGetColorTableParameteriv");
-   pragma Import (StdCall, glGetCompressedTexImage,      "glGetCompressedTexImage");
-   pragma Import (StdCall, glGetConvolutionFilter,       "glGetConvolutionFilter");
-   pragma Import (StdCall, glGetConvolutionParameterfv,  "glGetConvolutionParameterfv");
-   pragma Import (StdCall, glGetConvolutionParameteriv,  "glGetConvolutionParameteriv");
-   pragma Import (StdCall, glGetDoublev,                 "glGetDoublev");
-   pragma Import (StdCall, glGetHistogram,               "glGetHistogram");
-   pragma Import (StdCall, glGetHistogramParameterfv,    "glGetHistogramParameterfv");
-   pragma Import (StdCall, glGetHistogramParameteriv,    "glGetHistogramParameteriv");
-   pragma Import (StdCall, glGetLightiv,                 "glGetLightiv");
-   pragma Import (StdCall, glGetMapdv,                   "glGetMapdv");
-   pragma Import (StdCall, glGetMapfv,                   "glGetMapfv");
-   pragma Import (StdCall, glGetMapiv,                   "glGetMapiv");
-   pragma Import (StdCall, glGetMaterialiv,              "glGetMaterialiv");
-   pragma Import (StdCall, glGetMinmax,                  "glGetMinmax");
-   pragma Import (StdCall, glGetMinmaxParameterfv,       "glGetMinmaxParameterfv");
-   pragma Import (StdCall, glGetMinmaxParameteriv,       "glGetMinmaxParameteriv");
-   pragma Import (StdCall, glGetPixelMapfv,              "glGetPixelMapfv");
-   pragma Import (StdCall, glGetPixelMapuiv,             "glGetPixelMapuiv");
-   pragma Import (StdCall, glGetPixelMapusv,             "glGetPixelMapusv");
-   pragma Import (StdCall, glGetProgramRegisterfvMESA,   "glGetProgramRegisterfvMESA");
-   pragma Import (StdCall, glGetSeparableFilter,         "glGetSeparableFilter");
-   pragma Import (StdCall, glGetTexGendv,                "glGetTexGendv");
-   pragma Import (StdCall, glGetTexGenfv,                "glGetTexGenfv");
-   pragma Import (StdCall, glGetTexGeniv,                "glGetTexGeniv");
-   pragma Import (StdCall, glGetTexImage,                "glGetTexImage");
-   pragma Import (StdCall, glGetTexLevelParameterfv,     "glGetTexLevelParameterfv");
-   pragma Import (StdCall, glGetTexLevelParameteriv,     "glGetTexLevelParameteriv");
-   pragma Import (StdCall, glGetTexParameterfv,          "glGetTexParameterfv");
-   pragma Import (StdCall, glHistogram,                  "glHistogram");
-   pragma Import (StdCall, glIndexMask,                  "glIndexMask");
-   pragma Import (StdCall, glIndexPointer,               "glIndexPointer");
-   pragma Import (StdCall, glIndexd,                     "glIndexd");
-   pragma Import (StdCall, glIndexdv,                    "glIndexdv");
-   pragma Import (StdCall, glIndexf,                     "glIndexf");
-   pragma Import (StdCall, glIndexfv,                    "glIndexfv");
-   pragma Import (StdCall, glIndexi,                     "glIndexi");
-   pragma Import (StdCall, glIndexiv,                    "glIndexiv");
-   pragma Import (StdCall, glIndexs,                     "glIndexs");
-   pragma Import (StdCall, glIndexsv,                    "glIndexsv");
-   pragma Import (StdCall, glIndexub,                    "glIndexub");
-   pragma Import (StdCall, glIndexubv,                   "glIndexubv");
-   pragma Import (StdCall, glInitNames,                  "glInitNames");
-   pragma Import (StdCall, glInterleavedArrays,          "glInterleavedArrays");
-   pragma Import (StdCall, glIsList,                     "glIsList");
-   pragma Import (StdCall, glIsTexture,                  "glIsTexture");
-   pragma Import (StdCall, glLightModelf,                "glLightModelf");
-   pragma Import (StdCall, glLightModeli,                "glLightModeli");
-   pragma Import (StdCall, glLightModeliv,               "glLightModeliv");
-   pragma Import (StdCall, glLightf,                     "glLightf");
-   pragma Import (StdCall, glLighti,                     "glLighti");
-   pragma Import (StdCall, glLightiv,                    "glLightiv");
-   pragma Import (StdCall, glLoadMatrixd,                "glLoadMatrixd");
-   pragma Import (StdCall, glLoadName,                   "glLoadName");
-   pragma Import (StdCall, glLoadTransposeMatrixd,       "glLoadTransposeMatrixd");
-   pragma Import (StdCall, glLoadTransposeMatrixf,       "glLoadTransposeMatrixf");
-   pragma Import (StdCall, glLogicOp,                    "glLogicOp");
-   pragma Import (StdCall, glMap1d,                      "glMap1d");
-   pragma Import (StdCall, glMap1f,                      "glMap1f");
-   pragma Import (StdCall, glMap2d,                      "glMap2d");
-   pragma Import (StdCall, glMap2f,                      "glMap2f");
-   pragma Import (StdCall, glMapGrid1d,                  "glMapGrid1d");
-   pragma Import (StdCall, glMapGrid1f,                  "glMapGrid1f");
-   pragma Import (StdCall, glMapGrid2d,                  "glMapGrid2d");
-   pragma Import (StdCall, glMapGrid2f,                  "glMapGrid2f");
-   pragma Import (StdCall, glMateriali,                  "glMateriali");
-   pragma Import (StdCall, glMaterialiv,                 "glMaterialiv");
-   pragma Import (StdCall, glMinmax,                     "glMinmax");
-   pragma Import (StdCall, glMultMatrixd,                "glMultMatrixd");
-   pragma Import (StdCall, glMultTransposeMatrixd,       "glMultTransposeMatrixd");
-   pragma Import (StdCall, glMultTransposeMatrixf,       "glMultTransposeMatrixf");
-   pragma Import (StdCall, glMultiTexCoord1d,            "glMultiTexCoord1d");
-   pragma Import (StdCall, glMultiTexCoord1dARB,         "glMultiTexCoord1dARB");
-   pragma Import (StdCall, glMultiTexCoord1dv,           "glMultiTexCoord1dv");
-   pragma Import (StdCall, glMultiTexCoord1dvARB,        "glMultiTexCoord1dvARB");
-   pragma Import (StdCall, glMultiTexCoord1f,            "glMultiTexCoord1f");
-   pragma Import (StdCall, glMultiTexCoord1fARB,         "glMultiTexCoord1fARB");
-   pragma Import (StdCall, glMultiTexCoord1fv,           "glMultiTexCoord1fv");
-   pragma Import (StdCall, glMultiTexCoord1fvARB,        "glMultiTexCoord1fvARB");
-   pragma Import (StdCall, glMultiTexCoord1i,            "glMultiTexCoord1i");
-   pragma Import (StdCall, glMultiTexCoord1iARB,         "glMultiTexCoord1iARB");
-   pragma Import (StdCall, glMultiTexCoord1iv,           "glMultiTexCoord1iv");
-   pragma Import (StdCall, glMultiTexCoord1ivARB,        "glMultiTexCoord1ivARB");
-   pragma Import (StdCall, glMultiTexCoord1s,            "glMultiTexCoord1s");
-   pragma Import (StdCall, glMultiTexCoord1sARB,         "glMultiTexCoord1sARB");
-   pragma Import (StdCall, glMultiTexCoord1sv,           "glMultiTexCoord1sv");
-   pragma Import (StdCall, glMultiTexCoord1svARB,        "glMultiTexCoord1svARB");
-   pragma Import (StdCall, glMultiTexCoord2d,            "glMultiTexCoord2d");
-   pragma Import (StdCall, glMultiTexCoord2dARB,         "glMultiTexCoord2dARB");
-   pragma Import (StdCall, glMultiTexCoord2dv,           "glMultiTexCoord2dv");
-   pragma Import (StdCall, glMultiTexCoord2dvARB,        "glMultiTexCoord2dvARB");
-   pragma Import (StdCall, glMultiTexCoord2i,            "glMultiTexCoord2i");
-   pragma Import (StdCall, glMultiTexCoord2iARB,         "glMultiTexCoord2iARB");
-   pragma Import (StdCall, glMultiTexCoord2iv,           "glMultiTexCoord2iv");
-   pragma Import (StdCall, glMultiTexCoord2ivARB,        "glMultiTexCoord2ivARB");
-   pragma Import (StdCall, glMultiTexCoord2s,            "glMultiTexCoord2s");
-   pragma Import (StdCall, glMultiTexCoord2sARB,         "glMultiTexCoord2sARB");
-   pragma Import (StdCall, glMultiTexCoord2sv,           "glMultiTexCoord2sv");
-   pragma Import (StdCall, glMultiTexCoord2svARB,        "glMultiTexCoord2svARB");
-   pragma Import (StdCall, glMultiTexCoord3d,            "glMultiTexCoord3d");
-   pragma Import (StdCall, glMultiTexCoord3dARB,         "glMultiTexCoord3dARB");
-   pragma Import (StdCall, glMultiTexCoord3dv,           "glMultiTexCoord3dv");
-   pragma Import (StdCall, glMultiTexCoord3dvARB,        "glMultiTexCoord3dvARB");
-   pragma Import (StdCall, glMultiTexCoord3f,            "glMultiTexCoord3f");
-   pragma Import (StdCall, glMultiTexCoord3fARB,         "glMultiTexCoord3fARB");
-   pragma Import (StdCall, glMultiTexCoord3fv,           "glMultiTexCoord3fv");
-   pragma Import (StdCall, glMultiTexCoord3fvARB,        "glMultiTexCoord3fvARB");
-   pragma Import (StdCall, glMultiTexCoord3i,            "glMultiTexCoord3i");
-   pragma Import (StdCall, glMultiTexCoord3iARB,         "glMultiTexCoord3iARB");
-   pragma Import (StdCall, glMultiTexCoord3iv,           "glMultiTexCoord3iv");
-   pragma Import (StdCall, glMultiTexCoord3ivARB,        "glMultiTexCoord3ivARB");
-   pragma Import (StdCall, glMultiTexCoord3s,            "glMultiTexCoord3s");
-   pragma Import (StdCall, glMultiTexCoord3sARB,         "glMultiTexCoord3sARB");
-   pragma Import (StdCall, glMultiTexCoord3sv,           "glMultiTexCoord3sv");
-   pragma Import (StdCall, glMultiTexCoord3svARB,        "glMultiTexCoord3svARB");
-   pragma Import (StdCall, glMultiTexCoord4d,            "glMultiTexCoord4d");
-   pragma Import (StdCall, glMultiTexCoord4dARB,         "glMultiTexCoord4dARB");
-   pragma Import (StdCall, glMultiTexCoord4dv,           "glMultiTexCoord4dv");
-   pragma Import (StdCall, glMultiTexCoord4dvARB,        "glMultiTexCoord4dvARB");
-   pragma Import (StdCall, glMultiTexCoord4f,            "glMultiTexCoord4f");
-   pragma Import (StdCall, glMultiTexCoord4fARB,         "glMultiTexCoord4fARB");
-   pragma Import (StdCall, glMultiTexCoord4fv,           "glMultiTexCoord4fv");
-   pragma Import (StdCall, glMultiTexCoord4fvARB,        "glMultiTexCoord4fvARB");
-   pragma Import (StdCall, glMultiTexCoord4i,            "glMultiTexCoord4i");
-   pragma Import (StdCall, glMultiTexCoord4iARB,         "glMultiTexCoord4iARB");
-   pragma Import (StdCall, glMultiTexCoord4iv,           "glMultiTexCoord4iv");
-   pragma Import (StdCall, glMultiTexCoord4ivARB,        "glMultiTexCoord4ivARB");
-   pragma Import (StdCall, glMultiTexCoord4s,            "glMultiTexCoord4s");
-   pragma Import (StdCall, glMultiTexCoord4sARB,         "glMultiTexCoord4sARB");
-   pragma Import (StdCall, glMultiTexCoord4sv,           "glMultiTexCoord4sv");
-   pragma Import (StdCall, glMultiTexCoord4svARB,        "glMultiTexCoord4svARB");
-   pragma Import (StdCall, glNormal3b,                   "glNormal3b");
-   pragma Import (StdCall, glNormal3bv,                  "glNormal3bv");
-   pragma Import (StdCall, glNormal3d,                   "glNormal3d");
-   pragma Import (StdCall, glNormal3dv,                  "glNormal3dv");
-   pragma Import (StdCall, glNormal3i,                   "glNormal3i");
-   pragma Import (StdCall, glNormal3iv,                  "glNormal3iv");
-   pragma Import (StdCall, glNormal3s,                   "glNormal3s");
-   pragma Import (StdCall, glNormal3sv,                  "glNormal3sv");
-   pragma Import (StdCall, glOrtho,                      "glOrtho");
-   pragma Import (StdCall, glPassThrough,                "glPassThrough");
-   pragma Import (StdCall, glPixelMapfv,                 "glPixelMapfv");
-   pragma Import (StdCall, glPixelMapuiv,                "glPixelMapuiv");
-   pragma Import (StdCall, glPixelMapusv,                "glPixelMapusv");
-   pragma Import (StdCall, glPixelStoref,                "glPixelStoref");
-   pragma Import (StdCall, glPixelTransferf,             "glPixelTransferf");
-   pragma Import (StdCall, glPixelTransferi,             "glPixelTransferi");
-   pragma Import (StdCall, glPixelZoom,                  "glPixelZoom");
-   pragma Import (StdCall, glPolygonMode,                "glPolygonMode");
-   pragma Import (StdCall, glPopAttrib,                  "glPopAttrib");
-   pragma Import (StdCall, glPopClientAttrib,            "glPopClientAttrib");
-   pragma Import (StdCall, glPopName,                    "glPopName");
-   pragma Import (StdCall, glPrioritizeTextures,         "glPrioritizeTextures");
-   pragma Import (StdCall, glPushAttrib,                 "glPushAttrib");
-   pragma Import (StdCall, glPushClientAttrib,           "glPushClientAttrib");
-   pragma Import (StdCall, glPushName,                   "glPushName");
-   pragma Import (StdCall, glRasterPos2d,                "glRasterPos2d");
-   pragma Import (StdCall, glRasterPos2dv,               "glRasterPos2dv");
-   pragma Import (StdCall, glRasterPos2f,                "glRasterPos2f");
-   pragma Import (StdCall, glRasterPos2fv,               "glRasterPos2fv");
-   pragma Import (StdCall, glRasterPos2i,                "glRasterPos2i");
-   pragma Import (StdCall, glRasterPos2iv,               "glRasterPos2iv");
-   pragma Import (StdCall, glRasterPos2s,                "glRasterPos2s");
-   pragma Import (StdCall, glRasterPos2sv,               "glRasterPos2sv");
-   pragma Import (StdCall, glRasterPos3d,                "glRasterPos3d");
-   pragma Import (StdCall, glRasterPos3dv,               "glRasterPos3dv");
-   pragma Import (StdCall, glRasterPos3fv,               "glRasterPos3fv");
-   pragma Import (StdCall, glRasterPos3i,                "glRasterPos3i");
-   pragma Import (StdCall, glRasterPos3iv,               "glRasterPos3iv");
-   pragma Import (StdCall, glRasterPos3s,                "glRasterPos3s");
-   pragma Import (StdCall, glRasterPos3sv,               "glRasterPos3sv");
-   pragma Import (StdCall, glRasterPos4d,                "glRasterPos4d");
-   pragma Import (StdCall, glRasterPos4dv,               "glRasterPos4dv");
-   pragma Import (StdCall, glRasterPos4f,                "glRasterPos4f");
-   pragma Import (StdCall, glRasterPos4fv,               "glRasterPos4fv");
-   pragma Import (StdCall, glRasterPos4i,                "glRasterPos4i");
-   pragma Import (StdCall, glRasterPos4iv,               "glRasterPos4iv");
-   pragma Import (StdCall, glRasterPos4s,                "glRasterPos4s");
-   pragma Import (StdCall, glRasterPos4sv,               "glRasterPos4sv");
-   pragma Import (StdCall, glReadBuffer,                 "glReadBuffer");
-   pragma Import (StdCall, glRectd,                      "glRectd");
-   pragma Import (StdCall, glRectdv,                     "glRectdv");
-   pragma Import (StdCall, glRectf,                      "glRectf");
-   pragma Import (StdCall, glRectfv,                     "glRectfv");
-   pragma Import (StdCall, glRecti,                      "glRecti");
-   pragma Import (StdCall, glRectiv,                     "glRectiv");
-   pragma Import (StdCall, glRects,                      "glRects");
-   pragma Import (StdCall, glRectsv,                     "glRectsv");
-   pragma Import (StdCall, glRenderMode,                 "glRenderMode");
-   pragma Import (StdCall, glResetHistogram,             "glResetHistogram");
-   pragma Import (StdCall, glResetMinmax,                "glResetMinmax");
-   pragma Import (StdCall, glRotated,                    "glRotated");
-   pragma Import (StdCall, glSampleCoverage,             "glSampleCoverage");
-   pragma Import (StdCall, glScaled,                     "glScaled");
-   pragma Import (StdCall, glSelectBuffer,               "glSelectBuffer");
-   pragma Import (StdCall, glSeparableFilter2D,          "glSeparableFilter2D");
-   pragma Import (StdCall, glTexCoord1d,                 "glTexCoord1d");
-   pragma Import (StdCall, glTexCoord1dv,                "glTexCoord1dv");
-   pragma Import (StdCall, glTexCoord1f,                 "glTexCoord1f");
-   pragma Import (StdCall, glTexCoord1fv,                "glTexCoord1fv");
-   pragma Import (StdCall, glTexCoord1i,                 "glTexCoord1i");
-   pragma Import (StdCall, glTexCoord1iv,                "glTexCoord1iv");
-   pragma Import (StdCall, glTexCoord1s,                 "glTexCoord1s");
-   pragma Import (StdCall, glTexCoord1sv,                "glTexCoord1sv");
-   pragma Import (StdCall, glTexCoord2d,                 "glTexCoord2d");
-   pragma Import (StdCall, glTexCoord2dv,                "glTexCoord2dv");
-   pragma Import (StdCall, glTexCoord2f,                 "glTexCoord2f");
-   pragma Import (StdCall, glTexCoord2fv,                "glTexCoord2fv");
-   pragma Import (StdCall, glTexCoord2i,                 "glTexCoord2i");
-   pragma Import (StdCall, glTexCoord2iv,                "glTexCoord2iv");
-   pragma Import (StdCall, glTexCoord2s,                 "glTexCoord2s");
-   pragma Import (StdCall, glTexCoord2sv,                "glTexCoord2sv");
-   pragma Import (StdCall, glTexCoord3d,                 "glTexCoord3d");
-   pragma Import (StdCall, glTexCoord3dv,                "glTexCoord3dv");
-   pragma Import (StdCall, glTexCoord3f,                 "glTexCoord3f");
-   pragma Import (StdCall, glTexCoord3fv,                "glTexCoord3fv");
-   pragma Import (StdCall, glTexCoord3i,                 "glTexCoord3i");
-   pragma Import (StdCall, glTexCoord3iv,                "glTexCoord3iv");
-   pragma Import (StdCall, glTexCoord3s,                 "glTexCoord3s");
-   pragma Import (StdCall, glTexCoord3sv,                "glTexCoord3sv");
-   pragma Import (StdCall, glTexCoord4d,                 "glTexCoord4d");
-   pragma Import (StdCall, glTexCoord4dv,                "glTexCoord4dv");
-   pragma Import (StdCall, glTexCoord4f,                 "glTexCoord4f");
-   pragma Import (StdCall, glTexCoord4fv,                "glTexCoord4fv");
-   pragma Import (StdCall, glTexCoord4i,                 "glTexCoord4i");
-   pragma Import (StdCall, glTexCoord4iv,                "glTexCoord4iv");
-   pragma Import (StdCall, glTexCoord4s,                 "glTexCoord4s");
-   pragma Import (StdCall, glTexCoord4sv,                "glTexCoord4sv");
-   pragma Import (StdCall, glTexEnvf,                    "glTexEnvf");
-   pragma Import (StdCall, glTexEnviv,                   "glTexEnviv");
-   pragma Import (StdCall, glTexGend,                    "glTexGend");
-   pragma Import (StdCall, glTexGendv,                   "glTexGendv");
-   pragma Import (StdCall, glTexGenf,                    "glTexGenf");
-   pragma Import (StdCall, glTexGenfv,                   "glTexGenfv");
-   pragma Import (StdCall, glTexGeni,                    "glTexGeni");
-   pragma Import (StdCall, glTexGeniv,                   "glTexGeniv");
-   pragma Import (StdCall, glTexImage1D,                 "glTexImage1D");
-   pragma Import (StdCall, glTexImage3D,                 "glTexImage3D");
-   pragma Import (StdCall, glTexParameterf,              "glTexParameterf");
-   pragma Import (StdCall, glTexParameterfv,             "glTexParameterfv");
-   pragma Import (StdCall, glTexParameteriv,             "glTexParameteriv");
-   pragma Import (StdCall, glTexSubImage1D,              "glTexSubImage1D");
-   pragma Import (StdCall, glTexSubImage3D,              "glTexSubImage3D");
-   pragma Import (StdCall, glTranslated,                 "glTranslated");
-   pragma Import (StdCall, glVertex2d,                   "glVertex2d");
-   pragma Import (StdCall, glVertex2dv,                  "glVertex2dv");
-   pragma Import (StdCall, glVertex2i,                   "glVertex2i");
-   pragma Import (StdCall, glVertex2iv,                  "glVertex2iv");
-   pragma Import (StdCall, glVertex2s,                   "glVertex2s");
-   pragma Import (StdCall, glVertex2sv,                  "glVertex2sv");
-   pragma Import (StdCall, glVertex3d,                   "glVertex3d");
-   pragma Import (StdCall, glVertex3dv,                  "glVertex3dv");
-   pragma Import (StdCall, glVertex3i,                   "glVertex3i");
-   pragma Import (StdCall, glVertex3iv,                  "glVertex3iv");
-   pragma Import (StdCall, glVertex3s,                   "glVertex3s");
-   pragma Import (StdCall, glVertex3sv,                  "glVertex3sv");
-   pragma Import (StdCall, glVertex4d,                   "glVertex4d");
-   pragma Import (StdCall, glVertex4dv,                  "glVertex4dv");
-   pragma Import (StdCall, glVertex4f,                   "glVertex4f");
-   pragma Import (StdCall, glVertex4fv,                  "glVertex4fv");
-   pragma Import (StdCall, glVertex4i,                   "glVertex4i");
-   pragma Import (StdCall, glVertex4iv,                  "glVertex4iv");
-   pragma Import (StdCall, glVertex4s,                   "glVertex4s");
-   pragma Import (StdCall, glVertex4sv,                  "glVertex4sv");
+   pragma import (StdCall, glAccum,                      "glAccum");
+   pragma import (StdCall, glActiveTextureARB,           "glActiveTextureARB");
+   pragma import (StdCall, glAreTexturesResident,        "glAreTexturesResident");
+   pragma import (StdCall, glArrayElement,               "glArrayElement");
+   pragma import (StdCall, glBlendColor,                 "glBlendColor");
+   pragma import (StdCall, glBlendEquation,              "glBlendEquation");
+   pragma import (StdCall, glBlendEquationSeparate,      "glBlendEquationSeparate");
+   pragma import (StdCall, glBlendEquationSeparateATI,   "glBlendEquationSeparateATI");
+   pragma import (StdCall, glCallList,                   "glCallList");
+   pragma import (StdCall, glClearAccum,                 "glClearAccum");
+   pragma import (StdCall, glClearDepth,                 "glClearDepth");
+   pragma import (StdCall, glClearIndex,                 "glClearIndex");
+   pragma import (StdCall, glClientActiveTextureARB,     "glClientActiveTextureARB");
+   pragma import (StdCall, glClipPlane,                  "glClipPlane");
+   pragma import (StdCall, glColor3b,                    "glColor3b");
+   pragma import (StdCall, glColor3bv,                   "glColor3bv");
+   pragma import (StdCall, glColor3d,                    "glColor3d");
+   pragma import (StdCall, glColor3dv,                   "glColor3dv");
+   pragma import (StdCall, glColor3f,                    "glColor3f");
+   pragma import (StdCall, glColor3fv,                   "glColor3fv");
+   pragma import (StdCall, glColor3i,                    "glColor3i");
+   pragma import (StdCall, glColor3iv,                   "glColor3iv");
+   pragma import (StdCall, glColor3s,                    "glColor3s");
+   pragma import (StdCall, glColor3sv,                   "glColor3sv");
+   pragma import (StdCall, glColor3ub,                   "glColor3ub");
+   pragma import (StdCall, glColor3ubv,                  "glColor3ubv");
+   pragma import (StdCall, glColor3ui,                   "glColor3ui");
+   pragma import (StdCall, glColor3uiv,                  "glColor3uiv");
+   pragma import (StdCall, glColor3us,                   "glColor3us");
+   pragma import (StdCall, glColor3usv,                  "glColor3usv");
+   pragma import (StdCall, glColor4b,                    "glColor4b");
+   pragma import (StdCall, glColor4bv,                   "glColor4bv");
+   pragma import (StdCall, glColor4d,                    "glColor4d");
+   pragma import (StdCall, glColor4dv,                   "glColor4dv");
+   pragma import (StdCall, glColor4i,                    "glColor4i");
+   pragma import (StdCall, glColor4iv,                   "glColor4iv");
+   pragma import (StdCall, glColor4s,                    "glColor4s");
+   pragma import (StdCall, glColor4sv,                   "glColor4sv");
+   pragma import (StdCall, glColor4ubv,                  "glColor4ubv");
+   pragma import (StdCall, glColor4ui,                   "glColor4ui");
+   pragma import (StdCall, glColor4uiv,                  "glColor4uiv");
+   pragma import (StdCall, glColor4us,                   "glColor4us");
+   pragma import (StdCall, glColor4usv,                  "glColor4usv");
+   pragma import (StdCall, glColorMaterial,              "glColorMaterial");
+   pragma import (StdCall, glColorSubTable,              "glColorSubTable");
+   pragma import (StdCall, glColorTable,                 "glColorTable");
+   pragma import (StdCall, glColorTableParameterfv,      "glColorTableParameterfv");
+   pragma import (StdCall, glColorTableParameteriv,      "glColorTableParameteriv");
+   pragma import (StdCall, glCompressedTexImage1D,       "glCompressedTexImage1D");
+   pragma import (StdCall, glCompressedTexImage3D,       "glCompressedTexImage3D");
+   pragma import (StdCall, glCompressedTexSubImage1D,    "glCompressedTexSubImage1D");
+   pragma import (StdCall, glCompressedTexSubImage3D,    "glCompressedTexSubImage3D");
+   pragma import (StdCall, glConvolutionFilter1D,        "glConvolutionFilter1D");
+   pragma import (StdCall, glConvolutionFilter2D,        "glConvolutionFilter2D");
+   pragma import (StdCall, glConvolutionParameterf,      "glConvolutionParameterf");
+   pragma import (StdCall, glConvolutionParameterfv,     "glConvolutionParameterfv");
+   pragma import (StdCall, glConvolutionParameteri,      "glConvolutionParameteri");
+   pragma import (StdCall, glConvolutionParameteriv,     "glConvolutionParameteriv");
+   pragma import (StdCall, glCompressedTexImage2D,       "glCompressedTexImage2D");
+   pragma import (StdCall, glCompressedTexSubImage2D,    "glCompressedTexSubImage2D");
+   pragma import (StdCall, glCopyTexImage2D,             "glCopyTexImage2D");
+   pragma import (StdCall, glCopyTexSubImage2D,          "glCopyTexSubImage2D");
+   pragma import (StdCall, glCopyColorSubTable,          "glCopyColorSubTable");
+   pragma import (StdCall, glCopyColorTable,             "glCopyColorTable");
+   pragma import (StdCall, glCopyConvolutionFilter1D,    "glCopyConvolutionFilter1D");
+   pragma import (StdCall, glCopyConvolutionFilter2D,    "glCopyConvolutionFilter2D");
+   pragma import (StdCall, glCopyTexImage1D,             "glCopyTexImage1D");
+   pragma import (StdCall, glCopyTexSubImage1D,          "glCopyTexSubImage1D");
+   pragma import (StdCall, glCopyTexSubImage3D,          "glCopyTexSubImage3D");
+   pragma import (StdCall, glDeleteLists,                "glDeleteLists");
+   pragma import (StdCall, glDeleteTextures,             "glDeleteTextures");
+   pragma import (StdCall, glDepthRange,                 "glDepthRange");
+   pragma import (StdCall, glDisableClientState,         "glDisableClientState");
+   pragma import (StdCall, glDrawBuffer,                 "glDrawBuffer");
+   pragma import (StdCall, glDrawRangeElements,          "glDrawRangeElements");
+   pragma import (StdCall, glEdgeFlag,                   "glEdgeFlag");
+   pragma import (StdCall, glEdgeFlagPointer,            "glEdgeFlagPointer");
+   pragma import (StdCall, glEdgeFlagv,                  "glEdgeFlagv");
+   pragma import (StdCall, glEvalCoord1d,                "glEvalCoord1d");
+   pragma import (StdCall, glEvalCoord1dv,               "glEvalCoord1dv");
+   pragma import (StdCall, glEvalCoord1f,                "glEvalCoord1f");
+   pragma import (StdCall, glEvalCoord1fv,               "glEvalCoord1fv");
+   pragma import (StdCall, glEvalCoord2d,                "glEvalCoord2d");
+   pragma import (StdCall, glEvalCoord2dv,               "glEvalCoord2dv");
+   pragma import (StdCall, glEvalCoord2f,                "glEvalCoord2f");
+   pragma import (StdCall, glEvalCoord2fv,               "glEvalCoord2fv");
+   pragma import (StdCall, glEvalMesh1,                  "glEvalMesh1");
+   pragma import (StdCall, glEvalMesh2,                  "glEvalMesh2");
+   pragma import (StdCall, glEvalPoint1,                 "glEvalPoint1");
+   pragma import (StdCall, glEvalPoint2,                 "glEvalPoint2");
+   pragma import (StdCall, glFeedbackBuffer,             "glFeedbackBuffer");
+   pragma import (StdCall, glFogf,                       "glFogf");
+   pragma import (StdCall, glFogfv,                      "glFogfv");
+   pragma import (StdCall, glFogi,                       "glFogi");
+   pragma import (StdCall, glFogiv,                      "glFogiv");
+   pragma import (StdCall, glFramebufferTextureLayerEXT, "glFramebufferTextureLayerEXT");
+   pragma import (StdCall, glFrustum,                    "glFrustum");
+   pragma import (StdCall, glGetClipPlane,               "glGetClipPlane");
+   pragma import (StdCall, glGetColorTable,              "glGetColorTable");
+   pragma import (StdCall, glGetColorTableParameterfv,   "glGetColorTableParameterfv");
+   pragma import (StdCall, glGetColorTableParameteriv,   "glGetColorTableParameteriv");
+   pragma import (StdCall, glGetCompressedTexImage,      "glGetCompressedTexImage");
+   pragma import (StdCall, glGetConvolutionFilter,       "glGetConvolutionFilter");
+   pragma import (StdCall, glGetConvolutionParameterfv,  "glGetConvolutionParameterfv");
+   pragma import (StdCall, glGetConvolutionParameteriv,  "glGetConvolutionParameteriv");
+   pragma import (StdCall, glGetDoublev,                 "glGetDoublev");
+   pragma import (StdCall, glGetHistogram,               "glGetHistogram");
+   pragma import (StdCall, glGetHistogramParameterfv,    "glGetHistogramParameterfv");
+   pragma import (StdCall, glGetHistogramParameteriv,    "glGetHistogramParameteriv");
+   pragma import (StdCall, glGetLightiv,                 "glGetLightiv");
+   pragma import (StdCall, glGetMapdv,                   "glGetMapdv");
+   pragma import (StdCall, glGetMapfv,                   "glGetMapfv");
+   pragma import (StdCall, glGetMapiv,                   "glGetMapiv");
+   pragma import (StdCall, glGetMaterialiv,              "glGetMaterialiv");
+   pragma import (StdCall, glGetMinmax,                  "glGetMinmax");
+   pragma import (StdCall, glGetMinmaxParameterfv,       "glGetMinmaxParameterfv");
+   pragma import (StdCall, glGetMinmaxParameteriv,       "glGetMinmaxParameteriv");
+   pragma import (StdCall, glGetPixelMapfv,              "glGetPixelMapfv");
+   pragma import (StdCall, glGetPixelMapuiv,             "glGetPixelMapuiv");
+   pragma import (StdCall, glGetPixelMapusv,             "glGetPixelMapusv");
+   pragma import (StdCall, glGetProgramRegisterfvMESA,   "glGetProgramRegisterfvMESA");
+   pragma import (StdCall, glGetSeparableFilter,         "glGetSeparableFilter");
+   pragma import (StdCall, glGetTexGendv,                "glGetTexGendv");
+   pragma import (StdCall, glGetTexGenfv,                "glGetTexGenfv");
+   pragma import (StdCall, glGetTexGeniv,                "glGetTexGeniv");
+   pragma import (StdCall, glGetTexImage,                "glGetTexImage");
+   pragma import (StdCall, glGetTexLevelParameterfv,     "glGetTexLevelParameterfv");
+   pragma import (StdCall, glGetTexLevelParameteriv,     "glGetTexLevelParameteriv");
+   pragma import (StdCall, glGetTexParameterfv,          "glGetTexParameterfv");
+   pragma import (StdCall, glHistogram,                  "glHistogram");
+   pragma import (StdCall, glIndexMask,                  "glIndexMask");
+   pragma import (StdCall, glIndexPointer,               "glIndexPointer");
+   pragma import (StdCall, glIndexd,                     "glIndexd");
+   pragma import (StdCall, glIndexdv,                    "glIndexdv");
+   pragma import (StdCall, glIndexf,                     "glIndexf");
+   pragma import (StdCall, glIndexfv,                    "glIndexfv");
+   pragma import (StdCall, glIndexi,                     "glIndexi");
+   pragma import (StdCall, glIndexiv,                    "glIndexiv");
+   pragma import (StdCall, glIndexs,                     "glIndexs");
+   pragma import (StdCall, glIndexsv,                    "glIndexsv");
+   pragma import (StdCall, glIndexub,                    "glIndexub");
+   pragma import (StdCall, glIndexubv,                   "glIndexubv");
+   pragma import (StdCall, glInitNames,                  "glInitNames");
+   pragma import (StdCall, glInterleavedArrays,          "glInterleavedArrays");
+   pragma import (StdCall, glIsList,                     "glIsList");
+   pragma import (StdCall, glIsTexture,                  "glIsTexture");
+   pragma import (StdCall, glLightModelf,                "glLightModelf");
+   pragma import (StdCall, glLightModeli,                "glLightModeli");
+   pragma import (StdCall, glLightModeliv,               "glLightModeliv");
+   pragma import (StdCall, glLightf,                     "glLightf");
+   pragma import (StdCall, glLighti,                     "glLighti");
+   pragma import (StdCall, glLightiv,                    "glLightiv");
+   pragma import (StdCall, glLoadMatrixd,                "glLoadMatrixd");
+   pragma import (StdCall, glLoadName,                   "glLoadName");
+   pragma import (StdCall, glLoadTransposeMatrixd,       "glLoadTransposeMatrixd");
+   pragma import (StdCall, glLoadTransposeMatrixf,       "glLoadTransposeMatrixf");
+   pragma import (StdCall, glLogicOp,                    "glLogicOp");
+   pragma import (StdCall, glMap1d,                      "glMap1d");
+   pragma import (StdCall, glMap1f,                      "glMap1f");
+   pragma import (StdCall, glMap2d,                      "glMap2d");
+   pragma import (StdCall, glMap2f,                      "glMap2f");
+   pragma import (StdCall, glMapGrid1d,                  "glMapGrid1d");
+   pragma import (StdCall, glMapGrid1f,                  "glMapGrid1f");
+   pragma import (StdCall, glMapGrid2d,                  "glMapGrid2d");
+   pragma import (StdCall, glMapGrid2f,                  "glMapGrid2f");
+   pragma import (StdCall, glMateriali,                  "glMateriali");
+   pragma import (StdCall, glMaterialiv,                 "glMaterialiv");
+   pragma import (StdCall, glMinmax,                     "glMinmax");
+   pragma import (StdCall, glMultMatrixd,                "glMultMatrixd");
+   pragma import (StdCall, glMultTransposeMatrixd,       "glMultTransposeMatrixd");
+   pragma import (StdCall, glMultTransposeMatrixf,       "glMultTransposeMatrixf");
+   pragma import (StdCall, glMultiTexCoord1d,            "glMultiTexCoord1d");
+   pragma import (StdCall, glMultiTexCoord1dARB,         "glMultiTexCoord1dARB");
+   pragma import (StdCall, glMultiTexCoord1dv,           "glMultiTexCoord1dv");
+   pragma import (StdCall, glMultiTexCoord1dvARB,        "glMultiTexCoord1dvARB");
+   pragma import (StdCall, glMultiTexCoord1f,            "glMultiTexCoord1f");
+   pragma import (StdCall, glMultiTexCoord1fARB,         "glMultiTexCoord1fARB");
+   pragma import (StdCall, glMultiTexCoord1fv,           "glMultiTexCoord1fv");
+   pragma import (StdCall, glMultiTexCoord1fvARB,        "glMultiTexCoord1fvARB");
+   pragma import (StdCall, glMultiTexCoord1i,            "glMultiTexCoord1i");
+   pragma import (StdCall, glMultiTexCoord1iARB,         "glMultiTexCoord1iARB");
+   pragma import (StdCall, glMultiTexCoord1iv,           "glMultiTexCoord1iv");
+   pragma import (StdCall, glMultiTexCoord1ivARB,        "glMultiTexCoord1ivARB");
+   pragma import (StdCall, glMultiTexCoord1s,            "glMultiTexCoord1s");
+   pragma import (StdCall, glMultiTexCoord1sARB,         "glMultiTexCoord1sARB");
+   pragma import (StdCall, glMultiTexCoord1sv,           "glMultiTexCoord1sv");
+   pragma import (StdCall, glMultiTexCoord1svARB,        "glMultiTexCoord1svARB");
+   pragma import (StdCall, glMultiTexCoord2d,            "glMultiTexCoord2d");
+   pragma import (StdCall, glMultiTexCoord2dARB,         "glMultiTexCoord2dARB");
+   pragma import (StdCall, glMultiTexCoord2dv,           "glMultiTexCoord2dv");
+   pragma import (StdCall, glMultiTexCoord2dvARB,        "glMultiTexCoord2dvARB");
+   pragma import (StdCall, glMultiTexCoord2i,            "glMultiTexCoord2i");
+   pragma import (StdCall, glMultiTexCoord2iARB,         "glMultiTexCoord2iARB");
+   pragma import (StdCall, glMultiTexCoord2iv,           "glMultiTexCoord2iv");
+   pragma import (StdCall, glMultiTexCoord2ivARB,        "glMultiTexCoord2ivARB");
+   pragma import (StdCall, glMultiTexCoord2s,            "glMultiTexCoord2s");
+   pragma import (StdCall, glMultiTexCoord2sARB,         "glMultiTexCoord2sARB");
+   pragma import (StdCall, glMultiTexCoord2sv,           "glMultiTexCoord2sv");
+   pragma import (StdCall, glMultiTexCoord2svARB,        "glMultiTexCoord2svARB");
+   pragma import (StdCall, glMultiTexCoord3d,            "glMultiTexCoord3d");
+   pragma import (StdCall, glMultiTexCoord3dARB,         "glMultiTexCoord3dARB");
+   pragma import (StdCall, glMultiTexCoord3dv,           "glMultiTexCoord3dv");
+   pragma import (StdCall, glMultiTexCoord3dvARB,        "glMultiTexCoord3dvARB");
+   pragma import (StdCall, glMultiTexCoord3f,            "glMultiTexCoord3f");
+   pragma import (StdCall, glMultiTexCoord3fARB,         "glMultiTexCoord3fARB");
+   pragma import (StdCall, glMultiTexCoord3fv,           "glMultiTexCoord3fv");
+   pragma import (StdCall, glMultiTexCoord3fvARB,        "glMultiTexCoord3fvARB");
+   pragma import (StdCall, glMultiTexCoord3i,            "glMultiTexCoord3i");
+   pragma import (StdCall, glMultiTexCoord3iARB,         "glMultiTexCoord3iARB");
+   pragma import (StdCall, glMultiTexCoord3iv,           "glMultiTexCoord3iv");
+   pragma import (StdCall, glMultiTexCoord3ivARB,        "glMultiTexCoord3ivARB");
+   pragma import (StdCall, glMultiTexCoord3s,            "glMultiTexCoord3s");
+   pragma import (StdCall, glMultiTexCoord3sARB,         "glMultiTexCoord3sARB");
+   pragma import (StdCall, glMultiTexCoord3sv,           "glMultiTexCoord3sv");
+   pragma import (StdCall, glMultiTexCoord3svARB,        "glMultiTexCoord3svARB");
+   pragma import (StdCall, glMultiTexCoord4d,            "glMultiTexCoord4d");
+   pragma import (StdCall, glMultiTexCoord4dARB,         "glMultiTexCoord4dARB");
+   pragma import (StdCall, glMultiTexCoord4dv,           "glMultiTexCoord4dv");
+   pragma import (StdCall, glMultiTexCoord4dvARB,        "glMultiTexCoord4dvARB");
+   pragma import (StdCall, glMultiTexCoord4f,            "glMultiTexCoord4f");
+   pragma import (StdCall, glMultiTexCoord4fARB,         "glMultiTexCoord4fARB");
+   pragma import (StdCall, glMultiTexCoord4fv,           "glMultiTexCoord4fv");
+   pragma import (StdCall, glMultiTexCoord4fvARB,        "glMultiTexCoord4fvARB");
+   pragma import (StdCall, glMultiTexCoord4i,            "glMultiTexCoord4i");
+   pragma import (StdCall, glMultiTexCoord4iARB,         "glMultiTexCoord4iARB");
+   pragma import (StdCall, glMultiTexCoord4iv,           "glMultiTexCoord4iv");
+   pragma import (StdCall, glMultiTexCoord4ivARB,        "glMultiTexCoord4ivARB");
+   pragma import (StdCall, glMultiTexCoord4s,            "glMultiTexCoord4s");
+   pragma import (StdCall, glMultiTexCoord4sARB,         "glMultiTexCoord4sARB");
+   pragma import (StdCall, glMultiTexCoord4sv,           "glMultiTexCoord4sv");
+   pragma import (StdCall, glMultiTexCoord4svARB,        "glMultiTexCoord4svARB");
+   pragma import (StdCall, glNormal3b,                   "glNormal3b");
+   pragma import (StdCall, glNormal3bv,                  "glNormal3bv");
+   pragma import (StdCall, glNormal3d,                   "glNormal3d");
+   pragma import (StdCall, glNormal3dv,                  "glNormal3dv");
+   pragma import (StdCall, glNormal3i,                   "glNormal3i");
+   pragma import (StdCall, glNormal3iv,                  "glNormal3iv");
+   pragma import (StdCall, glNormal3s,                   "glNormal3s");
+   pragma import (StdCall, glNormal3sv,                  "glNormal3sv");
+   pragma import (StdCall, glOrtho,                      "glOrtho");
+   pragma import (StdCall, glPassThrough,                "glPassThrough");
+   pragma import (StdCall, glPixelMapfv,                 "glPixelMapfv");
+   pragma import (StdCall, glPixelMapuiv,                "glPixelMapuiv");
+   pragma import (StdCall, glPixelMapusv,                "glPixelMapusv");
+   pragma import (StdCall, glPixelStoref,                "glPixelStoref");
+   pragma import (StdCall, glPixelTransferf,             "glPixelTransferf");
+   pragma import (StdCall, glPixelTransferi,             "glPixelTransferi");
+   pragma import (StdCall, glPixelZoom,                  "glPixelZoom");
+   pragma import (StdCall, glPolygonMode,                "glPolygonMode");
+   pragma import (StdCall, glPopAttrib,                  "glPopAttrib");
+   pragma import (StdCall, glPopClientAttrib,            "glPopClientAttrib");
+   pragma import (StdCall, glPopName,                    "glPopName");
+   pragma import (StdCall, glPrioritizeTextures,         "glPrioritizeTextures");
+   pragma import (StdCall, glPushAttrib,                 "glPushAttrib");
+   pragma import (StdCall, glPushClientAttrib,           "glPushClientAttrib");
+   pragma import (StdCall, glPushName,                   "glPushName");
+   pragma import (StdCall, glRasterPos2d,                "glRasterPos2d");
+   pragma import (StdCall, glRasterPos2dv,               "glRasterPos2dv");
+   pragma import (StdCall, glRasterPos2f,                "glRasterPos2f");
+   pragma import (StdCall, glRasterPos2fv,               "glRasterPos2fv");
+   pragma import (StdCall, glRasterPos2i,                "glRasterPos2i");
+   pragma import (StdCall, glRasterPos2iv,               "glRasterPos2iv");
+   pragma import (StdCall, glRasterPos2s,                "glRasterPos2s");
+   pragma import (StdCall, glRasterPos2sv,               "glRasterPos2sv");
+   pragma import (StdCall, glRasterPos3d,                "glRasterPos3d");
+   pragma import (StdCall, glRasterPos3dv,               "glRasterPos3dv");
+   pragma import (StdCall, glRasterPos3fv,               "glRasterPos3fv");
+   pragma import (StdCall, glRasterPos3i,                "glRasterPos3i");
+   pragma import (StdCall, glRasterPos3iv,               "glRasterPos3iv");
+   pragma import (StdCall, glRasterPos3s,                "glRasterPos3s");
+   pragma import (StdCall, glRasterPos3sv,               "glRasterPos3sv");
+   pragma import (StdCall, glRasterPos4d,                "glRasterPos4d");
+   pragma import (StdCall, glRasterPos4dv,               "glRasterPos4dv");
+   pragma import (StdCall, glRasterPos4f,                "glRasterPos4f");
+   pragma import (StdCall, glRasterPos4fv,               "glRasterPos4fv");
+   pragma import (StdCall, glRasterPos4i,                "glRasterPos4i");
+   pragma import (StdCall, glRasterPos4iv,               "glRasterPos4iv");
+   pragma import (StdCall, glRasterPos4s,                "glRasterPos4s");
+   pragma import (StdCall, glRasterPos4sv,               "glRasterPos4sv");
+   pragma import (StdCall, glReadBuffer,                 "glReadBuffer");
+   pragma import (StdCall, glRectd,                      "glRectd");
+   pragma import (StdCall, glRectdv,                     "glRectdv");
+   pragma import (StdCall, glRectf,                      "glRectf");
+   pragma import (StdCall, glRectfv,                     "glRectfv");
+   pragma import (StdCall, glRecti,                      "glRecti");
+   pragma import (StdCall, glRectiv,                     "glRectiv");
+   pragma import (StdCall, glRects,                      "glRects");
+   pragma import (StdCall, glRectsv,                     "glRectsv");
+   pragma import (StdCall, glRenderMode,                 "glRenderMode");
+   pragma import (StdCall, glResetHistogram,             "glResetHistogram");
+   pragma import (StdCall, glResetMinmax,                "glResetMinmax");
+   pragma import (StdCall, glRotated,                    "glRotated");
+   pragma import (StdCall, glSampleCoverage,             "glSampleCoverage");
+   pragma import (StdCall, glScaled,                     "glScaled");
+   pragma import (StdCall, glSelectBuffer,               "glSelectBuffer");
+   pragma import (StdCall, glSeparableFilter2D,          "glSeparableFilter2D");
+   pragma import (StdCall, glTexCoord1d,                 "glTexCoord1d");
+   pragma import (StdCall, glTexCoord1dv,                "glTexCoord1dv");
+   pragma import (StdCall, glTexCoord1f,                 "glTexCoord1f");
+   pragma import (StdCall, glTexCoord1fv,                "glTexCoord1fv");
+   pragma import (StdCall, glTexCoord1i,                 "glTexCoord1i");
+   pragma import (StdCall, glTexCoord1iv,                "glTexCoord1iv");
+   pragma import (StdCall, glTexCoord1s,                 "glTexCoord1s");
+   pragma import (StdCall, glTexCoord1sv,                "glTexCoord1sv");
+   pragma import (StdCall, glTexCoord2d,                 "glTexCoord2d");
+   pragma import (StdCall, glTexCoord2dv,                "glTexCoord2dv");
+   pragma import (StdCall, glTexCoord2f,                 "glTexCoord2f");
+   pragma import (StdCall, glTexCoord2fv,                "glTexCoord2fv");
+   pragma import (StdCall, glTexCoord2i,                 "glTexCoord2i");
+   pragma import (StdCall, glTexCoord2iv,                "glTexCoord2iv");
+   pragma import (StdCall, glTexCoord2s,                 "glTexCoord2s");
+   pragma import (StdCall, glTexCoord2sv,                "glTexCoord2sv");
+   pragma import (StdCall, glTexCoord3d,                 "glTexCoord3d");
+   pragma import (StdCall, glTexCoord3dv,                "glTexCoord3dv");
+   pragma import (StdCall, glTexCoord3f,                 "glTexCoord3f");
+   pragma import (StdCall, glTexCoord3fv,                "glTexCoord3fv");
+   pragma import (StdCall, glTexCoord3i,                 "glTexCoord3i");
+   pragma import (StdCall, glTexCoord3iv,                "glTexCoord3iv");
+   pragma import (StdCall, glTexCoord3s,                 "glTexCoord3s");
+   pragma import (StdCall, glTexCoord3sv,                "glTexCoord3sv");
+   pragma import (StdCall, glTexCoord4d,                 "glTexCoord4d");
+   pragma import (StdCall, glTexCoord4dv,                "glTexCoord4dv");
+   pragma import (StdCall, glTexCoord4f,                 "glTexCoord4f");
+   pragma import (StdCall, glTexCoord4fv,                "glTexCoord4fv");
+   pragma import (StdCall, glTexCoord4i,                 "glTexCoord4i");
+   pragma import (StdCall, glTexCoord4iv,                "glTexCoord4iv");
+   pragma import (StdCall, glTexCoord4s,                 "glTexCoord4s");
+   pragma import (StdCall, glTexCoord4sv,                "glTexCoord4sv");
+   pragma import (StdCall, glTexEnvf,                    "glTexEnvf");
+   pragma import (StdCall, glTexEnviv,                   "glTexEnviv");
+   pragma import (StdCall, glTexGend,                    "glTexGend");
+   pragma import (StdCall, glTexGendv,                   "glTexGendv");
+   pragma import (StdCall, glTexGenf,                    "glTexGenf");
+   pragma import (StdCall, glTexGenfv,                   "glTexGenfv");
+   pragma import (StdCall, glTexGeni,                    "glTexGeni");
+   pragma import (StdCall, glTexGeniv,                   "glTexGeniv");
+   pragma import (StdCall, glTexImage1D,                 "glTexImage1D");
+   pragma import (StdCall, glTexImage3D,                 "glTexImage3D");
+   pragma import (StdCall, glTexParameterf,              "glTexParameterf");
+   pragma import (StdCall, glTexParameterfv,             "glTexParameterfv");
+   pragma import (StdCall, glTexParameteriv,             "glTexParameteriv");
+   pragma import (StdCall, glTexSubImage1D,              "glTexSubImage1D");
+   pragma import (StdCall, glTexSubImage3D,              "glTexSubImage3D");
+   pragma import (StdCall, glTranslated,                 "glTranslated");
+   pragma import (StdCall, glVertex2d,                   "glVertex2d");
+   pragma import (StdCall, glVertex2dv,                  "glVertex2dv");
+   pragma import (StdCall, glVertex2i,                   "glVertex2i");
+   pragma import (StdCall, glVertex2iv,                  "glVertex2iv");
+   pragma import (StdCall, glVertex2s,                   "glVertex2s");
+   pragma import (StdCall, glVertex2sv,                  "glVertex2sv");
+   pragma import (StdCall, glVertex3d,                   "glVertex3d");
+   pragma import (StdCall, glVertex3dv,                  "glVertex3dv");
+   pragma import (StdCall, glVertex3i,                   "glVertex3i");
+   pragma import (StdCall, glVertex3iv,                  "glVertex3iv");
+   pragma import (StdCall, glVertex3s,                   "glVertex3s");
+   pragma import (StdCall, glVertex3sv,                  "glVertex3sv");
+   pragma import (StdCall, glVertex4d,                   "glVertex4d");
+   pragma import (StdCall, glVertex4dv,                  "glVertex4dv");
+   pragma import (StdCall, glVertex4f,                   "glVertex4f");
+   pragma import (StdCall, glVertex4fv,                  "glVertex4fv");
+   pragma import (StdCall, glVertex4i,                   "glVertex4i");
+   pragma import (StdCall, glVertex4iv,                  "glVertex4iv");
+   pragma import (StdCall, glVertex4s,                   "glVertex4s");
+   pragma import (StdCall, glVertex4sv,                  "glVertex4sv");
+
 
 end gl.Desk;

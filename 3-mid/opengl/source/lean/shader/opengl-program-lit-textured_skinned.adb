@@ -9,8 +9,9 @@ is
    procedure define (Self : in out Item;   use_vertex_Shader   : in Shader.view;
                                            use_fragment_Shader : in Shader.view)
    is
-      use ada.Strings,
-          ada.Strings.fixed;
+      use
+           ada.Strings,
+           ada.Strings.fixed;
    begin
       openGL.Program.lit.item (Self).define (use_vertex_Shader,
                                              use_fragment_Shader);   -- Define base class.
@@ -21,6 +22,7 @@ is
                                                   "bone_Matrices[" & Trim (Integer'Image (i - 1), Left) & "]");
       end loop;
    end define;
+
 
 
    overriding

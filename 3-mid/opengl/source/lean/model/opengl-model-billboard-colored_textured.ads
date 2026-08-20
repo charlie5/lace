@@ -8,7 +8,7 @@ with
 
 package openGL.Model.billboard.colored_textured
 --
---  Models a colored, textured billboard.
+-- Models a colored, textured billboard.
 --
 is
    package textured_Model is new texturing.Mixin (openGL.Model.billboard.item);
@@ -26,6 +26,7 @@ is
                            Color   : in lucid_Color;
                            Texture : in asset_Name;
                            texture_Details : in texture_Set.item) return View;
+
 
    --------------
    --- Attributes
@@ -61,5 +62,6 @@ private
          Vertices : Geometry.colored_textured.Vertex_array_view := new geometry.colored_textured.Vertex_array (1 .. 4);
          Geometry : access Geometry.colored_textured.item'Class;
       end record;
+
 
 end openGL.Model.billboard.colored_textured;

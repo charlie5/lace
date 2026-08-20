@@ -9,7 +9,7 @@ with
 
 package opengl.Surface
 --
---  Models an openGL surface.
+-- Models an openGL surface.
 --
 is
 
@@ -20,13 +20,13 @@ is
    type Views is array (Positive range <>) of View;
 
 
-   --  Forge
+   -- Forge
    --
    procedure define (Self : in out Item;   surface_Profile : in opengl.surface_Profile.item'Class;
                                            Display         : in opengl.Display.item;
                                            Window_Id       : in Natural);
 
-   --  Operations
+   -- Operations
    --
    procedure swap_Buffers (Self : in Item);
 
@@ -39,5 +39,6 @@ private
          egl_Surface : egl.EGLSurface;
          Display     : openGL.Display.item;
       end record;
+
 
 end opengl.Surface;

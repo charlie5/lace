@@ -11,8 +11,9 @@ package body openGL.Model.terrain
 is
    use Texture;
 
-   --------
-   -- Forge
+
+   ---------
+   --- Forge
    --
 
    function new_Terrain (heights_Asset   : in asset_Name;
@@ -41,6 +42,7 @@ is
    overriding
    procedure destroy (Self : in out Item)
    is
+
       procedure deallocate is new ada.unchecked_Deallocation (height_Map,
                                                               height_Map_view);
    begin
@@ -49,8 +51,8 @@ is
    end destroy;
 
 
-   -------------
-   -- Attributes
+   --------------
+   --- Attributes
    --
 
    overriding
@@ -59,8 +61,9 @@ is
    is
       pragma unreferenced (Textures, Fonts);
 
-      use Geometry,
-          Geometry.lit_textured;
+      use
+           Geometry,
+           Geometry.lit_textured;
 
       Heights       :          height_Map_view renames Self.Heights;
 
@@ -70,7 +73,7 @@ is
       vertex_Count  : constant Index_t      := Heights'Length (1) * Heights'Length (2);
 
       indices_Count : constant long_Index_t :=   (2 * (long_Index_t (Heights'Length (2)) + 1)) * (long_Index_t (row_Count) - 1)
-                                               +  2 * (long_Index_t (Heights'Length (2)));
+                                               + 2 * (long_Index_t (Heights'Length (2)));
 
       the_Sites     : aliased  Sites         := [1 .. vertex_Count => <>];
       the_Bounds    :          openGL.Bounds := null_Bounds;
@@ -286,45 +289,44 @@ is
    end set_Bounds;
 
 
-
-   ------------
-   -- Texturing
+   -------------
+   --- Texturing
    --
 
-   --  overriding
-   --  procedure Fade_is (Self : in out Item;   Which : in texture_Set.texture_Id;
+   -- overriding
+   -- procedure Fade_is (Self : in out Item;   Which : in texture_Set.texture_Id;
    --                                           Now   : in texture_Set.fade_Level)
-   --  is
-   --  begin
+   -- is
+   -- begin
    --     null;
-   --  end Fade_is;
+   -- end Fade_is;
    --
    --
    --
-   --  overriding
-   --  function Fade (Self : in Item;   Which : in texture_Set.texture_Id) return texture_Set.fade_Level
-   --  is
-   --  begin
+   -- overriding
+   -- function Fade (Self : in Item;   Which : in texture_Set.texture_Id) return texture_Set.fade_Level
+   -- is
+   -- begin
    --     return 0.0;
-   --  end Fade;
+   -- end Fade;
    --
    --
    --
-   --  procedure Texture_is (Self : in out Item;   Which : in texture_Set.texture_Id;
+   -- procedure Texture_is (Self : in out Item;   Which : in texture_Set.texture_Id;
    --                                              Now   : in openGL.asset_Name)
-   --  is
-   --  begin
+   -- is
+   -- begin
    --     Self.color_Map := Now;
-   --  end Texture_is;
+   -- end Texture_is;
    --
    --
    --
-   --  overriding
-   --  function texture_Count (Self : in Item) return Natural
-   --  is
-   --  begin
+   -- overriding
+   -- function texture_Count (Self : in Item) return Natural
+   -- is
+   -- begin
    --     return 1;
-   --  end texture_Count;
+   -- end texture_Count;
 
 
 end openGL.Model.terrain;

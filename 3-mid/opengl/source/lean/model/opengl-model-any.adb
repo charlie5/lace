@@ -35,7 +35,7 @@ is
                       Texture_is_lucid : in Boolean) return openGL.Model.any.item
    is
    begin
-      --  return Self : openGL.Model.any. := (openGL.Model.item with
+      -- return Self : openGL.Model.any. := (openGL.Model.item with
       return Self : openGL.Model.any.item := (textured_Model.textured_item with
                                               Model,
                                               Texture,
@@ -48,6 +48,7 @@ is
    end to_Model;
 
 
+
    function new_Model (Model            : in asset_Name;
                        Texture          : in asset_Name;
                        texture_Details  : in texture_Set.item;
@@ -56,7 +57,6 @@ is
    begin
       return new openGL.Model.any.item' (to_Model (Model, Texture, texture_Details, Texture_is_lucid));
    end new_Model;
-
 
 
    --------------
@@ -77,6 +77,8 @@ is
    begin
       return ada.Containers.Hash_type (Self.site_Id + 3 * Self.coord_Id + 5 * Self.normal_Id + 7 * Self.weights_Id);
    end Hash;
+
+
 
    package io_vertex_Maps_of_gl_vertex_id is new ada.containers.Hashed_Maps (io.Vertex,
                                                                              long_Index_t,
@@ -120,6 +122,7 @@ is
    function to_lit_textured_skinned_Vertices (From : in any_Vertex_array) return Geometry.lit_colored_textured_skinned.Vertex_array
    is
       use Palette;
+
       Result : Geometry.lit_colored_textured_skinned.Vertex_array (From'Range);
    begin
       for i in From'Range
@@ -144,7 +147,6 @@ is
 
 
 
-
    overriding
    function to_GL_Geometries (Self : access Item;   Textures : access Texture.name_Map_of_texture'Class;
                                                     Fonts    : in     Font.font_id_Map_of_font) return Geometry.views
@@ -156,7 +158,6 @@ is
 
       return [1 => Self.Geometry];
    end to_GL_Geometries;
-
 
 
 
@@ -177,7 +178,7 @@ is
          end if;
       end load_Model;
 
-      the_Model     : openGL.io.Model := load_Model;
+      the_Model     : openGL.io.Model              := load_Model;
       the_Map       : io_vertex_Map_of_gl_vertex_id;
 
       the_Vertices  : any_Vertex_array_view := new any_Vertex_array' (1 .. 100_000 => <>);
@@ -186,12 +187,12 @@ is
       tri_Count     : Index_t := 0;
       Normals_known : Boolean := False;
 
-      --  TODO: Use one set of gl face vertices and 2 sets of indices (1 for tris and 1 for quads).
+      -- TODO: Use one set of gl face vertices and 2 sets of indices (1 for tris and 1 for quads).
 
    begin
       Self.Bounds := null_Bounds;
 
-      --  1st pass: - Set our openGL face vertices.
+      -- 1st pass: - Set our openGL face vertices.
       --            - Build 'io vertex' to 'openGL face vertex_Id' map.
       --
       for f in the_Model.Faces'Range
@@ -202,11 +203,11 @@ is
             the_model_Face : io.Face renames the_Model.Faces (f);
 
          begin
-            if    the_model_Face.Kind = Triangle
-               or the_model_Face.Kind = Quad
+            if        the_model_Face.Kind = Triangle
+              or else the_model_Face.Kind = Quad
             then
                declare
-                  the_io_Vertices : constant io.Vertices := Vertices_of (the_model_Face);
+                  the_io_Vertices : constant io.Vertices                          := Vertices_of (the_model_Face);
                   Cursor          :          io_vertex_Maps_of_gl_vertex_id.Cursor;
                begin
                   case the_model_Face.Kind
@@ -244,12 +245,13 @@ is
                               the_gl_Vertex.Normal := the_Model.Normals (the_io_Vertex.normal_Id);
                               the_gl_Vertex.Shine  := default_Shine;
                               normals_Known        := True;
+
                            else
                               the_gl_Vertex.Normal := [0.0, 0.0, 0.0];
                            end if;
 
-                           if    the_Model.Weights        /= null
-                             and the_io_Vertex.weights_Id /= null_Id
+                           if         the_Model.Weights        /= null
+                             and then the_io_Vertex.weights_Id /= null_Id
                            then
                               declare
                                  the_Weights : bone_Weights renames the_Model.Weights (the_io_Vertex.weights_Id).all;
@@ -258,7 +260,7 @@ is
                                  then
                                     the_gl_Vertex.Bones (1) := the_Weights (1);
                                     --
-                                    --  nb: Only using the first 4 bones atm.
+                                    -- nb: Only using the first 4 bones atm.
 
                                     if the_Weights'Length >= 2
                                     then   the_gl_Vertex.Bones (2) := the_Weights (2);
@@ -290,7 +292,7 @@ is
                                                       4 => (0, 0.0)];
                            end if;
 
-                           the_Map.insert (the_io_Vertex, vertex_Count);   --  'vertex_Count' provides the index of the current vertex.
+                           the_Map.insert (the_io_Vertex, vertex_Count);   -- 'vertex_Count' provides the index of the current vertex.
                         end;
                      end if;
 
@@ -301,15 +303,15 @@ is
          end;
       end loop;
 
-      --  We now have our gl face vertices built and mapped to each model vertex.
+      -- We now have our gl face vertices built and mapped to each model vertex.
 
 
-      --  2nd pass: - Set the triangle faceted indices.
+      -- 2nd pass: - Set the triangle faceted indices.
       --            - Set the quad     faceted indices.
       --
       declare
-         tri_indices_Count :          long_Index_t := 0;
-         tri_indices_Last  : constant long_Index_t := long_Index_t (tri_Count) * 3;
+         tri_indices_Count :          long_Index_t                        := 0;
+         tri_indices_Last  : constant long_Index_t                        := long_Index_t (tri_Count) * 3;
          tri_Indices       : aliased  long_Indices (1 .. tri_indices_Last);
 
          procedure add_to_Tri (the_Vertex : in io.Vertex)
@@ -352,7 +354,7 @@ is
          pragma assert (tri_indices_Count = tri_indices_Last);
 
 
-         --  Determine which geometry class is required and create the geometry.
+         -- Determine which geometry class is required and create the geometry.
          --
          if the_Model.Weights = null
          then
@@ -425,7 +427,7 @@ is
          Self.Geometry.Model_is (Self'unchecked_Access);
 
 
-         --  Set the geometry texture.
+         -- Set the geometry texture.
          --
          if Self.Texture /= null_Asset
          then
@@ -433,6 +435,7 @@ is
             then
                declare
                   use Texture;
+
                   the_Image   : constant lucid_Image
                     := io.to_lucid_Image (Self.Texture);
 
@@ -442,9 +445,11 @@ is
                begin
                   Self.Geometry.Texture_is (the_Texture);
                end;
+
             else
                declare
                   use Texture;
+
                   the_Image   : constant Image          := io.to_Image (Self.Texture);
                   the_Texture : constant Texture.object := Forge.to_Texture (the_Image);
                begin
@@ -453,7 +458,7 @@ is
             end if;
          end if;
 
-         --  Add any facia to the geometry.
+         -- Add any facia to the geometry.
          --
          if tri_Indices'Length > 0
          then
@@ -506,46 +511,44 @@ is
    end build_GL_Geometries;
 
 
-
-   ------------
-   -- Texturing
+   -------------
+   --- Texturing
    --
 
-   --  overriding
-   --  procedure Fade_is (Self : in out Item;   Which : in texture_Set.texture_Id;
+   -- overriding
+   -- procedure Fade_is (Self : in out Item;   Which : in texture_Set.texture_Id;
    --                                           Now   : in texture_Set.fade_Level)
-   --  is
-   --  begin
+   -- is
+   -- begin
    --     null;
-   --  end Fade_is;
+   -- end Fade_is;
    --
    --
    --
-   --  overriding
-   --  function Fade (Self : in Item;   Which : in texture_Set.texture_Id) return texture_Set.fade_Level
-   --  is
-   --  begin
+   -- overriding
+   -- function Fade (Self : in Item;   Which : in texture_Set.texture_Id) return texture_Set.fade_Level
+   -- is
+   -- begin
    --     return 0.0;
-   --  end Fade;
+   -- end Fade;
    --
    --
    --
-   --  procedure Texture_is (Self : in out Item;   Which : in texture_Set.texture_Id;
+   -- procedure Texture_is (Self : in out Item;   Which : in texture_Set.texture_Id;
    --                                              Now   : in openGL.asset_Name)
-   --  is
-   --  begin
+   -- is
+   -- begin
    --     null;
-   --  end Texture_is;
+   -- end Texture_is;
    --
    --
    --
-   --  overriding
-   --  function texture_Count (Self : in Item) return Natural
-   --  is
-   --  begin
+   -- overriding
+   -- function texture_Count (Self : in Item) return Natural
+   -- is
+   -- begin
    --     return 1;
-   --  end texture_Count;
-
+   -- end texture_Count;
 
 
 end openGL.Model.any;

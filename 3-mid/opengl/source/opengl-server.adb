@@ -4,18 +4,21 @@ with
      interfaces.C.Strings,
      ada.unchecked_Conversion;
 
+
 package body openGL.Server
 is
 
    function Version return String
    is
-      use GL,
-          GL.Binding,
-          Interfaces;
+      use
+           GL,
+           GL.Binding,
+           Interfaces;
 
       check_is_OK : constant Boolean := openGL.Tasks.Check with Unreferenced;
 
       type GLubyte_Pointer  is access all GLubyte;
+
       function to_Chars_ptr is new ada.unchecked_Conversion (GLubyte_Pointer,
                                                              c.Strings.Chars_ptr);
 
@@ -28,8 +31,10 @@ is
 
    function Version return a_Version
    is
-      use GL,
-          GL.Binding;
+      use
+           GL,
+           GL.Binding;
+
       Major : aliased glInt;
       Minor : aliased glInt;
    begin

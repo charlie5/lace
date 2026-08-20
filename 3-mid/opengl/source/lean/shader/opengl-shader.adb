@@ -16,20 +16,21 @@ use ada.Text_IO;
 
 package body openGL.Shader
 is
-   use GL.lean,
-       openGL.Errors,
-       Interfaces;
+   use
+        GL.lean,
+        openGL.Errors,
+        Interfaces;
+
 
    -----------
-   --  Utility
+   --- Utility
    --
+
    function read_text_File (Filename : in String) return C.char_array;
 
 
-
-
    ---------
-   --  Forge
+   --- Forge
    --
 
    function to_C_char_array (shader_Filename : in String) return C.char_array
@@ -39,7 +40,6 @@ is
       return   read_text_File (shader_Filename)
              & (1 => C.char (ada.Characters.Latin_1.NUL));
    end to_C_char_array;
-
 
 
 
@@ -69,13 +69,14 @@ is
 
 
 
-
    procedure create_Shader (Self : in out Item;   Kind   : in Shader.Kind;
                                                   Source : in C.char_array)
    is
-      use GL.Pointers,
-          C.Strings;
-      --  use ada.Text_IO;
+      use
+           GL.Pointers,
+           C.Strings;
+
+      -- use ada.Text_IO;
 
       use type interfaces.C.char_array;
 
@@ -106,14 +107,15 @@ is
 
       declare
          use interfaces.C;
+
          Status : aliased gl.glInt;
       begin
-         glGetShaderiv (self.gl_Shader,
+         glGetShaderiv (Self.gl_Shader,
                         GL_COMPILE_STATUS,
                         Status'unchecked_Access);
-         if    Status = 0
-           and Debugging
-           --  and False
+         if         Status = 0
+           and then Debugging
+           -- and then False
          then
             declare
                compile_Log : constant String := Self.shader_info_Log;
@@ -122,12 +124,14 @@ is
                put_Line ("Shader compile log:");
                put_Line (compile_Log);
                Self.destroy;
-               raise Error with "'" & to_Ada (the_Source) & "' compilation failed ~ " & compile_Log;
+               raise Error with "'"
+                              & to_Ada (the_Source)
+                              & "' compilation failed ~ "
+                              & compile_Log;
             end;
          end if;
       end;
    end create_Shader;
-
 
 
 
@@ -136,12 +140,11 @@ is
    is
       the_Source : aliased constant C.char_array := to_C_char_array (shader_Filename);
    begin
-      --  put_Line ("SHADER NAME: " & shader_Filename);
-      --  put_Line (interfaces.C.to_Ada (the_Source));
+      -- put_Line ("SHADER NAME: " & shader_Filename);
+      -- put_Line (interfaces.C.to_Ada (the_Source));
 
       create_Shader (Self, Kind, the_Source);
    end define;
-
 
 
 
@@ -152,8 +155,8 @@ is
 
       the_Source : aliased constant C.char_array := to_C_char_array (shader_Snippets);
    begin
-      if Debugging
-        and False
+      if         Debugging
+        and then False
       then
          new_Line;
          put_Line ("Shader snippets:");
@@ -181,23 +184,23 @@ is
 
 
 
-
    procedure destroy (Self : in out Item)
    is
    begin
       Tasks.check;
-      glDeleteShader (self.gl_Shader);
+      glDeleteShader (Self.gl_Shader);
    end destroy;
 
 
-
    --------------
-   --  Attributes
+   --- Attributes
    --
 
    function shader_info_Log (Self : in Item) return String
    is
-      use C, GL;
+      use
+           C,
+           GL;
 
       info_log_Length : aliased  glInt   := 0;
       chars_Written   : aliased  glSizei := 0;
@@ -215,10 +218,11 @@ is
 
       declare
          use gl.Pointers;
+
          info_Log     : aliased  C.char_array        := C.char_array' [1 .. C.size_t (info_log_Length) => <>];
          info_Log_ptr : constant C.Strings.chars_Ptr := C.Strings.to_chars_ptr (info_Log'unchecked_Access);
       begin
-         glGetShaderInfoLog (self.gl_Shader,
+         glGetShaderInfoLog (Self.gl_Shader,
                              glSizei (info_log_Length),
                              chars_Written'unchecked_Access,
                              to_GLchar_access (info_Log_ptr));
@@ -228,10 +232,8 @@ is
    end shader_info_Log;
 
 
-
-
    ----------
-   --  Privvy
+   --- Privvy
    --
 
    function gl_Shader (Self : in Item) return a_gl_Shader
@@ -241,10 +243,8 @@ is
    end gl_Shader;
 
 
-
-
    -----------
-   --  Utility
+   --- Utility
    --
 
    function read_text_File (Filename : in String) return C.char_array
@@ -283,7 +283,7 @@ is
                   the_Data (i) := C.char (Element (Pad, Integer (i) + 1));
                end loop;
 
-               --  the_Data (the_Data'Last) := C.char'Val (0);
+               -- the_Data (the_Data'Last) := C.char'Val (0);
 
                return the_Data;
             end;

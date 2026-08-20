@@ -44,13 +44,13 @@ is
 
    procedure free (Self : in out View)
    is
+
       procedure deallocate is new ada.unchecked_Deallocation (Model.item'Class,
                                                               Model.view);
    begin
       Self.destroy;
       deallocate (Self);
    end free;
-
 
 
    --------------
@@ -62,6 +62,7 @@ is
    begin
       return Self.Id;
    end Id;
+
 
 
    procedure Id_is (Self : in out Item'Class;   Now : in Model_Id)
@@ -110,10 +111,10 @@ is
       all_Geometries : constant Geometry.views := Self.to_GL_Geometries (Textures, Fonts);
 
       opaque_Faces   : Geometry.views (1 .. all_Geometries'Length);
-      opaque_Count   : Index_t := 0;
+      opaque_Count   : Index_t                                    := 0;
 
       lucid_Faces    : Geometry.views (1 .. all_Geometries'Length);
-      lucid_Count    : Index_t := 0;
+      lucid_Count    : Index_t                                    := 0;
 
    begin
       Self.Bounds := null_Bounds;
@@ -178,11 +179,13 @@ is
    end is_Modified;
 
 
+
    function Bounds (Self : in Item) return openGL.Bounds
    is
    begin
       return Self.Bounds;
    end Bounds;
+
 
 
    function opaque_Geometries (Self : in Item) return access_Geometry_views
@@ -192,11 +195,13 @@ is
    end opaque_Geometries;
 
 
+
    function lucid_Geometries (Self : in Item) return access_Geometry_views
    is
    begin
       return Self.lucid_Geometries;
    end lucid_Geometries;
+
 
 
    function needs_Rebuild (Self : in Item) return Boolean
@@ -206,6 +211,7 @@ is
    end needs_Rebuild;
 
 
+
    procedure needs_Rebuild (Self : in out Item)
    is
    begin
@@ -213,10 +219,8 @@ is
    end needs_Rebuild;
 
 
-
-
-   ------------
-   -- Texturing
+   -------------
+   --- Texturing
    --
 
    use ada.Tags;
@@ -300,7 +304,7 @@ is
    is
    begin
       raise program_Error with External_Tag (Model.item'Class (Self)'Tag) & " Model does not support texturing.";
-   end texture_applied_is;
+   end texture_Applied_is;
 
 
 end openGL.Model;

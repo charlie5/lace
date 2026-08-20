@@ -28,6 +28,7 @@ is
 
    procedure free (Self : in out View)
    is
+
       procedure deallocate is new ada.unchecked_Deallocation (Item'Class, View);
    begin
       deallocate (Self);
@@ -40,6 +41,7 @@ is
    begin
       return Self.Model;
    end Model;
+
 
 
    procedure Model_is (Self : in out Item;   Now : in openGL.Model.view)
@@ -57,6 +59,7 @@ is
    end Scale;
 
 
+
    procedure Scale_is (Self : in out Item;   Now : in Vector_3)
    is
    begin
@@ -70,6 +73,7 @@ is
    begin
       return Self.is_Terrain;
    end is_Terrain;
+
 
 
    procedure is_Terrain (Self : in out Item;   Now : in Boolean := True)
@@ -87,6 +91,7 @@ is
    end face_Count;
 
 
+
    procedure face_Count_is (Self : in out Item;   Now : in Natural)
    is
    begin
@@ -100,6 +105,7 @@ is
    begin
       return Self.apparent_Size;
    end apparent_Size;
+
 
 
    procedure apparent_Size_is (Self : in out Item;   Now : in Real)
@@ -117,11 +123,13 @@ is
    end Transform;
 
 
+
    procedure Transform_is (Self : in out Item;   Now : in Matrix_4x4)
    is
    begin
       Self.Transform := Now;
    end Transform_is;
+
 
 
    function mvp_Transform (Self : in Item) return Matrix_4x4
@@ -131,6 +139,7 @@ is
    end mvp_Transform;
 
 
+
    procedure mvp_Transform_is (Self : in out Item;   Now : in Matrix_4x4)
    is
    begin
@@ -138,11 +147,13 @@ is
    end mvp_Transform_is;
 
 
+
    function camera_Transform (Self : in Item) return Matrix_4x4
    is
    begin
       return Self.camera_Transform;
    end camera_Transform;
+
 
 
    procedure camera_Transform_is (Self : in out Item;   Now : in Matrix_4x4)
@@ -159,6 +170,7 @@ is
    begin
       set_Rotation (Self.Transform, Now);
    end Spin_is;
+
 
 
    function Spin_of (Self : in Item) return Matrix_3x3
@@ -178,6 +190,7 @@ is
    end Site_is;
 
 
+
    function Site_of (Self : in Item) return Vector_3
    is
       use linear_Algebra_3d;
@@ -192,6 +205,7 @@ is
    begin
       return Self.program_Parameters;
    end program_Parameters;
+
 
 
    procedure program_Parameters_are (Self : in out Item;   Now : in program.Parameters_view)

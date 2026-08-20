@@ -6,19 +6,25 @@ with
      GL.Pointers,
      interfaces.C.Strings;
 
+
 package body openGL.Variable.uniform
 is
-   use GL.lean,
-       Interfaces;
+   use
+        GL.lean,
+        Interfaces;
+
 
    ---------
-   --  Forge
+   --- Forge
    --
 
    procedure define (Self : in out Item;   Program : access openGL.Program.item'Class;
                                            Name    : in     String)
    is
-      use GL.Pointers, C;
+      use
+           GL.Pointers,
+           C;
+
       the_Name : C.Strings.chars_ptr := C.Strings.new_String (Name);
 
    begin
@@ -53,13 +59,11 @@ is
    end gl_Variable;
 
 
-
-
    -----------
-   --  Actuals
+   --- Actuals
    --
 
-   --  bool
+   -- bool
    --
    procedure Value_is (Self : in bool;   Now : in Boolean)
    is
@@ -71,7 +75,7 @@ is
    end Value_is;
 
 
-   --  int
+   -- int
    --
    procedure Value_is (Self : in int;   Now : in Integer)
    is
@@ -83,7 +87,7 @@ is
    end Value_is;
 
 
-   --  float
+   -- float
    --
    procedure Value_is (Self : in float;   Now : in Real)
    is
@@ -97,7 +101,7 @@ is
 
 
 
-   --  vec2
+   -- vec2
    --
    procedure Value_is (Self : in vec2;   Now : in Vector_2)
    is
@@ -111,7 +115,7 @@ is
 
 
 
-   --  vec3
+   -- vec3
    --
    procedure Value_is (Self : in vec3;   Now : in Vector_3)
    is
@@ -125,7 +129,7 @@ is
 
 
 
-   --  vec4
+   -- vec4
    --
    procedure Value_is (Self : in vec4;   Now : in Vector_4)
    is
@@ -139,7 +143,7 @@ is
 
 
 
-   --  mat3
+   -- mat3
    --
    procedure Value_is (Self : in mat3;   Now : in Matrix_3x3)
    is
@@ -154,7 +158,7 @@ is
 
 
 
-   --  mat4
+   -- mat4
    --
    procedure Value_is (Self : in mat4;   Now : in Matrix_4x4)
    is

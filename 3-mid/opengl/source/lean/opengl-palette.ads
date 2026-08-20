@@ -1,8 +1,8 @@
 package openGL.Palette
 --
---  Provides a pallete of named colors.
+-- Provides a pallete of named colors.
 --
---  Color values are sourced from WikiPaedia:
+-- Color values are sourced from WikiPaedia:
 --
 --    - http://en.wikipedia.org/wiki/Primary_color
 --    - http://en.wikipedia.org/wiki/Secondary_color
@@ -11,30 +11,30 @@ package openGL.Palette
 --
 is
    --------------------
-   --  Color Primitives
+   --- Color Primitives
    --
 
-   --  Shades
+   -- Shades
    --
 
    type Shade_Level is digits 7 range 0.0 .. 1.0;
 
    function Shade_of (Self : in Color;   Level : in Shade_Level) return Color;
    --
-   --  Darkens a color by the given shade level factor.
+   -- Darkens a color by the given shade level factor.
 
 
-   --  Color Mixing
+   -- Color Mixing
    --
    type mix_Factor is digits 7 range 0.0 .. 1.0;   -- 0.0 returns 'Self', 1.0 returns 'Other'.
 
    function mixed (Self : in Color;   Other : in Color;
                                       Mix   : in mix_Factor := 0.5) return Color;
    --
-   --  Combines two colors.
+   -- Combines two colors.
 
 
-   --  Similarity
+   -- Similarity
    --
    default_Similarity : constant Primary;
 
@@ -45,35 +45,34 @@ is
    -- differ from 'to' by more than 'Similarity'.
 
 
-   --  Random Colors
+   -- Random Colors
    --
    function random_Color return Color;
 
 
-
    ----------------
-   --  Named Colors
+   --- Named Colors
    --
 
-   --  Achromatic
+   -- Achromatic
    --
    White : constant Color;
    Black : constant Color;
    Grey  : constant Color;
 
-   --  Primary
+   -- Primary
    --
    Red   : constant Color;
    Green : constant Color;
    Blue  : constant Color;
 
-   --  Secondary
+   -- Secondary
    --
    Yellow  : constant Color;
    Cyan    : constant Color;
    Magenta : constant Color;
 
-   --  Tertiary
+   -- Tertiary
    --
    Azure        : constant Color;
    Violet       : constant Color;
@@ -83,7 +82,7 @@ is
    spring_Green : constant Color;
 
 
-   --  Named (TODO: sort named colors into primary, secondary and tertiary categories).
+   -- Named (TODO: sort named colors into primary, secondary and tertiary categories).
    --
    Air_Force_blue           : constant Color;
    Alice_blue               : constant Color;
@@ -1278,5 +1277,6 @@ private
    Yellow_process           : constant Color := +(255, 239, 0);
    Yellow_RYB               : constant Color := +(254, 254, 51);
    Yellow_green             : constant Color := +(154, 205, 50);
+
 
 end openGL.Palette;

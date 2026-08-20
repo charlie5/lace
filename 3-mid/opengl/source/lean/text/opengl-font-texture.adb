@@ -2,10 +2,11 @@ with
      openGL.FontImpl.texture,
      ada.unchecked_Deallocation;
 
+
 package body openGL.Font.texture
 is
    ---------
-   --  Forge
+   --- Forge
    --
 
    function to_Font_texture (fontFilePath : in String) return Font.texture.item
@@ -19,6 +20,7 @@ is
    end to_Font_texture;
 
 
+
    function new_Font_texture (fontFilePath : in String) return Font.texture.view
    is
       Self : constant Font.texture.view := new Font.texture.item;
@@ -27,6 +29,7 @@ is
                                                           fontFilePath));
       return Self;
    end new_Font_texture;
+
 
 
    function to_Font_texture (pBufferBytes      : in FontImpl.unsigned_char_Pointer;
@@ -42,6 +45,7 @@ is
    end to_Font_texture;
 
 
+
    overriding
    procedure destruct (Self : in out Item)
    is
@@ -50,8 +54,10 @@ is
    end destruct;
 
 
+
    procedure free (Self : in out View)
    is
+
       procedure deallocate is new ada.unchecked_Deallocation (Item'Class, View);
    begin
       Self.destruct;
@@ -60,7 +66,7 @@ is
 
 
    --------------
-   --  Attributes
+   --- Attributes
    --
 
    function gl_Texture (Self : in Item) return openGL.Texture.texture_Name
@@ -68,6 +74,7 @@ is
    begin
       return fontImpl.texture.view (Self.Impl).gl_Texture;
    end gl_Texture;
+
 
 
    function Quad (Self : in Item;   for_Character : in Character) return GlyphImpl.Texture.Quad_t
@@ -78,7 +85,7 @@ is
 
 
    --------------
-   --  Operations
+   --- Operations
    --
 
    overriding
@@ -88,7 +95,8 @@ is
 
       myimpl : constant FontImpl_texture_view := FontImpl_texture_view (Self.impl);
    begin
-      if myimpl = null then
+      if myimpl = null
+      then
          return null;
       end if;
 

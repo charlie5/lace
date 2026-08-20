@@ -1,9 +1,10 @@
 with
      GL;
 
+
 package openGL.Shader
 --
---  Models an openGL shader.
+-- Models an openGL shader.
 --
 is
    type Item  is tagged limited private;
@@ -16,8 +17,9 @@ is
 
 
    ---------
-   --  Forge
+   --- Forge
    --
+
    procedure define  (Self : in out Item;   Kind            : in Shader.Kind;
                                             shader_Filename : in String);
 
@@ -27,14 +29,14 @@ is
 
 
    --------------
-   --  Attributes
+   --- Attributes
    --
 
    function shader_info_Log (Self : in Item) return String;
 
 
    ----------
-   --  Privvy
+   --- Privvy
    --
 
    subtype a_gl_Shader is gl.GLuint;
@@ -49,5 +51,6 @@ private
          Kind      : shader.Kind;
          gl_Shader : a_gl_Shader;
       end record;
+
 
 end openGL.Shader;

@@ -14,13 +14,14 @@ with
 package body openGL.FontImpl.Texture
 is
    ---------
-   --  Forge
+   --- Forge
    --
 
    function to_FontImpl_texture (ftFont       : access Font.item'Class;
                                  fontFilePath : in     String) return fontImpl.texture.item
    is
       use freetype_c.Binding;
+
       Success : Boolean;
    begin
       return Self : fontImpl.texture.item
@@ -33,7 +34,8 @@ is
 
          Success := Self.FaceSize (20);
 
-         if not Success then
+         if not Success
+         then
             raise Error with "Unable to set font facesize for '" & fontFilePath & "'.";
          end if;
       end return;
@@ -57,7 +59,8 @@ is
 
       Success := Self.FaceSize (20);
 
-      if not Success then
+      if not Success
+      then
          raise Error with "Unable to set font facesize for '" & fontFilePath & "'.";
       end if;
 
@@ -78,8 +81,8 @@ is
 
          Self.load_Flags := freetype_c.FT_Int (   FT_LOAD_NO_HINTING_flag
                                                or FT_LOAD_NO_BITMAP_flag);
-         Self.numGlyphs  := Self.face.GlyphCount;
-         Self.remGlyphs  := Self.numGlyphs;
+         Self.numGlyphs := Self.face.GlyphCount;
+         Self.remGlyphs := Self.numGlyphs;
       end return;
    end to_FontImpl_texture;
 
@@ -99,8 +102,9 @@ is
 
    procedure free_Textures (Self : in out Item)
    is
-      use texture_name_Vectors,
-          GL.lean;
+      use
+           texture_name_Vectors,
+           GL.lean;
 
       Cursor   :         texture_name_Vectors.Cursor := Self.textureIDList.First;
       the_Name : aliased openGL.Texture.texture_Name;
@@ -133,7 +137,7 @@ is
 
 
    --------------
-   --  Attributes
+   --- Attributes
    --
 
    overriding
@@ -164,8 +168,9 @@ is
                                           Spacing  : in Vector_3;
                                           Mode     : in renderMode) return Vector_3
    is
-      use GL,
-          GL.Binding;
+      use
+           GL,
+           GL.Binding;
 
       Tmp : Vector_3;
 
@@ -249,9 +254,10 @@ is
 
    procedure CalculateTextureSize (Self : in out Item)
    is
-      use openGL.Texture,
-          GL,
-          GL.Binding;
+      use
+           openGL.Texture,
+           GL,
+           GL.Binding;
 
       use type GL.GLsizei;
 
@@ -271,6 +277,7 @@ is
       begin
          Self.textureWidth := Power_of_2_Ceiling (  (Self.remGlyphs * Self.glyphWidth)
                                                   + (Self.Padding   * 2));
+
       exception
          when constraint_Error =>
             Self.textureWidth := Self.maximumGLTextureSize;
@@ -295,9 +302,10 @@ is
 
    function CreateTexture (Self : access Item) return openGL.Texture.texture_Name
    is
-      use openGL.Palette,
-          GL,
-          GL.Binding;
+      use
+           openGL.Palette,
+           GL,
+           GL.Binding;
    begin
       Tasks.check;
 
@@ -306,7 +314,7 @@ is
       declare
          use GL.Pointers;
 
-         the_Image : Image (1 .. Index_t (self.textureHeight),
+         the_Image : Image (1 .. Index_t (Self.textureHeight),
                             1 .. Index_t (Self.textureWidth)) := (others => [others => +Black]);
 
          textID    : aliased openGL.Texture.texture_Name;

@@ -6,9 +6,9 @@ with
 
 package openGL.Model.Box.lit_colored
 --
---  Models a lit and colored box.
+-- Models a lit and colored box.
 --
---  Each face may be separately colored via each of its 4 vertices.
+-- Each face may be separately colored via each of its 4 vertices.
 --
 is
    type Item is new Model.box.item with private;
@@ -40,11 +40,13 @@ is
                                                     Fonts    : in     Font.font_id_Map_of_font) return Geometry.views;
 
 
+
 private
 
    type Item is new Model.box.item with
       record
          Faces : lit_colored.Faces;
       end record;
+
 
 end openGL.Model.Box.lit_colored;

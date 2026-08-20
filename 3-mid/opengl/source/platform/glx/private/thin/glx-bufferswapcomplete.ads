@@ -27,6 +27,7 @@ is
 
 private
 
-   pragma Import (C, Construct, "Ada_new_GLXBufferSwapComplete");
+   pragma import (C, Construct, "Ada_new_GLXBufferSwapComplete");
+
 
 end glx.BufferSwapComplete;

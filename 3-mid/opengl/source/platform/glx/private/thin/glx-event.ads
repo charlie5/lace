@@ -2,6 +2,7 @@ with
      glx.BufferSwapComplete,
      glx.PbufferClobberEvent;
 
+
 package glx.Event
 is
    type long_Array   is array (C.size_t range <>) of aliased C.Long;
@@ -25,5 +26,6 @@ is
 
    type Items    is array (C.size_t range <>) of aliased Item;
    type Pointers is array (C.size_t range <>) of aliased Pointer;
+
 
 end glx.Event;

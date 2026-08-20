@@ -12,6 +12,7 @@ is
    begin
       --- Calculate the centroid and min/max of x and y.
       --
+
       for i in the_Vertices'Range
       loop
          Centroid := Centroid + the_Vertices (i);
@@ -53,7 +54,6 @@ is
 
 
 
-
    overriding
    function to_Coordinates (Self : in xz_Generator;   the_Vertices : access Sites) return Coordinates_2D
    is
@@ -86,7 +86,6 @@ is
 
       return the_Coords;
    end to_Coordinates;
-
 
 
 
@@ -125,7 +124,6 @@ is
 
 
 
-
    overriding
    function to_Coordinates (Self : in zy_Generator;   the_Vertices : access Sites) return Coordinates_2D
    is
@@ -161,7 +159,7 @@ is
 
 
 
-   --  TODO: - Below does not cater for 'right edge' case where 's' should be
+   -- TODO: - Below does not cater for 'right edge' case where 's' should be
    --          1.0 rather than 0.0
    --
    --       - Would be possible given a known set of vertices

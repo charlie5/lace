@@ -2,12 +2,14 @@ with
      freetype.Face,
      freeType_C.Binding;
 
+
 package body freetype.charMap
 is
    use freeType_C;
 
+
    -----------
-   --  Utility
+   --- Utility
    --
 
    function to_characterCode (From : in Character) return characterCode
@@ -18,12 +20,13 @@ is
 
 
    ---------
-   --  Forge
+   --- Forge
    --
 
    function to_charMap (parent_Face : access Face.item'Class) return Item
    is
       use freetype_c.Binding;
+
       use type FT_int;
 
       Self : Item;
@@ -65,7 +68,7 @@ is
 
 
    --------------
-   --  Attributes
+   --- Attributes
    --
 
    function Encoding (Self : in Item) return FT_Encoding
@@ -79,6 +82,7 @@ is
    function CharMap (Self : access Item;   Encoding : in FT_Encoding) return Boolean
    is
       use freeType_C.Binding;
+
       use type FT_Encoding,
                FT_Error;
    begin

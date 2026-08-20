@@ -7,4 +7,5 @@ is
       return Self.egl_Config;
    end to_eGL;
 
+
 end opengl.surface_Profile.privvy;

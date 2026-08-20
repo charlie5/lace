@@ -38,7 +38,6 @@ is
 
 
 
-
 private
 
    type Item is new Culler.item with
@@ -48,5 +47,6 @@ private
 
          vanish_point_size_Min : safe_Real;
       end record;
+
 
 end openGL.Culler.frustum;

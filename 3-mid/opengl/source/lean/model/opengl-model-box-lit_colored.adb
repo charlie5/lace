@@ -61,7 +61,7 @@ is
       right_Face : Geometry.lit_colored.view;
 
    begin
-      --  Front
+      -- Front
       --
       declare
          the_Vertices : aliased Geometry.lit_colored.Vertex_array
@@ -74,7 +74,7 @@ is
       end;
 
 
-      --  Rear
+      -- Rear
       --
       declare
          the_Vertices : aliased Geometry.lit_colored.Vertex_array
@@ -87,7 +87,7 @@ is
       end;
 
 
-      --  Upper
+      -- Upper
       --
       declare
          the_Vertices : aliased Geometry.lit_colored.Vertex_array
@@ -100,7 +100,7 @@ is
       end;
 
 
-      --  Lower
+      -- Lower
       --
       declare
          the_Vertices : aliased Geometry.lit_colored.Vertex_array
@@ -113,7 +113,7 @@ is
       end;
 
 
-      --  Left
+      -- Left
       --
       declare
          the_Vertices : aliased Geometry.lit_colored.Vertex_array
@@ -126,7 +126,7 @@ is
       end;
 
 
-      --  Right
+      -- Right
       --
       declare
          the_Vertices : aliased Geometry.lit_colored.Vertex_array

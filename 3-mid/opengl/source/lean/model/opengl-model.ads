@@ -8,9 +8,9 @@ with
 
 package openGL.Model
 --
---  Provides an abstract base class for 3D models.
+-- Provides an abstract base class for 3D models.
 --
---  TODO: Make subprograms and 'with's private where possible.
+-- TODO: Make subprograms and 'with's private where possible.
 is
    use Geometry_3d;
 
@@ -19,8 +19,8 @@ is
    type Views is array (Positive range <>) of View;
 
 
-   --------
-   -- Forge
+   ---------
+   --- Forge
    --
 
    procedure define  (Self :    out Item);     -- TODO: Rid this.
@@ -28,8 +28,8 @@ is
    procedure free    (Self : in out View);
 
 
-   -------------
-   -- Attributes
+   --------------
+   --- Attributes
    --
 
    function  Id               (Self : in     Item'Class)     return model_Id;
@@ -61,17 +61,16 @@ is
    procedure needs_Rebuild    (Self : in out Item);
 
 
-   -------------
-   -- Operations
+   --------------
+   --- Operations
    --
 
    procedure create_GL_Geometries (Self : in out Item'Class;   Textures : access Texture.name_Map_of_texture'Class;
                                                                Fonts    : in     Font.font_id_Map_of_font);
 
 
-
-   ------------
-   -- Texturing
+   -------------
+   --- Texturing
    --
 
    function  texture_Object     (Self : in     Item;   Which : in texture_Set.texture_Id) return texture.Object;
@@ -106,5 +105,6 @@ private
          Bounds            : openGL.Bounds := null_Bounds;   -- The combined bounds of all geometries.
          needs_Rebuild     : safe_Boolean  := False;
       end record;
+
 
 end openGL.Model;

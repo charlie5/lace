@@ -9,7 +9,7 @@ with
 
 package openGL.Geometry.lit_colored_textured_skinned
 --
---  Supports 'per-vertex' site, color, texture, lighting and skinning.
+-- Supports 'per-vertex' site, color, texture, lighting and skinning.
 --
 is
    type Item is new openGL.Geometry.item with private;
@@ -20,7 +20,7 @@ is
 
 
    ----------
-   --  Vertex
+   --- Vertex
    --
 
    type Vertex is
@@ -42,7 +42,7 @@ is
 
 
    --------------
-   --  Attributes
+   --- Attributes
    --
 
    procedure Vertices_are (Self : in out Item;   Now : in Vertex_array);

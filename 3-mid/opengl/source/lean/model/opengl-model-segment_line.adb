@@ -34,10 +34,11 @@ is
    is
       pragma unreferenced (Textures, Fonts);
 
-      use Geometry.colored,
-          Primitive,
-          Primitive.indexed,
-          ada.Containers;
+      use
+           Geometry.colored,
+           Primitive,
+           Primitive.indexed,
+           ada.Containers;
 
       vertex_Count  : constant      Index_t :=      Index_t (Self.Points.Length);
       indices_Count : constant long_Index_t := long_Index_t (vertex_Count);
@@ -157,7 +158,7 @@ is
    is
    begin
       Self.Vertices (Index_t (for_End)).Color := (+Now, opaque_Value);
-      Self.needs_Rebuild := True;
+      Self.needs_Rebuild                      := True;
    end Color_is;
 
 
@@ -180,6 +181,7 @@ is
    function Angle_in_xz_plane (the_Segment : in Segment) return Radians
    is
       use real_Functions;
+
       the_Vector : constant Vector_3 := the_Segment.Last - the_Segment.First;
    begin
       return arcTan (the_Vector (3) / the_Vector (1));

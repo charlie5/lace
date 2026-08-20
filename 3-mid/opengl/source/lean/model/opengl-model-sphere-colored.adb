@@ -80,9 +80,9 @@ is
          the_Vertices (the_Vertices'First).Site  := north_Pole;
          the_Vertices (the_Vertices'First).Color := Color;
 
-         the_Sites    (the_Vertices'Last)        := south_Pole;
-         the_Vertices (the_Vertices'Last).Site   := south_Pole;
-         the_Vertices (the_Vertices'Last).Color  := Color;
+         the_Sites    (the_Vertices'Last)       := south_Pole;
+         the_Vertices (the_Vertices'Last).Site  := south_Pole;
+         the_Vertices (the_Vertices'Last).Color := Color;
 
          for lat_Id in 2 .. lat_Count - 1
          loop
@@ -145,7 +145,8 @@ is
                if lat_Strip /= num_lat_Strips then   Lower := Lower + 1;   end if;
             end loop;
 
-            if lat_Strip = 1 then
+            if lat_Strip = 1
+            then
                Upper := 2;
             end if;
 

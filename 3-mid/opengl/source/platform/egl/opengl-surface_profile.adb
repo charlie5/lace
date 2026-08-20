@@ -1,23 +1,22 @@
-with eGL.binding;
-with openGL.Display.privvy;
-
-with Interfaces.C;
-
-
+with
+     eGL.binding,
+     openGL.Display.privvy,
+     interfaces.C;
 
 
 package body opengl.surface_Profile
 is
-   use openGL.Display.privvy,
-       eGL,
-       eGL.Binding,
-       Interfaces;
+   use
+        openGL.Display.privvy,
+        eGL,
+        eGL.Binding,
+        Interfaces;
 
 
    subtype egl_attribute_List is EGLint_array;
 
 
-   function to_egl_Attributes (Desired : Qualities) return egl_attribute_List
+   function to_egl_Attributes (Desired : in Qualities) return egl_attribute_List
    is
       use C;
 
@@ -36,39 +35,46 @@ is
       add (EGL_SURFACE_TYPE,    EGL_WINDOW_BIT);
       add (EGL_RENDERABLE_TYPE, EGL_OPENGL_ES2_BIT);
 
-      if desired.color_Buffer.Bits_blue /= Irrelevant then
+      if Desired.color_Buffer.Bits_blue /= Irrelevant
+      then
          add (EGL_BLUE_SIZE,
-              EGLint (desired.color_Buffer.Bits_blue));
+              EGLint (Desired.color_Buffer.Bits_blue));
       end if;
 
-      if desired.color_Buffer.Bits_green /= Irrelevant then
+      if Desired.color_Buffer.Bits_green /= Irrelevant
+      then
          add (EGL_GREEN_SIZE,
-              EGLint (desired.color_Buffer.Bits_green));
+              EGLint (Desired.color_Buffer.Bits_green));
       end if;
 
-      if desired.color_Buffer.Bits_luminence /= Irrelevant then
+      if Desired.color_Buffer.Bits_luminence /= Irrelevant
+      then
          add (EGL_LUMINANCE_SIZE,
-              EGLint (desired.color_Buffer.Bits_luminence));
+              EGLint (Desired.color_Buffer.Bits_luminence));
       end if;
 
-      if desired.color_Buffer.Bits_alpha /= Irrelevant then
+      if Desired.color_Buffer.Bits_alpha /= Irrelevant
+      then
          add (EGL_ALPHA_SIZE,
-              EGLint (desired.color_Buffer.Bits_alpha));
+              EGLint (Desired.color_Buffer.Bits_alpha));
       end if;
 
-      if desired.color_Buffer.Bits_alpha_mask /= Irrelevant then
+      if Desired.color_Buffer.Bits_alpha_mask /= Irrelevant
+      then
          add (EGL_ALPHA_MASK_SIZE,
-              EGLint (desired.color_Buffer.Bits_alpha_mask));
+              EGLint (Desired.color_Buffer.Bits_alpha_mask));
       end if;
 
-      if desired.depth_buffer_Bits /= Irrelevant then
+      if Desired.depth_buffer_Bits /= Irrelevant
+      then
          add (EGL_DEPTH_SIZE,
-              EGLint (desired.depth_buffer_Bits));
+              EGLint (Desired.depth_buffer_Bits));
       end if;
 
-      if desired.stencil_buffer_Bits /= Irrelevant then
+      if Desired.stencil_buffer_Bits /= Irrelevant
+      then
          add (EGL_STENCIL_SIZE,
-              EGLint (desired.stencil_buffer_Bits));
+              EGLint (Desired.stencil_buffer_Bits));
       end if;
 
       Count                  := Count + 1;
@@ -92,14 +98,16 @@ is
       Self.Display := the_Display;
       Success      := eglChooseConfig (to_eGL (the_Display.all),
                                        attribList (attribList'First)'Unchecked_Access,
-                                       self.egl_Config              'Unchecked_Access,
+                                       Self.egl_Config              'Unchecked_Access,
                                        1,
                                        config_Count                 'Unchecked_Access);
-      if Success = EGL_FALSE then
+      if Success = EGL_FALSE
+      then
          raise opengl.Error with "eglChooseConfig failed";
       end if;
 
-      if config_Count = 0 then
+      if config_Count = 0
+      then
          raise desired_Qualitites_unavailable;
       end if;
    end define;
@@ -116,11 +124,13 @@ is
                                                      1,
                                                      Count'Unchecked_Access);
    begin
-      if Success = EGL_FALSE then
+      if Success = EGL_FALSE
+      then
          raise opengl.Error with "Failed to get egl Config count.";
       end if;
 
-      if Count = 0 then
+      if Count = 0
+      then
          raise opengl.Error with "Found zero egl Configs.";
       end if;
 
@@ -132,7 +142,8 @@ is
                                    egl_Configs (1)'Unchecked_Access,
                                    Count,
                                    Count'Unchecked_Access);
-         if Success = EGL_FALSE then
+         if Success = EGL_FALSE
+         then
             raise opengl.Error with "Failed to get egl Configs.";
          end if;
 
@@ -158,15 +169,19 @@ is
       is
          use type EGLBoolean;
       begin
-         if Success = EGL_FALSE then
+         if Success = EGL_FALSE
+         then
             raise openGL.Error with "Unable to get eGL surface configuration attribute.";
          end if;
       end check_Success;
 
+
+
       procedure set_Value (Attribute : out Natural)
       is
       begin
-         if Value = EGL_DONT_CARE then
+         if Value = EGL_DONT_CARE
+         then
             Attribute := Irrelevant;
          else
             Attribute := Natural (Value);
@@ -215,7 +230,8 @@ is
    function value_Image (Value : in Natural) return String
    is
    begin
-      if Value = Irrelevant then
+      if Value = Irrelevant
+      then
          return "Irrelevant";
       else
          return Natural'Image (Value);
@@ -227,13 +243,12 @@ is
    function Image (Self : in color_Buffer) return String
    is
    begin
-      return
-            "Bits_red =>"        & value_Image (Self.Bits_red)
-        & "  Bits_green =>"      & value_Image (Self.Bits_green)
-        & "  Bits_blue =>"       & value_Image (Self.Bits_blue)
-        & "  Bits_luminence =>"  & value_Image (Self.Bits_luminence)
-        & "  Bits_alpha =>"      & value_Image (Self.Bits_alpha)
-        & "  Bits_alpha_mask =>" & value_Image (Self.Bits_alpha_mask);
+      return   "Bits_red =>"          & value_Image (Self.Bits_red)
+             & "  Bits_green =>"      & value_Image (Self.Bits_green)
+             & "  Bits_blue =>"       & value_Image (Self.Bits_blue)
+             & "  Bits_luminence =>"  & value_Image (Self.Bits_luminence)
+             & "  Bits_alpha =>"      & value_Image (Self.Bits_alpha)
+             & "  Bits_alpha_mask =>" & value_Image (Self.Bits_alpha_mask);
    end Image;
 
 
@@ -241,10 +256,9 @@ is
    function Image (Self : in Qualities) return String
    is
    begin
-      return
-          Image (Self.color_Buffer)
-        & "  depth_buffer_Bits =>"    & value_Image (Self.depth_buffer_Bits)
-        & "  stencil_buffer_Bits => " & value_Image (Self.stencil_buffer_Bits);
+      return   Image (Self.color_Buffer)
+             & "  depth_buffer_Bits =>"    & value_Image (Self.depth_buffer_Bits)
+             & "  stencil_buffer_Bits => " & value_Image (Self.stencil_buffer_Bits);
    end Image;
 
 

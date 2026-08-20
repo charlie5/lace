@@ -2,6 +2,7 @@ with
      ada.unchecked_Conversion,
      system.Address_to_Access_Conversions;
 
+
 package body GL.Pointers
 is
 
@@ -25,6 +26,7 @@ is
    function to_GLvoid_access (From : access C.unsigned_char) return access GLvoid
    is
       type unsigned_Char_access is access all C.unsigned_char;
+
       function Convert is new ada.unchecked_Conversion (unsigned_Char_access, GLvoid_access);
    begin
       return Convert (unsigned_Char_access (From));
@@ -34,6 +36,7 @@ is
 
    function to_GLchar_access (From : in C.Strings.chars_ptr) return access lean.GLchar
    is
+
       function Convert is new ada.unchecked_Conversion (C.Strings.chars_ptr, GLchar_access);
    begin
       return Convert (From);
@@ -43,6 +46,7 @@ is
 
    function to_GLchar_Pointer_access (From : access C.Strings.chars_ptr_array) return access lean.GLchar_Pointer
    is
+
       function Convert is new ada.unchecked_Conversion (chars_ptr_access, GLchar_Pointer_access);
    begin
       return Convert (From (From'First)'unchecked_Access);

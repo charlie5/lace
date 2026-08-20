@@ -1,6 +1,7 @@
 with
      freetype_c.FT_CharMapRec;
 
+
 package freetype_c.FT_CharMap
 is
 
@@ -11,5 +12,6 @@ is
    type Pointer_array is array (C.Size_t range <>) of aliased FT_CharMap.Pointer;
 
    type pointer_Pointer is access all freetype_c.FT_CharMap.Pointer;
+
 
 end freetype_c.FT_CharMap;

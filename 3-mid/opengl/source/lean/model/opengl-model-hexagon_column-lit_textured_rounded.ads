@@ -6,9 +6,9 @@ with
 
 package openGL.Model.hexagon_Column.lit_textured_rounded
 --
---  Models a lit, colored and textured column with six rounded sides.
+-- Models a lit, colored and textured column with six rounded sides.
 --
---  The shaft of the column appears rounded, whereas the top and bottom appear as hexagons.
+-- The shaft of the column appears rounded, whereas the top and bottom appear as hexagons.
 --
 is
    package textured_Model is new texturing.Mixin (Model.hexagon_Column.item);
@@ -43,6 +43,7 @@ is
                                 Lower  : in hex_Face;
                                 Shaft  : in shaft_Face) return View;
 
+
    --------------
    --- Attributes
    --
@@ -50,6 +51,7 @@ is
    overriding
    function to_GL_Geometries (Self : access Item;   Textures : access Texture.name_Map_of_texture'Class;
                                                     Fonts    : in     Font.font_id_Map_of_font) return Geometry.views;
+
 
 
 private
