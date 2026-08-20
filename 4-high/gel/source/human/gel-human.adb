@@ -373,11 +373,11 @@ is
       end;
 
 
-      set_global_Transform_for (Self, the_root_Joint);     -- determine all joint transforms, recursively
-      set_Site_for             (the_root_Joint,  parent_site => [0.0, 0.0, 0.0]);   -- determine all joint sites
+      set_global_Transform_for (Self, the_root_Joint);                              -- Determine all joint transforms, recursively.
+      set_Site_for             (the_root_Joint,  parent_site => [0.0, 0.0, 0.0]);   -- Determine all joint sites.
 
-      Self.Model      := Model; --.all'Unchecked_Access;       -- remember our model
-      Self.root_Joint := the_root_Joint;                   -- remember our root joint.
+      Self.Model      := Model; --.all'unchecked_Access;       -- Remember our model.
+      Self.root_Joint := the_root_Joint;                       -- Remember our root joint.
 
 --        the_Model.Scale := (my_Scale, my_Scale, my_Scale);
 

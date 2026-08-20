@@ -53,8 +53,8 @@ is
 begin
    the_Applet.gui_World.Gravity_is ([0.0, -1.0, 0.0]);
 
-   the_Applet.gui_Camera.Site_is ([0.0, 0.0, 40.0]);   -- Position the camera
-   the_Applet.enable_simple_Dolly (1);                 -- Enable user camera control via keyboards
+   the_Applet.gui_Camera.Site_is ([0.0, 0.0, 40.0]);                            -- Position the camera
+   the_Applet.enable_simple_Dolly (1);                                          -- Enable user camera control via keyboards
    the_Applet.enable_Mouse (detect_Motion => False);                            -- Enable mouse events.
 
    gel.Human.use_Model ("assets/gel/collada/mh-human-dae.dae");

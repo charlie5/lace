@@ -90,7 +90,7 @@ private
 
          textureWidth         :         gl.GLsizei         := 0;       -- The min texture width  required to hold the glyphs.
          textureHeight        :         gl.GLsizei         := 0;       -- The min texture height required to hold the glyphs.
-         textureIDList        :         texture_name_Vector;   -- An array of texture ids.
+         textureIDList        :         texture_name_Vector;           -- An array of texture ids.
 
          glyphHeight          :         Integer    := 0;       -- The max height for glyphs in the current font.
          glyphWidth           :         Integer    := 0;       -- The max width  for glyphs in the current font.

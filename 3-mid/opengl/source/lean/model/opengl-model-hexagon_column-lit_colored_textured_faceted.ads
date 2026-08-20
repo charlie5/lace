@@ -22,8 +22,8 @@ is
 
    type hex_Face is
       record
-         center_Color : lucid_Color;                         -- The color of the center of the hex.
-         Colors       : lucid_Colors (1 .. 6);               -- The color of each of the faces 4 vertices.
+         center_Color : lucid_Color;                                   -- The color of the center of the hex.
+         Colors       : lucid_Colors (1 .. 6);                         -- The color of each of the faces 4 vertices.
          Texture      : asset_Name           := openGL.null_Asset;     -- The texture to be applied to the face.
       end record;
 
