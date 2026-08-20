@@ -1039,7 +1039,7 @@ is
 
       if Line_p1 (1) = Line_p2 (1)
       then
-         raise Line_is_parralel_to_Plane;
+         raise Line_is_parallel_to_Plane;
       end if;
 
       declare
@@ -1065,7 +1065,7 @@ is
 
       if Line_p1 (2) = Line_p2 (2)
       then
-         raise Line_is_parralel_to_Plane;
+         raise Line_is_parallel_to_Plane;
       end if;
 
       declare
@@ -1091,7 +1091,7 @@ is
 
       if Line_p1 (3) = Line_p2 (3)
       then
-         raise Line_is_parralel_to_Plane;
+         raise Line_is_parallel_to_Plane;
       end if;
 
       declare

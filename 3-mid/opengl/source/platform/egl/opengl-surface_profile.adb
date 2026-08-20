@@ -108,7 +108,7 @@ is
 
       if config_Count = 0
       then
-         raise desired_Qualitites_unavailable;
+         raise desired_Qualities_unavailable;
       end if;
    end define;
 

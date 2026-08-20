@@ -52,7 +52,7 @@ is
    --- Forge
    --
 
-   desired_Qualitites_unavailable : exception;
+   desired_Qualities_unavailable : exception;
 
    procedure define (Self : in out Item;   Screen  : access openGL.Screen.item'Class;
                                            Desired : in     Qualities := default_Qualities);

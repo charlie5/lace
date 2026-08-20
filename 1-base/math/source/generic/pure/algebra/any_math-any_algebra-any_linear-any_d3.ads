@@ -214,7 +214,7 @@ is
    --- Line/Plane Intersections
    --
 
-   Line_is_parralel_to_Plane : exception;
+   Line_is_parallel_to_Plane : exception;
    Line_lies_on_Plane        : exception;
 
    function intersect_Line_and_x0_Plane (Line_p1, Line_p2 : in Vector_3) return Vector_3;
