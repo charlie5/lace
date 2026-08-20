@@ -19,6 +19,8 @@ is
       function new_Mouse (of_Name : in String) return View;
    end Forge;
 
+
+
    procedure free (Self : in out View);
 
 
@@ -27,5 +29,6 @@ private
 
    type Item is limited new lace.Subject.local.item
                         and gel.Mouse         .item with null record;
+
 
 end gel.Mouse.local;

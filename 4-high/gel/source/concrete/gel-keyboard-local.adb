@@ -1,6 +1,7 @@
 with
      ada.unchecked_Deallocation;
 
+
 package body gel.Keyboard.local
 is
 
@@ -15,6 +16,7 @@ is
             null;
          end return;
       end to_Keyboard;
+
 
 
       function new_Keyboard (of_Name : in String) return View

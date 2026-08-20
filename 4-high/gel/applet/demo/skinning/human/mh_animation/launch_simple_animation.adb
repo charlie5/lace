@@ -21,9 +21,10 @@ procedure launch_simple_Animation
 is
    package Math renames float_Math;
 
-   use gel.Human_v1,
-       openGL,
-       ada.Calendar;
+   use
+        gel.Human_v1,
+        openGL,
+        ada.Calendar;
 
    -- Options
    --
@@ -37,32 +38,34 @@ is
 
    the_Applet : constant gel.Applet.gui_World.view := gel.Forge.new_gui_Applet ("Simple Animation", 1800, 1100);
 
-   --  human_model_Name : constant String := "assets/human-default-animated-01_01-y_up.dae";
+   -- human_model_Name : constant String := "assets/human-default-animated-01_01-y_up.dae";
    human_model_Name : constant String := "assets/human-default-animated-01_01.dae";
-   --  human_model_Name : constant String := "assets/mh-blender-2.dae";
+   -- human_model_Name : constant String := "assets/mh-blender-2.dae";
 
 
-   --  human_model_Name : constant String := "assets/human_animation.dae";
-   --  human_model_Name : constant String := "assets/alfieri.dae";
+   -- human_model_Name : constant String := "assets/human_animation.dae";
+   -- human_model_Name : constant String := "assets/alfieri.dae";
 
---  --     human_model_Name : constant String := "./assets/human-golf_swing-v1.dae";
+--  --    human_model_Name : constant String := "./assets/human-golf_swing-v1.dae";
 --       human_model_Name : constant String := "assets/human-default-animated-01_01.dae";
---  --     human_model_Name : constant String := "assets/human-default-animated-01_02.dae";
---  --     human_model_Name : constant String := "assets/human-default-animated-01_03.dae";
---  --     human_model_Name : constant String := "assets/human-default-animated-01_04.dae";
---  --     human_model_Name : constant String := "assets/human-default-animated-01_05.dae";
+--  --    human_model_Name : constant String := "assets/human-default-animated-01_02.dae";
+--  --    human_model_Name : constant String := "assets/human-default-animated-01_03.dae";
+--  --    human_model_Name : constant String := "assets/human-default-animated-01_04.dae";
+--  --    human_model_Name : constant String := "assets/human-default-animated-01_05.dae";
 
-   frame_Period     : constant Duration := 0.016_666_667;     -- ~ 1/60th of a second.
+   frame_Period     : constant Duration         := 0.016_666_667;     -- ~ 1/60th of a second.
    next_render_Time :          ada.calendar.Time;
-   Counter          :          Integer  := 0;
+   Counter          :          Integer          := 0;
 
 begin
-   --  gel.Human_v1.Mode_is (Skin);
+   -- gel.Human_v1.Mode_is (Skin);
    gel.Human_v1.Mode_is (Skin_and_Bones);
-   --  gel.Human_v1.Mode_is (Bones);
+   -- gel.Human_v1.Mode_is (Bones);
+
 
    --- Setup the applet.
    --
+
    the_Applet.gui_World.Gravity_is ([0.0, -10.0, 0.0]);
 
    the_Applet.gui_Camera.Site_is ([0.0, 0.0, 8.0]);     -- Position the camera.
@@ -82,8 +85,9 @@ begin
    begin
       --- Setup the human model.
       --
-      --  --  the_Human.base_Sprite.rotate (to_spin => x_Rotation_from (to_Radians (0.0)));
-      --  the_Human.base_Sprite.rotate (to_spin => y_Rotation_from (to_Radians (90.0)));
+
+      --  -- the_Human.base_Sprite.rotate (to_spin => x_Rotation_from (to_Radians (0.0)));
+      -- the_Human.base_Sprite.rotate (to_spin => y_Rotation_from (to_Radians (90.0)));
 --        the_Human.base_Sprite.move   ((0.0, -10.0, 0.0));
 
 --        the_Human.skin_Sprite.rotate (to_spin =>  (y_Rotation_from (to_Radians (45.0))));
@@ -93,11 +97,12 @@ begin
       the_Applet.gui_World.add (the_Human.skin_Sprite);                                 -- Add human skin.
 
       the_Human.motion_Mode_is (gel.Human_v1.Animation);
-      --  the_Human.motion_Mode_is (gel.Human_v1.Physics);
+      -- the_Human.motion_Mode_is (gel.Human_v1.Physics);
 
 
       --- Add balls, if desired.
       --
+
       if add_Balls
       then
          declare
@@ -128,13 +133,16 @@ begin
 
       --- Setup the simulation world.
       --
+
 --        the_Applet.gui_World.add (the_Ground);               -- Add the ground.
 --        the_Ground.Site_is ((0.0,  -0.5,  0.0));
 
-      --  the_Human.evolve (0.0); --the_Applet.gui_World.Age);
+      -- the_Human.evolve (0.0); --the_Applet.gui_World.Age);
+
 
       --- Run the simulation.
       --
+
       next_render_Time := ada.calendar.Clock;
 
       while the_Applet.is_open
@@ -145,25 +153,25 @@ begin
          the_Applet.gui_World.evolve; -- (by => 1.0/60.0);      -- Evolve the world.
 
          the_Human .evolve (the_Applet.gui_World.Age);
-         --  the_Human .evolve (0.0); --the_Applet.gui_World.Age);
+         -- the_Human .evolve (0.0); --the_Applet.gui_World.Age);
          the_Applet.freshen;                                -- Handle any new events and update the screen.
          delay 0.1;
 
-         --  if Counter mod 600 = 0
-         --  then
+         -- if Counter mod 600 = 0
+         -- then
          --     null;
---  --              the_Human.base_Sprite.move (the_Human.base_Sprite.Site + (0.0, 0.0, -1.0));
+--  --             the_Human.base_Sprite.move (the_Human.base_Sprite.Site + (0.0, 0.0, -1.0));
 --              the_Human.evolve (the_Applet.gui_World.Age);
 --           end if;
 
          next_render_Time := next_render_Time + frame_Period;
-         --  delay until next_render_Time;
+         -- delay until next_render_Time;
       end loop;
 
       the_Applet.destroy;
    end;
 
---  exception
+-- exception
 --     when E : others =>
 --        put_Line (Exception_Information (E));
 end launch_simple_Animation;

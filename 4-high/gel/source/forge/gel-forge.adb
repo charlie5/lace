@@ -112,14 +112,13 @@ is
    end new_client_Applet;
 
 
-
-
    -----------
    --- Sprites
    --
 
-   -----
-   -- 2D
+
+   ------
+   --- 2D
    --
 
    function new_circle_Sprite (in_World    : in gel.World.view;
@@ -156,6 +155,7 @@ is
                                                                                        Color => Color,
                                                                                        texture_Details => openGL.texture_Set.to_Set ([1 => Texture]),
                                                                                        Image => Texture).all'Access;
+
          else
             the_graphics_Model := openGL.Model.circle.colored.new_circle (Radius,
                                                                           Color => Color,
@@ -218,7 +218,7 @@ is
                                                                               texture_Details => openGL.texture_Set.to_Set (texture_Assets  => [1 => Texture],
                                                                                                                             texture_Tilings => texture_Tiling,
                                                                                                                             Animation       => null)).all'Access;
-                                                                              --  texture_Details => (Fades           => [1 => 0.0,     others => <>],
+                                                                              -- texture_Details => (Fades           => [1 => 0.0,     others => <>],
                                                                               --                      Textures        => [1 => Texture, others => <>],
                                                                               --                      Objects         => [others => <>],
                                                                               --                      texture_Count   => 1,
@@ -282,9 +282,8 @@ is
    end new_rectangle_Sprite;
 
 
-
-   -----
-   -- 3D
+   ------
+   --- 3D
    --
 
    function new_ball_Sprite (in_World   : in gel.World.view;
@@ -317,12 +316,14 @@ is
                                                                                        long_Count => long_Count,
                                                                                        texture_Details => openGL.texture_Set.to_Set ([1 => Texture]),
                                                                                        Image      => Texture).all'Access;
+
          else
             the_graphics_Model := openGL.Model.sphere.lit_colored.new_Sphere (Radius,
                                                                               lat_Count  => lat_Count,
                                                                               long_Count => long_Count,
                                                                               Color      => Color).all'Access;
          end if;
+
       else
          if Color /= openGL.no_lucid_Color
          then
@@ -330,6 +331,7 @@ is
                                                                           lat_Count  => lat_Count,
                                                                           long_Count => long_Count,
                                                                           Color      => Color).all'Access;
+
          else
             the_graphics_Model := openGL.Model.sphere.textured.new_Sphere (Radius,
                                                                            lat_Count  => lat_Count,
@@ -394,9 +396,10 @@ is
                             is_Kinematic : in Boolean            := False;
                             user_Data    : in any_user_Data_view := null) return gel.Sprite.view
    is
-      use openGL.Model.box,
-          openGL,
-          Math;
+      use
+           openGL.Model.box,
+           openGL,
+           Math;
 
       the_box_Model : constant openGL.Model.box.colored.view
         := openGL.Model.box.colored.new_Box (Size => Size,
@@ -435,8 +438,9 @@ is
                             Texture      : in openGL.asset_Name;
                             user_Data    : in any_user_Data_view := null) return gel.Sprite.view
    is
-      use openGL.Model.box,
-          Math;
+      use
+           openGL.Model.box,
+           Math;
 
       the_box_Model : constant openGL.Model.box.textured.view
         := openGL.Model.box.textured.new_Box (Size => Size,
@@ -674,11 +678,12 @@ is
       pragma Unreferenced (Centered);
 
       use Math;
-      use type Physics.space_Kind;
+
+      use type physics.space_Kind;
 
       the_Texture : constant openGL.asset_Name   :=  openGL.to_Asset ("assets/opengl/texture/Face1.bmp");
 
-      --  the_graphics_Model : constant openGL.Model.text.lit_colored.view
+      -- the_graphics_Model : constant openGL.Model.text.lit_colored.view
       --    := openGL.Model.text.lit_colored.new_Text (Text     => Text,
       --                                               Font     => Font,
       --                                               Color    => (Color, openGL.Opaque),
@@ -694,7 +699,7 @@ is
 
       the_physics_Model  : physics.Model.view;
    begin
-      if in_World.space_Kind = Physics.Box2d
+      if in_World.space_Kind = physics.Box2d
       then
          declare
             half_Width   : constant Real                       := Size (1) / 2.0;
@@ -709,6 +714,7 @@ is
                                                                                        Vertices     => the_Vertices,
                                                                                        vertex_Count => 4));
          end;
+
       else
          the_physics_Model := physics.Model.Forge.new_physics_Model (shape_Info => (Kind         => physics.Model.Cube,
                                                                                     half_Extents => Size / 2.0));

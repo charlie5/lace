@@ -17,19 +17,20 @@ pragma unreferenced (gel.Window.setup);
 
 procedure launch_mixed_Joints_2d
 --
---  Drops a variety of shapes a plane terrain.
+-- Drops a variety of shapes a plane terrain.
 --
 --
 is
    package Math renames gel.Math;
 
-   use openGL,
-       opengl.Palette,
-       ada.Text_IO;
+   use
+        openGL,
+        opengl.Palette,
+        ada.Text_IO;
 
    the_Applet : constant gel.Applet.gui_World.view := gel.Forge.new_gui_Applet ("Mixed 2D Joints",
                                                                                 1920, 1200,
-                                                                                space_Kind => Physics.Box2D);
+                                                                                space_Kind => physics.Box2D);
    Counter    : Natural := 0;
 
 begin
@@ -38,13 +39,14 @@ begin
    the_Applet.Renderer  .Background_is (Grey);
    the_Applet.enable_simple_Dolly      (1);                     -- Enable user camera control via keyboard.
 
-   --  Add joints.
+   -- Add joints.
    --
    declare
-      use gel.Forge,
-          Math;
+      use
+           gel.Forge,
+           Math;
    begin
-      --  Hinge
+      -- Hinge
       --
       declare
          the_hinge_Box_1 : constant gel.Sprite.view := new_circle_Sprite (in_World => the_Applet.gui_World,
@@ -61,8 +63,8 @@ begin
 
          new_Joint       :          gel.      Joint .view;
 
-         --  Frame_A : constant math.Matrix_4x4 := math.Identity_4x4;
-         --  Frame_B : constant math.Matrix_4x4 := math.Identity_4x4;
+         -- Frame_A : constant math.Matrix_4x4 := math.Identity_4x4;
+         -- Frame_B : constant math.Matrix_4x4 := math.Identity_4x4;
       begin
          the_hinge_Box_1.Site_is ([ 0.0,  0.0,  0.0]);
          the_hinge_Box_2.Site_is ([-10.0, 0.0,  0.0]);
@@ -70,7 +72,7 @@ begin
          the_Applet.gui_World.add (the_hinge_Box_1);
          the_Applet.gui_World.add (the_hinge_Box_2);
 
-         --  the_hinge_Box_1.attach_via_Hinge (the_Child         => the_hinge_Box_2,
+         -- the_hinge_Box_1.attach_via_Hinge (the_Child         => the_hinge_Box_2,
          --                                    Frame_in_parent   => Frame_A,
          --                                    Frame_in_child    => Frame_B,
          --                                    Limits            => (0.0, to_Radians (355.0)),
@@ -78,21 +80,20 @@ begin
          --                                    new_joint         => new_Joint);
 
 
-         the_hinge_Box_1.attach_via_Hinge
-           (the_Child    => the_hinge_Box_2,
-            pivot_Axis   => [0.0, 0.0, 1.0],        -- Unused.
-            pivot_Anchor => [-0.0, 0.0, 0.0],
-            low_Limit    => to_Radians (-355.0),
-            high_Limit   => to_Radians ( 355.0),
-            new_joint    => new_Joint);
+         the_hinge_Box_1.attach_via_Hinge (the_Child    => the_hinge_Box_2,
+                                           pivot_Axis   => [0.0, 0.0, 1.0],        -- Unused.
+                                           pivot_Anchor => [-0.0, 0.0, 0.0],
+                                           low_Limit    => to_Radians (-355.0),
+                                           high_Limit   => to_Radians ( 355.0),
+                                           new_joint    => new_Joint);
 
 --           the_hinge_Joint := gel.hinge_Joint .view (new_Joint);
 
-         --  the_Applet.gui_World.add (the_hinge_Box_1, and_children => True);
+         -- the_Applet.gui_World.add (the_hinge_Box_1, and_children => True);
          the_Applet.gui_World.add (new_Joint);
       end;
 
---        --  DoF6
+--        -- DoF6
 --        --
 --        declare
 --           use gel.any_Joint,
@@ -119,7 +120,7 @@ begin
 --           the_Applet.gui_World.add (the_dof6_Joint.all'Access);
 --        end;
 --
---        --  Ball
+--        -- Ball
 --        --
 --        declare
 --           use gel.any_Joint,
@@ -144,7 +145,7 @@ begin
 --           the_Applet.gui_World.add (the_ball_Joint.all'Access);
 --        end;
 --
---        --  Slider
+--        -- Slider
 --        --
 --        declare
 --           use gel.any_Joint,
@@ -162,8 +163,8 @@ begin
 --        begin
 --           set_Translation (Frame_A, (  -4.0, 4.0, -4.0));
 --           set_Translation (Frame_B, (  4.0, 0.0, 0.0));
---  --           set_Rotation    (Frame_A, x_Rot);
---  --           set_Rotation    (Frame_B, x_Rot);
+--  --          set_Rotation    (Frame_A, x_Rot);
+--  --          set_Rotation    (Frame_B, x_Rot);
 --
 --           the_slider_Joint.define (the_Applet.gui_World.Physics,
 --                                    the_slider_Box_1,  the_slider_Box_2,
@@ -177,7 +178,7 @@ begin
 --           the_Applet.gui_World.add (the_slider_Joint.all'Access);
 --        end;
 --
---        --  cone Twist
+--        -- cone Twist
 --        --
 --        declare
 --           use gel.any_Joint,
@@ -193,10 +194,10 @@ begin
 --           y_Rot   : math.Matrix_3x3 := y_Rotation_from (to_Radians (45.0));
 --           x_Rot   : math.Matrix_3x3 := x_Rotation_from (to_Radians (45.0));
 --        begin
---  --           set_Translation (Frame_A, (  -4.0, 4.0, -4.0));
+--  --          set_Translation (Frame_A, (  -4.0, 4.0, -4.0));
 --           set_Translation (Frame_B, (  4.0, 0.0, 0.0));
---  --           set_Rotation    (Frame_A, x_Rot);
---  --           set_Rotation    (Frame_B, x_Rot);
+--  --          set_Rotation    (Frame_A, x_Rot);
+--  --          set_Rotation    (Frame_B, x_Rot);
 --
 --           the_cone_twist_Joint.define (the_Applet.gui_World.Physics,
 --                                        the_cone_twist_Box_1,  the_cone_twist_Box_2,
@@ -222,12 +223,12 @@ begin
 --              then
 --                 if Added then
 --                    the_Applet.gui_World.rid (the_hinge_Joint.all'Access);
---  --                    the_Applet.gui_World.rid (the_hinge_Box_1);
---  --                    the_Applet.gui_World.rid (the_hinge_Box_2);
+--  --                   the_Applet.gui_World.rid (the_hinge_Box_1);
+--  --                   the_Applet.gui_World.rid (the_hinge_Box_2);
 --                    Added := False;
 --                 else
---  --                    the_Applet.gui_World.add (the_hinge_Box_1);
---  --                    the_Applet.gui_World.add (the_hinge_Box_2);
+--  --                   the_Applet.gui_World.add (the_hinge_Box_1);
+--  --                   the_Applet.gui_World.add (the_hinge_Box_2);
 --                    the_Applet.gui_World.add (the_hinge_Joint.all'Access);
 --                    Added := True;
 --                 end if;
@@ -246,6 +247,6 @@ exception
    when E : others =>
       new_Line;
       put_Line ("Unhandled exception in main thread !");
-      put_Line (Ada.Exceptions.Exception_Information (E));
+      put_Line (ada.Exceptions.Exception_Information (E));
       new_Line;
 end launch_mixed_Joints_2d;

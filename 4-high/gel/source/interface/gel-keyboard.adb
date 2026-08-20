@@ -1,6 +1,7 @@
 with
      ada.Characters.latin_1;
 
+
 package body gel.Keyboard
 is
 
@@ -172,27 +173,27 @@ is
    function is_Graphic (Self : in Key) return Boolean
    is
    begin
-      return    Self = SPACE
-        or else Self = QUOTE
-        or else Self = COMMA
-        or else Self = MINUS
-        or else Self = PERIOD
-        or else Self = SLASH
-        or else Self in '0' .. '9'
-        or else Self = SEMICOLON
-        or else Self = EQUALS
-        or else Self = LEFTBRACKET
-        or else Self = BACKSLASH
-        or else Self = RIGHTBRACKET
-        or else Self = BACKQUOTE
-        or else Self in   a .. z
-        or else Self in KP0 .. KP9
-        or else Self = KP_PERIOD
-        or else Self = KP_DIVIDE
-        or else Self = KP_MULTIPLY
-        or else Self = KP_MINUS
-        or else Self = KP_PLUS
-        or else Self = KP_EQUALS;
+      return         Self = SPACE
+             or else Self = QUOTE
+             or else Self = COMMA
+             or else Self = MINUS
+             or else Self = PERIOD
+             or else Self = SLASH
+             or else Self in '0' .. '9'
+             or else Self = SEMICOLON
+             or else Self = EQUALS
+             or else Self = LEFTBRACKET
+             or else Self = BACKSLASH
+             or else Self = RIGHTBRACKET
+             or else Self = BACKQUOTE
+             or else Self in   a .. z
+             or else Self in KP0 .. KP9
+             or else Self = KP_PERIOD
+             or else Self = KP_DIVIDE
+             or else Self = KP_MULTIPLY
+             or else Self = KP_MINUS
+             or else Self = KP_PLUS
+             or else Self = KP_EQUALS;
    end is_Graphic;
 
 

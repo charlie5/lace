@@ -17,22 +17,24 @@ is
 
 
    ---------
-   --  Forge
+   --- Forge
    --
 
    procedure free (Self : in out View);
 
 
    --------------
-   --  Operations
+   --- Operations
    --
 
    procedure render (Self : in out Item;   the_World : in gel.World.view;
                                            To        : in openGL.Surface.view);
 
 
+
 private
 
    type Item  is new openGL.Camera.item with null record;
+
 
 end gel.Camera;

@@ -6,7 +6,7 @@ with
 
 package gel.Applet.sim_2D_world
 --
---  Provides an applet configured with a single window and a single 2D world.
+-- Provides an applet configured with a single window and a single 2D world.
 --
 is
    type Item is new gel.Applet.item with private;
@@ -20,6 +20,7 @@ is
    end Forge;
 
 
+
    function sim_World  (Self : in Item) return gel.World .view;
    function sim_Camera (Self : in Item) return gel.Camera.view;
 
@@ -31,5 +32,6 @@ private
       record
          null;
       end record;
+
 
 end gel.Applet.sim_2D_world;

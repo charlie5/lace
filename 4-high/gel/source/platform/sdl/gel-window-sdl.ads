@@ -3,6 +3,7 @@ with
      sdl.Video.Windows,
      sdl.Video.GL;
 
+
 package gel.Window.sdl
 --
 -- Provides an SDL implementation of a window.
@@ -53,5 +54,6 @@ private
          window_Handle : standard.sdl.Video.Windows.Window;
          GL_Context    : standard.sdl.Video.GL.Contexts;
       end record;
+
 
 end gel.Window.sdl;

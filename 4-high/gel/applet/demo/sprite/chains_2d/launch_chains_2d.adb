@@ -14,13 +14,14 @@ pragma unreferenced (gel.Window.sdl);
 
 procedure launch_Chains_2d
 --
---  Creates a chain of balls in a 2D space.
+-- Creates a chain of balls in a 2D space.
 --
 is
-   use gel.Forge,
-       gel.Applet,
-       gel.Math,
-       opengl.Palette;
+   use
+        gel.Forge,
+        gel.Applet,
+        gel.Math,
+        opengl.Palette;
 
    the_Applet : gel.Applet.gui_World.view := new_gui_Applet ("Chains 2D",
                                                              1536, 864,
@@ -50,7 +51,7 @@ begin
    the_Ground.Site_is ([0.0, -40.0, 0.0]);
    the_Applet.gui_World.add (the_Ground, and_Children => False);
 
-   --  Add joints.
+   -- Add joints.
    --
    declare
       ball_Count    : constant := 39;

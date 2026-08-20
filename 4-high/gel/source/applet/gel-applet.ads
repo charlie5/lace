@@ -22,14 +22,14 @@ with
 
 package gel.Applet
 --
---  Provides an application model, configured with a single window.
+-- Provides an application model, configured with a single window.
 --
 is
    type Item is limited new lace.Subject_and_deferred_Observer.item with private;
    type View is access all Item'Class;
 
 
-   ----------
+   ---------
    --- Forge
    --
 
@@ -42,12 +42,14 @@ is
                            use_Window : in gel.Window.view) return View;
    end Forge;
 
+
+
    overriding
    procedure destroy (Self : in out Item);
    procedure free    (Self : in out View);
 
 
-   ---------------
+   --------------
    --- Attributes
    --
 
@@ -79,6 +81,7 @@ is
    --
 
    use type gel.Camera.view;
+
    package camera_Vectors is new ada.Containers.Vectors (Positive, gel.Camera.view);
    subtype camera_Vector  is     camera_Vectors.Vector;
 
@@ -98,7 +101,8 @@ is
    function  new_World     (Self : access Item;   Name       : in String;
                                                   space_Kind : in physics.space_Kind) return gel.World.view;
 
-   ---------------
+
+   --------------
    --- Operations
    --
 
@@ -119,27 +123,28 @@ is
    procedure prepare (Self : access Item) is null;
    procedure freshen (Self : in out Item;   evolve_World : in Boolean := True);
    --
-   --  processes window events and then redraws the window.
+   -- processes window events and then redraws the window.
 
    procedure take_Screenshot (Self : in out Item;   Filename : in String);
    procedure request_Quit    (Self : in out Item);
+
 
    ----------
    --- Events
    --
 
-   function local_Subject_and_Observer
-                           (Self : access Item) return lace.Subject_and_deferred_Observer.view;
-   function local_Subject  (Self : access Item) return lace.Subject.view;
-   function local_Observer (Self : access Item) return lace.Observer.view;
+   function local_Subject_and_Observer (Self : access Item) return lace.Subject_and_deferred_Observer.view;
+   function local_Subject              (Self : access Item) return lace.Subject.view;
+   function local_Observer             (Self : access Item) return lace.Observer.view;
 
 
 
 private
 
-   --  pragma Suppress (Container_Checks);     -- Suppress expensive tamper checks.
+   -- pragma suppress (Container_Checks);     -- Suppress expensive tamper checks.
 
    use type Sprite.view;
+
    package sprite_Vectors is new ada.containers.Vectors (Positive, Sprite.view);
 
 
@@ -201,18 +206,20 @@ private
    procedure respond (Self : in out resize_event_Response;   to_Event : in lace.Event.Item'Class);
 
 
-
    ----------------
    --- world_Vector
    --
+
    use type gel.World.view;
+
    package world_Vectors is new ada.Containers.Vectors (Positive, world_Info_view);
    subtype world_Vector  is world_Vectors.Vector;
 
 
-   --------------
-   -- Applet Item
+   ---------------
+   --- Applet Item
    --
+
    type Item is limited new lace.Subject_and_deferred_Observer.item with
       record
          local_Subject_and_Observer : lace.Subject_and_deferred_Observer.view := new lace.Subject_and_deferred_Observer.item;
@@ -232,9 +239,9 @@ private
          mouse_motion_Response        : aliased applet.mouse_motion_Response;
 
          Renderer           : openGL.Renderer.lean.view;
-         Font               : opengl.Font.font_Id := (openGL.to_Asset ("assets/opengl/font/LiberationMono-Regular.ttf"), 30);
-         titles_Font        : opengl.Font.font_Id := (openGL.to_Asset ("assets/opengl/font/LiberationMono-Regular.ttf"), 40);
-         is_capturing_Video : Boolean             := False;
+         Font               : opengl.Font.font_Id      := (openGL.to_Asset ("assets/opengl/font/LiberationMono-Regular.ttf"), 30);
+         titles_Font        : opengl.Font.font_Id      := (openGL.to_Asset ("assets/opengl/font/LiberationMono-Regular.ttf"), 40);
+         is_capturing_Video : Boolean                  := False;
          Dolly              : gel.Dolly.view;
 
          last_pressed_Key   : gel.Keyboard.Key := gel.Keyboard.Nil;

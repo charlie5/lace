@@ -19,16 +19,17 @@ pragma Unreferenced (gel.Window.sdl);
 
 procedure launch_add_rid
 --
---  Creates a chain of balls in a 2d space.
+-- Creates a chain of balls in a 2d space.
 --
 is
    package Math renames float_Math;
 
-   use gel.Forge,
-       gel.Applet,
-       opengl.Palette,
-       gel.Math,
-       ada.Text_IO;
+   use
+        gel.Forge,
+        gel.Applet,
+        opengl.Palette,
+        gel.Math,
+        ada.Text_IO;
 
    type Tests is (None,
                   add_rid_Joint,
@@ -60,7 +61,7 @@ begin
    the_Applet.gui_World.add (the_Ground, and_Children => False);
 
 
-   --  Add joints.
+   -- Add joints.
    --
    declare
       ball_Count      : constant                       := 39; -- 256;
@@ -73,7 +74,7 @@ begin
       mid_Ball_initial_Offset
                       :          Vector_3;
    begin
-      --  the_root_Ball.Site_is ((0.0,  0.0,  0.0));
+      -- the_root_Ball.Site_is ((0.0,  0.0,  0.0));
 
       declare
          Frame_A   : constant math.Matrix_4x4       := math.Identity_4x4;
@@ -101,7 +102,8 @@ begin
                                      high_Limit => to_Radians ( 180.0),
                                      new_joint  => new_Joint);
 
-            if i = mid_Ball_Id then
+            if i = mid_Ball_Id
+            then
                mid_Ball_initial_Offset := the_Balls (i).Site - Parent.Site;
             end if;
 
@@ -123,7 +125,8 @@ begin
             if false -- Counter mod (2 * 60) = 0
             then
 
-               if Added then
+               if Added
+               then
                   case my_Test
                   is
                      when None =>
@@ -182,6 +185,6 @@ exception
    when E : others =>
       new_Line;
       put_Line ("Unhandled exception in main thread !");
-      put_Line (Ada.Exceptions.Exception_Information (E));
+      put_Line (ada.Exceptions.Exception_Information (E));
       new_Line;
 end launch_add_rid;

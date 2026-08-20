@@ -1,7 +1,6 @@
-
 package gel.human_Types
 --
---  Provides core types for defining a Human.
+-- Provides core types for defining a Human.
 --
 is
    pragma Pure;

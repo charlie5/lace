@@ -8,6 +8,7 @@ private
 with
      ada.Calendar;
 
+
 package gel.Window
 --
 -- Models a UI Window.
@@ -27,6 +28,8 @@ is
                            Width  : in Positive;
                            Height : in Positive) return View;
    end Forge;
+
+
 
    overriding
    procedure destroy (Self : in out Item);
@@ -70,7 +73,7 @@ is
 
 
    ----------
-   --  Events
+   --- Events
    --
 
    procedure emit_enter_Event             (Self : in out Item'Class);
@@ -110,7 +113,7 @@ private
 
    type String_view is access all String;
 
-   --  pragma Suppress (Container_Checks);     -- Suppress expensive tamper checks.
+   -- pragma suppress (Container_Checks);     -- Suppress expensive tamper checks.
 
    type Item is limited new lace.Subject_and_deferred_Observer.item with
       record

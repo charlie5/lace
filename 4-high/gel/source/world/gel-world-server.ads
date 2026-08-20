@@ -9,10 +9,10 @@ with
 
 package gel.World.server
 --
---  Provides a gel world server.
+-- Provides a gel world server.
 --
 is
-   --  pragma Suppress (Container_Checks);     -- Suppress expensive tamper checks.
+   -- pragma suppress (Container_Checks);     -- Suppress expensive tamper checks.
 
    type Item  is limited new gel.World.item
    with private;
@@ -22,7 +22,7 @@ is
 
 
    ---------
-   --  Forge
+   --- Forge
    --
 
    package Forge
@@ -37,6 +37,8 @@ is
                           space_Kind : in     physics.space_Kind;
                           Renderer   : access openGL.Renderer.lean.item'Class) return gel.World.server.view;
    end Forge;
+
+
 
    overriding
    procedure destroy (Self : in out Item);
@@ -64,7 +66,9 @@ private
    -----------
    --- Clients
    --
+
    use type remote.World.view;
+
    package world_Vectors is new ada.Containers.Vectors (Positive, remote.World.view);
    subtype world_Vector  is     world_Vectors.Vector;
 
@@ -72,6 +76,7 @@ private
    --------------
    --- sprite_Map
    --
+
    type sprite_Map is limited new World.sprite_Map with
       record
          Map : id_Maps_of_sprite.Map;
@@ -90,9 +95,10 @@ private
    --------------
    --- World Item
    --
+
    type Item is limited new gel.World.item with
       record
-         Age_at_last_Clients_update : Duration := 0.0;
+         Age_at_last_Clients_update : Duration    := 0.0;
          Clients                    : World_vector;
 
          all_Sprites : aliased sprite_Map;

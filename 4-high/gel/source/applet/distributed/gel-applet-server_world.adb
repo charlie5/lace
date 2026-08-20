@@ -25,7 +25,7 @@ is
 
       Self.Worlds.append (the_world_Info);
 
-      --  Self.local_Subject_and_Observer.add (the_add_new_sprite_Response'Access,
+      -- Self.local_Subject_and_Observer.add (the_add_new_sprite_Response'Access,
       --                                       to_Kind (gel.events.new_sprite_added_to_world_Event'Tag),
       --                                       the_world_Info.World.Name);
       the_world_Info.World.start;
@@ -72,7 +72,7 @@ is
    function server_Camera (Self : in Item) return gel.Camera.view
    is
    begin
-      return Self.Camera ( server_world_Id,
+      return Self.Camera (server_world_Id,
                           server_camera_Id);
    end server_Camera;
 

@@ -1,6 +1,6 @@
 package gel.Dolly.simple
 --
---  Provides a simple camera dolly.
+-- Provides a simple camera dolly.
 --
 is
    type Item is new gel.Dolly.item with private;
@@ -31,5 +31,6 @@ private
    type Direction_Flags is array (Direction) of Boolean;
 
    type Item is new gel.Dolly.item with null record;
+
 
 end gel.Dolly.simple;

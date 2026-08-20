@@ -19,15 +19,16 @@ pragma unreferenced (gel.Window.sdl);
 
 procedure launch_hinged_Box
 --
---  Shows variously hinged boxes.
+-- Shows variously hinged boxes.
 --
 is
    package Math renames float_Math;
 
-   use openGL,
-       openGL.Model.box,
-       opengl.Palette,
-       ada.Text_IO;
+   use
+        openGL,
+        openGL.Model.box,
+        opengl.Palette,
+        ada.Text_IO;
 
    the_Applet : constant gel.Applet.gui_World.view := gel.Forge.new_gui_Applet ("hinged Box", 1536, 864);
 
@@ -36,14 +37,14 @@ begin
    the_Applet.enable_simple_Dolly (1);                    -- Enable user camera control via keyboard.
    the_Applet.Renderer.Background_is (Blue);
 
-   --  Add sprites and joints.
+   -- Add sprites and joints.
    --
    declare
       use float_Math;
 
       box_Size : constant gel.Math.Vector_3 := [1.0, 1.0, 1.0];
 
-      --  Box
+      -- Box
       --
       the_box_Model : constant openGL.Model.box.colored.view
         := openGL.Model.box.colored.new_Box (Size  => box_Size,
@@ -110,7 +111,7 @@ begin
       begin
          set_Translation (Frame_2, [2.0, 2.0, 0.0]);
          set_Translation (Frame_3, [8.0, 8.0, 0.0]);
-         --  set_Translation (Frame_3, (8.0, 8.0, 0.0));
+         -- set_Translation (Frame_3, (8.0, 8.0, 0.0));
 --           set_Translation (Frame_B, y_Rot * math.Vector_3'( -2.0, 0.0, 0.0));
 --
 --           set_Rotation    (Frame_A, x_Rotation_from (to_Radians (0.0)));
@@ -128,7 +129,7 @@ begin
                              collide_Conected => False);
 
          -- TODO:
-         --  the_Joint_2.define (the_Applet.gui_World.Space,
+         -- the_Joint_2.define (the_Applet.gui_World.Space,
          --                      the_Box_1, the_Box_2,
          --                      pivot_Axis => (0.0, 0.0, 0.0));
 

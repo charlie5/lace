@@ -1,6 +1,7 @@
 with
      physics.Object;
 
+
 package body gel.cone_twist_Joint
 is
 
@@ -70,12 +71,14 @@ is
    end Frame_A;
 
 
+
    overriding
    function Frame_B (Self : in Item) return Matrix_4x4
    is
    begin
       return Self.Physics.Frame_B;
    end Frame_B;
+
 
 
    overriding
@@ -86,6 +89,7 @@ is
    end Frame_A_is;
 
 
+
    overriding
    procedure Frame_B_is (Self : in out Item; Now : in Matrix_4x4)
    is
@@ -94,12 +98,14 @@ is
    end Frame_B_is;
 
 
+
    overriding
    function Physics (Self : in Item) return gel.Joint.Physics_view
    is
    begin
       return joint.Physics_view (Self.Physics);
    end Physics;
+
 
 
    overriding
@@ -112,7 +118,7 @@ is
 
 
 
-   --  Bounds - limits the range of motion for a Degree of freedom.
+   -- Bounds - limits the range of motion for a Degree of freedom.
    --
 
    overriding
@@ -126,6 +132,7 @@ is
 
       return Self.Physics.is_Limited (for_Degree);
    end is_Bound;
+
 
 
    overriding
@@ -143,6 +150,7 @@ is
    end low_Bound;
 
 
+
    overriding
    procedure low_Bound_is (Self : access Item;   for_Degree : in joint.Degree_of_freedom;
                                                  Now        : in Real)
@@ -150,6 +158,7 @@ is
    begin
       Self.Physics.lower_Limit_is (Now, for_Degree);
    end low_Bound_is;
+
 
 
    overriding
@@ -165,6 +174,7 @@ is
             return Self.Physics.upper_Limit (for_Degree);
       end case;
    end high_Bound;
+
 
 
    overriding

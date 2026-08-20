@@ -35,25 +35,24 @@ pragma Unreferenced (gel.Window.setup);
 
 procedure launch_Pong
 --
---  Basic pong game.
+-- Basic pong game.
 --
 is
-   use gel.Applet,
-       gel.Applet.gui_world,
-       gel.Keyboard,
-       gel.Math,
-
-       openGL.Palette,
-
-       gtk.Box,
-       gtk.Label,
-       gtk.Window,
-
-       ada.Text_IO;
+   use
+        gel.Applet,
+        gel.Applet.gui_world,
+        gel.Keyboard,
+        gel.Math,
+        openGL.Palette,
+        gtk.Box,
+        gtk.Label,
+        gtk.Window,
+        ada.Text_IO;
 
 
    --- GtkAda objects.
    --
+
    top_Window : Gtk_Window;
    Label      : Gtk_Label;
    Box        : Gtk_Vbox;
@@ -63,21 +62,21 @@ begin
    --- Setup GtkAda.
    --
 
-   --  Initialize GtkAda.
+   -- Initialize GtkAda.
    --
    gtk.Main.init;
 
-   --  Create a window with a size of 800 x 650.
+   -- Create a window with a size of 800 x 650.
    --
    gtk_new (top_Window);
    top_Window.set_default_Size (800, 650);
 
-   --  Create a box to organize vertically the contents of the window.
+   -- Create a box to organize vertically the contents of the window.
    --
    gtk_New_vBox   (Box);
    top_Window.add (Box);
 
-   --  Add a label.
+   -- Add a label.
    --
    gtk_new (Label, "Hello Pong.");
    Box.pack_Start (Label,
@@ -85,22 +84,27 @@ begin
                    Fill    => False,
                    Padding => 10);
 
-   --  Show the window.
+   -- Show the window.
    --
    top_Window.show_All;
 
 
    declare
+
+
       --- Applet
       --
+
       the_Applet : gel.Applet.gui_world.view
         := gel.Forge.new_gui_Applet (Named         => "Pong",
                                      window_Width  => 800,
                                      window_Height => 650,
                                      space_Kind    => physics.Box2d);
 
+
       --- Ball
       --
+
       the_Ball : constant gel.Sprite.view
         := gel.Forge.new_circle_Sprite (Name     => "Ball",
                                         in_World => the_Applet.World,
@@ -118,13 +122,14 @@ begin
 
       --- Players
       --
+
       type Player is
          record
             Paddle      : gel.Sprite.view;
             moving_Up   : Boolean         := False;
             moving_Down : Boolean         := False;
 
-            Score       : Natural         := 0;
+            Score       : Natural               := 0;
             score_Text  : gel.Sprite.view;
             score_Model : openGL.Model.text.view;
          end record;
@@ -159,19 +164,20 @@ begin
                                                               Size     => ([1.0, 1.0, 1.0]));
          the_Player.score_Model := openGL.Model.text.view (the_Player.score_Text.graphics_Model);
 
-         --  the_Player.score_Model.
+         -- the_Player.score_Model.
 
          the_Applet.World.add (the_Player.Paddle);
          the_Applet.World.add (the_Player.score_Text);
 
          the_Player.score_Text.Site_is (Vector_3 (score_Site & 0.0));
          the_Player.score_Text.Scale_is ([50.0, 50.0, 50.0]);
-         --  the_Player.score_Text.graphics_Model.
+         -- the_Player.score_Text.graphics_Model.
       end add_Player;
 
 
       --- Court Walls
       --
+
       procedure add_Wall (Site   : in Vector_2;
                           Width,
                           Height : in Real)
@@ -193,11 +199,13 @@ begin
 
       --- Controls
       --
+
       relaunch_Ball : Boolean := True;
 
 
       --- Events
       --
+
       type key_press_Response is new lace.Response.item with null record;
 
       overriding
@@ -262,10 +270,10 @@ begin
       Box.pack_Start (window_gl_Area);
 
 
-      --  Show the window.
+      -- Show the window.
       --
       top_Window.show_All;
-      --  top_Window.present;
+      -- top_Window.present;
 
       the_Applet.Camera.  Site_is ([0.0, 0.0, 20.0]);
       the_Applet.World.Gravity_is ([0.0, 0.0,  0.0]);
@@ -284,6 +292,7 @@ begin
 
       --- Add the players.
       --
+
       declare
          paddle_X_Offset : constant := court_Width / 2.0 - 2.0;
       begin
@@ -294,6 +303,7 @@ begin
 
       --- Build the court.
       --
+
       declare
          Thickness : constant :=  1.0;     -- Thickness of the walls.
          goal_Size : constant :=  6.0;
@@ -329,6 +339,7 @@ begin
 
       --- Main loop.
       --
+
       while the_Applet.is_open
       loop
          the_Applet.World.evolve;     -- Advance the world.
@@ -337,6 +348,7 @@ begin
 
          --- Check goal scoring.
          --
+
          declare
             procedure award_Goal (Id : in player_Id)
             is
@@ -363,6 +375,7 @@ begin
 
          --- Relauch the ball after a goal has been scored.
          --
+
          if relaunch_Ball
          then
             the_Ball.Site_is ([0.0, 0.0, 0.0]);
@@ -386,6 +399,7 @@ begin
 
          --- Move the paddles.
          --
+
          for the_Player of the_Players
          loop
             declare

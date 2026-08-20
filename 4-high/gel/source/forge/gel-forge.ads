@@ -17,7 +17,7 @@ with
 
 package gel.Forge
 --
---  Provides utility constructor functions for various GEL classes.
+-- Provides utility constructor functions for various GEL classes.
 --
 is
 
@@ -44,6 +44,8 @@ is
                                     window_Width  : in Positive           := 500;
                                     window_Height : in Positive           := 500;
                                     space_Kind    : in physics.space_Kind := physics.Bullet) return gel.Applet.client_world.view;
+
+
    -----------
    --- Sprites
    --
@@ -200,5 +202,6 @@ is
                              Size      : in math.Vector_3      := [1.0, 1.0, 1.0];
                              Centered  : in Boolean            := True;
                              user_Data : in any_user_Data_view := null) return gel.Sprite.view;
+
 
 end gel.Forge;

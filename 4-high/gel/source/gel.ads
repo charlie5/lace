@@ -10,7 +10,7 @@ with
 
 package GEL
 --
---  A game engine library.
+-- A game engine library.
 --
 is
    pragma Pure;
@@ -21,6 +21,7 @@ is
    --------
    --- Math
    --
+
    package Math              renames float_Math;
    package Geometry          renames math.Geometry;
    package Geometry_2d       renames Geometry.D2;
@@ -31,16 +32,15 @@ is
    package linear_Algebra_3D renames linear_Algebra.D3;
 
 
-
    ---------------
    --- Constraints
    --
+
    max_Worlds          : constant := 1_000;
    max_Cameras         : constant := 1_000;
    max_graphics_Models : constant := 2**32 - 1;
 --     max_physics_Models  : constant := 2**32 - 1;
    max_Sprites         : constant := 2**32 - 1;
-
 
 
    -------
@@ -69,7 +69,7 @@ is
 
    type asset_Name is new String (1 .. 128);    -- TODO: Make private.
    --
-   --  Name of a file containing textures, images, fonts, sounds, media or other resources.
+   -- Name of a file containing textures, images, fonts, sounds, media or other resources.
 
    null_Asset : constant asset_Name;
 
@@ -85,4 +85,6 @@ private
    null_sprite_Id         : constant sprite_Id         := 0;
 
    null_Asset : constant asset_Name := (others => ' ');
+
+
 end GEL;

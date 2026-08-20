@@ -24,9 +24,10 @@ procedure launch_opengl_Model
 --
 --
 is
-   use ada.Calendar,
-       ada.Text_IO,
-       ada.Exceptions;
+   use
+        ada.Calendar,
+        ada.Text_IO,
+        ada.Exceptions;
 
 
    the_Applet : constant gel.Applet.gui_World.view := gel.Forge.new_gui_Applet ("openGL Model", 500, 500);
@@ -84,14 +85,14 @@ begin
    the_Applet.gui_World.add (the_Human);                   -- Add human.
    the_Human.Site_is ([0.0, 5.0, 0.0]);                    --
 
-   --  the_Applet.gui_World.add (the_Cobra);               -- Add cobra.
+   -- the_Applet.gui_World.add (the_Cobra);               -- Add cobra.
    the_Cobra.Site_is ([0.0,  5.0,  0.0]);              --
 
    the_Applet.gui_Camera.Site_is ([0.0, 1.5, 2.6]);        -- Position the camera.
-   --  the_Applet.gui_Camera.Site_is ((0.0, 100.0, 0.0));    -- Position the camera.
+   -- the_Applet.gui_Camera.Site_is ((0.0, 100.0, 0.0));    -- Position the camera.
    the_Applet.enable_simple_Dolly (in_World => 1);         -- Enable user camera control via keyboards.
    the_Applet.Dolly.Speed_is (0.1);                        -- Slow down the rate at which the dolly moves.
-   --  the_Applet.Dolly.Speed_is (0.5);                    -- Slow down the rate at which the dolly moves.
+   -- the_Applet.Dolly.Speed_is (0.5);                    -- Slow down the rate at which the dolly moves.
 
    -- Set the lights position.
    --

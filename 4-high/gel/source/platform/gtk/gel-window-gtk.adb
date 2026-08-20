@@ -14,10 +14,11 @@ with
 
 package body gel.Window.gtk
 is
-   use gdk.Event,
-       std_gtk.Widget,
-       std_gtk.Window,
-       ada.Text_IO;
+   use
+        gdk.Event,
+        std_gtk.Widget,
+        std_gtk.Window,
+        ada.Text_IO;
 
    function to_gel_Key (From : in gdk.Types.gdk_Key_Type) return gel.keyboard.Key;
 
@@ -41,7 +42,7 @@ is
 
       gel_Window : Window.gtk.item'Class renames user_Data.all;
    begin
-      --  put_Line ("key_press_Event_Cb ~ " & Event.Key'Image);
+      -- put_Line ("key_press_Event_Cb ~ " & Event.Key'Image);
 
       gel_Window.Keyboard.emit_key_press_Event (Key      => to_gel_Key (Event.Key.keyVal),
                                                 key_Code => Integer    (Event.Key.hardware_Keycode));
@@ -60,7 +61,7 @@ is
 
       gel_Window : Window.gtk.item'Class renames user_Data.all;
    begin
-      --  put_Line ("key_release_Event_Cb ~ " & Event.Key'Image);
+      -- put_Line ("key_release_Event_Cb ~ " & Event.Key'Image);
 
       gel_Window.Keyboard.emit_key_release_Event (Key => to_gel_Key (Event.Key.keyVal));
 
@@ -107,7 +108,7 @@ is
       Width      : constant Integer := Integer (Widget.get_allocated_Width);
       Height     : constant Integer := Integer (Widget.get_allocated_Height);
    begin
-      --  put_Line ("gl_Area_resize_Event_Cb ~ Height =>" & Height'Image & "   Width =>" & Width'Image);
+      -- put_Line ("gl_Area_resize_Event_Cb ~ Height =>" & Height'Image & "   Width =>" & Width'Image);
 
       gel_Window.Size_is (Width, Height);
    end gl_Area_resize_Event_Cb;
@@ -121,7 +122,7 @@ is
 
       gel_Window : Window.gtk.item'Class renames user_Data.all;
    begin
-      --  put_Line ("unrealize_Event_Cb");
+      -- put_Line ("unrealize_Event_Cb");
 
       gel_Window.is_Open := False;
    end unrealize_Event_Cb;
@@ -146,7 +147,7 @@ is
 
       gel_Window : Window.gtk.item'Class renames user_Data.all;
    begin
-      --  put_Line ("Button_press_Event_Cb ~ Button =>"
+      -- put_Line ("Button_press_Event_Cb ~ Button =>"
       --            & Event.Button.Button'Image
       --            & "   X =>" & Integer (Event.Button.X)'Image
       --            & "   Y =>" & Integer (Event.Button.Y)'Image);
@@ -168,7 +169,7 @@ is
 
       gel_Window : Window.gtk.item'Class renames user_Data.all;
    begin
-      --  put_Line ("Button_release_Event_Cb ~ Button =>"
+      -- put_Line ("Button_release_Event_Cb ~ Button =>"
       --            & Event.Button.Button'Image
       --            & "   X =>" & Integer (Event.Button.X)'Image
       --            & "   Y =>" & Integer (Event.Button.Y)'Image);
@@ -190,18 +191,17 @@ is
 
       gel_Window : Window.gtk.item'Class renames user_Data.all;
    begin
-      --  put_Line ("Pointer_motion_Event_Cb ~ Button =>"
+      -- put_Line ("Pointer_motion_Event_Cb ~ Button =>"
       --            & Event.Button.Button'Image
       --            & "   X =>"      & Integer (Event.Button.X)'Image
       --            & "   Y =>"      & Integer (Event.Button.Y)'Image);
-      --            --  & "   X_root =>" & Integer (Event.Button.X_root)'Image
-      --            --  & "   Y_root =>" & Integer (Event.Button.Y_root)'Image);
+      --            -- & "   X_root =>" & Integer (Event.Button.X_root)'Image
+      --            -- & "   Y_root =>" & Integer (Event.Button.Y_root)'Image);
 
       gel_Window.Mouse.emit_motion_Event (Site => [Integer (Event.Button.X),
                                                    Integer (Event.Button.Y)]);
       return True;
    end Pointer_motion_Event_Cb;
-
 
 
    ---------
@@ -214,45 +214,46 @@ is
    is
       pragma Unreferenced (Title, Width, Height);
 
-      use std_gtk.glArea,
-          gdk    .glContext;
+      use
+           std_gtk.glArea,
+           gdk    .glContext;
    begin
       Self.gl_Area := gtk_glArea_new;
       Self.gl_Area.set_use_ES (True);
       Self.gl_Area.Set_Can_Focus (True);
 
       Callbacks_with_gel_Window_user_Data.connect (Self.gl_Area,
-                                                  "realize",
-                                                  Callbacks_with_gel_Window_user_Data.to_Marshaller (realize_Event_Cb'Access),
-                                                  user_Data => View (Self));
+                                                   "realize",
+                                                   Callbacks_with_gel_Window_user_Data.to_Marshaller (realize_Event_Cb'Access),
+                                                   user_Data => View (Self));
 
       Callbacks_with_gel_Window_user_Data.connect (Self.gl_Area,
-                                                  "resize",
-                                                  Callbacks_with_gel_Window_user_Data.to_Marshaller (gl_Area_resize_Event_Cb'Access),
-                                                  user_Data => View (Self));
+                                                   "resize",
+                                                   Callbacks_with_gel_Window_user_Data.to_Marshaller (gl_Area_resize_Event_Cb'Access),
+                                                   user_Data => View (Self));
 
       Callbacks_with_gel_Window_user_Data.connect (Self.gl_Area,
-                                                  "unrealize",
-                                                  Callbacks_with_gel_Window_user_Data.to_Marshaller (unrealize_Event_Cb'Access),
-                                                  user_Data => View (Self));
+                                                   "unrealize",
+                                                   Callbacks_with_gel_Window_user_Data.to_Marshaller (unrealize_Event_Cb'Access),
+                                                   user_Data => View (Self));
 
       Self.gl_Area.on_Render (render_Event_Cb'Access);
 
       Self.gl_Area.add_Events (Button_press_Mask);
       Callbacks_with_gel_Window_user_Data_and_return_Boolean.connect (Self.gl_Area,
-                                                                     "button-press-event",
-                                                                     Callbacks_with_gel_Window_user_Data_and_return_Boolean.to_Marshaller (Button_press_Event_Cb'Access),
-                                                                     user_Data => View (Self));
+                                                                      "button-press-event",
+                                                                      Callbacks_with_gel_Window_user_Data_and_return_Boolean.to_Marshaller (Button_press_Event_Cb'Access),
+                                                                      user_Data => View (Self));
       Self.gl_Area.add_Events (Button_release_Mask);
       Callbacks_with_gel_Window_user_Data_and_return_Boolean.connect (Self.gl_Area,
-                                                                     "button-release-event",
-                                                                     Callbacks_with_gel_Window_user_Data_and_return_Boolean.to_Marshaller (Button_release_Event_Cb'Access),
-                                                                     user_Data => View (Self));
+                                                                      "button-release-event",
+                                                                      Callbacks_with_gel_Window_user_Data_and_return_Boolean.to_Marshaller (Button_release_Event_Cb'Access),
+                                                                      user_Data => View (Self));
       Self.gl_Area.add_Events (Pointer_Motion_Mask);
       Callbacks_with_gel_Window_user_Data_and_return_Boolean.connect (Self.gl_Area,
-                                                                     "motion-notify-event",
-                                                                     Callbacks_with_gel_Window_user_Data_and_return_Boolean.to_Marshaller (Pointer_motion_Event_Cb'Access),
-                                                                     user_Data => View (Self));
+                                                                      "motion-notify-event",
+                                                                      Callbacks_with_gel_Window_user_Data_and_return_Boolean.to_Marshaller (Pointer_motion_Event_Cb'Access),
+                                                                      user_Data => View (Self));
       Self.gl_Context := Self.gl_Area.get_Context;
    end define;
 
@@ -282,6 +283,7 @@ is
       end to_Window;
 
 
+
       function new_Window (Title  : in String;
                            Width  : in Natural;
                            Height : in Natural) return Window.gtk.view
@@ -291,7 +293,6 @@ is
          return Self;
       end new_Window;
    end Forge;
-
 
 
    --------------
@@ -309,11 +310,11 @@ is
 
 
 
-   --  procedure set_Context (Self : in out Item;   To : in gdk.glContext.gdk_glContext)
-   --  is
-   --  begin
+   -- procedure set_Context (Self : in out Item;   To : in gdk.glContext.gdk_glContext)
+   -- is
+   -- begin
    --     Self.gl_Context := To;
-   --  end set_Context;
+   -- end set_Context;
 
 
 
@@ -321,9 +322,10 @@ is
    procedure enable_GL (Self : in Item)
    is
       use gdk.GLContext;
+
       use type std_gtk.glArea.gtk_GLArea;
    begin
-      --  ada.Text_IO.Put_Line ("gel.window.gtk.enble_GL: attempting to make context current");
+      -- ada.Text_IO.Put_Line ("gel.window.gtk.enble_GL: attempting to make context current");
 
       if          Self.is_Open
         and then (         Self.gl_Area             /= null
@@ -373,7 +375,6 @@ is
          Self.gl_Area.queue_Render;
       end if;
    end freshen;
-
 
 
 
@@ -505,96 +506,96 @@ is
       when Key.GDK_KP_0        => return gel.Keyboard.KP0;
       when Key.GDK_KP_Decimal  => return gel.Keyboard.KP_Period;
 
-         --  when Key.GDK_application     => return gel.Keyboard.;
-         --  when Key.GDK_power           => return gel.Keyboard.Power;
+         -- when Key.GDK_application     => return gel.Keyboard.;
+         -- when Key.GDK_power           => return gel.Keyboard.Power;
       when Key.GDK_KP_equal        => return gel.Keyboard.KP_Equals;
       when Key.GDK_F13             => return gel.Keyboard.F13;
       when Key.GDK_F14             => return gel.Keyboard.F14;
       when Key.GDK_F15             => return gel.Keyboard.F15;
-         --  when Key.GDK_F16             => return gel.Keyboard.;
-         --  when Key.GDK_F17             => return gel.Keyboard.;
-         --  when Key.GDK_F18             => return gel.Keyboard.;
-         --  when Key.GDK_F19             => return gel.Keyboard.;
-         --  when Key.GDK_F20             => return gel.Keyboard.;
-         --  when Key.GDK_F21             => return gel.Keyboard.;
-         --  when Key.GDK_F22             => return gel.Keyboard.;
-         --  when Key.GDK_F23             => return gel.Keyboard.;
-         --  when Key.GDK_F24             => return gel.Keyboard.;
-         --  when Key.GDK_execute         => return gel.Keyboard.;
+         -- when Key.GDK_F16             => return gel.Keyboard.;
+         -- when Key.GDK_F17             => return gel.Keyboard.;
+         -- when Key.GDK_F18             => return gel.Keyboard.;
+         -- when Key.GDK_F19             => return gel.Keyboard.;
+         -- when Key.GDK_F20             => return gel.Keyboard.;
+         -- when Key.GDK_F21             => return gel.Keyboard.;
+         -- when Key.GDK_F22             => return gel.Keyboard.;
+         -- when Key.GDK_F23             => return gel.Keyboard.;
+         -- when Key.GDK_F24             => return gel.Keyboard.;
+         -- when Key.GDK_execute         => return gel.Keyboard.;
       when Key.GDK_help            => return gel.Keyboard.Help;
       when Key.GDK_menu            => return gel.Keyboard.Menu;
-         --  when Key.GDK_select          => return gel.Keyboard.;
-         --  when Key.GDK_stop            => return gel.Keyboard.;
-         --  when Key.GDK_again           => return gel.Keyboard.;
+         -- when Key.GDK_select          => return gel.Keyboard.;
+         -- when Key.GDK_stop            => return gel.Keyboard.;
+         -- when Key.GDK_again           => return gel.Keyboard.;
       when Key.GDK_undo            => return gel.Keyboard.Undo;
-         --  when Key.GDK_cut             => return gel.Keyboard.;
-         --  when Key.GDK_copy            => return gel.Keyboard.;
-         --  when Key.GDK_paste           => return gel.Keyboard.;
-         --  when Key.GDK_find            => return gel.Keyboard.;
-         --  when Key.GDK_mute            => return gel.Keyboard.;
-         --  when Key.GDK_volume_up       => return gel.Keyboard.;
-         --  when Key.GDK_volume_down     => return gel.Keyboard.;
-         --  when Key.GDK_KP_comma        => return gel.Keyboard.;
-         --  when Key.GDK_KP_equals_AS400 => return gel.Keyboard.;
+         -- when Key.GDK_cut             => return gel.Keyboard.;
+         -- when Key.GDK_copy            => return gel.Keyboard.;
+         -- when Key.GDK_paste           => return gel.Keyboard.;
+         -- when Key.GDK_find            => return gel.Keyboard.;
+         -- when Key.GDK_mute            => return gel.Keyboard.;
+         -- when Key.GDK_volume_up       => return gel.Keyboard.;
+         -- when Key.GDK_volume_down     => return gel.Keyboard.;
+         -- when Key.GDK_KP_comma        => return gel.Keyboard.;
+         -- when Key.GDK_KP_equals_AS400 => return gel.Keyboard.;
 
-         --  when Key.GDK_alt_erase   => return gel.Keyboard.;
+         -- when Key.GDK_alt_erase   => return gel.Keyboard.;
       when Key.GDK_sys_req     => return gel.Keyboard.SysReq;
-         --  when Key.GDK_cancel      => return gel.Keyboard.;
+         -- when Key.GDK_cancel      => return gel.Keyboard.;
       when Key.GDK_clear       => return gel.Keyboard.Clear;
-         --  when Key.GDK_prior       => return gel.Keyboard.;
-         --  when Key.GDK_return_2    => return gel.Keyboard.;
-         --  when Key.GDK_separator   => return gel.Keyboard.;
-         --  when Key.GDK_out         => return gel.Keyboard.;
-         --  when Key.GDK_oper        => return gel.Keyboard.;
-         --  when Key.GDK_clear_again => return gel.Keyboard.;
-         --  when Key.GDK_CR_sel      => return gel.Keyboard.;
-         --  when Key.GDK_Ex_sel      => return gel.Keyboard.;
+         -- when Key.GDK_prior       => return gel.Keyboard.;
+         -- when Key.GDK_return_2    => return gel.Keyboard.;
+         -- when Key.GDK_separator   => return gel.Keyboard.;
+         -- when Key.GDK_out         => return gel.Keyboard.;
+         -- when Key.GDK_oper        => return gel.Keyboard.;
+         -- when Key.GDK_clear_again => return gel.Keyboard.;
+         -- when Key.GDK_CR_sel      => return gel.Keyboard.;
+         -- when Key.GDK_Ex_sel      => return gel.Keyboard.;
 
-         --  when Key.GDK_KP_00                  => return gel.Keyboard.;
-         --  when Key.GDK_KP_000                 => return gel.Keyboard.;
-         --  when Key.GDK_thousands_separator    => return gel.Keyboard.;
-         --  when Key.GDK_decimal_separator      => return gel.Keyboard.;
-         --  when Key.GDK_currency_unit          => return gel.Keyboard.;
-         --  when Key.GDK_KP_left_parenthesis    => return gel.Keyboard.;
-         --  when Key.GDK_KP_right_parentheesis  => return gel.Keyboard.;
-         --  when Key.GDK_KP_left_brace          => return gel.Keyboard.;
-         --  when Key.GDK_KP_right_brace         => return gel.Keyboard.;
-         --  when Key.GDK_KP_tab                 => return gel.Keyboard.;
-         --  when Key.GDK_KP_backspace           => return gel.Keyboard.;
-         --  when Key.GDK_KP_A                   => return gel.Keyboard.;
-         --  when Key.GDK_KP_B                   => return gel.Keyboard.;
-         --  when Key.GDK_KP_C                   => return gel.Keyboard.;
-         --  when Key.GDK_KP_D                   => return gel.Keyboard.;
-         --  when Key.GDK_KP_E                   => return gel.Keyboard.;
-         --  when Key.GDK_KP_F                   => return gel.Keyboard.;
-         --  when Key.GDK_KP_xor                 => return gel.Keyboard.;
-         --  when Key.GDK_KP_power               => return gel.Keyboard.;
-         --  when Key.GDK_KP_percent             => return gel.Keyboard.;
-         --  when Key.GDK_KP_less                => return gel.Keyboard.;
-         --  when Key.GDK_KP_greater             => return gel.Keyboard.;
-         --  when Key.GDK_KP_ampersand           => return gel.Keyboard.;
-         --  when Key.GDK_KP_double_ampersand    => return gel.Keyboard.;
-         --  when Key.GDK_KP_vertical_bar        => return gel.Keyboard.;
-         --  when Key.GDK_KP_double_vertical_bar => return gel.Keyboard.;
-         --  when Key.GDK_KP_colon               => return gel.Keyboard.;
-         --  when Key.GDK_KP_hash                => return gel.Keyboard.;
-         --  when Key.GDK_KP_space               => return gel.Keyboard.;
-         --  when Key.GDK_KP_at                  => return gel.Keyboard.;
-         --  when Key.GDK_KP_exclamation         => return gel.Keyboard.;
-         --  when Key.GDK_KP_memory_store        => return gel.Keyboard.;
-         --  when Key.GDK_KP_memory_recall       => return gel.Keyboard.;
-         --  when Key.GDK_KP_memory_clear        => return gel.Keyboard.;
-         --  when Key.GDK_KP_memory_add          => return gel.Keyboard.;
-         --  when Key.GDK_KP_memory_subtract     => return gel.Keyboard.;
-         --  when Key.GDK_KP_memory_multiply     => return gel.Keyboard.;
-         --  when Key.GDK_KP_memory_divide       => return gel.Keyboard.;
-         --  when Key.GDK_KP_plus_minus          => return gel.Keyboard.;
-         --  when Key.GDK_KP_clear               => return gel.Keyboard.;
-         --  when Key.GDK_KP_clear_entry         => return gel.Keyboard.;
-         --  when Key.GDK_KP_binary              => return gel.Keyboard.;
-         --  when Key.GDK_KP_octal               => return gel.Keyboard.;
-         --  when Key.GDK_KP_decimal             => return gel.Keyboard.;
-         --  when Key.GDK_KP_hexadecimal         => return gel.Keyboard.;
+         -- when Key.GDK_KP_00                  => return gel.Keyboard.;
+         -- when Key.GDK_KP_000                 => return gel.Keyboard.;
+         -- when Key.GDK_thousands_separator    => return gel.Keyboard.;
+         -- when Key.GDK_decimal_separator      => return gel.Keyboard.;
+         -- when Key.GDK_currency_unit          => return gel.Keyboard.;
+         -- when Key.GDK_KP_left_parenthesis    => return gel.Keyboard.;
+         -- when Key.GDK_KP_right_parentheesis  => return gel.Keyboard.;
+         -- when Key.GDK_KP_left_brace          => return gel.Keyboard.;
+         -- when Key.GDK_KP_right_brace         => return gel.Keyboard.;
+         -- when Key.GDK_KP_tab                 => return gel.Keyboard.;
+         -- when Key.GDK_KP_backspace           => return gel.Keyboard.;
+         -- when Key.GDK_KP_A                   => return gel.Keyboard.;
+         -- when Key.GDK_KP_B                   => return gel.Keyboard.;
+         -- when Key.GDK_KP_C                   => return gel.Keyboard.;
+         -- when Key.GDK_KP_D                   => return gel.Keyboard.;
+         -- when Key.GDK_KP_E                   => return gel.Keyboard.;
+         -- when Key.GDK_KP_F                   => return gel.Keyboard.;
+         -- when Key.GDK_KP_xor                 => return gel.Keyboard.;
+         -- when Key.GDK_KP_power               => return gel.Keyboard.;
+         -- when Key.GDK_KP_percent             => return gel.Keyboard.;
+         -- when Key.GDK_KP_less                => return gel.Keyboard.;
+         -- when Key.GDK_KP_greater             => return gel.Keyboard.;
+         -- when Key.GDK_KP_ampersand           => return gel.Keyboard.;
+         -- when Key.GDK_KP_double_ampersand    => return gel.Keyboard.;
+         -- when Key.GDK_KP_vertical_bar        => return gel.Keyboard.;
+         -- when Key.GDK_KP_double_vertical_bar => return gel.Keyboard.;
+         -- when Key.GDK_KP_colon               => return gel.Keyboard.;
+         -- when Key.GDK_KP_hash                => return gel.Keyboard.;
+         -- when Key.GDK_KP_space               => return gel.Keyboard.;
+         -- when Key.GDK_KP_at                  => return gel.Keyboard.;
+         -- when Key.GDK_KP_exclamation         => return gel.Keyboard.;
+         -- when Key.GDK_KP_memory_store        => return gel.Keyboard.;
+         -- when Key.GDK_KP_memory_recall       => return gel.Keyboard.;
+         -- when Key.GDK_KP_memory_clear        => return gel.Keyboard.;
+         -- when Key.GDK_KP_memory_add          => return gel.Keyboard.;
+         -- when Key.GDK_KP_memory_subtract     => return gel.Keyboard.;
+         -- when Key.GDK_KP_memory_multiply     => return gel.Keyboard.;
+         -- when Key.GDK_KP_memory_divide       => return gel.Keyboard.;
+         -- when Key.GDK_KP_plus_minus          => return gel.Keyboard.;
+         -- when Key.GDK_KP_clear               => return gel.Keyboard.;
+         -- when Key.GDK_KP_clear_entry         => return gel.Keyboard.;
+         -- when Key.GDK_KP_binary              => return gel.Keyboard.;
+         -- when Key.GDK_KP_octal               => return gel.Keyboard.;
+         -- when Key.GDK_KP_decimal             => return gel.Keyboard.;
+         -- when Key.GDK_KP_hexadecimal         => return gel.Keyboard.;
 
       when Key.GDK_control_L  => return gel.Keyboard.lCtrl;
       when Key.GDK_shift_L    => return gel.Keyboard.lShift;
@@ -603,36 +604,36 @@ is
       when Key.GDK_shift_R    => return gel.Keyboard.rShift;
       when Key.GDK_alt_R      => return gel.Keyboard.rAlt;
 
-         --  when Key.GDK_left_gui      => return gel.Keyboard.;
-         --  when Key.GDK_right_gui     => return gel.Keyboard.;
-         --  when Key.GDK_mode          => return gel.Keyboard.;
+         -- when Key.GDK_left_gui      => return gel.Keyboard.;
+         -- when Key.GDK_right_gui     => return gel.Keyboard.;
+         -- when Key.GDK_mode          => return gel.Keyboard.;
 
-         --  when Key.GDK_audio_next     => return gel.Keyboard.;
-         --  when Key.GDK_audio_previous => return gel.Keyboard.;
-         --  when Key.GDK_audio_stop     => return gel.Keyboard.;
-         --  when Key.GDK_audio_play     => return gel.Keyboard.;
-         --  when Key.GDK_audio_mute     => return gel.Keyboard.;
-         --  when Key.GDK_media_select   => return gel.Keyboard.;
-         --  when Key.GDK_www            => return gel.Keyboard.;
-         --  when Key.GDK_mail           => return gel.Keyboard.;
-         --  when Key.GDK_calculator     => return gel.Keyboard.;
-         --  when Key.GDK_computer       => return gel.Keyboard.;
-         --  when Key.GDK_AC_search      => return gel.Keyboard.;
-         --  when Key.GDK_AC_home        => return gel.Keyboard.;
-         --  when Key.GDK_AC_back        => return gel.Keyboard.;
-         --  when Key.GDK_AC_forward     => return gel.Keyboard.;
-         --  when Key.GDK_AC_stop        => return gel.Keyboard.;
-         --  when Key.GDK_AC_refresh     => return gel.Keyboard.;
-         --  when Key.GDK_AC_bookmarks   => return gel.Keyboard.;
+         -- when Key.GDK_audio_next     => return gel.Keyboard.;
+         -- when Key.GDK_audio_previous => return gel.Keyboard.;
+         -- when Key.GDK_audio_stop     => return gel.Keyboard.;
+         -- when Key.GDK_audio_play     => return gel.Keyboard.;
+         -- when Key.GDK_audio_mute     => return gel.Keyboard.;
+         -- when Key.GDK_media_select   => return gel.Keyboard.;
+         -- when Key.GDK_www            => return gel.Keyboard.;
+         -- when Key.GDK_mail           => return gel.Keyboard.;
+         -- when Key.GDK_calculator     => return gel.Keyboard.;
+         -- when Key.GDK_computer       => return gel.Keyboard.;
+         -- when Key.GDK_AC_search      => return gel.Keyboard.;
+         -- when Key.GDK_AC_home        => return gel.Keyboard.;
+         -- when Key.GDK_AC_back        => return gel.Keyboard.;
+         -- when Key.GDK_AC_forward     => return gel.Keyboard.;
+         -- when Key.GDK_AC_stop        => return gel.Keyboard.;
+         -- when Key.GDK_AC_refresh     => return gel.Keyboard.;
+         -- when Key.GDK_AC_bookmarks   => return gel.Keyboard.;
 
-         --  when Key.GDK_brightness_down     => return gel.Keyboard.;
-         --  when Key.GDK_brightness_up       => return gel.Keyboard.;
-         --  when Key.GDK_display_switch      => return gel.Keyboard.;
-         --  when Key.GDK_illumination_toggle => return gel.Keyboard.;
-         --  when Key.GDK_illumination_down   => return gel.Keyboard.;
-         --  when Key.GDK_illumination_up     => return gel.Keyboard.;
-         --  when Key.GDK_eject               => return gel.Keyboard.;
-         --  when Key.GDK_sleep               => return gel.Keyboard.;
+         -- when Key.GDK_brightness_down     => return gel.Keyboard.;
+         -- when Key.GDK_brightness_up       => return gel.Keyboard.;
+         -- when Key.GDK_display_switch      => return gel.Keyboard.;
+         -- when Key.GDK_illumination_toggle => return gel.Keyboard.;
+         -- when Key.GDK_illumination_down   => return gel.Keyboard.;
+         -- when Key.GDK_illumination_up     => return gel.Keyboard.;
+         -- when Key.GDK_eject               => return gel.Keyboard.;
+         -- when Key.GDK_sleep               => return gel.Keyboard.;
 
       when others =>
          ada.Text_IO.put_Line ("Gtk window ~ unhandled key: " & From'Image);     -- TODO: Remaining key codes.
@@ -642,8 +643,7 @@ is
    end to_gel_Key;
 
 
-
-   -------------------
+   ------------------
    --- Window Creator
    --
 

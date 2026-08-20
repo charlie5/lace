@@ -25,10 +25,10 @@ with
 
 package gel.World
 --
---  Provides a gel world.
+-- Provides a gel world.
 --
 is
-   --  pragma Suppress (Container_Checks);     -- Suppress expensive tamper checks.
+   -- pragma suppress (Container_Checks);     -- Suppress expensive tamper checks.
 
 
    type Item  is abstract limited new lace.Subject_and_deferred_Observer.item
@@ -44,9 +44,8 @@ is
    type Any_limited_view is access all lace.Any.limited_item'Class;
 
 
-
    ---------
-   --  Forge
+   --- Forge
    --
 
    overriding
@@ -55,7 +54,7 @@ is
 
 
    --------------
-   --  Attributes
+   --- Attributes
    --
 
    function  local_Observer  (Self : in     Item)     return lace.Observer.view;
@@ -85,9 +84,11 @@ is
    procedure apply_Force     (Self : in out Item;   to_Sprite : in gel.Sprite.view;
                                                     Force     : in Vector_3);
 
+
    -----------
-   --  Sprites
+   --- Sprites
    --
+
    function  new_sprite_Id   (Self : access Item)                                    return sprite_Id;
    function  free_sprite_Set (Self : access Item)                                    return gel.Sprite.views;
    function  fetch_Sprite    (Self : in out Item'Class;   Id         : in sprite_Id) return gel.Sprite.view;
@@ -96,14 +97,19 @@ is
    procedure set_Scale       (Self : in out Item;         for_Sprite : in gel.Sprite.view;
                                                           To         : in Vector_3);
 
+
    ---------------------
    --- id_Maps_of_sprite
    --
+
    use type Sprite.view;
+
    function Hash              is new ada.unchecked_Conversion   (gel.sprite_Id, ada.Containers.Hash_type);
    package  id_Maps_of_sprite is new ada.Containers.hashed_Maps (gel.sprite_Id,  gel.Sprite.view,
                                                                  Hash            => Hash,
                                                                  equivalent_Keys => "=");
+
+
    --------------
    --- sprite_Map
    --
@@ -141,6 +147,7 @@ is
    procedure set_local_Anchor_on_B (Self : in out Item;   for_Joint : in gel.Joint.view;
                                                           To        : in Vector_3);
 
+
    --------------
    --- Collisions
    --
@@ -169,13 +176,14 @@ is
 
    type impact_Filter   is access function  (the_Manifold : in a_Manifold) return Boolean;
    --
-   --  Returns True if the impact is of interest and requires a response.
+   -- Returns True if the impact is of interest and requires a response.
 
    type impact_Response is access procedure (the_Manifold : in a_Manifold;
                                              the_World    : in World.view);
 
    procedure add_impact_Response (Self : in out Item;   Filter   : in impact_Filter;
                                                         Response : in impact_Response);
+
 
    --------------
    --- Operations
@@ -226,7 +234,6 @@ is
    function cast_Ray (Self : in Item;   From, To : in Vector_3) return ray_Collision;
 
 
-
    -----------------
    --- Point Casting
    --
@@ -240,9 +247,8 @@ is
    function cast_Point (Self : in Item;   Point : in Vector_3) return point_Collision;
 
 
-
-   --------------------
-   ---  World Mirroring
+   -------------------
+   --- World Mirroring
    --
 
    interpolation_Steps  : constant Natural;
@@ -258,7 +264,7 @@ is
    procedure motion_Updates_are (Self : in Item;   seq_Id : in remote.World.sequence_Id;
                                                    Now    : in remote.World.motion_Updates);
    --
-   --  'Self' must use 'in' as mode to ensure async transmission with DSA.
+   -- 'Self' must use 'in' as mode to ensure async transmission with DSA.
 
 
    overriding
@@ -269,15 +275,16 @@ is
    function  Sprites         (Self : in out Item) return remote.World.sprite_model_Pairs;
 
 
-
    ----------
    --- Models
    --
 
-   --  Graphics Models
+   -- Graphics Models
    --
-   use type openGL.Model.view;
-   use type gel.graphics_model_Id;
+   use type
+        openGL.Model.view,
+        gel.graphics_model_Id;
+
    function Hash                      is new ada.unchecked_Conversion   (gel.graphics_model_Id,  ada.Containers.Hash_type);
    package  id_Maps_of_graphics_model is new ada.Containers.hashed_Maps (gel.graphics_model_Id,  openGL.Model.view,
                                                                          Hash,                   "=");
@@ -285,16 +292,15 @@ is
    function local_graphics_Models (Self : in Item) return id_Maps_of_graphics_model.Map;
 
 
-   --  Physics Models
+   -- Physics Models
    --
-   use type Standard.physics.Model.view,
-            Standard.physics.model_Id;
+   use type standard.physics.Model.view,
+            standard.physics.model_Id;
    function Hash                     is new ada.unchecked_Conversion   (physics.model_Id,  ada.Containers.Hash_type);
    package  id_Maps_of_physics_model is new ada.Containers.hashed_Maps (physics.model_Id,  physics.Model.view,
                                                                         Hash,              "=");
 
    function local_physics_Models (Self : in Item) return id_Maps_of_physics_model.Map;
-
 
 
    -------
@@ -304,10 +310,10 @@ is
    procedure reserve_Ids (Self : in out Item;   Before : in long_Integer);
 
 
-
-   ------------------
-   ---  Testing/Debug
+   -----------------
+   --- Testing/Debug
    --
+
    overriding
    procedure kick_Sprite (Self : in out Item;   sprite_Id : in gel.Sprite_Id);
 
@@ -329,6 +335,7 @@ private
    -----------------
    --- Signal Object
    --
+
    protected
    type signal_Object
    is
@@ -345,16 +352,20 @@ private
    -----------------------------
    --- sprite_Maps_of_transforms
    --
+
    function Hash (the_Sprite : in Sprite.view) return ada.Containers.Hash_type
    is
       (ada.Containers.Hash_type'Mod (system.storage_Elements.to_Integer (the_Sprite.all'Address)));
-     
+
    package  sprite_Maps_of_transforms is new ada.Containers.hashed_Maps (Sprite.view,  Matrix_4x4,
                                                                          Hash            => Hash,
                                                                          equivalent_Keys => "=");
+
+
    -------------------------
    --- all_sprite_Transforms
    --
+
    protected
    type all_sprite_Transforms
    is
@@ -372,6 +383,7 @@ private
    -----------------
    --- Duration_safe
    --
+
    protected
    type Duration_safe
    is
@@ -387,7 +399,7 @@ private
    type free_Set is
       record
          Sprites  : gel.Sprite.views (1 .. 10_000);
-         Count    : Natural := 0;
+         Count    : Natural                       := 0;
       end record;
 
    type free_Sets is array (1 .. 2) of free_Set;
@@ -409,7 +421,7 @@ private
                        Count     :    out Natural);
    private
       Set       : safe_Joints;
-      the_Count : Natural := 0;
+      the_Count : Natural    := 0;
    end safe_joint_Set;
 
 
@@ -430,31 +442,31 @@ private
 
          Renderer        : access  openGL.Renderer.lean.item'Class;         -- Is *not* owned by Item.
 
-         --  Models
+         -- Models
          --
          graphics_Models : aliased id_Maps_of_graphics_model.Map;
          physics_Models  : aliased id_Maps_of_physics_model .Map;
 
-         --  Ids
+         -- Ids
          --
          last_used_sprite_Id        : gel.sprite_Id         := 0;
          last_used_model_Id         : gel.graphics_model_Id := 0;     --TODO: Rename to 'last_used_graphics_model_Id'.
          last_used_physics_model_Id : physics     .model_Id := 0;
 
-         --  Free Sets
+         -- Free Sets
          --
          free_Sets        : World.free_Sets;
-         current_free_Set : Integer := 2;
+         current_free_Set : Integer        := 2;
 
-         --  Collisions
+         -- Collisions
          --
          Manifolds      : Manifold_array (1 .. 50_000);
-         manifold_Count : Natural := 0;
+         manifold_Count : Natural                     := 0;
 
          -- Broken Joints
          --
          broken_Joints         : safe_joint_Set;
-         broken_joints_Allowed : Boolean := False;
+         broken_joints_Allowed : Boolean       := False;
       end record;
 
 

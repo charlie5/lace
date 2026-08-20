@@ -8,7 +8,7 @@ with
      openGL.Model.any,
      openGL.texture_Set,
      openGL.Light,
-     --  openGL.Light.directional,
+     -- openGL.Light.directional,
 
      ada.Calendar;
 
@@ -20,21 +20,24 @@ procedure launch_box_rig_1_bone_Demo
 -- Simple rigged box model with one animated bone.
 --
 is
-   use gel.Rig,
-       gel.Math,
-       gel.linear_Algebra_3D,
-       openGL,
-       ada.Calendar;
+   use
+        gel.Rig,
+        gel.Math,
+        gel.linear_Algebra_3D,
+        openGL,
+        ada.Calendar;
+
 
    -------------
    --- Variables
    --
+
    the_Applet    : constant gel.Applet.gui_World.view := gel.Forge.new_gui_Applet ("Rig Demo", 1536, 864);
    the_rig_Model : constant openGL.Model.any.view     := openGL.Model.any.new_Model (Model            => openGL.to_Asset ("./box_1_bone.dae"),
-                                                                                     --  Model            => openGL.to_Asset ("./box_1_bone-animated.dae"),
-                                                                                     --  Model            => openGL.to_Asset ("./box_2_bone.dae"),
-                                                                                     --  Model            => openGL.to_Asset ("./box_3_bone.dae"),
-                                                                                     --  Model            => openGL.to_Asset ("./human-default-animated-01_01.dae"),
+                                                                                     -- Model            => openGL.to_Asset ("./box_1_bone-animated.dae"),
+                                                                                     -- Model            => openGL.to_Asset ("./box_2_bone.dae"),
+                                                                                     -- Model            => openGL.to_Asset ("./box_3_bone.dae"),
+                                                                                     -- Model            => openGL.to_Asset ("./human-default-animated-01_01.dae"),
                                                                                      Texture          => openGL.null_Asset,
                                                                                      texture_Details  => openGL.texture_Set.to_Set ([1 => openGL.to_Asset ("assets/gel/Face1.bmp")]),
                                                                                      Texture_is_lucid => False);
@@ -53,19 +56,19 @@ begin
    -- Set the lights position and ambient color.
    --
    declare
-      --  Light : openGL.Light.directional.item := the_Applet.Renderer.Light (Id => 1);
+      -- Light : openGL.Light.directional.item := the_Applet.Renderer.Light (Id => 1);
       Light : openGL.Light.item := the_Applet.Renderer.new_Light;
    begin
-      --  Light.ambient_Color_is ((255.0 / 255.0,
+      -- Light.ambient_Color_is ((255.0 / 255.0,
       --                           153.0 / 255.0,
       --                           102.0 / 255.0,
       --                             1.0));
       Light.Color_is ((255.0 / 255.0,
-                      153.0 / 255.0,
-                      102.0 / 255.0));
+                       153.0 / 255.0,
+                       102.0 / 255.0));
       Light.Site_is  ([1000.0, 000.0, 1000.0]);
 
-      --  the_Applet.Renderer.Light_is (Id => 1, Now => Light);
+      -- the_Applet.Renderer.Light_is (Id => 1, Now => Light);
       the_Applet.Renderer.set (the_Light => Light);
    end;
 

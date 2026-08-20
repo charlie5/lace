@@ -22,8 +22,9 @@ procedure launch_human_rig_Demo
 -- Rigged human model with two animations (jumping and golf swing).
 --
 is
-   use ada.Exceptions,
-       ada.Text_IO;
+   use
+        ada.Exceptions,
+        ada.Text_IO;
 
    no_Model : exception;
 
@@ -35,12 +36,13 @@ begin
    new_Line;
 
    declare
-      use gel.Rig,
-          gel.Math,
-          gel.linear_Algebra_3D,
-          openGL,
-          ada.command_Line,
-          ada.Calendar;
+      use
+           gel.Rig,
+           gel.Math,
+           gel.linear_Algebra_3D,
+           openGL,
+           ada.command_Line,
+           ada.Calendar;
 
       Arg : constant String := (if argument_Count = 0 then raise no_Model with "No model specified."
                                                       else Argument (1));
@@ -48,9 +50,12 @@ begin
       model_Name : constant String := (if    Arg = "golfer" then "assets/human-animation-golf.dae"
                                        elsif Arg = "jumper" then "assets/human-animation-jump.dae"
                                        else                      raise no_Model with "No model exists for " & Arg);
+
+
       -------------
       --- Variables
       --
+
       the_Applet    : constant gel.Applet.gui_World.view     := gel.Forge.new_gui_Applet ("Rig Demo", 1536, 864);
       the_Rig       : aliased  gel.Rig.item;
       the_rig_Model : aliased constant openGL.Model.any.view := openGL.Model.any.new_Model (Model            => openGL.to_Asset (model_Name),

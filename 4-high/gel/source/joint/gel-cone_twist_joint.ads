@@ -5,9 +5,10 @@ with
      physics.Joint.DoF6,
      physics.Space;
 
+
 package gel.cone_twist_Joint
 --
---  Allows sprites to be connected via 'cone-twist' joint.
+-- Allows sprites to be connected via 'cone-twist' joint.
 --
 is
    type Item  is new gel.Joint.item with private;
@@ -65,7 +66,7 @@ is
    function  Degrees_of_freedom (Self : in Item) return joint.Degree_of_freedom;
 
 
-   --  Bounds - limits the range of motion for a degree of freedom.
+   -- Bounds - limits the range of motion for a degree of freedom.
    --
 
    overriding
@@ -88,6 +89,7 @@ is
    procedure Velocity_is   (Self : in     Item;   for_Degree : in joint.Degree_of_freedom;
                                                   Now        : in Real);
 
+
    --------------
    --- Operations
    --
@@ -105,5 +107,6 @@ private
       record
          Physics : access std_physics.Joint.DoF6.item'Class;
    end record;
+
 
 end gel.cone_twist_Joint;

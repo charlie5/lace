@@ -70,15 +70,16 @@ is
    overriding
    procedure freshen (Self : in out Item)
    is
-      use Math,
-          linear_Algebra_3D;
+      use
+           Math,
+           linear_Algebra_3D;
 
       Speed           :          math.Real  renames Self.Speed;
       the_sprite_Site : constant math.Vector_3   := Self.Sprite.Site;
       the_Camera      : constant gel.Camera.view := Self.Cameras.first_Element;
 
    begin
-      --  Linear motion.
+      -- Linear motion.
       --
       if Self.allow_linear_Motion
       then
@@ -89,7 +90,7 @@ is
          if Self.Motion (Down)     then   Self.sprite_Offset := Self.sprite_Offset - the_Camera.Spin * [0.0, 0.1 * Speed, 0.0];   end if;
       end if;
 
-      --  Orbit.
+      -- Orbit.
       --
       if Self.allow_orbital_Motion
       then

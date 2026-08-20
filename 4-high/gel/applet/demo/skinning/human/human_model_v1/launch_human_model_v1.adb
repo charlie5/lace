@@ -26,44 +26,44 @@ is
 
 --     the_human_graphics_Model : aliased gel.graphics_Model.open_gl.view
 --       := gel.graphics_Model.open_gl.forge.new_Model (scale   => (1.0, 1.0, 1.0),
---  --                                                     model   => gel.to_Asset ("assets/gel/model/gel-human.dae"),
+--  --                                                    model   => gel.to_Asset ("assets/gel/model/gel-human.dae"),
 --                                                     model   => gel.to_Asset ("assets/gel/collada/mh-human-dae.dae"),
---  --                                                     model   => gel.to_Asset ("assets/gel/collada/alfieri.dae"),
+--  --                                                    model   => gel.to_Asset ("assets/gel/collada/alfieri.dae"),
 --                                                     texture => gel.null_Asset, -- gel.to_Asset ("assets/collada/gel-human-texture.tga"),
 --                                                     Texture_is_lucid => False);
 --     the_human_physics_Model : constant gel.physics_Model.view
 --       := gel.physics_Model.Forge.new_physics_Model (shape_Info => (kind         => gel.physics_Model.Cube,
 --                                                                    half_extents => 0.5 * (4.0, 1.0, 2.0)),
 --                                                     mass       => 1.0);
---  --     the_human_physics_Model : constant gel.physics_Model.view
---  --       := gel.physics_Model.Forge.new_physics_Model (shape_Info => (kind          => gel.physics_Model.a_Sphere,
---  --                                                                    sphere_radius => 0.2),
---  --                                                     mass       => 0.5);
+--  --    the_human_physics_Model : constant gel.physics_Model.view
+--  --      := gel.physics_Model.Forge.new_physics_Model (shape_Info => (kind          => gel.physics_Model.a_Sphere,
+--  --                                                                   sphere_radius => 0.2),
+--  --                                                    mass       => 0.5);
    my_Human         : aliased gel.Human_v1.item;
    use gel.Human_v1;
 
-   frame_Period     : constant Duration := 0.016_666_667;     -- ~ 1/60th of a second.
+   frame_Period     : constant Duration         := 0.016_666_667;     -- ~ 1/60th of a second.
    next_render_Time :          ada.calendar.Time;
 
 begin
    gel.Human_v1.Mode_is (Skin);
    gel.Human_v1.Mode_is (Bones);
-   --  gel.Human_v1.Mode_is (Skin_and_Bones);
+   -- gel.Human_v1.Mode_is (Skin_and_Bones);
 
    the_Applet.gui_World.Gravity_is ([0.0, -0.0, 0.0]);
-   --  the_Applet.gui_World.Gravity_is ((0.0, -9.8, 0.0));
-   --  the_Applet.gui_World.Gravity_is ((0.0, -0.5, 0.0));
+   -- the_Applet.gui_World.Gravity_is ((0.0, -9.8, 0.0));
+   -- the_Applet.gui_World.Gravity_is ((0.0, -0.5, 0.0));
 
-   --  --  the_Applet.gui_Camera.Site_is ((0.0, 1.0, 5.0));    -- Position the camera
-   --  the_Applet.gui_Camera.Site_is ((0.0, -9.0, 5.0));    -- Position the camera
+   --  -- the_Applet.gui_Camera.Site_is ((0.0, 1.0, 5.0));    -- Position the camera
+   -- the_Applet.gui_Camera.Site_is ((0.0, -9.0, 5.0));    -- Position the camera
    the_Applet.gui_Camera.Site_is ([0.0, -0.0, 5.0]);    -- Position the camera
    the_Applet.enable_simple_Dolly (1);                 -- Enable user camera control via keyboards
    the_Applet.Dolly.Speed_is (0.1);
    the_Applet.enable_Mouse (detect_Motion => False);                            -- Enable mouse events.
 
 --     gel.Human_v1.use_Model ("assets/mh-blender-no_bones.dae");
-   --  gel.Human_v1.use_Model ("assets/mh-blender-2.dae");
-   --  gel.Human_v1.use_Model ("assets/mh-blender-2-y_up.dae");
+   -- gel.Human_v1.use_Model ("assets/mh-blender-2.dae");
+   -- gel.Human_v1.use_Model ("assets/mh-blender-2-y_up.dae");
 --     gel.Human_v1.use_Model ("assets/human-default.dae");
    gel.Human_v1.use_Model ("assets/human-default-animated-01_01.dae");
 
@@ -77,7 +77,7 @@ begin
                     mass => 1.0,
                     is_Kinematic => False);
 
-   --  my_Human.base_Sprite.rotate (to_spin => x_Rotation_from (to_Radians (0.0)));
+   -- my_Human.base_Sprite.rotate (to_spin => x_Rotation_from (to_Radians (0.0)));
 --     my_Human.base_Sprite.move   ((0.0, 2.0, 0.0));
    the_Applet.gui_World.add (my_Human.base_Sprite, and_Children => True);      -- Add the human
 --     my_Human.base_Sprite.move ((0.0,  0.0,  0.0));                             --
@@ -101,9 +101,9 @@ begin
 
    while the_Applet.is_open
    loop
-      --  my_Human.base_Sprite.apply_Force ((0.0, 100.0, 0.0));
-      --  my_Human.Sprite (for_Bone => gel.human_Types_v1.upper_Arm_R).apply_Force ((0.0, 10000.0, 0.0));
-      --  gel.Human_v1.Sprite (my_Human, for_Bone => gel.human_Types_v1.upper_Arm_R).apply_Force ((0.0, 100.0, 0.0));
+      -- my_Human.base_Sprite.apply_Force ((0.0, 100.0, 0.0));
+      -- my_Human.Sprite (for_Bone => gel.human_Types_v1.upper_Arm_R).apply_Force ((0.0, 10000.0, 0.0));
+      -- gel.Human_v1.Sprite (my_Human, for_Bone => gel.human_Types_v1.upper_Arm_R).apply_Force ((0.0, 100.0, 0.0));
 
       the_Applet.gui_World.evolve; -- (by => 1.0/60.0);      -- Evolve the world.
       my_Human  .evolve (the_Applet.gui_World.Age);
@@ -117,7 +117,7 @@ begin
 
    the_Applet.destroy;
 
---  exception
+-- exception
 --     when E : others =>
 --        put_Line (Exception_Information (E));
 end launch_human_Model_v1;

@@ -5,10 +5,10 @@ with
 
 package gel.World.client
 --
---  Provides a gel world.
+-- Provides a gel world.
 --
 is
-   --  pragma Suppress (Container_Checks);     -- Suppress expensive tamper checks.
+   -- pragma suppress (Container_Checks);     -- Suppress expensive tamper checks.
 
    type Item  is limited new gel.World.item with private;
 
@@ -17,7 +17,7 @@ is
 
 
    ---------
-   --  Forge
+   --- Forge
    --
 
    package Forge
@@ -32,6 +32,8 @@ is
                           space_Kind : in     physics.space_Kind;
                           Renderer   : access openGL.Renderer.lean.item'Class) return gel.World.client.view;
    end Forge;
+
+
 
    overriding
    procedure destroy (Self : in out Item);
@@ -49,8 +51,8 @@ is
    overriding
    procedure evolve (Self : in out Item);
 
-   --  overriding
-   --  procedure wait_on_evolve (Self : in out Item);
+   -- overriding
+   -- procedure wait_on_evolve (Self : in out Item);
 
 
    --------------------
@@ -63,7 +65,7 @@ is
    procedure motion_Updates_are (Self : in Item;   seq_Id : in remote.World.sequence_Id;
                                                    Now    : in remote.World.motion_Updates);
    --
-   --  'Self' must use 'in' mode to ensure async transmission with DSA.
+   -- 'Self' must use 'in' mode to ensure async transmission with DSA.
 
 
    ----------
@@ -117,14 +119,13 @@ private
    type safe_sequence_Id_view is access all safe_sequence_Id;
 
 
-
    --------------
    --- World Item
    --
 
    type Item is limited new gel.World.item with
       record
-         Age_at_last_mirror_update : Duration := 0.0;
+         Age_at_last_mirror_update : Duration          := 0.0;
          all_Sprites               : aliased sprite_Map;
 
          -- Motion Updates

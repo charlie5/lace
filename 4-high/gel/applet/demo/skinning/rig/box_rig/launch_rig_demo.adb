@@ -22,20 +22,24 @@ procedure launch_rig_Demo
 --
 --
 is
-   use gel.Rig,
-       openGL,
-       ada.Calendar;
+   use
+        gel.Rig,
+        openGL,
+        ada.Calendar;
+
 
    -----------
    --- Utility
    --
 
-   --  function "+" (From : in String) return ada.strings.unbounded.unbounded_String
+   -- function "+" (From : in String) return ada.strings.unbounded.unbounded_String
    --    renames ada.strings.unbounded.To_unbounded_String;
+
 
    -------------
    --- Variables
    --
+
    the_Applet    : constant gel.Applet.gui_World.view := gel.Forge.new_gui_Applet ("Rig Demo", 1536, 864);
 
    the_Ground    : constant gel.Sprite.view           := gel.Forge.new_box_Sprite (the_Applet.gui_World,
@@ -43,9 +47,9 @@ is
                                                                                    Size => [50.0, 1.0, 50.0]);
 
    the_rig_Model : aliased constant openGL.Model.any.view := openGL.Model.any.new_Model (--Scale            => (1.0, 1.0, 1.0),
-                                                                                         --  Model            => openGL.to_Asset ("./tarantula-rigged.dae"),
+                                                                                         -- Model            => openGL.to_Asset ("./tarantula-rigged.dae"),
                                                                                          Model            => openGL.to_Asset ("./box_1_bone.dae"),
-                                                                                         --  Model            => openGL.to_Asset ("./box_2_bone.dae"),
+                                                                                         -- Model            => openGL.to_Asset ("./box_2_bone.dae"),
                                                                                          Texture          => openGL.null_Asset,
                                                                                          texture_Details  => openGL.texture_Set.to_Set ([1 => openGL.to_Asset ("./assets/opengl/textures/wooden-crate.jpg")]),
                                                                                          Texture_is_lucid => False);
@@ -75,9 +79,9 @@ begin
    end;
 
 
-   --  declare
+   -- declare
    --     leaf_bone_Lengths : bone_id_Map_of_details;
-   --  begin
+   -- begin
    --     leaf_bone_Lengths.insert (+"head", to_Details (length => 0.13));
    --     leaf_bone_Lengths.insert (+"jaw",  to_Details (length => 0.11));
    --
@@ -108,12 +112,12 @@ begin
       the_Rig.define (the_Applet.gui_World,
                       the_rig_Model.all'Access,
                       Mass         => 1.0,
-                      --  bone_Details => leaf_bone_Lengths,
+                      -- bone_Details => leaf_bone_Lengths,
                       is_Kinematic => False);
-   --  end;
+   -- end;
 
    the_Ground.Site_is ([0.0,  -4.0,  0.0]);
-   --  the_Rig   .Spin_is (x_Rotation_from (to_Radians (-90.0)));
+   -- the_Rig   .Spin_is (x_Rotation_from (to_Radians (-90.0)));
 
    the_Applet.gui_World.add (the_Rig.base_Sprite, and_Children => True);     -- Add the rigs armature sprite.
    the_Applet.gui_World.add (the_Ground,          and_Children => False);    -- Add the ground        sprite.

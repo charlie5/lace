@@ -11,11 +11,12 @@ pragma unreferenced (gel.Window.setup);
 
 procedure launch_hello_GEL
 --
---  Opens a GEL window.
+-- Opens a GEL window.
 --
 is
-   use gel.Applet.gui_world,
-       ada.Text_IO;
+   use
+        gel.Applet.gui_world,
+        ada.Text_IO;
 
    the_Applet : gel.Applet.gui_World.view := gel.Forge.new_gui_Applet ("Hello GEL");
 

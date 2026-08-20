@@ -6,8 +6,9 @@ package body gel.any_Joint
 is
    use Math;
 
+
    ---------
-   --  Forge
+   --- Forge
    --
 
    procedure define (Self : access Item;   in_Space           : in     std_physics.Space.view;
@@ -126,7 +127,7 @@ is
 
 
 
-   --  Bounds - limits the range of motion for a degree of freedom.
+   -- Bounds - limits the range of motion for a degree of freedom.
    --
 
    -- TODO: Use Radians type for angular bounds.
@@ -135,7 +136,8 @@ is
    function is_Bound (Self : in Item;   for_Degree : in joint.Degree_of_freedom) return Boolean
    is
    begin
-      if for_Degree in Sway .. Surge then
+      if for_Degree in Sway .. Surge
+      then
          return False;
       end if;
 
@@ -196,7 +198,7 @@ is
 
 
    ----------
-   --  Extent
+   --- Extent
    --
 
    overriding
@@ -213,7 +215,7 @@ is
 
 
    ------------------
-   --  Motor Velocity
+   --- Motor Velocity
    --
 
    overriding

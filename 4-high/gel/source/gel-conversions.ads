@@ -1,6 +1,7 @@
 with
      openGL;
 
+
 package gel.Conversions
 is
 
@@ -11,5 +12,6 @@ is
    function to_GL   (Self : in geometry_3d.bounding_Box)   return opengl.Bounds;
 
    function to_Math (Self : in opengl.Vector_3)            return math.Vector_3;
+
 
 end gel.Conversions;

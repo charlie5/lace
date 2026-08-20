@@ -6,10 +6,11 @@ limited
 with
      gel.Sprite;
 
+
 package gel.Joint
 --
---  Allows sprites to be connected via a joint.
---  A joint constrains the motion of the sprites which it connects.
+-- Allows sprites to be connected via a joint.
+-- A joint constrains the motion of the sprites which it connects.
 --
 is
    type Item  is abstract new lace.Any.limited_item with private;
@@ -30,6 +31,7 @@ is
    ---------
    --- Forge
    --
+
    procedure define  (Self : access Item;   Sprite_A, Sprite_B : access gel.Sprite.item'Class);
 
    procedure destroy (Self : in out Item) is abstract;
@@ -55,7 +57,7 @@ is
 
    function Degrees_of_freedom (Self : in Item) return degree_of_Freedom  is abstract;
    --
-   --  Returns the number of possible DoF's for this joint.
+   -- Returns the number of possible DoF's for this joint.
 
 
    type Physics_view is access all physics.Joint.item'Class;
@@ -63,7 +65,7 @@ is
    function Physics (Self : in Item) return Physics_view is abstract;
 
 
-   --  Bounds - limits the range of motion for a Degree of freedom.
+   -- Bounds - limits the range of motion for a Degree of freedom.
    --
 
    function  low_Bound     (Self : access Item;   for_Degree : in Degree_of_freedom) return Real is abstract;
@@ -75,12 +77,12 @@ is
 
    function  is_Bound      (Self : in     Item;   for_Degree : in Degree_of_freedom) return Boolean is abstract;
    --
-   --  Returns true if an upper or lower bound has been set for the given Degree of freedom.
+   -- Returns true if an upper or lower bound has been set for the given Degree of freedom.
 
 
    function  Extent        (Self : in     Item;   for_Degree : in Degree_of_freedom) return Real is abstract;
    --
-   --  Angle about axis for rotational joints or spatial distance along an axis, in the case of sliders, etc.
+   -- Angle about axis for rotational joints or spatial distance along an axis, in the case of sliders, etc.
 
    procedure Velocity_is   (Self : in     Item;   for_Degree : in Degree_of_freedom;
                                                   Now        : in Real) is abstract;
@@ -91,9 +93,8 @@ is
 
    function collide_Connected (Self : in Item'Class) return Boolean;
 
-   --  function local_Anchor_on_A (Self : in Item'Class) return Vector_3;
-   --  function local_Anchor_on_B (Self : in Item'Class) return Vector_3;
-
+   -- function local_Anchor_on_A (Self : in Item'Class) return Vector_3;
+   -- function local_Anchor_on_B (Self : in Item'Class) return Vector_3;
 
 
    --------------
@@ -107,8 +108,8 @@ is
    --- Hinges
    --
 
-   --  function  local_Anchor_on_A    (Self : in     Item)     return Vector_3;
-   --  function  local_Anchor_on_B    (Self : in     Item)     return Vector_3;
+   -- function  local_Anchor_on_A    (Self : in     Item)     return Vector_3;
+   -- function  local_Anchor_on_B    (Self : in     Item)     return Vector_3;
 
    procedure local_Anchor_on_A_is (Self :    out Item;   Now : in Vector_3);
    procedure local_Anchor_on_B_is (Self :    out Item;   Now : in Vector_3);
@@ -122,10 +123,11 @@ private
          Sprite_A : access gel.Sprite.item'Class;
          Sprite_B : access gel.Sprite.item'Class;
 
-         --  local_Anchor_on_A : Vector_3;
-         --  local_Anchor_on_B : Vector_3;
+         -- local_Anchor_on_A : Vector_3;
+         -- local_Anchor_on_B : Vector_3;
       end record;
 
    null_Joints : constant Joint.views (1 .. 0) := [others => null];
+
 
 end gel.Joint;

@@ -2,9 +2,10 @@ with
      gel.Sprite,
      gel.World;
 
+
 package gel.Terrain
 --
---  Provides a constructor for heightmap terrain.
+-- Provides a constructor for heightmap terrain.
 --
 is
 
@@ -12,5 +13,6 @@ is
                          heights_File : in String;
                          texture_File : in String        := "";
                          Scale        : in math.Vector_3 := (1.0, 1.0, 1.0)) return access gel.Sprite.Grid;
+
 
 end gel.Terrain;

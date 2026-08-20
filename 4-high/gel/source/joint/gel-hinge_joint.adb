@@ -2,6 +2,7 @@ with
      physics.Object,
      ada.unchecked_Deallocation;
 
+
 package body gel.hinge_Joint
 is
    use gel.Joint;
@@ -62,8 +63,8 @@ is
       sprite_B_Solid : std_physics.Object.view;
 
    begin
-      if   Sprite_A = null
-        or Sprite_B = null
+      if        Sprite_A = null
+        or else Sprite_B = null
       then
          raise Error with "Sprite is null.";
       end if;
@@ -87,7 +88,7 @@ is
    is
       type Joint_cast is access all gel.Joint.item;
 
-      A_Frame        : constant Matrix_4x4 := Frame_A;
+      A_Frame        : constant Matrix_4x4    := Frame_A;
       sprite_A_Solid : std_physics.Object.view;
 
    begin
@@ -116,8 +117,8 @@ is
       sprite_B_Solid : std_physics.Object.view;
 
    begin
-      if   Sprite_A = null
-        or Sprite_B = null
+      if        Sprite_A = null
+        or else Sprite_B = null
       then
          raise Error with "Attempt to join a null sprite.";
       end if;
@@ -133,6 +134,7 @@ is
                                                  low_Limit,       high_Limit,
                                                  collide_Conected);
    end define;
+
 
 
    overriding
@@ -211,12 +213,14 @@ is
    end Angle;
 
 
+
    overriding
    function Frame_A (Self : in Item) return Matrix_4x4
    is
    begin
       return Self.Physics.Frame_A;
    end Frame_A;
+
 
 
    overriding
@@ -227,12 +231,14 @@ is
    end Frame_B;
 
 
+
    overriding
    procedure Frame_A_is (Self : in out Item;   Now  : in Matrix_4x4)
    is
    begin
       Self.Physics.Frame_A_is (Now);
    end Frame_A_is;
+
 
 
    overriding
@@ -243,13 +249,13 @@ is
    end Frame_B_is;
 
 
+
    overriding
    function Physics (Self : in Item) return joint.Physics_view
    is
    begin
       return Joint.Physics_view (Self.Physics);
    end Physics;
-
 
 
    ---------
@@ -277,7 +283,6 @@ is
    begin
       return Self.Physics.max_motor_Torque;
    end max_motor_Torque;
-
 
 
    ----------------
@@ -312,7 +317,7 @@ is
    end apply_Limits;
 
 
-   --  Bounds - limits the range of motion for a Degree of freedom.
+   -- Bounds - limits the range of motion for a Degree of freedom.
    --
 
    overriding
@@ -320,12 +325,14 @@ is
    is
       use type joint.Degree_of_freedom;
    begin
-      if for_Degree /= Revolve then
+      if for_Degree /= Revolve
+      then
          raise Error with "Invalid degree of freedom:" & for_Degree'Image;
       end if;
 
       return Self.low_Bound;
    end low_Bound;
+
 
 
    overriding
@@ -334,7 +341,8 @@ is
    is
       use type joint.Degree_of_freedom;
    begin
-      if for_Degree /= Revolve then
+      if for_Degree /= Revolve
+      then
          raise Error with "Invalid degree of freedom:" & for_Degree'Image;
       end if;
 
@@ -343,17 +351,20 @@ is
    end low_Bound_is;
 
 
+
    overriding
    function high_Bound (Self : access Item;  for_Degree : in joint.Degree_of_freedom) return Real
    is
       use type joint.Degree_of_freedom;
    begin
-      if for_Degree /= Revolve then
+      if for_Degree /= Revolve
+      then
          raise Error with "Invalid degree of freedom:" & for_Degree'Image;
       end if;
 
       return Self.high_Bound;
    end high_Bound;
+
 
 
    overriding
@@ -362,7 +373,8 @@ is
    is
       use type joint.Degree_of_freedom;
    begin
-      if for_Degree /= Revolve then
+      if for_Degree /= Revolve
+      then
          raise Error with "Invalid degree of freedom:" & for_Degree'Image;
       end if;
 
@@ -371,17 +383,20 @@ is
    end high_Bound_is;
 
 
+
    overriding
    function Extent (Self : in Item;   for_Degree : in Degree_of_freedom) return Real
    is
       use type joint.Degree_of_freedom;
    begin
-      if for_Degree /= Revolve then
+      if for_Degree /= Revolve
+      then
          raise Error with "Invalid degree of freedom:" & for_Degree'Image;
       end if;
 
       return Self.Angle;
    end Extent;
+
 
 
    overriding
@@ -392,12 +407,13 @@ is
    end is_Bound;
 
 
+
    overriding
    procedure Velocity_is (Self : in Item;   for_Degree : in joint.Degree_of_freedom;
                                             Now        : in Real)
    is
    begin
-      self.Physics.Velocity_is (Now, for_Degree);
+      Self.Physics.Velocity_is (Now, for_Degree);
    end Velocity_is;
 
 

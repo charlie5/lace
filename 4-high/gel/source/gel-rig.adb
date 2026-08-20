@@ -167,8 +167,9 @@ is
 
    procedure update_global_Transform_for (Self : in out Item'Class;   the_Joint : in collada.Library.visual_scenes.Node_view)
    is
-      use collada.Library,
-          ada.Strings.unbounded;
+      use
+           collada.Library,
+           ada.Strings.unbounded;
 
       which_Joint          : constant scene_joint_Id      := the_Joint.Id;
       child_Joints         : constant visual_scenes.Nodes := the_Joint.Children;
@@ -189,7 +190,7 @@ is
       declare
          use type gel.Sprite.view;
 
-         the_bone_Id : constant bone_Id := which_Joint;
+         the_bone_Id : constant bone_Id   := which_Joint;
          Site        :          Vector_3;
          Rotation    :          Matrix_3x3;
 
@@ -260,6 +261,7 @@ is
    end set_Location_x;
 
 
+
    procedure set_Location_y (Self : in out Item'Class;   for_Joint : in scene_joint_Id;
                                                          To        : in Real)
    is
@@ -268,12 +270,13 @@ is
    end set_Location_y;
 
 
+
    procedure set_Location_z (Self : in out Item'Class;   for_Joint : in scene_joint_Id;
                                                          To        : in Real)
    is
    begin
       Self.scene_Joints (for_Joint).Node.set_Location_z (To);
-   end set_location_z;
+   end set_Location_z;
 
 
 
@@ -322,12 +325,12 @@ is
                                            is_Kinematic : in Boolean                := False;
                                            bone_Details : in bone_id_Map_of_details := bone_id_Maps_of_details.empty_Map)
    is
-      use collada.Document,
-          collada.Library,
-          collada.Library.visual_Scenes,
-
-          ada.Strings.unbounded,
-          ada.Strings;
+      use
+           collada.Document,
+           collada.Library,
+           collada.Library.visual_Scenes,
+           ada.Strings.unbounded,
+           ada.Strings;
 
       type any_Model_view is access all openGL.Model.any.item;
 
@@ -381,6 +384,7 @@ is
             set_Site_for (child_Joints (i));     -- Recurse over children.
          end loop;
       end set_Site_for;
+
 
 
       procedure create_Bone (the_Bone    : in bone_Id;
@@ -459,6 +463,7 @@ is
       end create_Bone;
 
 
+
       procedure create_Bone_for (the_Joint : in visual_Scenes.Node_view;   Parent : in bone_Id)
       is
          use bone_id_Maps_of_details;
@@ -503,6 +508,7 @@ is
             then   bone_Length := guessed_bone_Length;
             else   bone_Length := the_bone_Details.Length;
             end if;
+
          else
             bone_Length := guessed_bone_Length;
          end if;
@@ -554,6 +560,7 @@ is
       Self.root_Joint := the_root_Joint;                 -- Remember our root joint.
       Self.Model      := Model.all'unchecked_Access;     -- Remember our model.
 
+
       --- Parse Controllers.
       --
 
@@ -591,6 +598,7 @@ is
 
       --- Parse Visual Scene.
       --
+
       Self.define_global_Transform_for (the_root_Joint,                  -- Determine all joint transforms, recursively.
                                         Slot => global_transform_Slot);
       set_Site_for    (the_root_Joint);
@@ -599,8 +607,10 @@ is
 
       --- Parse the Collada animations file.
       --
+
       declare
          use collada.Library.Animations;
+
          the_Animations : constant access Animation_array := the_Document.Libraries.Animations.Contents;
 
       begin
@@ -623,9 +633,10 @@ is
                      Self.Channels (Channel).Target       := Self.scene_Joints (scene_Joint).Node.fetch_Transform (Sid);
                      Self.Channels (Channel).target_Joint := scene_Joint;
 
-                     Self.Channels (Channel).Times        := Inputs_of  (the_Animation);
-                     Self.Channels (Channel).Values       := Outputs_of (the_Animation);
+                     Self.Channels (Channel).Times  := Inputs_of  (the_Animation);
+                     Self.Channels (Channel).Values := Outputs_of (the_Animation);
                   end common_setup;
+
 
 
                   procedure setup_Rotation (Channel     : in channel_Id;
@@ -684,9 +695,10 @@ is
                      Self.Channels (Channel).initial_Transform := Self.Channels (Channel).Transforms (1);
                      Self.Channels (Channel).current_Transform := Self.Channels (Channel).initial_Transform;
 
-                     Self.Channels (Channel).current_Site      := Self.Channels (Channel).initial_Transform.Translation;
-                     Self.Channels (Channel).initial_Site      := Self.Channels (Channel).current_Site;
+                     Self.Channels (Channel).current_Site := Self.Channels (Channel).initial_Transform.Translation;
+                     Self.Channels (Channel).initial_Site := Self.Channels (Channel).current_Site;
                   end setup_Location_x;
+
 
 
                   procedure setup_Location_y (Channel     : in channel_Id;
@@ -713,9 +725,10 @@ is
                      Self.Channels (Channel).initial_Transform := Self.Channels (Channel).Transforms (1);
                      Self.Channels (Channel).current_Transform := Self.Channels (Channel).initial_Transform;
 
-                     Self.Channels (Channel).current_Site      := Self.Channels (Channel).initial_Transform.Translation;
-                     Self.Channels (Channel).initial_Site      := Self.Channels (Channel).current_Site;
+                     Self.Channels (Channel).current_Site := Self.Channels (Channel).initial_Transform.Translation;
+                     Self.Channels (Channel).initial_Site := Self.Channels (Channel).current_Site;
                   end setup_Location_y;
+
 
 
                   procedure setup_Location_z (Channel     : in channel_Id;
@@ -742,9 +755,10 @@ is
                      Self.Channels (Channel).initial_Transform := Self.Channels (Channel).Transforms (1);
                      Self.Channels (Channel).current_Transform := Self.Channels (Channel).initial_Transform;
 
-                     Self.Channels (Channel).current_Site      := Self.Channels (Channel).initial_Transform.Translation;
-                     Self.Channels (Channel).initial_Site      := Self.Channels (Channel).current_Site;
+                     Self.Channels (Channel).current_Site := Self.Channels (Channel).initial_Transform.Translation;
+                     Self.Channels (Channel).initial_Site := Self.Channels (Channel).current_Site;
                   end setup_Location_z;
+
 
 
                   procedure setup_full_Transform (Channel     : in channel_Id;
@@ -756,13 +770,13 @@ is
 
                      -- For matrix interpolation during 'full_transform' animation.
                      --
-                     Self.Channels (Channel).Transforms := new Transforms (1 .. Collada.matrix_Count (Self.Channels (Channel).Values.all));
+                     Self.Channels (Channel).Transforms := new Transforms (1 .. collada.matrix_Count (Self.Channels (Channel).Values.all));
 
                      for i in Self.Channels (Channel).Transforms'Range
                      loop
                         declare
-                           the_Matrix : constant math.Matrix_4x4 := Transpose (Collada.get_Matrix (Self.Channels (Channel).Values.all,
-                                                                               which => i));
+                           the_Matrix : constant math.Matrix_4x4 := Transpose (collada.get_Matrix (Self.Channels (Channel).Values.all,
+                                                                                                   which => i));
                         begin
                            Self.Channels (Channel).Transforms (i) := (Rotation    => to_Quaternion (get_Rotation    (the_Matrix)),
                                                                       Translation =>                get_Translation (the_Matrix));
@@ -772,9 +786,10 @@ is
                      Self.Channels (Channel).initial_Transform := Self.Channels (Channel).Transforms (1);
                      Self.Channels (Channel).current_Transform := Self.Channels (Channel).initial_Transform;
 
-                     Self.Channels (Channel).current_Site      := Self.Channels (Channel).initial_Transform.Translation;
-                     Self.Channels (Channel).initial_Site      := Self.Channels (Channel).current_Site;
+                     Self.Channels (Channel).current_Site := Self.Channels (Channel).initial_Transform.Translation;
+                     Self.Channels (Channel).initial_Site := Self.Channels (Channel).current_Site;
                   end setup_full_Transform;
+
 
 
                   function Index (Source  : in unbounded_String;
@@ -784,114 +799,149 @@ is
                     renames ada.Strings.unbounded.Index;
 
                begin
-                  if    Index (the_Animation.Channel.Target, "hips/transform")    /= 0 then
+                  if    Index (the_Animation.Channel.Target, "hips/transform")    /= 0
+                  then
                      setup_full_Transform (+"hips",         +"hips",         "transform");
 
-                  elsif Index (the_Animation.Channel.Target, "thigh_L/transform") /= 0 then
+                  elsif Index (the_Animation.Channel.Target, "thigh_L/transform") /= 0
+                  then
                      setup_full_Transform (+"thigh_L",      +"thigh_L",      "transform");
 
-                  elsif Index (the_Animation.Channel.Target, "shin_L/transform")  /= 0 then
+                  elsif Index (the_Animation.Channel.Target, "shin_L/transform")  /= 0
+                  then
                      setup_full_Transform (+"shin_L",       +"shin_L",       "transform");
 
-                  elsif Index (the_Animation.Channel.Target, "foot_L/transform")  /= 0 then
+                  elsif Index (the_Animation.Channel.Target, "foot_L/transform")  /= 0
+                  then
                      setup_full_Transform (+"foot_L",       +"foot_L",       "transform");
 
-                  elsif Index (the_Animation.Channel.Target, "toe_L/transform")   /= 0 then
+                  elsif Index (the_Animation.Channel.Target, "toe_L/transform")   /= 0
+                  then
                      setup_full_Transform (+"toe_L",        +"toe_L",        "transform");
 
-                  elsif Index (the_Animation.Channel.Target, "thigh_R/transform") /= 0 then
+                  elsif Index (the_Animation.Channel.Target, "thigh_R/transform") /= 0
+                  then
                      setup_full_Transform (+"thigh_R",      +"thigh_R",      "transform");
 
-                  elsif Index (the_Animation.Channel.Target, "shin_R/transform")  /= 0 then
+                  elsif Index (the_Animation.Channel.Target, "shin_R/transform")  /= 0
+                  then
                      setup_full_Transform (+"shin_R",       +"shin_R",       "transform");
 
-                  elsif Index (the_Animation.Channel.Target, "foot_R/transform")  /= 0 then
+                  elsif Index (the_Animation.Channel.Target, "foot_R/transform")  /= 0
+                  then
                      setup_full_Transform (+"foot_R",       +"foot_R",       "transform");
 
-                  elsif Index (the_Animation.Channel.Target, "toe_R/transform")   /= 0 then
+                  elsif Index (the_Animation.Channel.Target, "toe_R/transform")   /= 0
+                  then
                      setup_full_Transform (+"toe_R",        +"toe_R",        "transform");
 
-                  elsif Index (the_Animation.Channel.Target, "spine/transform")   /= 0 then
+                  elsif Index (the_Animation.Channel.Target, "spine/transform")   /= 0
+                  then
                      setup_full_Transform (+"spine",        +"spine",        "transform");
 
-                  elsif Index (the_Animation.Channel.Target, "chest/transform")   /= 0 then
+                  elsif Index (the_Animation.Channel.Target, "chest/transform")   /= 0
+                  then
                      setup_full_Transform (+"chest",        +"chest",        "transform");
 
 
-                  elsif Index (the_Animation.Channel.Target, "clavicle_R/transform")   /= 0 then
+                  elsif Index (the_Animation.Channel.Target, "clavicle_R/transform")   /= 0
+                  then
                      setup_full_Transform (+"clavicle_R",   +"clavicle_R",   "transform");
 
-                  elsif Index (the_Animation.Channel.Target, "upper_arm_R/transform")  /= 0 then
+                  elsif Index (the_Animation.Channel.Target, "upper_arm_R/transform")  /= 0
+                  then
                      setup_full_Transform (+"upper_arm_R",  +"upper_arm_R",  "transform");
 
-                  elsif Index (the_Animation.Channel.Target, "forearm_R/transform")    /= 0 then
+                  elsif Index (the_Animation.Channel.Target, "forearm_R/transform")    /= 0
+                  then
                      setup_full_Transform (+"forearm_R",    +"forearm_R",    "transform");
 
-                  elsif Index (the_Animation.Channel.Target, "hand_R/transform")       /= 0 then
+                  elsif Index (the_Animation.Channel.Target, "hand_R/transform")       /= 0
+                  then
                      setup_full_Transform (+"hand_R",       +"hand_R",       "transform");
 
-                  elsif Index (the_Animation.Channel.Target, "thumb_02_R/transform")   /= 0 then
+                  elsif Index (the_Animation.Channel.Target, "thumb_02_R/transform")   /= 0
+                  then
                      setup_full_Transform (+"thumb_02_R",   +"thumb_02_R",   "transform");
 
-                  elsif Index (the_Animation.Channel.Target, "thumb_03_R/transform")   /= 0 then
+                  elsif Index (the_Animation.Channel.Target, "thumb_03_R/transform")   /= 0
+                  then
                      setup_full_Transform (+"thumb_03_R",   +"thumb_03_R",   "transform");
 
-                  elsif Index (the_Animation.Channel.Target, "f_ring_01_R/transform")  /= 0 then
+                  elsif Index (the_Animation.Channel.Target, "f_ring_01_R/transform")  /= 0
+                  then
                      setup_full_Transform (+"f_ring_01_R",  +"f_ring_01_R",  "transform");
 
-                  elsif Index (the_Animation.Channel.Target, "f_index_01_R/transform") /= 0 then
+                  elsif Index (the_Animation.Channel.Target, "f_index_01_R/transform") /= 0
+                  then
                      setup_full_Transform (+"f_index_01_R", +"f_index_01_R", "transform");
 
 
-                  elsif Index (the_Animation.Channel.Target, "clavicle_L/transform")   /= 0 then
+                  elsif Index (the_Animation.Channel.Target, "clavicle_L/transform")   /= 0
+                  then
                      setup_full_Transform (+"clavicle_L",   +"clavicle_L",   "transform");
 
-                  elsif Index (the_Animation.Channel.Target, "upper_arm_L/transform")  /= 0 then
+                  elsif Index (the_Animation.Channel.Target, "upper_arm_L/transform")  /= 0
+                  then
                      setup_full_Transform (+"upper_arm_L",  +"upper_arm_L",  "transform");
 
-                  elsif Index (the_Animation.Channel.Target, "forearm_L/transform")    /= 0 then
+                  elsif Index (the_Animation.Channel.Target, "forearm_L/transform")    /= 0
+                  then
                      setup_full_Transform (+"forearm_L",    +"forearm_L",    "transform");
 
-                  elsif Index (the_Animation.Channel.Target, "hand_L/transform")       /= 0 then
+                  elsif Index (the_Animation.Channel.Target, "hand_L/transform")       /= 0
+                  then
                      setup_full_Transform (+"hand_L",       +"hand_L",       "transform");
 
-                  elsif Index (the_Animation.Channel.Target, "thumb_02_L/transform")   /= 0 then
+                  elsif Index (the_Animation.Channel.Target, "thumb_02_L/transform")   /= 0
+                  then
                      setup_full_Transform (+"thumb_02_L",   +"thumb_02_L",   "transform");
 
-                  elsif Index (the_Animation.Channel.Target, "thumb_03_L/transform")   /= 0 then
+                  elsif Index (the_Animation.Channel.Target, "thumb_03_L/transform")   /= 0
+                  then
                      setup_full_Transform (+"thumb_03_L",   +"thumb_03_L",   "transform");
 
-                  elsif Index (the_Animation.Channel.Target, "f_ring_01_L/transform")  /= 0 then
+                  elsif Index (the_Animation.Channel.Target, "f_ring_01_L/transform")  /= 0
+                  then
                      setup_full_Transform (+"f_ring_01_L",  +"f_ring_01_L",  "transform");
 
-                  elsif Index (the_Animation.Channel.Target, "f_index_01_L/transform") /= 0 then
+                  elsif Index (the_Animation.Channel.Target, "f_index_01_L/transform") /= 0
+                  then
                      setup_full_Transform (+"f_index_01_L", +"f_index_01_L", "transform");
 
 
-                  elsif Index (the_Animation.Channel.Target, "neck/transform")         /= 0 then
+                  elsif Index (the_Animation.Channel.Target, "neck/transform")         /= 0
+                  then
                      setup_full_Transform (+"neck",         +"neck",         "transform");
 
-                  elsif Index (the_Animation.Channel.Target, "head/transform")         /= 0 then
+                  elsif Index (the_Animation.Channel.Target, "head/transform")         /= 0
+                  then
                      setup_full_Transform (+"head",         +"head",         "transform");
 
-                  elsif Index (the_Animation.Channel.Target, "jaw/transform")          /= 0 then
+                  elsif Index (the_Animation.Channel.Target, "jaw/transform")          /= 0
+                  then
                      setup_full_Transform (+"jaw",          +"jaw",          "transform");
 
-                  elsif Index (the_Animation.Channel.Target, "eye_R/transform")        /= 0 then
+                  elsif Index (the_Animation.Channel.Target, "eye_R/transform")        /= 0
+                  then
                      setup_full_Transform (+"eye_R",        +"eye_R",        "transform");
 
-                  elsif Index (the_Animation.Channel.Target, "eye_L/transform")        /= 0 then
+                  elsif Index (the_Animation.Channel.Target, "eye_L/transform")        /= 0
+                  then
                      setup_full_Transform (+"eye_L",        +"eye_L",        "transform");
 
-                  elsif Index (the_Animation.Channel.Target, "stride_bone/location.X") /= 0 then
+                  elsif Index (the_Animation.Channel.Target, "stride_bone/location.X") /= 0
+                  then
 --                       setup_Location_x (+"stride_bone_x", +"stride_bone", "x");
                      setup_Location_x (+"stride_bone_x",    +"human",     "x");
 
-                  elsif Index (the_Animation.Channel.Target, "stride_bone/location.Y") /= 0 then
+                  elsif Index (the_Animation.Channel.Target, "stride_bone/location.Y") /= 0
+                  then
 --                       setup_Location_y (+"stride_bone_y", +"stride_bone", "y");
                      setup_Location_y (+"stride_bone_y",    +"human",     "y");
 
-                  elsif Index (the_Animation.Channel.Target, "stride_bone/location.Z") /= 0 then
+                  elsif Index (the_Animation.Channel.Target, "stride_bone/location.Z") /= 0
+                  then
 --                       setup_Location_z (+"stride_bone_z", +"stride_bone", "z");
                      setup_Location_z (+"stride_bone_z",    +"human",     "z");
 
@@ -952,7 +1002,7 @@ is
    --- Attributes
    --
 
-   procedure Site_is (Self :in out Item;   Now : in Vector_3)
+   procedure Site_is (Self : in out Item;   Now : in Vector_3)
    is
    begin
       Self.base_Sprite.move (to_Site => Now);
@@ -961,7 +1011,7 @@ is
 
 
 
-   procedure Spin_is (Self :in out Item;   Now : in Matrix_3x3)
+   procedure Spin_is (Self : in out Item;   Now : in Matrix_3x3)
    is
    begin
       Self.base_Sprite.rotate (to_Spin => Now);
@@ -1005,6 +1055,7 @@ is
                                                                     To       : in Matrix_4x4)
    is
       use gel.Conversions;
+
       bone_Slot : constant Positive := Self.program_Parameters.joint_Map_of_slot.Element (for_Bone);
    begin
       Self.program_Parameters.bone_Transforms.replace_Element (bone_Slot,
@@ -1092,6 +1143,7 @@ is
       end joint_Transform_for;
 
 
+
       procedure set_Transform_for (the_Bone : in controller_joint_Id)
       is
          the_Slot : constant Positive := Self.program_Parameters.joint_Map_of_slot (the_Bone);
@@ -1102,6 +1154,7 @@ is
                                                      * joint_Transform_for (the_Bone)
                                                      * inv_root_Transform);
       end set_Transform_for;
+
 
 
       procedure set_proxy_Transform_for (the_Bone : in controller_joint_Id;   the_Proxy : in controller_joint_Id)
@@ -1277,7 +1330,9 @@ is
          Elapsed     : constant Duration          :=      Now - Self.start_Time;
 
          function site_X return Real is begin   return the_Channel.Values ((Cursor - 1) * 3 + 1);   end site_X;
+
          function site_Y return Real is begin   return the_Channel.Values ((Cursor - 1) * 3 + 2);   end site_Y;
+
          function site_Z return Real is begin   return the_Channel.Values ((Cursor - 1) * 3 + 3);   end site_Z;
 
       begin
@@ -1295,6 +1350,7 @@ is
                      the_Channel.site_interp_Delta (1) := site_X - the_Channel.current_Site (1);
                      the_Channel.site_interp_Delta (2) := site_Y - the_Channel.current_Site (2);
                      the_Channel.site_interp_Delta (3) := site_Z - the_Channel.current_Site (3);
+
                   else
                      the_Channel.site_interp_Delta (1) :=   (site_X - the_Channel.current_Site (1))
                                                           / (the_Channel.Times (Cursor));
@@ -1401,6 +1457,7 @@ is
                      the_Channel.site_interp_Delta (2) :=   (site_Y - the_Channel.current_Site (2))
                                                           / (the_Channel.Times  (Cursor));
                   end if;
+
                else
                   the_Channel.site_interp_Delta (2) :=   (site_Y - the_Channel.current_Site (2))
                                                        / (the_Channel.Times  (Cursor) - the_Channel.Times (Cursor - 1));
@@ -1502,7 +1559,7 @@ is
                      end if;
 
                   else
-                     Initial := the_Channel.Transforms (Cursor - 1);
+                     Initial                            := the_Channel.Transforms (Cursor - 1);
                      the_Channel.Transform_interp_Delta := the_Channel.Times (Cursor) - the_Channel.Times (Cursor - 1);
                   end if;
 
@@ -1582,15 +1639,17 @@ is
    begin
       Now := world_Age;
 
-      if Self.start_Time = 0.0 then
+      if Self.start_Time = 0.0
+      then
          Self.start_Time := Now;
       end if;
 
       Elapsed := Now - Self.start_Time;
 
       declare
-         use channel_id_Maps_of_animation_Channel,
-             ada.Strings.Unbounded;
+         use
+              channel_id_Maps_of_animation_Channel,
+              ada.Strings.Unbounded;
 
          Cursor : channel_id_Maps_of_animation_Channel.Cursor := Self.Channels.First;
       begin

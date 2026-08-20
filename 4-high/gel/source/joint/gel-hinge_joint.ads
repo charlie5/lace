@@ -5,9 +5,10 @@ with
      physics.Joint.hinge,
      physics.Space;
 
+
 package gel.hinge_Joint
 --
---  Allows sprites to be connected via a hinge joint.
+-- Allows sprites to be connected via a hinge joint.
 --
 is
    type Item  is new gel.Joint.item with private;
@@ -15,7 +16,7 @@ is
    type Views is array (math.Index range <>) of View;
 
 
-   --  Degrees of freedom.
+   -- Degrees of freedom.
    --
    Revolve : constant joint.Degree_of_freedom := 1;
 
@@ -47,7 +48,7 @@ is
                                            Sprite_A, Sprite_B : access gel.Sprite.item'Class;
                                            pivot_Axis         : in     Vector_3);
    --
-   --  Uses midpoint between sprite A and B for the pivot anchor.
+   -- Uses midpoint between sprite A and B for the pivot anchor.
 
 
    procedure define (Self : access Item;   in_Space           : in     std_physics.Space.view;
@@ -64,7 +65,6 @@ is
 
    overriding
    procedure destroy (Self : in out Item);
-
 
 
    --------------
@@ -107,7 +107,7 @@ is
 
 
 
-   --  Bounds - limits the range of motion for a degree of freedom.
+   -- Bounds - limits the range of motion for a degree of freedom.
    --
 
    overriding
@@ -132,6 +132,7 @@ is
    procedure Velocity_is   (Self : in     Item;   for_Degree : in joint.Degree_of_freedom;
                                                   Now        : in Real);
 
+
    ---------
    --- Motor
    --
@@ -139,7 +140,6 @@ is
    function motor_Enabled    (Self : in Item) return Boolean;
    function motor_Speed      (Self : in Item) return Real;
    function max_motor_Torque (Self : in Item) return Real;
-
 
 
 
@@ -160,5 +160,6 @@ private
       end record;
 
    procedure apply_Limits (Self : in out Item);
+
 
 end gel.hinge_Joint;

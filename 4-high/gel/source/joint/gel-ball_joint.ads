@@ -6,9 +6,10 @@ with
      physics.Joint.Ball,
      physics.Space;
 
+
 package gel.ball_Joint
 --
---  Allows sprites to be connected via a 'ball and socket' joint.
+-- Allows sprites to be connected via a 'ball and socket' joint.
 --
 is
    type Item  is new gel.Joint.item with private;
@@ -28,8 +29,9 @@ is
    package std_physics renames standard.Physics;
    use Math;
 
-   ----------
-   ---  Forge
+
+   ---------
+   --- Forge
    --
 
    procedure define  (Self : access Item;   in_Space                : in     std_physics.Space.view;
@@ -40,7 +42,7 @@ is
 
 
    --------------
-   --  Attributes
+   --- Attributes
    --
 
    overriding
@@ -60,7 +62,7 @@ is
    function Degrees_of_freedom (Self : in Item) return joint.Degree_of_freedom;
 
 
-   ----------
+   ----------------------------------------------------------------
    --- Bounds - limits the range of motion for a degree of freedom.
    --
 
@@ -86,6 +88,7 @@ is
    procedure Velocity_is   (Self : in     Item;   for_Degree : in joint.Degree_of_freedom;
                                                   Now        : in Real);
 
+
    --------------
    --- Operations
    --
@@ -103,5 +106,6 @@ private
       record
          Physics : access std_physics.Joint.ball.item'Class;
    end record;
+
 
 end gel.ball_Joint;

@@ -17,7 +17,7 @@ with
 
 package gel.Human_v1
 --
---  Provides access to and control of a 'make_human' produced model.
+-- Provides access to and control of a 'make_human' produced model.
 --
 is
    type Item  is tagged limited private;
@@ -50,6 +50,7 @@ is
                           controller_Joints : in     human_types_v1.controller_Joints;
                           Model             : access openGL.Model.item'Class) return Human_v1.view;
    end Forge;
+
 
 
    procedure destroy (Self : in out Item);
@@ -178,6 +179,7 @@ is
    ----------------
    --- Display Mode
    --
+
    type display_Mode is (Skin, Bones, Skin_and_Bones);
 
    procedure Mode_is (Now : in display_Mode);
@@ -222,7 +224,7 @@ private
    type channel_Id is new scene_joint_Id range Hips .. scene_joint_Id'Last;
 
 --     type channel_Id is (root_loc,     root_x,       root_y,       root_z,
---  --                         hips_x,       hips_y,       hips_z,
+--  --                        hips_x,       hips_y,       hips_z,
 --                         spine_1_x,    spine_1_y,    spine_1_z,
 --                         spine_2_x,    spine_2_y,    spine_2_z,
 --                         spine_3_x,    spine_3_y,    spine_3_z,
@@ -263,9 +265,9 @@ private
    type animation_Channel is
       record
          Target        : access collada.Library.visual_scenes.Transform;
-         Times         : access collada.float_Array;
+         Times         : access collada.float_array;
 
-         Values        : access collada.float_Array;
+         Values        : access collada.float_array;
 --           Transforms    : access collada.Matrix_4x4_array;
 
          Cursor        :        math.Index         := 0;       -- Current frame of the anmination.
@@ -323,5 +325,6 @@ private
 
 
    procedure enable_Graphics (Self : in out Item);
+
 
 end gel.Human_v1;

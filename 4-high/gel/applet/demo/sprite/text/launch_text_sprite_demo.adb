@@ -14,7 +14,7 @@ pragma unreferenced (gel.Window.sdl);
 
 procedure launch_text_sprite_Demo
 --
---  Shows a few text sprites.
+-- Shows a few text sprites.
 --
 is
    use openGL.Palette;

@@ -3,10 +3,11 @@ with
      gel.World,
      ada.unchecked_Deallocation;
 
+
 package body gel.Joint
 is
 
-   function to_GEL (the_Joint : standard.physics.Joint.view) return gel.Joint.view
+   function to_GEL (the_Joint : in standard.physics.Joint.view) return gel.Joint.view
    is
    begin
       return gel.Joint.view (the_Joint.user_Data);
@@ -30,7 +31,8 @@ is
    is
       procedure deallocate is new ada.unchecked_Deallocation (Joint.item'Class, Joint.view);
    begin
-      if Self /= null then
+      if Self /= null
+      then
          Self.destroy;
       end if;
 
@@ -61,28 +63,28 @@ is
    --- Hinges
    --
 
-   --  function local_Anchor_on_A (Self : in Item'Class) return Vector_3
-   --  is
-   --  begin
+   -- function local_Anchor_on_A (Self : in Item'Class) return Vector_3
+   -- is
+   -- begin
    --     return Self.Physics.local_Anchor_on_A;
-   --     --  return Self.local_Anchor_on_A;
-   --  end local_Anchor_on_A;
+   --     -- return Self.local_Anchor_on_A;
+   -- end local_Anchor_on_A;
    --
    --
    --
-   --  function local_Anchor_on_B (Self : in Item'Class) return Vector_3
-   --  is
-   --  begin
+   -- function local_Anchor_on_B (Self : in Item'Class) return Vector_3
+   -- is
+   -- begin
    --     return Self.Physics.local_Anchor_on_B;
-   --     --  return Self.local_Anchor_on_B;
-   --  end local_Anchor_on_B;
+   --     -- return Self.local_Anchor_on_B;
+   -- end local_Anchor_on_B;
 
 
 
    procedure local_Anchor_on_A_is (Self : out Item;   Now : in Vector_3)
    is
    begin
-      --  Self.local_Anchor_on_A := Now;
+      -- Self.local_Anchor_on_A := Now;
 
       if Self.Sprite_A.World /= null
       then
@@ -96,7 +98,7 @@ is
    procedure local_Anchor_on_B_is (Self : out Item;   Now : in Vector_3)
    is
    begin
-      --  Self.local_Anchor_on_B := Now;
+      -- Self.local_Anchor_on_B := Now;
 
       if Self.Sprite_B.World /= null
       then

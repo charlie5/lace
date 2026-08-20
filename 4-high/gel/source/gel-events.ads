@@ -3,6 +3,7 @@ with
      gel.Mouse,
      lace.Event;
 
+
 package gel.Events with remote_Types
 --
 -- Provides events for GEL.
@@ -88,7 +89,6 @@ is
          mouse_Button : gel.Mouse.Button_Id;
          world_Site   : math.Vector_3;
       end record;
-
 
 
 end gel.Events;

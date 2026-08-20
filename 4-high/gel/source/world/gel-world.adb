@@ -16,12 +16,11 @@ with
 
 package body gel.World
 is
-   use gel.Sprite,
-
-       --  lace.Event,
-
-       ada.Exceptions,
-       ada.Text_IO;
+   use
+        gel.Sprite,
+        -- lace.Event,
+        ada.Exceptions,
+        ada.Text_IO;
 
 
    procedure log (Message : in String) renames ada.Text_IO.put_Line;
@@ -38,6 +37,8 @@ is
       deallocate (Self);
    end free;
 
+
+
    procedure define (Self : in out Item'Class;   Name       : in     String;
                                                  Id         : in     world_Id;
                                                  space_Kind : in     physics.space_Kind;
@@ -48,7 +49,7 @@ is
    procedure destroy (Self : in out Item)
    is
    begin
-      --  Free record components.
+      -- Free record components.
       --
       physics.Space.free (Self.physics_Space);
 
@@ -82,17 +83,17 @@ is
 
 
 
-   --  function to_Sprite (the_Pair            : in remote.World.sprite_model_Pair;
+   -- function to_Sprite (the_Pair            : in remote.World.sprite_model_Pair;
    --                      the_graphics_Models : in id_Maps_of_graphics_model        .Map;
    --                      the_physics_Models  : in Id_Maps_of_physics_Model.Map;
    --                      the_World           : in gel.World.view) return gel.Sprite.view
-   --  is
+   -- is
    --     the_graphics_Model : access openGL .Model.item'Class;
    --     the_physics_Model  : access physics.Model.item'Class;
    --     the_Sprite         :        gel.Sprite.view;
    --
    --     use openGL;
-   --  begin
+   -- begin
    --     log ("gel.world.to_Sprite");
    --
    --     the_graphics_Model := openGL .Model.view (the_graphics_Models.Element (the_Pair.graphics_Model_Id));
@@ -117,8 +118,7 @@ is
    --     the_Sprite.desired_Dynamics_are (Site => the_Sprite.Site,
    --                                      Spin => to_Quaternion (get_Rotation (the_Sprite.Transform)));
    --     return the_Sprite;
-   --  end to_Sprite;
-
+   -- end to_Sprite;
 
 
    --------------------------------
@@ -143,15 +143,15 @@ is
    is
    begin
       raise Program_Error with "JJJ";
-      --  declare
+      -- declare
       --     the_Event  : constant gel.Events.new_sprite_Event := gel.Events.new_sprite_Event (to_Event);
       --     the_Sprite : constant gel.Sprite.view             := to_Sprite (the_Event.Pair,
       --                                                                     Self.graphics_Models.all,
       --                                                                     Self. physics_Models.all,
       --                                                                     Self.World);
-      --  begin
+      -- begin
       --     Self.World.add (the_Sprite, and_children => False);
-      --  end;
+      -- end;
    end respond;
 
 
@@ -211,6 +211,7 @@ is
       end add;
 
 
+
       procedure set (To : in sprite_Maps_of_transforms.Map)
       is
       begin
@@ -218,11 +219,12 @@ is
       end set;
 
 
+
       function fetch return sprite_Maps_of_transforms.Map
       is
       begin
          return sprite_Map_of_transforms;
-      end Fetch;
+      end fetch;
 
    end all_sprite_Transforms;
 
@@ -240,6 +242,8 @@ is
          the_Duration := Now;
       end Duration_is;
 
+
+
       function Duration return standard.Duration
       is
       begin
@@ -253,13 +257,15 @@ is
    --- Breakable Joints
    --
 
-   protected body safe_joint_Set
+   protected
+   body safe_joint_Set
    is
       function is_Empty return Boolean
       is
       begin
          return the_Count = 0;
       end is_Empty;
+
 
 
       procedure add (the_Joint : in gel.Joint.view)
@@ -270,6 +276,7 @@ is
       end add;
 
 
+
       procedure fetch (To    : out safe_Joints;
                        Count : out Natural)
       is
@@ -277,7 +284,7 @@ is
          To (1 .. the_Count) := Set (1 .. the_Count);
          Count               := the_Count;
          the_Count           := 0;
-      end Fetch;
+      end fetch;
 
    end safe_joint_Set;
 
@@ -328,7 +335,8 @@ is
    pragma Warnings (On);
 
 
-   protected body Signal_Object
+   protected
+   body Signal_Object
    is
       entry Wait
         when Open
@@ -336,6 +344,8 @@ is
       begin
          Open := False;
       end Wait;
+
+
 
       procedure Signal
       is
@@ -385,7 +395,7 @@ is
    is
    begin
       null;     -- TODO
-      --  Self.physics_Engine.update_Bounds (of_Sprite.Solid);
+      -- Self.physics_Engine.update_Bounds (of_Sprite.Solid);
    end update_Bounds;
 
 
@@ -407,7 +417,7 @@ is
    is
    begin
       null;
-      --  Self.physics_Engine.set_Speed (of_Sprite.Solid, To);
+      -- Self.physics_Engine.set_Speed (of_Sprite.Solid, To);
    end set_Speed;
 
 
@@ -419,7 +429,7 @@ is
    begin
       of_Sprite.Solid.xy_Spin_is (To);
 
-      --  Self.physics_Engine.set_xy_Spin (of_Sprite.Solid, To);
+      -- Self.physics_Engine.set_xy_Spin (of_Sprite.Solid, To);
    end set_xy_Spin;
 
 
@@ -429,7 +439,7 @@ is
    is
    begin
       null;
-      --  Self.physics_Engine.update_Scale (of_Sprite.Solid, To);
+      -- Self.physics_Engine.update_Scale (of_Sprite.Solid, To);
 
 --        Self.physics_Engine.add (std_Physics.Engine.Command' (Kind   => scale_Object,
 --                                                              Sprite => the_Command.Sprite.Solid,
@@ -444,7 +454,7 @@ is
       pragma Unreferenced (Self);
    begin
       to_Sprite.apply_Force (Force);
-      --  Self.physics_Engine.apply_Force (to_Sprite.Solid, Force);
+      -- Self.physics_Engine.apply_Force (to_Sprite.Solid, Force);
    end apply_Force;
 
 
@@ -465,13 +475,11 @@ is
 
 
 
-
    procedure Gravity_is (Self : in out Item;   Now : in Vector_3)
    is
    begin
       Self.physics_Space.Gravity_is (Now);
    end Gravity_is;
-
 
 
 
@@ -496,7 +504,6 @@ is
 
 
 
-
    function cast_Point (Self : in Item;   Point : in Vector_3) return point_Collision
    is
       use type physics.Object.view;
@@ -513,8 +520,6 @@ is
                                   physics_Collision.Site_world);
       end if;
    end cast_Point;
-
-
 
 
    --------------
@@ -562,7 +567,7 @@ is
    is
    begin
       null;     -- TODO
-      --  Self.Commands.add ((Kind   => destroy_Sprite,
+      -- Self.Commands.add ((Kind   => destroy_Sprite,
       --                      Sprite => the_Sprite));
    end destroy;
 
@@ -582,7 +587,7 @@ is
            := Self.free_Sets (prior_set_Index).Sprites (1 .. Self.free_Sets (prior_set_Index).Count);
       begin
          Self.free_Sets (prior_set_Index).Count := 0;
-         Self.current_free_Set := prior_set_Index;
+         Self.current_free_Set                  := prior_set_Index;
 
          return the_Set;
       end;
@@ -659,7 +664,7 @@ is
    is
    begin
       null;     -- TODO
-      --  Self.Commands.add ((kind   => free_Joint,
+      -- Self.Commands.add ((kind   => free_Joint,
       --                      sprite => null,
       --                      joint  => the_Joint));
    end destroy;
@@ -671,7 +676,7 @@ is
    is
    begin
       null;     -- TODO
-      --  Self.physics_Engine.set_local_Anchor (for_Joint.Physics.all'Access,
+      -- Self.physics_Engine.set_local_Anchor (for_Joint.Physics.all'Access,
       --                                        to          => To,
       --                                        is_Anchor_A => True);
 
@@ -694,7 +699,7 @@ is
    is
    begin
       null;     -- TODO
-      --  Self.physics_Engine.set_local_Anchor (for_Joint.Physics.all'Access,
+      -- Self.physics_Engine.set_local_Anchor (for_Joint.Physics.all'Access,
       --                                        To          => To,
       --                                        is_Anchor_A => False);
 
@@ -703,7 +708,7 @@ is
 --                            anchor_Joint => for_Joint,
 --                            is_Anchor_A  => False,
 --                            local_Anchor => To));
-   end set_local_anchor_on_B;
+   end set_local_Anchor_on_B;
 
 
 
@@ -717,6 +722,7 @@ is
    procedure add (Self : access Item;   the_Sprite   : in gel.Sprite.view;
                                         and_Children : in Boolean := False)
    is
+
       procedure add_single_Sprite (Single : in out Sprite.item'Class)
       is
       begin
@@ -748,6 +754,7 @@ is
             procedure add_the_Joint (the_Sprite : in out Sprite.item'Class)
             is
                use type gel.Joint.view;
+
                the_Joint : constant gel.Joint.view := the_Sprite.parent_Joint;
             begin
                if the_Joint /= null
@@ -772,6 +779,7 @@ is
    procedure rid (Self : in out Item'Class;   the_Sprite   : in gel.Sprite.view;
                                               and_Children : in Boolean := False)
    is
+
       procedure rid_single_Sprite (Single : in out Sprite.item'Class)
       is
       begin
@@ -790,6 +798,7 @@ is
             procedure rid_the_Joint (the_Sprite : in out Sprite.item'Class)
             is
                use type gel.Joint.view;
+
                the_Joint : constant gel.Joint.view := the_Sprite.parent_Joint;
             begin
                if the_Joint /= null
@@ -812,7 +821,7 @@ is
    procedure add (Self : in out Item;   the_Model : in openGL.Model.view)
    is
    begin
-      --  log ("gel.World.add (the opengl Model) ~ the_Model.Id:" & the_Model.Id'Image);
+      -- log ("gel.World.add (the opengl Model) ~ the_Model.Id:" & the_Model.Id'Image);
 
 
       if the_Model.Id = null_graphics_model_Id
@@ -825,10 +834,10 @@ is
       then
          Self.graphics_Models.insert (the_Model.Id, the_Model);
 
-         --  Emit a new model event.
+         -- Emit a new model event.
          --
 
-         --  log ("gel.World.add ~ emit new graphics model event");
+         -- log ("gel.World.add ~ emit new graphics model event");
 
          declare
             the_Event : remote.World.new_graphics_model_Event;
@@ -844,7 +853,7 @@ is
    procedure add (Self : in out Item;   the_Model : in physics.Model.view)
    is
    begin
-      if the_Model.Id = Physics.null_model_Id
+      if the_Model.Id = physics.null_model_Id
       then
          Self.last_used_physics_model_Id := Self.last_used_physics_model_Id + 1;
          the_Model.Id_is (Self.last_used_physics_model_Id);
@@ -854,9 +863,9 @@ is
       then
          Self.physics_Models.insert (the_Model.Id, the_Model);
 
-         --  Emit a new model event.
+         -- Emit a new model event.
          --
-         --  log ("gel.World.add ~ emit new physics model event");
+         -- log ("gel.World.add ~ emit new physics model event");
 
          declare
             the_Event : remote.World.new_physics_model_Event;
@@ -882,13 +891,12 @@ is
    is
    begin
       null;     -- TODO
-      --  Self.physics_Engine.rid (the_Joint.Physics.all'Access);
+      -- Self.physics_Engine.rid (the_Joint.Physics.all'Access);
 
 --        Self.Commands.add ((kind   => rid_Joint,
 --                            sprite => null,
 --                            joint  => the_Joint));
    end rid;
-
 
 
    --------------
@@ -902,8 +910,8 @@ is
    end start;
 
 
-   --------------------
-   ---  World Mirroring
+   -------------------
+   --- World Mirroring
    --
 
    overriding
@@ -930,20 +938,21 @@ is
 
 
 
-   procedure handle_broken_Joints (Self : in out Item;   the_Joints :in Joint.views)
+   procedure handle_broken_Joints (Self : in out Item;   the_Joints : in Joint.views)
    is
       pragma Unreferenced (Self);
    begin
       for i in the_Joints'Range
       loop
          begin
-            if         (    the_Joints (i).Sprite_A /= null
-                        and the_Joints (i).Sprite_B /= null)
-              and then (    not the_Joints (i).Sprite_A.is_Destroyed
-                        and not the_Joints (i).Sprite_B.is_Destroyed)
+            if              (         the_Joints (i).Sprite_A /= null
+                             and then the_Joints (i).Sprite_B /= null)
+              and then (         not the_Joints (i).Sprite_A.is_Destroyed
+                        and then not the_Joints (i).Sprite_B.is_Destroyed)
             then
                begin
                   the_Joints (i).Sprite_A.detach (the_Joints (i).Sprite_B);
+
                exception
                   when no_such_Child =>
                      put_Line ("handle_broken_Joints: Cannot detach sprite:  no_such_Child." );
@@ -964,11 +973,11 @@ is
    begin
       Self.Age := Self.Age + evolve_Period;
 
-      --  Evolve the physics.
+      -- Evolve the physics.
       --
       Self.physics_Space.evolve (evolve_Period);     -- Evolve the physics space.
 
-      --  Handle evnts.
+      -- Handle evnts.
       --
       Self.respond;
       Self.local_Subject_and_deferred_Observer.respond;
@@ -983,7 +992,7 @@ is
          Self.handle_broken_Joints (the_Joints (1 .. Count));
       end;
 
-      --  Perform responses to events for all sprites.
+      -- Perform responses to events for all sprites.
       --
       declare
          use id_Maps_of_sprite;
@@ -1025,7 +1034,7 @@ is
       use id_Maps_of_graphics_model;
 
       the_Models  : remote.World.id_Map_of_graphics_model;
-      Cursor      : id_Maps_of_graphics_model.Cursor := Self.graphics_Models.First;
+      Cursor      : id_Maps_of_graphics_model.Cursor     := Self.graphics_Models.First;
    begin
       while has_Element (Cursor)
       loop
@@ -1045,7 +1054,7 @@ is
       use id_Maps_of_physics_model;
 
       the_Models  : remote.World.id_Map_of_physics_model;
-      Cursor      : id_Maps_of_physics_model.Cursor := Self.physics_Models.First;
+      Cursor      : id_Maps_of_physics_model.Cursor     := Self.physics_Models.First;
    begin
       while has_Element (Cursor)
       loop
@@ -1064,11 +1073,11 @@ is
    is
       use id_Maps_of_sprite;
 
-      all_Sprites : id_Maps_of_sprite.Map    renames Item'Class (Self).all_Sprites.fetch;
-      Cursor      : id_Maps_of_sprite.Cursor :=      all_Sprites.First;
+      all_Sprites : id_Maps_of_sprite.Map                                              renames Item'Class (Self).all_Sprites.fetch;
+      Cursor      : id_Maps_of_sprite.Cursor                                           :=      all_Sprites.First;
       the_Pairs   : remote.World.sprite_model_Pairs (1 .. Natural (all_Sprites.Length));
       the_Sprite  : Sprite.view;
-      i           : Natural := 0;
+      i           : Natural                                                            :=      0;
    begin
       while has_Element (Cursor)
       loop
@@ -1089,7 +1098,6 @@ is
    end Sprites;
 
 
-
    --------------
    --- Collisions
    --
@@ -1099,7 +1107,9 @@ is
       use type ada.Containers.Hash_type;
 
       pragma Warnings (Off);     -- The conversions hash only the leading bits of fat subprogram-access values.
+
       function to_Hash is new ada.unchecked_Conversion (impact_Filter,   ada.Containers.Hash_type);
+
       function to_Hash is new ada.unchecked_Conversion (impact_Response, ada.Containers.Hash_type);
       pragma Warnings (On);
    begin
@@ -1114,7 +1124,7 @@ is
    is
    begin
       null;   -- TODO
-      --  Self.Commands.add ((new_impact_Response,
+      -- Self.Commands.add ((new_impact_Response,
       --                      null,
       --                      Filter,
       --                      Response));
@@ -1122,10 +1132,11 @@ is
 
 
 
-   task body impact_Responder
+   task
+   body impact_Responder
    is
       the_World : gel.World.view;
-      Done      : Boolean := False;
+      Done      : Boolean       := False;
 
       Filters_through : impact_Filter;
       the_Response    : impact_Response;
@@ -1157,7 +1168,7 @@ is
 
             exit when Done;
 
-            --  Filter and call response.
+            -- Filter and call response.
             --
             for i in 1 .. the_World.manifold_Count
             loop
@@ -1183,8 +1194,6 @@ is
    end impact_Responder;
 
 
-
-
    -------
    --- Ids
    --
@@ -1198,9 +1207,8 @@ is
    end reserve_Ids;
 
 
-
    -----------
-   --  Testing
+   --- Testing
    --
 
    overriding
@@ -1221,12 +1229,13 @@ end gel.World;
 
 -- Old engine code left for reference ...
 
+
    ----------
    --- Engine
    --
 
-   --  task body Engine
-   --  is
+   -- task body Engine
+   -- is
    --     use type gel.Joint.view,
    --              ada.Containers.Count_type;
    --
@@ -1240,10 +1249,10 @@ end gel.World;
    --     max_joint_Torque : Real := 0.0;
 
 
-      --  procedure free_Sprites
-      --  is
+      -- procedure free_Sprites
+      -- is
       --     the_free_Sprites : gel.Sprite.views := the_World.free_sprite_Set;
-      --  begin
+      -- begin
       --     for i in the_free_Sprites'Range
       --     loop
       --        log ("Engine is freeing sprite id:" & the_free_Sprites (i).Id'Image);
@@ -1255,49 +1264,49 @@ end gel.World;
       --
       --        gel.Sprite.free (the_free_Sprites (i));
       --     end loop;
-      --  end free_Sprites;
+      -- end free_Sprites;
 
 
 
-      --  procedure free_graphics_Models
-      --  is
+      -- procedure free_graphics_Models
+      -- is
       --     use id_Maps_of_graphics_model;
       --     Cursor : id_Maps_of_graphics_model.Cursor := the_World.graphics_Models.First;
-      --  begin
+      -- begin
       --     while has_Element (Cursor)
       --     loop
       --        the_World.Renderer.free (Element (Cursor));
       --        next (Cursor);
       --     end loop;
-      --  end free_graphics_Models;
+      -- end free_graphics_Models;
 
 
 
-      --  procedure evolve
-      --  is
+      -- procedure evolve
+      -- is
       --     the_sprite_Transforms : sprite_Maps_of_transforms.Map := the_World.all_sprite_Transforms.Fetch;
-      --  begin
+      -- begin
       --     Cycle := Cycle + 1;
 
-         --  do_engine_Commands:
-         --  declare
-            --  the_Commands  : World.Commands;
-            --  Count         : Natural;
-            --  command_Count : array (command_Kind) of Natural := (others => 0);
+         -- do_engine_Commands:
+         -- declare
+            -- the_Commands  : World.Commands;
+            -- Count         : Natural;
+            -- command_Count : array (command_Kind) of Natural := (others => 0);
 
-         --  begin
-            --  the_World.Commands.fetch (the_Commands, Count);
+         -- begin
+            -- the_World.Commands.fetch (the_Commands, Count);
 
-            --  for Each in 1 .. Count
-            --  loop
+            -- for Each in 1 .. Count
+            -- loop
             --     declare
             --        use Physics.Engine;
-                  --  the_Command : World.Command renames the_Commands (Each);
-               --  begin
-                  --  command_Count (the_Command.Kind) := command_Count (the_Command.Kind) + 1;
+                  -- the_Command : World.Command renames the_Commands (Each);
+               -- begin
+                  -- command_Count (the_Command.Kind) := command_Count (the_Command.Kind) + 1;
 
-                  --  case the_Command.Kind
-                  --  is
+                  -- case the_Command.Kind
+                  -- is
 --                       when scale_Sprite =>
 --                          the_World.physics_Engine.add (std_Physics.Engine.Command' (Kind   => scale_Object,
 --                                                                                     Sprite => the_Command.Sprite.Solid,
@@ -1313,7 +1322,7 @@ end gel.World;
 --                          the_World.physics_Space.update_Bounds (std_physics.Object.view (the_Command.Sprite.Solid));
 
 
-                     --  when update_Site =>
+                     -- when update_Site =>
                      --     the_World.physics_Engine.update_Site (the_Command.Sprite.Solid,
                      --                                           the_Command.Site);
 --                          std_physics.Object.view (the_Command.Sprite.Solid).Site_is (the_Command.Site);
@@ -1327,7 +1336,7 @@ end gel.World;
 --                          std_physics.Object.view (the_Command.Sprite.Solid).xy_Spin_is (the_Command.xy_Spin);
 
 
-                     --  when add_Sprite =>
+                     -- when add_Sprite =>
                      --     declare
                      --        procedure add (the_Sprite : in Sprite.view)
                      --        is
@@ -1359,7 +1368,7 @@ end gel.World;
                      --     end;
 
 
-                     --  when rid_Sprite =>
+                     -- when rid_Sprite =>
                      --     declare
                      --        function find (the_Sprite : in Sprite.view) return Index
                      --        is
@@ -1421,7 +1430,7 @@ end gel.World;
 --                          the_Command.Sprite.Solid.apply_Force (the_Command.Force);
 
 
-                     --  when destroy_Sprite =>
+                     -- when destroy_Sprite =>
                      --     declare
                      --        the_free_Set : free_Set renames the_World.free_Sets (the_World.current_free_Set);
                      --     begin
@@ -1444,11 +1453,11 @@ end gel.World;
 --                                                                          the_Command.is_Anchor_A,
 --                                                                          the_Command.local_Anchor);
 
-                     --  when free_Joint =>
+                     -- when free_Joint =>
                      --     gel.Joint.free (the_Command.Joint);
 
 
-                     --  when cast_Ray =>
+                     -- when cast_Ray =>
                      --     declare
                      --        function cast_Ray (Self : in Item'Class;   From, To : in Vector_3) return ray_Collision
                      --        is
@@ -1494,7 +1503,7 @@ end gel.World;
                      --     end;
 
 
-                     --  when new_impact_Response =>
+                     -- when new_impact_Response =>
                      --     declare
                      --        the_impact_Responder      : constant impact_Responder_view := new impact_Responder;
                      --        the_responses_done_Signal : constant Signal_Object_view    := new signal_Object;
@@ -1512,13 +1521,13 @@ end gel.World;
 
 --                       when set_Gravity =>
 --                          the_World.physics_Space.Gravity_is (the_Command.Gravity);
-                  --  end case;
-               --  end;
-            --  end loop;
-         --  end do_engine_Commands;
+                  -- end case;
+               -- end;
+            -- end loop;
+         -- end do_engine_Commands;
 
 
-         --  Evolve the physics.
+         -- Evolve the physics.
          --
 --           if not the_World.is_a_Mirror
 --           then
@@ -1526,11 +1535,11 @@ end gel.World;
 --           end if;
 
 
-         --  --  Contact Manifolds
+         --  -- Contact Manifolds
          --  --
-         --  declare
+         -- declare
          --     Count : Natural := 0;
-         --  begin
+         -- begin
          --     for i in 1 .. the_World.physics_Space.manifold_Count
          --     loop
          --        declare
@@ -1552,27 +1561,27 @@ end gel.World;
          --
          --     the_World.manifold_Count := the_World.physics_Space.manifold_Count;
          --
-         --  exception
+         -- exception
          --     when E : others =>
          --        put_Line ("'gel.World.local.Engine.Contact Manifolds' has an unhandled exception ...");
          --        put_Line (exception_Information (E));
-         --  end;
+         -- end;
 
 
-         --  --  For each registered impact response, tell the associated responder task to respond.
+         --  -- For each registered impact response, tell the associated responder task to respond.
          --  --
-         --  declare
+         -- declare
          --     use filtered_impact_Response_Sets;
          --     Cursor : filtered_impact_Response_Sets.Cursor := the_filtered_impact_Response_Set.First;
          --
-         --  begin
+         -- begin
          --     while has_Element (Cursor)
          --     loop
          --        Element (Cursor).Responder.respond;
          --        next (Cursor);
          --     end loop;
          --
-         --     --  Wait for all responders to complete.
+         --     -- Wait for all responders to complete.
          --     --
          --     Cursor := the_filtered_impact_Response_Set.First;
          --
@@ -1587,21 +1596,21 @@ end gel.World;
          --        next (Cursor);
          --     end loop;
          --
-         --  exception
+         -- exception
          --     when E : others =>
          --        put_Line ("'gel.World.local.Engine.impact response' has an unhandled exception ...");
          --        put_Line (exception_Information (E));
-         --  end;
+         -- end;
 
 
-         --  --  Update sprite transforms.
+         --  -- Update sprite transforms.
          --  --
-         --  declare
+         -- declare
          --     use sprite_Maps_of_transforms;
          --
          --     Cursor     : sprite_Maps_of_transforms.Cursor := the_sprite_Transforms.First;
          --     the_Sprite : gel.Sprite.view;
-         --  begin
+         -- begin
          --     while has_Element (Cursor)
          --     loop
          --        the_Sprite := Key (Cursor);
@@ -1612,26 +1621,26 @@ end gel.World;
          --        end;
          --        next (Cursor);
          --     end loop;
-         --  end;
+         -- end;
          --
-         --  the_World.all_sprite_Transforms.set (To => the_sprite_Transforms);
+         -- the_World.all_sprite_Transforms.set (To => the_sprite_Transforms);
          --
-         --  free_Sprites;
-      --  end evolve;
+         -- free_Sprites;
+      -- end evolve;
 
 
-      --  use type physics.Space.view;
+      -- use type physics.Space.view;
       --
-   --  begin
+   -- begin
    --     accept start (space_Kind : in physics.space_Kind)
    --     do
    --        Stopped                 := False;
    --        the_World.physics_Space := physics.Forge.new_Space (space_Kind);
    --     end start;
 
-      --  next_render_Time := ada.Calendar.Clock;
+      -- next_render_Time := ada.Calendar.Clock;
 
-      --  loop
+      -- loop
       --     select
       --        accept stop
       --        do
@@ -1650,14 +1659,14 @@ end gel.World;
 
                -- Evolve the world til there are no commands left.
                --
-               --  while not the_World.Commands.is_Empty
-               --  loop
+               -- while not the_World.Commands.is_Empty
+               -- loop
                --     evolve;
-               --  end loop;
+               -- end loop;
 
-               --  Stop all impact responders tasks.
+               -- Stop all impact responders tasks.
                --
-               --  declare
+               -- declare
                --     use filtered_impact_Response_Sets;
                --
                --     procedure free is new ada.unchecked_Deallocation (Signal_Object,
@@ -1668,7 +1677,7 @@ end gel.World;
                --     the_Responder : impact_Responder_view;
                --     the_Signal    : Signal_Object_view;
                --
-               --  begin
+               -- begin
                --     while has_Element (Cursor)
                --     loop
                --        the_Signal    := Element (Cursor).responses_Done;
@@ -1685,41 +1694,41 @@ end gel.World;
                --
                --        next (Cursor);
                --     end loop;
-               --  end;
+               -- end;
 
                -- Free both sets of freeable sprites.
                --
-               --  free_Sprites;
-               --  free_Sprites;
-            --  end stop;
+               -- free_Sprites;
+               -- free_Sprites;
+            -- end stop;
 
-            --  exit when Stopped;
+            -- exit when Stopped;
             --
-         --  or
+         -- or
          --     accept reset_Age
          --     do
          --        the_World.Age_is (0.0);
          --     end reset_Age;
          --
-         --  else
+         -- else
          --     null;
-         --  end select;
+         -- end select;
          --
          --
-         --  if not the_World.is_a_Mirror
-         --  then
+         -- if not the_World.is_a_Mirror
+         -- then
          --     evolve;
-         --  end if;
+         -- end if;
          --
          --
-         --  the_World.new_sprite_transforms_Available.signal;
-         --  the_World.evolver_Done                   .signal;
+         -- the_World.new_sprite_transforms_Available.signal;
+         -- the_World.evolver_Done                   .signal;
          --
          --
          --  -- Check for joint breakage.
          --  --
-         --  if the_World.broken_joints_Allowed
-         --  then
+         -- if the_World.broken_joints_Allowed
+         -- then
          --     declare
          --        use gel.Joint,
          --            physics.Space;
@@ -1766,12 +1775,12 @@ end gel.World;
          --           next (Cursor);
          --        end loop;
          --     end;
-         --  end if;
+         -- end if;
          --
-         --  next_render_Time := next_render_Time + Duration (1.0 / 60.0);
-      --  end loop;
+         -- next_render_Time := next_render_Time + Duration (1.0 / 60.0);
+      -- end loop;
       --
-   --  exception
+   -- exception
    --     when E : others =>
    --        new_Line (2);
    --        put_Line ("Error in gel.World.Engine");
@@ -1779,4 +1788,4 @@ end gel.World;
    --        put_Line (exception_Information (E));
    --        put_Line ("Engine has terminated !");
    --        new_Line (2);
-   --  end Engine;
+   -- end Engine;

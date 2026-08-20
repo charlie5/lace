@@ -1,9 +1,10 @@
 with
      lace.Subject.local;
 
+
 package gel.Keyboard.local
 --
---  Provides a concrete keyboard.
+-- Provides a concrete keyboard.
 --
 is
    type Item is limited new lace.Subject.local.item
@@ -18,6 +19,7 @@ is
       function  to_Keyboard (of_Name : in String) return Item;
       function new_Keyboard (of_Name : in String) return View;
    end Forge;
+
 
 
    procedure free (Self : in out View);
@@ -50,5 +52,6 @@ private
       record
          Modifiers : Modifier_Set := no_Modifiers;
       end record;
+
 
 end gel.Keyboard.local;

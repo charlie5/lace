@@ -13,10 +13,9 @@ private
 with collada.Library.visual_scenes;
 
 
-
 package gel.Human
 --
---  Provides access to and control of a 'make_human' produced model.
+-- Provides access to and control of a 'make_human' produced model.
 --
 is
    type Item  is tagged limited private;
@@ -42,7 +41,8 @@ is
 
 
 
-   package Forge is
+   package Forge
+   is
 
       function new_Human (World         : access gel.World.item'Class;
 --                            Space         : in     gel.Sprite.physics_Space_view;
@@ -78,7 +78,6 @@ is
 
 
    procedure evolve (Self : in out Item'Class);
-
 
 
    --- Animation
@@ -148,6 +147,7 @@ is
 
    --- animation
    --
+
    procedure animate         (Self : in out Item;   world_Age : in Duration);
    procedure reset_Animation (Self : in out Item);
 
@@ -196,8 +196,6 @@ private
 --     procedure enable (Self : in out skin_program_Parameters);
 
 
-
-
    --- Animation
    --
 
@@ -234,10 +232,10 @@ private
    type animation_Channel is
       record
          Target        : access collada.Library.visual_scenes.Transform;
-         Times         : access collada.float_Array;
-         Cursor        :        math.Index         := 0;
+         Times         : access collada.float_array;
+         Cursor        :        math.Index                             := 0;
 
-         Angles        : access collada.float_Array;
+         Angles        : access collada.float_array;
          initial_Angle : math.Real;
          current_Angle : math.Real                 := 0.0;
          interp_Delta  : math.Real                 := 0.0;
@@ -249,10 +247,6 @@ private
 
 
    type animation_Channels is array (channel_Id) of animation_Channel;
-
-
-
-
 
 
    --- Human item
@@ -284,5 +278,6 @@ private
 
 
    procedure enable_Graphics (Self : in out Item);
+
 
 end gel.Human;

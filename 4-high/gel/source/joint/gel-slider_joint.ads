@@ -5,9 +5,10 @@ with
      physics.Joint.slider,
      physics.Space;
 
+
 package gel.slider_Joint
 --
---  Allows sprites to be connected via a slider joint.
+-- Allows sprites to be connected via a slider joint.
 --
 is
    type Item is new gel.Joint.Item with private;
@@ -65,7 +66,7 @@ is
    function  Degrees_of_freedom (Self : in Item) return Joint.Degree_of_freedom;
 
 
-   --  Bounds - limits the range of motion for a Degree of freedom.
+   -- Bounds - limits the range of motion for a Degree of freedom.
    --
 
    overriding
@@ -87,6 +88,7 @@ is
    procedure Velocity_is   (Self : in     Item;   for_Degree : in Joint.Degree_of_freedom;
                                                   Now        : in Real);
 
+
    --------------
    --- Operations
    --
@@ -104,5 +106,6 @@ private
       record
          Physics : access std_physics.Joint.slider.item'Class;
    end record;
+
 
 end gel.slider_Joint;

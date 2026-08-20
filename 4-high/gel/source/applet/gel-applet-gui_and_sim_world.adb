@@ -20,7 +20,7 @@ is
                                                                    space_Kind => physics.Bullet,
                                                                    Renderer   => Self.Renderer).all'Access;
 
-         --  the_world_Info.World.register (Self.all'unchecked_Access,
+         -- the_world_Info.World.register (Self.all'unchecked_Access,
          --                                 to_Kind (gel.events.new_sprite_added_to_world_Event'Tag));
 
          the_Camera.Viewport_is (Self.Window.Width, Self.Window.Height);
@@ -30,7 +30,7 @@ is
          the_world_Info.Cameras.append (the_Camera);
          Self.Worlds           .append (the_world_Info);
 
-         --  Self.local_Subject_and_Observer.add (the_add_new_sprite_Response'Access,
+         -- Self.local_Subject_and_Observer.add (the_add_new_sprite_Response'Access,
          --                                       to_Kind (gel.events.new_sprite_added_to_world_Event'Tag),
          --                                       the_world_Info.World.Name);
          the_world_Info.World.start;
@@ -45,7 +45,7 @@ is
                                                                    space_Kind => physics.Bullet,
                                                                    Renderer   => Self.Renderer).all'Access;
 
-         --  the_world_Info.World.register (the_Observer => Self.all'unchecked_Access,
+         -- the_world_Info.World.register (the_Observer => Self.all'unchecked_Access,
          --                                 of_Kind      => to_Kind (gel.events.new_sprite_added_to_world_Event'Tag));
 
          the_Camera.Viewport_is (Self.Window.Width, Self.Window.Height);
@@ -55,7 +55,7 @@ is
          the_world_Info.Cameras.append (the_Camera);
          Self.Worlds           .append (the_world_Info);
 
-         --  Self.local_Subject_and_Observer.add (the_add_new_sprite_Response'Access,
+         -- Self.local_Subject_and_Observer.add (the_add_new_sprite_Response'Access,
          --                                       to_Kind (gel.events.new_sprite_added_to_world_Event'Tag),
          --                                       the_world_Info.World.Name);
          the_world_Info.World.start;

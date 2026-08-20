@@ -8,6 +8,7 @@ with
      ada.unchecked_Deallocation,
      ada.unchecked_Conversion;
 
+
 package body gel.Terrain
 is
    type Heightfield_view is access all physics.Heightfield;
@@ -20,14 +21,15 @@ is
    function Width (Self : in opengl.height_Map) return math.Real
    is
    begin
-      return math.Real (self'Length (2) - 1);
+      return math.Real (Self'Length (2) - 1);
    end Width;
+
 
 
    function Depth (Self : in opengl.height_Map) return math.Real
    is
    begin
-      return math.Real (self'Length (1) - 1);
+      return math.Real (Self'Length (1) - 1);
    end Depth;
 
 
@@ -68,7 +70,7 @@ is
       procedure free is new ada.unchecked_Deallocation (opengl.height_Map,
                                                         opengl.IO.height_Map_view);
 
-      procedure flip (Self : opengl.IO.height_Map_view)
+      procedure flip (Self : in opengl.IO.height_Map_view)
       is
          use type opengl.Index_t;
 
@@ -90,7 +92,7 @@ is
    begin
       flip (the_Pixels.all'unchecked_Access);
 
-      --  Create each grid elements 'heightmap'.
+      -- Create each grid elements 'heightmap'.
       --
       declare
          use openGL;
@@ -118,7 +120,7 @@ is
          end loop;
       end;
 
-      --  Create the Sprite for each grid element.
+      -- Create the Sprite for each grid element.
       --
       declare
          site_X_offset,
@@ -164,11 +166,11 @@ is
 
                   function to_Physics is new ada.unchecked_Conversion (height_Map_view,
                                                                        physics.Model.Heightfield_view);
-                                                                       --  Heightfield_view);
+                                                                       -- Heightfield_view);
 
                   the_ground_physics_Model : constant physics.Model.view
                     := new physics.Model.item' (Id          => physics.null_model_Id,
-                                                --  Site        => Origin_3d,
+                                                -- Site        => Origin_3d,
                                                 Scale       => Scale,
                                                 shape_Info  => (physics.Model.Heightfield,
                                                                 Heights      => to_Physics (the_Region),
@@ -184,7 +186,7 @@ is
                   the_Sprite         : gel.Sprite.view     renames the_sprite_Grid (Row, Col);
                   the_Site           : vector_3;
                begin
-                  --  the_ground_Model.Scale := (Scale (1),
+                  -- the_ground_Model.Scale := (Scale (1),
                   --                             Scale (2),
                   --                             Scale (3));
 
@@ -202,7 +204,7 @@ is
                   site_y_Offset := math.Real (  the_height_Extents (1)
                                               + (the_height_Extents (2) - the_height_Extents (1)) / 2.0);
 
-                  --  the_sprite_Grid (Row, Col).Site_is (the_Site + base_Centre);
+                  -- the_sprite_Grid (Row, Col).Site_is (the_Site + base_Centre);
                   the_Sprite. Site_is (the_Site + base_Centre);
                   the_Sprite.Scale_is (Scale);
 
@@ -210,17 +212,18 @@ is
 
                   if Col /= the_sprite_Grid'Last (2)
                   then
-                     site_X_offset := site_X_offset
-                                    + Width (the_heightmap_Grid (Row, Col    ).all) * Scale (1) / 2.0
-                                    + Width (the_heightmap_Grid (Row, Col + 1).all) * Scale (1) / 2.0;
+                     site_X_offset :=   site_X_offset
+                                      + Width (the_heightmap_Grid (Row, Col    ).all) * Scale (1) / 2.0
+                                      + Width (the_heightmap_Grid (Row, Col + 1).all) * Scale (1) / 2.0;
                   end if;
                end;
             end loop;
 
             if Row /= the_sprite_Grid'Last (1)
             then
-               site_Z_offset := site_Z_offset + Depth (the_heightmap_Grid (Row,     1).all) * Scale (3) / 2.0
-                                              + Depth (the_heightmap_Grid (Row + 1, 1).all) * Scale (3) / 2.0;
+               site_Z_offset :=   site_Z_offset
+                                + Depth (the_heightmap_Grid (Row,     1).all) * Scale (3) / 2.0
+                                + Depth (the_heightmap_Grid (Row + 1, 1).all) * Scale (3) / 2.0;
             end if;
          end loop;
       end;

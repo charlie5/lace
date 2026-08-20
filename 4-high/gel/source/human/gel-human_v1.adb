@@ -23,20 +23,22 @@ with
 
 package body gel.Human_v1
 is
-   use ada.Text_IO,
-       gel.linear_Algebra_3D;
+   use
+        ada.Text_IO,
+        gel.linear_Algebra_3D;
 
    package std_Physics renames standard.Physics;
 
 
-   my_Scale   : constant := 1.0;
+   my_Scale   : constant     := 1.0;
    model_Name : access String;
 
 
    procedure use_Model (Named : in String)
    is
    begin
-      if model_Name /= null then
+      if model_Name /= null
+      then
          raise Program_Error with "'gel.human' model name has already been set";
       end if;
 
@@ -56,14 +58,16 @@ is
    is
       Pad : String := From;
    begin
-      if From = "" then
+      if From = ""
+      then
          raise Constraint_Error;
          -- return Armature;
       end if;
 
-      for Each in Pad'Range loop
-         if   Pad (Each) = '-'
-           or Pad (Each) = '.'
+      for Each in Pad'Range
+      loop
+         if        Pad (Each) = '-'
+           or else Pad (Each) = '.'
          then
             Pad (Each) := '_';
          end if;
@@ -121,7 +125,6 @@ is
    end Forge;
 
 
-
    ---------------------------
    --- Skin Program Parameters
    --
@@ -143,7 +146,9 @@ is
    procedure set_global_Transform_for (Self      : in out Item'Class;
                                        the_Joint : in     collada.Library.visual_scenes.Node_view)
    is
-      use collada.Library, Math;
+      use
+           collada.Library,
+           Math;
 
       which_Joint         : constant scene_joint_Id       := to_joint_Id (+the_Joint.Name);
       child_Joints        : constant visual_scenes.Nodes  := the_Joint.Children;
@@ -173,27 +178,28 @@ is
                null;
 --                 Site := get_Translation (the_global_Transform);
 --                 Site := (Site (1), Site (3), -Site (2));         -- Convert from Z-up to Y-up.
---  --                 Site := get_Translation (to_translation_Matrix (  (Site (1), Site (3), -Site (2))));         -- Convert from Z-up to Y-up.
---  --                                                                 * Self.bone_Sprites (Hips).Transform);
+--  --                Site := get_Translation (to_translation_Matrix (  (Site (1), Site (3), -Site (2))));         -- Convert from Z-up to Y-up.
+--  --                                                                * Self.bone_Sprites (Hips).Transform);
 --
 --                 Rotation := Inverse (get_Rotation (the_global_Transform));
 --                 Rotation := (1 => ( Rotation (1, 1),  Rotation (1, 2),  Rotation (1, 3)),                  -- Convert from Z-up to Y-up.
 --                              2 => ( Rotation (3, 1),  Rotation (3, 2),  Rotation (3, 3)),                 --
 --                              3 => (-Rotation (2, 1), -Rotation (2, 2), -Rotation (2, 3)));                  --
 --
---  --                 Rotation :=   Inverse (get_Rotation (Self.bone_Sprites (Hips).Transform))
---  --                             * Rotation;
+--  --                Rotation :=   Inverse (get_Rotation (Self.bone_Sprites (Hips).Transform))
+--  --                            * Rotation;
 --
 --                 Site := Rotation * Site;
 --                 Self.bone_Sprites (the_bone_Id).Site_is (Site);
---  --                 Self.bone_Sprites (the_bone_Id).Spin_is (Rotation);
+--  --                Self.bone_Sprites (the_bone_Id).Spin_is (Rotation);
+
             else
                Rotation :=  Inverse (get_Rotation (the_global_Transform));
                Rotation := [1 => [ Rotation (1, 1),  Rotation (1, 2),  Rotation (1, 3)],                  -- Convert from Z-up to Y-up.
                             2 => [ Rotation (3, 1),  Rotation (3, 2),  Rotation (3, 3)],                 --
                             3 => [-Rotation (2, 1), -Rotation (2, 2), -Rotation (2, 3)]];                  --
 
---  --                 Rotation :=   Inverse (get_Rotation (Self.bone_Sprites (Hips).Transform))
+--  --                Rotation :=   Inverse (get_Rotation (Self.bone_Sprites (Hips).Transform))
 --                 Rotation :=   Inverse (get_Rotation (Self.skin_Sprite.Transform)) -- animation_Origin))
 --                             * Rotation;
 --                 Rotation :=   Rotation * get_Rotation (Self.skin_Sprite.Transform);
@@ -303,7 +309,9 @@ is
 
    procedure destroy (Self : in out Item)
    is
-      use openGL.Model, gel.Sprite;
+      use
+           openGL.Model,
+           gel.Sprite;
 
       the_base_Sprite : gel.Sprite.view := Self.base_Sprite;
 
@@ -311,20 +319,23 @@ is
       procedure free_Model_for (the_Sprite : in gel.Sprite.view)
       is
          type Model_view is access all openGL.Model.item'Class;
+
          procedure deallocate is new ada.unchecked_Deallocation (openGL.Model.item'Class,  Model_view);
 
-         the_Model        : Model_view      := Model_view (the_sprite.graphics_Model);
+         the_Model        : Model_view      := Model_view (the_Sprite.graphics_Model);
          the_child_Joints : constant gel.Joint.views := the_Sprite.child_Joints;
          the_Child        : gel.Sprite.view;
       begin
-         if the_Sprite /= the_base_Sprite then
+         if the_Sprite /= the_base_Sprite
+         then
             destroy (the_Model.all);
             deallocate (the_Model);
          end if;
 
-         --  do children
+         -- do children
          --
-         for Each in the_child_Joints'Range loop
+         for Each in the_child_Joints'Range
+         loop
             the_Child := the_child_Joints (Each).Sprite_B.all'Access;
             free_Model_for (the_Child);    -- recurse
          end loop;
@@ -347,12 +358,12 @@ is
    end free;
 
 
-
    --------------
    --- Human Item
    --
+
    the_global_Document            : collada.Document.item;
-   the_global_Document_is_defined : Boolean := False;
+   the_global_Document_is_defined : Boolean              := False;
 
    procedure define (Self : in out Item;   World         : access gel        .World.item'Class;
                                            Model         : access openGL     .Model.item'Class;
@@ -362,17 +373,19 @@ is
    is
       pragma Unreferenced (Mass);
 
-      use collada.Library,
-          collada.Library.visual_scenes,
-          ada.Strings,
-          ada.Strings.unbounded;
+      use
+           collada.Library,
+           collada.Library.visual_scenes,
+           ada.Strings,
+           ada.Strings.unbounded;
 
 
       function the_Document return collada.Document.item
       is
       begin
-         if not the_global_Document_is_defined then
-            the_global_Document           := collada.Document.to_Document (model_Name.all);   -- tbd: free this at app close.
+         if not the_global_Document_is_defined
+         then
+            the_global_Document            := collada.Document.to_Document (model_Name.all);   -- tbd: free this at app close.
             the_global_Document_is_defined := True;
          end if;
 
@@ -388,7 +401,7 @@ is
       joint_Sites : array (scene_joint_Id) of math.Vector_3;
 
 
-      procedure set_Site_for (the_Joint : visual_scenes.Node_view;   parent_Site : in math.Vector_3)
+      procedure set_Site_for (the_Joint : in visual_scenes.Node_view;   parent_Site : in math.Vector_3)
       is
          pragma Unreferenced (parent_Site);
          use Math;
@@ -417,10 +430,12 @@ is
 
 
    begin
-      --  Set the inverse bind matrices for all joints.
+      -- Set the inverse bind matrices for all joints.
       --
       declare
-         use collada.Library.controllers,  Math;
+         use
+              collada.Library.controllers,
+              Math;
 
          the_Skin       : constant controllers.Skin         := the_Document.libraries.controllers.Contents (1).Skin;
          the_bind_Poses : constant collada.Matrix_4x4_array := bind_Poses_of (the_Skin);
@@ -430,7 +445,7 @@ is
             Self.controller_Joints (Each).inverse_bind_Matrix
               := Transpose (the_bind_Poses (controller_joint_Id'Pos (Each) + 1));             -- Transpose to correct for collada col major.
 
-            --  Scale the site in the joints inverse bind matrix.
+            -- Scale the site in the joints inverse bind matrix.
             declare
                the_Site : math.Vector_3 := get_Translation (Self.controller_Joints (Each).inverse_bind_Matrix);
             begin
@@ -457,11 +472,13 @@ is
 --        the_Model.Scale := (my_Scale, my_Scale, my_Scale);
 
 
-      --  Define a sprite for each bone.
+      -- Define a sprite for each bone.
       --
       declare
-         use openGL.Model.box,
-             openGL, opengl.Palette;
+         use
+              openGL.Model.box,
+              openGL,
+              opengl.Palette;
 
          use type math.Degrees;
 
@@ -480,7 +497,8 @@ is
             function get_Mass return math.Real
             is
             begin
-               if is_Kinematic then
+               if is_Kinematic
+               then
                   return 0.0;
                else
                   return Mass;
@@ -518,26 +536,26 @@ is
 --                                             texture_Name => null_Asset,
 --                                             texture_object => <>)));
 --
---  --                    the_human_graphics_Model : aliased gel.graphics_Model.open_gl.view
---  --                      := gel.graphics_Model.open_gl.forge.new_Model (scale   => (1.0, 1.0, 1.0),
---  --                                                                     --                                                     model   => gel.to_Asset ("assets/gel/model/gel-human.dae"),
---  --                                                                     model   => to_Asset (model_Name.all),  --gel.to_Asset ("assets/gel/collada/mh-human-dae.dae"),
---  --                                                                     --                                                     model   => gel.to_Asset ("assets/gel/collada/alfieri.dae"),
---  --                                                                     texture => gel.null_Asset, -- gel.to_Asset ("assets/collada/gel-human-texture.tga"),
---  --                                                                     Texture_is_lucid => False);
+--  --                   the_human_graphics_Model : aliased gel.graphics_Model.open_gl.view
+--  --                     := gel.graphics_Model.open_gl.forge.new_Model (scale   => (1.0, 1.0, 1.0),
+--  --                                                                    --                                                     model   => gel.to_Asset ("assets/gel/model/gel-human.dae"),
+--  --                                                                    model   => to_Asset (model_Name.all),  --gel.to_Asset ("assets/gel/collada/mh-human-dae.dae"),
+--  --                                                                    --                                                     model   => gel.to_Asset ("assets/gel/collada/alfieri.dae"),
+--  --                                                                    texture => gel.null_Asset, -- gel.to_Asset ("assets/collada/gel-human-texture.tga"),
+--  --                                                                    Texture_is_lucid => False);
 --                 begin
---  --                    if   the_display_Mode = Skin
---  --                      or the_display_Mode = Skin_and_Bones
---  --                    then
---  --                       Self.bone_Sprites (the_Bone) := gel.Sprite.forge.new_Sprite (sprite_Name,
---  --                                                                                    World,
---  --                                                                                    the_human_graphics_Model,
---  --  --                                                                                 Model,
---  --                                                                                    the_physics_Model,
---  --                                                                                    owns_graphics => True,
---  --                                                                                    owns_physics  => True,
---  --                                                                                    is_kinematic  => is_Kinematic);
---  --                    else
+--  --                   if   the_display_Mode = Skin
+--  --                     or the_display_Mode = Skin_and_Bones
+--  --                   then
+--  --                      Self.bone_Sprites (the_Bone) := gel.Sprite.forge.new_Sprite (sprite_Name,
+--  --                                                                                   World,
+--  --                                                                                   the_human_graphics_Model,
+--  -- --                                                                                 Model,
+--  --                                                                                   the_physics_Model,
+--  --                                                                                   owns_graphics => True,
+--  --                                                                                   owns_physics  => True,
+--  --                                                                                   is_kinematic  => is_Kinematic);
+--  --                   else
 --                       Self.bone_Sprites (the_Bone) := gel.Sprite.forge.new_Sprite (sprite_Name,
 --                                                                                    World,
 --                                                                                    the_graphics_Model,
@@ -546,7 +564,7 @@ is
 --                                                                                    owns_physics  => True,
 --                                                                                    is_kinematic  => is_Kinematic);
 --
---  --                    end if;
+--  --                   end if;
 --                 end;
 --              else
                declare
@@ -591,14 +609,16 @@ is
          end create_Bone;
 
 
+
          procedure attach_via_Ball (bone_A_Id,
                                     bone_B_Id   : in Bone_Id;
-                                    pitch_limits,
-                                    yaw_limits,
+                                    pitch_Limits,
+                                    yaw_Limits,
                                     roll_Limits : in gel.Sprite.dof_limits := (math.to_Radians (-0.0),
                                                                                math.to_Radians ( 0.0))) -- -20.0 .. 20.0
          is
             use Math;
+
             joint_Id       : constant controller_joint_Id
               := controller_joint_Id (bone_B_Id);
 
@@ -630,11 +650,12 @@ is
             Self.bone_Sprites (bone_A_Id).attach_via_ball_Socket (Self.bone_Sprites (bone_B_Id),
                                                                   frame_in_parent => Frame_A,
                                                                   frame_in_child  => Frame_B,
-                                                                  pitch_limits    => pitch_Limits,
-                                                                  yaw_limits      => yaw_limits,
-                                                                  roll_limits     => roll_limits,
+                                                                  pitch_Limits    => pitch_Limits,
+                                                                  yaw_Limits      => yaw_Limits,
+                                                                  roll_Limits     => roll_Limits,
                                                                   new_joint       => Self.Joints (joint_Id));
          end attach_via_Ball;
+
 
 
          procedure attach_via_Hinge (bone_A_Id,
@@ -643,6 +664,7 @@ is
                                                                               math.to_Radians (90.0)))
          is
             use Math;
+
             joint_Id       : constant controller_joint_Id
               := controller_joint_Id (bone_B_Id);
 
@@ -682,7 +704,7 @@ is
          bone_Extent : math.Real;
 
       begin
-         --  Skin
+         -- Skin
          --
          declare
             the_human_graphics_Model : aliased constant openGL.Model.any.view
@@ -711,7 +733,7 @@ is
          end;
 
 
-         --  Hips
+         -- Hips
          --
          bone_Extent := 0.25 * Distance (joint_Sites (Hips), to => joint_Sites (Spine));
          create_Bone (Hips,
@@ -721,343 +743,343 @@ is
                       Mass => 1.0);
 
 
-         --  Thigh_L
+         -- Thigh_L
          --
          bone_Extent := 1.0 * Distance (joint_Sites (Thigh_L), to => joint_Sites (Shin_L));
          create_Bone (Thigh_L,  Thigh_L, joint_Sites (Shin_L),  [0.25, 0.5, 0.25] * bone_Extent,  0.5);
 
          attach_via_Ball (bone_A_Id    => Hips,
                           bone_B_Id    => Thigh_L,
-                          pitch_limits => (-0.5, 0.5),
-                          yaw_limits   => (-0.5, 0.5),
+                          pitch_Limits => (-0.5, 0.5),
+                          yaw_Limits   => (-0.5, 0.5),
                           roll_Limits  => (-0.5, 0.5));
 
 
-         --  Shin_L
+         -- Shin_L
          --
          bone_Extent := 1.0 * Distance (joint_Sites (Shin_L), to => joint_Sites (Foot_L));
          create_Bone (Shin_L,  Shin_L, joint_Sites (Foot_L),  [0.2, 0.8, 0.2] * bone_Extent,  0.5);
 
          attach_via_Ball (bone_A_Id    => Thigh_L,
                           bone_B_Id    => Shin_L,
-                          pitch_limits => (-0.5, 0.5),
-                          yaw_limits   => (-0.5, 0.5),
+                          pitch_Limits => (-0.5, 0.5),
+                          yaw_Limits   => (-0.5, 0.5),
                           roll_Limits  => (-0.5, 0.5));
 
 
-         --  Foot_L
+         -- Foot_L
          --
          bone_Extent := 1.0 * Distance (joint_Sites (Foot_L), to => joint_Sites (Toe_L));
          create_Bone (Foot_L,  Foot_L, joint_Sites (Toe_L),  [0.4, 0.8, 0.2] * bone_Extent,  0.5);
 
          attach_via_Ball (bone_A_Id    => Shin_L,
                           bone_B_Id    => Foot_L,
-                          pitch_limits => (-0.5, 0.5),
-                          yaw_limits   => (-0.5, 0.5),
+                          pitch_Limits => (-0.5, 0.5),
+                          yaw_Limits   => (-0.5, 0.5),
                           roll_Limits  => (-0.5, 0.5));
 
 
-         --  Toe_L
+         -- Toe_L
          --
          bone_Extent := 1.0 * Distance (joint_Sites (Toe_L), to => joint_Sites (Foot_L));
          create_Bone (Toe_L,  Toe_L, joint_Sites (Toe_L) + [0.0, -0.05, 0.0],  [0.6, 0.3, 0.1] * bone_Extent,  0.5);
 
          attach_via_Ball (bone_A_Id    => Foot_L,
                           bone_B_Id    => Toe_L,
-                          pitch_limits => (-0.5, 0.5),
-                          yaw_limits   => (-0.5, 0.5),
+                          pitch_Limits => (-0.5, 0.5),
+                          yaw_Limits   => (-0.5, 0.5),
                           roll_Limits  => (-0.5, 0.5));
 
 
-         --  Thigh_R
+         -- Thigh_R
          --
          bone_Extent := 1.0 * Distance (joint_Sites (Thigh_R), to => joint_Sites (Shin_R));
          create_Bone (Thigh_R,  Thigh_R, joint_Sites (Shin_R),  [0.25, 0.5, 0.25] * bone_Extent,  0.5);
 
          attach_via_Ball (bone_A_Id    => Hips,
                           bone_B_Id    => Thigh_R,
-                          pitch_limits => (-0.5, 0.5),
-                          yaw_limits   => (-0.5, 0.5),
+                          pitch_Limits => (-0.5, 0.5),
+                          yaw_Limits   => (-0.5, 0.5),
                           roll_Limits  => (-0.5, 0.5));
 
 
-         --  Shin_R
+         -- Shin_R
          --
          bone_Extent := 1.0 * Distance (joint_Sites (Shin_R), to => joint_Sites (Foot_R));
          create_Bone (Shin_R,  Shin_R, joint_Sites (Foot_R),  [0.2, 0.8, 0.2] * bone_Extent,  0.5);
 
          attach_via_Ball (bone_A_Id    => Thigh_R,
                           bone_B_Id    => Shin_R,
-                          pitch_limits => (-0.5, 0.5),
-                          yaw_limits   => (-0.5, 0.5),
+                          pitch_Limits => (-0.5, 0.5),
+                          yaw_Limits   => (-0.5, 0.5),
                           roll_Limits  => (-0.5, 0.5));
 
 
-         --  Foot_R
+         -- Foot_R
          --
          bone_Extent := 1.0 * Distance (joint_Sites (Foot_R), to => joint_Sites (Toe_R));
          create_Bone (Foot_R,  Foot_R, joint_Sites (Toe_R),  [0.4, 0.8, 0.2] * bone_Extent,  0.5);
 
          attach_via_Ball (bone_A_Id    => Shin_R,
                           bone_B_Id    => Foot_R,
-                          pitch_limits => (-0.5, 0.5),
-                          yaw_limits   => (-0.5, 0.5),
+                          pitch_Limits => (-0.5, 0.5),
+                          yaw_Limits   => (-0.5, 0.5),
                           roll_Limits  => (-0.5, 0.5));
 
 
-         --  Toe_R
+         -- Toe_R
          --
          bone_Extent := 1.0 * Distance (joint_Sites (Toe_R), to => joint_Sites (Foot_R));
          create_Bone (Toe_R,  Toe_R, joint_Sites (Toe_R) + [0.0, -0.05, 0.0],  [0.6, 0.3, 0.1] * bone_Extent,  0.5);
 
          attach_via_Ball (bone_A_Id    => Foot_R,
                           bone_B_Id    => Toe_R,
-                          pitch_limits => (-0.5, 0.5),
-                          yaw_limits   => (-0.5, 0.5),
+                          pitch_Limits => (-0.5, 0.5),
+                          yaw_Limits   => (-0.5, 0.5),
                           roll_Limits  => (-0.5, 0.5));
 
 
-         --  Spine
+         -- Spine
          --
          bone_Extent := 1.0 * Distance (joint_Sites (Spine), to => joint_Sites (Chest));
          create_Bone (Spine,  Spine, joint_Sites (Chest),  [1.4, 0.6, 0.9] * bone_Extent,  0.5);
 
          attach_via_Ball (bone_A_Id    => Hips,
                           bone_B_Id    => Spine,
-                          pitch_limits => (-0.5, 0.5),
-                          yaw_limits   => (-0.5, 0.5),
+                          pitch_Limits => (-0.5, 0.5),
+                          yaw_Limits   => (-0.5, 0.5),
                           roll_Limits  => (-0.5, 0.5));
 
 
-         --  Chest
+         -- Chest
          --
          bone_Extent := 1.0 * Distance (joint_Sites (Chest), to => joint_Sites (Neck));
          create_Bone (Chest,  Chest, joint_Sites (Neck),  [0.8, 0.2, 0.20] * bone_Extent,  0.5); -- 0.6 * 0.5);
 
          attach_via_Ball (bone_A_Id    => Spine,
                           bone_B_Id    => Chest,
-                          pitch_limits => (-0.5, 0.5),
-                          yaw_limits   => (-0.5, 0.5),
+                          pitch_Limits => (-0.5, 0.5),
+                          yaw_Limits   => (-0.5, 0.5),
                           roll_Limits  => (-0.5, 0.5));
 
 
          --- Right Arm
          --
 
-         --  Right Clavicle
+         -- Right Clavicle
          --
          bone_Extent := 1.0 * Distance (joint_Sites (Clavicle_R), to => joint_Sites (upper_Arm_R));
          create_Bone (Clavicle_R,  Clavicle_R, joint_Sites (upper_Arm_R),  [0.25, 0.25, 0.25] * bone_Extent,  0.5);
 
          attach_via_Ball (Chest,   Clavicle_R,
-                          pitch_limits => (-0.5, 0.5),
-                          yaw_limits   => (-0.5, 0.5),
-                          roll_limits  => (-0.5, 0.5));
+                          pitch_Limits => (-0.5, 0.5),
+                          yaw_Limits   => (-0.5, 0.5),
+                          roll_Limits  => (-0.5, 0.5));
 
 
-         --  Right Upper Arm
+         -- Right Upper Arm
          --
          bone_Extent := 1.0 * Distance (joint_Sites (upper_Arm_R), to => joint_Sites (Forearm_R));
          create_Bone (upper_Arm_R,  upper_Arm_R, joint_Sites (Forearm_R),  [0.2, 0.7, 0.2] * bone_Extent,  0.5);
 
          attach_via_Ball (Clavicle_R,   upper_Arm_R,
-                          pitch_limits => (-0.5, 0.5),
-                          yaw_limits   => (-0.5, 0.5),
-                          roll_limits  => (-0.5, 0.5));
+                          pitch_Limits => (-0.5, 0.5),
+                          yaw_Limits   => (-0.5, 0.5),
+                          roll_Limits  => (-0.5, 0.5));
 
 
-         --  Right Forearm
+         -- Right Forearm
          --
          bone_Extent := 1.0 * Distance (joint_Sites (Forearm_R), to => joint_Sites (Hand_R));
          create_Bone (Forearm_R,  Forearm_R, joint_Sites (Hand_R),  [0.2, 0.8, 0.2] * bone_Extent,  0.5);
 
          attach_via_Ball (upper_Arm_R,   Forearm_R,
-                          pitch_limits => (-0.5, 0.5),
-                          yaw_limits   => (-0.5, 0.5),
-                          roll_limits  => (-0.5, 0.5));
+                          pitch_Limits => (-0.5, 0.5),
+                          yaw_Limits   => (-0.5, 0.5),
+                          roll_Limits  => (-0.5, 0.5));
 
 
-         --  Right Hand
+         -- Right Hand
          --
          bone_Extent := 1.0 * Distance (joint_Sites (Hand_R), to => joint_Sites (Thumb_02_R));
          create_Bone (Hand_R,  Hand_R,  joint_Sites (Thumb_02_R) - [0.0, 0.0, 0.0],  [0.8, 0.9, 0.2] * bone_Extent,  0.5);
 
          attach_via_Ball (Forearm_R,   Hand_R,
-                          pitch_limits => (-0.5, 0.0),
-                          yaw_limits   => (-0.5, 0.0),
-                          roll_limits  => (-0.0, 0.0));
+                          pitch_Limits => (-0.5, 0.0),
+                          yaw_Limits   => (-0.5, 0.0),
+                          roll_Limits  => (-0.0, 0.0));
 
---           --  Right Thumb_02
+--           -- Right Thumb_02
 --           --
 --           bone_Extent := 1.0 * Distance (joint_Sites (Thumb_02_R), to => joint_Sites (Hand_R));
 --           create_Bone (Thumb_02_R,  Thumb_02_R,  joint_Sites (Hand_R) - (0.5, 0.0, 0.0),  (0.4, 0.15, 0.08) * bone_Extent,  0.5);
 --
 --           attach_via_Ball (Hand_R,   Thumb_02_R,
---                            pitch_limits => (-0.5, 0.0),
---                            yaw_limits   => (-0.5, 0.0),
---                            roll_limits  => (-0.0, 0.0));
+--                            pitch_Limits => (-0.5, 0.0),
+--                            yaw_Limits   => (-0.5, 0.0),
+--                            roll_Limits  => (-0.0, 0.0));
 --
---           --  Right Thumb_03
+--           -- Right Thumb_03
 --           --
 --           bone_Extent := 1.0 * Distance (joint_Sites (Thumb_03_R), to => joint_Sites (Hand_R));
 --           create_Bone (Thumb_03_R,  Thumb_03_R,  joint_Sites (Hand_R) - (0.5, 0.0, 0.0),  (0.4, 0.15, 0.08) * bone_Extent,  0.5);
 --
 --           attach_via_Ball (Hand_R,   Thumb_03_R,
---                            pitch_limits => (-0.5, 0.0),
---                            yaw_limits   => (-0.5, 0.0),
---                            roll_limits  => (-0.0, 0.0));
+--                            pitch_Limits => (-0.5, 0.0),
+--                            yaw_Limits   => (-0.5, 0.0),
+--                            roll_Limits  => (-0.0, 0.0));
 --
---           --  Right Index Finger
+--           -- Right Index Finger
 --           --
 --           bone_Extent := 1.0 * Distance (joint_Sites (F_ring_01_R), to => joint_Sites (Hand_R));
 --           create_Bone (F_ring_01_R,  F_ring_01_R,  joint_Sites (Hand_R) - (0.5, 0.0, 0.0),  (0.4, 0.15, 0.08) * bone_Extent,  0.5);
 --
 --           attach_via_Ball (Hand_R,   F_ring_01_R,
---                            pitch_limits => (-0.5, 0.0),
---                            yaw_limits   => (-0.5, 0.0),
---                            roll_limits  => (-0.0, 0.0));
+--                            pitch_Limits => (-0.5, 0.0),
+--                            yaw_Limits   => (-0.5, 0.0),
+--                            roll_Limits  => (-0.0, 0.0));
 --
---           --  Right Ring Finger
+--           -- Right Ring Finger
 --           --
 --           bone_Extent := 1.0 * Distance (joint_Sites (F_index_01_R), to => joint_Sites (Hand_R));
 --           create_Bone (F_index_01_R,  F_index_01_R,  joint_Sites (Hand_R) - (0.5, 0.0, 0.0),  (0.4, 0.15, 0.08) * bone_Extent,  0.5);
 --
 --           attach_via_Ball (Hand_R,   F_index_01_R,
---                            pitch_limits => (-0.5, 0.0),
---                            yaw_limits   => (-0.5, 0.0),
---                            roll_limits  => (-0.0, 0.0));
+--                            pitch_Limits => (-0.5, 0.0),
+--                            yaw_Limits   => (-0.5, 0.0),
+--                            roll_Limits  => (-0.0, 0.0));
 
 
          --- Left Arm
          --
 
-         --  Left Clavicle
+         -- Left Clavicle
          --
          bone_Extent := 1.0 * Distance (joint_Sites (Clavicle_L), to => joint_Sites (upper_Arm_L));
          create_Bone (Clavicle_L,  Clavicle_L, joint_Sites (upper_Arm_L),  [0.25, 0.25, 0.25] * bone_Extent,  0.5);
 
          attach_via_Ball (Chest,   Clavicle_L,
-                          pitch_limits => (-0.5, 0.5),
-                          yaw_limits   => (-0.5, 0.5),
-                          roll_limits  => (-0.5, 0.5));
+                          pitch_Limits => (-0.5, 0.5),
+                          yaw_Limits   => (-0.5, 0.5),
+                          roll_Limits  => (-0.5, 0.5));
 
 
-         --  Left Upper Arm
+         -- Left Upper Arm
          --
          bone_Extent := 1.0 * Distance (joint_Sites (upper_Arm_L), to => joint_Sites (Forearm_L));
          create_Bone (upper_Arm_L,  upper_Arm_L, joint_Sites (Forearm_L),  [0.2, 0.7, 0.2] * bone_Extent,  0.5);
 
          attach_via_Ball (Clavicle_L,   upper_Arm_L,
-                          pitch_limits => (-0.5, 0.5),
-                          yaw_limits   => (-0.5, 0.5),
-                          roll_limits  => (-0.5, 0.5));
+                          pitch_Limits => (-0.5, 0.5),
+                          yaw_Limits   => (-0.5, 0.5),
+                          roll_Limits  => (-0.5, 0.5));
 
 
-         --  Left Forearm
+         -- Left Forearm
          --
          bone_Extent := 0.75 * Distance (joint_Sites (Forearm_L), to => joint_Sites (Hand_L));
          create_Bone (Forearm_L,  Forearm_L, joint_Sites (Hand_L),  [0.2, 0.8, 0.2] * bone_Extent,  0.5);
 
          attach_via_Ball (upper_Arm_L,   Forearm_L,
-                          pitch_limits => (-0.5, 0.5),
-                          yaw_limits   => (-0.5, 0.5),
-                          roll_limits  => (-0.5, 0.5));
+                          pitch_Limits => (-0.5, 0.5),
+                          yaw_Limits   => (-0.5, 0.5),
+                          roll_Limits  => (-0.5, 0.5));
 
 
-         --  Left Hand
+         -- Left Hand
          --
          bone_Extent := 1.0 * Distance (joint_Sites (Hand_L), to => joint_Sites (Thumb_02_L));
          create_Bone (Hand_L,  Hand_L,  joint_Sites (Thumb_02_L) - [0.0, 0.0, 0.0],  [0.8, 0.9, 0.2] * bone_Extent,  0.5);
 
          attach_via_Ball (Forearm_L,   Hand_L,
-                          pitch_limits => (-0.5, 0.0),
-                          yaw_limits   => (-0.5, 0.0),
-                          roll_limits  => (-0.0, 0.0));
+                          pitch_Limits => (-0.5, 0.0),
+                          yaw_Limits   => (-0.5, 0.0),
+                          roll_Limits  => (-0.0, 0.0));
 
 
---           --  Left Thumb_02
+--           -- Left Thumb_02
 --           --
 --           bone_Extent := 1.0 * Distance (joint_Sites (Thumb_02_L), to => joint_Sites (Hand_L));
 --           create_Bone (Thumb_02_L,  Thumb_02_L,  joint_Sites (Hand_L) + (0.5, 0.0, 0.0),  (0.4, 0.15, 0.08) * bone_Extent,  0.5);
 --
 --           attach_via_Ball (Hand_L,   Thumb_02_L,
---                            pitch_limits => (-0.5, 0.0),
---                            yaw_limits   => (-0.5, 0.0),
---                            roll_limits  => (-0.0, 0.0));
+--                            pitch_Limits => (-0.5, 0.0),
+--                            yaw_Limits   => (-0.5, 0.0),
+--                            roll_Limits  => (-0.0, 0.0));
 --
---           --  Left Thumb_03
+--           -- Left Thumb_03
 --           --
 --           bone_Extent := 1.0 * Distance (joint_Sites (Thumb_03_L), to => joint_Sites (Hand_L));
 --           create_Bone (Thumb_03_L,  Thumb_03_L,  joint_Sites (Hand_L) + (0.5, 0.0, 0.0),  (0.4, 0.15, 0.08) * bone_Extent,  0.5);
 --
 --           attach_via_Ball (Hand_L,   Thumb_03_L,
---                            pitch_limits => (-0.5, 0.0),
---                            yaw_limits   => (-0.5, 0.0),
---                            roll_limits  => (-0.0, 0.0));
+--                            pitch_Limits => (-0.5, 0.0),
+--                            yaw_Limits   => (-0.5, 0.0),
+--                            roll_Limits  => (-0.0, 0.0));
 --
---           --  Left Index Finger
+--           -- Left Index Finger
 --           --
 --           bone_Extent := 1.0 * Distance (joint_Sites (F_ring_01_L), to => joint_Sites (Hand_L));
 --           create_Bone (F_ring_01_L,  F_ring_01_L,  joint_Sites (Hand_L) + (0.5, 0.0, 0.0),  (0.4, 0.15, 0.08) * bone_Extent,  0.5);
 --
 --           attach_via_Ball (Hand_L,   F_ring_01_L,
---                            pitch_limits => (-0.5, 0.0),
---                            yaw_limits   => (-0.5, 0.0),
---                            roll_limits  => (-0.0, 0.0));
+--                            pitch_Limits => (-0.5, 0.0),
+--                            yaw_Limits   => (-0.5, 0.0),
+--                            roll_Limits  => (-0.0, 0.0));
 --
---           --  Left Ring Finger
+--           -- Left Ring Finger
 --           --
 --           bone_Extent := 1.0 * Distance (joint_Sites (F_index_01_L), to => joint_Sites (Hand_L));
 --           create_Bone (F_index_01_L,  F_index_01_L,  joint_Sites (Hand_L) + (0.5, 0.0, 0.0),  (0.4, 0.15, 0.08) * bone_Extent,  0.5);
 --
 --           attach_via_Ball (Hand_L,   F_index_01_L,
---                            pitch_limits => (-0.5, 0.0),
---                            yaw_limits   => (-0.5, 0.0),
---                            roll_limits  => (-0.0, 0.0));
+--                            pitch_Limits => (-0.5, 0.0),
+--                            yaw_Limits   => (-0.5, 0.0),
+--                            roll_Limits  => (-0.0, 0.0));
 
 
-         --  Neck
+         -- Neck
          --
          bone_Extent := 1.0 * Distance (joint_Sites (Neck), to => joint_Sites (Head));
          create_Bone (Neck,  Neck, joint_Sites (Head),  [0.4, 0.6, 0.4] * bone_Extent,  0.4); -- 0.4 * 0.5);
 
          attach_via_Ball (bone_A_Id    => Chest,
                           bone_B_Id    => Neck,
-                          pitch_limits => (-0.4, 0.3),
-                          yaw_limits   => (-0.3, 0.3),
+                          pitch_Limits => (-0.4, 0.3),
+                          yaw_Limits   => (-0.3, 0.3),
                           roll_Limits  => (-0.2, 0.2));
 
 
-         --  Head
+         -- Head
          --
          bone_Extent := 1.0 * Distance (joint_Sites (Head), to => joint_Sites (Neck));
          create_Bone (Head,  Head, joint_Sites (Head) + [0.0, 0.0, 0.05],  [0.8, 0.6, 0.7] * bone_Extent,  0.25);
 
          attach_via_Ball (bone_A_Id    => Neck,
                           bone_B_Id    => Head,
-                          pitch_limits => (-0.5, 0.5),
-                          yaw_limits   => (-0.5, 0.5),
+                          pitch_Limits => (-0.5, 0.5),
+                          yaw_Limits   => (-0.5, 0.5),
                           roll_Limits  => (-0.5, 0.5));
 
-         --  Jaw
+         -- Jaw
          --
          bone_Extent := 1.0 * Distance (joint_Sites (Jaw), to => joint_Sites (Head));
          create_Bone (Jaw,  Jaw, joint_Sites (Jaw) + [0.0, -0.07, 0.03],  [0.9, 1.0, 0.3] * bone_Extent,  0.25);
 
          attach_via_Ball (bone_A_Id    => Head,
                           bone_B_Id    => Jaw,
-                          pitch_limits => (-0.5, 0.5),
-                          yaw_limits   => (-0.5, 0.5),
+                          pitch_Limits => (-0.5, 0.5),
+                          yaw_Limits   => (-0.5, 0.5),
                           roll_Limits  => (-0.5, 0.5));
 
---           --  Eye_R
+--           -- Eye_R
 --           --
 --           bone_Extent := 0.1 * Distance (joint_Sites (Eye_R), to => joint_Sites (Head));
 --           create_Bone (Eye_R,  Eye_R, joint_Sites (Eye_R) + (0.0, 0.0, 0.0),  (1.0, 1.4, 0.7) * bone_Extent,  0.25);
 --
 --           attach_via_Ball (Head, Eye_R);
 --
---           --  Eye_L
+--           -- Eye_L
 --           --
 --           bone_Extent := 0.1 * Distance (joint_Sites (Eye_L), to => joint_Sites (Head));
 --           create_Bone (Eye_L,  Eye_L, joint_Sites (Eye_L) + (0.0, 0.0, 0.0),  (1.0, 1.4, 0.7) * bone_Extent,  0.25);
@@ -1068,8 +1090,10 @@ is
 
       --- Parse the Collada animations file.
       --
+
       declare
          use collada.Library.animations;
+
          the_Animations  : constant access animations.Animation_array := the_Document.Libraries.Animations.Contents;
       begin
          if the_Animations /= null
@@ -1079,12 +1103,12 @@ is
                declare
                   the_Animation   : constant animations.Animation       := the_Animations (Each);
 
-                  procedure common_setup (Channel : channel_Id;   scene_Joint : scene_Joint_Id;   Sid : in String)
+                  procedure common_setup (Channel : in channel_Id;   scene_Joint : in scene_Joint_Id;   Sid : in String)
                   is
                   begin
-                     Self.Channels (Channel).Target        := Self.scene_Joints (scene_Joint).Node.fetch_Transform (Sid);
-                     Self.Channels (Channel).Times         := Inputs_of  (the_Animation);
-                     Self.Channels (Channel).Values        := Outputs_of (the_Animation);
+                     Self.Channels (Channel).Target := Self.scene_Joints (scene_Joint).Node.fetch_Transform (Sid);
+                     Self.Channels (Channel).Times  := Inputs_of  (the_Animation);
+                     Self.Channels (Channel).Values := Outputs_of (the_Animation);
 
                      for Each in Self.Channels (Channel).Times'Range
                      loop
@@ -1092,7 +1116,9 @@ is
                      end loop;
                   end common_setup;
 
-                  procedure setup_Rotation (Channel : channel_Id;   scene_Joint : scene_Joint_Id;   Sid : in String)
+
+
+                  procedure setup_Rotation (Channel : in channel_Id;   scene_Joint : in scene_Joint_Id;   Sid : in String)
                   is
                   begin
                      common_setup (Channel, scene_Joint, Sid);
@@ -1104,7 +1130,7 @@ is
                   end setup_Rotation;
                   pragma Unreferenced (setup_Rotation);
 
-                  procedure setup_Location (Channel : channel_Id;   scene_Joint : scene_Joint_Id;   Sid : in String)
+                  procedure setup_Location (Channel : in channel_Id;   scene_Joint : in scene_Joint_Id;   Sid : in String)
                   is
                   begin
                      common_setup (Channel, scene_Joint, Sid);
@@ -1118,19 +1144,19 @@ is
                   end setup_Location;
                   pragma Unreferenced (setup_Location);
 
-                  procedure setup_full_Transform (Channel : channel_Id;   scene_Joint : scene_Joint_Id;   Sid : in String)
+                  procedure setup_full_Transform (Channel : in channel_Id;   scene_Joint : in scene_Joint_Id;   Sid : in String)
                   is
                   begin
                      common_setup (Channel, scene_Joint, Sid);
 
                      -- For matrix interpolation during 'full_transform' animation.
                      --
-                     Self.Channels (Channel).Transforms := new Transforms (1 .. Collada.matrix_Count (Self.Channels (Channel).Values.all));
+                     Self.Channels (Channel).Transforms := new Transforms (1 .. collada.matrix_Count (Self.Channels (Channel).Values.all));
 
                      for i in Self.Channels (Channel).Transforms'Range
                      loop
                         declare
-                           the_Matrix : constant math.Matrix_4x4 := math.Transpose (Collada.get_Matrix (Self.Channels (Channel).Values.all, which => i));
+                           the_Matrix : constant math.Matrix_4x4 := math.Transpose (collada.get_Matrix (Self.Channels (Channel).Values.all, which => i));
                         begin
                            Self.Channels (Channel).Transforms (i) := (rotation    => to_Quaternion (get_Rotation    (the_Matrix)),
                                                                       translation =>                get_Translation (the_Matrix));
@@ -1141,108 +1167,140 @@ is
                      Self.Channels (Channel).initial_Transform := Self.Channels (Channel).Transforms (1);
                      Self.Channels (Channel).current_Transform := Self.Channels (Channel).initial_Transform;
 
-                     Self.Channels (Channel).current_Site  := Self.Channels (Channel).initial_Transform.Translation;
-                     Self.Channels (Channel).initial_Site  := Self.Channels (Channel).current_Site;
+                     Self.Channels (Channel).current_Site := Self.Channels (Channel).initial_Transform.Translation;
+                     Self.Channels (Channel).initial_Site := Self.Channels (Channel).current_Site;
                   end setup_full_Transform;
 
                begin
-                  if    Index (the_Animation.Channel.Target, "hips/transform") /= 0 then
+                  if    Index (the_Animation.Channel.Target, "hips/transform") /= 0
+                  then
                      setup_full_Transform (Hips, Hips, "transform");
 
-                  elsif Index (the_Animation.Channel.Target, "thigh_L/transform") /= 0 then
+                  elsif Index (the_Animation.Channel.Target, "thigh_L/transform") /= 0
+                  then
                      setup_full_Transform (Thigh_L, Thigh_L, "transform");
 
-                  elsif Index (the_Animation.Channel.Target, "shin_L/transform") /= 0 then
+                  elsif Index (the_Animation.Channel.Target, "shin_L/transform") /= 0
+                  then
                      setup_full_Transform (Shin_L, Shin_L, "transform");
 
-                  elsif Index (the_Animation.Channel.Target, "foot_L/transform") /= 0 then
+                  elsif Index (the_Animation.Channel.Target, "foot_L/transform") /= 0
+                  then
                      setup_full_Transform (Foot_L, Foot_L, "transform");
 
-                  elsif Index (the_Animation.Channel.Target, "toe_L/transform") /= 0 then
+                  elsif Index (the_Animation.Channel.Target, "toe_L/transform") /= 0
+                  then
                      setup_full_Transform (Toe_L, Toe_L, "transform");
 
-                  elsif Index (the_Animation.Channel.Target, "thigh_R/transform") /= 0 then
+                  elsif Index (the_Animation.Channel.Target, "thigh_R/transform") /= 0
+                  then
                      setup_full_Transform (Thigh_R, Thigh_R, "transform");
 
-                  elsif Index (the_Animation.Channel.Target, "shin_R/transform") /= 0 then
+                  elsif Index (the_Animation.Channel.Target, "shin_R/transform") /= 0
+                  then
                      setup_full_Transform (Shin_R, Shin_R, "transform");
 
-                  elsif Index (the_Animation.Channel.Target, "foot_R/transform") /= 0 then
+                  elsif Index (the_Animation.Channel.Target, "foot_R/transform") /= 0
+                  then
                      setup_full_Transform (Foot_R, Foot_R, "transform");
 
-                  elsif Index (the_Animation.Channel.Target, "toe_R/transform") /= 0 then
+                  elsif Index (the_Animation.Channel.Target, "toe_R/transform") /= 0
+                  then
                      setup_full_Transform (Toe_R, Toe_R, "transform");
 
-                  elsif Index (the_Animation.Channel.Target, "spine/transform") /= 0 then
+                  elsif Index (the_Animation.Channel.Target, "spine/transform") /= 0
+                  then
                      setup_full_Transform (Spine, Spine, "transform");
 
-                  elsif Index (the_Animation.Channel.Target, "chest/transform") /= 0 then
+                  elsif Index (the_Animation.Channel.Target, "chest/transform") /= 0
+                  then
                      setup_full_Transform (Chest, Chest, "transform");
 
 
-                  elsif Index (the_Animation.Channel.Target, "clavicle_R/transform") /= 0 then
+                  elsif Index (the_Animation.Channel.Target, "clavicle_R/transform") /= 0
+                  then
                      setup_full_Transform (Clavicle_R, Clavicle_R, "transform");
 
-                  elsif Index (the_Animation.Channel.Target, "upper_arm_R/transform") /= 0 then
+                  elsif Index (the_Animation.Channel.Target, "upper_arm_R/transform") /= 0
+                  then
                      setup_full_Transform (upper_Arm_R, upper_Arm_R, "transform");
 
-                  elsif Index (the_Animation.Channel.Target, "forearm_R/transform") /= 0 then
+                  elsif Index (the_Animation.Channel.Target, "forearm_R/transform") /= 0
+                  then
                      setup_full_Transform (Forearm_R, Forearm_R, "transform");
 
-                  elsif Index (the_Animation.Channel.Target, "hand_R/transform") /= 0 then
+                  elsif Index (the_Animation.Channel.Target, "hand_R/transform") /= 0
+                  then
                      setup_full_Transform (Hand_R, Hand_R, "transform");
 
-                  elsif Index (the_Animation.Channel.Target, "thumb_02_R/transform") /= 0 then
+                  elsif Index (the_Animation.Channel.Target, "thumb_02_R/transform") /= 0
+                  then
                      setup_full_Transform (Thumb_02_R, Thumb_02_R, "transform");
 
-                  elsif Index (the_Animation.Channel.Target, "thumb_03_R/transform") /= 0 then
+                  elsif Index (the_Animation.Channel.Target, "thumb_03_R/transform") /= 0
+                  then
                      setup_full_Transform (Thumb_03_R, Thumb_03_R, "transform");
 
-                  elsif Index (the_Animation.Channel.Target, "f_ring_01_R/transform") /= 0 then
+                  elsif Index (the_Animation.Channel.Target, "f_ring_01_R/transform") /= 0
+                  then
                      setup_full_Transform (F_ring_01_R, F_ring_01_R, "transform");
 
-                  elsif Index (the_Animation.Channel.Target, "f_index_01_R/transform") /= 0 then
+                  elsif Index (the_Animation.Channel.Target, "f_index_01_R/transform") /= 0
+                  then
                      setup_full_Transform (F_index_01_R, F_index_01_R, "transform");
 
 
-                  elsif Index (the_Animation.Channel.Target, "clavicle_L/transform") /= 0 then
+                  elsif Index (the_Animation.Channel.Target, "clavicle_L/transform") /= 0
+                  then
                      setup_full_Transform (Clavicle_L, Clavicle_L, "transform");
 
-                  elsif Index (the_Animation.Channel.Target, "upper_arm_L/transform") /= 0 then
+                  elsif Index (the_Animation.Channel.Target, "upper_arm_L/transform") /= 0
+                  then
                      setup_full_Transform (upper_Arm_L, upper_Arm_L, "transform");
 
-                  elsif Index (the_Animation.Channel.Target, "forearm_L/transform") /= 0 then
+                  elsif Index (the_Animation.Channel.Target, "forearm_L/transform") /= 0
+                  then
                      setup_full_Transform (Forearm_L, Forearm_L, "transform");
 
-                  elsif Index (the_Animation.Channel.Target, "hand_L/transform") /= 0 then
+                  elsif Index (the_Animation.Channel.Target, "hand_L/transform") /= 0
+                  then
                      setup_full_Transform (Hand_L, Hand_L, "transform");
 
-                  elsif Index (the_Animation.Channel.Target, "thumb_02_L/transform") /= 0 then
+                  elsif Index (the_Animation.Channel.Target, "thumb_02_L/transform") /= 0
+                  then
                      setup_full_Transform (Thumb_02_L, Thumb_02_L, "transform");
 
-                  elsif Index (the_Animation.Channel.Target, "thumb_03_L/transform") /= 0 then
+                  elsif Index (the_Animation.Channel.Target, "thumb_03_L/transform") /= 0
+                  then
                      setup_full_Transform (Thumb_03_L, Thumb_03_L, "transform");
 
-                  elsif Index (the_Animation.Channel.Target, "f_ring_01_L/transform") /= 0 then
+                  elsif Index (the_Animation.Channel.Target, "f_ring_01_L/transform") /= 0
+                  then
                      setup_full_Transform (F_ring_01_L, F_ring_01_L, "transform");
 
-                  elsif Index (the_Animation.Channel.Target, "f_index_01_L/transform") /= 0 then
+                  elsif Index (the_Animation.Channel.Target, "f_index_01_L/transform") /= 0
+                  then
                      setup_full_Transform (F_index_01_L, F_index_01_L, "transform");
 
 
-                  elsif Index (the_Animation.Channel.Target, "neck/transform") /= 0 then
+                  elsif Index (the_Animation.Channel.Target, "neck/transform") /= 0
+                  then
                      setup_full_Transform (Neck, Neck, "transform");
 
-                  elsif Index (the_Animation.Channel.Target, "head/transform") /= 0 then
+                  elsif Index (the_Animation.Channel.Target, "head/transform") /= 0
+                  then
                      setup_full_Transform (Head, Head, "transform");
 
-                  elsif Index (the_Animation.Channel.Target, "jaw/transform") /= 0 then
+                  elsif Index (the_Animation.Channel.Target, "jaw/transform") /= 0
+                  then
                      setup_full_Transform (Jaw, Jaw, "transform");
 
-                  elsif Index (the_Animation.Channel.Target, "eye_R/transform") /= 0 then
+                  elsif Index (the_Animation.Channel.Target, "eye_R/transform") /= 0
+                  then
                      setup_full_Transform (Eye_R, Eye_R, "transform");
 
-                  elsif Index (the_Animation.Channel.Target, "eye_L/transform") /= 0 then
+                  elsif Index (the_Animation.Channel.Target, "eye_L/transform") /= 0
+                  then
                      setup_full_Transform (Eye_L, Eye_L, "transform");
                   end if;
                end;
@@ -1320,7 +1378,7 @@ is
 
 
    procedure set_GL_program_Parameters (Self : in out Item'Class;   for_Bone : in controller_joint_Id;
-                                                        To       : in math.Matrix_4x4)
+                                                                    To       : in math.Matrix_4x4)
    is
       use gel.Conversions;
    begin
@@ -1445,7 +1503,7 @@ is
       then
          Self.animate (world_Age);
       else
---  --           Self.skin_Sprite.Transform_is (Self.base_Sprite.Transform);
+--  --          Self.skin_Sprite.Transform_is (Self.base_Sprite.Transform);
          Self.skin_Sprite.rotate (Self.base_Sprite.Spin);
          Self.skin_Sprite.move   (Self.base_Sprite.Site);
          null;
@@ -1454,63 +1512,64 @@ is
 
       -- tbd: Can probly do the below 'set_Transform_for' calls in a loop.
 
-      --  Torso
+      -- Torso
       --
       set_Transform_for (Hips);
-      --  set_Transform_for (Spine);
-      --  set_Transform_for (Chest);
-      --  set_Transform_for (Neck);
+      -- set_Transform_for (Spine);
+      -- set_Transform_for (Chest);
+      -- set_Transform_for (Neck);
       --
-      --  set_Transform_for       (Head);
-      --  set_Transform_for       (Jaw);
-      --  set_proxy_Transform_for (Eye_R, Head);
-      --  set_proxy_Transform_for (Eye_L, Head);
+      -- set_Transform_for       (Head);
+      -- set_Transform_for       (Jaw);
+      -- set_proxy_Transform_for (Eye_R, Head);
+      -- set_proxy_Transform_for (Eye_L, Head);
       --
       --
-      --  --  Left Arm
+      --  -- Left Arm
       --  --
-      --  set_Transform_for       (Clavicle_L);
-      --  set_Transform_for       (upper_Arm_L);
-      --  set_Transform_for       (Forearm_L);
-      --  set_Transform_for       (Hand_L);
-      --  set_proxy_Transform_for (Thumb_02_L,   Hand_L);
-      --  set_proxy_Transform_for (Thumb_03_L,   Hand_L);
-      --  set_proxy_Transform_for (F_ring_01_L,  Hand_L);
-      --  set_proxy_Transform_for (F_index_01_L, Hand_L);
+      -- set_Transform_for       (Clavicle_L);
+      -- set_Transform_for       (upper_Arm_L);
+      -- set_Transform_for       (Forearm_L);
+      -- set_Transform_for       (Hand_L);
+      -- set_proxy_Transform_for (Thumb_02_L,   Hand_L);
+      -- set_proxy_Transform_for (Thumb_03_L,   Hand_L);
+      -- set_proxy_Transform_for (F_ring_01_L,  Hand_L);
+      -- set_proxy_Transform_for (F_index_01_L, Hand_L);
       --
       --
-      --  --  Right Arm
+      --  -- Right Arm
       --  --
-      --  set_Transform_for       (Clavicle_R);
-      --  set_Transform_for       (upper_Arm_R);
-      --  set_Transform_for       (Forearm_R);
-      --  set_Transform_for       (Hand_R);
-      --  set_proxy_Transform_for (Thumb_02_R,   Hand_R);
-      --  set_proxy_Transform_for (Thumb_03_R,   Hand_R);
-      --  set_proxy_Transform_for (F_ring_01_R,  Hand_R);
-      --  set_proxy_Transform_for (F_index_01_R, Hand_R);
+      -- set_Transform_for       (Clavicle_R);
+      -- set_Transform_for       (upper_Arm_R);
+      -- set_Transform_for       (Forearm_R);
+      -- set_Transform_for       (Hand_R);
+      -- set_proxy_Transform_for (Thumb_02_R,   Hand_R);
+      -- set_proxy_Transform_for (Thumb_03_R,   Hand_R);
+      -- set_proxy_Transform_for (F_ring_01_R,  Hand_R);
+      -- set_proxy_Transform_for (F_index_01_R, Hand_R);
       --
       --
-      --  --  Left Leg
+      --  -- Left Leg
       --  --
-      --  set_Transform_for (Thigh_L);
-      --  set_Transform_for (Shin_L);
-      --  set_Transform_for (Foot_L);
-      --  set_Transform_for (Toe_L);
+      -- set_Transform_for (Thigh_L);
+      -- set_Transform_for (Shin_L);
+      -- set_Transform_for (Foot_L);
+      -- set_Transform_for (Toe_L);
       --
       --
-      --  --  Right Leg
+      --  -- Right Leg
       --  --
-      --  set_Transform_for (Thigh_R);
-      --  set_Transform_for (Shin_R);
-      --  set_Transform_for (Foot_R);
-      --  set_Transform_for (Toe_R);
+      -- set_Transform_for (Thigh_R);
+      -- set_Transform_for (Shin_R);
+      -- set_Transform_for (Foot_R);
+      -- set_Transform_for (Toe_R);
    end evolve;
 
 
    -------------
-   --  Animation
+   --- Animation
    --
+
    procedure animate (Self : in out Item;   world_Age : in Duration)
    is
       Now     : Duration;
@@ -1553,6 +1612,7 @@ is
                      the_Channel.interp_Delta :=   Reduced (the_Channel.Values (Cursor) - the_Channel.current_Angle)
                                                  / (the_Channel.Times  (Cursor));
                   end if;
+
                else
                   the_Channel.interp_Delta :=   Reduced (the_Channel.Values (Cursor) - the_Channel.current_Angle)
                                               / (the_Channel.Times  (Cursor) - the_Channel.Times (Cursor - 1));
@@ -1582,7 +1642,9 @@ is
          Elapsed     : constant Duration      := Now - Self.start_Time;
 
          function site_X return math.Real is begin   return the_Channel.Values ((Cursor - 1) * 3 + 1);   end site_X;
+
          function site_Y return math.Real is begin   return the_Channel.Values ((Cursor - 1) * 3 + 2);   end site_Y;
+
          function site_Z return math.Real is begin   return the_Channel.Values ((Cursor - 1) * 3 + 3);   end site_Z;
 
       begin
@@ -1593,12 +1655,14 @@ is
             then
                Cursor := Cursor + 1;
 
-               if Cursor = 1 then
+               if Cursor = 1
+               then
                   if the_Channel.Times  (Cursor) = 0.0
                   then
                      the_Channel.site_interp_Delta (1) := site_X - the_Channel.current_Site (1);
                      the_Channel.site_interp_Delta (2) := site_Y - the_Channel.current_Site (2);
                      the_Channel.site_interp_Delta (3) := site_Z - the_Channel.current_Site (3);
+
                   else
                      the_Channel.site_interp_Delta (1) :=   (site_X - the_Channel.current_Site (1))
                                                           / (the_Channel.Times  (Cursor));
@@ -1607,6 +1671,7 @@ is
                      the_Channel.site_interp_Delta (3) :=   (site_Z - the_Channel.current_Site (3))
                                                           / (the_Channel.Times  (Cursor));
                   end if;
+
                else
                   the_Channel.site_interp_Delta (1) :=   (site_X - the_Channel.current_Site (1))
                                                        / (the_Channel.Times  (Cursor) - the_Channel.Times (Cursor - 1));
@@ -1637,7 +1702,7 @@ is
       is
          the_Channel    : animation_Channel renames Self.Channels (for_Channel);
          Cursor         : math.Index        renames the_Channel.Cursor;
-         Cursor_updated : Boolean := False;
+         Cursor_updated : Boolean        := False;
          new_Transform  : math.Matrix_4x4;
 
       begin
@@ -1657,6 +1722,7 @@ is
          --
          declare
             use Math;
+
             Initial : Transform;
          begin
             if Cursor < the_Channel.Times'Last
@@ -1677,21 +1743,25 @@ is
                      else
                         the_Channel.Transform_interp_Delta := the_Channel.Times (Cursor);
                      end if;
+
                   else
-                     Initial := the_Channel.Transforms (Cursor - 1);
+                     Initial                            := the_Channel.Transforms (Cursor - 1);
                      the_Channel.Transform_interp_Delta := the_Channel.Times (Cursor) - the_Channel.Times (Cursor - 1);
                   end if;
 
                   the_Channel.current_Transform      := the_Channel.Transforms (Cursor);
                   the_Channel.Transform_interp_Delta := 1.0 / (the_Channel.Transform_interp_Delta * 60.0);  -- 60.0 is frames/sec
                   the_Channel.slerp_Time             := 0.0;
+
                else
-                  if Cursor > 1 then
+                  if Cursor > 1
+                  then
                      Initial := the_Channel.Transforms (Cursor - 1);
                   else
                      Initial := the_Channel.Transforms (Cursor);
                   end if;
                end if;
+
             else
                Initial := the_Channel.Transforms (1);
             end if;
@@ -1751,6 +1821,7 @@ is
                         the_Channel.site_interp_Delta :=   (desired_Site - the_Channel.current_Site)
                                                          / (the_Channel.Times (Cursor));
                      end if;
+
                   else
                      the_Channel.site_interp_Delta :=   (desired_Site - the_Channel.current_Site)
                                                       / (the_Channel.Times  (Cursor) - the_Channel.Times (Cursor - 1));
@@ -1769,6 +1840,7 @@ is
 --                 end if;
 
                set_Translation (new_Transform,   to => the_Channel.current_Site);
+
             else
                null;
             end if;
@@ -1790,7 +1862,8 @@ is
    begin
       Now := world_Age;
 
-      if Self.start_Time = 0.0 then
+      if Self.start_Time = 0.0
+      then
          Self.start_Time := Now;
       end if;
 
@@ -1811,23 +1884,23 @@ is
       update_full_transform_Animation (upper_Arm_R,       upper_Arm_R);
       update_full_transform_Animation (Forearm_R,         Forearm_R);
       update_full_transform_Animation (Hand_R,            Hand_R);
-      --  update_full_transform_Animation (Thumb_02_R,        Thumb_02_R);
-      --  update_full_transform_Animation (Thumb_03_R,        Thumb_03_R);
-      --  update_full_transform_Animation (F_ring_01_R,       F_ring_01_R);
-      --  update_full_transform_Animation (F_index_01_R,      F_index_01_R);
+      -- update_full_transform_Animation (Thumb_02_R,        Thumb_02_R);
+      -- update_full_transform_Animation (Thumb_03_R,        Thumb_03_R);
+      -- update_full_transform_Animation (F_ring_01_R,       F_ring_01_R);
+      -- update_full_transform_Animation (F_index_01_R,      F_index_01_R);
       update_full_transform_Animation (Clavicle_L,        Clavicle_L);
       update_full_transform_Animation (upper_Arm_L,       upper_Arm_L);
       update_full_transform_Animation (Forearm_L,         Forearm_L);
       update_full_transform_Animation (Hand_L,            Hand_L);
-      --  update_full_transform_Animation (Thumb_02_L,        Thumb_02_L);
-      --  update_full_transform_Animation (Thumb_03_L,        Thumb_03_L);
-      --  update_full_transform_Animation (F_ring_01_L,       F_ring_01_L);
-      --  update_full_transform_Animation (F_index_01_L,      F_index_01_L);
+      -- update_full_transform_Animation (Thumb_02_L,        Thumb_02_L);
+      -- update_full_transform_Animation (Thumb_03_L,        Thumb_03_L);
+      -- update_full_transform_Animation (F_ring_01_L,       F_ring_01_L);
+      -- update_full_transform_Animation (F_index_01_L,      F_index_01_L);
       update_full_transform_Animation (Neck,              Neck);
       update_full_transform_Animation (Head,              Head);
       update_full_transform_Animation (Jaw,               Jaw);
-      --  update_full_transform_Animation (Eye_R,             Eye_R);
-      --  update_full_transform_Animation (Eye_L,             Eye_L);
+      -- update_full_transform_Animation (Eye_R,             Eye_R);
+      -- update_full_transform_Animation (Eye_L,             Eye_L);
 
       Self.update_all_global_Transforms;
    end animate;

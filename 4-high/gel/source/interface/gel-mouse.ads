@@ -4,6 +4,7 @@ with
      lace.Event,
      lace.Subject;
 
+
 package gel.Mouse with remote_Types
 --
 -- Provides an interface to a mouse.

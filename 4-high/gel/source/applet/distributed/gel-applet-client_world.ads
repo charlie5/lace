@@ -3,9 +3,10 @@ with
      gel.Camera,
      gel.Window;
 
+
 package gel.Applet.client_world
 --
---  Provides a GEL applet configured with a single window and a single client world.
+-- Provides a GEL applet configured with a single window and a single client world.
 --
 is
    type Item is new gel.Applet.item with private;
@@ -18,6 +19,8 @@ is
                            use_Window : in gel.Window.view;
                            space_Kind : in physics.space_Kind) return gel.Applet.client_world.view;
    end Forge;
+
+
 
    procedure free (Self : in out View);
 
@@ -36,5 +39,6 @@ private
       record
          null;
       end record;
+
 
 end gel.Applet.client_world;

@@ -19,14 +19,15 @@ is
 
 
    --------------
-   --  Operations
+   --- Operations
    --
 
    overriding
    procedure freshen (Self : in out Item)
    is
-      use Math,
-          linear_Algebra_3D;
+      use
+           Math,
+           linear_Algebra_3D;
 
       Speed         : constant Real := Self.Speed * Self.Multiplier;
       rotate_Factor : constant Real := 0.04;
@@ -48,6 +49,8 @@ is
          site_Updated := True;
       end update_Site;
 
+
+
       procedure update_Spin (To : in math.Matrix_3x3)
       is
       begin
@@ -56,7 +59,7 @@ is
       end update_Spin;
 
    begin
-      --  Linear Motion
+      -- Linear Motion
       --
 
       if Self.Motion (Forward)  then   update_Site (initial_Site - forward_Direction (initial_Spin) * Speed);   end if;
@@ -68,7 +71,7 @@ is
       if Self.Motion (Up)       then   update_Site (initial_Site + up_Direction      (initial_Spin) * Speed);   end if;
       if Self.Motion (Down)     then   update_Site (initial_Site - up_Direction      (initial_Spin) * Speed);   end if;
 
-      --  Angular Spin
+      -- Angular Spin
       --
 
       if Self.Spin (Left)       then   update_Spin (y_Rotation_from (-rotate_Factor) * initial_Spin);     end if;
@@ -80,7 +83,7 @@ is
       if Self.Spin (Up)         then   update_Spin (z_Rotation_from (-rotate_Factor) * initial_Spin);     end if;
       if Self.Spin (Down)       then   update_Spin (z_Rotation_from ( rotate_Factor) * initial_Spin);     end if;
 
-      --  Orbit
+      -- Orbit
       --
 
       if Self.Orbit (Left)
@@ -126,6 +129,7 @@ is
       --
       declare
          use camera_Vectors;
+
          the_Camera : gel.Camera.view;
          Cursor     : camera_Vectors.Cursor := Self.Cameras.First;
       begin
@@ -151,4 +155,3 @@ is
 
 
 end gel.Dolly.simple;
-

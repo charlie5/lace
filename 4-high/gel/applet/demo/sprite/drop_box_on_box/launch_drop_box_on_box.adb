@@ -16,13 +16,14 @@ pragma unreferenced (gel.window.sdl);
 
 procedure launch_drop_Box_on_Box
 --
---  Drops a box onto a box 'terrain'.
+-- Drops a box onto a box 'terrain'.
 --
 is
-   use openGL.Model.box,
-       openGL,
-       opengl.Palette,
-       ada.Text_IO;
+   use
+        openGL.Model.box,
+        openGL,
+        opengl.Palette,
+        ada.Text_IO;
 
    the_Applet : constant gel.Applet.gui_World.view
      := gel.Forge.new_gui_Applet ("drop Ball on Box");

@@ -20,9 +20,10 @@ procedure launch_human_Model
 --
 --
 is
-   use ada.Calendar,
-       ada.Text_IO,
-       ada.Exceptions;
+   use
+        ada.Calendar,
+        ada.Text_IO,
+        ada.Exceptions;
 
    the_Applet : constant gel.Applet.gui_World.view := gel.Forge.new_gui_Applet ("human Model", 1920, 1200);
 
@@ -31,22 +32,22 @@ is
                                                                                  size => [50.0, 1.0, 50.0]);
 --     the_human_graphics_Model : aliased gel.graphics_Model.open_gl.view
 --       := gel.graphics_Model.open_gl.forge.new_Model (scale   => (1.0, 1.0, 1.0),
---  --                                                     model   => gel.to_Asset ("assets/gel/model/gel-human.dae"),
+--  --                                                    model   => gel.to_Asset ("assets/gel/model/gel-human.dae"),
 --                                                     model   => gel.to_Asset ("assets/gel/collada/mh-human-dae.dae"),
---  --                                                     model   => gel.to_Asset ("assets/gel/collada/alfieri.dae"),
+--  --                                                    model   => gel.to_Asset ("assets/gel/collada/alfieri.dae"),
 --                                                     texture => gel.null_Asset, -- gel.to_Asset ("assets/collada/gel-human-texture.tga"),
 --                                                     Texture_is_lucid => False);
 --     the_human_physics_Model : constant gel.physics_Model.view
 --       := gel.physics_Model.Forge.new_physics_Model (shape_Info => (kind         => gel.physics_Model.Cube,
 --                                                                    half_extents => 0.5 * (4.0, 1.0, 2.0)),
 --                                                     mass       => 1.0);
---  --     the_human_physics_Model : constant gel.physics_Model.view
---  --       := gel.physics_Model.Forge.new_physics_Model (shape_Info => (kind          => gel.physics_Model.a_Sphere,
---  --                                                                    sphere_radius => 0.2),
---  --                                                     mass       => 0.5);
+--  --    the_human_physics_Model : constant gel.physics_Model.view
+--  --      := gel.physics_Model.Forge.new_physics_Model (shape_Info => (kind          => gel.physics_Model.a_Sphere,
+--  --                                                                   sphere_radius => 0.2),
+--  --                                                    mass       => 0.5);
    my_Human         : aliased  gel.Human.item;
 
-   frame_Period     : constant Duration := 0.016_666_667;     -- ~ 1/60th of a second.
+   frame_Period     : constant Duration         := 0.016_666_667;     -- ~ 1/60th of a second.
    next_render_Time :          ada.calendar.Time;
 
 begin
@@ -71,7 +72,7 @@ begin
    the_Ground.Site_is ([0.0,  -10.0,  0.0]);                      --
 
    my_Human.motion_Mode_is (gel.Human.Animation);
-   --  the_Human.motion_Mode_is (gel.Human_v1.Physics);
+   -- the_Human.motion_Mode_is (gel.Human_v1.Physics);
 
 --     my_Human.enable_Graphics;
 --     my_Human.attach_program_Parameters_to_model_Faces;
@@ -102,7 +103,7 @@ begin
 
       the_Applet.gui_World.evolve; -- (by => 1.0/60.0);    -- evolve the world
 
-      --  my_Human  .evolve;
+      -- my_Human  .evolve;
       my_Human.animate (world_Age => the_Applet.World.Age);
       the_Applet.freshen;                          -- handle any new events and update the screen
       delay 0.5;

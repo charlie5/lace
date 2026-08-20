@@ -7,8 +7,8 @@ with
 package body gel.Camera
 is
 
-   --------
-   -- Forge
+   ---------
+   --- Forge
    --
 
    procedure free (Self : in out View)
@@ -20,9 +20,8 @@ is
    end free;
 
 
-
    --------------
-   --  Operations
+   --- Operations
    --
 
    procedure render (Self : in out Item;   the_World : in gel.World.view;
@@ -31,7 +30,7 @@ is
       all_Sprites : gel.World.sprite_transform_Pairs renames the_World.sprite_Transforms;
 
       the_Visuals : openGL.Visual.views (1 .. all_Sprites'Length);
-      Count       : Natural := 0;
+      Count       : Natural                                      := 0;
 
       the_Sprite  : gel.Sprite.view;
    begin

@@ -1,6 +1,7 @@
 with
      physics.Object;
 
+
 package body gel.slider_Joint
 is
 
@@ -63,38 +64,48 @@ is
    --
 
    overriding
-   function Frame_A (Self : in Item) return Matrix_4x4 is
+   function Frame_A (Self : in Item) return Matrix_4x4
+   is
    begin
       return Self.Physics.Frame_A;
    end Frame_A;
 
 
+
    overriding
-   function Frame_B (Self : in Item) return Matrix_4x4 is
+   function Frame_B (Self : in Item) return Matrix_4x4
+   is
    begin
       return Self.Physics.Frame_B;
    end Frame_B;
 
 
+
    overriding
-   procedure Frame_A_is (Self : in out Item; Now : in Matrix_4x4) is
+   procedure Frame_A_is (Self : in out Item;   Now : in Matrix_4x4)
+   is
    begin
       Self.Physics.Frame_A_is (Now);
    end Frame_A_is;
 
 
+
    overriding
-   procedure Frame_B_is (Self : in out Item; Now : in Matrix_4x4) is
+   procedure Frame_B_is (Self : in out Item;   Now : in Matrix_4x4)
+   is
    begin
       Self.Physics.Frame_B_is (Now);
    end Frame_B_is;
 
 
+
    overriding
-   function Physics (Self : in Item) return gel.Joint.Physics_view is
+   function Physics (Self : in Item) return gel.Joint.Physics_view
+   is
    begin
-      return GEL.Joint.Physics_view (Self.Physics);
+      return gel.Joint.Physics_view (Self.Physics);
    end Physics;
+
 
 
    overriding
@@ -106,7 +117,7 @@ is
    end Degrees_of_freedom;
 
 
-   --  Bounds - limits the range of motion for a Degree of freedom.
+   -- Bounds - limits the range of motion for a Degree of freedom.
    --
 
    overriding
@@ -120,6 +131,7 @@ is
 
       return Self.Physics.is_Limited (for_Degree);
    end is_Bound;
+
 
 
    overriding
@@ -137,6 +149,7 @@ is
    end low_Bound;
 
 
+
    overriding
    procedure low_Bound_is (Self : access Item;   for_Degree : in Joint.Degree_of_freedom;
                                                  Now        : in Real)
@@ -144,6 +157,7 @@ is
    begin
       Self.Physics.lower_Limit_is (Now, for_Degree);
    end low_Bound_is;
+
 
 
    overriding
@@ -159,6 +173,7 @@ is
             return Self.Physics.upper_Limit (for_Degree);
       end case;
    end high_Bound;
+
 
 
    overriding

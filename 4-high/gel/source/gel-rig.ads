@@ -15,6 +15,7 @@ private
 with
      collada.Library.visual_Scenes;
 
+
 package gel.Rig
 --
 -- Provides GEL sprites which allow placing a collada skinned/rigged model into a GEL World.
@@ -124,8 +125,6 @@ is
    subtype bone_id_Map_of_details is bone_id_Maps_of_details.Map;
 
 
-
-
    ---------
    --- Forge
    --
@@ -142,6 +141,7 @@ is
                         joint_site_Offets       : in joint_Id_Map_of_bone_site_offset;
                         Model                   : in openGL.Model.view) return Rig.view;
    end Forge;
+
 
 
    procedure define (Self : in out Item;   in_World     : in gel.World.view;
@@ -317,8 +317,8 @@ private
          Target            : access collada.Library.visual_Scenes.Transform;
          target_Joint      :        scene_joint_Id;
 
-         Times             : access collada.float_Array;
-         Values            : access collada.float_Array;
+         Times             : access collada.float_array;
+         Values            : access collada.float_array;
 
          Cursor            :        Index := 0;       -- Current frame of the anmination.
 
@@ -375,7 +375,7 @@ private
          bone_pose_Transforms    : bone_id_Map_of_transform;                -- The bone transforms when in the skeletal pose.
 
          Channels                : channel_id_Map_of_animation_Channel;
-         start_Time              : Duration := 0.0;
+         start_Time              : Duration                           := 0.0;
 
          overall_Site            : Vector_3 := [0.0, 0.0, 0.0];
 

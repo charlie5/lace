@@ -15,9 +15,9 @@ with
      lace.Response,
      lace.Event.utility,
 
-     Ada.Calendar,
-     Ada.Text_IO,
-     Ada.Exceptions;
+     ada.Calendar,
+     ada.Text_IO,
+     ada.Exceptions;
 
 pragma unreferenced (gel.Window.setup);
 
@@ -28,8 +28,9 @@ procedure launch_mouse_Selection_2D
 -- handle mouse clicks on the sprite.
 --
 is
-   use lace.Event.utility,
-       ada.Text_IO;
+   use
+        lace.Event.utility,
+        ada.Text_IO;
 
    the_Applet : gel.Applet.gui_world.view;
 

@@ -2,6 +2,7 @@ with
      gel.Events,
      ada.unchecked_Deallocation;
 
+
 package body gel.Window
 is
    -----------
@@ -12,7 +13,7 @@ is
    pragma Unreferenced (free);
 
 
-   ----------
+   ---------
    --- Forge
    --
 
@@ -22,8 +23,8 @@ is
    begin
       Self.last_resize_Time := ada.Calendar.Clock;
 
-      Self.Width    := Width;
-      Self.Height   := Height;
+      Self.Width  := Width;
+      Self.Height := Height;
 
       Self.Keyboard := gel.Keyboard.local.Forge.new_Keyboard (of_name => Self.Name & "." & "Keyboard");
       Self.Mouse    := gel.Mouse   .local.Forge.new_Mouse    (of_name => Self.Name & "." & "Mouse");
@@ -55,9 +56,10 @@ is
    overriding
    procedure destroy (Self : in out Item)
    is
-      use lace.Subject_and_deferred_Observer,
-          gel.Keyboard.local,
-          gel.Mouse   .local;
+      use
+           lace.Subject_and_deferred_Observer,
+           gel.Keyboard.local,
+           gel.Mouse   .local;
 
       procedure deallocate is new ada.unchecked_Deallocation (openGL.Surface.item'Class, openGL.Surface.View);
    begin
@@ -182,19 +184,19 @@ is
    procedure Size_is (Self : in out Item;   Width, Height : in Positive)
    is
    begin
-      Self.last_resize_Time := Ada.Calendar.Clock;
+      Self.last_resize_Time := ada.Calendar.Clock;
 
       Self.Width  := Width;
       Self.Height := Height;
 
-      --  Generate a 'resize' event.
+      -- Generate a 'resize' event.
       --
       Self.emit (gel.Events.window_resize_Request' (Width, Height));
    end Size_is;
 
 
-   ---------------
-   ---  Operations
+   --------------
+   --- Operations
    --
 
    procedure flush (Self : in Item)

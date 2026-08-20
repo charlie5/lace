@@ -1,9 +1,10 @@
 with
      gel.Sprite;
 
+
 package gel.Dolly.following
 --
---  Provides a camera dolly which follows a sprite.
+-- Provides a camera dolly which follows a sprite.
 --
 is
    type Item is new gel.Dolly.item with private;
@@ -49,7 +50,7 @@ private
    type Item is new gel.Dolly.item with
       record
          Sprite               : gel.Sprite.view;
-         sprite_Offset        : math.Vector_3 := [0.0, 30.0, 0.0];
+         sprite_Offset        : math.Vector_3  := [0.0, 30.0, 0.0];
 
          allow_linear_Motion  : Boolean       := True;
          allow_orbital_Motion : Boolean       := True;
@@ -58,5 +59,6 @@ private
          camera_y_Spin        : math.Real     := 0.0;
          camera_z_Spin        : math.Real     := 0.0;
       end record;
+
 
 end gel.Dolly.following;

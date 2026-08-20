@@ -5,10 +5,10 @@ with
 
 package gel.World.simple
 --
---  Provides a simple gel world.
+-- Provides a simple gel world.
 --
 is
-   --  pragma Suppress (Container_Checks);     -- Suppress expensive tamper checks.
+   -- pragma suppress (Container_Checks);     -- Suppress expensive tamper checks.
 
    type Item  is limited new gel.World.item
    with private;
@@ -18,7 +18,7 @@ is
 
 
    ---------
-   --  Forge
+   --- Forge
    --
 
    package Forge
@@ -41,6 +41,7 @@ private
    --------------
    --- sprite_Map
    --
+
    type sprite_Map is limited new World.sprite_Map with
       record
          Map : id_Maps_of_sprite.Map;
@@ -59,6 +60,7 @@ private
    --------------
    --- World Item
    --
+
    type Item is limited new gel.World.item with
       record
          all_Sprites : aliased sprite_Map;

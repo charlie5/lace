@@ -5,9 +5,10 @@ with
      physics.Joint.DoF6,
      physics.Space;
 
+
 package GEL.any_Joint
 --
---  Allows sprites to be connected via '6 degree of freedom' joint.
+-- Allows sprites to be connected via '6 degree of freedom' joint.
 --
 is
    type Item  is new GEL.Joint.Item with private;
@@ -65,7 +66,7 @@ is
    function  Degrees_of_freedom (Self : in     Item) return joint.Degree_of_freedom;
 
 
-   --  Bounds - limits the range of motion for a degree of freedom.
+   -- Bounds - limits the range of motion for a degree of freedom.
    --
 
    overriding
@@ -75,7 +76,7 @@ is
    function  low_Bound     (Self : access Item;   for_Degree : in joint.Degree_of_freedom) return math.Real;
    overriding
    procedure low_Bound_is  (Self : access Item;   for_Degree : in joint.Degree_of_freedom;
-                                                   Now        : in math.Real);
+                                                  Now        : in math.Real);
    overriding
    function  high_Bound    (Self : access Item;   for_Degree : in joint.Degree_of_freedom) return math.Real;
    overriding
@@ -87,6 +88,7 @@ is
    overriding
    procedure Velocity_is   (Self : in     Item;   for_Degree : in joint.Degree_of_freedom;
                                                   Now        : in math.Real);
+
 
    --------------
    --- Operations
@@ -105,5 +107,6 @@ private
       record
          Physics : access std_physics.Joint.DoF6.item'Class;
    end record;
+
 
 end GEL.any_Joint;

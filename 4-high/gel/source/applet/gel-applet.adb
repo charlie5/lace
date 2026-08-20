@@ -54,17 +54,17 @@ is
    overriding
    procedure respond (Self : in out add_new_Sprite;   to_Event : in lace.Event.item'Class)
    is
-      --  the_Event : constant gel.events.new_sprite_added_to_world_Event
+      -- the_Event : constant gel.events.new_sprite_added_to_world_Event
       --    := gel.events.new_sprite_added_to_world_Event (to_Event);
 
-      --  the_Sprite : gel.Sprite.view;
+      -- the_Sprite : gel.Sprite.view;
 
    begin
       log ("gel.applet.add_new_Sprite.respond");
-      --  the_Sprite := Self.Applet.World (the_Event.World_Id).fetch_Sprite (the_event.Sprite_Id);
+      -- the_Sprite := Self.Applet.World (the_Event.World_Id).fetch_Sprite (the_event.Sprite_Id);
 
-      --  the_Sprite.is_Visible (True);
-      --  Self.Applet.add (the_Sprite);
+      -- the_Sprite.is_Visible (True);
+      -- Self.Applet.add (the_Sprite);
 
    exception
       when constraint_Error =>
@@ -136,11 +136,12 @@ is
    overriding
    procedure destroy (Self : in out Item)
    is
-      use world_Vectors,
-          gel.Dolly,
-          openGL.Renderer.lean,
-          gel.Window,
-          gel.World;
+      use
+           world_Vectors,
+           gel.Dolly,
+           openGL.Renderer.lean,
+           gel.Window,
+           gel.World;
 
       procedure free is new ada.unchecked_Deallocation (world_Info, world_Info_view);
 
@@ -198,7 +199,6 @@ is
    end free;
 
 
-
    ---------
    --- Forge
    --
@@ -229,7 +229,6 @@ is
       end new_Applet;
 
    end Forge;
-
 
 
    --------------
@@ -275,7 +274,7 @@ is
 
       Self.Worlds.append (the_world_Info);
 
-      --  Self.local_Subject_and_Observer.add (the_add_new_sprite_Response'Access,
+      -- Self.local_Subject_and_Observer.add (the_add_new_sprite_Response'Access,
       --                                       to_Kind (gel.Events.new_sprite_added_to_world_Event'Tag),
       --                                       the_world_Info.World.Name);
       the_world_Info.World.start;
@@ -288,8 +287,8 @@ is
    function is_Open (Self : in Item) return Boolean
    is
    begin
-      return    Self.Window.is_Open
-        and not Self.quit_Requested;
+      return          Self.Window.is_Open
+             and then not Self.quit_Requested;
    end is_Open;
 
 
@@ -408,8 +407,6 @@ is
    end last_Keypress;
 
 
-
-
    --------------
    --- Operations
    --
@@ -417,6 +414,7 @@ is
    procedure evolve_all_Worlds (Self : in out Item;   By : in Duration)
    is
       use world_Vectors;
+
       world_Cursor : world_Vectors.Cursor := Self.Worlds.First;
 
    begin
@@ -450,15 +448,17 @@ is
       Self.local_Subject_and_Observer.respond;
       Self.Window                    .respond;
 
-      if Self.Dolly /= null then
+      if Self.Dolly /= null
+      then
          Self.Dolly.freshen;
       end if;
 
-      Window_is_active :=              Self.Window.is_Open
-                          and then     Self.Window.is_Exposed
+      Window_is_active :=          Self.Window.is_Open
+                          and then Self.Window.is_Exposed
                           and then not Self.Window.is_being_Resized;
       declare
          use world_Vectors;
+
          world_Cursor     : world_Vectors.Cursor        := Self.Worlds.First;
          all_Cameras      : gel.Camera.views (1 .. 1000);
          all_cameras_Last : Natural                     := 0;
@@ -468,12 +468,13 @@ is
          loop
             declare
                use camera_Vectors;
+
                the_world_Info : world_Info       renames Element (world_Cursor).all;
                camera_Cursor  : camera_Vectors.Cursor := the_world_Info.Cameras.First;
             begin
                if evolve_World
                then
-                  --  the_world_Info.World.wait_on_evolve;
+                  -- the_world_Info.World.wait_on_evolve;
                   the_world_Info.World.evolve;
                end if;
 
@@ -518,7 +519,7 @@ is
    is
       child_Joints : constant gel.Joint.views := the_Sprite.child_Joints;
    begin
-      --  Add children and their joints.
+      -- Add children and their joints.
       --
       for i in child_Joints'Range
       loop
@@ -563,14 +564,15 @@ is
 
 
    ----------------------
-   --  Keyboard Responses
+   --- Keyboard Responses
    --
 
    overriding
    procedure respond (Self : in out key_press_Response;   to_Event : in lace.Event.item'Class)
    is
-      use gel.Keyboard,
-          gel.Dolly;
+      use
+           gel.Keyboard,
+           gel.Dolly;
 
       the_Event     :          gel.Keyboard.key_press_Event renames gel.Keyboard.key_press_Event (to_Event);
       the_Dolly     : constant gel.Dolly.view               :=      Self.Applet.Dolly;
@@ -648,7 +650,9 @@ is
    overriding
    procedure respond (Self : in out key_release_Response;   to_Event : in lace.Event.Item'Class)
    is
-      use gel.Keyboard, gel.Dolly;
+      use
+           gel.Keyboard,
+           gel.Dolly;
 
       the_Event     :          gel.Keyboard.key_release_Event renames gel.Keyboard.key_release_Event (to_Event);
       the_Dolly     :          gel.Dolly.view                 renames Self.Applet.Dolly;
@@ -744,7 +748,6 @@ is
    end enable_following_Dolly;
 
 
-
    --------------------------
    --- Mouse Button Responses
    --
@@ -765,6 +768,7 @@ is
 
          declare
             use gel.World;
+
             use type physics.space_Kind;
 
             the_Camera        : constant gel.Camera.view := the_world_Info.Cameras.first_Element;
@@ -813,6 +817,7 @@ is
                         begin
                            the_Collision.near_Sprite.emit (sprite_clicked_Event);
                         end;
+
                      else
                         declare
                            space_clicked_Event : constant gel.Events.space_click_down_Event := (mouse_Button => the_Event.Button,
@@ -921,8 +926,8 @@ is
       pragma Unreferenced (the_Event, Cursor, the_world_Info);
 
    begin
-      --  while has_Element (Cursor)
-      --  loop
+      -- while has_Element (Cursor)
+      -- loop
       --     the_world_Info := Element (Cursor);
       --
       --     declare
@@ -939,11 +944,10 @@ is
       --     end;
       --
       --     next (Cursor);
-      --  end loop;
+      -- end loop;
 
       null;
    end respond;
-
 
 
    --------------------------
@@ -975,7 +979,6 @@ is
    end respond;
 
 
-
    ---------
    --- Mouse
    --
@@ -1002,7 +1005,6 @@ is
                                      to_Kind (gel.Mouse.motion_Event'Tag));
       end if;
    end enable_Mouse;
-
 
 
    ----------------

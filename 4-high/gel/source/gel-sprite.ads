@@ -23,7 +23,7 @@ with
 
 package gel.Sprite
 --
---  Combines a graphics 'visual' and a physics 'solid'.
+-- Combines a graphics 'visual' and a physics 'solid'.
 --
 is
    type Item  is limited new lace.Subject_and_deferred_Observer.item with private;
@@ -49,7 +49,7 @@ is
    --- Containers
    --
 
-   --  pragma Suppress (Container_Checks);     -- Suppress expensive tamper checks.
+   -- pragma suppress (Container_Checks);     -- Suppress expensive tamper checks.
 
    type Grid       is array (math.Index range <>,
                              math.Index range <>) of Sprite.view;
@@ -58,7 +58,7 @@ is
    package Vectors is new ada.Containers.Vectors (Positive, Sprite.view);
 
 
-   ----------
+   ---------
    --- Forge
    --
 
@@ -103,7 +103,7 @@ is
    end Forge;
 
 
-   ---------------
+   --------------
    --- Attributes
    --
 
@@ -156,9 +156,10 @@ is
    procedure user_Data_is (Self : in out Item;   Now :      in any_user_Data_view);
 
 
-   -------------
+   ------------
    --- Dynamics
    --
+
 
    --- Bounds
    --
@@ -173,8 +174,8 @@ is
    procedure Site_is (Self : in out Item;   Now     : in Vector_3);
    procedure move    (Self : in out Item;   to_Site : in Vector_3);
    --
-   --  Moves the sprite to a new site and recursively move children such that
-   --  relative positions are maintained.
+   -- Moves the sprite to a new site and recursively move children such that
+   -- relative positions are maintained.
 
 
    --- Spin
@@ -188,8 +189,8 @@ is
 
    procedure rotate     (Self : in out Item;   to_Spin : in Matrix_3x3);
    --
-   --  Rotates the sprite to a new spin and recursively moves and rotates children such that
-   --  relative positions/orientations are maintained.
+   -- Rotates the sprite to a new spin and recursively moves and rotates children such that
+   -- relative positions/orientations are maintained.
 
 
    --- Transform
@@ -207,7 +208,7 @@ is
 
    procedure set_Speed (Self : in out Item;   to_Speed : in Vector_3);
    --
-   --  Set Self and all children to given value.
+   -- Set Self and all children to given value.
 
 
    --- Gyre
@@ -217,7 +218,7 @@ is
    procedure Gyre_is  (Self : in out Item;   Now     : in Vector_3);
    procedure set_Gyre (Self : in out Item;   to_Gyre : in Vector_3);
    --
-   --  Set Self and all children to given value.
+   -- Set Self and all children to given value.
 
 
    --- Forces
@@ -252,20 +253,21 @@ is
    function  Parent       (Self : in     Item) return gel.Sprite.view;
    function  tree_Depth   (Self : in     Item) return Natural;
 
-   procedure detach       (Self : in out Item;   the_Child : gel.Sprite.view);
+   procedure detach       (Self : in out Item;   the_Child : in gel.Sprite.view);
 
    no_such_Child : exception;
 
 
    type Action is access procedure (the_Sprite : in out Item'Class);
 
-   procedure apply (Self : in out Item;   do_Action : Action);
+   procedure apply (Self : in out Item;   do_Action : in Action);
    --
    -- Applies an action to a sprite and its children recursively.
 
 
-   ---  Hinge
+   --- Hinge
    --
+
    procedure attach_via_Hinge (Self : access Item;   the_Child         : in      Sprite.view;
                                                      pivot_Axis        : in      Vector_3;
                                                      Anchor            : in      Vector_3;
@@ -273,7 +275,7 @@ is
                                                      low_Limit         : in      Real;
                                                      high_Limit        : in      Real;
                                                      collide_Connected : in      Boolean;
-                                                     new_joint         :     out gel.Joint.view);
+                                                     new_Joint         :     out gel.Joint.view);
 
 
    procedure attach_via_Hinge (Self : access Item;   the_Child    : in      Sprite.view;
@@ -281,15 +283,15 @@ is
                                                      pivot_Anchor : in      Vector_3;
                                                      low_Limit    : in      Real;
                                                      high_Limit   : in      Real;
-                                                     new_joint    :     out gel.Joint.view);
+                                                     new_Joint    :     out gel.Joint.view);
 
    procedure attach_via_Hinge (Self : access Item;   the_Child  : in      Sprite.view;
                                                      pivot_Axis : in      Vector_3;
                                                      low_Limit  : in      Real;
                                                      high_Limit : in      Real;
-                                                     new_joint  :     out gel.Joint.view);
+                                                     new_Joint  :     out gel.Joint.view);
    --
-   --  Uses midpoint between Self and the_Child sprite as pivot_Anchor.
+   -- Uses midpoint between Self and the_Child sprite as pivot_Anchor.
 
 
    procedure attach_via_Hinge (Self : access Item;   the_Child         : in     Sprite.view;
@@ -297,18 +299,19 @@ is
                                                      Frame_in_child    : in     Matrix_4x4;
                                                      Limits            : in     DoF_Limits;
                                                      collide_Connected : in     Boolean;
-                                                     new_joint         :    out gel.Joint.view);
+                                                     new_Joint         :    out gel.Joint.view);
 
 
-   ---  Ball/Socket
+   --- Ball/Socket
    --
+
    procedure attach_via_ball_Socket (Self : access Item;   the_Child    : in     Sprite.view;
                                                            pivot_Anchor : in     Vector_3;
                                                            pivot_Axis   : in     Matrix_3x3;
                                                            pitch_Limits : in     DoF_Limits;
                                                            yaw_Limits   : in     DoF_Limits;
                                                            roll_Limits  : in     DoF_Limits;
-                                                           new_joint    :    out gel.Joint.view);
+                                                           new_Joint    :    out gel.Joint.view);
 
    procedure attach_via_ball_Socket (Self : access Item;   the_Child       : in     Sprite.view;
                                                            Frame_in_parent : in     Matrix_4x4;
@@ -316,16 +319,19 @@ is
                                                            pitch_Limits    : in     DoF_Limits;
                                                            yaw_Limits      : in     DoF_Limits;
                                                            roll_Limits     : in     DoF_Limits;
-                                                           new_joint       :    out gel.Joint.view);
+                                                           new_Joint       :    out gel.Joint.view);
+
 
    --- Graphics
    --
+
    procedure program_Parameters_are  (Self : in out Item;   Now : in opengl.Program.Parameters_view);
    function  program_Parameters      (Self : in     Item)  return opengl.Program.Parameters_view;
 
 
    --- Physics
    --
+
    procedure rebuild_Shape (Self : in out Item);
    procedure rebuild_Solid (Self : in out Item;   at_Site  : in Vector_3;
                                                   and_Spin : in Matrix_3x3);
@@ -334,11 +340,8 @@ is
 
    -- Motion Updates
    --
-   function has_Moved (Self : in out Item;   current_Site : Vector_3;
-                                             current_Spin : Matrix_3x3) return Boolean;
-
-
-
+   function has_Moved (Self : in out Item;   current_Site : in Vector_3;
+                                             current_Spin : in Matrix_3x3) return Boolean;
 
 
 
@@ -347,19 +350,20 @@ private
    type access_Joint_views is access all Joint.views;
 
    use type Joint.view;
+
    package joint_Vectors is new ada.Containers.Vectors (Positive, Joint.view);
 
 
-   --  protected
-   --  type safe_Matrix_4x4
-   --  is
+   -- protected
+   -- type safe_Matrix_4x4
+   -- is
    --     function  Value       return Matrix_4x4;
    --     procedure Value_is (Now : in Matrix_4x4);
    --     procedure Site_is  (Now : in Vector_3);
    --
-   --  private
+   -- private
    --     the_Value : Matrix_4x4 := Identity_4x4;
-   --  end safe_Matrix_4x4;
+   -- end safe_Matrix_4x4;
 
 
    -----------------
@@ -412,7 +416,7 @@ private
       record
          Id                      : gel.sprite_Id := null_sprite_Id;
 
-         Visual                  : openGL.Visual.view := new openGL.Visual.item;
+         Visual                  : openGL.Visual.view            := new openGL.Visual.item;
          program_Parameters      : openGL.program.Parameters_view;
          owns_Graphics           : Boolean;
 
@@ -431,7 +435,7 @@ private
          parent_Joint            : gel.Joint.view;
          child_Joints            : joint_Vectors.Vector;
 
-         is_Visible              : Boolean := True;
+         is_Visible              : Boolean           := True;
          key_Response            : lace.Response.view;
          user_Data               : any_user_Data_view;
 
@@ -445,5 +449,6 @@ private
 
 
    null_Sprites : constant Sprite.views (1 .. 0) := [others => null];
+
 
 end gel.Sprite;

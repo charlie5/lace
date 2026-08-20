@@ -15,7 +15,6 @@ is
    type View is access all Item'Class;
 
 
-
    ---------
    --- Forge
    --
@@ -35,7 +34,6 @@ is
    end Forge;
 
 
-
    --------------
    --- Attributes
    --
@@ -43,7 +41,6 @@ is
    package std_gtk renames standard.GTK;
 
    function gl_Area (Self : in Item) return std_gtk.GLArea.Gtk_GLArea;
-
 
 
    --------------
@@ -68,5 +65,6 @@ private
          gl_Area    : std_gtk.glArea   .gtk_glArea;
          gl_Context :     gdk.glContext.gdk_glContext;
       end record;
+
 
 end gel.Window.gtk;

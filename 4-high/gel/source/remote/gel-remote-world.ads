@@ -14,13 +14,13 @@ with
 
 package gel.remote.World
 --
---  Provides a remote (DSA friendly) interface of a GEL world.
+-- Provides a remote (DSA friendly) interface of a GEL world.
 --
---  Supports world mirroring, in which a mirror world mimics the objects and dynamics of a master world.
+-- Supports world mirroring, in which a mirror world mimics the objects and dynamics of a master world.
 --
 is
    pragma remote_Types;
-   --  pragma suppress (Container_Checks);     -- Suppress expensive tamper checks.
+   -- pragma suppress (Container_Checks);     -- Suppress expensive tamper checks.
 
    type Item is  limited interface
              and lace.Subject .item
@@ -29,12 +29,11 @@ is
    type View is access all Item'Class with Asynchronous;
 
 
-
    -----------
-   --  Mirrors
+   --- Mirrors
    --
 
-   --  Registration
+   -- Registration
    --
 
    procedure   register (Self : access Item;   the_Mirror         : in World.view;
@@ -43,15 +42,15 @@ is
                                                Mirror_as_observer : in lace.Observer.view)   is abstract;
 
 
-
    ----------
-   --  Models
+   --- Models
    --
 
-   --  Graphics
+   -- Graphics
    --
 
    use type openGL.remote_Model.item;
+
    package  model_Vectors is new ada.Containers.indefinite_Vectors (Positive, openGL.remote_Model.item'Class);
 
    function Hash is new ada.unchecked_Conversion (gel.graphics_model_Id, ada.containers.Hash_type);
@@ -79,13 +78,15 @@ is
    for new_graphics_model_Event'read  use read;
 
 
-   --  Physics
+   -- Physics
    --
 
    use physics.remote.Model;
+
    package  physics_model_Vectors is new ada.containers.indefinite_Vectors (Positive, physics.remote.Model.item'Class);
 
    use type physics.model_Id;
+
    function Hash is new ada.unchecked_Conversion (physics.model_Id, ada.containers.Hash_type);
 
    package  id_Maps_of_physics_model is new ada.containers.indefinite_Hashed_Maps (physics.model_Id,
@@ -130,11 +131,11 @@ is
    function Sprites (Self : in out Item) return sprite_model_Pairs is abstract;
 
 
-   -------------------------
+   ---------------------
    --- Id Motion Updates
    --
 
-   --  Coarse types to help minimise network use - (TODO: Currently disabled til better quaternion 'coarsen' is ready.)
+   -- Coarse types to help minimise network use - (TODO: Currently disabled til better quaternion 'coarsen' is ready.)
    --
    type coarse_Real is new math.Real;   -- Not coarse atm (see above 'TODO')
 
@@ -178,9 +179,7 @@ is
                                                    Now    : in motion_Updates) is abstract;
 
 
-
-
-   ------------------------------
+   --------------------------
    --- Id add and rid events.
    --
 
@@ -197,11 +196,11 @@ is
       end record;
 
 
-
    --------------
-   --  Test/Debug
+   --- Test/Debug
    --
 
    procedure kick_Sprite (Self : in out Item;   sprite_Id : in gel.Sprite_Id) is abstract;
+
 
 end gel.remote.World;

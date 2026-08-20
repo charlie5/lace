@@ -17,13 +17,14 @@ pragma unreferenced (gel.window.sdl);
 
 procedure launch_ghost_Sprite
 --
---  Drops a box onto a box 'terrain'.
+-- Drops a box onto a box 'terrain'.
 --
 is
-   use openGL.Model.box,
-       openGL,
-       opengl.Palette,
-       ada.Text_IO;
+   use
+        openGL.Model.box,
+        openGL,
+        opengl.Palette,
+        ada.Text_IO;
 
    the_Applet : constant gel.Applet.gui_World.view
      := gel.Forge.new_gui_Applet ("ghost Sprite");

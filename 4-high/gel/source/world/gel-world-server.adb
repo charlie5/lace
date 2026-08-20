@@ -10,11 +10,11 @@ with
 
 package body gel.World.server
 is
-   use gel.Sprite,
-       linear_Algebra_3D,
-
-       lace.Event.utility,
-       lace.Event;
+   use
+        gel.Sprite,
+        linear_Algebra_3D,
+        lace.Event.utility,
+        lace.Event;
 
 
    procedure log (Message : in String)
@@ -89,7 +89,6 @@ is
    end Forge;
 
 
-
    ----------
    --- Define
    --
@@ -110,7 +109,6 @@ is
    end define;
 
 
-
    --------------
    --- Operations
    --
@@ -121,11 +119,12 @@ is
    begin
       gel.World.item (Self).evolve;     -- Evolve the base class.
 
-      --  Update dynamics in client worlds.
+      -- Update dynamics in client worlds.
       --
       declare
-         use id_Maps_of_sprite,
-             remote.World;
+         use
+              id_Maps_of_sprite,
+              remote.World;
 
          all_Sprites            :          id_Maps_of_sprite.Map    renames Self.all_Sprites.fetch;
          Cursor                 :          id_Maps_of_sprite.Cursor :=      all_Sprites.First;
@@ -140,8 +139,8 @@ is
          the_motion_Updates     :          remote.World.motion_Updates (1 .. Integer (all_Sprites.Length));
 
       begin
-         if    is_a_mirrored_World
-           and mirror_Updates_are_due
+         if        is_a_mirrored_World
+           and then mirror_Updates_are_due
          then
             while has_Element (Cursor)
             loop
@@ -164,7 +163,7 @@ is
                next (Cursor);
             end loop;
 
-            --  Send updated sprite motions to all registered client worlds.
+            -- Send updated sprite motions to all registered client worlds.
             --
             Self.Age_at_last_clients_update := Self.Age;
             Self.seq_Id                     := Self.seq_Id + 1;
@@ -227,7 +226,6 @@ is
    begin
       return Self.all_Sprites'Access;
    end all_Sprites;
-
 
 
    -----------------------

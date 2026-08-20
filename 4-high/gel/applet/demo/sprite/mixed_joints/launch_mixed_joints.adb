@@ -16,13 +16,14 @@ pragma unreferenced (gel.Window.sdl);
 
 procedure launch_mixed_Joints
 --
---  Shows a variety of joints.
+-- Shows a variety of joints.
 --
 is
    package Math renames gel.Math;
 
-   use openGL,
-       opengl.Palette;
+   use
+        openGL,
+        opengl.Palette;
 
    the_Applet : constant gel.Applet.gui_World.view := gel.Forge.new_gui_Applet ("mixed Joints", 1536, 864);
 begin
@@ -31,14 +32,15 @@ begin
    the_Applet.Renderer  .Background_is (Grey);
    the_Applet.enable_simple_Dolly      (gel.Applet.gui_world.gui_world_Id);     -- Enable user camera control via keyboard.
 
-   --  Add joints.
+   -- Add joints.
    --
    declare
-      use gel.Forge,
-          gel.linear_Algebra_3D,
-          Math;
+      use
+           gel.Forge,
+           gel.linear_Algebra_3D,
+           Math;
    begin
-      --  Hinge
+      -- Hinge
       --
       declare
          the_hinge_Box_1 : constant gel.Sprite.view := new_box_Sprite (the_Applet.gui_World, Mass => 0.0);
@@ -63,7 +65,7 @@ begin
          the_Applet.gui_World.add (the_hinge_Joint.all'Access);
       end;
 
-      --  DoF6
+      -- DoF6
       --
       declare
          the_DoF6_Box_1  : constant gel.Sprite   .view := new_box_Sprite (the_Applet.gui_World, Mass => 0.0);
@@ -87,7 +89,7 @@ begin
          the_Applet.gui_World.add (the_DoF6_Joint.all'Access);
       end;
 
-      --  Ball
+      -- Ball
       --
       declare
          the_ball_Box_1  : constant gel.Sprite    .view := new_box_Sprite (the_Applet.gui_World, Mass => 0.0);
@@ -109,7 +111,7 @@ begin
          the_Applet.gui_World.add (the_ball_Joint.all'Access);
       end;
 
-      --  Slider
+      -- Slider
       --
       declare
          the_slider_Box_1  : constant gel.Sprite      .view := new_box_Sprite (the_Applet.gui_World, Mass => 0.0);
@@ -140,7 +142,7 @@ begin
          the_Applet.gui_World.add (the_slider_Joint.all'Access);
       end;
 
-      --  cone Twist
+      -- cone Twist
       --
       declare
          the_cone_twist_Box_1  : constant gel.Sprite          .view := new_box_Sprite (the_Applet.gui_World, Mass => 0.0);

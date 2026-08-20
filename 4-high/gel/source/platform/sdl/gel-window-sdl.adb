@@ -13,11 +13,11 @@ package body gel.Window.sdl
 is
    package std_SDL renames standard.SDL;
 
-   use std_SDL,
-       std_SDL.Events;
+   use
+        std_SDL,
+        std_SDL.Events;
 
    function to_gel_Key (From : in std_SDL.Events.Keyboards.Key_Codes) return gel.keyboard.Key;
-
 
 
    ---------
@@ -76,6 +76,7 @@ is
       end to_Window;
 
 
+
       function new_Window (Title  : in String;
                            Width  : in Natural;
                            Height : in Natural) return Window.sdl.view
@@ -85,7 +86,6 @@ is
          return Self;
       end new_Window;
    end Forge;
-
 
 
    --------------
@@ -115,8 +115,8 @@ is
                                                    key_Code => Integer    (Event.keyboard.key_Sym.key_Code));
 
             when std_SDL.Events.Keyboards.Key_Up =>
-               std_SDL.Log.put_Debug ("Key up event: " & Event.keyboard.key_Sym. key_Code'Image &
-                                      "   Scan code: " & Event.keyboard.key_Sym.scan_Code'Image);
+               std_SDL.Log.put_Debug ("Key up event: " & Event.keyboard.key_Sym. key_Code'Image
+                                      & "   Scan code: " & Event.keyboard.key_Sym.scan_Code'Image);
 
                if Event.keyboard.key_Sym.key_Code = std_SDL.Events.Keyboards.Code_escape     -- TODO: Make this user-configurable.
                then
@@ -324,133 +324,133 @@ is
          when Key.Code_KP_0        => return gel.Keyboard.KP0;
          when Key.Code_KP_period   => return gel.Keyboard.KP_Period;
 
-         --  when Key.Code_application     => return gel.Keyboard.;
+         -- when Key.Code_application     => return gel.Keyboard.;
          when Key.Code_power           => return gel.Keyboard.Power;
          when Key.Code_KP_equals       => return gel.Keyboard.KP_Equals;
          when Key.Code_F13             => return gel.Keyboard.F13;
          when Key.Code_F14             => return gel.Keyboard.F14;
          when Key.Code_F15             => return gel.Keyboard.F15;
-         --  when Key.Code_F16             => return gel.Keyboard.;
-         --  when Key.Code_F17             => return gel.Keyboard.;
-         --  when Key.Code_F18             => return gel.Keyboard.;
-         --  when Key.Code_F19             => return gel.Keyboard.;
-         --  when Key.Code_F20             => return gel.Keyboard.;
-         --  when Key.Code_F21             => return gel.Keyboard.;
-         --  when Key.Code_F22             => return gel.Keyboard.;
-         --  when Key.Code_F23             => return gel.Keyboard.;
-         --  when Key.Code_F24             => return gel.Keyboard.;
-         --  when Key.Code_execute         => return gel.Keyboard.;
+         -- when Key.Code_F16             => return gel.Keyboard.;
+         -- when Key.Code_F17             => return gel.Keyboard.;
+         -- when Key.Code_F18             => return gel.Keyboard.;
+         -- when Key.Code_F19             => return gel.Keyboard.;
+         -- when Key.Code_F20             => return gel.Keyboard.;
+         -- when Key.Code_F21             => return gel.Keyboard.;
+         -- when Key.Code_F22             => return gel.Keyboard.;
+         -- when Key.Code_F23             => return gel.Keyboard.;
+         -- when Key.Code_F24             => return gel.Keyboard.;
+         -- when Key.Code_execute         => return gel.Keyboard.;
          when Key.Code_help            => return gel.Keyboard.Help;
          when Key.Code_menu            => return gel.Keyboard.Menu;
-         --  when Key.Code_select          => return gel.Keyboard.;
-         --  when Key.Code_stop            => return gel.Keyboard.;
-         --  when Key.Code_again           => return gel.Keyboard.;
+         -- when Key.Code_select          => return gel.Keyboard.;
+         -- when Key.Code_stop            => return gel.Keyboard.;
+         -- when Key.Code_again           => return gel.Keyboard.;
          when Key.Code_undo            => return gel.Keyboard.Undo;
-         --  when Key.Code_cut             => return gel.Keyboard.;
-         --  when Key.Code_copy            => return gel.Keyboard.;
-         --  when Key.Code_paste           => return gel.Keyboard.;
-         --  when Key.Code_find            => return gel.Keyboard.;
-         --  when Key.Code_mute            => return gel.Keyboard.;
-         --  when Key.Code_volume_up       => return gel.Keyboard.;
-         --  when Key.Code_volume_down     => return gel.Keyboard.;
-         --  when Key.Code_KP_comma        => return gel.Keyboard.;
-         --  when Key.Code_KP_equals_AS400 => return gel.Keyboard.;
+         -- when Key.Code_cut             => return gel.Keyboard.;
+         -- when Key.Code_copy            => return gel.Keyboard.;
+         -- when Key.Code_paste           => return gel.Keyboard.;
+         -- when Key.Code_find            => return gel.Keyboard.;
+         -- when Key.Code_mute            => return gel.Keyboard.;
+         -- when Key.Code_volume_up       => return gel.Keyboard.;
+         -- when Key.Code_volume_down     => return gel.Keyboard.;
+         -- when Key.Code_KP_comma        => return gel.Keyboard.;
+         -- when Key.Code_KP_equals_AS400 => return gel.Keyboard.;
 
-         --  when Key.Code_alt_erase   => return gel.Keyboard.;
+         -- when Key.Code_alt_erase   => return gel.Keyboard.;
          when Key.Code_sys_req     => return gel.Keyboard.SysReq;
-         --  when Key.Code_cancel      => return gel.Keyboard.;
+         -- when Key.Code_cancel      => return gel.Keyboard.;
          when Key.Code_clear       => return gel.Keyboard.Clear;
-         --  when Key.Code_prior       => return gel.Keyboard.;
-         --  when Key.Code_return_2    => return gel.Keyboard.;
-         --  when Key.Code_separator   => return gel.Keyboard.;
-         --  when Key.Code_out         => return gel.Keyboard.;
-         --  when Key.Code_oper        => return gel.Keyboard.;
-         --  when Key.Code_clear_again => return gel.Keyboard.;
-         --  when Key.Code_CR_sel      => return gel.Keyboard.;
-         --  when Key.Code_Ex_sel      => return gel.Keyboard.;
+         -- when Key.Code_prior       => return gel.Keyboard.;
+         -- when Key.Code_return_2    => return gel.Keyboard.;
+         -- when Key.Code_separator   => return gel.Keyboard.;
+         -- when Key.Code_out         => return gel.Keyboard.;
+         -- when Key.Code_oper        => return gel.Keyboard.;
+         -- when Key.Code_clear_again => return gel.Keyboard.;
+         -- when Key.Code_CR_sel      => return gel.Keyboard.;
+         -- when Key.Code_Ex_sel      => return gel.Keyboard.;
 
-         --  when Key.Code_KP_00                  => return gel.Keyboard.;
-         --  when Key.Code_KP_000                 => return gel.Keyboard.;
-         --  when Key.Code_thousands_separator    => return gel.Keyboard.;
-         --  when Key.Code_decimal_separator      => return gel.Keyboard.;
-         --  when Key.Code_currency_unit          => return gel.Keyboard.;
-         --  when Key.Code_KP_left_parenthesis    => return gel.Keyboard.;
-         --  when Key.Code_KP_right_parentheesis  => return gel.Keyboard.;
-         --  when Key.Code_KP_left_brace          => return gel.Keyboard.;
-         --  when Key.Code_KP_right_brace         => return gel.Keyboard.;
-         --  when Key.Code_KP_tab                 => return gel.Keyboard.;
-         --  when Key.Code_KP_backspace           => return gel.Keyboard.;
-         --  when Key.Code_KP_A                   => return gel.Keyboard.;
-         --  when Key.Code_KP_B                   => return gel.Keyboard.;
-         --  when Key.Code_KP_C                   => return gel.Keyboard.;
-         --  when Key.Code_KP_D                   => return gel.Keyboard.;
-         --  when Key.Code_KP_E                   => return gel.Keyboard.;
-         --  when Key.Code_KP_F                   => return gel.Keyboard.;
-         --  when Key.Code_KP_xor                 => return gel.Keyboard.;
-         --  when Key.Code_KP_power               => return gel.Keyboard.;
-         --  when Key.Code_KP_percent             => return gel.Keyboard.;
-         --  when Key.Code_KP_less                => return gel.Keyboard.;
-         --  when Key.Code_KP_greater             => return gel.Keyboard.;
-         --  when Key.Code_KP_ampersand           => return gel.Keyboard.;
-         --  when Key.Code_KP_double_ampersand    => return gel.Keyboard.;
-         --  when Key.Code_KP_vertical_bar        => return gel.Keyboard.;
-         --  when Key.Code_KP_double_vertical_bar => return gel.Keyboard.;
-         --  when Key.Code_KP_colon               => return gel.Keyboard.;
-         --  when Key.Code_KP_hash                => return gel.Keyboard.;
-         --  when Key.Code_KP_space               => return gel.Keyboard.;
-         --  when Key.Code_KP_at                  => return gel.Keyboard.;
-         --  when Key.Code_KP_exclamation         => return gel.Keyboard.;
-         --  when Key.Code_KP_memory_store        => return gel.Keyboard.;
-         --  when Key.Code_KP_memory_recall       => return gel.Keyboard.;
-         --  when Key.Code_KP_memory_clear        => return gel.Keyboard.;
-         --  when Key.Code_KP_memory_add          => return gel.Keyboard.;
-         --  when Key.Code_KP_memory_subtract     => return gel.Keyboard.;
-         --  when Key.Code_KP_memory_multiply     => return gel.Keyboard.;
-         --  when Key.Code_KP_memory_divide       => return gel.Keyboard.;
-         --  when Key.Code_KP_plus_minus          => return gel.Keyboard.;
-         --  when Key.Code_KP_clear               => return gel.Keyboard.;
-         --  when Key.Code_KP_clear_entry         => return gel.Keyboard.;
-         --  when Key.Code_KP_binary              => return gel.Keyboard.;
-         --  when Key.Code_KP_octal               => return gel.Keyboard.;
-         --  when Key.Code_KP_decimal             => return gel.Keyboard.;
-         --  when Key.Code_KP_hexadecimal         => return gel.Keyboard.;
+         -- when Key.Code_KP_00                  => return gel.Keyboard.;
+         -- when Key.Code_KP_000                 => return gel.Keyboard.;
+         -- when Key.Code_thousands_separator    => return gel.Keyboard.;
+         -- when Key.Code_decimal_separator      => return gel.Keyboard.;
+         -- when Key.Code_currency_unit          => return gel.Keyboard.;
+         -- when Key.Code_KP_left_parenthesis    => return gel.Keyboard.;
+         -- when Key.Code_KP_right_parentheesis  => return gel.Keyboard.;
+         -- when Key.Code_KP_left_brace          => return gel.Keyboard.;
+         -- when Key.Code_KP_right_brace         => return gel.Keyboard.;
+         -- when Key.Code_KP_tab                 => return gel.Keyboard.;
+         -- when Key.Code_KP_backspace           => return gel.Keyboard.;
+         -- when Key.Code_KP_A                   => return gel.Keyboard.;
+         -- when Key.Code_KP_B                   => return gel.Keyboard.;
+         -- when Key.Code_KP_C                   => return gel.Keyboard.;
+         -- when Key.Code_KP_D                   => return gel.Keyboard.;
+         -- when Key.Code_KP_E                   => return gel.Keyboard.;
+         -- when Key.Code_KP_F                   => return gel.Keyboard.;
+         -- when Key.Code_KP_xor                 => return gel.Keyboard.;
+         -- when Key.Code_KP_power               => return gel.Keyboard.;
+         -- when Key.Code_KP_percent             => return gel.Keyboard.;
+         -- when Key.Code_KP_less                => return gel.Keyboard.;
+         -- when Key.Code_KP_greater             => return gel.Keyboard.;
+         -- when Key.Code_KP_ampersand           => return gel.Keyboard.;
+         -- when Key.Code_KP_double_ampersand    => return gel.Keyboard.;
+         -- when Key.Code_KP_vertical_bar        => return gel.Keyboard.;
+         -- when Key.Code_KP_double_vertical_bar => return gel.Keyboard.;
+         -- when Key.Code_KP_colon               => return gel.Keyboard.;
+         -- when Key.Code_KP_hash                => return gel.Keyboard.;
+         -- when Key.Code_KP_space               => return gel.Keyboard.;
+         -- when Key.Code_KP_at                  => return gel.Keyboard.;
+         -- when Key.Code_KP_exclamation         => return gel.Keyboard.;
+         -- when Key.Code_KP_memory_store        => return gel.Keyboard.;
+         -- when Key.Code_KP_memory_recall       => return gel.Keyboard.;
+         -- when Key.Code_KP_memory_clear        => return gel.Keyboard.;
+         -- when Key.Code_KP_memory_add          => return gel.Keyboard.;
+         -- when Key.Code_KP_memory_subtract     => return gel.Keyboard.;
+         -- when Key.Code_KP_memory_multiply     => return gel.Keyboard.;
+         -- when Key.Code_KP_memory_divide       => return gel.Keyboard.;
+         -- when Key.Code_KP_plus_minus          => return gel.Keyboard.;
+         -- when Key.Code_KP_clear               => return gel.Keyboard.;
+         -- when Key.Code_KP_clear_entry         => return gel.Keyboard.;
+         -- when Key.Code_KP_binary              => return gel.Keyboard.;
+         -- when Key.Code_KP_octal               => return gel.Keyboard.;
+         -- when Key.Code_KP_decimal             => return gel.Keyboard.;
+         -- when Key.Code_KP_hexadecimal         => return gel.Keyboard.;
 
          when Key.Code_left_control  => return gel.Keyboard.lCtrl;
          when Key.Code_left_shift    => return gel.Keyboard.lShift;
          when Key.Code_left_alt      => return gel.Keyboard.lAlt;
-         --  when Key.Code_left_gui      => return gel.Keyboard.;
+         -- when Key.Code_left_gui      => return gel.Keyboard.;
          when Key.Code_right_control => return gel.Keyboard.rCtrl;
          when Key.Code_right_shift   => return gel.Keyboard.rShift;
          when Key.Code_right_alt     => return gel.Keyboard.rAlt;
-         --  when Key.Code_right_gui     => return gel.Keyboard.;
-         --  when Key.Code_mode          => return gel.Keyboard.;
+         -- when Key.Code_right_gui     => return gel.Keyboard.;
+         -- when Key.Code_mode          => return gel.Keyboard.;
 
-         --  when Key.Code_audio_next     => return gel.Keyboard.;
-         --  when Key.Code_audio_previous => return gel.Keyboard.;
-         --  when Key.Code_audio_stop     => return gel.Keyboard.;
-         --  when Key.Code_audio_play     => return gel.Keyboard.;
-         --  when Key.Code_audio_mute     => return gel.Keyboard.;
-         --  when Key.Code_media_select   => return gel.Keyboard.;
-         --  when Key.Code_www            => return gel.Keyboard.;
-         --  when Key.Code_mail           => return gel.Keyboard.;
-         --  when Key.Code_calculator     => return gel.Keyboard.;
-         --  when Key.Code_computer       => return gel.Keyboard.;
-         --  when Key.Code_AC_search      => return gel.Keyboard.;
-         --  when Key.Code_AC_home        => return gel.Keyboard.;
-         --  when Key.Code_AC_back        => return gel.Keyboard.;
-         --  when Key.Code_AC_forward     => return gel.Keyboard.;
-         --  when Key.Code_AC_stop        => return gel.Keyboard.;
-         --  when Key.Code_AC_refresh     => return gel.Keyboard.;
-         --  when Key.Code_AC_bookmarks   => return gel.Keyboard.;
+         -- when Key.Code_audio_next     => return gel.Keyboard.;
+         -- when Key.Code_audio_previous => return gel.Keyboard.;
+         -- when Key.Code_audio_stop     => return gel.Keyboard.;
+         -- when Key.Code_audio_play     => return gel.Keyboard.;
+         -- when Key.Code_audio_mute     => return gel.Keyboard.;
+         -- when Key.Code_media_select   => return gel.Keyboard.;
+         -- when Key.Code_www            => return gel.Keyboard.;
+         -- when Key.Code_mail           => return gel.Keyboard.;
+         -- when Key.Code_calculator     => return gel.Keyboard.;
+         -- when Key.Code_computer       => return gel.Keyboard.;
+         -- when Key.Code_AC_search      => return gel.Keyboard.;
+         -- when Key.Code_AC_home        => return gel.Keyboard.;
+         -- when Key.Code_AC_back        => return gel.Keyboard.;
+         -- when Key.Code_AC_forward     => return gel.Keyboard.;
+         -- when Key.Code_AC_stop        => return gel.Keyboard.;
+         -- when Key.Code_AC_refresh     => return gel.Keyboard.;
+         -- when Key.Code_AC_bookmarks   => return gel.Keyboard.;
 
-         --  when Key.Code_brightness_down     => return gel.Keyboard.;
-         --  when Key.Code_brightness_up       => return gel.Keyboard.;
-         --  when Key.Code_display_switch      => return gel.Keyboard.;
-         --  when Key.Code_illumination_toggle => return gel.Keyboard.;
-         --  when Key.Code_illumination_down   => return gel.Keyboard.;
-         --  when Key.Code_illumination_up     => return gel.Keyboard.;
-         --  when Key.Code_eject               => return gel.Keyboard.;
-         --  when Key.Code_sleep               => return gel.Keyboard.;
+         -- when Key.Code_brightness_down     => return gel.Keyboard.;
+         -- when Key.Code_brightness_up       => return gel.Keyboard.;
+         -- when Key.Code_display_switch      => return gel.Keyboard.;
+         -- when Key.Code_illumination_toggle => return gel.Keyboard.;
+         -- when Key.Code_illumination_down   => return gel.Keyboard.;
+         -- when Key.Code_illumination_up     => return gel.Keyboard.;
+         -- when Key.Code_eject               => return gel.Keyboard.;
+         -- when Key.Code_sleep               => return gel.Keyboard.;
 
          when others =>
             ada.Text_IO.put_Line ("SDL window unhandled key: " & From'Image);     -- TODO: Remaining key codes.
@@ -460,7 +460,7 @@ is
    end to_gel_Key;
 
 
-   -------------------
+   ------------------
    --- Window Creator
    --
 

@@ -19,36 +19,42 @@ with
      lace.Subject,
      lace.Event.utility,
 
-     Ada.Text_IO,
-     Ada.Exceptions;
+     ada.Text_IO,
+     ada.Exceptions;
 
 pragma Unreferenced (gel.Window.setup);
 
 
 procedure launch_Pong
 --
---  Basic pong game.
+-- Basic pong game.
 --
 is
-   use gel.Applet,
-       gel.Applet.gui_world,
-       gel.Keyboard,
-       gel.Math,
-       openGL.Palette,
-       Ada.Text_IO;
+   use
+        gel.Applet,
+        gel.Applet.gui_world,
+        gel.Keyboard,
+        gel.Math,
+        openGL.Palette,
+        ada.Text_IO;
 
    stadium_Width  : constant := 30.0;
    stadium_Height : constant := 20.0;
 
+
    --- Applet
    --
+
    the_Applet : gel.Applet.gui_world.view
      := gel.Forge.new_gui_Applet (Named         => "Pong",
                                   window_Width  => 800,
                                   window_Height => 600,
                                   space_Kind    => physics.Box2d);
+
+
    --- Ball
    --
+
    the_Ball : constant gel.Sprite.view
      := gel.Forge.new_circle_Sprite (in_World => the_Applet.World,
                                      Name     => "Ball",
@@ -59,15 +65,18 @@ is
                                      Radius   => 0.5,
                                      Color    => (Grey, openGL.Opaque),
                                      Texture  => openGL.to_Asset ("assets/opengl/texture/Face1.bmp"));
+
+
    --- Players
    --
+
    type Player is
       record
          Paddle      : gel.Sprite.view;
          moving_Up   : Boolean         := False;
          moving_Down : Boolean         := False;
 
-         Score       : Natural         := 0;
+         Score       : Natural               := 0;
          score_Text  : gel.Sprite.view;
          score_Model : openGL.Model.text.view;
       end record;
@@ -115,6 +124,7 @@ is
 
    --- Walls
    --
+
    procedure add_Wall (Site   : in Vector_3;
                        Width,
                        Height : in Real)
@@ -136,15 +146,18 @@ is
 
    --- Controls
    --
+
    relaunch_Ball : Boolean := True;
    Cycle         : Natural := 0;
 
 
    --- Events
    --
+
    type key_press_Response is new lace.Response.item with null record;
 
    overriding
+
    procedure respond (Self : in out key_press_Response;   to_Event : in lace.Event.item'Class)
    is
       pragma Unreferenced (Self);
@@ -167,6 +180,7 @@ is
    type key_release_Response is new lace.Response.item with null record;
 
    overriding
+
    procedure respond (Self : in out key_release_Response;   to_Event : in lace.Event.item'Class)
    is
       pragma Unreferenced (Self);
@@ -210,6 +224,7 @@ begin
 
    --- Add the players.
    --
+
    declare
       paddle_X_Offset : constant := stadium_Width / 2.0 - 2.0;
    begin
@@ -217,8 +232,10 @@ begin
       add_Player (2, Site => [ paddle_X_Offset, 0.0, 0.0]);
    end;
 
+
    --- Build the stadium.
    --
+
    declare
       Thickness : constant :=  1.0;     -- Thickness of the walls.
       goal_Size : constant :=  6.0;
@@ -253,15 +270,18 @@ begin
 
    --- Main loop.
    --
+
    while the_Applet.is_open
    loop
       Cycle := Cycle + 1;
 
-      --  the_Applet.World.evolve;                        -- Advance the world.
+      -- the_Applet.World.evolve;                        -- Advance the world.
       the_Applet.freshen;                             -- Handle any new events and update the screen.
+
 
       --- Check goal scoring.
       --
+
       declare
          procedure award_Goal (Id : in player_Id)
          is
@@ -304,8 +324,10 @@ begin
          relaunch_Ball := False;
       end if;
 
+
       --- Move the paddles.
       --
+
       for the_Player of the_Players
       loop
          declare
@@ -323,6 +345,6 @@ exception
    when E : others =>
       new_Line;
       put_Line ("Unhandled exception in main task !");
-      put_Line (Ada.Exceptions.Exception_Information (E));
+      put_Line (ada.Exceptions.Exception_Information (E));
       new_Line;
 end launch_Pong;

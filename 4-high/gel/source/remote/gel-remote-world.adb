@@ -17,9 +17,11 @@ is
    begin
       begin
          Result (1) := coarse_Real (Self (1));
+
       exception
          when constraint_Error =>
-            if Self (1) > 0.0 then
+            if Self (1) > 0.0
+            then
                Result (1) := coarse_Real'Last;
             else
                Result (1) := coarse_Real'First;
@@ -28,9 +30,11 @@ is
 
       begin
          Result (2) := coarse_Real (Self (2));
+
       exception
          when constraint_Error =>
-            if Self (2) > 0.0 then
+            if Self (2) > 0.0
+            then
                Result (2) := coarse_Real'Last;
             else
                Result (2) := coarse_Real'First;
@@ -39,9 +43,11 @@ is
 
       begin
          Result (3) := coarse_Real (Self (3));
+
       exception
          when constraint_Error =>
-            if Self (3) > 0.0 then
+            if Self (3) > 0.0
+            then
                Result (3) := coarse_Real'Last;
             else
                Result (3) := coarse_Real'First;
@@ -70,9 +76,11 @@ is
    begin
       begin
          Result (1) := coarse_Real2 (Self.R);
+
       exception
          when constraint_Error =>
-            if Self.R > 0.0 then
+            if Self.R > 0.0
+            then
                Result (1) := coarse_Real2'Last;
             else
                Result (1) := coarse_Real2'First;
@@ -81,9 +89,11 @@ is
 
       begin
          Result (2) := coarse_Real2 (Self.V (1));
+
       exception
          when constraint_Error =>
-            if Self.V (1) > 0.0 then
+            if Self.V (1) > 0.0
+            then
                Result (2) := coarse_Real2'Last;
             else
                Result (2) := coarse_Real2'First;
@@ -92,9 +102,11 @@ is
 
       begin
          Result (3) := coarse_Real2 (Self.V (2));
+
       exception
          when constraint_Error =>
-            if Self.V (2) > 0.0 then
+            if Self.V (2) > 0.0
+            then
                Result (3) := coarse_Real2'Last;
             else
                Result (3) := coarse_Real2'First;
@@ -103,9 +115,11 @@ is
 
       begin
          Result (4) := coarse_Real2 (Self.V (3));
+
       exception
          when Constraint_Error =>
-            if Self.V (3) > 0.0 then
+            if Self.V (3) > 0.0
+            then
                Result (4) := coarse_Real2'Last;
             else
                Result (4) := coarse_Real2'First;
@@ -131,7 +145,7 @@ is
       stream_element_array_Length : constant Stream_Element_Offset
         := Item'Length * number_of_stream_Elements_for_a_Motion_Update;
 
-      subtype the_Stream_Element_Array  is Stream_Element_Array (1 .. stream_element_array_Length);
+      subtype the_Stream_Element_Array  is stream_Element_array (1 .. stream_element_array_Length);
 
       function to_Stream_Element_Array is new ada.unchecked_Conversion (motion_Updates, the_Stream_Element_Array);
 
@@ -144,7 +158,7 @@ is
    procedure motion_Updates_read (Stream : access ada.Streams.Root_Stream_type'Class;    Item : out motion_Updates)
    is
       subtype the_Stream_Element_Array
-        is Stream_Element_Array (1 .. Item'Length * number_of_stream_Elements_for_a_motion_Update);
+        is stream_Element_array (1 .. Item'Length * number_of_stream_Elements_for_a_motion_Update);
 
       subtype the_motion_Updates is motion_Updates (1 .. Item'Length);
 
@@ -190,6 +204,7 @@ is
    begin
       physics.Remote.Model.item'Class'Output (Stream, the_Event.Model.all);
    end Write;
+
 
 
    procedure Read (Stream    : not null access ada.Streams.Root_Stream_type'Class;

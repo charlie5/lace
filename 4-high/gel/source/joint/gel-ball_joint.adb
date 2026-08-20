@@ -1,11 +1,12 @@
 with
      physics.Object;
 
+
 package body GEL.ball_Joint
 is
 
-   ----------
-   ---  Forge
+   ---------
+   --- Forge
    --
 
    procedure define (Self : access Item;   in_Space                : in     std_physics.Space.view;
@@ -30,6 +31,7 @@ is
    end define;
 
 
+
    overriding
    procedure destroy (Self : in out Item)
    is
@@ -50,12 +52,14 @@ is
    end Frame_A;
 
 
+
    overriding
    function Frame_B (Self : in Item) return Matrix_4x4
    is
    begin
       return Self.Physics.Frame_B;
    end Frame_B;
+
 
 
    overriding
@@ -66,6 +70,7 @@ is
    end Frame_A_is;
 
 
+
    overriding
    procedure Frame_B_is (Self : in out Item; Now : in Matrix_4x4)
    is
@@ -74,12 +79,14 @@ is
    end Frame_B_is;
 
 
+
    overriding
    function Physics (Self : in Item) return gel.joint.Physics_view
    is
    begin
       return Self.Physics;
    end Physics;
+
 
 
    overriding
@@ -91,7 +98,7 @@ is
    end Degrees_of_freedom;
 
 
-   ----------
+   ----------------------------------------------------------------
    --- Bounds - limits the range of motion for a Degree of freedom.
    --
 
@@ -99,12 +106,14 @@ is
    function is_Bound (Self : in Item;   for_Degree : in joint.Degree_of_freedom) return Boolean
    is
    begin
-      if for_Degree in Sway .. Surge then
+      if for_Degree in Sway .. Surge
+      then
          return False;
       end if;
 
       return Self.Physics.is_Limited (for_Degree);
    end is_Bound;
+
 
 
    overriding
@@ -122,6 +131,7 @@ is
    end low_Bound;
 
 
+
    overriding
    procedure low_Bound_is (Self : access Item;   for_Degree : in joint.Degree_of_freedom;
                                                  Now        : in Real)
@@ -129,6 +139,7 @@ is
    begin
       Self.Physics.lower_Limit_is (Now, for_Degree);
    end low_Bound_is;
+
 
 
    overriding
@@ -144,6 +155,7 @@ is
             return Self.Physics.upper_Limit (for_Degree);
       end case;
    end high_Bound;
+
 
 
    overriding
@@ -185,4 +197,4 @@ is
    end Velocity_is;
 
 
-end gel.ball_Joint;
+end GEL.ball_Joint;

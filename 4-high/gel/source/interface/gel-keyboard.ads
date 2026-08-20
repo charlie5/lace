@@ -2,9 +2,10 @@ with
      lace.Event,
      lace.Subject;
 
+
 package gel.Keyboard with remote_Types
 --
---  Provides an interface for a keyboard.
+-- Provides an interface for a keyboard.
 --
 is
 
@@ -159,5 +160,6 @@ is
 private
 
    no_Modifiers : constant modifier_Set := [others => False];
+
 
 end gel.Keyboard;

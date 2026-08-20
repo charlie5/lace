@@ -6,7 +6,7 @@ with
 
 package gel.Applet.server_world
 --
---  Provides a gel applet configured with a single window and a single server world.
+-- Provides a gel applet configured with a single window and a single server world.
 --
 is
    type Item is new gel.Applet.item with private;
@@ -19,6 +19,8 @@ is
                            use_Window : in gel.Window.view;
                            space_Kind : in physics.space_Kind) return gel.Applet.server_world.view;
    end Forge;
+
+
 
    procedure free (Self : in out View);
 
@@ -37,5 +39,6 @@ private
       record
          null;
       end record;
+
 
 end gel.Applet.server_world;

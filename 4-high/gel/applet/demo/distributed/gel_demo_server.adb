@@ -3,7 +3,6 @@ with
      gel.Sprite,
 
      Physics,
-
      float_Math,
 
      ada.Calendar,
@@ -13,14 +12,16 @@ with
 
 package body gel_demo_Server
 is
-   use ada.Calendar,
-       ada.Text_IO;
+   use
+        ada.Calendar,
+        ada.Text_IO;
 
 
    package Math renames float_Math;
 
 
-   task body Item
+   task
+   body Item
    is
       the_World : gel.World.server.view;
 
@@ -34,7 +35,7 @@ is
       the_World.start;
 
       declare
-         --  use type math.Real;
+         -- use type math.Real;
 
          the_Box  : constant gel.Sprite.view := gel.Forge. new_box_Sprite (the_World.all'Access,
                                                                            Site => math.Origin_3D,
@@ -44,11 +45,12 @@ is
          the_Ball : constant gel.Sprite.view := gel.Forge.new_ball_Sprite (the_World.all'Access,
                                                                            Mass => 1.0);
          next_render_Time : ada.calendar.Time;
-         Counter          : Natural := 0;
-         Done             : Boolean := False;
+         Counter          : Natural          := 0;
+         Done             : Boolean          := False;
       begin
          --- Setup.
          --
+
          the_World.Gravity_is ([0.0, -10.0, 0.0]);
 
          the_World.add     (the_Ball, and_Children => False);
@@ -61,6 +63,7 @@ is
 
          --- Begin processing.
          --
+
          next_render_Time := ada.Calendar.clock;
 
          delay 1.0;
@@ -94,6 +97,7 @@ is
 
          --- Close
          --
+
          the_World.destroy;
       end;
 

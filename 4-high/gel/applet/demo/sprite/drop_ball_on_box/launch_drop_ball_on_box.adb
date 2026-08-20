@@ -19,11 +19,12 @@ pragma unreferenced (gel.Window.setup);
 
 procedure launch_drop_Ball_on_Box
 --
---  Drops a ball onto a box 'terrain'.
+-- Drops a ball onto a box 'terrain'.
 --
 is
-   use gel.Applet.gui_world,
-       Ada.Text_IO;
+   use
+        gel.Applet.gui_world,
+        ada.Text_IO;
 
    the_Applet : gel.Applet.gui_world.view := gel.Forge.new_gui_Applet ("drop Ball on Box",
                                                                        space_Kind => physics.Bullet);
@@ -33,6 +34,7 @@ is
    begin
       return the_Applet.World (gui_world_Id);
    end gui_World;
+
 
 
    function gui_Camera return gel.Camera.view

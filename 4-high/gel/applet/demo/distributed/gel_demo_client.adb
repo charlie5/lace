@@ -21,7 +21,8 @@ is
    use ada.Text_IO;
 
 
-   task body Item
+   task
+   body Item
    is
       use type ada.Calendar.Time;
 
@@ -39,7 +40,7 @@ is
       gel_demo_Services.World.register    (the_Mirror         => the_Applet.client_World.all'Access,
                                            Mirror_as_observer => the_Applet.client_World.all'Access);
 
-      --  Setup.
+      -- Setup.
       --
       the_Applet.client_Camera.Site_is ([0.0, 0.0, 20.0]);
       the_Applet.enable_simple_Dolly (1);
@@ -57,7 +58,7 @@ is
 
       next_render_Time := ada.Calendar.clock;
 
-      --  Begin processing.
+      -- Begin processing.
       --
       while the_Applet.is_open
       loop
@@ -67,7 +68,7 @@ is
          delay until next_render_Time;
       end loop;
 
-      --  Close.
+      -- Close.
       --
       gel_demo_services.World.deregister (the_Mirror         => the_Applet.client_World.all'access,
                                           Mirror_as_Observer => the_Applet.client_World.all'access);
