@@ -240,10 +240,10 @@ begin
       begin
          case the_Key
          is
-         when up   =>   the_Players (2).moving_Up   := False;
-         when down =>   the_Players (2).moving_Down := False;
-         when a    =>   the_Players (1).moving_Up   := False;
-         when z    =>   the_Players (1).moving_Down := False;
+         when up     => the_Players (2).moving_Up   := False;
+         when down   => the_Players (2).moving_Down := False;
+         when a      => the_Players (1).moving_Up   := False;
+         when z      => the_Players (1).moving_Down := False;
          when others => null;
          end case;
       end respond;

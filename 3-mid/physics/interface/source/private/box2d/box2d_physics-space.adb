@@ -392,23 +392,23 @@ is
 
          case shape_Info.Kind
          is
-         when physics.Model.Cube =>         the_box2d_Object.Shape_is (Self.new_box_Shape         (shape_Info.half_Extents));
-         when physics.Model.a_Sphere =>     the_box2d_Object.Shape_is (Self.new_sphere_Shape      (shape_Info.sphere_Radius));
+         when physics.Model.Cube         => the_box2d_Object.Shape_is (Self.new_box_Shape         (shape_Info.half_Extents));
+         when physics.Model.a_Sphere     => the_box2d_Object.Shape_is (Self.new_sphere_Shape      (shape_Info.sphere_Radius));
          when physics.Model.multi_Sphere => the_box2d_Object.Shape_is (Self.new_multisphere_Shape (shape_Info.Sites.all,
                                                                                                    shape_Info.Radii.all));
-         when physics.Model.Cone =>         the_box2d_Object.Shape_is (Self.new_cone_Shape        (radius => Real (the_Object.Model.Scale (1) / 2.0),
+         when physics.Model.Cone         => the_box2d_Object.Shape_is (Self.new_cone_Shape        (radius => Real (the_Object.Model.Scale (1) / 2.0),
                                                                                                    height => Real (the_Object.Model.Scale (2))));
-         when physics.Model.a_Capsule =>    the_box2d_Object.Shape_is (Self.new_capsule_Shape     (shape_Info.lower_Radius,
+         when physics.Model.a_Capsule    => the_box2d_Object.Shape_is (Self.new_capsule_Shape     (shape_Info.lower_Radius,
                                                                                                    shape_Info.Height));
-         when physics.Model.Cylinder =>     the_box2d_Object.Shape_is (Self.new_cylinder_Shape    (shape_Info.half_Extents));
-         when physics.Model.Hull =>         the_box2d_Object.Shape_is (Self.new_convex_hull_Shape (shape_Info.Points.all));
-         when physics.Model.Mesh =>         the_box2d_Object.Shape_is (Self.new_mesh_Shape        (shape_Info.Model));
-         when physics.Model.Plane =>        the_box2d_Object.Shape_is (Self.new_plane_Shape       (Shape_Info.plane_Normal,
+         when physics.Model.Cylinder     => the_box2d_Object.Shape_is (Self.new_cylinder_Shape    (shape_Info.half_Extents));
+         when physics.Model.Hull         => the_box2d_Object.Shape_is (Self.new_convex_hull_Shape (shape_Info.Points.all));
+         when physics.Model.Mesh         => the_box2d_Object.Shape_is (Self.new_mesh_Shape        (shape_Info.Model));
+         when physics.Model.Plane        => the_box2d_Object.Shape_is (Self.new_plane_Shape       (Shape_Info.plane_Normal,
                                                                                                    Shape_Info.plane_Offset));
-         when physics.Model.Heightfield =>  the_box2d_Object.Shape_is (Self.new_heightfield_Shape (shape_Info.Heights.all,
+         when physics.Model.Heightfield  => the_box2d_Object.Shape_is (Self.new_heightfield_Shape (shape_Info.Heights.all,
                                                                                                    the_Object.Model.Scale));
-         when physics.Model.Circle =>       the_box2d_Object.Shape_is (Self.new_circle_Shape      (shape_Info.circle_Radius));
-         when physics.Model.Polygon =>      the_box2d_Object.Shape_is (Self.new_polygon_Shape     (physics.space.polygon_Vertices (shape_Info.Vertices (1 .. shape_Info.vertex_Count))));
+         when physics.Model.Circle       => the_box2d_Object.Shape_is (Self.new_circle_Shape      (shape_Info.circle_Radius));
+         when physics.Model.Polygon      => the_box2d_Object.Shape_is (Self.new_polygon_Shape     (physics.space.polygon_Vertices (shape_Info.Vertices (1 .. shape_Info.vertex_Count))));
          end case;
 
       end rebuild_Shape;
