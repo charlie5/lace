@@ -30,11 +30,11 @@ is
                                   fontFilePath      : in     String)  return access fontImpl.texture.item'Class;
 
    function  to_FontImpl_texture (ftFont            : access openGL.Font.item'Class;
-                                  pBufferBytes      : in     unsigned_char_Pointer;
+                                  pBufferBytes      : in     unsigned_char_pointer;
                                   bufferSizeInBytes : in     Natural) return fontImpl.texture.item;
 
    function new_FontImpl_texture (ftFont            : access openGL.Font.item'Class;
-                                  pBufferBytes      : in     unsigned_char_Pointer;
+                                  pBufferBytes      : in     unsigned_char_pointer;
                                   bufferSizeInBytes : in     Natural) return fontImpl.texture.view;
    overriding
    procedure destruct (Self : in out Item);

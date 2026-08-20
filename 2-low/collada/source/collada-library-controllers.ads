@@ -5,7 +5,7 @@ package collada.Library.controllers
 is
 
    type Inputs_view    is access all Library.Inputs;
-   type int_Array_view is access all int_Array;
+   type int_Array_view is access all int_array;
 
 
    ----------
@@ -42,13 +42,13 @@ is
    type Skin is
       record
          main_Source       : Text;
-         bind_shape_Matrix : float_Array (1 .. 16);
+         bind_shape_Matrix : float_array (1 .. 16);
          Sources           : library.Sources_view;
          Joints            : controllers.Joints;
          vertex_weights    : controllers.vertex_Weights;
       end record;
 
-   function Weights_of           (Self : in Skin) return access float_Array;
+   function Weights_of           (Self : in Skin) return access float_array;
    function bind_shape_Matrix_of (Self : in Skin) return Matrix_4x4;
    function bind_Poses_of        (Self : in Skin) return Matrix_4x4_array;
    function joint_Names_of       (Self : in Skin) return Text_array;

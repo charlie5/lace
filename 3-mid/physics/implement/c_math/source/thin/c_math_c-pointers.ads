@@ -6,21 +6,21 @@ with interfaces.C;
 package c_math_c.Pointers
 is
 
-   --- Real_Pointer
+   --- Real_pointer
    --
-   type Real_Pointer is access all c_math_c.Real;
+   type Real_pointer is access all c_math_c.Real;
 
-   --- Real_Pointers
+   --- Real_pointers
    --
-   type Real_Pointers is array (interfaces.C.size_t range <>) of aliased c_math_c.Pointers.Real_Pointer;
+   type Real_pointers is array (interfaces.C.size_t range <>) of aliased c_math_c.Pointers.Real_pointer;
 
-   --- Index_Pointer
+   --- Index_pointer
    --
-   type Index_Pointer is access all c_math_c.Index;
+   type Index_pointer is access all c_math_c.Index;
 
-   --- Index_Pointers
+   --- Index_pointers
    --
-   type Index_Pointers is array (interfaces.C.size_t range <>) of aliased c_math_c.Pointers.Index_Pointer;
+   type Index_pointers is array (interfaces.C.size_t range <>) of aliased c_math_c.Pointers.Index_pointer;
 
 
 end c_math_c.Pointers;

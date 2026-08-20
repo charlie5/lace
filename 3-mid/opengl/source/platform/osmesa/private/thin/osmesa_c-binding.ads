@@ -36,19 +36,19 @@ is
                                value : in osmesa_c.GLint);
 
    procedure OSMesaGetIntegerv (pname : in osmesa_c.GLint;
-                                value : in osmesa_c.Pointers.GLint_Pointer);
+                                value : in osmesa_c.Pointers.GLint_pointer);
 
    function OSMesaGetDepthBuffer (c             : in osmesa_c.OSMesaContext;
-                                  width         : in osmesa_c.Pointers.GLint_Pointer;
-                                  height        : in osmesa_c.Pointers.GLint_Pointer;
-                                  bytesPerValue : in osmesa_c.Pointers.GLint_Pointer;
-                                  buffer        : in Swig.Pointers.void_ptr_Pointer) return osmesa_c.GLboolean;
+                                  width         : in osmesa_c.Pointers.GLint_pointer;
+                                  height        : in osmesa_c.Pointers.GLint_pointer;
+                                  bytesPerValue : in osmesa_c.Pointers.GLint_pointer;
+                                  buffer        : in Swig.Pointers.void_ptr_pointer) return osmesa_c.GLboolean;
 
    function OSMesaGetColorBuffer (c      : in osmesa_c.OSMesaContext;
-                                  width  : in osmesa_c.Pointers.GLint_Pointer;
-                                  height : in osmesa_c.Pointers.GLint_Pointer;
-                                  format : in osmesa_c.Pointers.GLint_Pointer;
-                                  buffer : in Swig.Pointers.void_ptr_Pointer) return osmesa_c.GLboolean;
+                                  width  : in osmesa_c.Pointers.GLint_pointer;
+                                  height : in osmesa_c.Pointers.GLint_pointer;
+                                  format : in osmesa_c.Pointers.GLint_pointer;
+                                  buffer : in Swig.Pointers.void_ptr_pointer) return osmesa_c.GLboolean;
 
    function OSMesaGetProcAddress (funcName : in interfaces.C.Strings.chars_ptr) return osmesa_c.OSMESAproc;
 

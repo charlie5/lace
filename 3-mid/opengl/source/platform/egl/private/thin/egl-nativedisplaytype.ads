@@ -4,7 +4,7 @@ with
 
 package eGL.NativeDisplayType
 is
-   subtype Item          is eGL.Pointers.Display_Pointer;
+   subtype Item          is eGL.Pointers.Display_pointer;
    type    Item_array    is array (C.size_t range <>) of aliased Item;
 
    type    Pointer       is access all eGL.NativeDisplayType.Item;

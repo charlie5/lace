@@ -23,21 +23,21 @@ is
    use freetype_c.Pointers;
 
 
-   -- unsigned_char_Pointer
+   -- unsigned_char_pointer
    --
-   type    unsigned_char_Array      is array (C.size_t range <>) of aliased C.unsigned_Char;
+   type    unsigned_char_array      is array (C.size_t range <>) of aliased C.unsigned_Char;
    package c_unsigned_char_Pointers is new C.Pointers (Index              => C.size_t,
                                                        Element            => C.unsigned_Char,
-                                                       element_Array      => unsigned_char_Array,
+                                                       Element_array      => unsigned_char_array,
                                                        default_Terminator => 0);
-   subtype unsigned_char_Pointer is c_unsigned_char_Pointers.Pointer;
+   subtype unsigned_char_pointer is c_unsigned_char_Pointers.Pointer;
 
 
    ---------------
    --- Subprograms
    --
 
-   procedure FT_Outline_Get_CBox (Outline     : in FT_Outline_Pointer;
+   procedure FT_Outline_Get_CBox (Outline     : in FT_Outline_pointer;
                                   acBox       : in FT_BBox.Pointer);
 
    function  FT_Init_FreeType    (aLibrary    : in FT_Library.Pointer)   return FT_Error;
@@ -89,7 +89,7 @@ is
                                        FontFilePath      : in C.strings.chars_ptr) return access FT_FaceRec;
 
    function  new_FT_Memory_Face       (Library           : in FT_Library.Item;
-                                       pBufferBytes      : in unsigned_char_Pointer;
+                                       pBufferBytes      : in unsigned_char_pointer;
                                        BufferSizeInBytes : in C.int) return access FT_FaceRec;
 
    function  FT_Face_Get_Size         (Self : in FT_Face.Item) return access FT_SizeRec;
@@ -105,7 +105,7 @@ is
    function  FT_Face_Get_num_charmaps (Self : in FT_Face.Item) return FT_Int;
    function  FT_Face_Get_glyph        (Self : in FT_Face.Item) return access FT_GlyphSlotRec;
 
-   function  FT_Face_Attach_Stream    (Self : in FT_Face.Item;   pBufferBytes      : in unsigned_char_Pointer;
+   function  FT_Face_Attach_Stream    (Self : in FT_Face.Item;   pBufferBytes      : in unsigned_char_pointer;
                                                                  BufferSizeInBytes : in C.size_t) return FT_Error;
 
    function  get_FT_GLYPH_FORMAT_NONE         return C.unsigned;

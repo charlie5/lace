@@ -19,32 +19,32 @@ is
          Site     : aliased c_math_c.Vector_3.Item;
       end record;
 
-   --- Item_Array
+   --- Item_array
    --
-   type Item_Array is array (interfaces.C.size_t range <>) of aliased box2d_c.b2d_Contact.Item;
+   type Item_array is array (interfaces.C.size_t range <>) of aliased box2d_c.b2d_Contact.Item;
 
    --- Pointer
    --
    package C_Pointers is new interfaces.C.Pointers (Index              => interfaces.C.size_t,
                                                     Element            => box2d_c.b2d_Contact.Item,
-                                                    Element_Array      => box2d_c.b2d_Contact.Item_Array,
-                                                    Default_Terminator => (Object_A | Object_B => null,
+                                                    Element_array      => box2d_c.b2d_Contact.item_array,
+                                                    default_Terminator => (Object_A | Object_B => null,
                                                                            Site                => (x | y | z => 0.0)));
 
    subtype Pointer is C_Pointers.Pointer;
 
-   --- Pointer_Array
+   --- Pointer_array
    --
-   type Pointer_Array is array (interfaces.C.size_t range <>) of aliased box2d_c.b2d_Contact.Pointer;
+   type Pointer_array is array (interfaces.C.size_t range <>) of aliased box2d_c.b2d_Contact.Pointer;
 
-   --- Pointer_Pointer
+   --- Pointer_pointer
    --
    package C_Pointer_Pointers is new interfaces.C.Pointers (Index              => interfaces.C.size_t,
                                                             Element            => box2d_c.b2d_Contact.Pointer,
-                                                            Element_Array      => box2d_c.b2d_Contact.Pointer_Array,
-                                                            Default_Terminator => null);
+                                                            Element_array      => box2d_c.b2d_Contact.Pointer_array,
+                                                            default_Terminator => null);
 
-   subtype Pointer_Pointer is C_Pointer_Pointers.Pointer;
+   subtype Pointer_pointer is C_Pointer_Pointers.Pointer;
 
    function construct return box2d_c.b2d_Contact.Item;
 

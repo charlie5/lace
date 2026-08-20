@@ -248,9 +248,9 @@ is
 
    function Insert (Source   : in String;
                     Before   : in Positive;
-                    New_Item : in String) return String
+                    new_Item : in String) return String
    is
-      Result : String (1 .. Source'Length + New_Item'Length);
+      Result : String (1 .. Source'Length + new_Item'Length);
       Front  : constant Integer                             := Before - Source'First;
 
    begin
@@ -260,8 +260,8 @@ is
       end if;
 
       Result (1 .. Front)                                 := Source (Source'First .. Before - 1);
-      Result (Front + 1 .. Front + New_Item'Length)       := New_Item;
-      Result (Front + New_Item'Length + 1 .. Result'Last) := Source (Before .. Source'Last);
+      Result (Front + 1 .. Front + new_Item'Length)       := new_Item;
+      Result (Front + new_Item'Length + 1 .. Result'Last) := Source (Before .. Source'Last);
 
       return Result;
    end Insert;
@@ -270,11 +270,11 @@ is
 
    procedure Insert (Source   : in out String;
                      Before   : in     Positive;
-                     New_Item : in     String;
+                     new_Item : in     String;
                      Drop     : in     Truncation := Error)
    is
    begin
-      Move (Source => Insert (Source, Before, New_Item),
+      Move (Source => Insert (Source, Before, new_Item),
             Target => Source,
             Drop   => Drop);
    end Insert;
@@ -403,7 +403,7 @@ is
 
    function Overwrite (Source   : in String;
                        Position : in Positive;
-                       New_Item : in String) return String
+                       new_Item : in String) return String
    is
    begin
       if Position not in Source'First .. Source'Last + 1
@@ -414,15 +414,15 @@ is
       declare
          Result_Length : constant Natural := Integer'Max
              (Source'Length,
-              Position - Source'First + New_Item'Length);
+              Position - Source'First + new_Item'Length);
 
          Result : String (1 .. Result_Length);
          Front  : constant Integer           := Position - Source'First;
 
       begin
          Result (1 .. Front)                                   := Source (Source'First .. Position - 1);
-         Result (Front + 1 .. Front + New_Item'Length)         := New_Item;
-         Result (Front + New_Item'Length + 1 .. Result'Length) := Source (Position + New_Item'Length .. Source'Last);
+         Result (Front + 1 .. Front + new_Item'Length)         := new_Item;
+         Result (Front + new_Item'Length + 1 .. Result'Length) := Source (Position + new_Item'Length .. Source'Last);
          return Result;
       end;
    end Overwrite;
@@ -431,11 +431,11 @@ is
 
    procedure Overwrite (Source   : in out String;
                         Position : in     Positive;
-                        New_Item : in     String;
+                        new_Item : in     String;
                         Drop     : in     Truncation := Right)
    is
    begin
-      Move (Source => Overwrite (Source, Position, New_Item),
+      Move (Source => Overwrite (Source, Position, new_Item),
             Target => Source,
             Drop   => Drop);
    end Overwrite;
@@ -478,7 +478,7 @@ is
          end;
 
       else
-         return Insert (Source, Before => Low, New_Item => By);
+         return Insert (Source, Before => Low, new_Item => By);
       end if;
    end Replace_Slice;
 

@@ -175,7 +175,7 @@ is
    -- Returns True if file has been attached successfully.
 
 
-   function attach (Self : in Item;   pBufferBytes      : in FontImpl.unsigned_char_Pointer;
+   function attach (Self : in Item;   pBufferBytes      : in FontImpl.unsigned_char_pointer;
                                       bufferSizeInBytes : in Natural) return Boolean;
    --
    -- Attach auxilliary data to font e.g font metrics, from memory.
@@ -258,7 +258,7 @@ private
    -- Open and read a font file. Sets Error flag.
 
 
-   procedure define (Self : in out Item;   pBufferBytes      : in FontImpl.unsigned_char_Pointer;
+   procedure define (Self : in out Item;   pBufferBytes      : in FontImpl.unsigned_char_pointer;
                                            bufferSizeInBytes : in Natural);
    --
    -- Open and read a font from a buffer in memory. Sets Error flag.

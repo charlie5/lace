@@ -272,7 +272,7 @@ is
    is
       c_Now : aliased c_math_c.Matrix_4x4.item := +Now;
    begin
-      b2d_Object_Transform_is (Self.C, c_Now'Unchecked_Access);
+      b2d_Object_Transform_is (Self.C, c_Now'unchecked_Access);
    end Transform_is;
 
 

@@ -65,10 +65,10 @@ is
          viewport_Width  : constant Integer := the_Camera.Viewport.Max (1) - the_Camera.Viewport.Min (1) + 1;
          viewport_Height : constant Integer := the_Camera.Viewport.Max (2) - the_Camera.Viewport.Min (2) + 1;
 
-         Complete_left   : Boolean;
-         Complete_right  : Boolean;
-         Complete_top    : Boolean;
-         Complete_bottom : Boolean;
+         complete_Left   : Boolean;
+         complete_Right  : Boolean;
+         complete_Top    : Boolean;
+         complete_Bottom : Boolean;
          now_Complete    : Boolean;
 
       begin
@@ -78,8 +78,8 @@ is
             copy_X        := 0;
             copy_Width    := copy_Width - glSizeI (copy_x_Offset);
 
-            Complete_left  := False;
-            Complete_right := True;
+            complete_Left  := False;
+            complete_Right := True;
 
             if copy_Width < 1
             then
@@ -91,8 +91,8 @@ is
          then
             copy_Width     := glSizeI (viewport_Width) - glSizeI (copy_X);
 
-            Complete_left  := True;
-            Complete_right := False;
+            complete_Left  := True;
+            complete_Right := False;
 
             if copy_Width < 1
             then
@@ -101,8 +101,8 @@ is
             end if;
 
          else
-            Complete_left  := True;
-            Complete_right := True;
+            complete_Left  := True;
+            complete_Right := True;
          end if;
 
 
@@ -112,8 +112,8 @@ is
             copy_Y        := 0;
             copy_Height   := copy_Height - glSizeI (copy_y_Offset);
 
-            Complete_top    := True;
-            Complete_bottom := False;
+            complete_Top    := True;
+            complete_Bottom := False;
 
             if copy_Height < 1
             then
@@ -125,8 +125,8 @@ is
          then
             copy_Height     := glSizeI (viewport_Height) - glSizeI (copy_Y);
 
-            Complete_top    := False;
-            Complete_bottom := True;
+            complete_Top    := False;
+            complete_Bottom := True;
 
             if copy_Height < 1
             then
@@ -135,14 +135,14 @@ is
             end if;
 
          else
-            Complete_top    := True;
-            Complete_bottom := True;
+            complete_Top    := True;
+            complete_Bottom := True;
          end if;
 
-         now_Complete :=     Complete_left
-                         and Complete_right
-                         and Complete_top
-                         and Complete_bottom;
+         now_Complete :=     complete_Left
+                         and complete_Right
+                         and complete_Top
+                         and complete_Bottom;
 
          if not update_Required
          then   -- Only do further tests if update not already required.

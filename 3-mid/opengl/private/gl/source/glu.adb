@@ -32,8 +32,8 @@ is
 
    package GLubyte_Pointers is new C.Pointers (Index              => C.size_t,
                                                Element            => GLubyte,
-                                               Element_Array      => GLubtye_array,
-                                               Default_Terminator => 0);
+                                               Element_array      => GLubtye_array,
+                                               default_Terminator => 0);
    subtype GLubyte_view is GLubyte_Pointers.Pointer;
 
    function to_GLubyte_view is new ada.unchecked_Conversion (system.Address, GLubyte_view);
@@ -44,8 +44,8 @@ is
    --
    package GLushort_Pointers is new C.Pointers (Index              => C.size_t,
                                                 Element            => GLushort,
-                                                Element_Array      => GLushort_array,
-                                                Default_Terminator => 0);
+                                                Element_array      => GLushort_array,
+                                                default_Terminator => 0);
 
    subtype GLushort_view is GLushort_Pointers.Pointer;
 

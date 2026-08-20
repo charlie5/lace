@@ -23,7 +23,7 @@ is
    --- Utility
    --
 
-   procedure deallocate is new ada.Unchecked_Deallocation (float_Array,     float_Array_view);
+   procedure deallocate is new ada.Unchecked_Deallocation (float_array,     float_Array_view);
 
 
    ---------
@@ -114,7 +114,7 @@ is
       is
          use freeType_C.Binding;
 
-         use type Pointers.FT_FaceRec_Pointer;
+         use type Pointers.FT_FaceRec_pointer;
       begin
          if Self.kerningCache /= null
          then
@@ -322,7 +322,7 @@ is
    begin
       kernAdvance.x     := 0;
       kernAdvance.y     := 0;
-      Self.kerningCache := new float_Array' (1 .. C.size_t (max_Index) => <>);
+      Self.kerningCache := new float_array' (1 .. C.size_t (max_Index) => <>);
 
       for j in 1 .. FT_UInt' (max_Precomputed)
       loop

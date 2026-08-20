@@ -14,8 +14,8 @@ is
    function eglGetDisplay (display_id : in eGL.NativeDisplayType.Item) return eGL.EGLDisplay;
 
    function eglInitialize (dpy   : in eGL.EGLDisplay;
-                           major : in eGL.Pointers.EGLint_Pointer;
-                           minor : in eGL.Pointers.EGLint_Pointer) return eGL.EGLBoolean;
+                           major : in eGL.Pointers.EGLint_pointer;
+                           minor : in eGL.Pointers.EGLint_pointer) return eGL.EGLBoolean;
 
    function eglTerminate (dpy : in eGL.EGLDisplay)  return eGL.EGLBoolean;
 
@@ -23,34 +23,34 @@ is
                             name : in eGL.EGLint) return interfaces.C.Strings.chars_ptr;
 
    function eglGetConfigs (dpy         : in eGL.EGLDisplay;
-                           configs     : in eGL.Pointers.EGLConfig_Pointer;
+                           configs     : in eGL.Pointers.EGLConfig_pointer;
                            config_size : in eGL.EGLint;
-                           num_config  : in eGL.Pointers.EGLint_Pointer) return eGL.EGLBoolean;
+                           num_config  : in eGL.Pointers.EGLint_pointer) return eGL.EGLBoolean;
 
    function eglChooseConfig (dpy         : in eGL.EGLDisplay;
-                             attrib_list : in eGL.Pointers.EGLint_Pointer;
-                             configs     : in eGL.Pointers.EGLConfig_Pointer;
+                             attrib_list : in eGL.Pointers.EGLint_pointer;
+                             configs     : in eGL.Pointers.EGLConfig_pointer;
                              config_size : in eGL.EGLint;
-                             num_config  : in eGL.Pointers.EGLint_Pointer) return eGL.EGLBoolean;
+                             num_config  : in eGL.Pointers.EGLint_pointer) return eGL.EGLBoolean;
 
    function eglGetConfigAttrib (dpy       : in eGL.EGLDisplay;
                                 config    : in eGL.EGLConfig;
                                 attribute : in eGL.EGLint;
-                                value     : in eGL.Pointers.EGLint_Pointer) return eGL.EGLBoolean;
+                                value     : in eGL.Pointers.EGLint_pointer) return eGL.EGLBoolean;
 
    function eglCreateWindowSurface (dpy         : in eGL.EGLDisplay;
                                     config      : in eGL.EGLConfig;
                                     win         : in eGL.NativeWindowType;
-                                    attrib_list : in eGL.Pointers.EGLint_Pointer) return eGL.EGLSurface;
+                                    attrib_list : in eGL.Pointers.EGLint_pointer) return eGL.EGLSurface;
 
    function eglCreatePbufferSurface (dpy         : in eGL.EGLDisplay;
                                      config      : in eGL.EGLConfig;
-                                     attrib_list : in eGL.Pointers.EGLint_Pointer) return eGL.EGLSurface;
+                                     attrib_list : in eGL.Pointers.EGLint_pointer) return eGL.EGLSurface;
 
    function eglCreatePixmapSurface (dpy         : in eGL.EGLDisplay;
                                     config      : in eGL.EGLConfig;
                                     pixmap      : in eGL.NativePixmapType;
-                                    attrib_list : in eGL.Pointers.EGLint_Pointer) return eGL.EGLSurface;
+                                    attrib_list : in eGL.Pointers.EGLint_pointer) return eGL.EGLSurface;
 
    function eglDestroySurface (dpy     : in eGL.EGLDisplay;
                                surface : in eGL.EGLSurface) return eGL.EGLBoolean;
@@ -58,7 +58,7 @@ is
    function eglQuerySurface (dpy       : in eGL.EGLDisplay;
                              surface   : in eGL.EGLSurface;
                              attribute : in eGL.EGLint;
-                             value     : in eGL.Pointers.EGLint_Pointer) return eGL.EGLBoolean;
+                             value     : in eGL.Pointers.EGLint_pointer) return eGL.EGLBoolean;
 
    function eglBindAPI (api : in eGL.EGLenum)       return eGL.EGLBoolean;
 
@@ -72,7 +72,7 @@ is
                                               buftype     : in eGL.EGLenum;
                                               buffer      : in eGL.EGLClientBuffer;
                                               config      : in eGL.EGLConfig;
-                                              attrib_list : in eGL.Pointers.EGLint_Pointer) return eGL.EGLSurface;
+                                              attrib_list : in eGL.Pointers.EGLint_pointer) return eGL.EGLSurface;
 
    function eglSurfaceAttrib (dpy       : in eGL.EGLDisplay;
                               surface   : in eGL.EGLSurface;
@@ -94,7 +94,7 @@ is
    function eglCreateContext (dpy           : in eGL.EGLDisplay;
                               config        : in eGL.EGLConfig;
                               share_context : in eGL.EGLContext;
-                              attrib_list   : in eGL.Pointers.EGLint_Pointer) return eGL.EGLContext;
+                              attrib_list   : in eGL.Pointers.EGLint_pointer) return eGL.EGLContext;
 
    function eglDestroyContext (dpy : in eGL.EGLDisplay;
                                ctx : in eGL.EGLContext) return eGL.EGLBoolean;
@@ -113,7 +113,7 @@ is
    function eglQueryContext (dpy       : in eGL.EGLDisplay;
                              ctx       : in eGL.EGLContext;
                              attribute : in eGL.EGLint;
-                             value     : in eGL.Pointers.EGLint_Pointer) return eGL.EGLBoolean;
+                             value     : in eGL.Pointers.EGLint_pointer) return eGL.EGLBoolean;
 
    function eglWaitGL                                 return eGL.EGLBoolean;
 

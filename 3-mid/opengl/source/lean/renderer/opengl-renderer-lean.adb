@@ -822,7 +822,7 @@ is
       procedure define
       is
       begin
-         current_Map := Map_1'Unchecked_Access;
+         current_Map := Map_1'unchecked_Access;
       end define;
 
 

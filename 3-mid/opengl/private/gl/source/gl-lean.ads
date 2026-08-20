@@ -19,14 +19,14 @@ is
    type    GLsizeiptr is new Integer;
 
 
-   -- GLchar_Pointer
+   -- GLchar_pointer
    --
    type    GLchar_array    is array (C.size_t range <>) of aliased GLchar;
    package GLchar_Pointers is new C.Pointers (Index              => C.size_t,
                                               Element            => GLchar,
-                                              Element_Array      => GLchar_array,
-                                              Default_Terminator => C.nul);
-   subtype GLchar_Pointer  is GLchar_Pointers.Pointer;
+                                              Element_array      => GLchar_array,
+                                              default_Terminator => C.nul);
+   subtype GLchar_pointer  is GLchar_Pointers.Pointer;
 
    subtype GLfloat_Address is system.Address;
 
@@ -393,7 +393,7 @@ is
                                                     Length         : in     GLint);
    procedure glShaderSource                        (Shader         : in     GLuint;
                                                     Count          : in     GLsizei;
-                                                    String         : access GLchar_Pointer;
+                                                    String         : access GLchar_pointer;
                                                     Length         : access GLint);
    procedure glStencilFuncSeparate                 (Face           : in     GLenum;
                                                     Func           : in     GLenum;

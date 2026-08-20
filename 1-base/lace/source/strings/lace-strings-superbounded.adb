@@ -373,19 +373,19 @@ is
 
 
    procedure Super_Append (Source   : in out Super_String;
-                           New_Item : in     Super_String;
+                           new_Item : in     Super_String;
                            Drop     : in     Truncation := Error)
    is
       Max_Length : constant Positive := Source.Max_Length;
       Llen       : constant Natural := Source.Current_Length;
-      Rlen       : constant Natural := New_Item.Current_Length;
+      Rlen       : constant Natural := new_Item.Current_Length;
       Nlen       : constant Natural := Llen + Rlen;
 
    begin
       if Nlen <= Max_Length
       then
          Source.Current_Length          := Nlen;
-         Source.Data (Llen + 1 .. Nlen) := New_Item.Data (1 .. Rlen);
+         Source.Data (Llen + 1 .. Nlen) := new_Item.Data (1 .. Rlen);
 
       else
          Source.Current_Length := Max_Length;
@@ -394,16 +394,16 @@ is
             when ada.Strings.Right =>
                if Llen < Max_Length
                then
-                  Source.Data (Llen + 1 .. Max_Length) := New_Item.Data (1 .. Max_Length - Llen);
+                  Source.Data (Llen + 1 .. Max_Length) := new_Item.Data (1 .. Max_Length - Llen);
                end if;
 
             when ada.Strings.Left =>
                if Rlen >= Max_Length then -- only case is Rlen = Max_Length
-                  Source.Data := New_Item.Data;
+                  Source.Data := new_Item.Data;
 
                else
                   Source.Data (1 .. Max_Length - Rlen)              := Source.Data (Llen - (Max_Length - Rlen - 1) .. Llen);
-                  Source.Data (Max_Length - Rlen + 1 .. Max_Length) := New_Item.Data (1 .. Rlen);
+                  Source.Data (Max_Length - Rlen + 1 .. Max_Length) := new_Item.Data (1 .. Rlen);
                end if;
 
             when ada.Strings.Error =>
@@ -467,19 +467,19 @@ is
 
 
    procedure Super_Append (Source   : in out Super_String;
-                           New_Item : in     String;
+                           new_Item : in     String;
                            Drop     : in     Truncation := Error)
    is
       Max_Length : constant Positive := Source.Max_Length;
       Llen   : constant Natural := Source.Current_Length;
-      Rlen   : constant Natural := New_Item'Length;
+      Rlen   : constant Natural := new_Item'Length;
       Nlen   : constant Natural := Llen + Rlen;
 
    begin
       if Nlen <= Max_Length
       then
          Source.Current_Length          := Nlen;
-         Source.Data (Llen + 1 .. Nlen) := New_Item;
+         Source.Data (Llen + 1 .. Nlen) := new_Item;
 
       else
          Source.Current_Length := Max_Length;
@@ -488,19 +488,19 @@ is
             when ada.Strings.Right =>
                if Llen < Max_Length
                then
-                  Source.Data (Llen + 1 .. Max_Length) := New_Item (New_Item'First ..
-                                                                    New_Item'First - 1 + Max_Length - Llen);
+                  Source.Data (Llen + 1 .. Max_Length) := new_Item (new_Item'First ..
+                                                                    new_Item'First - 1 + Max_Length - Llen);
                end if;
 
             when ada.Strings.Left =>
                if Rlen >= Max_Length
                then
-                  Source.Data (1 .. Max_Length) := New_Item (New_Item'Last - (Max_Length - 1) ..
-                                                             New_Item'Last);
+                  Source.Data (1 .. Max_Length) := new_Item (new_Item'Last - (Max_Length - 1) ..
+                                                             new_Item'Last);
 
                else
                   Source.Data (1 .. Max_Length - Rlen)              := Source.Data (Llen - (Max_Length - Rlen - 1) .. Llen);
-                  Source.Data (Max_Length - Rlen + 1 .. Max_Length) := New_Item;
+                  Source.Data (Max_Length - Rlen + 1 .. Max_Length) := new_Item;
                end if;
 
             when ada.Strings.Error =>
@@ -599,7 +599,7 @@ is
 
 
    procedure Super_Append (Source   : in out Super_String;
-                           New_Item : in     Character;
+                           new_Item : in     Character;
                            Drop     : in     Truncation := Error)
    is
       Max_Length : constant Positive := Source.Max_Length;
@@ -609,7 +609,7 @@ is
       if Llen  < Max_Length
       then
          Source.Current_Length  := Llen + 1;
-         Source.Data (Llen + 1) := New_Item;
+         Source.Data (Llen + 1) := new_Item;
 
       else
          Source.Current_Length := Max_Length;
@@ -620,7 +620,7 @@ is
 
             when ada.Strings.Left =>
                Source.Data (1 .. Max_Length - 1) := Source.Data (2 .. Max_Length);
-               Source.Data (Max_Length)          := New_Item;
+               Source.Data (Max_Length)          := new_Item;
 
             when ada.Strings.Error =>
                raise ada.Strings.length_Error;
@@ -1021,13 +1021,13 @@ is
 
    function Super_Insert (Source   : in Super_String;
                           Before   : in Positive;
-                          New_Item : in String;
+                          new_Item : in String;
                           Drop     : in ada.Strings.Truncation := ada.Strings.Error) return Super_String
    is
       Max_Length : constant Positive        := Source.Max_Length;
       Result     : Super_String (Max_Length);
       Slen       : constant Natural         := Source.Current_Length;
-      Nlen       : constant Natural         := New_Item'Length;
+      Nlen       : constant Natural         := new_Item'Length;
       Tlen       : constant Natural         := Slen + Nlen;
       Blen       : constant Natural         := Before - 1;
       Alen       : constant Integer         := Slen - Blen;
@@ -1046,7 +1046,7 @@ is
       then
          Result.Current_Length                     := Tlen;
          Result.Data (1 .. Blen)                   := Source.Data (1 .. Blen);
-         Result.Data (Before .. Before + Nlen - 1) := New_Item;
+         Result.Data (Before .. Before + Nlen - 1) := new_Item;
          Result.Data (Before + Nlen .. Tlen)       := Source.Data (Before .. Slen);
 
       else
@@ -1058,10 +1058,10 @@ is
 
                if Droplen > Alen
                then
-                  Result.Data (Before .. Max_Length) := New_Item (New_Item'First ..
-                                                                  New_Item'First + Max_Length - Before);
+                  Result.Data (Before .. Max_Length) := new_Item (new_Item'First ..
+                                                                  new_Item'First + Max_Length - Before);
                else
-                  Result.Data (Before .. Before + Nlen - 1) := New_Item;
+                  Result.Data (Before .. Before + Nlen - 1) := new_Item;
                   Result.Data (Before + Nlen .. Max_Length) := Source.Data (Before .. Slen - Droplen);
                end if;
 
@@ -1070,10 +1070,10 @@ is
 
                if Droplen >= Blen
                then
-                  Result.Data (1 .. Max_Length - Alen) := New_Item (New_Item'Last - (Max_Length - Alen) + 1 ..
-                                                                    New_Item'Last);
+                  Result.Data (1 .. Max_Length - Alen) := new_Item (new_Item'Last - (Max_Length - Alen) + 1 ..
+                                                                    new_Item'Last);
                else
-                  Result.Data (Blen - Droplen + 1 .. Max_Length - Alen) := New_Item;
+                  Result.Data (Blen - Droplen + 1 .. Max_Length - Alen) := new_Item;
                   Result.Data (1 .. Blen - Droplen)                     := Source.Data (Droplen + 1 .. Blen);
                end if;
 
@@ -1089,7 +1089,7 @@ is
 
    procedure Super_Insert (Source   : in out Super_String;
                            Before   : in     Positive;
-                           New_Item : in     String;
+                           new_Item : in     String;
                            Drop     : in     ada.Strings.Truncation := ada.Strings.Error)
    is
    begin
@@ -1097,7 +1097,7 @@ is
       -- in which we move data to the right, and at least at the moment,
       -- GNAT is not handling such cases correctly ???
 
-      Source := Super_Insert (Source, Before, New_Item, Drop);
+      Source := Super_Insert (Source, Before, new_Item, Drop);
    end Super_Insert;
 
 
@@ -1118,12 +1118,12 @@ is
 
    function Super_Overwrite (Source   : in Super_String;
                              Position : in Positive;
-                             New_Item : in String;
+                             new_Item : in String;
                              Drop     : in ada.Strings.Truncation := ada.Strings.Error) return Super_String
    is
       Max_Length : constant Positive        := Source.Max_Length;
       Result     : Super_String (Max_Length);
-      Endpos     : constant Natural         := Position + New_Item'Length - 1;
+      Endpos     : constant Natural         := Position + new_Item'Length - 1;
       Slen       : constant Natural         := Source.Current_Length;
       Droplen    : Natural;
 
@@ -1132,7 +1132,7 @@ is
       then
          raise ada.Strings.index_Error;
 
-      elsif New_Item'Length = 0
+      elsif new_Item'Length = 0
       then
          return Source;
 
@@ -1140,14 +1140,14 @@ is
       then
          Result.Current_Length            := Source.Current_Length;
          Result.Data (1 .. Slen)          := Source.Data (1 .. Slen);
-         Result.Data (Position .. Endpos) := New_Item;
+         Result.Data (Position .. Endpos) := new_Item;
          return Result;
 
       elsif Endpos <= Max_Length
       then
          Result.Current_Length            := Endpos;
          Result.Data (1 .. Position - 1)  := Source.Data (1 .. Position - 1);
-         Result.Data (Position .. Endpos) := New_Item;
+         Result.Data (Position .. Endpos) := new_Item;
          return Result;
 
       else
@@ -1158,19 +1158,19 @@ is
             when ada.Strings.Right =>
                Result.Data (1 .. Position - 1) := Source.Data (1 .. Position - 1);
 
-               Result.Data (Position .. Max_Length) := New_Item (New_Item'First .. New_Item'Last - Droplen);
+               Result.Data (Position .. Max_Length) := new_Item (new_Item'First .. new_Item'Last - Droplen);
                return Result;
 
             when ada.Strings.Left =>
-               if New_Item'Length >= Max_Length
+               if new_Item'Length >= Max_Length
                then
-                  Result.Data (1 .. Max_Length) := New_Item (New_Item'Last - Max_Length + 1 ..
-                                                             New_Item'Last);
+                  Result.Data (1 .. Max_Length) := new_Item (new_Item'Last - Max_Length + 1 ..
+                                                             new_Item'Last);
                   return Result;
 
                else
-                  Result.Data (1 .. Max_Length - New_Item'Length)              := Source.Data (Droplen + 1 .. Position - 1);
-                  Result.Data (Max_Length - New_Item'Length + 1 .. Max_Length) := New_Item;
+                  Result.Data (1 .. Max_Length - new_Item'Length)              := Source.Data (Droplen + 1 .. Position - 1);
+                  Result.Data (Max_Length - new_Item'Length + 1 .. Max_Length) := new_Item;
                   return Result;
                end if;
 
@@ -1184,11 +1184,11 @@ is
 
    procedure Super_Overwrite (Source   : in out Super_String;
                               Position : in     Positive;
-                              New_Item : in     String;
+                              new_Item : in     String;
                               Drop     : in     ada.Strings.Truncation := ada.Strings.Error)
    is
       Max_Length : constant Positive := Source.Max_Length;
-      Endpos     : constant Positive := Position + New_Item'Length - 1;
+      Endpos     : constant Positive := Position + new_Item'Length - 1;
       Slen       : constant Natural  := Source.Current_Length;
       Droplen    : Natural;
 
@@ -1199,11 +1199,11 @@ is
 
       elsif Endpos <= Slen
       then
-         Source.Data (Position .. Endpos) := New_Item;
+         Source.Data (Position .. Endpos) := new_Item;
 
       elsif Endpos <= Max_Length
       then
-         Source.Data (Position .. Endpos) := New_Item;
+         Source.Data (Position .. Endpos) := new_Item;
          Source.Current_Length            := Endpos;
 
       else
@@ -1212,17 +1212,17 @@ is
 
          case Drop is
             when ada.Strings.Right =>
-               Source.Data (Position .. Max_Length) := New_Item (New_Item'First .. New_Item'Last - Droplen);
+               Source.Data (Position .. Max_Length) := new_Item (new_Item'First .. new_Item'Last - Droplen);
 
             when ada.Strings.Left =>
-               if New_Item'Length > Max_Length
+               if new_Item'Length > Max_Length
                then
-                  Source.Data (1 .. Max_Length) := New_Item (New_Item'Last - Max_Length + 1 ..
-                                                             New_Item'Last);
+                  Source.Data (1 .. Max_Length) := new_Item (new_Item'Last - Max_Length + 1 ..
+                                                             new_Item'Last);
 
                else
-                  Source.Data (1 .. Max_Length - New_Item'Length)              := Source.Data (Droplen + 1 .. Position - 1);
-                  Source.Data (Max_Length - New_Item'Length + 1 .. Max_Length) := New_Item;
+                  Source.Data (1 .. Max_Length - new_Item'Length)              := Source.Data (Droplen + 1 .. Position - 1);
+                  Source.Data (Max_Length - new_Item'Length + 1 .. Max_Length) := new_Item;
                end if;
 
             when ada.Strings.Error =>

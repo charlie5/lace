@@ -28,7 +28,7 @@ is
            Paths,
            gnat.OS_Lib;
 
-      File_Path :          String_Access := locate_Exec_on_Path (+Executable);
+      File_Path :          String_access := locate_Exec_on_Path (+Executable);
       Found     : constant Boolean       := File_Path /= null;
 
    begin

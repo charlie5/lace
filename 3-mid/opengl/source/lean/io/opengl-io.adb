@@ -387,16 +387,16 @@ is
       -- The "+4" are there to avoid parity address problems when GL writes
       -- to the buffer.
 
-      type Loc_pointer is new gl.safe.GLvoid_Pointer;
+      type loc_pointer is new gl.safe.GLvoid_pointer;
 
-      function convert is new ada.unchecked_Conversion (System.Address, Loc_pointer);
+      function convert is new ada.unchecked_Conversion (System.Address, loc_pointer);
       --
       -- This method is functionally identical as GNAT's Unrestricted_Access
       -- but has no type safety (cf GNAT Docs).
 
-      pragma no_strict_Aliasing (Loc_pointer); -- Recommended by GNAT 2005+.
+      pragma no_strict_Aliasing (loc_pointer); -- Recommended by GNAT 2005+.
 
-      pPicData :          Loc_pointer;
+      pPicData :          loc_pointer;
       data_Max : constant Integer    := padded_row_Size * Height - 1;
 
       -- Workaround for the severe xxx'Read xxx'Write performance
@@ -406,7 +406,7 @@ is
       --
       type Byte_array is array (Integer range <>) of aliased GLUByte;
 
-      subtype Size_Test_a is Byte_Array (1..19);
+      subtype Size_Test_a is Byte_array (1..19);
       subtype Size_Test_b is ada.Streams.Stream_Element_array (1 .. 19);
 
       Workaround_possible: constant Boolean :=          Size_Test_a'Size      = Size_Test_b'Size
@@ -460,7 +460,7 @@ is
 
    generic
       type Number is mod <>;
-      S : Stream_Access;
+      S : Stream_access;
    procedure write_Intel_x86_Number (N : in Number);
 
    procedure write_Intel_x86_Number (N : in Number)
@@ -539,7 +539,7 @@ is
 
 
 
-   procedure write_BMP_Header (to_Stream     : in Stream_Access;
+   procedure write_BMP_Header (to_Stream     : in Stream_access;
                                Width, Height : in GL.GLint;
                                with_Alpha    : in Boolean)
    is
@@ -885,7 +885,7 @@ is
 
    procedure capture_Frame
    is
-      S : constant Stream_Access := Stream (Avi);
+      S : constant Stream_access := Stream (Avi);
 
       procedure write_Intel is new write_Intel_x86_Number (U32, s);
    begin
@@ -901,7 +901,7 @@ is
    procedure stop_Capture
    is
       index_Size  : constant U32           := U32 (Frames) * 16;
-      S           : constant Stream_Access := Stream (Avi);
+      S           : constant Stream_access := Stream (Avi);
       ChunkOffset :          U32           := 4;
 
       procedure write_Intel is new write_Intel_x86_Number (U32, S);

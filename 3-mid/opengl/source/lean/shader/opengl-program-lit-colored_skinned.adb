@@ -21,22 +21,22 @@ is
 --        sample_Vertex        :          Geometry.lit_textured_skinned.Vertex;
 --
 --        Attribute_1_Name     : aliased          C.char_array        := "Site";
---        Attribute_1_Name_ptr : aliased constant C.strings.chars_ptr := C.strings.to_chars_ptr (Attribute_1_Name'Unchecked_Access);
+--        attribute_1_Name_ptr : aliased constant C.strings.chars_ptr := C.strings.to_chars_ptr (Attribute_1_Name'unchecked_Access);
 --
 --        Attribute_2_Name     : aliased          C.char_array        := "Normal";
---        Attribute_2_Name_ptr : aliased constant C.strings.chars_ptr := C.strings.to_chars_ptr (Attribute_2_Name'Unchecked_Access);
+--        attribute_2_Name_ptr : aliased constant C.strings.chars_ptr := C.strings.to_chars_ptr (Attribute_2_Name'unchecked_Access);
 --
 --        Attribute_3_Name     : aliased          C.char_array        := "Color";
---        Attribute_3_Name_ptr : aliased constant C.strings.chars_ptr := C.strings.to_chars_ptr (Attribute_3_Name'Unchecked_Access);
+--        attribute_3_Name_ptr : aliased constant C.strings.chars_ptr := C.strings.to_chars_ptr (Attribute_3_Name'unchecked_Access);
 --
 --        Attribute_4_Name     : aliased          C.char_array        := "Coords";
---        Attribute_4_Name_ptr : aliased constant C.strings.chars_ptr := C.strings.to_chars_ptr (Attribute_4_Name'Unchecked_Access);
+--        attribute_4_Name_ptr : aliased constant C.strings.chars_ptr := C.strings.to_chars_ptr (Attribute_4_Name'unchecked_Access);
 --
 --        Attribute_5_Name     : aliased          C.char_array        := "bone_Ids";
---        Attribute_5_Name_ptr : aliased constant C.strings.chars_ptr := C.strings.to_chars_ptr (Attribute_5_Name'Unchecked_Access);
+--        attribute_5_Name_ptr : aliased constant C.strings.chars_ptr := C.strings.to_chars_ptr (Attribute_5_Name'unchecked_Access);
 --
 --        Attribute_6_Name     : aliased          C.char_array        := "bone_Weights";
---        Attribute_6_Name_ptr : aliased constant C.strings.chars_ptr := C.strings.to_chars_ptr (Attribute_6_Name'Unchecked_Access);
+--        attribute_6_Name_ptr : aliased constant C.strings.chars_ptr := C.strings.to_chars_ptr (Attribute_6_Name'unchecked_Access);
 --
 --        Attribute_1 : openGL.Attribute.view;
 --        Attribute_2 : openGL.Attribute.view;
@@ -126,27 +126,27 @@ is
 --
 --        glBindAttribLocation (program => Self.gl_Program,
 --                              index   => Self.Attribute (named => "Site").gl_Location,
---                              name    => +Attribute_1_Name_ptr);
+--                              name    => +attribute_1_Name_ptr);
 --
 --        glBindAttribLocation (program => Self.gl_Program,
 --                              index   => Self.Attribute (named => "Normal").gl_Location,
---                              name    => +Attribute_2_Name_ptr);
+--                              name    => +attribute_2_Name_ptr);
 --
 --        glBindAttribLocation (program => Self.gl_Program,
 --                              index   => Self.Attribute (named => "Color").gl_Location,
---                              name    => +Attribute_3_Name_ptr);
+--                              name    => +attribute_3_Name_ptr);
 --
 --        glBindAttribLocation (program => Self.gl_Program,
 --                              index   => Self.Attribute (named => "Coords").gl_Location,
---                              name    => +Attribute_4_Name_ptr);
+--                              name    => +attribute_4_Name_ptr);
 --
 --        glBindAttribLocation (program => Self.gl_Program,
 --                              index   => Self.Attribute (named => "bone_Ids").gl_Location,
---                              name    => +Attribute_5_Name_ptr);
+--                              name    => +attribute_5_Name_ptr);
 --
 --        glBindAttribLocation (program => Self.gl_Program,
 --                              index   => Self.Attribute (named => "bone_Weights").gl_Location,
---                              name    => +Attribute_6_Name_ptr);
+--                              name    => +attribute_6_Name_ptr);
 --     end define;
 
 

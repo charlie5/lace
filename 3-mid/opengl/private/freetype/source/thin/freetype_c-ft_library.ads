@@ -5,14 +5,14 @@ with
 package freetype_c.FT_Library
 is
 
-   subtype Item       is Pointers.FT_LibraryRec_Pointer;
+   subtype Item       is Pointers.FT_LibraryRec_pointer;
    type    Item_array is array (C.Size_t range <>) of aliased FT_Library.Item;
 
 
    type Pointer       is access all freetype_c.FT_Library.Item;
    type Pointer_array is array (C.Size_t range <>) of aliased freetype_c.FT_Library.Pointer;
 
-   type pointer_Pointer is access all freetype_c.FT_Library.Pointer;
+   type Pointer_pointer is access all freetype_c.FT_Library.Pointer;
 
 
 end freetype_c.FT_Library;

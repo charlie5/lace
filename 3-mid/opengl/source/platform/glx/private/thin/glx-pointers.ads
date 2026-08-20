@@ -1,79 +1,79 @@
 package GLX.Pointers
 is
-   --- VisualID_Pointer
+   --- VisualID_pointer
    --
-   type VisualID_Pointer  is access all VisualID;
-   type VisualID_Pointers is array (C.size_t range <>) of aliased VisualID_Pointer;
+   type VisualID_pointer  is access all VisualID;
+   type VisualID_pointers is array (C.size_t range <>) of aliased VisualID_pointer;
 
-   --- XVisualInfo_Pointer
+   --- XVisualInfo_pointer
    --
-   type XVisualInfo_Pointer is access all XVisualInfo;
-   type XVisualInfo_Pointers is array (C.size_t range <>) of aliased XVisualInfo_Pointer;
+   type XVisualInfo_pointer is access all XVisualInfo;
+   type XVisualInfo_pointers is array (C.size_t range <>) of aliased XVisualInfo_pointer;
 
-   --- Pixmap_Pointer
+   --- Pixmap_pointer
    --
-   type Pixmap_Pointer  is access all Pixmap;
-   type Pixmap_Pointers is array (C.size_t range <>) of aliased Pixmap_Pointer;
+   type Pixmap_pointer  is access all Pixmap;
+   type Pixmap_pointers is array (C.size_t range <>) of aliased Pixmap_pointer;
 
-   --- Font_Pointer
+   --- Font_pointer
    --
-   type Font_Pointer  is access all Font;
-   type Font_Pointers is array (C.size_t range <>) of aliased Font_Pointer;
+   type Font_pointer  is access all Font;
+   type Font_pointers is array (C.size_t range <>) of aliased Font_pointer;
 
-   --- Window_Pointer
+   --- Window_pointer
    --
-   type Window_Pointer  is access all Window;
-   type Window_Pointers is array (C.size_t range <>) of aliased Window_Pointer;
+   type Window_pointer  is access all Window;
+   type Window_pointers is array (C.size_t range <>) of aliased Window_pointer;
 
-   --- Bool_Pointer
+   --- Bool_pointer
    --
-   type Bool_Pointer  is access all Bool;
-   type Bool_Pointers is array (C.size_t range <>) of aliased Bool_Pointer;
+   type Bool_pointer  is access all Bool;
+   type Bool_pointers is array (C.size_t range <>) of aliased Bool_pointer;
 
-   --- ContextRec_Pointer
+   --- ContextRec_pointer
    --
-   type ContextRec_Pointer  is access all ContextRec;
-   type ContextRec_Pointers is array (C.size_t range <>) of aliased ContextRec_Pointer;
+   type ContextRec_pointer  is access all ContextRec;
+   type ContextRec_pointers is array (C.size_t range <>) of aliased ContextRec_pointer;
 
-   --- XID_Pointer
+   --- XID_pointer
    --
-   type XID_Pointer  is access all XID;
-   type XID_Pointers is array (C.size_t range <>) of aliased XID_Pointer;
+   type XID_pointer  is access all XID;
+   type XID_pointers is array (C.size_t range <>) of aliased XID_pointer;
 
-   --- GLXPixmap_Pointer
+   --- GLXPixmap_pointer
    --
-   type GLXPixmap_Pointer  is access all GLXPixmap;
-   type GLXPixmap_Pointers is array (C.size_t range <>) of aliased GLXPixmap_Pointer;
+   type GLXPixmap_pointer  is access all GLXPixmap;
+   type GLXPixmap_pointers is array (C.size_t range <>) of aliased GLXPixmap_pointer;
 
-   --- Drawable_Pointer
+   --- Drawable_pointer
    --
-   type Drawable_Pointer  is access all Drawable;
-   type Drawable_Pointers is array (C.size_t range <>) of aliased Drawable_Pointer;
+   type Drawable_pointer  is access all Drawable;
+   type Drawable_pointers is array (C.size_t range <>) of aliased Drawable_pointer;
 
-   --- FBConfig_Pointer
+   --- FBConfig_pointer
    --
-   type FBConfig_Pointer  is access all FBConfig;
-   type FBConfig_Pointers is array (C.size_t range <>) of aliased FBConfig_Pointer;
+   type FBConfig_pointer  is access all FBConfig;
+   type FBConfig_pointers is array (C.size_t range <>) of aliased FBConfig_pointer;
 
-   --- GLXFBConfigID_Pointer
+   --- GLXFBConfigID_pointer
    --
-   type FBConfigID_Pointer  is access all FBConfigID;
-   type FBConfigID_Pointers is array (C.size_t range <>) of aliased FBConfigID_Pointer;
+   type FBConfigID_pointer  is access all FBConfigID;
+   type FBConfigID_pointers is array (C.size_t range <>) of aliased FBConfigID_pointer;
 
-   --- GLXContextID_Pointer
+   --- GLXContextID_pointer
    --
-   type ContextID_Pointer  is access all ContextID;
-   type ContextID_Pointers is array (C.size_t range <>) of aliased ContextID_Pointer;
+   type ContextID_pointer  is access all ContextID;
+   type ContextID_pointers is array (C.size_t range <>) of aliased ContextID_pointer;
 
-   --- GLXWindow_Pointer
+   --- GLXWindow_pointer
    --
-   type GLXWindow_Pointer  is access all GLXWindow;
-   type GLXWindow_Pointers is array (C.size_t range <>) of aliased GLXWindow_Pointer;
+   type GLXWindow_pointer  is access all GLXWindow;
+   type GLXWindow_pointers is array (C.size_t range <>) of aliased GLXWindow_pointer;
 
-   --- PBuffer_Pointer
+   --- PBuffer_pointer
    --
-   type PBuffer_Pointer  is access all PBuffer;
-   type PBuffer_Pointers is array (C.size_t range <>) of aliased PBuffer_Pointer;
+   type PBuffer_pointer  is access all PBuffer;
+   type PBuffer_pointers is array (C.size_t range <>) of aliased PBuffer_pointer;
 
 
 end GLX.Pointers;

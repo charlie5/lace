@@ -41,11 +41,11 @@ is
 
 private
 
-   type XML_Parser_Ptr is access all Character;  -- Essentially, C's "void *".
+   type XML_Parser_ptr is access all Character;  -- Essentially, C's "void *".
 
    type Parser_Rec is
       record
-         XML_Parser    : XML_Parser_Ptr;
+         XML_Parser    : XML_Parser_ptr;
          Start_Handler : Start_Element_Handler;
          End_Handler   : End_Element_Handler;
          CD_Handler    : Character_Data_Handler;

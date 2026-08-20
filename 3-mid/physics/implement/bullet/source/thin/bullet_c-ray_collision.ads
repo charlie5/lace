@@ -32,9 +32,9 @@ is
    --
    type Pointers is array (interfaces.C.size_t range <>) of aliased bullet_c.ray_Collision.Pointer;
 
-   --- Pointer_Pointer
+   --- Pointer_pointer
    --
-   type Pointer_Pointer is access all bullet_c.ray_Collision.Pointer;
+   type Pointer_pointer is access all bullet_c.ray_Collision.Pointer;
 
    function construct return bullet_c.ray_Collision.Item;
 

@@ -15,7 +15,7 @@ is
    type Pointer       is access all FT_CharMapRec.Item;
    type Pointer_array is array (C.Size_t range <>) of aliased FT_CharMapRec.Pointer;
 
-   type pointer_Pointer is access all FT_CharMapRec.Pointer;
+   type Pointer_pointer is access all FT_CharMapRec.Pointer;
 
 
 end freetype_c.FT_CharMapRec;

@@ -55,7 +55,7 @@ is
 
 
 
-   function Weights_of (Self : in Skin) return access float_Array
+   function Weights_of (Self : in Skin) return access float_array
    is
       the_Input : constant Input_t := find_in (Self.vertex_weights.Inputs.all, Weight);
    begin
@@ -73,7 +73,7 @@ is
 
 
 
-   function raw_bind_Poses_of (Self : in Skin) return access float_Array
+   function raw_bind_Poses_of (Self : in Skin) return access float_array
    is
       the_Input : constant Input_t := find_in (Self.joints.Inputs.all, inv_bind_Matrix);
    begin
@@ -93,7 +93,7 @@ is
 
    function bind_shape_Matrix_of (Self : in Skin) return Matrix_4x4
    is
-      Raw        : constant float_Array := Self.bind_shape_Matrix;
+      Raw        : constant float_array := Self.bind_shape_Matrix;
       First      : constant math.Index  := 1;
       the_Matrix :          Matrix_4x4;
 
@@ -110,7 +110,7 @@ is
 
    function bind_Poses_of (Self : in Skin) return Matrix_4x4_array
    is
-      Raw       : constant access float_Array            := raw_bind_Poses_of (Self);
+      Raw       : constant access float_array            := raw_bind_Poses_of (Self);
       the_Poses : Matrix_4x4_array (1 .. Raw'Length / 16);
       First     : math.Index                             := 1;
 

@@ -163,7 +163,7 @@ is
 
    function new_heightfield_Shape (Width,
                                    Depth       : in Positive;
-                                   Heights     : in c_math_c.Pointers.Real_Pointer;
+                                   Heights     : in c_math_c.Pointers.Real_pointer;
                                    min_Height,
                                    max_Height  : in Real;
                                    Scale       : in Vector_3) return physics.Shape.view

@@ -14,7 +14,7 @@ is
    function to_GLchar_access (From : in     C.Strings.chars_ptr) return access lean.GLchar;
 
    function to_GLchar_Pointer_access (From : access C.Strings.chars_ptr_array)
-                                                                 return access lean.GLchar_Pointer;
+                                                                 return access lean.GLchar_pointer;
 
    function "+" (From : in     system.Address)      return access GLvoid      renames to_GLvoid_access;
    function "+" (From : access C.unsigned_char)     return access GLvoid      renames to_GLvoid_access;

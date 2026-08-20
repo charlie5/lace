@@ -6,13 +6,13 @@ with c_math_c.Pointers;
 package c_math_c.pointer_Pointers
 is
 
-   --- Real_Pointer_Pointer
+   --- Real_pointer_pointer
    --
-   type Real_Pointer_Pointer is access all c_math_c.Pointers.Real_Pointer;
+   type Real_pointer_pointer is access all c_math_c.Pointers.Real_pointer;
 
-   --- Index_Pointer_Pointer
+   --- Index_pointer_pointer
    --
-   type Index_Pointer_Pointer is access all c_math_c.Pointers.Index_Pointer;
+   type Index_pointer_pointer is access all c_math_c.Pointers.Index_pointer;
 
 
 end c_math_c.pointer_Pointers;

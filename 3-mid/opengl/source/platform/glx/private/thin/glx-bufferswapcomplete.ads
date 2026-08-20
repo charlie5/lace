@@ -19,7 +19,7 @@ is
    type Pointer  is access all BufferSwapComplete.item;
    type Pointers is array (C.size_t range <>) of aliased BufferSwapComplete.Pointer;
 
-   type Pointer_Pointer is access all BufferSwapComplete.Pointer;
+   type Pointer_pointer is access all BufferSwapComplete.Pointer;
 
    function Construct return BufferSwapComplete.item;
 

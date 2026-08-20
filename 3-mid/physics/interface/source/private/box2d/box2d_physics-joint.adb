@@ -91,8 +91,8 @@ is
       Self       : constant DoF6_view := new DoF6;
       pragma Unreferenced (Self);
 
-      c_Object_A : box2d_C.Pointers.Object_Pointer := box2d_physics.Object.view (Object_A).C;
-      c_Object_B : box2d_C.Pointers.Object_Pointer := box2d_physics.Object.view (Object_B).C;
+      c_Object_A : box2d_C.Pointers.Object_pointer := box2d_physics.Object.view (Object_A).C;
+      c_Object_B : box2d_C.Pointers.Object_pointer := box2d_physics.Object.view (Object_B).C;
 
       c_Frame_A  : aliased c_math_c.Matrix_4x4.item := +Frame_A;
       c_Frame_B  : aliased c_math_c.Matrix_4x4.item := +Frame_B;
@@ -115,7 +115,7 @@ is
    overriding
    function Object_A (Self : in DoF6) return physics.Object.view
    is
-      c_Object_A : constant box2d_c.Pointers.Object_Pointer := b2d_Joint_Object_A (Self.C);
+      c_Object_A : constant box2d_c.Pointers.Object_pointer := b2d_Joint_Object_A (Self.C);
    begin
       return physics.Object.view (to_Any_view (b2d_Object_user_Data (c_Object_A)));
    end Object_A;
@@ -125,7 +125,7 @@ is
    overriding
    function Object_B (Self : in DoF6) return physics.Object.view
    is
-      c_Object_B : constant box2d_c.Pointers.Object_Pointer := b2d_Joint_Object_B (Self.C);
+      c_Object_B : constant box2d_c.Pointers.Object_pointer := b2d_Joint_Object_B (Self.C);
    begin
       return physics.Object.view (to_Any_view (b2d_Object_user_Data (c_Object_B)));
    end Object_B;
@@ -262,8 +262,8 @@ is
    is
       Self         : constant Ball_view := new Ball;
 
-      c_Object_A   : constant box2d_C.Pointers.Object_Pointer := box2d_physics.Object.view (Object_A).C;
-      c_Object_B   : constant box2d_C.Pointers.Object_Pointer := box2d_physics.Object.view (Object_B).C;
+      c_Object_A   : constant box2d_C.Pointers.Object_pointer := box2d_physics.Object.view (Object_A).C;
+      c_Object_B   : constant box2d_C.Pointers.Object_pointer := box2d_physics.Object.view (Object_B).C;
 
       c_Pivot_in_A : aliased c_math_c.Vector_3.item := +Pivot_in_A;
       c_Pivot_in_B : aliased c_math_c.Vector_3.item := +Pivot_in_B;
@@ -288,7 +288,7 @@ is
    overriding
    function Object_A (Self : in Ball) return physics.Object.view
    is
-      c_Object_A : constant box2d_c.Pointers.Object_Pointer := b2d_Joint_Object_A (Self.C);
+      c_Object_A : constant box2d_c.Pointers.Object_pointer := b2d_Joint_Object_A (Self.C);
    begin
       return physics.Object.view (to_Any_view (b2d_Object_user_Data (c_Object_A)));
    end Object_A;
@@ -298,7 +298,7 @@ is
    overriding
    function Object_B (Self : in Ball) return physics.Object.view
    is
-      c_Object_B : constant box2d_c.Pointers.Object_Pointer := b2d_Joint_Object_B (Self.C);
+      c_Object_B : constant box2d_c.Pointers.Object_pointer := b2d_Joint_Object_B (Self.C);
    begin
       return physics.Object.view (to_Any_view (b2d_Object_user_Data (c_Object_B)));
    end Object_B;
@@ -435,8 +435,8 @@ is
    is
       Self       : constant Slider_view := new Slider;
 
-      c_Object_A : constant box2d_C.Pointers.Object_Pointer := box2d_physics.Object.view (Object_A).C;
-      c_Object_B : constant box2d_C.Pointers.Object_Pointer := box2d_physics.Object.view (Object_B).C;
+      c_Object_A : constant box2d_C.Pointers.Object_pointer := box2d_physics.Object.view (Object_A).C;
+      c_Object_B : constant box2d_C.Pointers.Object_pointer := box2d_physics.Object.view (Object_B).C;
 
       c_Frame_A  : aliased  c_math_c.Matrix_4x4.item := +Frame_A;
       c_Frame_B  : aliased  c_math_c.Matrix_4x4.item := +Frame_B;
@@ -461,7 +461,7 @@ is
    overriding
    function Object_A (Self : in Slider) return physics.Object.view
    is
-      c_Object_A : constant box2d_c.Pointers.Object_Pointer := b2d_Joint_Object_A (Self.C);
+      c_Object_A : constant box2d_c.Pointers.Object_pointer := b2d_Joint_Object_A (Self.C);
    begin
       return physics.Object.view (to_Any_view (b2d_Object_user_Data (c_Object_A)));
    end Object_A;
@@ -471,7 +471,7 @@ is
    overriding
    function Object_B (Self : in Slider) return physics.Object.view
    is
-      c_Object_B : constant box2d_c.Pointers.Object_Pointer := b2d_Joint_Object_B (Self.C);
+      c_Object_B : constant box2d_c.Pointers.Object_pointer := b2d_Joint_Object_B (Self.C);
    begin
       return physics.Object.view (to_Any_view (b2d_Object_user_Data (c_Object_B)));
    end Object_B;
@@ -608,8 +608,8 @@ is
    is
       Self       : constant cone_Twist_view := new cone_Twist;
 
-      c_Object_A : constant box2d_C.Pointers.Object_Pointer := box2d_physics.Object.view (Object_A).C;
-      c_Object_B : constant box2d_C.Pointers.Object_Pointer := box2d_physics.Object.view (Object_B).C;
+      c_Object_A : constant box2d_C.Pointers.Object_pointer := box2d_physics.Object.view (Object_A).C;
+      c_Object_B : constant box2d_C.Pointers.Object_pointer := box2d_physics.Object.view (Object_B).C;
 
       c_Frame_A  : aliased c_math_c.Matrix_4x4.item := +Frame_A;
       c_Frame_B  : aliased c_math_c.Matrix_4x4.item := +Frame_B;
@@ -634,7 +634,7 @@ is
    overriding
    function Object_A (Self : in cone_Twist) return physics.Object.view
    is
-      c_Object_A : constant box2d_c.Pointers.Object_Pointer := b2d_Joint_Object_A (Self.C);
+      c_Object_A : constant box2d_c.Pointers.Object_pointer := b2d_Joint_Object_A (Self.C);
    begin
       return physics.Object.view (to_Any_view (b2d_Object_user_Data (c_Object_A)));
    end Object_A;
@@ -644,7 +644,7 @@ is
    overriding
    function Object_B (Self : in cone_Twist) return physics.Object.view
    is
-      c_Object_B : constant box2d_c.Pointers.Object_Pointer := b2d_Joint_Object_B (Self.C);
+      c_Object_B : constant box2d_c.Pointers.Object_pointer := b2d_Joint_Object_B (Self.C);
    begin
       return physics.Object.view (to_Any_view (b2d_Object_user_Data (c_Object_B)));
    end Object_B;
@@ -776,7 +776,7 @@ is
    --- Hinge
    --
 
-   function new_hinge_Joint (in_Space                 : in box2d_c.Pointers.Space_Pointer;
+   function new_hinge_Joint (in_Space                 : in box2d_c.Pointers.Space_pointer;
                              Object_A,    Object_B    : in physics.Object.view;
                              Anchor_in_A, Anchor_in_B : in Vector_3;
                              low_Limit,   high_Limit  : in math.Real;
@@ -787,8 +787,8 @@ is
 
       Self           : constant Hinge_view := new Hinge;
 
-      c_Object_A     : box2d_C.Pointers.Object_Pointer;
-      c_Object_B     : box2d_C.Pointers.Object_Pointer;
+      c_Object_A     : box2d_C.Pointers.Object_pointer;
+      c_Object_B     : box2d_C.Pointers.Object_pointer;
 
       c_Anchor_in_A  : aliased c_math_c.Vector_3.item := +Anchor_in_A;
       c_Anchor_in_B  : aliased c_math_c.Vector_3.item := +Anchor_in_B;
@@ -823,7 +823,7 @@ is
 
 
 
-   function new_hinge_Joint (in_Space : in box2d_c.Pointers.Space_Pointer;
+   function new_hinge_Joint (in_Space : in box2d_c.Pointers.Space_pointer;
                              Object_A : in physics.Object.view;
                              Frame_A  : in Matrix_4x4) return physics.Joint.hinge.view
    is
@@ -831,7 +831,7 @@ is
 
       Self : constant Hinge_view := new Hinge;
 
-      c_Object_A : constant box2d_C.Pointers.Object_Pointer := box2d_physics.Object.view (Object_A).C;
+      c_Object_A : constant box2d_C.Pointers.Object_pointer := box2d_physics.Object.view (Object_A).C;
       c_Frame_A  : aliased  c_math_c.Matrix_4x4.item        := +Frame_A;
    begin
       Self.C := b2d_new_space_hinge_Joint (in_Space,
@@ -841,7 +841,7 @@ is
    end new_hinge_Joint;
 
 
-   function new_hinge_Joint (in_Space              : in box2d_c.Pointers.Space_Pointer;
+   function new_hinge_Joint (in_Space              : in box2d_c.Pointers.Space_pointer;
                              Object_A,  Object_B   : in physics.Object.view;
                              Frame_A,   Frame_B    : in Matrix_4x4;
                              low_Limit, high_Limit : in math.Real;
@@ -852,8 +852,8 @@ is
 
       Self : constant Hinge_view := new Hinge;
 
-      c_Object_A : box2d_C.Pointers.Object_Pointer;
-      c_Object_B : box2d_C.Pointers.Object_Pointer;
+      c_Object_A : box2d_C.Pointers.Object_pointer;
+      c_Object_B : box2d_C.Pointers.Object_pointer;
 
       c_Frame_A  : aliased c_math_c.Matrix_4x4.item := +Frame_A;
       c_Frame_B  : aliased c_math_c.Matrix_4x4.item := +Frame_B;

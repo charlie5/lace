@@ -12,70 +12,70 @@ is
    use System;
 
 
-   --- Shape_Pointer
+   --- Shape_pointer
    --
    package C_Shape_Pointers is new interfaces.c.Pointers (Index              => interfaces.c.size_t,
                                                           Element            => box2d_c.Shape,
-                                                          element_Array      => box2d_c.Shape_Array,
+                                                          Element_array      => box2d_c.Shape_array,
                                                           default_Terminator => null_Address);
 
-   subtype Shape_Pointer is C_Shape_Pointers.Pointer;
+   subtype Shape_pointer is C_Shape_Pointers.Pointer;
 
-   --- Shape_Pointer_Array
+   --- Shape_pointer_array
    --
-   type Shape_Pointer_Array is array (interfaces.C.size_t range <>) of aliased box2d_c.Pointers.Shape_Pointer;
+   type Shape_pointer_array is array (interfaces.C.size_t range <>) of aliased box2d_c.Pointers.Shape_pointer;
 
-   --- Object_Pointer
+   --- Object_pointer
    --
    package C_Object_Pointers is new interfaces.c.Pointers (Index              => interfaces.c.size_t,
                                                            Element            => box2d_c.Object,
-                                                           element_Array      => box2d_c.Object_Array,
+                                                           Element_array      => box2d_c.Object_array,
                                                            default_Terminator => null_Address);
 
-   subtype Object_Pointer is C_Object_Pointers.Pointer;
+   subtype Object_pointer is C_Object_Pointers.Pointer;
 
-   --- Object_Pointer_Array
+   --- Object_pointer_array
    --
-   type Object_Pointer_Array is array (interfaces.C.size_t range <>) of aliased box2d_c.Pointers.Object_Pointer;
+   type Object_pointer_array is array (interfaces.C.size_t range <>) of aliased box2d_c.Pointers.Object_pointer;
 
-   --- Joint_Pointer
+   --- Joint_pointer
    --
    package C_Joint_Pointers is new interfaces.c.Pointers (Index              => interfaces.c.size_t,
                                                           Element            => box2d_c.Joint,
-                                                          element_Array      => box2d_c.Joint_Array,
+                                                          Element_array      => box2d_c.Joint_array,
                                                           default_Terminator => null_Address);
 
-   subtype Joint_Pointer is C_Joint_Pointers.Pointer;
+   subtype Joint_pointer is C_Joint_Pointers.Pointer;
 
-   --- Joint_Pointer_Array
+   --- Joint_pointer_array
    --
-   type Joint_Pointer_Array is array (interfaces.C.size_t range <>) of aliased box2d_c.Pointers.Joint_Pointer;
+   type Joint_pointer_array is array (interfaces.C.size_t range <>) of aliased box2d_c.Pointers.Joint_pointer;
 
-   --- Space_Pointer
+   --- Space_pointer
    --
    package C_Space_Pointers is new interfaces.c.Pointers (Index              => interfaces.c.size_t,
                                                           Element            => box2d_c.Space,
-                                                          element_Array      => box2d_c.Space_Array,
+                                                          Element_array      => box2d_c.Space_array,
                                                           default_Terminator => null_Address);
 
-   subtype Space_Pointer is C_Space_Pointers.Pointer;
+   subtype Space_pointer is C_Space_Pointers.Pointer;
 
-   --- Space_Pointer_Array
+   --- Space_pointer_array
    --
-   type Space_Pointer_Array is array (interfaces.C.size_t range <>) of aliased box2d_c.Pointers.Space_Pointer;
+   type Space_pointer_array is array (interfaces.C.size_t range <>) of aliased box2d_c.Pointers.Space_pointer;
 
-   --- b2Joint_Pointer
+   --- b2Joint_pointer
    --
    package C_b2Joint_Pointers is new interfaces.c.Pointers (Index              => interfaces.c.size_t,
                                                             Element            => box2d_c.b2Joint,
-                                                            element_Array      => box2d_c.b2Joint_Array,
+                                                            Element_array      => box2d_c.b2Joint_array,
                                                             default_Terminator => null_Address);
 
-   subtype b2Joint_Pointer is C_b2Joint_Pointers.Pointer;
+   subtype b2Joint_pointer is C_b2Joint_Pointers.Pointer;
 
-   --- b2Joint_Pointer_Array
+   --- b2Joint_pointer_array
    --
-   type b2Joint_Pointer_Array is array (interfaces.C.size_t range <>) of aliased box2d_c.Pointers.b2Joint_Pointer;
+   type b2Joint_pointer_array is array (interfaces.C.size_t range <>) of aliased box2d_c.Pointers.b2Joint_pointer;
 
 
 end box2d_c.Pointers;

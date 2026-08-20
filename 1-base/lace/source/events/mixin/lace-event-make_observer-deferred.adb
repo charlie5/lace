@@ -136,15 +136,15 @@ is
       for i in the_subject_Events'Range
       loop
          declare
-            function  Less_than (L, R : in event_sequence_Pair) return Boolean
+            function  less_than (L, R : in event_sequence_Pair) return Boolean
             is
                (L.Sequence < R.Sequence);
 
-            package   Sorter     is new event_Vectors.generic_Sorting ("<" => Less_than);
+            package   Sorter     is new event_Vectors.generic_Sorting ("<" => less_than);
             procedure deallocate is new ada.unchecked_Deallocation (String, String_view);
 
             subject_Name : String_view  := the_subject_Events (i).Subject;
-            the_Events   : Event_vector := the_subject_Events (i).Events;
+            the_Events   : event_Vector := the_subject_Events (i).Events;
          begin
             if Self.Responses.contains (subject_Name.all)
             then
@@ -245,7 +245,7 @@ is
          while has_Element (Cursor)
          loop
             declare
-               the_Events : Event_vector;
+               the_Events : event_Vector;
             begin
                Element (Cursor).fetch (the_Events);
 
@@ -273,7 +273,7 @@ is
          while has_Element (Cursor)
          loop
             declare
-               the_Events : Event_vector;
+               the_Events : event_Vector;
             begin
                Element (Cursor).fetch (the_Events);
 

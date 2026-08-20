@@ -144,7 +144,7 @@ is
       end height_Extent;
 
       function convert is new ada.unchecked_Conversion (physics.Space.Real_view,
-                                                        c_math_c.Pointers.Real_Pointer);
+                                                        c_math_c.Pointers.Real_pointer);
 
       the_height_Extent : constant Vector_2           := height_Extent (Heightfield);
       the_Heightfield   : constant physics.Shape.view := bullet_physics.Shape.new_heightfield_Shape (Heightfield'Length (1),
@@ -388,7 +388,7 @@ is
    overriding
    procedure add (Self : in out Item;   Object : in physics.Object.view)
    is
-      the_c_Object : constant Object_Pointer := bullet_physics.Object.view (Object).C;
+      the_c_Object : constant Object_pointer := bullet_physics.Object.view (Object).C;
    begin
       b3d_Space_add_Object (Self.C, the_c_Object);
    end add;
@@ -398,7 +398,7 @@ is
    overriding
    procedure rid (Self : in out Item;   Object : in physics.Object.view)
    is
-      the_c_Object : constant Object_Pointer := bullet_physics.Object.view (Object).C;
+      the_c_Object : constant Object_pointer := bullet_physics.Object.view (Object).C;
    begin
       b3d_Space_rid_Object (Self.C, the_c_Object);
    end rid;
@@ -486,7 +486,7 @@ is
    overriding
    procedure add (Self : in out Item;   Joint : in physics.Joint.view)
    is
-      the_c_Joint : constant Joint_Pointer := bullet_physics.Joint.view (Joint).C;
+      the_c_Joint : constant Joint_pointer := bullet_physics.Joint.view (Joint).C;
    begin
       b3d_Space_add_Joint (Self.C, the_c_Joint);
    end add;

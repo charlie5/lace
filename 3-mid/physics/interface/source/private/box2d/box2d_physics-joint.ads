@@ -17,7 +17,7 @@ package box2d_Physics.Joint
 is
    type Item is abstract limited new physics.Joint.item with     -- TODO: Make private.
       record
-         C         :        box2d_c.Pointers.Joint_Pointer;
+         C         :        box2d_c.Pointers.Joint_pointer;
          user_Data : access lace.Any.limited_item'Class;
       end record;
 
@@ -38,19 +38,19 @@ is
    function new_cone_twist_Joint (Object_A,   Object_B     : in physics.Object.view;
                                   Frame_A,    Frame_B      : in Matrix_4x4) return physics.Joint.cone_twist.view;
 
-   function new_hinge_Joint      (in_Space                 : in box2d_c.Pointers.Space_Pointer;
+   function new_hinge_Joint      (in_Space                 : in box2d_c.Pointers.Space_pointer;
                                   Object_A,    Object_B    : in physics.Object.view;
                                   Anchor_in_A, Anchor_in_B : in Vector_3;
                                   low_Limit,   high_Limit  : in math.Real;
                                   collide_Conected         : in Boolean) return physics.Joint.hinge.view;
 
-   function new_hinge_Joint      (in_Space                 : in box2d_c.Pointers.Space_Pointer;
+   function new_hinge_Joint      (in_Space                 : in box2d_c.Pointers.Space_pointer;
                                   Object_A,   Object_B     : in physics.Object.view;
                                   Frame_A,    Frame_B      : in Matrix_4x4;
                                   low_Limit,  high_Limit   : in math.Real;
                                   collide_Conected         : in Boolean) return physics.Joint.hinge.view;
 
-   function new_hinge_Joint   (in_Space                 : in box2d_c.Pointers.Space_Pointer;
+   function new_hinge_Joint   (in_Space                 : in box2d_c.Pointers.Space_pointer;
                                Object_A                 : in physics.Object.view;
                                Frame_A                  : in Matrix_4x4) return physics.Joint.hinge.view;
 

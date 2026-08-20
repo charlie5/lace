@@ -91,7 +91,7 @@ is
                      raw_Torque : aliased physics.Vector_3.item := +(20.0 * 256.0 * the_Torque * 180.0 / math.Pi);
                   begin
 --                       put_Line ("applying torque");
-                     Self.Rigid.apply_Torque (raw_Torque'unchecked_access);   -- tbd: check this 'scale' factor
+                     Self.Rigid.apply_Torque (raw_Torque'unchecked_Access);   -- tbd: check this 'scale' factor
                   end;
                end;
             end;
@@ -170,7 +170,7 @@ is
 --                       raw_Torque : aliased physics.Vector_3.item := +(the_Torque * 180.0 / math.Pi);
 --                    begin
 --  --                       put_Line ("applying torque");
---                       self.Rigid.apply_Torque (raw_Torque'unchecked_access);   -- tbd: check this 'scale' factor
+--                       self.Rigid.apply_Torque (raw_Torque'unchecked_Access);   -- tbd: check this 'scale' factor
 --                    end;
 --                 end;
 --              end;

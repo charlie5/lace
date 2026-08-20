@@ -303,7 +303,7 @@ is
    --    & By & Source(High + 1 .. Source'Last), but with lower bound 1.
    --
    -- * If High < Low, then the returned string is
-   --    Insert (Source, Before => Low, New_Item => By).
+   --    Insert (Source, Before => Low, new_Item => By).
 
    function Replace_Slice (Source : in String;
                            Low    : in Positive;
@@ -334,58 +334,58 @@ is
 
    function Insert (Source   : in String;
                     Before   : in Positive;
-                    New_Item : in String) return String
+                    new_Item : in String) return String
    with
      Pre    =>
        Before - 1 in Source'First - 1 .. Source'Last
-         and then Source'Length <= Natural'Last - New_Item'Length,
-     Post   => Insert'Result'Length = Source'Length + New_Item'Length,
+         and then Source'Length <= Natural'Last - new_Item'Length,
+     Post   => Insert'Result'Length = Source'Length + new_Item'Length,
      Global => null;
    -- Propagates index_Error if Before is not in
    -- Source'First .. Source'Last+1; otherwise, returns
    -- Source (Source'First .. Before - 1)
-   -- & New_Item & Source(Before..Source'Last), but with lower bound 1.
+   -- & new_Item & Source(Before..Source'Last), but with lower bound 1.
 
    procedure Insert (Source   : in out String;
                      Before   : in     Positive;
-                     New_Item : in     String;
+                     new_Item : in     String;
                      Drop     : in     Truncation := Error)
    with
      -- Incomplete contract.
      Pre    => Before - 1 in Source'First - 1 .. Source'Last,
      Global => null;
-   -- Equivalent to Move (Insert (Source, Before, New_Item), Source, Drop)
+   -- Equivalent to Move (Insert (Source, Before, new_Item), Source, Drop)
 
    function Overwrite (Source   : in String;
                        Position : in Positive;
-                       New_Item : in String) return String
+                       new_Item : in String) return String
    with
      Pre    =>
        Position - 1 in Source'First - 1 .. Source'Last
          and then
-       (if Position - Source'First >= Source'Length - New_Item'Length
-        then Position - Source'First <= Natural'Last - New_Item'Length),
+       (if Position - Source'First >= Source'Length - new_Item'Length
+        then Position - Source'First <= Natural'Last - new_Item'Length),
      Post   =>
        Overwrite'Result'Length
      = Integer'Max (Source'Length,
-                    Position - Source'First + New_Item'Length),
+                    Position - Source'First + new_Item'Length),
      Global => null;
    -- Propagates index_Error if Position is not in
    -- Source'First .. Source'Last + 1; otherwise, returns the string obtained
    -- from Source by consecutively replacing characters starting at Position
-   -- with corresponding characters from New_Item. If the end of Source is
-   -- reached before the characters in New_Item are exhausted, the remaining
-   -- characters from New_Item are appended to the string.
+   -- with corresponding characters from new_Item. If the end of Source is
+   -- reached before the characters in new_Item are exhausted, the remaining
+   -- characters from new_Item are appended to the string.
 
    procedure Overwrite (Source   : in out String;
                         Position : in     Positive;
-                        New_Item : in     String;
+                        new_Item : in     String;
                         Drop     : in     Truncation := Right)
    with
      -- Incomplete contract.
      Pre    => Position - 1 in Source'First - 1 .. Source'Last,
      Global => null;
-   -- Equivalent to Move(Overwrite(Source, Position, New_Item), Source, Drop)
+   -- Equivalent to Move(Overwrite(Source, Position, new_Item), Source, Drop)
 
    function Delete (Source  : in String;
                     From    : in Positive;

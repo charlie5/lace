@@ -18,7 +18,7 @@ is
 
    function  getCurrentReadDrawable return Drawable;
 
-   function  get_visualid (Self : in Pointers.XVisualInfo_Pointer) return VisualID;
+   function  get_visualid (Self : in Pointers.XVisualInfo_pointer) return VisualID;
 
 
 

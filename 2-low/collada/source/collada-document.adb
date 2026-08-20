@@ -44,11 +44,11 @@ is
 
 
 
-   function to_int_Array (From : in String) return int_Array
+   function to_int_Array (From : in String) return int_array
    is
       use ada.Strings.fixed;
 
-      the_Array : int_Array (1 .. 500_000);
+      the_Array : int_array (1 .. 500_000);
       Count     : math.Index              := 0;
 
       Start     : Natural := 1;
@@ -85,18 +85,18 @@ is
 
 
 
-   function to_float_Array (From : in String) return float_Array
+   function to_float_Array (From : in String) return float_array
    is
    begin
       if From = ""
       then
-         return float_Array' (1 .. 0 => <>);
+         return float_array' (1 .. 0 => <>);
       end if;
 
       declare
          use ada.Strings.fixed;
 
-         the_Array : float_Array (1 .. 500_000);
+         the_Array : float_array (1 .. 500_000);
          Count     : math.Index                := 0;
 
          Start     : Integer    := 1;
@@ -210,7 +210,7 @@ is
          the_Source.array_Id := +the_xml_float_Array.Attribute ("id").Value;
 
          the_array_Length  := Natural'Value (the_xml_float_Array.Attribute ("count").Value);
-         the_Source.Floats := new float_Array' (to_float_Array (the_xml_float_Array.Data));
+         the_Source.Floats := new float_array' (to_float_Array (the_xml_float_Array.Data));
 
       elsif the_xml_text_Array /= null
       then
@@ -304,8 +304,8 @@ is
          the_Polylist.Inputs (i) := to_Input (the_xml_Inputs (i).all);
       end loop;
 
-      the_Polylist.vCount := new int_Array' (to_int_Array (the_xml_vCount.Data));
-      the_Polylist.P_List := new int_array_List' (1 => new int_Array' (to_int_Array (the_xml_P.Data)));
+      the_Polylist.vCount := new int_array' (to_int_Array (the_xml_vCount.Data));
+      the_Polylist.P_List := new int_array_List' (1 => new int_array' (to_int_Array (the_xml_P.Data)));
 
       return the_Polylist;
    end to_Polylist;
@@ -349,7 +349,7 @@ is
 
       for i in the_Polygons.P_List'Range
       loop
-         the_Polygons.P_List (i) := new int_Array' (to_int_Array (the_xml_Ps (i).Data));
+         the_Polygons.P_List (i) := new int_array' (to_int_Array (the_xml_Ps (i).Data));
       end loop;
 
       return the_Polygons;
@@ -394,7 +394,7 @@ is
 
       for i in the_Triangles.P_List'Range
       loop
-         the_Triangles.P_List (i) := new int_Array' (to_int_Array (the_xml_Ps (i).Data));
+         the_Triangles.P_List (i) := new int_array' (to_int_Array (the_xml_Ps (i).Data));
       end loop;
 
       return the_Triangles;
@@ -446,7 +446,7 @@ is
          the_Weights.Inputs (i) := to_Input (the_xml_Inputs (i).all);
       end loop;
 
-      the_Weights.v_Count := new int_Array' (to_int_Array (the_xml_vCount.Data));
+      the_Weights.v_Count := new int_array' (to_int_Array (the_xml_vCount.Data));
       the_Weights.V       := new int_array' (to_int_Array (the_xml_V.Data));
 
       return the_Weights;

@@ -19,7 +19,7 @@ is
    type Pointer       is access all freetype_c.FT_Size_Metrics.Item;
    type Pointer_array is array (C.Size_t range <>) of aliased freetype_c.FT_Size_Metrics.Pointer;
 
-   type pointer_Pointer is access all freetype_c.FT_Size_Metrics.Pointer;
+   type Pointer_pointer is access all freetype_c.FT_Size_Metrics.Pointer;
 
 
 end freetype_c.FT_Size_Metrics;

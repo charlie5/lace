@@ -25,7 +25,7 @@ is
    function new_Font_texture (fontFilePath : in String) return Font.texture.view;
 
 
-   function to_Font_texture (pBufferBytes      : in FontImpl.unsigned_char_Pointer;
+   function to_Font_texture (pBufferBytes      : in FontImpl.unsigned_char_pointer;
                              bufferSizeInBytes : in Natural) return Font.texture.item;
    --
    -- Open and read a font from a buffer in memory. Sets Error flag.

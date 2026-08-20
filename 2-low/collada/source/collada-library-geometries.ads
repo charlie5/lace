@@ -72,13 +72,13 @@ is
    function Source_of    (Self          : in Mesh;
                           source_Name   : in String)    return Source;
 
-   function Positions_of (Self          : in Mesh)      return access float_Array;
+   function Positions_of (Self          : in Mesh)      return access float_array;
 
    function Normals_of   (Self          : in Mesh;
-                          for_Primitive : in Primitive) return access float_Array;
+                          for_Primitive : in Primitive) return access float_array;
 
    function Coords_of    (Self          : in Mesh;
-                          for_Primitive : in Primitive) return access float_Array;
+                          for_Primitive : in Primitive) return access float_array;
 
    ------------
    --- Geometry

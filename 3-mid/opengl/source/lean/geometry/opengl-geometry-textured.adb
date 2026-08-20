@@ -36,8 +36,8 @@ is
    Attribute_1_Name : aliased C.char_array := C.to_C (Name_1);
    Attribute_2_Name : aliased C.char_array := C.to_C (Name_2);
 
-   Attribute_1_Name_ptr : aliased constant C.strings.chars_ptr := C.strings.to_chars_ptr (Attribute_1_Name'Access);
-   Attribute_2_Name_ptr : aliased constant C.strings.chars_ptr := C.strings.to_chars_ptr (Attribute_2_Name'Access);
+   attribute_1_Name_ptr : aliased constant C.strings.chars_ptr := C.strings.to_chars_ptr (Attribute_1_Name'Access);
+   attribute_2_Name_ptr : aliased constant C.strings.chars_ptr := C.strings.to_chars_ptr (Attribute_2_Name'Access);
 
 
    ---------
@@ -97,12 +97,12 @@ is
 
             glBindAttribLocation (program => the_Program.gl_Program,
                                   index   => the_Program.Attribute (named => Name_1).gl_Location,
-                                  name    => +Attribute_1_Name_ptr);
+                                  name    => +attribute_1_Name_ptr);
             Errors.log;
 
             glBindAttribLocation (program => the_Program.gl_Program,
                                   index   => the_Program.Attribute (named => Name_2).gl_Location,
-                                  name    => +Attribute_2_Name_ptr);
+                                  name    => +attribute_2_Name_ptr);
             Errors.log;
 
             textured_Geometry.create_Uniforms (for_Program => the_Program.all'Access);
@@ -130,7 +130,7 @@ is
    package openGL_Buffer_of_geometry_Vertices is new Buffer.general (base_Object   => Buffer.array_Object,
                                                                      Index         => Index_t,
                                                                      Element       => Vertex,
-                                                                     Element_Array => Vertex_array);
+                                                                     Element_array => Vertex_array);
 
    procedure Vertices_are (Self : in out Item;   Now : in Vertex_array)
    is

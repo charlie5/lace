@@ -6,21 +6,21 @@ with bullet_c.Pointers;
 package bullet_c.pointer_Pointers
 is
 
-   --- Shape_Pointer_Pointer
+   --- Shape_pointer_pointer
    --
-   type Shape_Pointer_Pointer is access all bullet_c.Pointers.Shape_Pointer;
+   type Shape_pointer_pointer is access all bullet_c.Pointers.Shape_pointer;
 
-   --- Object_Pointer_Pointer
+   --- Object_pointer_pointer
    --
-   type Object_Pointer_Pointer is access all bullet_c.Pointers.Object_Pointer;
+   type Object_pointer_pointer is access all bullet_c.Pointers.Object_pointer;
 
-   --- Joint_Pointer_Pointer
+   --- Joint_pointer_pointer
    --
-   type Joint_Pointer_Pointer is access all bullet_c.Pointers.Joint_Pointer;
+   type Joint_pointer_pointer is access all bullet_c.Pointers.Joint_pointer;
 
-   --- Space_Pointer_Pointer
+   --- Space_pointer_pointer
    --
-   type Space_Pointer_Pointer is access all bullet_c.Pointers.Space_Pointer;
+   type Space_pointer_pointer is access all bullet_c.Pointers.Space_pointer;
 
 
 end bullet_c.pointer_Pointers;

@@ -28,9 +28,9 @@ is
    --
    type Pointers is array (interfaces.C.size_t range <>) of aliased c_math_c.Vector_3.Pointer;
 
-   --- Pointer_Pointer
+   --- Pointer_pointer
    --
-   type Pointer_Pointer is access all c_math_c.Vector_3.Pointer;
+   type Pointer_pointer is access all c_math_c.Vector_3.Pointer;
 
    function construct return c_math_c.Vector_3.Item;
 

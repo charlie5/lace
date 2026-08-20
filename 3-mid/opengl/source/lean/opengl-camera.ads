@@ -89,7 +89,7 @@ is
    procedure render (Self : in out Item;   Visuals : in Visual.views;
                                            To      : in Surface.view := null);
 
-   function  current_Planes (Self : in Item) return Frustum.plane_Array;
+   function  current_Planes (Self : in Item) return Frustum.Plane_array;
    --
    -- Returns the frustum planes calculated from the current GL projection and modelview matrices.
 

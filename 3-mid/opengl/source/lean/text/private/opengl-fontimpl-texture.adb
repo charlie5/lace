@@ -70,7 +70,7 @@ is
 
 
    function to_FontImpl_texture (ftFont            : access openGL.Font.item'Class;
-                                 pBufferBytes      : in     unsigned_char_Pointer;
+                                 pBufferBytes      : in     unsigned_char_pointer;
                                  bufferSizeInBytes : in     Natural) return fontImpl.texture.item
    is
       use freetype_c.Binding;
@@ -89,7 +89,7 @@ is
 
 
    function new_FontImpl_texture (ftFont            : access Font.item'Class;
-                                  pBufferBytes      : in     unsigned_char_Pointer;
+                                  pBufferBytes      : in     unsigned_char_pointer;
                                   bufferSizeInBytes : in     Natural) return fontImpl.texture.view
    is
    begin

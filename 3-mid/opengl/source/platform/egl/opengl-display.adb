@@ -21,7 +21,7 @@ is
       Status      : EGLBoolean;
 
    begin
-      the_Display.Thin := eglGetDisplay (Display_Pointer (EGL_DEFAULT_DISPLAY));
+      the_Display.Thin := eglGetDisplay (Display_pointer (EGL_DEFAULT_DISPLAY));
 
       if the_Display.Thin = egl_NO_DISPLAY
       then
@@ -29,8 +29,8 @@ is
       end if;
 
 
-      Success := eglInitialize (the_Display.Thin, the_Display.Version_major'Unchecked_Access,
-                                                  the_Display.Version_minor'Unchecked_Access);
+      Success := eglInitialize (the_Display.Thin, the_Display.Version_major'unchecked_Access,
+                                                  the_Display.Version_minor'unchecked_Access);
       if Success = egl_False
       then
          raise openGL.Error with "Failed to initialise eGL using the default Display.";

@@ -36,13 +36,13 @@ is
    --
    type Pointers is array (interfaces.C.size_t range <>) of aliased c_math_c.Matrix_3x3.Pointer;
 
-   --- Pointer_Pointer
+   --- Pointer_pointer
    --
-   type Pointer_Pointer is access all c_math_c.Matrix_3x3.Pointer;
+   type Pointer_pointer is access all c_math_c.Matrix_3x3.Pointer;
 
    function construct return c_math_c.Matrix_3x3.Item;
 
-   function construct (First : in c_math_c.Pointers.Real_Pointer) return c_math_c.Matrix_3x3.Item;
+   function construct (First : in c_math_c.Pointers.Real_pointer) return c_math_c.Matrix_3x3.Item;
 
    function construct (m00 : in c_math_c.Real;
                        m01 : in c_math_c.Real;
@@ -64,9 +64,9 @@ private
 
    pragma import (C, construct_v1, "Ada_new_Matrix_3x3__SWIG_0");
 
-   function construct_v2 (First : in c_math_c.Pointers.Real_Pointer) return c_math_c.Matrix_3x3.Item;
+   function construct_v2 (First : in c_math_c.Pointers.Real_pointer) return c_math_c.Matrix_3x3.Item;
 
-   function construct (First : in c_math_c.Pointers.Real_Pointer) return c_math_c.Matrix_3x3.Item
+   function construct (First : in c_math_c.Pointers.Real_pointer) return c_math_c.Matrix_3x3.Item
      renames construct_v2;
 
    pragma import (C, construct_v2, "Ada_new_Matrix_3x3__SWIG_1");

@@ -8,7 +8,7 @@ is
 
    type GLvoid_access         is access all GLvoid;
    type GLchar_access         is access all lean.GLchar;
-   type GLchar_Pointer_access is access all lean.GLchar_Pointer;
+   type GLchar_pointer_access is access all lean.GLchar_pointer;
    type chars_ptr_access      is access all C.strings.chars_ptr;
 
    package Conversions is new system.Address_To_Access_Conversions (GLvoid);
@@ -44,10 +44,10 @@ is
 
 
 
-   function to_GLchar_Pointer_access (From : access C.Strings.chars_ptr_array) return access lean.GLchar_Pointer
+   function to_GLchar_Pointer_access (From : access C.Strings.chars_ptr_array) return access lean.GLchar_pointer
    is
 
-      function Convert is new ada.unchecked_Conversion (chars_ptr_access, GLchar_Pointer_access);
+      function Convert is new ada.unchecked_Conversion (chars_ptr_access, GLchar_pointer_access);
    begin
       return Convert (From (From'First)'unchecked_Access);
    end to_GLchar_Pointer_access;

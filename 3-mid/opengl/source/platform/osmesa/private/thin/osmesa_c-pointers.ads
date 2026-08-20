@@ -6,53 +6,53 @@ with interfaces.C;
 package osmesa_c.Pointers
 is
 
-   --- GLenum_Pointer
+   --- GLenum_pointer
    --
-   type GLenum_Pointer is access all osmesa_c.GLenum;
+   type GLenum_pointer is access all osmesa_c.GLenum;
 
-   --- GLenum_Pointers
+   --- GLenum_pointers
    --
-   type GLenum_Pointers is array (interfaces.C.size_t range <>) of aliased osmesa_c.Pointers.GLenum_Pointer;
+   type GLenum_pointers is array (interfaces.C.size_t range <>) of aliased osmesa_c.Pointers.GLenum_pointer;
 
-   --- GLint_Pointer
+   --- GLint_pointer
    --
-   type GLint_Pointer is access all osmesa_c.GLint;
+   type GLint_pointer is access all osmesa_c.GLint;
 
-   --- GLint_Pointers
+   --- GLint_pointers
    --
-   type GLint_Pointers is array (interfaces.C.size_t range <>) of aliased osmesa_c.Pointers.GLint_Pointer;
+   type GLint_pointers is array (interfaces.C.size_t range <>) of aliased osmesa_c.Pointers.GLint_pointer;
 
-   --- GLsizei_Pointer
+   --- GLsizei_pointer
    --
-   type GLsizei_Pointer is access all osmesa_c.GLsizei;
+   type GLsizei_pointer is access all osmesa_c.GLsizei;
 
-   --- GLsizei_Pointers
+   --- GLsizei_pointers
    --
-   type GLsizei_Pointers is array (interfaces.C.size_t range <>) of aliased osmesa_c.Pointers.GLsizei_Pointer;
+   type GLsizei_pointers is array (interfaces.C.size_t range <>) of aliased osmesa_c.Pointers.GLsizei_pointer;
 
-   --- GLboolean_Pointer
+   --- GLboolean_pointer
    --
-   type GLboolean_Pointer is access all osmesa_c.GLboolean;
+   type GLboolean_pointer is access all osmesa_c.GLboolean;
 
-   --- GLboolean_Pointers
+   --- GLboolean_pointers
    --
-   type GLboolean_Pointers is array (interfaces.C.size_t range <>) of aliased osmesa_c.Pointers.GLboolean_Pointer;
+   type GLboolean_pointers is array (interfaces.C.size_t range <>) of aliased osmesa_c.Pointers.GLboolean_pointer;
 
-   --- OSMesaContext_Pointer
+   --- OSMesaContext_pointer
    --
-   type OSMesaContext_Pointer is access all osmesa_c.OSMesaContext;
+   type OSMesaContext_pointer is access all osmesa_c.OSMesaContext;
 
-   --- OSMesaContext_Pointers
+   --- OSMesaContext_pointers
    --
-   type OSMesaContext_Pointers is array (interfaces.C.size_t range <>) of aliased osmesa_c.Pointers.OSMesaContext_Pointer;
+   type OSMesaContext_pointers is array (interfaces.C.size_t range <>) of aliased osmesa_c.Pointers.OSMesaContext_pointer;
 
-   --- OSMESAproc_Pointer
+   --- OSMESAproc_pointer
    --
-   type OSMESAproc_Pointer is access all osmesa_c.OSMESAproc;
+   type OSMESAproc_pointer is access all osmesa_c.OSMESAproc;
 
-   --- OSMESAproc_Pointers
+   --- OSMESAproc_pointers
    --
-   type OSMESAproc_Pointers is array (interfaces.C.size_t range <>) of aliased osmesa_c.Pointers.OSMESAproc_Pointer;
+   type OSMESAproc_pointers is array (interfaces.C.size_t range <>) of aliased osmesa_c.Pointers.OSMESAproc_pointer;
 
 
 end osmesa_c.Pointers;

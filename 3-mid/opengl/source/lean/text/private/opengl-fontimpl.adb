@@ -389,7 +389,7 @@ is
    is
       use freetype_c.Binding;
 
-      ft_Size    : constant FT_SizeRec_Pointer              := FT_Face_Get_Size    (Self.Face.freetype_Face);
+      ft_Size    : constant FT_SizeRec_pointer              := FT_Face_Get_Size    (Self.Face.freetype_Face);
       ft_Metrics : constant freetype_c.FT_Size_Metrics.item := FT_Size_Get_Metrics (ft_Size);
    begin
       return Real (ft_Metrics.x_PPEM);
@@ -401,7 +401,7 @@ is
    is
       use freetype_c.Binding;
 
-      ft_Size    : constant FT_SizeRec_Pointer              := FT_Face_Get_Size    (Self.Face.freetype_Face);
+      ft_Size    : constant FT_SizeRec_pointer              := FT_Face_Get_Size    (Self.Face.freetype_Face);
       ft_Metrics : constant freetype_c.FT_Size_Metrics.item := FT_Size_Get_Metrics (ft_Size);
    begin
       return Real (ft_Metrics.x_Scale);
@@ -413,7 +413,7 @@ is
    is
       use freetype_c.Binding;
 
-      ft_Size    : constant FT_SizeRec_Pointer              := FT_Face_Get_Size    (Self.Face.freetype_Face);
+      ft_Size    : constant FT_SizeRec_pointer              := FT_Face_Get_Size    (Self.Face.freetype_Face);
       ft_Metrics : constant freetype_c.FT_Size_Metrics.item := FT_Size_Get_Metrics (ft_Size);
    begin
       return Real (ft_Metrics.y_Scale);

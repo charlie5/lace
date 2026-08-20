@@ -220,7 +220,7 @@ is
          use gl.Pointers;
 
          info_Log     : aliased  C.char_array        := C.char_array' [1 .. C.size_t (info_log_Length) => <>];
-         info_Log_ptr : constant C.Strings.chars_Ptr := C.Strings.to_chars_ptr (info_Log'unchecked_Access);
+         info_Log_ptr : constant C.Strings.chars_ptr := C.Strings.to_chars_ptr (info_Log'unchecked_Access);
       begin
          glGetShaderInfoLog (Self.gl_Shader,
                              glSizei (info_log_Length),

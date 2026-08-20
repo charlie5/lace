@@ -29,7 +29,7 @@ is
 
 
 
-   procedure define (Self : in out Item;   pBufferBytes      : in FontImpl.unsigned_char_Pointer;
+   procedure define (Self : in out Item;   pBufferBytes      : in FontImpl.unsigned_char_pointer;
                                            bufferSizeInBytes : in Natural)
    is
    begin
@@ -193,7 +193,7 @@ is
 
 
 
-   function attach (Self : in Item;   pBufferBytes      : in FontImpl.unsigned_char_Pointer;
+   function attach (Self : in Item;   pBufferBytes      : in FontImpl.unsigned_char_pointer;
                                       bufferSizeInBytes : in Natural) return Boolean
    is
    begin

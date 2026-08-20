@@ -34,7 +34,7 @@ is
 
 
 
-   function find_Inputs_of (Self : in Animation;   for_Semantic : in Semantic) return access float_Array
+   function find_Inputs_of (Self : in Animation;   for_Semantic : in Semantic) return access float_array
    is
       the_Input : constant Input_t := find_in (Self.Sampler.Inputs.all, for_Semantic);
    begin
@@ -52,7 +52,7 @@ is
 
 
 
-   function Inputs_of (Self : in Animation) return access float_Array
+   function Inputs_of (Self : in Animation) return access float_array
    is
    begin
       return find_Inputs_of (Self, for_Semantic => Input);
@@ -60,7 +60,7 @@ is
 
 
 
-   function Outputs_of (Self : in Animation) return access float_Array
+   function Outputs_of (Self : in Animation) return access float_array
    is
    begin
       return find_Inputs_of (Self, for_Semantic => Output);
@@ -68,7 +68,7 @@ is
 
 
 
-   function Interpolations_of (Self : in Animation) return access float_Array
+   function Interpolations_of (Self : in Animation) return access float_array
    is
    begin
       return find_Inputs_of (Self, for_Semantic => Interpolation);

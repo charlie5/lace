@@ -13,14 +13,14 @@ is
 
 
    type XML_Char     is new C.unsigned_short;
-   type XML_Char_Ptr is access all XML_Char;
-   type Char_Ptr_Ptr is access all S.chars_ptr;
+   type XML_Char_ptr is access all XML_Char;
+   type Char_ptr_ptr is access all S.chars_ptr;
 
 
 
 
-   procedure XML_SetUserData (XML_Parser : in XML_Parser_Ptr;
-                              Parser_Ptr : in Parser);
+   procedure XML_SetUserData (XML_Parser : in XML_Parser_ptr;
+                              Parser_ptr : in Parser);
 
    pragma import (C, XML_SetUserData, "XML_SetUserData");
 
@@ -45,7 +45,7 @@ is
 
       procedure free is new ada.unchecked_Deallocation (Attributes_t,   Attributes_view);
 
-      function To_CP is new ada.unchecked_Conversion   (System.Address, Char_Ptr_Ptr);
+      function To_CP is new ada.unchecked_Conversion   (System.Address, Char_ptr_ptr);
 
       AA_Size             : Storage_Offset;
 
@@ -63,7 +63,7 @@ is
       N_Atts := 0;
       Atts   := AttAdd;
 
-      while To_CP (Atts).all /= S.Null_Ptr
+      while To_CP (Atts).all /= S.null_ptr
       loop
          N_Atts := N_Atts + 1;
          Atts   := Atts   + (AA_Size * 2);
@@ -138,7 +138,7 @@ is
    function Create_Parser return Parser
    is
 
-      function XML_ParserCreate (Encoding : in XML_Char_Ptr) return XML_Parser_Ptr;
+      function XML_ParserCreate (Encoding : in XML_Char_ptr) return XML_Parser_ptr;
       pragma import (C, XML_ParserCreate, "XML_ParserCreate");
 
    begin
@@ -166,7 +166,7 @@ is
       pragma Convention (C, Internal_End_Element_Handler);
 
 
-      procedure XML_SetElementHandler (XML_Parser    : in XML_Parser_Ptr;
+      procedure XML_SetElementHandler (XML_Parser    : in XML_Parser_ptr;
                                        Start_Handler : in Internal_Start_Element_Handler;
                                        End_Handler   : in Internal_End_Element_Handler);
       pragma import (C, XML_SetElementHandler, "XML_SetElementHandler");
@@ -194,7 +194,7 @@ is
                                                                  Len       : in C.int);
       pragma Convention (C, Internal_Character_Data_Handler);
 
-      procedure XML_SetCharacterDataHandler (XML_Parser : in XML_Parser_Ptr;
+      procedure XML_SetCharacterDataHandler (XML_Parser : in XML_Parser_ptr;
                                              CD_Handler : in Internal_Character_Data_Handler);
       pragma import (C, XML_SetCharacterDataHandler, "XML_SetCharacterDataHandler");
 
@@ -212,7 +212,7 @@ is
                     Is_Final   : in Boolean)
    is
 
-      function XML_Parse (XML_Parser : in XML_Parser_Ptr;
+      function XML_Parse (XML_Parser : in XML_Parser_ptr;
                           XML        : in S.chars_ptr;
                           Len        : in C.int;
                           Is_Final   : in C.int) return C.int;

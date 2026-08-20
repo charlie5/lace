@@ -1,15 +1,15 @@
 with
-     ada.Numerics.Float_random,
-     ada.Numerics.Discrete_random;
+     ada.Numerics.float_Random,
+     ada.Numerics.discrete_Random;
 
 
 package body any_Math.any_Random
 is
    use ada.Numerics;
 
-   package Boolean_random is new ada.numerics.discrete_Random (Boolean);
+   package Boolean_random is new ada.Numerics.discrete_Random (Boolean);
 
-   real_Generator    : Float_random  .Generator;
+   real_Generator    : float_Random  .Generator;
    boolean_Generator : Boolean_random.Generator;
 
 
@@ -25,7 +25,7 @@ is
    function random_Real (Lower : in Real := Real'First;
                          Upper : in Real := Real'Last) return Real
    is
-      base_Roll : constant Float := Float_random.Random (Real_Generator);
+      base_Roll : constant Float := float_Random.Random (Real_Generator);
    begin
       return   Lower
              + Real (base_Roll) * (Upper - Lower);
@@ -37,7 +37,7 @@ is
                             Upper : in Integer := Integer'Last) return Integer
    is
       Modulus   : constant Positive := Upper - Lower + 1;
-      base_Roll : constant Float    := Float_random.Random (Real_Generator);
+      base_Roll : constant Float    := float_Random.Random (Real_Generator);
    begin
       return   Lower
              + Integer (Float (Modulus) * base_Roll) mod Modulus;
@@ -47,5 +47,5 @@ is
 
 begin
    Boolean_random.reset (boolean_Generator);
-   Float_random  .reset (   real_Generator);
+   float_Random  .reset (   real_Generator);
 end any_Math.any_Random;

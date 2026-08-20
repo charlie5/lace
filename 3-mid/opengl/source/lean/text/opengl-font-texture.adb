@@ -32,7 +32,7 @@ is
 
 
 
-   function to_Font_texture (pBufferBytes      : in FontImpl.unsigned_char_Pointer;
+   function to_Font_texture (pBufferBytes      : in FontImpl.unsigned_char_pointer;
                              bufferSizeInBytes : in Natural) return Font.texture.item
    is
    begin

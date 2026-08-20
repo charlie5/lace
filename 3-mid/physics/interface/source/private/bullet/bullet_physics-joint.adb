@@ -80,8 +80,8 @@ is
    is
       Self : constant DoF6_view := new DoF6;
 
-      c_Object_A : constant bullet_C.Pointers.Object_Pointer := bullet_physics.Object.view (Object_A).C;
-      c_Object_B : constant bullet_C.Pointers.Object_Pointer := bullet_physics.Object.view (Object_B).C;
+      c_Object_A : constant bullet_C.Pointers.Object_pointer := bullet_physics.Object.view (Object_A).C;
+      c_Object_B : constant bullet_C.Pointers.Object_pointer := bullet_physics.Object.view (Object_B).C;
 
       c_Frame_A  : aliased  c_math_c.Matrix_4x4.item := +Frame_A;
       c_Frame_B  : aliased  c_math_c.Matrix_4x4.item := +Frame_B;
@@ -255,8 +255,8 @@ is
    is
       Self : constant Ball_view := new Ball;
 
-      c_Object_A   : constant bullet_C.Pointers.Object_Pointer := bullet_physics.Object.view (Object_A).C;
-      c_Object_B   : constant bullet_C.Pointers.Object_Pointer := bullet_physics.Object.view (Object_B).C;
+      c_Object_A   : constant bullet_C.Pointers.Object_pointer := bullet_physics.Object.view (Object_A).C;
+      c_Object_B   : constant bullet_C.Pointers.Object_pointer := bullet_physics.Object.view (Object_B).C;
 
       c_Pivot_in_A : aliased  c_math_c.Vector_3.item := +Pivot_in_A;
       c_Pivot_in_B : aliased  c_math_c.Vector_3.item := +Pivot_in_B;
@@ -282,7 +282,7 @@ is
    overriding
    function Object_A (Self : in Ball) return physics.Object.view
    is
-      c_Object_A : constant bullet_c.Pointers.Object_Pointer := b3d_Joint_Object_A (Self.C);
+      c_Object_A : constant bullet_c.Pointers.Object_pointer := b3d_Joint_Object_A (Self.C);
    begin
       return physics.Object.view (to_Any_view (b3d_Object_user_Data (c_Object_A)));
    end Object_A;
@@ -292,7 +292,7 @@ is
    overriding
    function Object_B (Self : in Ball) return physics.Object.view
    is
-      c_Object_B : constant bullet_c.Pointers.Object_Pointer := b3d_Joint_Object_B (Self.C);
+      c_Object_B : constant bullet_c.Pointers.Object_pointer := b3d_Joint_Object_B (Self.C);
    begin
       return physics.Object.view (to_Any_view (b3d_Object_user_Data (c_Object_B)));
    end Object_B;
@@ -430,16 +430,16 @@ is
    is
       Self       : constant Slider_view := new Slider;
 
-      c_Object_A : constant bullet_C.Pointers.Object_Pointer := bullet_physics.Object.view (Object_A).C;
-      c_Object_B : constant bullet_C.Pointers.Object_Pointer := bullet_physics.Object.view (Object_B).C;
+      c_Object_A : constant bullet_C.Pointers.Object_pointer := bullet_physics.Object.view (Object_A).C;
+      c_Object_B : constant bullet_C.Pointers.Object_pointer := bullet_physics.Object.view (Object_B).C;
 
       c_Frame_A  : aliased c_math_c.Matrix_4x4.item := +Frame_A;
       c_Frame_B  : aliased c_math_c.Matrix_4x4.item := +Frame_B;
    begin
       Self.C := b3d_new_slider_Joint (c_Object_A,
                                       c_Object_B,
-                                      c_Frame_A'Unchecked_Access,
-                                      c_Frame_B'Unchecked_Access);
+                                      c_Frame_A'unchecked_Access,
+                                      c_Frame_B'unchecked_Access);
       return Self;
    end new_Slider_Joint;
 
@@ -456,7 +456,7 @@ is
    overriding
    function Object_A (Self : in  Slider) return physics.Object.view
    is
-      c_Object_A : constant bullet_c.Pointers.Object_Pointer := b3d_Joint_Object_A (Self.C);
+      c_Object_A : constant bullet_c.Pointers.Object_pointer := b3d_Joint_Object_A (Self.C);
    begin
       return physics.Object.view (to_Any_view (b3d_Object_user_Data (c_Object_A)));
    end Object_A;
@@ -466,7 +466,7 @@ is
    overriding
    function Object_B (Self : in Slider) return physics.Object.view
    is
-      c_Object_B : constant bullet_c.Pointers.Object_Pointer := b3d_Joint_Object_B (Self.C);
+      c_Object_B : constant bullet_c.Pointers.Object_pointer := b3d_Joint_Object_B (Self.C);
    begin
       return physics.Object.view (to_Any_view (b3d_Object_user_Data (c_Object_B)));
    end Object_B;
@@ -604,8 +604,8 @@ is
    is
       Self : constant cone_Twist_view := new cone_Twist;
 
-      c_Object_A : constant bullet_C.Pointers.Object_Pointer := bullet_physics.Object.view (Object_A).C;
-      c_Object_B : constant bullet_C.Pointers.Object_Pointer := bullet_physics.Object.view (Object_B).C;
+      c_Object_A : constant bullet_C.Pointers.Object_pointer := bullet_physics.Object.view (Object_A).C;
+      c_Object_B : constant bullet_C.Pointers.Object_pointer := bullet_physics.Object.view (Object_B).C;
 
       c_Frame_A  : aliased  c_math_c.Matrix_4x4.item := +Frame_A;
       c_Frame_B  : aliased  c_math_c.Matrix_4x4.item := +Frame_B;
@@ -780,7 +780,7 @@ is
 
       Self : constant Hinge_view := new Hinge;
 
-      c_Object_A : constant bullet_C.Pointers.Object_Pointer := bullet_physics.Object.view (Object_A).C;
+      c_Object_A : constant bullet_C.Pointers.Object_pointer := bullet_physics.Object.view (Object_A).C;
       c_Frame_A  : aliased  c_math_c.Matrix_4x4.item         := +Frame_A;
 
    begin
@@ -807,8 +807,8 @@ is
 
       Self : constant Hinge_view := new Hinge;
 
-      c_Object_A : bullet_C.Pointers.Object_Pointer;
-      c_Object_B : bullet_C.Pointers.Object_Pointer;
+      c_Object_A : bullet_C.Pointers.Object_pointer;
+      c_Object_B : bullet_C.Pointers.Object_pointer;
 
       c_Frame_A  : aliased c_math_c.Matrix_4x4.item := +Frame_A;
       c_Frame_B  : aliased c_math_c.Matrix_4x4.item := +Frame_B;

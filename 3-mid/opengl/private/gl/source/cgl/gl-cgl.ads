@@ -215,7 +215,7 @@ is
    kCGLSupersampleBit : constant := 16#00000001#;
    kCGLMultisampleBit : constant := 16#00000002#;
 
-   type CGLPixelFormatAttribute_Array is array (Positive range <>) of
+   type CGLPixelFormatAttribute_array is array (Positive range <>) of
      aliased CGLPixelFormatAttribute;
 
 

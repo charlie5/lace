@@ -17,12 +17,12 @@ is
 
       check_is_OK : constant Boolean := openGL.Tasks.Check with Unreferenced;
 
-      type GLubyte_Pointer  is access all GLubyte;
+      type GLubyte_pointer  is access all GLubyte;
 
-      function to_Chars_ptr is new ada.unchecked_Conversion (GLubyte_Pointer,
-                                                             c.Strings.Chars_ptr);
+      function to_chars_ptr is new ada.unchecked_Conversion (GLubyte_pointer,
+                                                             c.Strings.chars_ptr);
 
-      Result : constant String := c.Strings.Value (to_Chars_ptr (glGetString (GL_VERSION)));
+      Result : constant String := c.Strings.Value (to_chars_ptr (glGetString (GL_VERSION)));
    begin
       return Result;
    end Version;

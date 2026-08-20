@@ -13,7 +13,7 @@ is
 
    package body Forge
    is
-      function to_Buffer (From  : access constant Element_Array;
+      function to_Buffer (From  : access constant Element_array;
                           Usage : in              Buffer.Usage) return  Object
       is
          use GL.Pointers;
@@ -37,7 +37,7 @@ is
 
 
 
-      function to_Buffer (From  : in Element_Array;
+      function to_Buffer (From  : in Element_array;
                           Usage : in Buffer.Usage) return  Object
       is
          use GL.Pointers;
@@ -64,11 +64,11 @@ is
 
 
    procedure set (Self : in out Object;   Position : in Positive := 1;
-                                          To       : in Element_Array)
+                                          To       : in Element_array)
    is
       use GL.Pointers;
 
-      new_Vertices        : aliased  Element_Array := To;
+      new_Vertices        : aliased  Element_array := To;
       Vertex_Size_in_bits : constant Natural       := To (To'First)'Size;
 
    begin
@@ -101,7 +101,7 @@ is
 
 
    procedure set (Self : in out Object;   Position : in              Positive := 1;
-                                          To       : access constant Element_Array)
+                                          To       : access constant Element_array)
    is
    begin
       Self.set (Position, To.all);

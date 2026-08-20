@@ -43,18 +43,18 @@ is
 
 private
 
-   function Hash (the_C_Object : in box2d_c.Pointers.Object_Pointer) return ada.Containers.Hash_type;
+   function Hash (the_C_Object : in box2d_c.Pointers.Object_pointer) return ada.Containers.Hash_type;
    use type box2d_c.Pointers.Object_pointer,
             box2d_Physics.Object.view;
 
-   package c_Object_Maps_of_Object is new ada.Containers.hashed_Maps (Key_type        => box2d_c.Pointers.Object_Pointer,
+   package c_Object_Maps_of_Object is new ada.Containers.hashed_Maps (Key_type        => box2d_c.Pointers.Object_pointer,
                                                                       Element_type    => box2d_Physics.Object.view,
                                                                       Hash            => Hash,
                                                                       equivalent_Keys => "=",
                                                                       "="             => "=");
    type Item is new physics.Space.item with
       record
-         C          : box2d_c.Pointers.Space_Pointer;
+         C          : box2d_c.Pointers.Space_pointer;
          object_Map : c_Object_Maps_of_Object.Map;
       end record;
 

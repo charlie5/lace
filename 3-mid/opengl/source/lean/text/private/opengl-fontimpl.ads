@@ -42,7 +42,7 @@ is
                           ALIGN_JUSTIFY => 3);
 
 
-   -- unsigned_char_Pointer
+   -- unsigned_char_pointer
    --
 
    use Interfaces;
@@ -53,7 +53,7 @@ is
                                                      Element            => C.unsigned_char,
                                                      Element_array      => unsigned_char_array,
                                                      default_Terminator => 0);
-   subtype unsigned_char_Pointer  is unsigned_char_Pointers.Pointer;
+   subtype unsigned_char_pointer  is unsigned_char_Pointers.Pointer;
 
 
    ---------

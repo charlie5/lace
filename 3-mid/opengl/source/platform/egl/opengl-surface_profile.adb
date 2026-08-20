@@ -97,10 +97,10 @@ is
    begin
       Self.Display := the_Display;
       Success      := eglChooseConfig (to_eGL (the_Display.all),
-                                       attribList (attribList'First)'Unchecked_Access,
-                                       Self.egl_Config              'Unchecked_Access,
+                                       attribList (attribList'First)'unchecked_Access,
+                                       Self.egl_Config              'unchecked_Access,
                                        1,
-                                       config_Count                 'Unchecked_Access);
+                                       config_Count                 'unchecked_Access);
       if Success = EGL_FALSE
       then
          raise opengl.Error with "eglChooseConfig failed";
@@ -122,7 +122,7 @@ is
       Success :         EGLBoolean := eglGetConfigs (to_eGL (the_Display.all),
                                                      null,
                                                      1,
-                                                     Count'Unchecked_Access);
+                                                     Count'unchecked_Access);
    begin
       if Success = EGL_FALSE
       then
@@ -139,9 +139,9 @@ is
          the_Profiles : surface_Profile.items (1 .. Positive (Count));
       begin
          Success := eglGetConfigs (to_eGL (the_Display.all),
-                                   egl_Configs (1)'Unchecked_Access,
+                                   egl_Configs (1)'unchecked_Access,
                                    Count,
-                                   Count'Unchecked_Access);
+                                   Count'unchecked_Access);
          if Success = EGL_FALSE
          then
             raise opengl.Error with "Failed to get egl Configs.";
@@ -189,36 +189,36 @@ is
       end set_Value;
 
    begin
-      Success := eglGetConfigAttrib (to_eGL (Self.Display.all),  Self.egl_Config,  EGL_RED_SIZE,        Value'Unchecked_Access);
+      Success := eglGetConfigAttrib (to_eGL (Self.Display.all),  Self.egl_Config,  EGL_RED_SIZE,        Value'unchecked_Access);
       check_Success;
       set_Value (the_Qualities.color_Buffer.Bits_red);
 
-      Success := eglGetConfigAttrib (to_eGL (Self.Display.all),  Self.egl_Config,  EGL_GREEN_SIZE,      Value'Unchecked_Access);
+      Success := eglGetConfigAttrib (to_eGL (Self.Display.all),  Self.egl_Config,  EGL_GREEN_SIZE,      Value'unchecked_Access);
       check_Success;
       set_Value (the_Qualities.color_Buffer.Bits_green);
 
-      Success := eglGetConfigAttrib (to_eGL (Self.Display.all),  Self.egl_Config,  EGL_BLUE_SIZE,       Value'Unchecked_Access);
+      Success := eglGetConfigAttrib (to_eGL (Self.Display.all),  Self.egl_Config,  EGL_BLUE_SIZE,       Value'unchecked_Access);
       check_Success;
       set_Value (the_Qualities.color_Buffer.Bits_blue);
 
-      Success := eglGetConfigAttrib (to_eGL (Self.Display.all),  Self.egl_Config,  EGL_LUMINANCE_SIZE,  Value'Unchecked_Access);
+      Success := eglGetConfigAttrib (to_eGL (Self.Display.all),  Self.egl_Config,  EGL_LUMINANCE_SIZE,  Value'unchecked_Access);
       check_Success;
       set_Value (the_Qualities.color_Buffer.Bits_luminence);
 
-      Success := eglGetConfigAttrib (to_eGL (Self.Display.all),  Self.egl_Config,  EGL_ALPHA_SIZE,      Value'Unchecked_Access);
+      Success := eglGetConfigAttrib (to_eGL (Self.Display.all),  Self.egl_Config,  EGL_ALPHA_SIZE,      Value'unchecked_Access);
       check_Success;
       set_Value (the_Qualities.color_Buffer.Bits_alpha);
 
-      Success := eglGetConfigAttrib (to_eGL (Self.Display.all),  Self.egl_Config,  EGL_ALPHA_MASK_SIZE, Value'Unchecked_Access);
+      Success := eglGetConfigAttrib (to_eGL (Self.Display.all),  Self.egl_Config,  EGL_ALPHA_MASK_SIZE, Value'unchecked_Access);
       check_Success;
       set_Value (the_Qualities.color_Buffer.Bits_alpha_mask);
 
 
-      Success := eglGetConfigAttrib (to_eGL (Self.Display.all),  Self.egl_Config,  EGL_DEPTH_SIZE,      Value'Unchecked_Access);
+      Success := eglGetConfigAttrib (to_eGL (Self.Display.all),  Self.egl_Config,  EGL_DEPTH_SIZE,      Value'unchecked_Access);
       check_Success;
       set_Value (the_Qualities.depth_buffer_Bits);
 
-      Success := eglGetConfigAttrib (to_eGL (Self.Display.all),  Self.egl_Config,  EGL_STENCIL_SIZE,    Value'Unchecked_Access);
+      Success := eglGetConfigAttrib (to_eGL (Self.Display.all),  Self.egl_Config,  EGL_STENCIL_SIZE,    Value'unchecked_Access);
       check_Success;
       set_Value (the_Qualities.stencil_buffer_Bits);
 

@@ -69,15 +69,15 @@ is
                        Drop  : in Truncation := Error) return Bounded_String;
 
       procedure Append (Source   : in out Bounded_String;
-                        New_Item : in     Bounded_String;
+                        new_Item : in     Bounded_String;
                         Drop     : in     Truncation := Error);
 
       procedure Append (Source   : in out Bounded_String;
-                        New_Item : in     String;
+                        new_Item : in     String;
                         Drop     : in     Truncation := Error);
 
       procedure Append (Source   : in out Bounded_String;
-                        New_Item : in     Character;
+                        new_Item : in     Character;
                         Drop     : in     Truncation := Error);
 
       function "&" (Left  : in Bounded_String;
@@ -273,22 +273,22 @@ is
 
       function Insert (Source   : in Bounded_String;
                        Before   : in Positive;
-                       New_Item : in String;
+                       new_Item : in String;
                        Drop     : in Truncation := Error) return Bounded_String;
 
       procedure Insert (Source   : in out Bounded_String;
                         Before   : in     Positive;
-                        New_Item : in     String;
+                        new_Item : in     String;
                         Drop     : in     Truncation := Error);
 
       function Overwrite (Source   : in Bounded_String;
                           Position : in Positive;
-                          New_Item : in String;
+                          new_Item : in String;
                           Drop     : in Truncation := Error) return Bounded_String;
 
       procedure Overwrite (Source   : in out Bounded_String;
                            Position : in     Positive;
-                           New_Item : in     String;
+                           new_Item : in     String;
                            Drop     : in     Truncation := Error);
 
       function Delete (Source  : in Bounded_String;
@@ -435,17 +435,17 @@ is
          renames Super_Append;
 
       procedure Append (Source   : in out Bounded_String;
-                        New_Item : in     Bounded_String;
+                        new_Item : in     Bounded_String;
                         Drop     : in     Truncation := Error)
          renames Super_Append;
 
       procedure Append (Source   : in out Bounded_String;
-                        New_Item : in     String;
+                        new_Item : in     String;
                         Drop     : in     Truncation := Error)
          renames Super_Append;
 
       procedure Append (Source   : in out Bounded_String;
-                        New_Item : in     Character;
+                        new_Item : in     Character;
                         Drop     : in     Truncation := Error)
          renames Super_Append;
 
@@ -664,25 +664,25 @@ is
 
       function Insert (Source   : in Bounded_String;
                        Before   : in Positive;
-                       New_Item : in String;
+                       new_Item : in String;
                        Drop     : in Truncation := Error) return Bounded_String
          renames Super_Insert;
 
       procedure Insert (Source   : in out Bounded_String;
                         Before   : in     Positive;
-                        New_Item : in     String;
+                        new_Item : in     String;
                         Drop     : in     Truncation := Error)
          renames Super_Insert;
 
       function Overwrite (Source   : in Bounded_String;
                           Position : in Positive;
-                          New_Item : in String;
+                          new_Item : in String;
                           Drop     : in Truncation := Error) return Bounded_String
          renames Super_Overwrite;
 
       procedure Overwrite (Source   : in out Bounded_String;
                            Position : in     Positive;
-                           New_Item : in     String;
+                           new_Item : in     String;
                            Drop     : in     Truncation := Error)
          renames Super_Overwrite;
 

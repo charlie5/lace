@@ -12,7 +12,7 @@ is
    --- Types
    --
 
-   subtype void_Ptr         is System.Address;
+   subtype void_ptr         is System.Address;
    subtype Display          is System.Address;
    subtype NativeWindowType is interfaces.C.unsigned_long;
    subtype NativePixmapType is interfaces.C.unsigned_long;
@@ -25,7 +25,7 @@ is
    subtype EGLSurface       is void_ptr;
    subtype EGLClientBuffer  is void_ptr;
 
-   type void_Ptr_array         is array (C.size_t range <>) of aliased void_Ptr;
+   type void_ptr_array         is array (C.size_t range <>) of aliased void_ptr;
    type Display_array          is array (C.size_t range <>) of aliased eGL.Display;
    type NativeWindowType_array is array (C.size_t range <>) of aliased eGL.NativeWindowType;
    type NativePixmapType_array is array (C.size_t range <>) of aliased eGL.NativePixmapType;

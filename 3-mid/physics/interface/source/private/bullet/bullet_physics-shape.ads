@@ -13,7 +13,7 @@ package bullet_Physics.Shape
 is
    type Item is abstract new physics.Shape.item with
       record
-         C : bullet_c.Pointers.Shape_Pointer;
+         C : bullet_c.Pointers.Shape_pointer;
       end record;
 
    type View is access all Item'Class;

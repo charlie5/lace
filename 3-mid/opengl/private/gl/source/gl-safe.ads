@@ -12,50 +12,50 @@ is
    --- Types
    --
 
-   -- GLubyte_Pointer
+   -- GLubyte_pointer
    --
    package GLubyte_Pointers is new C.Pointers (Index              => C.size_t,
                                                Element            => GLubyte,
-                                               Element_Array      => GLubyte_array,
-                                               Default_Terminator => 0);
-   subtype GLubyte_Pointer  is GLubyte_Pointers.Pointer;
+                                               Element_array      => GLubyte_array,
+                                               default_Terminator => 0);
+   subtype GLubyte_pointer  is GLubyte_Pointers.Pointer;
 
 
-   -- GLint_Pointer
+   -- GLint_pointer
    --
-   package GLint_Pointers is new C.Pointers (Index              => C.size_t,
+   package GLint_pointers is new C.Pointers (Index              => C.size_t,
                                              Element            => GLint,
-                                             Element_Array      => GLint_array,
-                                             Default_Terminator => 0);
-   subtype GLint_Pointer  is GLint_Pointers.Pointer;
+                                             Element_array      => GLint_array,
+                                             default_Terminator => 0);
+   subtype GLint_pointer  is GLint_pointers.Pointer;
 
 
-   -- GLfloat_Pointer
+   -- GLfloat_pointer
    --
    package GLfloat_Pointers is new C.Pointers (Index              => C.size_t,
                                                Element            => GLfloat,
-                                               Element_Array      => GLfloat_array,
-                                               Default_Terminator => 0.0);
-   subtype GLfloat_Pointer  is GLfloat_Pointers.Pointer;
+                                               Element_array      => GLfloat_array,
+                                               default_Terminator => 0.0);
+   subtype GLfloat_pointer  is GLfloat_Pointers.Pointer;
 
 
-   -- GLvoid_Pointer
+   -- GLvoid_pointer
    --
    package GLvoid_Pointers is new C.Pointers (Index              => C.size_t,
                                               Element            => GLvoid,
-                                              Element_Array      => GLvoid_array,
-                                              Default_Terminator => system.null_Address);
-   subtype GLvoid_Pointer  is GLvoid_Pointers.Pointer;
+                                              Element_array      => GLvoid_array,
+                                              default_Terminator => system.null_Address);
+   subtype GLvoid_pointer  is GLvoid_Pointers.Pointer;
 
 
-   -- GLvoid_Pointer_Pointer
+   -- GLvoid_pointer_pointer
    --
-   type    GLvoid_Pointer_array    is array (C.size_t range <>) of aliased GLvoid_Pointer;
+   type    GLvoid_pointer_array    is array (C.size_t range <>) of aliased GLvoid_pointer;
    package GLvoid_Pointer_Pointers is new C.Pointers (Index              => C.size_t,
-                                                      Element            => GLvoid_Pointer,
-                                                      Element_Array      => GLvoid_Pointer_array,
-                                                      Default_Terminator => null);
-   subtype GLvoid_Pointer_Pointer  is GLvoid_Pointer_Pointers.Pointer;
+                                                      Element            => GLvoid_pointer,
+                                                      Element_array      => GLvoid_pointer_array,
+                                                      default_Terminator => null);
+   subtype GLvoid_pointer_pointer  is GLvoid_Pointer_Pointers.Pointer;
 
 
    -------------
@@ -177,16 +177,16 @@ is
                                     yOrig          : in     GLfloat;
                                     xMove          : in     GLfloat;
                                     yMove          : in     GLfloat;
-                                    Bitmap         : in     GLubyte_Pointer);
+                                    Bitmap         : in     GLubyte_pointer);
    procedure glCallLists           (N              : in     GLsizei;
                                     the_Type       : in     GLenum;
-                                    Lists          : in     GLvoid_Pointer);
+                                    Lists          : in     GLvoid_pointer);
    procedure glClientActiveTexture (Texture        : in     GLenum);
    procedure glColor4f             (Red            : in     GLfloat;
                                     Green          : in     GLfloat;
                                     Blue           : in     GLfloat;
                                     Alpha          : in     GLfloat);
-   procedure glColor4fv            (V              : in     GLfloat_Pointer);
+   procedure glColor4fv            (V              : in     GLfloat_pointer);
    procedure glColor4ub            (Red            : in     GLubyte;
                                     Green          : in     GLubyte;
                                     Blue           : in     GLubyte;
@@ -194,7 +194,7 @@ is
    procedure glColorPointer        (Size           : in     GLint;
                                     the_Type       : in     GLenum;
                                     Stride         : in     GLsizei;
-                                    Ptr            : in     GLvoid_Pointer);
+                                    Ptr            : in     GLvoid_pointer);
    procedure glCopyPixels          (X              : in     GLint;
                                     Y              : in     GLint;
                                     Width          : in     GLsizei;
@@ -205,7 +205,7 @@ is
                                     Height         : in     GLsizei;
                                     Format         : in     GLenum;
                                     the_Type       : in     GLenum;
-                                    Pixels         : in     GLvoid_Pointer);
+                                    Pixels         : in     GLvoid_pointer);
    procedure glEnableClientState   (Cap            : in     GLenum);
    procedure glEnd;
    procedure glEndList;
@@ -218,51 +218,51 @@ is
    function  glGenLists            (the_Range      : in     GLsizei) return GLuint;
    procedure glGetLightfv          (Light          : in     GLenum;
                                     pName          : in     GLenum;
-                                    Params         : in     GLfloat_Pointer);
+                                    Params         : in     GLfloat_pointer);
    procedure glGetMaterialfv       (Face           : in     GLenum;
                                     pName          : in     GLenum;
-                                    Params         : in     GLfloat_Pointer);
+                                    Params         : in     GLfloat_pointer);
    procedure glGetPointerv         (pName          : in     GLenum;
-                                    Params         : in     GLvoid_Pointer_Pointer);
-   procedure glGetPolygonStipple   (Mask           : in     GLubyte_Pointer);
+                                    Params         : in     GLvoid_pointer_pointer);
+   procedure glGetPolygonStipple   (Mask           : in     GLubyte_pointer);
    procedure glGetTexEnvfv         (Target         : in     GLenum;
                                     pName          : in     GLenum;
-                                    Params         : in     GLfloat_Pointer);
+                                    Params         : in     GLfloat_pointer);
    procedure glGetTexEnviv         (Target         : in     GLenum;
                                     pName          : in     GLenum;
-                                    Params         : in     GLint_Pointer);
+                                    Params         : in     GLint_pointer);
    procedure glLightModelfv        (pName          : in     GLenum;
-                                    Params         : in     GLfloat_Pointer);
+                                    Params         : in     GLfloat_pointer);
    procedure glLightfv             (Light          : in     GLenum;
                                     pName          : in     GLenum;
-                                    Params         : in     GLfloat_Pointer);
+                                    Params         : in     GLfloat_pointer);
    procedure glLineStipple         (Factor         : in     GLint;
                                     Pattern        : in     GLushort);
    procedure glListBase            (Base           : in     GLuint);
    procedure glLoadIdentity;
-   procedure glLoadMatrixf         (M              : in     GLfloat_Pointer);
+   procedure glLoadMatrixf         (M              : in     GLfloat_pointer);
    procedure glMaterialf           (Face           : in     GLenum;
                                     pName          : in     GLenum;
                                     Param          : in     GLfloat);
    procedure glMaterialfv          (Face           : in     GLenum;
                                     pName          : in     GLenum;
-                                    Params         : in     GLfloat_Pointer);
+                                    Params         : in     GLfloat_pointer);
    procedure glMatrixMode          (Mode           : in     GLenum);
-   procedure glMultMatrixf         (M              : in     GLfloat_Pointer);
+   procedure glMultMatrixf         (M              : in     GLfloat_pointer);
    procedure glMultiTexCoord2f     (Target         : in     GLenum;
                                     S              : in     GLfloat;
                                     T              : in     GLfloat);
    procedure glMultiTexCoord2fv    (Target         : in     GLenum;
-                                    V              : in     GLfloat_Pointer);
+                                    V              : in     GLfloat_pointer);
    procedure glNewList             (List           : in     GLuint;
                                     Mode           : in     GLenum);
    procedure glNormal3f            (nX             : in     GLfloat;
                                     nY             : in     GLfloat;
                                     nZ             : in     GLfloat);
-   procedure glNormal3fv           (V              : in     GLfloat_Pointer);
+   procedure glNormal3fv           (V              : in     GLfloat_pointer);
    procedure glNormalPointer       (the_Type       : in     GLenum;
                                     Stride         : in     GLsizei;
-                                    Ptr            : in     GLvoid_Pointer);
+                                    Ptr            : in     GLvoid_pointer);
    procedure glOrthof              (Left           : in     GLfloat;
                                     Right          : in     GLfloat;
                                     Bottom         : in     GLfloat;
@@ -270,7 +270,7 @@ is
                                     Near           : in     GLfloat;
                                     Far            : in     GLfloat);
    procedure glPointSize           (Size           : in     GLfloat);
-   procedure glPolygonStipple      (Mask           : in     GLubyte_Pointer);
+   procedure glPolygonStipple      (Mask           : in     GLubyte_pointer);
    procedure glPopMatrix;
    procedure glPushMatrix;
    procedure glRasterPos3f         (X              : in     GLfloat;
@@ -287,10 +287,10 @@ is
    procedure glTexCoordPointer     (Size           : in     GLint;
                                     the_Type       : in     GLenum;
                                     Stride         : in     GLsizei;
-                                    Ptr            : in     GLvoid_Pointer);
+                                    Ptr            : in     GLvoid_pointer);
    procedure glTexEnvfv            (Target         : in     GLenum;
                                     pName          : in     GLenum;
-                                    Params         : in     GLfloat_Pointer);
+                                    Params         : in     GLfloat_pointer);
    procedure glTexEnvi             (Target         : in     GLenum;
                                     pName          : in     GLenum;
                                     Param          : in     GLint);
@@ -299,15 +299,15 @@ is
                                     Z              : in     GLfloat);
    procedure glVertex2f            (X              : in     GLfloat;
                                     Y              : in     GLfloat);
-   procedure glVertex2fv           (V              : in     GLfloat_Pointer);
+   procedure glVertex2fv           (V              : in     GLfloat_pointer);
    procedure glVertex3f            (X              : in     GLfloat;
                                     Y              : in     GLfloat;
                                     Z              : in     GLfloat);
-   procedure glVertex3fv           (V              : in     GLfloat_Pointer);
+   procedure glVertex3fv           (V              : in     GLfloat_pointer);
    procedure glVertexPointer       (Size           : in     GLint;
                                     the_Type       : in     GLenum;
                                     Stride         : in     GLsizei;
-                                    Ptr            : in     GLvoid_Pointer);
+                                    Ptr            : in     GLvoid_pointer);
 
 
 

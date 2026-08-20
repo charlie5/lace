@@ -15,7 +15,7 @@ is
    type Pointer       is access all FT_BBox.Item;
    type Pointer_array is array (C.Size_t range <>) of aliased FT_BBox.Pointer;
 
-   type pointer_Pointer is access all FT_BBox.Pointer;
+   type Pointer_pointer is access all FT_BBox.Pointer;
 
 
 end freetype_c.FT_BBox;

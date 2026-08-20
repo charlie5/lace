@@ -12,50 +12,50 @@ use interfaces.C;
 package box2d_c.pointer_Pointers
 is
 
-   --- Shape_Pointer_Pointer
+   --- Shape_pointer_pointer
    --
    package C_Shape_Pointer_Pointers is new interfaces.C.Pointers (Index              => interfaces.C.size_t,
-                                                                  Element            => box2d_c.Pointers.Shape_Pointer,
-                                                                  Element_Array      => box2d_c.Pointers.Shape_Pointer_Array,
-                                                                  Default_Terminator => null);
+                                                                  Element            => box2d_c.Pointers.Shape_pointer,
+                                                                  Element_array      => box2d_c.Pointers.Shape_pointer_array,
+                                                                  default_Terminator => null);
 
-   subtype Shape_Pointer_Pointer is C_Shape_Pointer_Pointers.Pointer;
+   subtype Shape_pointer_pointer is C_Shape_Pointer_Pointers.Pointer;
 
-   --- Object_Pointer_Pointer
+   --- Object_pointer_pointer
    --
    package C_Object_Pointer_Pointers is new interfaces.C.Pointers (Index              => interfaces.C.size_t,
-                                                                   Element            => box2d_c.Pointers.Object_Pointer,
-                                                                   Element_Array      => box2d_c.Pointers.Object_Pointer_Array,
-                                                                   Default_Terminator => null);
+                                                                   Element            => box2d_c.Pointers.Object_pointer,
+                                                                   Element_array      => box2d_c.Pointers.Object_pointer_array,
+                                                                   default_Terminator => null);
 
-   subtype Object_Pointer_Pointer is C_Object_Pointer_Pointers.Pointer;
+   subtype Object_pointer_pointer is C_Object_Pointer_Pointers.Pointer;
 
-   --- Joint_Pointer_Pointer
+   --- Joint_pointer_pointer
    --
    package C_Joint_Pointer_Pointers is new interfaces.C.Pointers (Index              => interfaces.C.size_t,
-                                                                  Element            => box2d_c.Pointers.Joint_Pointer,
-                                                                  Element_Array      => box2d_c.Pointers.Joint_Pointer_Array,
-                                                                  Default_Terminator => null);
+                                                                  Element            => box2d_c.Pointers.Joint_pointer,
+                                                                  Element_array      => box2d_c.Pointers.Joint_pointer_array,
+                                                                  default_Terminator => null);
 
-   subtype Joint_Pointer_Pointer is C_Joint_Pointer_Pointers.Pointer;
+   subtype Joint_pointer_pointer is C_Joint_Pointer_Pointers.Pointer;
 
-   --- Space_Pointer_Pointer
+   --- Space_pointer_pointer
    --
    package C_Space_Pointer_Pointers is new interfaces.C.Pointers (Index              => interfaces.C.size_t,
-                                                                  Element            => box2d_c.Pointers.Space_Pointer,
-                                                                  Element_Array      => box2d_c.Pointers.Space_Pointer_Array,
-                                                                  Default_Terminator => null);
+                                                                  Element            => box2d_c.Pointers.Space_pointer,
+                                                                  Element_array      => box2d_c.Pointers.Space_pointer_array,
+                                                                  default_Terminator => null);
 
-   subtype Space_Pointer_Pointer is C_Space_Pointer_Pointers.Pointer;
+   subtype Space_pointer_pointer is C_Space_Pointer_Pointers.Pointer;
 
-   --- b2Joint_Pointer_Pointer
+   --- b2Joint_pointer_pointer
    --
    package C_b2Joint_Pointer_Pointers is new interfaces.C.Pointers (Index              => interfaces.C.size_t,
-                                                                    Element            => box2d_c.Pointers.b2Joint_Pointer,
-                                                                    Element_Array      => box2d_c.Pointers.b2Joint_Pointer_Array,
-                                                                    Default_Terminator => null);
+                                                                    Element            => box2d_c.Pointers.b2Joint_pointer,
+                                                                    Element_array      => box2d_c.Pointers.b2Joint_pointer_array,
+                                                                    default_Terminator => null);
 
-   subtype b2Joint_Pointer_Pointer is C_b2Joint_Pointer_Pointers.Pointer;
+   subtype b2Joint_pointer_pointer is C_b2Joint_Pointer_Pointers.Pointer;
 
 
 end box2d_c.pointer_Pointers;

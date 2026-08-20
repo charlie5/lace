@@ -70,7 +70,7 @@ is
 
 
 
-   function Positions_of (Self : in Mesh) return access float_Array
+   function Positions_of (Self : in Mesh) return access float_array
    is
       the_Input : constant Input_t := find_in (Self.Vertices.Inputs.all, Position);
    begin
@@ -89,7 +89,7 @@ is
 
 
    function Normals_of (Self          : in Mesh;
-                        for_Primitive : in Primitive) return access float_Array
+                        for_Primitive : in Primitive) return access float_array
    is
       the_Primitive : Primitive   renames for_Primitive;
       the_Input     : constant Input_t := find_in (the_Primitive.Inputs.all, Normal);
@@ -110,7 +110,7 @@ is
 
 
    function Coords_of (Self          : in Mesh;
-                       for_Primitive : in Primitive) return access float_Array
+                       for_Primitive : in Primitive) return access float_array
    is
       the_Primitive : Primitive   renames for_Primitive;
       the_Input     : constant Input_t := find_in (the_Primitive.Inputs.all, TexCoord);

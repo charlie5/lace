@@ -8,7 +8,7 @@ package openGL.Images
 --
 is
 
-   function fetch_Image (Stream  : in ada.Streams.Stream_IO.Stream_Access;
+   function fetch_Image (Stream  : in ada.Streams.Stream_IO.Stream_access;
                          try_TGA : in Boolean) return openGL.Image;
 
 

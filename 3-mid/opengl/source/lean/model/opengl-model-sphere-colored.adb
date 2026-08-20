@@ -45,12 +45,12 @@ is
       lat_Count      : Positive renames Self.lat_Count;
       long_Count     : Positive renames Self.long_Count;
 
-      Num_lat_strips : constant Positive := lat_Count - 1;
+      num_lat_Strips : constant Positive := lat_Count - 1;
 
       lat_Spacing    : constant Real := Degrees_180 / Real (lat_Count - 1);
       long_Spacing   : constant Real := Degrees_360 / Real (long_Count);
 
-      indices_Count  : constant long_Index_t := long_Index_t (Num_lat_strips * (long_Count + 1) * 2);
+      indices_Count  : constant long_Index_t := long_Index_t (num_lat_Strips * (long_Count + 1) * 2);
       vertex_Count   : constant      Index_t :=   1 + 1                                                  -- North and south pole.
                                                 + Index_t ((long_Count + 1) * (lat_Count - 2));          -- Each latitude ring.
 

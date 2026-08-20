@@ -6,7 +6,7 @@ with
 package body openGL.Images
 is
 
-   function fetch_Image (Stream  : in ada.Streams.Stream_IO.Stream_Access;
+   function fetch_Image (Stream  : in ada.Streams.Stream_IO.Stream_access;
                          try_TGA : in Boolean) return openGL.Image
    is
       the_GID_Image : GID.Image_descriptor;

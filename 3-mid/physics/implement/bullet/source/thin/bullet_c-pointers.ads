@@ -6,37 +6,37 @@ with interfaces.C;
 package bullet_c.Pointers
 is
 
-   --- Shape_Pointer
+   --- Shape_pointer
    --
-   type Shape_Pointer is access all bullet_c.Shape;
+   type Shape_pointer is access all bullet_c.Shape;
 
-   --- Shape_Pointers
+   --- Shape_pointers
    --
-   type Shape_Pointers is array (interfaces.C.size_t range <>) of aliased bullet_c.Pointers.Shape_Pointer;
+   type Shape_pointers is array (interfaces.C.size_t range <>) of aliased bullet_c.Pointers.Shape_pointer;
 
-   --- Object_Pointer
+   --- Object_pointer
    --
-   type Object_Pointer is access all bullet_c.Object;
+   type Object_pointer is access all bullet_c.Object;
 
-   --- Object_Pointers
+   --- Object_pointers
    --
-   type Object_Pointers is array (interfaces.C.size_t range <>) of aliased bullet_c.Pointers.Object_Pointer;
+   type Object_pointers is array (interfaces.C.size_t range <>) of aliased bullet_c.Pointers.Object_pointer;
 
-   --- Joint_Pointer
+   --- Joint_pointer
    --
-   type Joint_Pointer is access all bullet_c.Joint;
+   type Joint_pointer is access all bullet_c.Joint;
 
-   --- Joint_Pointers
+   --- Joint_pointers
    --
-   type Joint_Pointers is array (interfaces.C.size_t range <>) of aliased bullet_c.Pointers.Joint_Pointer;
+   type Joint_pointers is array (interfaces.C.size_t range <>) of aliased bullet_c.Pointers.Joint_pointer;
 
-   --- Space_Pointer
+   --- Space_pointer
    --
-   type Space_Pointer is access all bullet_c.Space;
+   type Space_pointer is access all bullet_c.Space;
 
-   --- Space_Pointers
+   --- Space_pointers
    --
-   type Space_Pointers is array (interfaces.C.size_t range <>) of aliased bullet_c.Pointers.Space_Pointer;
+   type Space_pointers is array (interfaces.C.size_t range <>) of aliased bullet_c.Pointers.Space_pointer;
 
 
 end bullet_c.Pointers;

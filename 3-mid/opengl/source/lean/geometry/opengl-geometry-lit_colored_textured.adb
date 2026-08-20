@@ -56,11 +56,11 @@ is
    Attribute_4_Name : aliased C.char_array := C.to_C (Name_4);
    Attribute_5_Name : aliased C.char_array := C.to_C (Name_5);
 
-   Attribute_1_Name_ptr : aliased constant C.strings.chars_ptr := C.strings.to_chars_ptr (Attribute_1_Name'Access);
-   Attribute_2_Name_ptr : aliased constant C.strings.chars_ptr := C.strings.to_chars_ptr (Attribute_2_Name'Access);
-   Attribute_3_Name_ptr : aliased constant C.strings.chars_ptr := C.strings.to_chars_ptr (Attribute_3_Name'Access);
-   Attribute_4_Name_ptr : aliased constant C.strings.chars_ptr := C.strings.to_chars_ptr (Attribute_4_Name'Access);
-   Attribute_5_Name_ptr : aliased constant C.strings.chars_ptr := C.strings.to_chars_ptr (Attribute_5_Name'Access);
+   attribute_1_Name_ptr : aliased constant C.strings.chars_ptr := C.strings.to_chars_ptr (Attribute_1_Name'Access);
+   attribute_2_Name_ptr : aliased constant C.strings.chars_ptr := C.strings.to_chars_ptr (Attribute_2_Name'Access);
+   attribute_3_Name_ptr : aliased constant C.strings.chars_ptr := C.strings.to_chars_ptr (Attribute_3_Name'Access);
+   attribute_4_Name_ptr : aliased constant C.strings.chars_ptr := C.strings.to_chars_ptr (Attribute_4_Name'Access);
+   attribute_5_Name_ptr : aliased constant C.strings.chars_ptr := C.strings.to_chars_ptr (Attribute_5_Name'Access);
 
 
    ---------
@@ -169,27 +169,27 @@ is
 
          glBindAttribLocation (Program =>  the_Program.Program.gl_Program,
                                Index   =>  the_Program.Program.Attribute (named => Name_1).gl_Location,
-                               Name    => +Attribute_1_Name_ptr);
+                               Name    => +attribute_1_Name_ptr);
          Errors.log;
 
          glBindAttribLocation (Program =>  the_Program.Program.gl_Program,
                                Index   =>  the_Program.Program.Attribute (named => Name_2).gl_Location,
-                               Name    => +Attribute_2_Name_ptr);
+                               Name    => +attribute_2_Name_ptr);
          Errors.log;
 
          glBindAttribLocation (Program =>  the_Program.Program.gl_Program,
                                Index   =>  the_Program.Program.Attribute (named => Name_3).gl_Location,
-                               Name    => +Attribute_3_Name_ptr);
+                               Name    => +attribute_3_Name_ptr);
          Errors.log;
 
          glBindAttribLocation (Program =>  the_Program.Program.gl_Program,
                                Index   =>  the_Program.Program.Attribute (named => Name_4).gl_Location,
-                               Name    => +Attribute_4_Name_ptr);
+                               Name    => +attribute_4_Name_ptr);
          Errors.log;
 
          glBindAttribLocation (Program =>  the_Program.Program.gl_Program,
                                Index   =>  the_Program.Program.Attribute (named => Name_5).gl_Location,
-                               Name    => +Attribute_5_Name_ptr);
+                               Name    => +attribute_5_Name_ptr);
          Errors.log;
 
 
@@ -257,7 +257,7 @@ is
    package openGL_Buffer_of_geometry_Vertices is new Buffer.general (base_Object   => Buffer.array_Object,
                                                                      Index         => Index_t,
                                                                      Element       => Vertex,
-                                                                     Element_Array => Vertex_array);
+                                                                     Element_array => Vertex_array);
 
    procedure Vertices_are (Self : in out Item;   Now : in Vertex_array)
    is

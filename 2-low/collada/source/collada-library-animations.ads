@@ -5,7 +5,7 @@ package collada.Library.animations
 is
 
    type Inputs_view    is access all Library.Inputs;
-   type int_Array_view is access all int_Array;
+   type int_Array_view is access all int_array;
 
 
    -----------
@@ -47,9 +47,9 @@ is
    type Animation_array      is array (Positive range <>) of Animation;
    type Animation_array_view is access Animation_array;
 
-   function Inputs_of         (Self : in Animation) return access float_Array;
-   function Outputs_of        (Self : in Animation) return access float_Array;
-   function Interpolations_of (Self : in Animation) return access float_Array;
+   function Inputs_of         (Self : in Animation) return access float_array;
+   function Outputs_of        (Self : in Animation) return access float_array;
+   function Interpolations_of (Self : in Animation) return access float_array;
 
 
    ----------------

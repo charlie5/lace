@@ -19,15 +19,15 @@ is
    for  XEventQueueOwner use (nil => 0);
    pragma Convention (C, XEventQueueOwner);
 
-   type XEventQueueOwner_Pointer  is access all XEventQueueOwner;
+   type XEventQueueOwner_pointer  is access all XEventQueueOwner;
 
    type XEventQueueOwner_array    is array (C.size_t range <>) of aliased XEventQueueOwner;
-   type XEventQueueOwner_Pointers is array (C.size_t range <>) of aliased XEventQueueOwner_Pointer;
+   type XEventQueueOwner_pointers is array (C.size_t range <>) of aliased XEventQueueOwner_pointer;
 
 
-   --- XEventQueueOwner_Pointer_Pointer
+   --- XEventQueueOwner_pointer_pointer
    --
-   type XEventQueueOwner_Pointer_Pointer is access all glx.XEventQueueOwner_Pointer;
+   type XEventQueueOwner_pointer_pointer is access all glx.XEventQueueOwner_pointer;
 
 
    --- VisualID

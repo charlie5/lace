@@ -75,15 +75,15 @@ is
                           Drop  : in Truncation := Error) return Super_String;
 
    procedure Super_Append (Source   : in out Super_String;
-                           New_Item : in     Super_String;
+                           new_Item : in     Super_String;
                            Drop     : in     Truncation := Error);
 
    procedure Super_Append (Source   : in out Super_String;
-                           New_Item : in     String;
+                           new_Item : in     String;
                            Drop     : in     Truncation := Error);
 
    procedure Super_Append (Source   : in out Super_String;
-                           New_Item : in     Character;
+                           new_Item : in     Character;
                            Drop     : in     Truncation := Error);
 
    function Concat (Left  : in Super_String;
@@ -275,22 +275,22 @@ is
 
    function Super_Insert (Source   : in Super_String;
                           Before   : in Positive;
-                          New_Item : in String;
+                          new_Item : in String;
                           Drop     : in Truncation := Error) return Super_String;
 
    procedure Super_Insert (Source   : in out Super_String;
                            Before   : in     Positive;
-                           New_Item : in     String;
+                           new_Item : in     String;
                            Drop     : in     Truncation := Error);
 
    function Super_Overwrite (Source   : in Super_String;
                              Position : in Positive;
-                             New_Item : in String;
+                             new_Item : in String;
                              Drop     : in Truncation := Error) return Super_String;
 
    procedure Super_Overwrite (Source   : in out Super_String;
                               Position : in     Positive;
-                              New_Item : in     String;
+                              new_Item : in     String;
                               Drop     : in     Truncation := Error);
 
    function Super_Delete (Source  : in Super_String;

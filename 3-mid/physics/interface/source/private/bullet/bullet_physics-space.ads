@@ -40,11 +40,11 @@ is
 
 private
 
-   function Hash (the_C_Object : in bullet_c.Pointers.Object_Pointer) return ada.Containers.Hash_type;
+   function Hash (the_C_Object : in bullet_c.Pointers.Object_pointer) return ada.Containers.Hash_type;
    use type bullet_c.Pointers.Object_pointer,
             bullet_Physics.Object.view;
 
-   package c_Object_Maps_of_Object is new ada.Containers.hashed_Maps (Key_type        => bullet_c.Pointers.Object_Pointer,
+   package c_Object_Maps_of_Object is new ada.Containers.hashed_Maps (Key_type        => bullet_c.Pointers.Object_pointer,
                                                                       Element_type    => bullet_Physics.Object.view,
                                                                       Hash            => Hash,
                                                                       equivalent_Keys => "=",
@@ -52,7 +52,7 @@ private
 
    type Item is new physics.Space.item with
       record
-         C          : bullet_c.Pointers.Space_Pointer;
+         C          : bullet_c.Pointers.Space_pointer;
          object_Map : c_Object_Maps_of_Object.Map;
       end record;
 

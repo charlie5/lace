@@ -3,7 +3,7 @@ generic
 
    type Index         is range <>;
    type Element       is private;
-   type Element_Array is array (Index range <>) of Element;
+   type Element_array is array (Index range <>) of Element;
 
 
 package openGL.Buffer.general
@@ -21,10 +21,10 @@ is
 
    package Forge
    is
-      function to_Buffer (From  : access constant Element_Array;
+      function to_Buffer (From  : access constant Element_array;
                           Usage : in              Buffer.Usage) return Object;
 
-      function to_Buffer (From  : in              Element_Array;
+      function to_Buffer (From  : in              Element_array;
                           Usage : in              Buffer.Usage) return  Object;
    end Forge;
 
@@ -34,10 +34,10 @@ is
    --
 
    procedure set (Self : in out Object;   Position : in              Positive     := 1;
-                                          To       : in              Element_Array);
+                                          To       : in              Element_array);
 
    procedure set (Self : in out Object;   Position : in              Positive     := 1;
-                                          To       : access constant Element_Array);
+                                          To       : access constant Element_array);
 
 
 

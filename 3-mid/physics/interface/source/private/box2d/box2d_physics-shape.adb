@@ -92,7 +92,7 @@ is
 --           c_Verts (i) := +Vertices (i);
 --        end loop;
 --
---        Self.C := b2d_new_Polygon (c_Verts (1)'Unchecked_Access,
+--        Self.C := b2d_new_Polygon (c_Verts (1)'unchecked_Access,
 --                                   c_Verts'Length);
       Self.define;
       return physics.Shape.view (Self);

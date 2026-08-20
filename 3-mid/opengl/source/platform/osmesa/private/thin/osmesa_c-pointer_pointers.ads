@@ -8,33 +8,33 @@ with
 package osmesa_c.pointer_Pointers
 is
 
-   --- GLenum_Pointer_Pointer
+   --- GLenum_pointer_pointer
    --
-   type GLenum_Pointer_Pointer is access all osmesa_c.Pointers.GLenum_Pointer;
+   type GLenum_pointer_pointer is access all osmesa_c.Pointers.GLenum_pointer;
 
-   --- GLint_Pointer_Pointer
+   --- GLint_pointer_pointer
    --
-   type GLint_Pointer_Pointer is access all osmesa_c.Pointers.GLint_Pointer;
+   type GLint_pointer_pointer is access all osmesa_c.Pointers.GLint_pointer;
 
-   --- GLsizei_Pointer_Pointer
+   --- GLsizei_pointer_pointer
    --
-   type GLsizei_Pointer_Pointer is
-     access all osmesa_c.Pointers.GLsizei_Pointer;
+   type GLsizei_pointer_pointer is
+     access all osmesa_c.Pointers.GLsizei_pointer;
 
-   --- GLboolean_Pointer_Pointer
+   --- GLboolean_pointer_pointer
    --
-   type GLboolean_Pointer_Pointer is
-     access all osmesa_c.Pointers.GLboolean_Pointer;
+   type GLboolean_pointer_pointer is
+     access all osmesa_c.Pointers.GLboolean_pointer;
 
-   --- OSMesaContext_Pointer_Pointer
+   --- OSMesaContext_pointer_pointer
    --
-   type OSMesaContext_Pointer_Pointer is
-     access all osmesa_c.Pointers.OSMesaContext_Pointer;
+   type OSMesaContext_pointer_pointer is
+     access all osmesa_c.Pointers.OSMesaContext_pointer;
 
-   --- OSMESAproc_Pointer_Pointer
+   --- OSMESAproc_pointer_pointer
    --
-   type OSMESAproc_Pointer_Pointer is
-     access all osmesa_c.Pointers.OSMESAproc_Pointer;
+   type OSMESAproc_pointer_pointer is
+     access all osmesa_c.Pointers.OSMESAproc_pointer;
 
 
 end osmesa_c.pointer_Pointers;
