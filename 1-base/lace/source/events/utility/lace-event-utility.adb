@@ -51,15 +51,15 @@ is
    procedure connect (the_Observer  : in Observer.view;
                       to_Subject    : in Subject .view;
                       with_Response : in Response.view;
-                      to_Event_Kind : in Event.Kind)
+                      to_event_Kind : in Event.Kind)
    is
    begin
       the_Observer.add (with_Response,
-                        to_Event_Kind,
+                        to_event_Kind,
                         to_Subject.Name);
 
       to_Subject.register (the_Observer,
-                           to_Event_Kind);
+                           to_event_Kind);
    end connect;
 
 
@@ -67,17 +67,17 @@ is
    procedure disconnect (the_Observer  : in Observer.view;
                          from_Subject  : in Subject .view;
                          for_Response  : in Response.view;
-                         to_Event_Kind : in Event.Kind;
+                         to_event_Kind : in Event.Kind;
                          Subject_Name  : in String)
    is
    begin
       the_Observer.rid (for_Response,
-                        to_Event_Kind,
+                        to_event_Kind,
                         Subject_Name);
 
       begin
          from_Subject.deregister (the_Observer,
-                                  to_Event_Kind);
+                                  to_event_Kind);
 
       exception
             when system.RPC.communication_Error

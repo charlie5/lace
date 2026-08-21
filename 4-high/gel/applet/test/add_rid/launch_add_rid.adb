@@ -46,11 +46,11 @@ is
                                                                  1536, 864,
                                                                  space_Kind => physics.Box2D);
    the_Ground : constant gel.Sprite.view := new_rectangle_Sprite (the_Applet.gui_World,
-                                                                   name   => "the_Ground",
-                                                                   mass   =>   0.0,
-                                                                   width  => 100.0,
-                                                                   height =>   1.0,
-                                                                   color  => apple_Green);
+                                                                  Name   => "the_Ground",
+                                                                  Mass   =>   0.0,
+                                                                  Width  => 100.0,
+                                                                  Height =>   1.0,
+                                                                  Color  => apple_Green);
 begin
    the_Applet.gui_World .Gravity_is    ([0.0, -10.0,   0.0]);
    the_Applet.gui_Camera.Site_is       ([0.0, -30.0, 100.0]);
@@ -65,9 +65,9 @@ begin
    --
    declare
       ball_Count      : constant                       := 39; -- 256;
-      the_root_Ball   : constant gel.Sprite.view       :=                         new_circle_Sprite (the_Applet.gui_World, name => "the_root_Ball", mass =>  0.0);
-      the_Balls       : constant gel.Sprite.views      := [1 .. ball_Count - 1 => new_circle_Sprite (the_Applet.gui_World, name => "the_Balls",     mass =>  1.0),
-                                                           ball_Count          => new_circle_Sprite (the_Applet.gui_World, name => "the_last_Ball", mass => 10.0)];
+      the_root_Ball   : constant gel.Sprite.view       :=                         new_circle_Sprite (the_Applet.gui_World, Name => "the_root_Ball", Mass =>  0.0);
+      the_Balls       : constant gel.Sprite.views      := [1 .. ball_Count - 1 => new_circle_Sprite (the_Applet.gui_World, Name => "the_Balls",     Mass =>  1.0),
+                                                           ball_Count          => new_circle_Sprite (the_Applet.gui_World, Name => "the_last_Ball", Mass => 10.0)];
 
       mid_Ball_Id     : constant Index                 := Index (the_Balls'First + the_Balls'Last) / 2;
       mid_Ball        :          gel.Sprite.view  renames the_Balls (mid_Ball_Id);

@@ -11,7 +11,7 @@ is
 
    function new_Box (Size            : in Vector_3;
                      Faces           : in lit_textured.Faces;
-                     texture_Details : in texture_Set.item := texture_Set.null_Set) return View
+                     texture_Details : in texture_Set.item  := texture_Set.null_Set) return View
 
    is
       Self : constant View := new Item;
@@ -45,10 +45,11 @@ is
       is
          use openGL.Primitive;
 
-         the_Geometry  : constant Geometry.lit_textured.view  := Geometry.lit_textured.new_Geometry;
-         the_Primitive : constant Primitive.view              := Primitive.indexed.new_Primitive
-                                                                   (triangle_Fan,
-                                                                    the_Indices).all'unchecked_Access;
+         the_Geometry  : constant Geometry.lit_textured.view
+           := Geometry.lit_textured.new_Geometry;
+
+         the_Primitive : constant Primitive.view
+           := Primitive.indexed.new_Primitive (triangle_Fan, the_Indices).all'unchecked_Access;
       begin
          the_Geometry.Model_is     (Self.all'unchecked_Access);
          the_Geometry.Vertices_are (Vertices);

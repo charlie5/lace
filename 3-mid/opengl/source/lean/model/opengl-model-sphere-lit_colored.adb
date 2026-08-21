@@ -10,8 +10,8 @@ is
    --
 
    function new_Sphere (Radius     : in Real;
-                        lat_Count  : in Positive := default_latitude_Count;
-                        long_Count : in Positive := default_longitude_Count;
+                        lat_Count  : in Positive   := default_latitude_Count;
+                        long_Count : in Positive   := default_longitude_Count;
                         Color      : in lucid_Color) return View
    is
       Self : constant View := new Item;

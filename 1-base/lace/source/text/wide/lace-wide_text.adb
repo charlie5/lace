@@ -10,7 +10,7 @@ is
    --
 
    function to_Text (From : in wide_String;
-                     Trim : in Boolean := False) return Item
+                     Trim : in Boolean    := False) return Item
    is
    begin
       return to_Text (From,
@@ -22,7 +22,7 @@ is
 
    function to_Text (From     : in wide_String;
                      Capacity : in Natural;
-                     Trim     : in Boolean := False) return Item
+                     Trim     : in Boolean    := False) return Item
    is
       use ada.Strings;
 

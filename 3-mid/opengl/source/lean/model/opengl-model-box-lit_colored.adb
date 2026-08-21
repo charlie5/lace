@@ -41,10 +41,11 @@ is
       is
          use openGL.Primitive;
 
-         the_Geometry  : constant Geometry.lit_colored.view := Geometry.lit_colored.new_Geometry;
-         the_Primitive : constant Primitive.view            := Primitive.indexed.new_Primitive
-                                                                 (triangle_Fan,
-                                                                  the_Indices).all'Access;
+         the_Geometry  : constant Geometry.lit_colored.view
+           := Geometry.lit_colored.new_Geometry;
+
+         the_Primitive : constant Primitive.view
+           := Primitive.indexed.new_Primitive (triangle_Fan, the_Indices).all'Access;
       begin
          the_Geometry.Vertices_are (Vertices.all);
          the_Geometry.add          (the_Primitive);

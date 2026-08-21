@@ -85,10 +85,10 @@ is
       Self.Target     := Target;
       Self.is_Terrain := Target.is_Terrain;
 
-      Self.Visual.Model_is (Model.billboard.textured.Forge.new_Billboard (Size    => (Width  => Width,
-                                                                                      Height => Height),
-                                                                          Plane   => Model.billboard.xy,
-                                                                          Texture => null_Asset,
+      Self.Visual.Model_is (Model.billboard.textured.Forge.new_Billboard (Size            => (Width  => Width,
+                                                                                              Height => Height),
+                                                                          Plane           => Model.billboard.xy,
+                                                                          Texture         => null_Asset,
                                                                           texture_Details => texture_Set.to_Set ([1 => null_Asset])).all'Access);
       Self.Visual.Transform_is (Target.Transform);
       -- Self.Visual.model_Transform_is (Target.model_Transform);

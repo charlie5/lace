@@ -48,12 +48,12 @@ begin
       --
       the_box_Model : constant openGL.Model.box.colored.view
         := openGL.Model.box.colored.new_Box (Size  => box_Size,
-                                             Faces => [Front => (colors => [others => (Red,     Opaque)]),
-                                                       Rear  => (colors => [others => (Blue,    Opaque)]),
-                                                       Upper => (colors => [others => (Violet,  Opaque)]),
-                                                       Lower => (colors => [others => (Yellow,  Opaque)]),
-                                                       Left  => (colors => [others => (Cyan,    Opaque)]),
-                                                       Right => (colors => [others => (Magenta, Opaque)])]);
+                                             Faces => [Front => (Colors => [others => (Red,     Opaque)]),
+                                                       Rear  => (Colors => [others => (Blue,    Opaque)]),
+                                                       Upper => (Colors => [others => (Violet,  Opaque)]),
+                                                       Lower => (Colors => [others => (Yellow,  Opaque)]),
+                                                       Left  => (Colors => [others => (Cyan,    Opaque)]),
+                                                       Right => (Colors => [others => (Magenta, Opaque)])]);
       the_static_box_physics_Model : constant physics.Model.view
         := physics.Model.forge.new_physics_Model (shape_Info => (Kind         => physics.Model.cube,
                                                                  half_Extents => box_Size));

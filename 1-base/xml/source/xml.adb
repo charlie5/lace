@@ -25,8 +25,6 @@ is
    end Value;
 
 
-
-
    ----------------
    --- Element type
    --
@@ -59,6 +57,7 @@ is
       end current_Element;
 
 
+
       procedure Starter (Name : in unbounded_String;
                          Atts : in Attributes_view)
       is
@@ -71,6 +70,7 @@ is
          current_Element.add_Child (new_Element);
          element_Stack  .append    (new_Element);
       end Starter;
+
 
 
       procedure Ender (Name : in unbounded_String)
@@ -177,6 +177,7 @@ is
    function Child (Self : in Element;   Named : in String) return access Element
    is
       use element_Vectors;
+
       Cursor : element_Vectors.Cursor := Self.Children.First;
 
    begin

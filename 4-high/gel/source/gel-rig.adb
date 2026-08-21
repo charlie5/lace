@@ -78,8 +78,8 @@ is
 
       function new_Rig (in_World     : in gel.World.view;
                         Model        : in openGL.Model.view;
-                        Mass         : in Real    := 0.0;
-                        is_Kinematic : in Boolean := False) return Rig.view
+                        Mass         : in Real             := 0.0;
+                        is_Kinematic : in Boolean          := False) return Rig.view
       is
          Self : constant Rig.view := new Rig.item;
       begin
@@ -413,7 +413,7 @@ is
                                                                     Mass        => 1.0);
             begin
                new_Sprite := gel.Sprite.Forge.new_Sprite (Name           => "Skin Sprite",
-                                                          World          => gel.sprite.World_view (in_World),
+                                                          World          => gel.Sprite.World_view (in_World),
                                                           graphics_Model => Model,
                                                           physics_Model  => physics_Model,
                                                           is_Kinematic   => is_Kinematic);

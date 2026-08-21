@@ -114,7 +114,7 @@ is
    type height_Map_view is access all height_Map;
 
    function to_height_Map (image_Filename : in asset_Name;
-                           Scale          : in Real := 1.0) return height_Map_view;
+                           Scale          : in Real      := 1.0) return height_Map_view;
 
 
    ----------

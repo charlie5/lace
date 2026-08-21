@@ -15,7 +15,7 @@ is
    --- Forge
    --
 
-   function new_circle (Radius : in Real;
+   function new_Circle (Radius : in Real;
                         Color  : in openGL.lucid_Color := (Primary => openGL.Palette.White,
                                                            Opacity => Opaque);
                         Sides  : in Positive           := 24) return View;

@@ -8,34 +8,49 @@ is
 
    --- Shape_pointer
    --
+
    type Shape_pointer is access all bullet_c.Shape;
+
 
    --- Shape_pointers
    --
+
    type Shape_pointers is array (interfaces.C.size_t range <>) of aliased bullet_c.Pointers.Shape_pointer;
+
 
    --- Object_pointer
    --
+
    type Object_pointer is access all bullet_c.Object;
+
 
    --- Object_pointers
    --
+
    type Object_pointers is array (interfaces.C.size_t range <>) of aliased bullet_c.Pointers.Object_pointer;
+
 
    --- Joint_pointer
    --
+
    type Joint_pointer is access all bullet_c.Joint;
+
 
    --- Joint_pointers
    --
+
    type Joint_pointers is array (interfaces.C.size_t range <>) of aliased bullet_c.Pointers.Joint_pointer;
+
 
    --- Space_pointer
    --
+
    type Space_pointer is access all bullet_c.Space;
+
 
    --- Space_pointers
    --
+
    type Space_pointers is array (interfaces.C.size_t range <>) of aliased bullet_c.Pointers.Space_pointer;
 
 

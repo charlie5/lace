@@ -10,49 +10,55 @@ is
 
    --- GLenum
    --
+
    subtype GLenum is interfaces.C.unsigned;
 
-   type GLenum_array is
-     array (interfaces.C.size_t range <>) of aliased osmesa_c.GLenum;
+   type GLenum_array is array (interfaces.C.size_t range <>) of aliased osmesa_c.GLenum;
+
 
    --- GLint
    --
+
    subtype GLint is interfaces.C.int;
 
-   type GLint_array is
-     array (interfaces.C.size_t range <>) of aliased osmesa_c.GLint;
+   type GLint_array is array (interfaces.C.size_t range <>) of aliased osmesa_c.GLint;
+
 
    --- GLsizei
    --
+
    subtype GLsizei is interfaces.C.int;
 
-   type GLsizei_array is
-     array (interfaces.C.size_t range <>) of aliased osmesa_c.GLsizei;
+   type GLsizei_array is array (interfaces.C.size_t range <>) of aliased osmesa_c.GLsizei;
+
 
    --- GLboolean
    --
+
    subtype GLboolean is interfaces.C.unsigned_char;
 
-   type GLboolean_array is
-     array (interfaces.C.size_t range <>) of aliased osmesa_c.GLboolean;
+   type GLboolean_array is array (interfaces.C.size_t range <>) of aliased osmesa_c.GLboolean;
+
 
    --- OSMesaContext
    --
+
    subtype OSMesaContext is Swig.opaque_structure;
 
-   type OSMesaContext_array is
-     array (interfaces.C.size_t range <>) of aliased osmesa_c.OSMesaContext;
+   type OSMesaContext_array is array (interfaces.C.size_t range <>) of aliased osmesa_c.OSMesaContext;
+
 
    --- OSMESAproc
    --
-   type OSMESAproc is access
- procedure;
+
+   type OSMESAproc is access procedure;
    pragma Convention (C, OSMESAproc);
+
 
    --- OSMESAprocs
    --
-   type OSMESAprocs is
-     array (interfaces.C.size_t range <>) of aliased osmesa_c.OSMESAproc;
+
+   type OSMESAprocs is array (interfaces.C.size_t range <>) of aliased osmesa_c.OSMESAproc;
 
    OSMESA_MAJOR_VERSION         : constant := 11;
    OSMESA_MINOR_VERSION         : constant := 2;

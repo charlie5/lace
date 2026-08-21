@@ -8,18 +8,25 @@ is
 
    --- Real_pointer
    --
+
    type Real_pointer is access all c_math_c.Real;
+
 
    --- Real_pointers
    --
+
    type Real_pointers is array (interfaces.C.size_t range <>) of aliased c_math_c.Pointers.Real_pointer;
+
 
    --- Index_pointer
    --
+
    type Index_pointer is access all c_math_c.Index;
+
 
    --- Index_pointers
    --
+
    type Index_pointers is array (interfaces.C.size_t range <>) of aliased c_math_c.Pointers.Index_pointer;
 
 

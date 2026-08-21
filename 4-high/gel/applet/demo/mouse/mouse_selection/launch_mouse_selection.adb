@@ -95,12 +95,12 @@ begin
       connect (the_Observer  =>  the_Applet.local_Observer,
                to_Subject    =>  the_Ball.all'Access,
                with_Response =>  advance_Sprite_Response'unchecked_Access,
-               to_Event_Kind =>  to_Kind (gel.events.sprite_click_down_Event'Tag));
+               to_event_Kind =>  to_Kind (gel.events.sprite_click_down_Event'Tag));
 
       connect (the_Observer  =>  the_Applet.local_Observer,
                to_Subject    =>  the_Ball.all'Access,
                with_Response =>  retreat_Sprite_Response'unchecked_Access,
-               to_Event_Kind =>  to_Kind (gel.events.sprite_click_up_Event'Tag));
+               to_event_Kind =>  to_Kind (gel.events.sprite_click_up_Event'Tag));
 
 
       the_Applet.gui_world .add      (the_Ball, and_Children => False);

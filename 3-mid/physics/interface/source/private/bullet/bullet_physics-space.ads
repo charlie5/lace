@@ -62,6 +62,7 @@ private
    ----------------
    --- Joint Cursor
    --
+
    type joint_Cursor is new physics.Space.joint_Cursor with null record;
 
    overriding
@@ -89,15 +90,15 @@ private
    overriding
    function              new_Shape (Self : access Item;   Model        : in physics.Model.view)              return physics.Shape.view;
    overriding
-   function       new_sphere_Shape (Self : access Item;   Radius       : in Real     := 0.5)                 return physics.Shape.view;
+   function       new_sphere_Shape (Self : access Item;   Radius       : in Real := 0.5)                 return physics.Shape.view;
    overriding
    function          new_box_Shape (Self : access Item;   half_Extents : in Vector_3 := [0.5, 0.5, 0.5])     return physics.Shape.view;
    overriding
-   function      new_capsule_Shape (Self : access Item;   Radius       : in Real     :=  0.5;
+   function      new_capsule_Shape (Self : access Item;   Radius       : in Real :=  0.5;
                                                           Height       : in Real)                            return physics.Shape.view;
    overriding
-   function         new_cone_Shape (Self : access Item;   Radius       : in Real     :=  0.5;
-                                                          Height       : in Real     := 1.0)                 return physics.Shape.view;
+   function         new_cone_Shape (Self : access Item;   Radius       : in Real :=  0.5;
+                                                          Height       : in Real := 1.0)                 return physics.Shape.view;
    overriding
    function     new_cylinder_Shape (Self : access Item;   half_Extents : in Vector_3 := [0.5, 0.5, 0.5])     return physics.Shape.view;
    overriding
@@ -114,7 +115,7 @@ private
    overriding
    function         new_mesh_Shape (Self : access Item;   Points       : access physics.Geometry_3D.a_Model) return physics.Shape.view;
    overriding
-   function       new_circle_Shape (Self : access Item;   Radius       : in Real     := 0.5)                 return physics.Shape.view;
+   function       new_circle_Shape (Self : access Item;   Radius       : in Real := 0.5)                 return physics.Shape.view;
    overriding
    function      new_polygon_Shape (Self : access Item;   Vertices     : in physics.Space.polygon_Vertices)  return physics.Shape.view;
 
@@ -179,6 +180,8 @@ private
                                                     Object_B   : in physics.Object.view;
                                                     Frame_A,
                                                     Frame_B    : in Matrix_4x4) return physics.Joint.cone_twist.view;
+
+
    --------------
    --- Operations
    --

@@ -12,8 +12,10 @@ is
    --- Types
    --
 
+
    --- XEventQueueOwner
    --
+
    type XEventQueueOwner is  (nil);
 
    for  XEventQueueOwner use (nil => 0);
@@ -27,96 +29,111 @@ is
 
    --- XEventQueueOwner_pointer_pointer
    --
+
    type XEventQueueOwner_pointer_pointer is access all glx.XEventQueueOwner_pointer;
 
 
    --- VisualID
    --
+
    subtype VisualID       is C.unsigned_long;
    type    VisualID_array is array (C.size_t range <>) of aliased VisualID;
 
 
    --- XVisualInfo
    --
+
    subtype XVisualInfo       is system.Address;
    type    XVisualInfo_array is array (C.size_t range <>) of aliased XVisualInfo;
 
 
    --- Pixmap
    --
+
    subtype Pixmap       is system.Address;
    type    Pixmap_array is array (C.size_t range <>) of aliased Pixmap;
 
 
    --- Font
    --
+
    subtype Font       is system.Address;
    type    Font_array is array (C.size_t range <>) of aliased Font;
 
 
    --- Window
    --
+
    subtype Window       is system.Address;
    type    Window_array is array (C.size_t range <>) of aliased Window;
 
 
    --- Bool
    --
+
    subtype Bool       is C.int;
    type    Bool_array is array (C.size_t range <>) of aliased Bool;
 
 
    --- ContextRec
    --
+
    subtype ContextRec       is system.Address;
    type    ContextRec_array is array (C.size_t range <>) of aliased ContextRec;
 
 
    --- XID
    --
+
    subtype XID       is system.Address;
    type    XID_array is array (C.size_t range <>) of aliased XID;
 
 
    --- GLXPixmap
    --
+
    subtype GLXPixmap       is XID;
    type    GLXPixmap_array is array (C.size_t range <>) of aliased glxPixmap;
 
 
    --- GLXDrawable
    --
+
    subtype Drawable       is glx.XID;
    type    Drawable_array is array (C.size_t range <>) of aliased Drawable;
 
 
-
    --- FBConfig
    --
+
    subtype FBConfig       is system.Address;
    type    FBConfig_array is array (C.size_t range <>) of aliased FBConfig;
 
 
    --- FBConfigID
    --
+
    subtype FBConfigID       is XID;
    type    FBConfigID_array is array (C.size_t range <>) of aliased FBConfigID;
 
 
    --- ContextID
    --
+
    subtype ContextID       is XID;
    type    ContextID_array is array (C.size_t range <>) of aliased ContextID;
 
 
    --- Window
    --
+
    subtype GLXWindow       is XID;
    type    GLXWindow_array is array (C.size_t range <>) of aliased GLXWindow;
 
 
    --- GLXPbuffer
    --
+
    subtype PBuffer       is XID;
    type    PBuffer_array is array (C.size_t range <>) of aliased PBuffer;
 

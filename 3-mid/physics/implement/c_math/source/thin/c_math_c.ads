@@ -8,12 +8,15 @@ is
 
    --- Real
    --
+
    subtype Real is interfaces.C.C_float;
 
    type Real_array is array (interfaces.C.size_t range <>) of aliased c_math_c.Real;
 
+
    --- Index
    --
+
    subtype Index is interfaces.C.int;
 
    type Index_array is array (interfaces.C.size_t range <>) of aliased c_math_c.Index;

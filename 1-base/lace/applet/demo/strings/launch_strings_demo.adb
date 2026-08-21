@@ -2,6 +2,7 @@ with
      lace.Strings.bounded,
      ada.Text_IO;
 
+
 procedure launch_strings_Demo
 --
 -- Displays a string message in a Pure unit.

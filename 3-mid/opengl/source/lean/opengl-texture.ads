@@ -32,7 +32,7 @@ is
       function to_Texture (the_Image   : in Image;
                            use_Mipmaps : in Boolean := True)    return Object;
       function to_Texture (the_Image   : in lucid_Image;
-                           use_Mipmaps : in Boolean := True)    return Object;
+                           use_Mipmaps : in Boolean    := True) return Object;
    end Forge;
 
 
@@ -56,7 +56,7 @@ is
    procedure set_Image      (Self : in out Object;   To          : in Image;
                                                      use_Mipmaps : in Boolean := True);
    procedure set_Image      (Self : in out Object;   To          : in lucid_Image;
-                                                     use_Mipmaps : in Boolean := True);
+                                                     use_Mipmaps : in Boolean    := True);
 
    function  Size           (Self : in     Object) return Texture.Dimensions;
 

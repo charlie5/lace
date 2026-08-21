@@ -19,12 +19,12 @@ is
    --- Forge
    --
 
-   function new_Sphere (Radius       : in Real;
-                        lat_Count    : in Positive   := 26;
-                        long_Count   : in Positive   := 52;
-                        Image        : in asset_Name := null_Asset;
+   function new_Sphere (Radius          : in Real;
+                        lat_Count       : in Positive        := 26;
+                        long_Count      : in Positive        := 52;
+                        Image           : in asset_Name      := null_Asset;
                         texture_Details : in texture_Set.item;
-                        is_Skysphere : in Boolean    := False) return View;
+                        is_Skysphere    : in Boolean         := False) return View;
 
 
    --------------

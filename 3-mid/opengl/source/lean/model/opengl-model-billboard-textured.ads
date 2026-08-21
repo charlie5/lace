@@ -24,11 +24,11 @@ is
 
    package Forge
    is
-      function new_Billboard (Size            : in Size_t         := default_Size;
+      function new_Billboard (Size            : in Size_t          := default_Size;
                               Plane           : in billboard.Plane;
                               Texture         : in asset_Name;
                               texture_Details : in texture_Set.item;
-                              Lucid           : in Boolean        := False) return View;
+                              Lucid           : in Boolean         := False) return View;
    end Forge;
 
 

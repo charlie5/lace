@@ -2,6 +2,7 @@ with
      lace.Text.utility,
      ada.Text_IO;
 
+
 procedure test_Text_replace
 is
    use

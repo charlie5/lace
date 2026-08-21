@@ -80,7 +80,7 @@ begin
         := gel.Human_v1.Forge.new_Human (the_Applet.gui_World,
                                          null,
                                          null,
-                                         Mass => 0.0,
+                                         Mass         => 0.0,
                                          is_Kinematic => True);
    begin
       --- Setup the human model.

@@ -3,6 +3,7 @@ with
      lace.Subject,
      lace.Observer;
 
+
 package chat.Client
 --
 -- Provides an interface to a chat client.
@@ -39,5 +40,6 @@ is
       end record;
 
    unknown_Client : exception;
+
 
 end chat.Client;

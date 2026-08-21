@@ -17,6 +17,7 @@ is
         bullet_c.Binding,
         Interfaces;
 
+
    ---------
    --- Forge
    --
@@ -41,6 +42,7 @@ is
    -------
    --- Box
    --
+
    type Box_view is access Box;
 
    function new_box_Shape (half_Extents : in Vector_3) return physics.Shape.view
@@ -56,6 +58,7 @@ is
    -----------
    --- Capsule
    --
+
    type Capsule_view is access Capsule;
 
    function new_capsule_Shape (Radii  : in Vector_2;
@@ -72,6 +75,7 @@ is
    --------
    --- Cone
    --
+
    type Cone_view is access Cone;
 
    function new_cone_Shape (Radius,
@@ -87,6 +91,7 @@ is
    ---------------
    --- convex_Hull
    --
+
    type convex_Hull_view is access convex_Hull;
 
    function new_convex_hull_Shape (Points : in physics.Vector_3_array) return physics.Shape.view
@@ -108,6 +113,7 @@ is
    --------
    --- Mesh
    --
+
    type Mesh_view is access Mesh;
 
    function new_mesh_Shape (Model : access math.Geometry.d3.a_Model) return physics.Shape.view
@@ -144,6 +150,7 @@ is
    ------------
    --- Cylinder
    --
+
    type Cylinder_view is access Cylinder;
 
    function new_cylinder_Shape (half_Extents : in Vector_3) return physics.Shape.view
@@ -159,6 +166,7 @@ is
    ---------------
    --- Heightfield
    --
+
    type Heightfield_view is access Heightfield;
 
    function new_heightfield_Shape (Width,
@@ -186,6 +194,7 @@ is
    ---------------
    --- multiSphere
    --
+
    type multiSphere_view is access multiSphere;
 
    function new_multiSphere_Shape (Positions    : in physics.Vector_3_array;
@@ -214,6 +223,7 @@ is
    ---------
    --- Plane
    --
+
    type Plane_view is access Plane;
 
    function new_plane_Shape (Normal : in Vector_3;
@@ -242,8 +252,8 @@ is
    end new_sphere_Shape;
 
 
-   ---------------
-   ---  Attributes
+   --------------
+   --- Attributes
    --
 
    overriding

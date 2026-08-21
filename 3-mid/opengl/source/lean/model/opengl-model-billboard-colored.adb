@@ -69,10 +69,10 @@ is
          the_Vertices : constant access Geometry.colored.Vertex_array := Self.Vertices;
       begin
          the_Vertices.all := Geometry.colored.Vertex_array'
-                               (1 => (site => the_Sites (1),  color => Color),
-                                2 => (site => the_Sites (2),  color => Color),
-                                3 => (site => the_Sites (3),  color => Color),
-                                4 => (site => the_Sites (4),  color => Color));
+                               (1 => (Site => the_Sites (1),  Color => Color),
+                                2 => (Site => the_Sites (2),  Color => Color),
+                                3 => (Site => the_Sites (3),  Color => Color),
+                                4 => (Site => the_Sites (4),  Color => Color));
 
          the_Face := new_Face (Vertices => the_Vertices);
 

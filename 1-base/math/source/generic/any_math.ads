@@ -78,7 +78,7 @@ is
    function to_Percentage (From      : in Real)         return Percentage;
    function to_Real       (Percent   : in Percentage)   return Real;
    function Image         (Percent   : in Percentage;
-                           Precision : in Natural := 5) return String;
+                           Precision : in Natural   := 5) return String;
    function apply         (Percent   : in Percentage;
                            To        : in Real)         return Real;
    function apply         (Left,

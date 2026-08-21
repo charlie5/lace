@@ -20,20 +20,28 @@ is
          Site_world   : aliased c_math_c.Vector_3.Item;
       end record;
 
+
    --- Items
    --
+
    type Items is array (interfaces.C.size_t range <>) of aliased bullet_c.ray_Collision.Item;
+
 
    --- Pointer
    --
+
    type Pointer is access all bullet_c.ray_Collision.Item;
+
 
    --- Pointers
    --
+
    type Pointers is array (interfaces.C.size_t range <>) of aliased bullet_c.ray_Collision.Pointer;
+
 
    --- Pointer_pointer
    --
+
    type Pointer_pointer is access all bullet_c.ray_Collision.Pointer;
 
    function construct return bullet_c.ray_Collision.Item;

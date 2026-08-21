@@ -1,15 +1,16 @@
 with
      lace.Observer,
-
      system.RPC,
 
      ada.Exceptions,
      ada.Strings.unbounded,
      ada.Text_IO;
 
+
 package body chat.Registrar
 is
    use ada.Strings.unbounded;
+
    use type Client.view;
 
    procedure last_chance_Handler (Msg  : in system.Address;
@@ -57,16 +58,20 @@ is
    end safe_Clients;
 
 
-   protected body safe_Clients
+
+   protected
+   body safe_Clients
    is
       procedure add (the_Client : in Client.view)
       is
+
          function "+" (From : in String) return unbounded_String
            renames to_unbounded_String;
       begin
          for i in Clients'Range
          loop
-            if Clients (i).View = null then
+            if Clients (i).View = null
+            then
                Clients (i).View        :=  the_Client;
                Clients (i).Name        := +the_Client.Name;
                Clients (i).as_Observer :=  the_Client.as_Observer;
@@ -76,12 +81,14 @@ is
       end add;
 
 
+
       procedure rid (the_Client : in Client.view)
       is
       begin
          for i in Clients'Range
          loop
-            if Clients (i).View = the_Client then
+            if Clients (i).View = the_Client
+            then
                Clients (i).View := null;
                return;
             end if;
@@ -91,9 +98,10 @@ is
       end rid;
 
 
+
       function all_client_Info return client_Info_array
       is
-         Count  : Natural := 0;
+         Count  : Natural                           := 0;
          Result : client_Info_array (1..max_Clients);
       begin
          for i in Clients'Range
@@ -109,6 +117,7 @@ is
       end all_client_Info;
 
    end safe_Clients;
+
 
 
    procedure register (the_Client : in Client.view)
@@ -128,6 +137,7 @@ is
    end register;
 
 
+
    procedure deregister (the_Client : in Client.view)
    is
    begin
@@ -135,9 +145,10 @@ is
    end deregister;
 
 
+
    function all_Clients return chat.Client.views
    is
-      all_Info : constant client_Info_array := safe_Clients.all_client_Info;
+      all_Info : constant client_Info_array                 := safe_Clients.all_client_Info;
       Result   :          chat.Client.views (all_Info'Range);
    begin
       for i in Result'Range
@@ -149,14 +160,19 @@ is
    end all_Clients;
 
 
+
    task check_Client_lives
    is
       entry halt;
    end check_Client_lives;
 
-   task body check_Client_lives
+
+
+   task
+   body check_Client_lives
    is
       use ada.Text_IO;
+
       Done : Boolean := False;
    begin
       loop
@@ -175,7 +191,7 @@ is
             all_Info    : constant client_Info_array := safe_Clients.all_client_Info;
 
             Dead        : client_Info_array (all_Info'Range);
-            dead_Count  : Natural := 0;
+            dead_Count  : Natural                           := 0;
 
             function "+" (From : in unbounded_String) return String
                           renames to_String;
@@ -184,6 +200,7 @@ is
             loop
                begin
                   Each.View.ping;
+
                exception
                   when system.RPC.communication_Error
                      | storage_Error =>
@@ -203,12 +220,20 @@ is
                   for i in 1 .. dead_Count
                   loop
                      begin
-                        put_Line ("Ridding " & (+Dead (i).Name) & " from " & Each.Name);
+                        put_Line (  "Ridding "
+                                  & (+Dead (i).Name)
+                                  & " from "
+                                  & Each.Name);
                         Each.deregister_Client ( Dead (i).as_Observer,
                                                 +Dead (i).Name);
+
                      exception
                         when chat.Client.unknown_Client =>
-                           put_Line ("Deregister of " & (+Dead (i).Name) & " from " & Each.Name & " is not needed.");
+                           put_Line (  "Deregister of "
+                                     & (+Dead (i).Name)
+                                     & " from "
+                                     & Each.Name
+                                     & " is not needed.");
                      end;
                   end loop;
                end loop;
@@ -225,6 +250,7 @@ is
    end check_Client_lives;
 
 
+
    procedure shutdown
    is
       all_Clients : constant Client.views := chat.Registrar.all_Clients;
@@ -233,6 +259,7 @@ is
       loop
          begin
             Each.Registrar_has_shutdown;
+
          exception
             when system.RPC.communication_Error =>
                null;   -- Client has died. No action needed since we are shutting down.
@@ -243,6 +270,8 @@ is
    end shutdown;
 
 
+
    procedure ping is null;
+
 
 end chat.Registrar;

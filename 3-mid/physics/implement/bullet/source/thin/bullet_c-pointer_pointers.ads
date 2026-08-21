@@ -8,18 +8,25 @@ is
 
    --- Shape_pointer_pointer
    --
+
    type Shape_pointer_pointer is access all bullet_c.Pointers.Shape_pointer;
+
 
    --- Object_pointer_pointer
    --
+
    type Object_pointer_pointer is access all bullet_c.Pointers.Object_pointer;
+
 
    --- Joint_pointer_pointer
    --
+
    type Joint_pointer_pointer is access all bullet_c.Pointers.Joint_pointer;
+
 
    --- Space_pointer_pointer
    --
+
    type Space_pointer_pointer is access all bullet_c.Pointers.Space_pointer;
 
 

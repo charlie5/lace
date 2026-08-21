@@ -63,7 +63,7 @@ is
 
 
 
-   procedure set (Self : in out Object;   Position : in Positive := 1;
+   procedure set (Self : in out Object;   Position : in Positive     := 1;
                                           To       : in Element_array)
    is
       use GL.Pointers;
@@ -100,7 +100,7 @@ is
 
 
 
-   procedure set (Self : in out Object;   Position : in              Positive := 1;
+   procedure set (Self : in out Object;   Position : in              Positive     := 1;
                                           To       : access constant Element_array)
    is
    begin

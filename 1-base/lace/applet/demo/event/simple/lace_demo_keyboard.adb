@@ -2,6 +2,7 @@ with
      lace_demo_Events,
      ada.real_Time;
 
+
 package body lace_demo_Keyboard
 is
    use
@@ -9,19 +10,24 @@ is
         Lace,
         ada.real_Time;
 
+
    --- Simulated Keyboard
    --
 
    the_event_Subject : constant Subject.local.view := Subject.local.forge.new_Subject ("demo.Subject");
 
 
-   task type simulated_Keyboard
+   task
+   type simulated_Keyboard
    is
       entry start;
       entry stop;
    end simulated_Keyboard;
 
-   task body simulated_Keyboard
+
+
+   task
+   body simulated_Keyboard
    is
       Count : Natural            := 0;
       Now   : ada.real_Time.Time := ada.real_Time.Clock;
@@ -62,11 +68,15 @@ is
       return the_event_Subject;
    end as_event_Subject;
 
+
+
    procedure start
    is
    begin
       the_simulated_Keyboard.start;
    end start;
+
+
 
    procedure stop
    is
@@ -74,5 +84,5 @@ is
       the_simulated_Keyboard.stop;
    end stop;
 
-end lace_demo_Keyboard;
 
+end lace_demo_Keyboard;

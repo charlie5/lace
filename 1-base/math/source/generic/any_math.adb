@@ -138,7 +138,7 @@ is
 
 
    function Image (Percent   : in Percentage;
-                   Precision : in Natural := 5) return String
+                   Precision : in Natural   := 5) return String
    is
    begin
       return Image (Real (Percent),

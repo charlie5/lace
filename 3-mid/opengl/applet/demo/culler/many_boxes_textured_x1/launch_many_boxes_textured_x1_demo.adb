@@ -1,6 +1,6 @@
 with
      openGL.Palette,
-     openGL.Model.Box.lit_colored_textured_x1,
+     openGL.Model.box.lit_colored_textured_x1,
      openGL.Visual,
      openGL.Light,
 
@@ -34,16 +34,15 @@ begin
       --
       face_Texture : constant asset_Name := to_Asset ("assets/Face1.bmp");
 
-      the_box_Model : constant Box.lit_colored_textured_x1.view
-        := Box.lit_colored_textured_x1.new_Box
-          (size   => [0.5, 0.5, 0.5],
-           faces  => [front => (colors => [others => (White,    Opaque)]),
-                      rear  => (colors => [others => (Blue,     Opaque)]),
-                      upper => (colors => [others => (Green,    Opaque)]),
-                      lower => (colors => [others => (Green,    Opaque)]),
-                      left  => (colors => [others => (Dark_Red, Opaque)]),
-                      right => (colors => [others => (Red,      Opaque)])],
-          Texture => face_Texture);
+      the_box_Model : constant box.lit_colored_textured_x1.view
+        := box.lit_colored_textured_x1.new_Box (Size    => [0.5, 0.5, 0.5],
+                                                Faces   => [Front => (Colors => [others => (White,    Opaque)]),
+                                                            Rear  => (Colors => [others => (Blue,     Opaque)]),
+                                                            Upper => (Colors => [others => (Green,    Opaque)]),
+                                                            Lower => (Colors => [others => (Green,    Opaque)]),
+                                                            Left  => (Colors => [others => (Dark_Red, Opaque)]),
+                                                            Right => (Colors => [others => (Red,      Opaque)])],
+                                                Texture => face_Texture);
 
       Size : constant Integer     :=  70;
       x    :          openGL.Real := -openGL.Real (Size) / 2.0;

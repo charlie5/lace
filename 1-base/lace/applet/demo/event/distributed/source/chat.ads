@@ -4,4 +4,6 @@ package Chat
 --
 is
    pragma Pure;
+
+
 end Chat;

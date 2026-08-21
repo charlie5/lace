@@ -999,7 +999,7 @@ is
 
       if detect_Motion
       then
-         lace.Event.Utility.connect (lace.Observer.view (Self.local_Subject_and_Observer),
+         lace.Event.utility.connect (lace.Observer.view (Self.local_Subject_and_Observer),
                                      lace.Subject.view  (Self.Mouse),
                                      Self.mouse_motion_Response'unchecked_Access,
                                      to_Kind (gel.Mouse.motion_Event'Tag));

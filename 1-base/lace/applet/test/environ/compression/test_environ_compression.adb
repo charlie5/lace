@@ -2,6 +2,7 @@ with
      lace.Environ.Paths,
      ada.Text_IO;
 
+
 procedure test_Environ_compression
 is
    use
@@ -19,6 +20,7 @@ begin
 
    --- Compress single files.
    --
+
    save      (+"digits.txt-original", digits_Text);
    copy_File (+"digits.txt-original", To => +"digits.txt");
 
@@ -39,6 +41,7 @@ begin
 
    --- Compress directories.
    --
+
    ensure_Folder (+"archive-original");
    move_Files    ("digits*",            To => +"archive-original");
 
@@ -63,6 +66,7 @@ begin
 
    --- Tidy up.
    --
+
    go_to_Folder (+"..");
    rid_Folder   (+"tmp");
 

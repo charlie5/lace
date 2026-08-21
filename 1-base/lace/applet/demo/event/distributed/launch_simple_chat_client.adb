@@ -1,12 +1,12 @@
 with
      chat.Client.local,
-
      lace.Event.utility,
 
      ada.Characters.latin_1,
      ada.command_Line,
      ada.Text_IO,
      ada.Exceptions;
+
 
 procedure launch_simple_chat_Client
 --

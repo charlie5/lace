@@ -57,8 +57,8 @@ is
    procedure free (the_Shape : in out physics.Shape.view);
 
 
-   ---------------
-   ---  Attributes
+   --------------
+   --- Attributes
    --
 
    overriding

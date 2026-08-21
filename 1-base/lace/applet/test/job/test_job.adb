@@ -6,10 +6,12 @@ with
 
 procedure test_Job
 is
+
    procedure log (Message : in String := "") renames ada.Text_IO.put_Line;
 
 
    type hello_Job is new lace.Job.item with null record;
+
 
    overriding
    procedure perform (Self : in out hello_Job)

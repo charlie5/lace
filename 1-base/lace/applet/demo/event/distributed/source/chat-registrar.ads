@@ -1,6 +1,7 @@
 with
      chat.Client;
 
+
 package chat.Registrar
 --
 -- A singleton providing the central chat registrar.
@@ -18,5 +19,6 @@ is
 
    procedure ping;
    procedure shutdown;
+
 
 end chat.Registrar;

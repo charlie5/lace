@@ -94,11 +94,11 @@ is
    --
 
    function to_Text (From     : in wide_String;
-                     Trim     : in Boolean := False) return Item;
+                     Trim     : in Boolean    := False) return Item;
 
    function to_Text (From     : in wide_String;
                      Capacity : in Natural;
-                     Trim     : in Boolean := False) return Item;
+                     Trim     : in Boolean    := False) return Item;
 
    function "+"     (From     : in wide_String)      return Item;
 

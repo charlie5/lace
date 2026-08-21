@@ -1,10 +1,11 @@
 with
      openGL.Visual,
-     openGL.Model.Billboard.        textured,
-     openGL.Model.Billboard.colored_textured,
+     openGL.Model.billboard.textured,
+     openGL.Model.billboard.colored_textured,
      openGL.texture_Set,
      openGL.Palette,
      openGL.Demo;
+
 
 procedure launch_render_Billboards
 --
@@ -26,18 +27,18 @@ begin
    declare
       -- The Models.
       --
-      the_Billboard_Model : constant Model.Billboard.textured.view
-        := Model.Billboard.textured.forge.new_Billboard (--Scale   => (1.0, 1.0, 1.0),
-                                                         Plane   => Billboard.xy,
-                                                         Texture => the_Texture,
-                                                         texture_Details  => openGL.texture_Set.to_Set ([1 => the_Texture]));
+      the_Billboard_Model : constant Model.billboard.textured.view
+        := Model.billboard.textured.forge.new_Billboard (--Scale   => (1.0, 1.0, 1.0),
+                                                         Plane           => Billboard.xy,
+                                                         Texture         => the_Texture,
+                                                         texture_Details => openGL.texture_Set.to_Set ([1 => the_Texture]));
 
-      the_colored_Billboard_Model : constant Model.Billboard.colored_textured.view
-        := Model.Billboard.colored_textured.new_Billboard (--Scale   => (1.0, 1.0, 1.0),
-                                                           Plane   => Billboard.xy,
-                                                           Color   => (Palette.Green, Opaque),
-                                                           Texture => the_Texture,
-                                                           texture_Details  => openGL.texture_Set.to_Set ([1 => the_Texture]));
+      the_colored_Billboard_Model : constant Model.billboard.colored_textured.view
+        := Model.billboard.colored_textured.new_Billboard (--Scale   => (1.0, 1.0, 1.0),
+                                                           Plane           => Billboard.xy,
+                                                           Color           => (Palette.Green, Opaque),
+                                                           Texture         => the_Texture,
+                                                           texture_Details => openGL.texture_Set.to_Set ([1 => the_Texture]));
       -- The Sprites.
       --
       use openGL.Visual.Forge;

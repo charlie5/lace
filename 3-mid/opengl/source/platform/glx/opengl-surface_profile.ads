@@ -55,7 +55,7 @@ is
    desired_Qualities_unavailable : exception;
 
    procedure define (Self : in out Item;   Screen  : access openGL.Screen.item'Class;
-                                           Desired : in     Qualities := default_Qualities);
+                                           Desired : in     Qualities               := default_Qualities);
 
    function  fetch_All return surface_Profile.items;
 

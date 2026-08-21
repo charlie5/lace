@@ -16,8 +16,8 @@ is
    --
 
    function new_Sphere (Radius     : in Real;
-                        lat_Count  : in Positive := openGL.Model.sphere.default_latitude_Count;
-                        long_Count : in Positive := openGL.Model.sphere.default_longitude_Count;
+                        lat_Count  : in Positive          := openGL.Model.sphere.default_latitude_Count;
+                        long_Count : in Positive          := openGL.Model.sphere.default_longitude_Count;
                         Color      : in openGL.lucid_Color) return View;
 
 

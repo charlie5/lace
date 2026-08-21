@@ -99,7 +99,7 @@ is
    --
 
    function to_height_Map (image_Filename : in asset_Name;
-                           Scale          : in Real  := 1.0) return height_Map_view
+                           Scale          : in Real      := 1.0) return height_Map_view
    is
       File    :          ada.Streams.Stream_IO.File_Type;
       Image   :          GID.Image_Descriptor;

@@ -584,6 +584,7 @@ is
          then
             declare
                use collada.Library.geometries;
+
                the_Geometries : constant xml.Elements := the_Library.Children (named => "geometry");
             begin
                the_Document.Libraries.Geometries.Contents := new Geometry_array (the_Geometries'Range);
@@ -681,6 +682,7 @@ is
          then
             declare
                use collada.Library.controllers;
+
                the_Controllers : constant xml.Elements := the_Library.Children (named => "controller");
             begin
                the_Document.Libraries.controllers.Contents := new Controller_array (the_Controllers'Range);
@@ -743,6 +745,7 @@ is
          then
             declare
                use collada.Library.visual_scenes;
+
                the_visual_Scenes : constant xml.Elements := the_Library.Children (named => "visual_scene");
             begin
                the_Document.Libraries.visual_Scenes.Contents := new visual_Scene_array (the_visual_Scenes'Range);
@@ -824,6 +827,7 @@ is
                                  then
                                     declare
                                        use collada.Math;
+
                                        the_Data : constant Vector_4 := Vector_4 (to_Float_array (the_Child.Data));
                                     begin
                                        the_Node.add (Transform' (Kind  => Rotate,
@@ -901,6 +905,7 @@ is
          then
             declare
                use collada.Library.animations;
+
                the_Animations : constant xml.Elements := the_Library.Children (named => "animation");
             begin
                the_document.Libraries.animations.Contents := new Animation_array (the_Animations'Range);
@@ -948,6 +953,7 @@ is
 
       --- Parse the 'scene' element.
       --
+
       -- TODO
 
       return the_Document;

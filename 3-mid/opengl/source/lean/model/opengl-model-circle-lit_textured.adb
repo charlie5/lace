@@ -10,9 +10,9 @@ is
    --- Forge
    --
 
-   function new_circle (Radius          : in Real;
+   function new_Circle (Radius          : in Real;
                         texture_Details : in texture_Set.item;
-                        Sides           : in Positive           := 24) return View
+                        Sides           : in Positive        := 24) return View
    is
       Self : constant View := new Item;
    begin
@@ -21,7 +21,7 @@ is
       Self.Sides  := Sides;
 
       return Self;
-   end new_circle;
+   end new_Circle;
 
 
    ------------------

@@ -5,7 +5,7 @@ with
      math.Algebra.linear.d3,
      ada.Text_IO;
 
-use  ada.Text_IO;
+use ada.Text_IO;
 
 
 package body physics.Motor.spring.angular

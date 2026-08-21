@@ -28,8 +28,8 @@ is
    procedure define (Self : in out Item;   World         : access gel    .World.item'Class;
                                            Model         : access openGL .Model.item'Class;
                                            physics_Model : access physics.Model.item'Class;
-                                           Mass          : in     math.Real := 0.0;
-                                           is_Kinematic  : in     Boolean   := True);
+                                           Mass          : in     math.Real               := 0.0;
+                                           is_Kinematic  : in     Boolean                 := True);
 
 
    type bone_Sprites is array (human_types_v1.bone_Id) of gel.Sprite.view;
@@ -43,8 +43,8 @@ is
       function new_Human (World         : access gel    .World.item'Class;
                           Model         : access openGL .Model.item'Class;
                           physics_Model : access physics.Model.item'Class;
-                          Mass          : in     math.Real := 0.0;
-                          is_Kinematic  : in     Boolean   := False) return Human_v1.view;
+                          Mass          : in     math.Real               := 0.0;
+                          is_Kinematic  : in     Boolean                 := False) return Human_v1.view;
 
       function new_Human (bone_Sprites      : in     human_v1.bone_Sprites;
                           controller_Joints : in     human_types_v1.controller_Joints;

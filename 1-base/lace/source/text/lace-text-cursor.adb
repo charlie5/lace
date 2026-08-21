@@ -200,8 +200,8 @@ is
 
 
 
-   procedure skip_Token (Self : in out Item;   Delimiter  : in String    := " ";
-                                               match_Case : in Boolean   := True)
+   procedure skip_Token (Self : in out Item;   Delimiter  : in String  := " ";
+                                               match_Case : in Boolean := True)
    is
       ignored_Token : String := Self.next_Token (Delimiter, match_Case);
    begin

@@ -133,8 +133,8 @@ is
    is
       function new_Rig (in_World                : in gel.World.view;
                         Model                   : in openGL.Model.view;
-                        Mass                    : in Real    := 0.0;
-                        is_Kinematic            : in Boolean := False) return Rig.view;
+                        Mass                    : in Real             := 0.0;
+                        is_Kinematic            : in Boolean          := False) return Rig.view;
 
       function new_Rig (bone_Sprites            : in bone_id_Map_of_sprite;
                         joint_inv_bind_Matrices : in inverse_bind_matrix_Vector;

@@ -1,6 +1,7 @@
 with
      lace.Subject.local;
 
+
 package lace_demo_Keyboard
 --
 -- Provides a simulated keyboard which periodically emits 'key' events.
@@ -10,5 +11,6 @@ is
 
    procedure start;
    procedure stop;
+
 
 end lace_demo_Keyboard;

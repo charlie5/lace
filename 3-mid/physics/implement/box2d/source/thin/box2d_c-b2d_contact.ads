@@ -19,12 +19,16 @@ is
          Site     : aliased c_math_c.Vector_3.Item;
       end record;
 
+
    --- Item_array
    --
+
    type Item_array is array (interfaces.C.size_t range <>) of aliased box2d_c.b2d_Contact.Item;
+
 
    --- Pointer
    --
+
    package C_Pointers is new interfaces.C.Pointers (Index              => interfaces.C.size_t,
                                                     Element            => box2d_c.b2d_Contact.Item,
                                                     Element_array      => box2d_c.b2d_Contact.item_array,
@@ -33,12 +37,16 @@ is
 
    subtype Pointer is C_Pointers.Pointer;
 
+
    --- Pointer_array
    --
+
    type Pointer_array is array (interfaces.C.size_t range <>) of aliased box2d_c.b2d_Contact.Pointer;
+
 
    --- Pointer_pointer
    --
+
    package C_Pointer_Pointers is new interfaces.C.Pointers (Index              => interfaces.C.size_t,
                                                             Element            => box2d_c.b2d_Contact.Pointer,
                                                             Element_array      => box2d_c.b2d_Contact.Pointer_array,

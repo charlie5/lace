@@ -19,7 +19,6 @@ is
    subtype connector_Vector  is connector_Vectors.Vector;
 
 
-
    --------------------
    --- Safe connectors.
    --
@@ -84,13 +83,13 @@ is
                lace.Event.utility.connect (the_Observer  => my_Connection.Observer,
                                            to_Subject    => my_Connection.Subject,
                                            with_Response => my_Connection.Response,
-                                           to_Event_Kind => Event.Kind (+my_Connection.Event_Kind));
+                                           to_event_Kind => Event.Kind (+my_Connection.event_Kind));
 
             else
                lace.Event.utility.disconnect (the_Observer  => my_Connection.Observer,
                                               from_Subject  => my_Connection.Subject,
                                               for_Response  => my_Connection.Response,
-                                              to_Event_Kind => Event.Kind (+my_Connection.Event_Kind),
+                                              to_event_Kind => Event.Kind (+my_Connection.event_Kind),
                                               subject_Name  => my_Connection.Subject.Name);
             end if;
 
@@ -104,7 +103,7 @@ is
                new_Line;
                put_Line ("Subject:  '" &   my_Connection.Subject.Name  & "'.");
                put_Line ("Observer: '" &   my_Connection.Observer.Name & "'.");
-               put_Line ("Event:    '" & (+my_Connection.Event_Kind)   & "'.");
+               put_Line ("Event:    '" & (+my_Connection.event_Kind)   & "'.");
                put_Line ("Response  '" &   my_Connection.Response.Name & "'.");
                new_Line;
                put_Line ("Continuing.");
@@ -122,7 +121,7 @@ is
          new_Line;
          put_Line ("Subject:  '" &   my_Connection.Subject.Name  & "'.");
          put_Line ("Observer: '" &   my_Connection.Observer.Name & "'.");
-         put_Line ("Event:    '" & (+my_Connection.Event_Kind)   & "'.");
+         put_Line ("Event:    '" & (+my_Connection.event_Kind)   & "'.");
          put_Line ("Response  '" &   my_Connection.Response.Name & "'.");
          new_Line (2);
    end Connector;
@@ -219,7 +218,7 @@ is
                   new_Line;
                   put_Line ("Subject:  '" &   each_Connection.Subject.Name  & "'.");
                   put_Line ("Observer: '" &   each_Connection.Observer.Name & "'.");
-                  put_Line ("Event:    '" & (+each_Connection.Event_Kind)   & "'.");
+                  put_Line ("Event:    '" & (+each_Connection.event_Kind)   & "'.");
                   put_Line ("Response  '" &   each_Connection.Response.Name & "'.");
                   new_Line;
                   put_Line ("Continuing.");
@@ -349,19 +348,19 @@ is
    procedure connect (Self : in out Item;   the_Observer  : in Observer.view;
                                             to_Subject    : in Subject .view;
                                             with_Response : in Response.view;
-                                            to_Event_Kind : in Event.Kind)
+                                            to_event_Kind : in Event.Kind)
    is
       use lace.Text;
 
       new_Connection : Connection := (Observer      => the_Observer,
                                       Subject       => to_Subject,
                                       Response      => with_Response,
-                                      Event_Kind    => <>,
+                                      event_Kind    => <>,
                                       subject_Name  => <>,
                                       is_Connecting => True);
    begin
-      String_is (new_Connection.Event_Kind,
-                 String (to_Event_Kind));
+      String_is (new_Connection.event_Kind,
+                 String (to_event_Kind));
 
       Self.Connections.add (new_Connection);
    end connect;
@@ -371,7 +370,7 @@ is
    procedure disconnect (Self : in out Item;   the_Observer  : in Observer.view;
                                                from_Subject  : in Subject .view;
                                                for_Response  : in Response.view;
-                                               to_Event_Kind : in Event.Kind;
+                                               to_event_Kind : in Event.Kind;
                                                subject_Name  : in String)
    is
       use lace.Text;
@@ -379,12 +378,12 @@ is
       new_Disconnection : Connection := (Observer      => the_Observer,
                                          Subject       => from_Subject,
                                          Response      => for_Response,
-                                         Event_Kind    => <>,
+                                         event_Kind    => <>,
                                          subject_Name  => <>,
                                          is_Connecting => False);
    begin
       String_is (new_Disconnection.event_Kind,
-                 String (to_Event_Kind));
+                 String (to_event_Kind));
 
       String_is (new_Disconnection.subject_Name,
                  subject_Name);

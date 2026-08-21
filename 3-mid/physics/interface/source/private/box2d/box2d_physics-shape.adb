@@ -127,6 +127,7 @@ is
    end new_box_Shape;
 
 
+
    function new_capsule_Shape (Radii  : in Vector_2;
                                Height : in Real) return physics.Shape.view
    is
@@ -136,6 +137,7 @@ is
    end new_capsule_Shape;
 
 
+
    function new_cone_Shape (Radius,
                             Height : in Real) return physics.Shape.view
    is
@@ -143,6 +145,7 @@ is
       raise physics.unsupported_Error;
       return null;
    end new_cone_Shape;
+
 
 
    function new_convex_hull_Shape (Points : in physics.Vector_3_array) return physics.Shape.view
@@ -162,6 +165,7 @@ is
    end new_cylinder_Shape;
 
 
+
    function new_heightfield_Shape (Width,
                                    Depth       : in Positive;
                                    Heights     : access constant Real;
@@ -175,6 +179,7 @@ is
    end new_heightfield_Shape;
 
 
+
    function new_multiSphere_Shape (Positions : in physics.Vector_3_array;
                                    Radii     : in Vector) return physics.Shape.view
    is
@@ -184,6 +189,7 @@ is
    end new_multiSphere_Shape;
 
 
+
    function new_plane_Shape (Normal : in Vector_3;
                              Offset : in Real) return physics.Shape.view
    is
@@ -191,6 +197,7 @@ is
       raise physics.unsupported_Error;
       return null;
    end new_plane_Shape;
+
 
 
    function new_sphere_Shape (Radius : in math.Real) return physics.Shape.view

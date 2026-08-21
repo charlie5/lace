@@ -30,9 +30,12 @@ is
 
    procedure add_Camera           (Self : in out Item'Class;   the_Camera : in Camera.view);
 
-   procedure is_moving            (Self : in out Item'Class;   Direction : in dolly.Direction;   Now : in Boolean := True);
-   procedure is_spinning          (Self : in out Item'Class;   Direction : in dolly.Direction;   Now : in Boolean := True);
-   procedure is_orbiting          (Self : in out Item'Class;   Direction : in dolly.Direction;   Now : in Boolean := True);
+   procedure is_moving            (Self : in out Item'Class;   Direction : in dolly.Direction;
+                                                               Now       : in Boolean        := True);
+   procedure is_spinning          (Self : in out Item'Class;   Direction : in dolly.Direction;
+                                                               Now       : in Boolean        := True);
+   procedure is_orbiting          (Self : in out Item'Class;   Direction : in dolly.Direction;
+                                                               Now       : in Boolean        := True);
 
    function  Speed                (Self : in     Item)       return math.Real;
    procedure Speed_is             (Self : in out Item;   Now   : in math.Real);

@@ -187,7 +187,7 @@ is
    is
       use lace.Subject_and_deferred_Observer.Forge;
    begin
-      Self.local_Subject_and_deferred_Observer := new_Subject_and_Observer (name => Name & " world" & Id'Image);
+      Self.local_Subject_and_deferred_Observer := new_Subject_and_Observer (Name => Name & " world" & Id'Image);
 
       Self.Id            := Id;
       Self.space_Kind    := space_Kind;
@@ -720,7 +720,7 @@ is
 
 
    procedure add (Self : access Item;   the_Sprite   : in gel.Sprite.view;
-                                        and_Children : in Boolean := False)
+                                        and_Children : in Boolean        := False)
    is
 
       procedure add_single_Sprite (Single : in out Sprite.item'Class)
@@ -777,7 +777,7 @@ is
 
 
    procedure rid (Self : in out Item'Class;   the_Sprite   : in gel.Sprite.view;
-                                              and_Children : in Boolean := False)
+                                              and_Children : in Boolean        := False)
    is
 
       procedure rid_single_Sprite (Single : in out Sprite.item'Class)

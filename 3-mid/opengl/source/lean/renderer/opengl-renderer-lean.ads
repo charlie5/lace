@@ -116,7 +116,7 @@ is
    procedure render       (Self : in out Item;   to_Surface : in Surface.view := null);
    procedure add_Font     (Self : in out Item;   font_Id    : in Font.font_Id);
    procedure Screenshot   (Self : in out Item;   Filename   : in String;
-                                                 with_Alpha : in Boolean := False);
+                                                 with_Alpha : in Boolean      := False);
 
    function  is_Busy      (Self : in Item) return Boolean;
 

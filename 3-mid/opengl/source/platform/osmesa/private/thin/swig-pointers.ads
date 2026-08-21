@@ -12,6 +12,7 @@ package swig.Pointers
 is
    --- void_ptr
    --
+
    package C_void_ptr_Pointers is new interfaces.c.Pointers (Index              => interfaces.c.size_t,
                                                              Element            => swig.void_ptr,
                                                              Element_array      => void_ptr_array,
@@ -349,9 +350,9 @@ is
    type std_string_array   is array (interfaces.c.size_t range <>) of aliased std_String;
 
 
-
    --- Utility
    --
+
    package void_Conversions is new system.Address_To_Access_Conversions (swig.Void);
 
 

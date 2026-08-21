@@ -46,7 +46,7 @@ is
 
    overriding
    procedure add (Self : access Item;   the_Sprite   : in gel.Sprite.view;
-                                        and_Children : in Boolean := False);
+                                        and_Children : in Boolean        := False);
 
    overriding
    procedure evolve (Self : in out Item);

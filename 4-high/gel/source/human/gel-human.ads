@@ -26,8 +26,8 @@ is
    procedure define (Self : in out Item;   World         : access gel.World.item'Class;
                                            Model         : access openGL.Model.item'Class;
                                            physics_Model : access physics.Model.item'Class;
-                                           Mass          : in     math.Real                    := 0.0;
-                                           is_Kinematic  : in     Boolean                      := False);
+                                           Mass          : in     math.Real               := 0.0;
+                                           is_Kinematic  : in     Boolean                 := False);
 
 
 

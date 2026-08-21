@@ -294,7 +294,7 @@ is
 
    procedure Set_Super_String (Target : out Super_String;
                                Source : in  String;
-                               Drop   : in  Truncation := Error)
+                               Drop   : in  Truncation  := Error)
    is
       Slen       : constant Natural := Source'Length;
       Max_Length : constant Positive := Target.Max_Length;
@@ -330,7 +330,7 @@ is
 
    function Super_Append (Left  : in Super_String;
                           Right : in Super_String;
-                          Drop  : in Truncation := Error) return Super_String
+                          Drop  : in Truncation  := Error) return Super_String
    is
       Max_Length : constant Positive    := Left.Max_Length;
       Result : Super_String (Max_Length);
@@ -379,7 +379,7 @@ is
 
    procedure Super_Append (Source   : in out Super_String;
                            new_Item : in     Super_String;
-                           Drop     : in     Truncation := Error)
+                           Drop     : in     Truncation  := Error)
    is
       Max_Length : constant Positive := Source.Max_Length;
       Llen       : constant Natural := Source.Current_Length;
@@ -473,7 +473,7 @@ is
 
    procedure Super_Append (Source   : in out Super_String;
                            new_Item : in     String;
-                           Drop     : in     Truncation := Error)
+                           Drop     : in     Truncation  := Error)
    is
       Max_Length : constant Positive := Source.Max_Length;
       Llen   : constant Natural := Source.Current_Length;
@@ -605,7 +605,7 @@ is
 
    procedure Super_Append (Source   : in out Super_String;
                            new_Item : in     Character;
-                           Drop     : in     Truncation := Error)
+                           Drop     : in     Truncation  := Error)
    is
       Max_Length : constant Positive := Source.Max_Length;
       Llen       : constant Natural  := Source.Current_Length;
@@ -869,8 +869,8 @@ is
 
    procedure Super_Head (Source : in out Super_String;
                          Count  : in     Natural;
-                         Pad    : in     Character  := Space;
-                         Drop   : in     Truncation := Error)
+                         Pad    : in     Character   := Space;
+                         Drop   : in     Truncation  := Error)
    is
       Max_Length : constant Positive       := Source.Max_Length;
       Slen       : constant Natural        := Source.Current_Length;
@@ -934,7 +934,7 @@ is
 
    function Super_Index (Source  : in Super_String;
                          Pattern : in String;
-                         Going   : in Direction := Forward;
+                         Going   : in Direction                      := Forward;
                          Mapping : in Maps.Character_Mapping_Function) return Natural
    is
    begin
@@ -973,7 +973,7 @@ is
    function Super_Index (Source  : in Super_String;
                          Pattern : in String;
                          From    : in Positive;
-                         Going   : in Direction := Forward;
+                         Going   : in Direction                      := Forward;
                          Mapping : in Maps.Character_Mapping_Function) return Natural
    is
    begin
@@ -987,8 +987,8 @@ is
    function Super_Index (Source : in Super_String;
                          Set    : in Maps.Character_Set;
                          From   : in Positive;
-                         Test   : in Membership := Inside;
-                         Going  : in Direction  := Forward) return Natural
+                         Test   : in Membership        := Inside;
+                         Going  : in Direction         := Forward) return Natural
    is
    begin
       return Search.Index
@@ -1012,7 +1012,7 @@ is
 
    function Super_Index_Non_Blank (Source : in Super_String;
                                    From   : in Positive;
-                                   Going  : in Direction := Forward) return Natural
+                                   Going  : in Direction   := Forward) return Natural
    is
    begin
       return Search.Index_Non_Blank
@@ -1573,8 +1573,8 @@ is
 
    procedure Super_Tail (Source : in out Super_String;
                          Count  : in     Natural;
-                         Pad    : in     Character  := Space;
-                         Drop   : in     Truncation := Error)
+                         Pad    : in     Character   := Space;
+                         Drop   : in     Truncation  := Error)
    is
       Max_Length : constant Positive := Source.Max_Length;
       Slen       : constant Natural  := Source.Current_Length;

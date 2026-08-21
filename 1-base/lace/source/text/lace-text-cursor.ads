@@ -29,10 +29,10 @@ is
                                                 match_Case : in Boolean   := True;
                                                 Trim       : in Boolean   := False) return String;
 
-   function  next_Line   (Self : in out Item;   Trim       : in Boolean   := False) return String;
+   function  next_Line   (Self : in out Item;   Trim       : in Boolean := False) return String;
 
-   procedure skip_Token  (Self : in out Item;   Delimiter  : in String    := " ";
-                                                match_Case : in Boolean   := True);
+   procedure skip_Token  (Self : in out Item;   Delimiter  : in String  := " ";
+                                                match_Case : in Boolean := True);
 
    procedure skip_White  (Self : in out Item);
    procedure skip_Line   (Self : in out Item);

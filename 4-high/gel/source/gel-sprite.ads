@@ -69,8 +69,8 @@ is
                                            physics_Model  : access physics.Model.item'Class;
                                            owns_Graphics  : in     Boolean;
                                            owns_Physics   : in     Boolean;
-                                           is_Kinematic   : in     Boolean := False;
-                                           user_Data      : in     any_user_Data_view := null);
+                                           is_Kinematic   : in     Boolean                 := False;
+                                           user_Data      : in     any_user_Data_view      := null);
 
    procedure destroy      (Self : access Item;   and_Children : in Boolean);
    function  is_Destroyed (Self : in     Item) return Boolean;
@@ -81,25 +81,25 @@ is
    is
       function  to_Sprite (Name           : in     String;
                            World          : in     World_view;
-                           at_Site        : in     Vector_3           := [0.0, 0.0, 0.0];
-                           and_Spin       : in     Matrix_3x3         := Identity_3x3;
+                           at_Site        : in     Vector_3                := [0.0, 0.0, 0.0];
+                           and_Spin       : in     Matrix_3x3              := Identity_3x3;
                            graphics_Model : access openGL. Model.item'Class;
                            physics_Model  : access physics.Model.item'Class;
                            owns_Graphics  : in     Boolean;
                            owns_Physics   : in     Boolean;
-                           is_Kinematic   : in     Boolean            := False;
-                           user_Data      : in     any_user_Data_view := null) return Item;
+                           is_Kinematic   : in     Boolean                 := False;
+                           user_Data      : in     any_user_Data_view      := null) return Item;
 
       function new_Sprite (Name           : in     String;
                            World          : in     World_view;
-                           at_Site        : in     Vector_3           := [0.0, 0.0, 0.0];
-                           and_Spin       : in     Matrix_3x3         := Identity_3x3;
+                           at_Site        : in     Vector_3                := [0.0, 0.0, 0.0];
+                           and_Spin       : in     Matrix_3x3              := Identity_3x3;
                            graphics_Model : access openGL. Model.item'Class;
                            physics_Model  : access physics.Model.item'Class;
-                           owns_Graphics  : in     Boolean            := True;
-                           owns_Physics   : in     Boolean            := True;
-                           is_Kinematic   : in     Boolean            := False;
-                           user_Data      : in     any_user_Data_view := null) return View;
+                           owns_Graphics  : in     Boolean                 := True;
+                           owns_Physics   : in     Boolean                 := True;
+                           is_Kinematic   : in     Boolean                 := False;
+                           user_Data      : in     any_user_Data_view      := null) return View;
    end Forge;
 
 

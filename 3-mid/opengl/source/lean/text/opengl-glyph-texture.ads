@@ -31,7 +31,7 @@ is
    function new_Glyph (glyth_Slot       : in freetype_c.FT_GlyphSlot.item;
                        texture_Id       : in openGL.Texture.texture_Name;
                        xOffset, yOffset : in Integer;
-                       Width,   Height    : in Integer) return Glyph.texture.view;
+                       Width,   Height  : in Integer) return Glyph.texture.view;
    --
    -- glyth_Slot:       The Freetype glyph to be processed.
    -- texture_Id:       The id of the texture that this glyph will be drawn in.

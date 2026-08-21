@@ -39,6 +39,7 @@ is
    begin
       begin
          Result.x := c_math_c.Real (Self (1));
+
       exception
          when constraint_Error =>
             if Self (1) > 0.0
@@ -49,6 +50,7 @@ is
 
       begin
          Result.y := c_math_c.Real (Self (2));
+
       exception
          when constraint_Error =>
             if Self (2) > 0.0
@@ -77,6 +79,7 @@ is
    begin
       begin
          Result.x := c_math_c.Real (Self (1));
+
       exception
          when constraint_Error =>
             if Self (1) > 0.0
@@ -87,6 +90,7 @@ is
 
       begin
          Result.y := c_math_c.Real (Self (2));
+
       exception
          when constraint_Error =>
             if Self (2) > 0.0
@@ -97,6 +101,7 @@ is
 
       begin
          Result.z := c_math_c.Real (Self (3));
+
       exception
          when constraint_Error =>
             if Self (3) > 0.0

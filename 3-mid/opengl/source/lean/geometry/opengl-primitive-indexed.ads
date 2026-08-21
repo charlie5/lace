@@ -21,11 +21,11 @@ is
 
    function  new_Primitive (Kind       : in facet_Kind;
                             Indices    : in openGL.Indices;
-                            line_Width : in Real := unused_line_Width) return Primitive.indexed.view;
+                            line_Width : in Real          := unused_line_Width) return Primitive.indexed.view;
 
    function  new_Primitive (Kind       : in facet_Kind;
                             Indices    : in openGL.long_Indices;
-                            line_Width : in Real := unused_line_Width) return Primitive.indexed.view;
+                            line_Width : in Real               := unused_line_Width) return Primitive.indexed.view;
 
    procedure define  (Self : in out Item;   Kind       : in facet_Kind;
                                             Indices    : in openGL.Indices;

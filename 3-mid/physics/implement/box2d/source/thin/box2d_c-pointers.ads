@@ -14,6 +14,7 @@ is
 
    --- Shape_pointer
    --
+
    package C_Shape_Pointers is new interfaces.c.Pointers (Index              => interfaces.c.size_t,
                                                           Element            => box2d_c.Shape,
                                                           Element_array      => box2d_c.Shape_array,
@@ -21,12 +22,16 @@ is
 
    subtype Shape_pointer is C_Shape_Pointers.Pointer;
 
+
    --- Shape_pointer_array
    --
+
    type Shape_pointer_array is array (interfaces.C.size_t range <>) of aliased box2d_c.Pointers.Shape_pointer;
+
 
    --- Object_pointer
    --
+
    package C_Object_Pointers is new interfaces.c.Pointers (Index              => interfaces.c.size_t,
                                                            Element            => box2d_c.Object,
                                                            Element_array      => box2d_c.Object_array,
@@ -34,12 +39,16 @@ is
 
    subtype Object_pointer is C_Object_Pointers.Pointer;
 
+
    --- Object_pointer_array
    --
+
    type Object_pointer_array is array (interfaces.C.size_t range <>) of aliased box2d_c.Pointers.Object_pointer;
+
 
    --- Joint_pointer
    --
+
    package C_Joint_Pointers is new interfaces.c.Pointers (Index              => interfaces.c.size_t,
                                                           Element            => box2d_c.Joint,
                                                           Element_array      => box2d_c.Joint_array,
@@ -47,12 +56,16 @@ is
 
    subtype Joint_pointer is C_Joint_Pointers.Pointer;
 
+
    --- Joint_pointer_array
    --
+
    type Joint_pointer_array is array (interfaces.C.size_t range <>) of aliased box2d_c.Pointers.Joint_pointer;
+
 
    --- Space_pointer
    --
+
    package C_Space_Pointers is new interfaces.c.Pointers (Index              => interfaces.c.size_t,
                                                           Element            => box2d_c.Space,
                                                           Element_array      => box2d_c.Space_array,
@@ -60,12 +73,16 @@ is
 
    subtype Space_pointer is C_Space_Pointers.Pointer;
 
+
    --- Space_pointer_array
    --
+
    type Space_pointer_array is array (interfaces.C.size_t range <>) of aliased box2d_c.Pointers.Space_pointer;
+
 
    --- b2Joint_pointer
    --
+
    package C_b2Joint_Pointers is new interfaces.c.Pointers (Index              => interfaces.c.size_t,
                                                             Element            => box2d_c.b2Joint,
                                                             Element_array      => box2d_c.b2Joint_array,
@@ -73,8 +90,10 @@ is
 
    subtype b2Joint_pointer is C_b2Joint_Pointers.Pointer;
 
+
    --- b2Joint_pointer_array
    --
+
    type b2Joint_pointer_array is array (interfaces.C.size_t range <>) of aliased box2d_c.Pointers.b2Joint_pointer;
 
 

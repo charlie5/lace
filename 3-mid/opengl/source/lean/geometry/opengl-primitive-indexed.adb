@@ -59,7 +59,7 @@ is
 
    function new_Primitive (Kind       : in facet_Kind;
                            Indices    : in openGL.Indices;
-                           line_Width : in Real := unused_line_Width) return Primitive.indexed.view
+                           line_Width : in Real          := unused_line_Width) return Primitive.indexed.view
    is
       Self : constant View := new Item;
    begin
@@ -71,7 +71,7 @@ is
 
    function new_Primitive (Kind       : in facet_Kind;
                            Indices    : in long_Indices;
-                           line_Width : in Real               := unused_line_Width) return Primitive.indexed.view
+                           line_Width : in Real        := unused_line_Width) return Primitive.indexed.view
    is
       Self : constant View := new Item;
    begin

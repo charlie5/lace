@@ -5,7 +5,7 @@ with
      openGL.texture_Set;
 
 
-package openGL.Model.Box.lit_textured
+package openGL.Model.box.lit_textured
 --
 -- Models a lit and textured box.
 --
@@ -32,7 +32,7 @@ is
 
    function new_Box (Size            : in Vector_3;
                      Faces           : in lit_textured.Faces;
-                     texture_Details : in texture_Set.item := texture_Set.null_Set) return View;
+                     texture_Details : in texture_Set.item  := texture_Set.null_Set) return View;
 
 
    --------------
@@ -53,4 +53,4 @@ private
       end record;
 
 
-end openGL.Model.Box.lit_textured;
+end openGL.Model.box.lit_textured;

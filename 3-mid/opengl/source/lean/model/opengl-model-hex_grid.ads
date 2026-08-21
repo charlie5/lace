@@ -21,8 +21,8 @@ is
 
    function new_Grid (heights_Asset : in asset_Name;
                       Heights       : in height_Map_view;
-                      Color         : in lucid_Color := (palette.White,
-                                                         Opaque)) return View;
+                      Color         : in lucid_Color    := (palette.White,
+                                                            Opaque)) return View;
    overriding
    procedure destroy (Self : in out Item);
 

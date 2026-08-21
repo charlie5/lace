@@ -43,6 +43,7 @@ is
    end new_Object;
 
 
+
    overriding
    procedure define (Self : access Item;   Shape       : in physics.Shape.view;
                                            Mass        : in Real;
@@ -68,6 +69,7 @@ is
       Self.user_Data_is (Self);
       Self.Site_is (at_Site);
    end define;
+
 
 
    overriding

@@ -283,8 +283,8 @@ is
    procedure define (Self : in out Item;   World         : access gel.World.item'Class;
                                            Model         : access openGL.Model.item'Class;
                                            physics_Model : access standard.physics.Model.item'Class;
-                                           Mass          : in     math.Real                    := 0.0;
-                                           is_Kinematic  : in     Boolean                      := False)
+                                           Mass          : in     math.Real                        := 0.0;
+                                           is_Kinematic  : in     Boolean                          := False)
    is
       pragma Unreferenced (Mass);
 
@@ -415,32 +415,31 @@ is
             then
                declare
                   the_graphics_Model : constant openGL.Model.box.lit_colored_textured.view
-                    := openGL.Model.box.lit_colored_textured.new_Box
-                      (Size => [Scale (1) * my_Scale,   Scale (2) * my_Scale,   Scale (3) * my_Scale],
-                       Faces => [front => (colors => [others => (Black,     Opaque)],
-                                           texture_Name => openGL.null_Asset),
-                                 rear  => (colors => [others => (Black,    Opaque)],
-                                           texture_Name => openGL.null_Asset),
-                                 upper => (colors => [others => (Black,   Opaque)],
-                                           texture_Name => openGL.null_Asset),
-                                 lower => (colors => [others => (Black,  Opaque)],
-                                           texture_Name => openGL.null_Asset),
-                                 left  => (colors => [others => (Black,    Opaque)],
-                                           texture_Name => openGL.null_Asset),
-                                 right => (colors => [others => (Black, Opaque)],
-                                           texture_Name => openGL.null_Asset)]);
+                    := openGL.Model.box.lit_colored_textured.new_Box (Size  => [Scale (1) * my_Scale,   Scale (2) * my_Scale,   Scale (3) * my_Scale],
+                                                                      Faces => [Front => (Colors => [others => (Black, Opaque)],
+                                                                                          texture_Name => openGL.null_Asset),
+                                                                                Rear  => (Colors       => [others => (Black, Opaque)],
+                                                                                          texture_Name => openGL.null_Asset),
+                                                                                Upper => (Colors       => [others => (Black, Opaque)],
+                                                                                          texture_Name => openGL.null_Asset),
+                                                                                Lower => (Colors       => [others => (Black, Opaque)],
+                                                                                          texture_Name => openGL.null_Asset),
+                                                                                Left  => (Colors       => [others => (Black, Opaque)],
+                                                                                          texture_Name => openGL.null_Asset),
+                                                                                Right => (Colors       => [others => (Black, Opaque)],
+                                                                                          texture_Name => openGL.null_Asset)]);
                   pragma Unreferenced (the_graphics_Model);     -- Kept as an alternative to 'the_human_graphics_Model' below.
 
                   the_human_graphics_Model : aliased constant openGL.Model.any.view
                     := openGL.Model.any.new_Model (--model   => gel.to_Asset ("assets/gel/model/gel-human.dae"),
-                                                   Model   => openGL.to_Asset ("assets/gel/collada/mh-human-dae.dae"),
-                                                   -- model   => gel.to_Asset ("assets/gel/collada/alfieri.dae"),
-                                                   Texture => openGL.null_Asset, -- gel.to_Asset ("assets/collada/gel-human-texture.tga"),
+                                                   Model            => openGL.to_Asset ("assets/gel/collada/mh-human-dae.dae"),
+                                                   -- model         => gel.to_Asset ("assets/gel/collada/alfieri.dae"),
+                                                   Texture          => openGL.null_Asset, -- gel.to_Asset ("assets/collada/gel-human-texture.tga"),
                                                    texture_Details  => openGL.texture_Set.to_Set ([1 => openGL.to_Asset ("./assets/gel/Face1.bmp")]),
                                                    Texture_is_lucid => False);
                begin
                   Self.bone_Sprites (the_Bone) := gel.Sprite.forge.new_Sprite (Name           => sprite_Name,
-                                                                               World          => gel.sprite.World_view (World),
+                                                                               World          => gel.Sprite.World_view (World),
                                                                                graphics_Model => the_human_graphics_Model,
 --                                                                                 the_graphics_Model,
 --                                                                                 Model,
@@ -455,24 +454,23 @@ is
             else
                declare
                   the_graphics_Model : constant openGL.Model.box.lit_colored_textured.view
-                    := openGL.Model.box.lit_colored_textured.new_Box
-                      (Size  => [Scale (1) * my_Scale,   Scale (2) * my_Scale,   Scale (3) * my_Scale],
-                       Faces => [front => (colors => [others => (Red,     Opaque)],
-                                           texture_Name => openGL.null_Asset),
-                                 rear  => (colors => [others => (Blue,    Opaque)],
-                                           texture_Name => openGL.null_Asset),
-                                 upper => (colors => [others => (Green,   Opaque)],
-                                           texture_Name => openGL.null_Asset),
-                                 lower => (colors => [others => (Yellow,  Opaque)],
-                                           texture_Name => openGL.null_Asset),
-                                 left  => (colors => [others => (Cyan,    Opaque)],
-                                           texture_Name => openGL.null_Asset),
-                                 right => (colors => [others => (Magenta, Opaque)],
-                                           texture_Name => openGL.null_Asset)]);
+                    := openGL.Model.box.lit_colored_textured.new_Box (Size  => [Scale (1) * my_Scale,   Scale (2) * my_Scale,   Scale (3) * my_Scale],
+                                                                      Faces => [Front => (Colors => [others => (Red,     Opaque)],
+                                                                                          texture_Name => openGL.null_Asset),
+                                                                                Rear  => (Colors       => [others => (Blue,    Opaque)],
+                                                                                          texture_Name => openGL.null_Asset),
+                                                                                Upper => (Colors       => [others => (Green,   Opaque)],
+                                                                                          texture_Name => openGL.null_Asset),
+                                                                                Lower => (Colors       => [others => (Yellow,  Opaque)],
+                                                                                          texture_Name => openGL.null_Asset),
+                                                                                Left  => (Colors       => [others => (Cyan,    Opaque)],
+                                                                                          texture_Name => openGL.null_Asset),
+                                                                                Right => (Colors       => [others => (Magenta, Opaque)],
+                                                                                          texture_Name => openGL.null_Asset)]);
                begin
 --                    raise program_Error with "TBD";
-                  Self.bone_Sprites (the_Bone) := gel.Sprite.forge.new_Sprite (Name  => sprite_Name,
-                                                                               World => gel.sprite.World_view (World),
+                  Self.bone_Sprites (the_Bone) := gel.Sprite.forge.new_Sprite (Name           => sprite_Name,
+                                                                               World          => gel.Sprite.World_view (World),
                                                                                graphics_Model => the_graphics_Model,
                                                                                physics_Model  => the_physics_Model,
                                                                                owns_graphics  => True,

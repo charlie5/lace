@@ -38,6 +38,7 @@ is
    end new_Object;
 
 
+
    overriding
    procedure define (Self : access Item;   Shape       : in physics.Shape.view;
                                            Mass        : in Real;
@@ -59,6 +60,7 @@ is
       Self.Site_is (at_Site);
       Self.update_Dynamics;
    end define;
+
 
 
    overriding

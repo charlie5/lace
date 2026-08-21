@@ -33,12 +33,12 @@ is
    procedure connect    (Self : in out Item;   the_Observer  : in Observer.view;
                                                to_Subject    : in Subject .view;
                                                with_Response : in Response.view;
-                                               to_Event_Kind : in Event.Kind);
+                                               to_event_Kind : in Event.Kind);
 
    procedure disconnect (Self : in out Item;   the_Observer  : in Observer.view;
                                                from_Subject  : in Subject .view;
                                                for_Response  : in Response.view;
-                                               to_Event_Kind : in Event.Kind;
+                                               to_event_Kind : in Event.Kind;
                                                subject_Name  : in String);
 
 
@@ -62,7 +62,7 @@ private
          Observer      : lace.Observer.view;
          Subject       : lace.Subject .view;
          Response      : lace.Response.view;
-         Event_Kind    : lace.Text.item_256;
+         event_Kind    : lace.Text.item_256;
          subject_Name  : lace.Text.item_256;
          is_Connecting : Boolean;
       end record;

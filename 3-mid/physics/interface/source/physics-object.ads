@@ -19,6 +19,7 @@ is
    ---------
    --- Forge
    --
+
    procedure define (Self : access Item;   Shape       : in physics.Shape.view;
                                            Mass        : in Real;
                                            Friction    : in Real;
@@ -67,6 +68,7 @@ is
    end safe_Dynamics;
 
 
+
    procedure update_Dynamics (Self : in out Item)                     is abstract;
    function     get_Dynamics (Self : in     Item) return Matrix_4x4   is abstract;
 
@@ -100,6 +102,7 @@ is
    --------------
    --- Operations
    --
+
 
    --- Forces
    --

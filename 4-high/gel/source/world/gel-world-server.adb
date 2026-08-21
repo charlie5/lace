@@ -79,7 +79,7 @@ is
          use lace.Subject_and_deferred_Observer.Forge;
 
          Self : constant gel.World.server.view
-           := new gel.World.server.item' (to_Subject_and_Observer (name => Name & " world" & Id'Image)
+           := new gel.World.server.item' (to_Subject_and_Observer (Name => Name & " world" & Id'Image)
                                           with others => <>);
       begin
          Self.define (Name, Id, space_Kind, Renderer);
@@ -100,7 +100,7 @@ is
    is
       use lace.Subject_and_deferred_Observer.Forge;
    begin
-      Self.local_Subject_and_deferred_Observer := new_Subject_and_Observer (name => Name & " world" & Id'Image);
+      Self.local_Subject_and_deferred_Observer := new_Subject_and_Observer (Name => Name & " world" & Id'Image);
 
       Self.Id            := Id;
       Self.space_Kind    := space_Kind;

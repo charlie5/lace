@@ -10,7 +10,6 @@ is
    type Int_array_List_view is access int_array_List;
 
 
-
    ------------
    --- Vertices
    --
@@ -79,6 +78,7 @@ is
 
    function Coords_of    (Self          : in Mesh;
                           for_Primitive : in Primitive) return access float_array;
+
 
    ------------
    --- Geometry

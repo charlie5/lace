@@ -116,14 +116,14 @@ is
             Self.Vertices (vertex_Count).Site := [-half_Width,
                                                    Real (Row - 1) - half_Height + y_Adjust,
                                                    0.16];
-            Self.Vertices (vertex_Count).Color := (primary => Color,
-                                                   Alpha => opaque_Value);
+            Self.Vertices (vertex_Count).Color := (Primary => Color,
+                                                   Alpha   => opaque_Value);
 
             vertex_Count                      := vertex_Count + 1;
             Self.Vertices (vertex_Count).Site := [half_Width,
                                                    Real (Row - 1) - half_Height + y_Adjust,
                                                    0.16];
-            Self.Vertices (vertex_Count).Color := (primary => Color,
+            Self.Vertices (vertex_Count).Color := (Primary => Color,
                                                    Alpha   => opaque_Value);
             if Row = row_Count / 2 + 1
             then
@@ -142,15 +142,15 @@ is
             Self.Vertices (vertex_Count).Site := [Real (Col - 1) - half_Width + x_Adjust,
                                                    -half_Height,
                                                    0.16];
-            Self.Vertices (vertex_Count).Color := (primary => Color,
+            Self.Vertices (vertex_Count).Color := (Primary => Color,
                                                    Alpha   => opaque_Value);
 
             vertex_Count                      := vertex_Count + 1;
             Self.Vertices (vertex_Count).Site := [Real (Col - 1) - half_Width + x_Adjust,
                                                    half_Height,
                                                    0.16];
-            Self.Vertices (vertex_Count).Color := (primary => Color,
-                                                   Alpha => opaque_Value);
+            Self.Vertices (vertex_Count).Color := (Primary => Color,
+                                                   Alpha   => opaque_Value);
             if Col = col_Count / 2 + 1
             then
                Color := Self.Color;

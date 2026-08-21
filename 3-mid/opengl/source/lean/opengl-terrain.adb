@@ -118,13 +118,13 @@ is
                          t => ((tile_Z_Offset / total_Depth) / (tile_Z_Scale * Scale (3)),  tile_Z_Scale * Scale (3)));
 
                   the_ground_Model : constant Model.Terrain.view
-                    := Model.Terrain.new_Terrain (heights_Asset => heights_File,
-                                                  Row           => Row,
-                                                  Col           => Col,
-                                                  Heights       => the_Region.all'Access,
-                                                  color_Map     => texture_File,
+                    := Model.Terrain.new_Terrain (heights_Asset   => heights_File,
+                                                  Row             => Row,
+                                                  Col             => Col,
+                                                  Heights         => the_Region.all'Access,
+                                                  color_Map       => texture_File,
                                                   texture_Details => texture_Set.to_Set ([1 => texture_File]),
-                                                  Tiling        => Tiling);
+                                                  Tiling          => Tiling);
 
                   the_height_Extents : constant Vector_2    :=      height_Extent (the_Region.all);
                   the_Visual         :          Visual.view renames the_Visual_Grid (Row, Col);

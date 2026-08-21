@@ -156,7 +156,7 @@ begin
          -- Box
          --
          the_box_Model : constant openGL.Model.box.colored.view
-           := openGL.Model.box.colored.new_Box (Size => [1.0, 1.0, 1.0],
+           := openGL.Model.box.colored.new_Box (Size  => [1.0, 1.0, 1.0],
                                                 Faces => [Front => (Colors => [others => (Red,     Opaque)]),
                                                           Rear  => (Colors => [others => (Green,   Opaque)]),
                                                           Upper => (Colors => [others => (Violet,  Opaque)]),
@@ -210,10 +210,10 @@ begin
          -- Capsule
          --
          the_capsule_Model : constant openGL.Model.capsule.textured.view
-           := openGL.Model.capsule.textured.new_Capsule (Radius => 0.5,
-                                                         Height => 1.0,
-                                                         texture_Details  => texture_Set.to_Set ([1 => openGL.to_Asset ("assets/gel/Face1.bmp")]),
-                                                         Image  => openGL.to_Asset ("assets/gel/Face1.bmp"));
+           := openGL.Model.capsule.textured.new_Capsule (Radius          => 0.5,
+                                                         Height          => 1.0,
+                                                         texture_Details => texture_Set.to_Set ([1 => openGL.to_Asset ("assets/gel/Face1.bmp")]),
+                                                         Image           => openGL.to_Asset ("assets/gel/Face1.bmp"));
 
          the_capsule_physics_Model : constant physics.Model.view
            := physics.Model.forge.new_physics_Model (shape_Info => (Kind         => physics.Model.a_Capsule,

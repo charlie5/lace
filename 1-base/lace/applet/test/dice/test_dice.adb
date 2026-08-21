@@ -6,6 +6,7 @@ with
 
 procedure test_Dice
 is
+
    procedure log (Message : in String) renames ada.Text_IO.put_Line;
 
    test_Error : exception;

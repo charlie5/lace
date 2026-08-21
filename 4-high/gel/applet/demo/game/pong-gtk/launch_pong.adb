@@ -257,7 +257,7 @@ begin
       end window_gl_Area;
 
 
-      use lace.Event.Utility;
+      use lace.Event.utility;
 
       the_key_press_Response   : aliased key_press_Response;
       the_key_release_Response : aliased key_release_Response;

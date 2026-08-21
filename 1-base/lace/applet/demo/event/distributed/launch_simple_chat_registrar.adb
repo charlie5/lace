@@ -4,6 +4,7 @@ with
      ada.Characters.latin_1,
      ada.Text_IO;
 
+
 procedure launch_simple_chat_Registrar
 --
 -- Launches the chat registrar.

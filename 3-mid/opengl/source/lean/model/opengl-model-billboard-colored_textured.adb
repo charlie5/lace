@@ -12,10 +12,10 @@ is
    --- Forge
    --
 
-   function new_Billboard (Size    : in Size_t         := default_Size;
-                           Plane   : in billboard.Plane;
-                           Color   : in lucid_Color;
-                           Texture : in asset_Name;
+   function new_Billboard (Size            : in Size_t          := default_Size;
+                           Plane           : in billboard.Plane;
+                           Color           : in lucid_Color;
+                           Texture         : in asset_Name;
                            texture_Details : in texture_Set.item) return View
    is
       Self : constant View := new Item;
@@ -75,10 +75,10 @@ is
          the_Vertices : constant access Geometry.colored_textured.Vertex_array := Self.Vertices;
       begin
          the_Vertices.all := Geometry.colored_textured.Vertex_array'
-                               (1 => (site => the_Sites (1),    color => Color,  coords => (Self.texture_Coords (1))),
-                                2 => (site => the_Sites (2),    color => Color,  coords => (Self.texture_Coords (2))),
-                                3 => (site => the_Sites (3),    color => Color,  coords => (Self.texture_Coords (3))),
-                                4 => (site => the_Sites (4),    color => Color,  coords => (Self.texture_Coords (4))));
+                               (1 => (Site => the_Sites (1),    Color => Color,  coords => (Self.texture_Coords (1))),
+                                2 => (Site => the_Sites (2),    Color => Color,  coords => (Self.texture_Coords (2))),
+                                3 => (Site => the_Sites (3),    Color => Color,  coords => (Self.texture_Coords (3))),
+                                4 => (Site => the_Sites (4),    Color => Color,  coords => (Self.texture_Coords (4))));
 
          the_Face := new_Face (Vertices => the_Vertices);
 

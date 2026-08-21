@@ -22,7 +22,7 @@ is
 
         Lace,
         lace.Event,
-        lace.event.Utility,
+        lace.Event.utility,
 
         ada.Text_IO,
         ada.Strings.unbounded,
@@ -37,6 +37,7 @@ is
       record
          key_to_message_Map : key_Map_of_message;
       end record;
+
 
    overriding
    procedure respond (Self : in out key_Response;   to_Event : in Event.item'Class)
@@ -60,15 +61,15 @@ is
    Now : ada.real_Time.Time := ada.real_Time.Clock;
 
 begin
-   event.Utility.use_text_Logger (log_filename => "events_demo");   -- Enable simple text file event logging.
+   Event.utility.use_text_Logger (log_filename => "events_demo");   -- Enable simple text file event logging.
 
 
    the_Subject := lace_demo_Keyboard.as_event_Subject;                    -- Get a reference to the keyboard as an event subject.
 
-   event.Utility.connect (the_observer  => Observer.view (the_Observer),   -- Setup our response to a keyboard event.
-                          to_subject    => Subject .view (the_Subject),
-                          with_response => the_Response'unchecked_Access,
-                          to_event_kind => to_Kind (keyboard_Event'Tag));
+   Event.utility.connect (the_Observer  => Observer.view (the_Observer),   -- Setup our response to a keyboard event.
+                          to_Subject    => Subject .view (the_Subject),
+                          with_Response => the_Response'unchecked_Access,
+                          to_event_Kind => to_Kind (keyboard_Event'Tag));
    lace_demo_Keyboard.start;
 
    for Each in 1 .. 5
@@ -78,5 +79,5 @@ begin
    end loop;
 
    lace_demo_Keyboard.stop;
-   event.Utility.close;            -- Ensure event logging is closed (ie saved to log file).
+   Event.utility.close;            -- Ensure event logging is closed (ie saved to log file).
 end launch_simple_instant_events_Demo;

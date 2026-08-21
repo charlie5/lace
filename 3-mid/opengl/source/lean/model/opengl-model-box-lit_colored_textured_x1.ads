@@ -5,7 +5,7 @@ with
      openGL.Texture;
 
 
-package openGL.Model.Box.lit_colored_textured_x1
+package openGL.Model.box.lit_colored_textured_x1
 --
 -- Models a lit, colored and textured box.
 --
@@ -55,4 +55,4 @@ private
       end record;
 
 
-end openGL.Model.Box.lit_colored_textured_x1;
+end openGL.Model.box.lit_colored_textured_x1;

@@ -16,13 +16,13 @@ is
    type View is access all Item'Class;
 
 
-   function new_Sphere (Radius     : in Real;
-                        lat_Count  : in Positive           := default_latitude_Count;
-                        long_Count : in Positive           := default_longitude_Count;
-                        Color      : in openGL.lucid_Color := (openGL.Palette.Grey,
-                                                               Opacity => 1.0);
+   function new_Sphere (Radius          : in Real;
+                        lat_Count       : in Positive           := default_latitude_Count;
+                        long_Count      : in Positive           := default_longitude_Count;
+                        Color           : in openGL.lucid_Color := (openGL.Palette.Grey,
+                                                                    Opacity => 1.0);
                         texture_Details : in texture_Set.item;
-                        Image      : in asset_Name         := null_Asset) return View;
+                        Image           : in asset_Name         := null_Asset) return View;
 
 
    overriding

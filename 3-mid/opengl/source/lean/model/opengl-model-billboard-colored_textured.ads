@@ -21,10 +21,10 @@ is
    --- Forge
    --
 
-   function new_Billboard (Size    : in Size_t         := default_Size;
-                           Plane   : in billboard.Plane;
-                           Color   : in lucid_Color;
-                           Texture : in asset_Name;
+   function new_Billboard (Size            : in Size_t          := default_Size;
+                           Plane           : in billboard.Plane;
+                           Color           : in lucid_Color;
+                           Texture         : in asset_Name;
                            texture_Details : in texture_Set.item) return View;
 
 

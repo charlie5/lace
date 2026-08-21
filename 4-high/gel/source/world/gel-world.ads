@@ -195,12 +195,12 @@ is
    procedure add    (Self : in out Item;         the_Model    : in physics.Model.view);
 
    procedure add    (Self : access Item;         the_Sprite   : in gel.Sprite.view;
-                                                 and_Children : in Boolean := False);
+                                                 and_Children : in Boolean        := False);
 
    procedure add    (Self : in out Item;         the_Joint    : in gel.Joint.view);
 
    procedure rid    (Self : in out Item'Class;   the_Sprite   : in gel.Sprite.view;
-                                                 and_Children : in Boolean := False);
+                                                 and_Children : in Boolean        := False);
    procedure rid    (Self : in out Item;         the_Joint    : in gel.Joint.view);
 
    procedure start  (Self : access Item);

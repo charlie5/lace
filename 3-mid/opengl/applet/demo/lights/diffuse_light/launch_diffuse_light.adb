@@ -1,7 +1,7 @@
 with
      openGL.Light,
      openGL.Visual,
-     openGL.Model.Box.lit_textured,
+     openGL.Model.box.lit_textured,
      openGL.texture_Set,
      openGL.Palette,
      openGL.Demo;
@@ -34,14 +34,14 @@ begin
 
       -- The Model.
       --
-      the_Box : constant Model.Box.lit_textured.view
-        := openGL.Model.Box.lit_textured.new_Box (Size  => [4.0, 4.0, 4.0],
-                                                  Faces => [Front => (texture_Name => the_Texture),
-                                                            Rear  => (texture_Name => the_Texture),
-                                                            Upper => (texture_Name => the_Texture),
-                                                            Lower => (texture_Name => the_Texture),
-                                                            Left  => (texture_Name => the_Texture),
-                                                            Right => (texture_Name => the_Texture)],
+      the_Box : constant Model.box.lit_textured.view
+        := openGL.Model.box.lit_textured.new_Box (Size            => [4.0, 4.0, 4.0],
+                                                  Faces           => [Front => (texture_Name => the_Texture),
+                                                                      Rear  => (texture_Name => the_Texture),
+                                                                      Upper => (texture_Name => the_Texture),
+                                                                      Lower => (texture_Name => the_Texture),
+                                                                      Left  => (texture_Name => the_Texture),
+                                                                      Right => (texture_Name => the_Texture)],
                                                   texture_Details => openGL.texture_Set.to_Set ([1 => the_Texture]));
       -- The Visual.
       --

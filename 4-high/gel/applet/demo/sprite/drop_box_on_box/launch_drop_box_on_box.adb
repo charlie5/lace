@@ -51,10 +51,10 @@ is
    the_box_physics_Model : constant physics.Model.view
      := physics.Model.forge.new_physics_Model (shape_Info => (Kind         => physics.Model.cube,
                                                               half_Extents => [1.0, 0.5, 1.0]),
-                                               Mass => 1.0);
+                                               Mass       => 1.0);
 
    the_box_graphics_Model : constant openGL.Model.box.colored.view
-     := openGL.Model.box.colored.new_Box (Size => [1.0, 1.0, 1.0],
+     := openGL.Model.box.colored.new_Box (Size  => [1.0, 1.0, 1.0],
                                           Faces => [Front => (Colors => [others => (Red,        Opaque)]),
                                                     Rear  => (Colors => [others => (Blue,       Opaque)]),
                                                     Upper => (Colors => [others => (dark_Green, Opaque)]),

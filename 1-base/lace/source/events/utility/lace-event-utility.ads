@@ -37,12 +37,12 @@ is
    procedure connect    (the_Observer  : in Observer.view;
                          to_Subject    : in Subject .view;
                          with_Response : in Response.view;
-                         to_Event_Kind : in Event.Kind);
+                         to_event_Kind : in Event.Kind);
 
    procedure disconnect (the_Observer  : in Observer.view;
                          from_Subject  : in Subject .view;
                          for_Response  : in Response.view;
-                         to_Event_Kind : in Event.Kind;
+                         to_event_Kind : in Event.Kind;
                          subject_Name  : in String);
 
 

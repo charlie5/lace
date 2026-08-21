@@ -20,7 +20,7 @@ is
 begin
    Demo.print_Usage;
    Demo.define ("openGL 'Render Hex Grid' Demo",
-                Width => 1_000,
+                Width  => 1_000,
                 Height =>1_000);
 
    Demo.Camera.Position_is ([0.0, 40.0, 0.0],

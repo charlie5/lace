@@ -10,24 +10,31 @@ is
 
    --- Shape
    --
+
    subtype Shape is Swig.opaque_structure;
 
    type Shape_array is array (interfaces.C.size_t range <>) of aliased bullet_c.Shape;
 
+
    --- Object
    --
+
    subtype Object is Swig.opaque_structure;
 
    type Object_array is array (interfaces.C.size_t range <>) of aliased bullet_c.Object;
 
+
    --- Joint
    --
+
    subtype Joint is Swig.opaque_structure;
 
    type Joint_array is array (interfaces.C.size_t range <>) of aliased bullet_c.Joint;
 
+
    --- Space
    --
+
    subtype Space is Swig.opaque_structure;
 
    type Space_array is array (interfaces.C.size_t range <>) of aliased bullet_c.Space;

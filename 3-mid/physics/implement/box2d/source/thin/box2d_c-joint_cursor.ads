@@ -16,12 +16,16 @@ is
          Joint : access box2d_c.b2Joint;
       end record;
 
+
    --- Item_array
    --
+
    type Item_array is array (interfaces.C.size_t range <>) of aliased box2d_c.joint_Cursor.Item;
+
 
    --- Pointer
    --
+
    package C_Pointers is new interfaces.C.Pointers (Index              => interfaces.C.size_t,
                                                     Element            => box2d_c.joint_Cursor.Item,
                                                     Element_array      => box2d_c.joint_Cursor.item_array,
@@ -29,12 +33,16 @@ is
 
    subtype Pointer is C_Pointers.Pointer;
 
+
    --- Pointer_array
    --
+
    type Pointer_array is array (interfaces.C.size_t range <>) of aliased box2d_c.joint_Cursor.Pointer;
+
 
    --- Pointer_pointer
    --
+
    package C_Pointer_Pointers is new interfaces.C.Pointers (Index              => interfaces.C.size_t,
                                                             Element            => box2d_c.joint_Cursor.Pointer,
                                                             Element_array      => box2d_c.joint_Cursor.Pointer_array,

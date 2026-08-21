@@ -84,7 +84,7 @@ is
                                 fragment_Shader'Access);
             the_Program.enable;
 
-            Attribute_1 := new_Attribute (Name => Name_1,
+            Attribute_1 := new_Attribute (Name        => Name_1,
                                           gl_Location => the_Program.attribute_Location (Name_1),
                                           Size        => 3,
                                           data_Kind   => Attribute.GL_FLOAT,

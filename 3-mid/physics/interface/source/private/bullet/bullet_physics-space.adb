@@ -29,6 +29,7 @@ is
    function to_Object_view is new ada.unchecked_Conversion (swig.void_ptr,
                                                             physics.Object.view);
 
+
    ---------
    --- Forge
    --
@@ -87,6 +88,7 @@ is
    end new_box_Shape;
 
 
+
    overriding
    function new_capsule_Shape (Self : access Item;   Radius : in Real :=  0.5;
                                                      Height : in Real) return physics.Shape.view
@@ -97,6 +99,7 @@ is
    begin
       return the_Capsule;
    end new_capsule_Shape;
+
 
 
    overriding
@@ -110,6 +113,7 @@ is
    end new_cone_Shape;
 
 
+
    overriding
    function new_cylinder_Shape (Self : access Item;   half_Extents : in Vector_3 := [0.5, 0.5, 0.5]) return physics.Shape.view
    is
@@ -118,6 +122,7 @@ is
    begin
       return the_Cylinder;
    end new_cylinder_Shape;
+
 
 
    overriding
@@ -143,6 +148,8 @@ is
          return [Min, Max];
       end height_Extent;
 
+
+
       function convert is new ada.unchecked_Conversion (physics.Space.Real_view,
                                                         c_math_c.Pointers.Real_pointer);
 
@@ -158,6 +165,7 @@ is
    end new_heightfield_Shape;
 
 
+
    overriding
    function new_multisphere_Shape (Self : access Item;   Sites : in physics.vector_3_array;
                                                          Radii : in Vector) return physics.Shape.view
@@ -169,6 +177,7 @@ is
    end new_multisphere_Shape;
 
 
+
    overriding
    function new_plane_Shape (Self : access Item;   Normal : in Vector_3 := [0.0, 1.0, 0.0];
                                                    Offset : in Real     :=  0.0) return physics.Shape .view
@@ -178,6 +187,7 @@ is
    begin
       return the_Plane;
    end new_plane_Shape;
+
 
 
    overriding
@@ -223,9 +233,10 @@ is
    end new_polygon_Shape;
 
 
-   ------------
-   ---  Objects
+   -----------
+   --- Objects
    --
+
    function Hash (the_C_Object : in bullet_c.Pointers.Object_pointer) return ada.Containers.Hash_type
    is
       function convert is new ada.unchecked_Conversion (bullet_c.Pointers.Object_pointer,
@@ -233,6 +244,7 @@ is
    begin
       return ada.Containers.Hash_type'Mod (convert (the_C_Object));
    end Hash;
+
 
 
    overriding
@@ -256,6 +268,7 @@ is
    end new_Object;
 
 
+
    overriding
    function object_Count (Self : in Item) return Natural
    is
@@ -265,8 +278,8 @@ is
    end object_Count;
 
 
-   -----------
-   ---  Joints
+   ----------
+   --- Joints
    --
 
    overriding
@@ -285,6 +298,7 @@ is
    end new_hinge_Joint;
 
 
+
    overriding
    function new_hinge_Joint (Self : access Item;   Object_A : in physics.Object.view;
                                                    Frame_A  : in Matrix_4x4) return physics.Joint.hinge.view
@@ -294,6 +308,7 @@ is
    begin
       return the_Joint;
    end new_hinge_Joint;
+
 
 
    overriding
@@ -313,6 +328,7 @@ is
    end new_hinge_Joint;
 
 
+
    overriding
    function new_DoF6_Joint (Self : access Item;   Object_A,
                                                   Object_B : in physics.Object.view;
@@ -325,6 +341,7 @@ is
    begin
       return the_Joint;
    end new_DoF6_Joint;
+
 
 
    overriding
@@ -341,6 +358,7 @@ is
    end new_ball_Joint;
 
 
+
    overriding
    function new_slider_Joint (Self : access Item;   Object_A,
                                                     Object_B : in physics.Object.view;
@@ -353,6 +371,7 @@ is
    begin
       return the_Joint;
    end new_slider_Joint;
+
 
 
    overriding
@@ -447,6 +466,7 @@ is
       --
       declare
          use c_Object_Maps_of_Object;
+
          Cursor     : c_Object_Maps_of_Object.Cursor := Self.object_Map.First;
          the_Object : bullet_Physics.Object.view;
       begin
@@ -524,6 +544,7 @@ is
       raise Error with "TODO";
       return the_Manifold;
    end Manifold;
+
 
 
    overriding

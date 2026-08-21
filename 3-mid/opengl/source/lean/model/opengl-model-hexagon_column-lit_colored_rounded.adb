@@ -52,7 +52,7 @@ is
 
 
       function new_hexagon_Face (Vertices : in Geometry.lit_colored.Vertex_array;
-                                 Flip     : in Boolean := False) return Geometry.lit_colored.view
+                                 Flip     : in Boolean                          := False) return Geometry.lit_colored.view
       is
          use Primitive;
 

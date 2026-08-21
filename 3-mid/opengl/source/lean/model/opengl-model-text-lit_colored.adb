@@ -13,11 +13,11 @@ is
    --- Forge
    --
 
-   function new_Text (Text     : in String;
-                      Font     : in openGL.Font.font_Id;
-                      Color    : in lucid_Color;
-                      texture_Details  : in texture_Set.item;
-                      Centered : in Boolean := True) return View
+   function new_Text (Text            : in String;
+                      Font            : in openGL.Font.font_Id;
+                      Color           : in lucid_Color;
+                      texture_Details : in texture_Set.item;
+                      Centered        : in Boolean            := True) return View
    is
       Font_Name : constant String  := to_String (Font.Name);
       Exists    : constant Boolean := ada.Directories.Exists (Font_Name);

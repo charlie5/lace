@@ -14,7 +14,7 @@ is
 
 
    procedure Background_is (Self : in out Item;   Now     : in openGL.Color;
-                                                  Opacity : in Opaqueness := 1.0)
+                                                  Opacity : in Opaqueness  := 1.0)
    is
    begin
       Self.Background.Primary := +Now;

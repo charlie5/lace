@@ -1,6 +1,6 @@
 with
      openGL.Palette,
-     openGL.Model.Box.lit_colored_textured,
+     openGL.Model.box.lit_colored_textured,
      openGL.Visual,
 
      openGL.Demo;
@@ -31,15 +31,14 @@ begin
    declare
       Face          : constant asset_Name := to_Asset ("assets/Face1.bmp");
 
-      the_box_Model : constant Box.lit_colored_textured.view
-        := Box.lit_colored_textured.new_Box
-          (size          => [0.5, 0.5, 0.5],
-           faces         => [front => (colors => [others => (White,    Opaque)], texture_name => Face),
-                             rear  => (colors => [others => (Blue,     Opaque)], texture_name => Face),
-                             upper => (colors => [others => (Green,    Opaque)], texture_name => Face),
-                             lower => (colors => [others => (Green,    Opaque)], texture_name => Face),
-                             left  => (colors => [others => (Dark_Red, Opaque)], texture_name => Face),
-                             right => (colors => [others => (Red,      Opaque)], texture_name => Face)]);
+      the_box_Model : constant box.lit_colored_textured.view
+        := box.lit_colored_textured.new_Box (Size  => [0.5, 0.5, 0.5],
+                                             Faces => [Front => (Colors => [others => (White,    Opaque)], texture_Name => Face),
+                                                       Rear  => (Colors => [others => (Blue,     Opaque)], texture_Name => Face),
+                                                       Upper => (Colors => [others => (Green,    Opaque)], texture_Name => Face),
+                                                       Lower => (Colors => [others => (Green,    Opaque)], texture_Name => Face),
+                                                       Left  => (Colors => [others => (Dark_Red, Opaque)], texture_Name => Face),
+                                                       Right => (Colors => [others => (Red,      Opaque)], texture_Name => Face)]);
 
       Size : constant Integer     :=  70;
       x    :          openGL.Real := -openGL.Real (Size) / 2.0;

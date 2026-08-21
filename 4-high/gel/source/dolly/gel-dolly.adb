@@ -33,7 +33,8 @@ is
 
 
 
-   procedure is_moving (Self : in out Item'Class;   Direction : in dolly.Direction;   Now : in Boolean := True)
+   procedure is_moving (Self : in out Item'Class;   Direction : in dolly.Direction;
+                                                    Now       : in Boolean        := True)
    is
    begin
       Self.Motion (Direction) := Now;
@@ -41,7 +42,8 @@ is
 
 
 
-   procedure is_spinning (Self : in out Item'Class;   Direction : in dolly.Direction;   Now : in Boolean := True)
+   procedure is_spinning (Self : in out Item'Class;   Direction : in dolly.Direction;
+                                                      Now       : in Boolean        := True)
    is
    begin
       Self.Spin (Direction) := Now;
@@ -49,7 +51,8 @@ is
 
 
 
-   procedure is_orbiting (Self : in out Item'Class;   Direction : in dolly.Direction;   Now : in Boolean := True)
+   procedure is_orbiting (Self : in out Item'Class;   Direction : in dolly.Direction;
+                                                      Now       : in Boolean        := True)
    is
    begin
       Self.Orbit (Direction) := Now;

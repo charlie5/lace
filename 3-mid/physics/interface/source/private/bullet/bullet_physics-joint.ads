@@ -72,11 +72,10 @@ private
       (False);
 
 
-
-
    --------
    --- DoF6
    --
+
    type DoF6 is new Item
                 and physics.Joint.DoF6.item with
       record
@@ -126,9 +125,11 @@ private
    procedure upper_Limit_is (Self : in out DoF6;   Now : in Real;
                                                    DoF : in Degree_of_freedom);
 
+
    ----------
    --- Slider
    --
+
    type Slider is new Item
                   and physics.Joint.Slider.item with
       record
@@ -178,9 +179,11 @@ private
    procedure upper_Limit_is (Self : in out Slider;   Now : in Real;
                                                      DoF : in Degree_of_freedom);
 
+
    --------------
    --- cone_Twist
    --
+
    type cone_Twist is new Item
                       and physics.Joint.cone_Twist.item with
       record
@@ -230,9 +233,11 @@ private
    procedure upper_Limit_is (Self : in out cone_Twist;   Now : in Real;
                                                          DoF : in Degree_of_freedom);
 
+
    --------
    --- Ball
    --
+
    type Ball is new Item
                 and physics.Joint.Ball.item with
       record
@@ -282,9 +287,11 @@ private
    procedure upper_Limit_is (Self : in out Ball;   Now : in Real;
                                                    DoF : in Degree_of_freedom);
 
+
    ---------
    --- Hinge
    --
+
    type Hinge is new Item
                 and physics.Joint.Hinge.item with
       record

@@ -26,7 +26,6 @@ is
    function Value (Self : in Attribute_t) return String;
 
 
-
    ----------------
    --- Element type
    --
@@ -35,14 +34,12 @@ is
    type Elements is array (Positive range <>) of access Element;
 
 
-
    --- Construction
    --
 
    function to_XML (Filename : in String) return Element;
    --
    -- Parses 'Filename' and returns the root node Element of the parsed XML tree.
-
 
 
    --- Attributes

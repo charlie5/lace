@@ -9,6 +9,7 @@ with
      ada.Exceptions,
      ada.Text_IO;
 
+
 package body chat.Client.local
 is
    -- Utility
@@ -27,6 +28,7 @@ is
    is
       pragma Unreferenced (Self);
       use ada.Text_IO;
+
       the_Message : constant Message := Message (to_Event);
    begin
       put_Line (the_Message.Text (1 .. the_Message.Length));
@@ -57,12 +59,14 @@ is
    end Name;
 
 
+
    overriding
    function as_Observer (Self : access Item) return lace.Observer.view
    is
    begin
       return Self;
    end as_Observer;
+
 
 
    overriding
@@ -86,9 +90,10 @@ is
       lace.Event.utility.connect (the_Observer  => Self'unchecked_Access,
                                   to_Subject    => other_Client.as_Subject,
                                   with_Response => the_Response'Access,
-                                  to_Event_Kind => to_Kind (chat.Client.Message'Tag));
+                                  to_event_Kind => to_Kind (chat.Client.Message'Tag));
       put_Line (other_Client.Name & " is here.");
    end register_Client;
+
 
 
    overriding
@@ -102,6 +107,7 @@ is
       begin
          Self.as_Subject.deregister (other_Client_as_Observer,
                                      to_Kind (chat.Client.Message'Tag));
+
       exception
          when constraint_Error =>
             raise unknown_Client with "Other client not known. Deregister is not required.";
@@ -115,6 +121,7 @@ is
    end deregister_Client;
 
 
+
    overriding
    procedure Registrar_has_shutdown  (Self : in out Item)
    is
@@ -125,16 +132,21 @@ is
    end Registrar_has_shutdown;
 
 
+
    task check_Registrar_lives
    is
       entry start (Self : in chat.Client.local.view);
       entry halt;
    end check_Registrar_lives;
 
-   task body check_Registrar_lives
+
+
+   task
+   body check_Registrar_lives
    is
       use ada.Text_IO;
-      Done : Boolean := False;
+
+      Done : Boolean               := False;
       Self : chat.Client.local.view;
    begin
       loop
@@ -156,6 +168,7 @@ is
 
          begin
             chat.Registrar.ping;
+
          exception
             when system.RPC.communication_Error =>
                put_Line ("The Registrar has died. Press <Enter> to exit.");
@@ -172,6 +185,7 @@ is
    end check_Registrar_lives;
 
 
+
    procedure start (Self : in out chat.Client.local.item)
    is
       use ada.Text_IO;
@@ -180,6 +194,7 @@ is
       --
       begin
          chat.Registrar.register (Self'unchecked_Access);   -- Register our client with the registrar.
+
       exception
          when chat.Registrar.Name_already_used =>
             put_Line (+Self.Name & " is already in use.");
@@ -201,6 +216,7 @@ is
                begin
                   Peers (i).register_Client (Self'unchecked_Access);    -- Register our client with all other clients.
                   Self     .register_Client (Peers (i));                -- Register all other clients with our client.
+
                exception
                   when system.RPC.communication_Error
                      | storage_Error =>
@@ -224,10 +240,9 @@ is
 
             chat_Message : constant String := get_Line;
          begin
-            exit
-              when chat_Message = "q"
-              or   Self.Registrar_has_shutdown
-              or   Self.Registrar_is_dead;
+            exit when         chat_Message = "q"
+                      or else Self.Registrar_has_shutdown
+                      or else Self.Registrar_is_dead;
 
             broadcast (chat_Message);
          end;
@@ -235,11 +250,12 @@ is
 
       -- Shutdown
       --
-      if    not Self.Registrar_has_shutdown
-        and not Self.Registrar_is_dead
+      if         not Self.Registrar_has_shutdown
+        and then not Self.Registrar_is_dead
       then
          begin
             chat.Registrar.deregister (Self'unchecked_Access);
+
          exception
             when system.RPC.communication_Error =>
                Self.Registrar_is_dead := True;
@@ -257,6 +273,7 @@ is
                      begin
                         Peers (i).deregister_Client ( Self'unchecked_Access,   -- Deregister our client with every other client.
                                                      +Self.Name);
+
                      exception
                         when system.RPC.communication_Error
                            | storage_Error =>
@@ -274,25 +291,25 @@ is
 
 
    -- 'last_chance_Handler' is commented out to avoid multiple definitions
-   --  of link symbols in 'build_All' test procedure (Tier 5).
+   -- of link symbols in 'build_All' test procedure (Tier 5).
    --
 
-   --  procedure last_chance_Handler (Msg  : in system.Address;
+   -- procedure last_chance_Handler (Msg  : in system.Address;
    --                                 Line : in Integer);
    --
-   --  pragma export (C, last_chance_Handler, --                 "__gnat_last_chance_handler");
+   -- pragma export (C, last_chance_Handler, --                 "__gnat_last_chance_handler");
    --
-   --  procedure last_chance_Handler (Msg  : in System.Address;
+   -- procedure last_chance_Handler (Msg  : in System.Address;
    --                                 Line : in Integer)
-   --  is
+   -- is
    --     pragma Unreferenced (Msg, Line);
    --     use ada.Text_IO;
-   --  begin
+   -- begin
    --     put_Line ("The Registrar is not running.");
    --     put_Line ("Press Ctrl-C to quit.");
    --     check_Registrar_lives.halt;
    --     delay Duration'Last;
-   --  end last_chance_Handler;
+   -- end last_chance_Handler;
 
 
 end chat.Client.local;

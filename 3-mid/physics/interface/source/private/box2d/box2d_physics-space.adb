@@ -120,6 +120,7 @@ is
    end new_box_Shape;
 
 
+
    overriding
    function new_capsule_Shape (Self : access Item;   Radius : in Real :=  0.5;
                                                      Height : in Real) return physics.Shape.view
@@ -129,6 +130,7 @@ is
       raise physics.Space.unsupported_Shape with "Capsule shape not allowed in box2d physics.";
       return null;
    end new_capsule_Shape;
+
 
 
    overriding
@@ -142,6 +144,7 @@ is
    end new_cone_Shape;
 
 
+
    overriding
    function new_cylinder_Shape (Self : access Item;   half_Extents : in Vector_3 := [0.5, 0.5, 0.5]) return physics.Shape.view
    is
@@ -150,6 +153,7 @@ is
       raise physics.Space.unsupported_Shape with "Cylinder shape not allowed in box2d physics.";
       return null;
    end new_cylinder_Shape;
+
 
 
    overriding
@@ -161,6 +165,7 @@ is
       raise physics.Space.unsupported_Shape with "Heightfield shape not allowed in box2d physics.";
       return null;
    end new_heightfield_Shape;
+
 
 
    overriding
@@ -184,6 +189,7 @@ is
       raise physics.Space.unsupported_Shape with "Plane shape not allowed in box2d physics.";
       return null;
    end new_plane_Shape;
+
 
 
    overriding
@@ -219,6 +225,7 @@ is
    end Hash;
 
 
+
    overriding
    function new_Object (Self : access Item;   of_Shape     : in physics.Shape.view;
                                               of_Mass      : in Real;
@@ -237,6 +244,7 @@ is
    begin
       return the_Object;
    end new_Object;
+
 
 
    overriding
@@ -270,6 +278,7 @@ is
    end new_hinge_Joint;
 
 
+
    overriding
    function new_hinge_Joint (Self : access Item;   Object_A : in physics.Object.view;
                                                    Frame_A  : in Matrix_4x4) return physics.Joint.hinge.view
@@ -278,6 +287,7 @@ is
    begin
       return the_Joint;
    end new_hinge_Joint;
+
 
 
    overriding
@@ -299,6 +309,7 @@ is
    end new_hinge_Joint;
 
 
+
    overriding
    function new_DoF6_Joint (Self : access Item;   Object_A,
                                                   Object_B  : in physics.Object.view;
@@ -311,6 +322,7 @@ is
    begin
       return the_Joint;
    end new_DoF6_Joint;
+
 
 
    overriding
@@ -327,6 +339,7 @@ is
    end new_ball_Joint;
 
 
+
    overriding
    function new_slider_Joint (Self : access Item;   Object_A,
                                                     Object_B : in physics.Object.view;
@@ -339,6 +352,7 @@ is
    begin
       return the_Joint;
    end new_slider_Joint;
+
 
 
    overriding
@@ -396,14 +410,14 @@ is
          when physics.Model.a_Sphere     => the_box2d_Object.Shape_is (Self.new_sphere_Shape      (shape_Info.sphere_Radius));
          when physics.Model.multi_Sphere => the_box2d_Object.Shape_is (Self.new_multisphere_Shape (shape_Info.Sites.all,
                                                                                                    shape_Info.Radii.all));
-         when physics.Model.Cone         => the_box2d_Object.Shape_is (Self.new_cone_Shape        (radius => Real (the_Object.Model.Scale (1) / 2.0),
-                                                                                                   height => Real (the_Object.Model.Scale (2))));
+         when physics.Model.Cone         => the_box2d_Object.Shape_is (Self.new_cone_Shape        (Radius => Real (the_Object.Model.Scale (1) / 2.0),
+                                                                                                   Height => Real (the_Object.Model.Scale (2))));
          when physics.Model.a_Capsule    => the_box2d_Object.Shape_is (Self.new_capsule_Shape     (shape_Info.lower_Radius,
                                                                                                    shape_Info.Height));
          when physics.Model.Cylinder     => the_box2d_Object.Shape_is (Self.new_cylinder_Shape    (shape_Info.half_Extents));
          when physics.Model.Hull         => the_box2d_Object.Shape_is (Self.new_convex_hull_Shape (shape_Info.Points.all));
          when physics.Model.Mesh         => the_box2d_Object.Shape_is (Self.new_mesh_Shape        (shape_Info.Model));
-         when physics.Model.Plane        => the_box2d_Object.Shape_is (Self.new_plane_Shape       (Shape_Info.plane_Normal,
+         when physics.Model.Plane        => the_box2d_Object.Shape_is (Self.new_plane_Shape       (shape_Info.plane_Normal,
                                                                                                    Shape_Info.plane_Offset));
          when physics.Model.Heightfield  => the_box2d_Object.Shape_is (Self.new_heightfield_Shape (shape_Info.Heights.all,
                                                                                                    the_Object.Model.Scale));
@@ -488,6 +502,7 @@ is
       --
       declare
          use c_Object_Maps_of_Object;
+
          Cursor     : c_Object_Maps_of_Object.Cursor := Self.object_Map.First;
          the_Object : box2d_Physics.Object.view;
       begin
@@ -527,6 +542,7 @@ is
    procedure add (Self : in out Item;   the_Joint : in physics.Joint.view)
    is
       use box2d_physics.Joint;
+
       the_c_Joint : constant Joint_pointer := box2d_physics.Joint.view (the_Joint).C;
    begin
       b2d_Space_add_Joint (Self.C, the_c_Joint);
@@ -575,6 +591,7 @@ is
 
       return the_Manifold;
    end Manifold;
+
 
 
    overriding

@@ -28,14 +28,14 @@ is
 
    function Index (Source  : in String;
                    Pattern : in String;
-                   Going   : in Direction := Forward;
+                   Going   : in Direction                      := Forward;
                    Mapping : in Maps.Character_Mapping_Function) return Natural
    renames lace.Strings.search.Index;
 
    function Index (Source : in String;
                    Set    : in Maps.Character_Set;
-                   Test   : in Membership := Inside;
-                   Going  : in Direction  := Forward) return Natural
+                   Test   : in Membership        := Inside;
+                   Going  : in Direction         := Forward) return Natural
    renames lace.Strings.search.Index;
 
    function Index (Source  : in String;
@@ -48,15 +48,15 @@ is
    function Index (Source  : in String;
                    Pattern : in String;
                    From    : in Positive;
-                   Going   : in Direction := Forward;
+                   Going   : in Direction                      := Forward;
                    Mapping : in Maps.Character_Mapping_Function) return Natural
    renames lace.Strings.search.Index;
 
    function Index (Source : in String;
                    Set    : in Maps.Character_Set;
                    From   : in Positive;
-                   Test   : in Membership := Inside;
-                   Going  : in Direction  := Forward) return Natural
+                   Test   : in Membership        := Inside;
+                   Going  : in Direction         := Forward) return Natural
    renames lace.Strings.search.Index;
 
    function Index_Non_Blank (Source : in String;
@@ -684,7 +684,7 @@ is
       Move (Trim (Source, Side),
             Source,
             Justify => Justify,
-            Pad => Pad);
+            Pad     => Pad);
    end Trim;
 
 
@@ -727,8 +727,8 @@ is
    procedure Trim (Source  : in out String;
                    Left    : in     Maps.Character_Set;
                    Right   : in     Maps.Character_Set;
-                   Justify : in     Alignment := ada.Strings.Left;
-                   Pad     : in     Character := Space)
+                   Justify : in     Alignment         := ada.Strings.Left;
+                   Pad     : in     Character         := Space)
    is
    begin
       Move (Source  => Trim (Source, Left, Right),

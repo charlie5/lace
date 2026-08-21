@@ -95,6 +95,7 @@ is
    end new_Dof6_Joint;
 
 
+
    overriding
    procedure destruct (Self : in out DoF6)
    is
@@ -172,6 +173,7 @@ is
    end is_Limited;
 
 
+
    overriding
    procedure Velocity_is (Self : in out DoF6;   Now : in Real;
                                                 DoF : in Degree_of_freedom)
@@ -187,6 +189,7 @@ is
    end Velocity_is;
 
 
+
    overriding
    function Extent (Self : in DoF6;   DoF : in Degree_of_freedom) return Real
    is
@@ -200,6 +203,7 @@ is
    end Extent;
 
 
+
    overriding
    procedure desired_Extent_is (Self : in out DoF6;   Now : in Real;
                                                       DoF : in Degree_of_freedom)
@@ -207,6 +211,7 @@ is
    begin
       raise Error with "TODO";
    end desired_Extent_is;
+
 
 
    overriding
@@ -226,6 +231,7 @@ is
    end upper_Limit;
 
 
+
    overriding
    procedure lower_Limit_is (Self : in out DoF6;   Now : in Real;
                                                    DoF : in Degree_of_freedom)
@@ -234,6 +240,7 @@ is
       b3d_Joint_6DoF_lower_Limit_is (Self.C, C.int (DoF),
                                              c_math_c.Real (Now));
    end lower_Limit_is;
+
 
 
    overriding
@@ -268,6 +275,7 @@ is
                                     c_Pivot_in_B'unchecked_Access);
       return Self;
    end new_Ball_Joint;
+
 
 
    overriding
@@ -347,6 +355,7 @@ is
    end is_Limited;
 
 
+
    overriding
    procedure Velocity_is (Self : in out Ball;   Now : in Real;
                                                 DoF : in Degree_of_freedom)
@@ -362,6 +371,7 @@ is
    end Velocity_is;
 
 
+
    overriding
    function Extent (Self : in Ball;   DoF : in Degree_of_freedom) return Real
    is
@@ -375,6 +385,7 @@ is
    end Extent;
 
 
+
    overriding
    procedure desired_Extent_is (Self : in out Ball;   Now : in Real;
                                                       DoF : in Degree_of_freedom)
@@ -382,6 +393,7 @@ is
    begin
       raise Error with "TODO";
    end desired_Extent_is;
+
 
 
    overriding
@@ -403,6 +415,7 @@ is
    end upper_Limit;
 
 
+
    overriding
    procedure lower_Limit_is (Self : in out Ball;   Now : in Real;
                                                    DoF : in Degree_of_freedom)
@@ -410,6 +423,7 @@ is
    begin
       raise Error with "TODO";
    end lower_Limit_is;
+
 
 
    overriding
@@ -442,6 +456,7 @@ is
                                       c_Frame_B'unchecked_Access);
       return Self;
    end new_Slider_Joint;
+
 
 
    overriding
@@ -521,6 +536,7 @@ is
    end is_Limited;
 
 
+
    overriding
    procedure Velocity_is (Self : in out Slider;   Now : in Real;
                                                   DoF : in Degree_of_freedom)
@@ -536,6 +552,7 @@ is
    end Velocity_is;
 
 
+
    overriding
    function Extent (Self : in Slider;   DoF : in Degree_of_freedom) return Real
    is
@@ -549,6 +566,7 @@ is
    end Extent;
 
 
+
    overriding
    procedure desired_Extent_is (Self : in out Slider;   Now : in Real;
                                                         DoF : in Degree_of_freedom)
@@ -556,6 +574,7 @@ is
    begin
       raise Error with "TODO";
    end desired_Extent_is;
+
 
 
    overriding
@@ -577,6 +596,7 @@ is
    end upper_Limit;
 
 
+
    overriding
    procedure lower_Limit_is (Self : in out Slider;   Now : in Real;
                                                      DoF : in Degree_of_freedom)
@@ -584,6 +604,7 @@ is
    begin
       raise Error with "TODO";
    end lower_Limit_is;
+
 
 
    overriding
@@ -616,6 +637,7 @@ is
                                     c_Frame_B'unchecked_Access);
       return Self;
    end new_cone_Twist_Joint;
+
 
 
    overriding
@@ -695,6 +717,7 @@ is
    end is_Limited;
 
 
+
    overriding
    procedure Velocity_is (Self : in out cone_Twist;   Now : in Real;
                                                       DoF : in Degree_of_freedom)
@@ -710,6 +733,7 @@ is
    end Velocity_is;
 
 
+
    overriding
    function Extent (Self : in cone_Twist;   DoF : in Degree_of_freedom) return Real
    is
@@ -723,6 +747,7 @@ is
    end Extent;
 
 
+
    overriding
    procedure desired_Extent_is (Self : in out cone_Twist;   Now : in Real;
                                                             DoF : in Degree_of_freedom)
@@ -730,6 +755,7 @@ is
    begin
       raise Error with "TODO";
    end desired_Extent_is;
+
 
 
    overriding
@@ -751,6 +777,7 @@ is
    end upper_Limit;
 
 
+
    overriding
    procedure lower_Limit_is (Self : in out cone_Twist;   Now : in Real;
                                                          DoF : in Degree_of_freedom)
@@ -758,6 +785,7 @@ is
    begin
       raise Error with "TODO";
    end lower_Limit_is;
+
 
 
    overriding
@@ -790,6 +818,7 @@ is
    end new_hinge_Joint;
 
 
+
    overriding
    procedure destruct (Self : in out Hinge)
    is
@@ -798,6 +827,7 @@ is
       put_Line ("bullet_physics-joint.adb =>    raise Program_Error with ""TBD"";");
       raise Error with "TODO";
    end destruct;
+
 
 
    function new_hinge_Joint (Object_A, Object_B : in physics.Object.view;
@@ -832,6 +862,7 @@ is
    end new_hinge_Joint;
 
 
+
    overriding
    procedure Limits_are (Self : in out Hinge;   Low, High        : in Real;
                                                 Softness         : in Real := 0.9;
@@ -846,6 +877,7 @@ is
                                   c_Math_c.Real (biasFactor),
                                   c_Math_c.Real (relaxationFactor));
    end Limits_are;
+
 
 
    overriding
@@ -949,6 +981,7 @@ is
    end is_Limited;
 
 
+
    overriding
    procedure Velocity_is (Self : in out Hinge;   Now : in Real;
                                                  DoF : in Degree_of_freedom)
@@ -963,6 +996,7 @@ is
    end Velocity_is;
 
 
+
    overriding
    function Extent (Self : in Hinge;   DoF : in Degree_of_freedom) return Real
    is
@@ -975,6 +1009,7 @@ is
       raise Error with "TODO";
       return 0.0;
    end Extent;
+
 
 
    overriding

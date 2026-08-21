@@ -97,7 +97,6 @@ is
 
 
 
-
    procedure Internal_End_Handler (My_Parser : in Parser;
                                    Name      : in S.chars_ptr);
 
@@ -109,7 +108,6 @@ is
    begin
       My_Parser.End_Handler (to_unbounded_String (S.Value (Name)));
    end Internal_End_Handler;
-
 
 
 
@@ -134,7 +132,6 @@ is
 
 
 
-
    function Create_Parser return Parser
    is
 
@@ -147,7 +144,6 @@ is
                               null,
                               null);
    end Create_Parser;
-
 
 
 
@@ -184,7 +180,6 @@ is
 
 
 
-
    procedure set_Character_Data_Handler (The_Parser : in Parser;
                                          CD_Handler : in Character_Data_Handler)
    is
@@ -203,7 +198,6 @@ is
       The_Parser.CD_Handler := CD_Handler;
       XML_SetCharacterDataHandler (The_Parser.XML_Parser, Internal_CD_Handler'Access);
    end set_Character_Data_Handler;
-
 
 
 

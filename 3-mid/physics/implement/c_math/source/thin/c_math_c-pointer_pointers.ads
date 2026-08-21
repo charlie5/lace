@@ -8,10 +8,13 @@ is
 
    --- Real_pointer_pointer
    --
+
    type Real_pointer_pointer is access all c_math_c.Pointers.Real_pointer;
+
 
    --- Index_pointer_pointer
    --
+
    type Index_pointer_pointer is access all c_math_c.Pointers.Index_pointer;
 
 

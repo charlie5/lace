@@ -16,20 +16,28 @@ is
          c : aliased c_math_c.Index;
       end record;
 
+
    --- Items
    --
+
    type Items is array (interfaces.C.size_t range <>) of aliased c_math_c.Triangle.Item;
+
 
    --- Pointer
    --
+
    type Pointer is access all c_math_c.Triangle.Item;
+
 
    --- Pointers
    --
+
    type Pointers is array (interfaces.C.size_t range <>) of aliased c_math_c.Triangle.Pointer;
+
 
    --- Pointer_pointer
    --
+
    type Pointer_pointer is access all c_math_c.Triangle.Pointer;
 
    function construct return c_math_c.Triangle.Item;

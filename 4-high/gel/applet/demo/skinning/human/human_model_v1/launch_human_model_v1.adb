@@ -21,8 +21,8 @@ is
 
    the_Applet : constant gel.Applet.gui_World.view := gel.Forge.new_gui_Applet ("human Model", 1920, 1200);
    the_Ground : constant gel.Sprite.view           := gel.Forge.new_box_Sprite (the_Applet.gui_World,
-                                                                                mass => 0.0,
-                                                                                size => [50.0, 1.0, 50.0]);
+                                                                                Mass => 0.0,
+                                                                                Size => [50.0, 1.0, 50.0]);
 
 --     the_human_graphics_Model : aliased gel.graphics_Model.open_gl.view
 --       := gel.graphics_Model.open_gl.forge.new_Model (scale   => (1.0, 1.0, 1.0),
@@ -74,7 +74,7 @@ begin
    my_Human.define (the_Applet.gui_World,
                     null, -- the_human_graphics_Model,
                     null, -- the_human_physics_Model,
-                    mass => 1.0,
+                    Mass         => 1.0,
                     is_Kinematic => False);
 
    -- my_Human.base_Sprite.rotate (to_spin => x_Rotation_from (to_Radians (0.0)));

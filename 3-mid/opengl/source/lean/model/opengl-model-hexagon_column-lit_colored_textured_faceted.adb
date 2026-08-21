@@ -4,7 +4,7 @@ with
      openGL.Model.hexagon;
 
 
-package body openGL.Model.Hexagon_Column.lit_colored_textured_faceted
+package body openGL.Model.hexagon_Column.lit_colored_textured_faceted
 is
 
    type Geometry_view is access all Geometry.lit_colored_textured.item'Class;
@@ -56,7 +56,7 @@ is
 
 
       function new_hexagon_Face (Vertices : access Geometry.lit_colored_textured.Vertex_array;
-                                 Flip     : in     Boolean := False) return Geometry_view
+                                 Flip     : in     Boolean                                   := False) return Geometry_view
       is
          use Primitive;
 
@@ -267,4 +267,4 @@ is
    end to_GL_Geometries;
 
 
-end openGL.Model.Hexagon_Column.lit_colored_textured_faceted;
+end openGL.Model.hexagon_Column.lit_colored_textured_faceted;

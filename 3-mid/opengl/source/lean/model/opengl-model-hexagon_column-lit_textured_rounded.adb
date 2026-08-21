@@ -53,7 +53,7 @@ is
 
 
       function new_hexagon_Face (Vertices : in Geometry.lit_textured.Vertex_array;
-                                 Flip     : in Boolean := False) return Geometry.lit_textured.view
+                                 Flip     : in Boolean                           := False) return Geometry.lit_textured.view
       is
          use Primitive;
 

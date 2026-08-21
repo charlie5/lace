@@ -21,7 +21,7 @@ is
         lace_demo_Events,
 
         lace.Event,
-        lace.event.Utility,
+        lace.Event.utility,
         Lace,
 
         ada.Text_IO,
@@ -37,6 +37,7 @@ is
       record
          key_to_message_Map : key_Map_of_message;
       end record;
+
 
    overriding
    procedure respond (Self : in out key_Response;   to_Event : in Event.item'Class)
@@ -64,10 +65,10 @@ begin
 
    the_Subject := lace_demo_Keyboard.as_event_Subject;                    -- Get a reference to the keyboard as an event subject.
 
-   Event.utility.connect (the_observer  => Observer.view (the_Observer),   -- Setup out response to a keyboard event.
-                         to_subject    => Subject .view (the_Subject),
-                         with_response => the_Response'unchecked_Access,
-                         to_event_kind => to_Kind (keyboard_Event'Tag));
+   Event.utility.connect (the_Observer  => Observer.view (the_Observer),   -- Setup out response to a keyboard event.
+                          to_Subject    => Subject .view (the_Subject),
+                          with_Response => the_Response'unchecked_Access,
+                          to_event_Kind => to_Kind (keyboard_Event'Tag));
    lace_demo_Keyboard.start;
 
    for Each in 1 .. 5

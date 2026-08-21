@@ -10,31 +10,38 @@ is
 
    --- GLenum_pointer_pointer
    --
+
    type GLenum_pointer_pointer is access all osmesa_c.Pointers.GLenum_pointer;
+
 
    --- GLint_pointer_pointer
    --
+
    type GLint_pointer_pointer is access all osmesa_c.Pointers.GLint_pointer;
+
 
    --- GLsizei_pointer_pointer
    --
-   type GLsizei_pointer_pointer is
-     access all osmesa_c.Pointers.GLsizei_pointer;
+
+   type GLsizei_pointer_pointer is access all osmesa_c.Pointers.GLsizei_pointer;
+
 
    --- GLboolean_pointer_pointer
    --
-   type GLboolean_pointer_pointer is
-     access all osmesa_c.Pointers.GLboolean_pointer;
+
+   type GLboolean_pointer_pointer is access all osmesa_c.Pointers.GLboolean_pointer;
+
 
    --- OSMesaContext_pointer_pointer
    --
-   type OSMesaContext_pointer_pointer is
-     access all osmesa_c.Pointers.OSMesaContext_pointer;
+
+   type OSMesaContext_pointer_pointer is access all osmesa_c.Pointers.OSMesaContext_pointer;
+
 
    --- OSMESAproc_pointer_pointer
    --
-   type OSMESAproc_pointer_pointer is
-     access all osmesa_c.Pointers.OSMESAproc_pointer;
+
+   type OSMESAproc_pointer_pointer is access all osmesa_c.Pointers.OSMESAproc_pointer;
 
 
 end osmesa_c.pointer_Pointers;

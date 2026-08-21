@@ -46,11 +46,11 @@ is
       is
          use openGL.Primitive;
 
-         the_Geometry  : constant Geometry_view  := Geometry.lit_colored_textured.new_Geometry
-                                                      (texture_is_Alpha => False);
-         the_Primitive : constant Primitive.view := Primitive.indexed.new_Primitive
-                                                      (triangle_Fan,
-                                                       the_Indices).all'Access;
+         the_Geometry  : constant Geometry_view
+           := Geometry.lit_colored_textured.new_Geometry (texture_is_Alpha => False);
+
+         the_Primitive : constant Primitive.view
+           := Primitive.indexed.new_Primitive (triangle_Fan, the_Indices).all'Access;
       begin
          the_Geometry.Model_is     (Self.all'unchecked_Access);
          the_Geometry.Vertices_are (Vertices.all);

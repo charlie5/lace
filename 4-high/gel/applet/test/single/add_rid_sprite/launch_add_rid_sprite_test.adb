@@ -23,10 +23,10 @@ is
      := gel.forge.new_gui_Applet ("Add/Rid Sprite Test", 500, 500);
 
    the_Box : constant gel.Sprite.view
-     := gel.forge.new_box_Sprite (the_Applet.gui_World, mass => 0.0);
+     := gel.forge.new_box_Sprite (the_Applet.gui_World, Mass => 0.0);
 
    the_Balls : gel.Sprite.views (1 .. 1)
-     := [others => gel.forge.new_ball_Sprite (the_Applet.gui_World, mass => 1.0)];
+     := [others => gel.forge.new_ball_Sprite (the_Applet.gui_World, Mass => 1.0)];
 
    next_render_Time : ada.calendar.Time;
 

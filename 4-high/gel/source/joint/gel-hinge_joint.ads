@@ -54,8 +54,8 @@ is
    procedure define (Self : access Item;   in_Space           : in     std_physics.Space.view;
                                            Sprite_A, Sprite_B : access gel.Sprite.item'Class;
                                            Frame_A,  Frame_B  : in     Matrix_4x4;
-                                           low_Limit          : in     Real := to_Radians (-180.0);
-                                           high_Limit         : in     Real := to_Radians ( 180.0);
+                                           low_Limit          : in     Real                  := to_Radians (-180.0);
+                                           high_Limit         : in     Real                  := to_Radians ( 180.0);
                                            collide_Conected   : in     Boolean);
 
    procedure define (Self : access Item;   in_Space           : in     std_physics.Space.view;

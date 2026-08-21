@@ -35,11 +35,11 @@ begin
       -- The model.
       --
       the_Text_Model : constant Model.Text.lit_colored.view
-        := Model.Text.lit_colored.new_Text (Text     => "Howdy",
-                                            Font     => the_font_Id,
-                                            Color    => (Red, Opaque),
+        := Model.Text.lit_colored.new_Text (Text            => "Howdy",
+                                            Font            => the_font_Id,
+                                            Color           => (Red, Opaque),
                                             texture_Details => openGL.texture_Set.to_Set ([1 => openGL.to_Asset ("assets/texture/Face1.bmp")]),
-                                            Centered => False);
+                                            Centered        => False);
 
       -- The sprites.
       --

@@ -1,6 +1,6 @@
 with
      openGL.Visual,
-     openGL.Model.Capsule.lit_colored_textured,
+     openGL.Model.capsule.lit_colored_textured,
      openGL.Palette,
      openGL.Light,
      openGL.Demo;
@@ -31,8 +31,8 @@ begin
 
       -- The Models.
       --
-      the_Capsule_Model : constant Model.Capsule.lit_colored_textured.view
-        := Model.Capsule.lit_colored_textured.new_Capsule (Radius => 0.5,
+      the_Capsule_Model : constant Model.capsule.lit_colored_textured.view
+        := Model.capsule.lit_colored_textured.new_Capsule (Radius => 0.5,
                                                            Height => 2.0,
                                                            Color  => (Green, Opaque),
                                                            Image  => the_Texture);

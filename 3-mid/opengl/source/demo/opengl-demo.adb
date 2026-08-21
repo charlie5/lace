@@ -104,8 +104,8 @@ is
       Camera.Position_is ([0.0, 0.0, 5.0],
                           y_Rotation_from (to_Radians (0.0)));
 
-      Camera.Viewport_is (width  => Width,
-                          height => Height);
+      Camera.Viewport_is (Width  => Width,
+                          Height => Height);
 
       declare
          use openGL.Light;
@@ -153,62 +153,59 @@ is
         := Model.sphere.lit_colored.new_Sphere (Radius => 1.0, Color => (Green, Opaque));
 
       the_ball_3_Model : constant Model.sphere.lit_textured.view
-        := Model.sphere.lit_textured.new_Sphere (Radius => 1.0,
+        := Model.sphere.lit_textured.new_Sphere (Radius          => 1.0,
                                                  texture_Details => texture_Set.to_Set ([1 => the_Texture]),
-                                                 Image => the_Texture);
+                                                 Image           => the_Texture);
 
       the_ball_4_Model : constant Model.sphere.lit_colored_textured.view
-        := Model.sphere.lit_colored_textured.new_Sphere (Radius => 1.0,
-                                                         Color  => (Green, Opaque),
+        := Model.sphere.lit_colored_textured.new_Sphere (Radius          => 1.0,
+                                                         Color           => (Green, Opaque),
                                                          texture_Details => texture_Set.to_Set ([1 => the_Texture]),
-                                                         Image => the_Texture);
+                                                         Image           => the_Texture);
 
       the_billboard_Model : constant Model.billboard.textured.view
-        := Model.billboard.textured.forge.new_Billboard (Size    => (1.0, 1.0),
-                                                         Plane   => Billboard.xy,
+        := Model.billboard.textured.forge.new_Billboard (Size            => (1.0, 1.0),
+                                                         Plane           => billboard.xy,
                                                          texture_Details => texture_Set.to_Set ([1 => the_Texture]),
-                                                         Texture => the_Texture);
+                                                         Texture         => the_Texture);
 
       the_colored_billboard_Model : constant Model.billboard.textured.view               -- TODO: Add color.
-        := Model.billboard.textured.forge.new_Billboard (Size    => (1.0, 1.0),
-                                                         Plane   => Billboard.xy,
-                                                         Texture => the_Texture,
+        := Model.billboard.textured.forge.new_Billboard (Size            => (1.0, 1.0),
+                                                         Plane           => billboard.xy,
+                                                         Texture         => the_Texture,
                                                          texture_Details => texture_Set.to_Set ([1 => the_Texture]));
       use Model.box;
 
       the_box_1_Model : constant Model.box.colored.view
-        := Model.box.colored.new_Box
-             (Size => [1.0, 2.0, 3.0],
-              Faces => [Front => (Colors => [others => (Blue,     Opaque)]),
-                        Rear  => (Colors => [others => (Blue,     Opaque)]),
-                        Upper => (Colors => [others => (Green,    Opaque)]),
-                        Lower => (Colors => [others => (Green,    Opaque)]),
-                        Left  => (Colors => [others => (Dark_Red, Opaque)]),
-                        Right => (Colors => [others => (Red,      Opaque)])]);
+        := Model.box.colored.new_Box (Size  => [1.0, 2.0, 3.0],
+                                      Faces => [Front => (Colors => [others => (Blue,     Opaque)]),
+                                                Rear  => (Colors => [others => (Blue,     Opaque)]),
+                                                Upper => (Colors => [others => (Green,    Opaque)]),
+                                                Lower => (Colors => [others => (Green,    Opaque)]),
+                                                Left  => (Colors => [others => (Dark_Red, Opaque)]),
+                                                Right => (Colors => [others => (Red,      Opaque)])]);
 
       the_box_2_Model : constant Model.box.lit_textured.view
-        := Model.box.lit_textured.new_Box
-             (Size  => [1.0, 2.0, 1.0],
-              Faces => [others => (texture_Name => the_Texture)],
-              texture_Details => texture_Set.to_Set ([1 => the_Texture]));
+        := Model.box.lit_textured.new_Box (Size            => [1.0, 2.0, 1.0],
+                                           Faces           => [others => (texture_Name => the_Texture)],
+                                           texture_Details => texture_Set.to_Set ([1 => the_Texture]));
 
       the_box_3_Model : constant Model.box.textured.view
-        := Model.box.textured.new_Box
-             (Size  => [1.0, 2.0, 3.0],
-              Faces => [others => (texture_Name => the_Texture)],
-              texture_Details => texture_Set.to_Set ([1 => the_Texture]));
+        := Model.box.textured.new_Box (Size            => [1.0, 2.0, 3.0],
+                                       Faces           => [others => (texture_Name => the_Texture)],
+                                       texture_Details => texture_Set.to_Set ([1 => the_Texture]));
 
 
       the_capsule_Model : constant Model.capsule.lit_textured.view
-        := Model.capsule.lit_textured.new_Capsule (Radius => 0.5,
-                                                   Height => 2.0,
+        := Model.capsule.lit_textured.new_Capsule (Radius          => 0.5,
+                                                   Height          => 2.0,
                                                    texture_Details => texture_Set.to_Set ([1 => the_Texture]),
-                                                   Image  => the_Texture);
+                                                   Image           => the_Texture);
 
       the_lit_textured_circle_Model : constant Model.circle.lit_textured.view
-        := Model.circle.lit_textured.new_Circle (Radius => 1.5,
-                                                 Texture_Details => (openGL.texture_Set.to_Set ([1 => the_Texture])),
-                                                 Sides  => 24);
+        := Model.circle.lit_textured.new_Circle (Radius          => 1.5,
+                                                 texture_Details => (openGL.texture_Set.to_Set ([1 => the_Texture])),
+                                                 Sides           => 24);
 
       the_grid_Model    : constant Model.grid.view
         := Model.grid.new_grid_Model (Color  => Red,
@@ -221,27 +218,25 @@ is
                                                              Colors       => [others => (Red, Opaque)]));
 
       the_textured_hexagon_Model : constant Model.hexagon.lit_textured.view
-        := Model.hexagon.lit_textured.new_Hexagon (Radius => 0.5,
+        := Model.hexagon.lit_textured.new_Hexagon (Radius          => 0.5,
                                                    texture_Details => texture_Set.to_Set ([1 => the_Texture]));
 
       the_faceted_hexagon_column_Model : constant Model.hexagon_Column.lit_colored_faceted.view
-        := Model.hexagon_Column.lit_colored_faceted.new_hexagon_Column
-             (Radius => 0.25,
-              Height => 1.0,
-              Upper => (center_Color => (Green, Opaque),   Colors => [others => (Red, Opaque)]),
-              Lower => (center_Color => (Green, Opaque),   Colors => [others => (Red, Opaque)]),
-              Shaft => (Color        => (Green, Opaque)));
+        := Model.hexagon_Column.lit_colored_faceted.new_hexagon_Column (Radius => 0.25,
+                                                                        Height => 1.0,
+                                                                        Upper  => (center_Color => (Green, Opaque),   Colors => [others => (Red, Opaque)]),
+                                                                        Lower  => (center_Color => (Green, Opaque),   Colors => [others => (Red, Opaque)]),
+                                                                        Shaft  => (Color        => (Green, Opaque)));
 
       the_rounded_hexagon_column_Model : constant Model.hexagon_Column.lit_colored_rounded.view
-        := Model.hexagon_Column.lit_colored_rounded.new_hexagon_Column
-             (Radius => 0.25,
-              Height => 1.0,
-              Upper => (center_Color => (Green, Opaque),   Colors => [others => (Red, Opaque)]),
-              Lower => (center_Color => (Green, Opaque),   Colors => [others => (Red, Opaque)]),
-              Shaft => (Color        => (White, Opaque)));
+        := Model.hexagon_Column.lit_colored_rounded.new_hexagon_Column (Radius => 0.25,
+                                                                        Height => 1.0,
+                                                                        Upper  => (center_Color => (Green, Opaque),   Colors => [others => (Red, Opaque)]),
+                                                                        Lower  => (center_Color => (Green, Opaque),   Colors => [others => (Red, Opaque)]),
+                                                                        Shaft  => (Color        => (White, Opaque)));
 
       the_line_Model : constant Model.line.colored.view
-        := Model.line.colored.new_line_Model (Color  => Red,
+        := Model.line.colored.new_line_Model (Color => Red,
                                               End_1 => [0.0, 0.0, 0.0],
                                               End_2 => [5.0, 5.0, 0.0]);
 
@@ -265,15 +260,15 @@ is
                                                   Color    => (Red, Opaque));
 
       the_lit_textured_polygon_Model : constant Model.polygon.lit_textured.view
-        := Model.polygon.lit_textured.new_Polygon (vertex_Sites => [Origin_2D, [1.0, 0.0], [1.0, 1.0], [-1.0, 0.5]],
+        := Model.polygon.lit_textured.new_Polygon (vertex_Sites    => [Origin_2D, [1.0, 0.0], [1.0, 1.0], [-1.0, 0.5]],
                                                    texture_Details => openGL.texture_Set.to_Set ([1 => the_Texture]));
 
       the_text_Model : constant Model.Text.lit_colored.view
-        := Model.Text.lit_colored.new_Text (Text     => "Once upon a midnight dreary ...",
-                                            Font     => the_font_Id,
-                                            Color    => (Green, Opaque),
+        := Model.Text.lit_colored.new_Text (Text            => "Once upon a midnight dreary ...",
+                                            Font            => the_font_Id,
+                                            Color           => (Green, Opaque),
                                             texture_Details => openGL.texture_Set.to_Set ([1 => the_Texture]),
-                                            Centered => True);
+                                            Centered        => True);
 
       the_segment_line_Model : constant Model.segment_line.view
         := Model.segment_line.new_segment_line_Model (Color => Green);

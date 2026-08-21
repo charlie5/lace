@@ -227,9 +227,9 @@ is
 
    function CGLDestroyPixelFormat (pix : in CGLPixelFormatObject) return CGLError;
 
-   function CGLDescribePixelFormat (pix : in CGLPixelFormatObject; pix_num : in GLint;
+   function CGLDescribePixelFormat (pix    : in CGLPixelFormatObject; pix_num : in GLint;
                                     attrib : in CGLPixelFormatAttribute;
-                                    value : access GLint) return CGLError;
+                                    value  : access GLint) return CGLError;
 
    procedure CGLReleasePixelFormat (pix : in CGLPixelFormatObject);
 
@@ -240,24 +240,24 @@ is
                                           return GLuint;
 
    function CGLQueryRendererInfo (display_mask : in GLuint;
-                                  rend : access CGLRendererInfoObject;
-                                  nrend : access GLint) return CGLError;
+                                  rend         : access CGLRendererInfoObject;
+                                  nrend        : access GLint) return CGLError;
 
    function CGLDestroyRendererInfo (rend : in CGLRendererInfoObject)
                                     return CGLError;
 
-   function CGLDescribeRenderer (rend : in CGLRendererInfoObject; rend_num : in GLint;
-                                 prop : in CGLRendererProperty;
+   function CGLDescribeRenderer (rend  : in CGLRendererInfoObject; rend_num : in GLint;
+                                 prop  : in CGLRendererProperty;
                                  value : access GLint) return CGLError;
 
-   function CGLCreateContext (pix : in CGLPixelFormatObject;
+   function CGLCreateContext (pix   : in CGLPixelFormatObject;
                               share : in CGLContextObject;
-                              ctx : access CGLContextObject) return CGLError;
+                              ctx   : access CGLContextObject) return CGLError;
 
    function CGLDestroyContext (ctx : in CGLContextObject) return CGLError;
 
    function CGLCopyContext (src, dst : in CGLContextObject;
-                            mask : in GLbitfield) return CGLError;
+                            mask     : in GLbitfield) return CGLError;
 
    function CGLRetainContext (ctx : in CGLContextObject) return CGLContextObject;
 
@@ -267,22 +267,22 @@ is
 
    function CGLGetPixelFormat (ctx : in CGLContextObject) return CGLPixelFormatObject;
 
-   function CGLCreatePBuffer (width, height : in GLsizei;
+   function CGLCreatePBuffer (width, height          : in GLsizei;
                               target, internalFormat : in GLenum;
-                              max_level : in GLint;
-                              pbuffer : access CGLPBufferObject)
+                              max_level              : in GLint;
+                              pbuffer                : access CGLPBufferObject)
                               return CGLError;
 
    function CGLDestroyPBuffer (pbuffer : in CGLPBufferObject) return CGLError;
 
-   function CGLDescribePBuffer (obj : in CGLPBufferObject;
-                                width, height : access GLsizei;
+   function CGLDescribePBuffer (obj                    : in CGLPBufferObject;
+                                width, height          : access GLsizei;
                                 target, internalFormat : access GLenum;
-                                mipmap : access GLint) return CGLError;
+                                mipmap                 : access GLint) return CGLError;
 
-   function CGLTexImagePBuffer (ctx : in CGLContextObject;
+   function CGLTexImagePBuffer (ctx     : in CGLContextObject;
                                 pbuffer : in CGLPBufferObject;
-                                source : in GLenum) return CGLError;
+                                source  : in GLenum) return CGLError;
 
    function CGLRetainPBuffer (pbuffer : in CGLPBufferObject)
                               return CGLPBufferObject;
@@ -291,31 +291,31 @@ is
 
    function CGLGetPBufferRetainCount (pbuffer : in CGLPBufferObject) return GLuint;
 
-   function CGLSetOffScreen (ctx : in CGLContextObject;
+   function CGLSetOffScreen (ctx           : in CGLContextObject;
                              width, height : in GLsizei;
-                             rowbytes : in GLint;
-                             baseaddr : in interfaces.C.Extensions.void_ptr)
+                             rowbytes      : in GLint;
+                             baseaddr      : in interfaces.C.Extensions.void_ptr)
                              return CGLError;
 
-   function CGLGetOffScreen (ctx : in CGLContextObject;
+   function CGLGetOffScreen (ctx           : in CGLContextObject;
                              width, height : access GLsizei;
-                             rowbytes : access GLint;
-                             baseaddr : access interfaces.C.Extensions.void_ptr)
+                             rowbytes      : access GLint;
+                             baseaddr      : access interfaces.C.Extensions.void_ptr)
                              return CGLError;
 
    function CGLSetFullScreen (ctx : in CGLContextObject) return CGLError;
 
-   function CGLSetFullScreenOnDisplay (ctx : in CGLContextObject;
+   function CGLSetFullScreenOnDisplay (ctx          : in CGLContextObject;
                                        display_mask : in GLuint) return CGLError;
 
-   function CGLSetPBuffer (ctx : in CGLContextObject;
-                           pbuffer : in CGLPBufferObject;
-                           face : in GLenum;
+   function CGLSetPBuffer (ctx           : in CGLContextObject;
+                           pbuffer       : in CGLPBufferObject;
+                           face          : in GLenum;
                            level, screen : in GLint) return CGLError;
 
-   function CGLGetPBuffer (ctx : in CGLContextObject;
-                           pbuffer : access CGLPBufferObject;
-                           face : access GLenum;
+   function CGLGetPBuffer (ctx           : in CGLContextObject;
+                           pbuffer       : access CGLPBufferObject;
+                           face          : access GLenum;
                            level, screen : access GLint) return CGLError;
 
    function CGLClearDrawable (ctx : in CGLContextObject) return CGLError;
@@ -328,15 +328,15 @@ is
    function CGLDisable (ctx : in CGLContextObject; pname : in CGLContextEnable)
                         return CGLError;
 
-   function CGLIsEnabled (ctx : in CGLContextObject; pname : in CGLContextEnable;
+   function CGLIsEnabled (ctx    : in CGLContextObject; pname : in CGLContextEnable;
                           enable : access GLint) return CGLError;
 
-   function CGLSetParameter (ctx : in CGLContextObject;
-                             pname : in CGLContextParameter;
+   function CGLSetParameter (ctx    : in CGLContextObject;
+                             pname  : in CGLContextParameter;
                              params : access constant GLint) return CGLError;
 
-   function CGLGetParameter (ctx : in CGLContextObject;
-                             pname : in CGLContextParameter;
+   function CGLGetParameter (ctx    : in CGLContextObject;
+                             pname  : in CGLContextParameter;
                              params : access GLint) return CGLError;
 
    function CGLSetVirtualScreen (ctx : in CGLContextObject; screen : in GLint)
@@ -347,10 +347,10 @@ is
 
    function CGLUpdateContext (ctx : in CGLContextObject) return CGLError;
 
-   function CGLSetGlobalOption (pname : in CGLGlobalOption;
+   function CGLSetGlobalOption (pname  : in CGLGlobalOption;
                                 params : access constant GLint) return CGLError;
 
-   function CGLGetGlobalOption (pname : in CGLGlobalOption;
+   function CGLGetGlobalOption (pname  : in CGLGlobalOption;
                                 params : access GLint) return CGLError;
 
    function CGLSetOption (pname : in CGLGlobalOption; param : in GLint)
@@ -400,24 +400,24 @@ private
                                     kCGLPFASupersample        =>  60,
                                     kCGLPFASampleAlpha        =>  61,
 
-                                    kCGLPFARendererID         =>  70,
-                                    kCGLPFASingleRenderer     =>  71,
-                                    kCGLPFANoRecovery         =>  72,
-                                    kCGLPFAAccelerated        =>  73,
-                                    kCGLPFAClosestPolicy      =>  74,
-                                    kCGLPFARobust             =>  75,
-                                    kCGLPFABackingStore       =>  76,
-                                    kCGLPFAMPSafe             =>  78,
-                                    kCGLPFAWindow             =>  80,
-                                    kCGLPFAMultiScreen        =>  81,
-                                    kCGLPFACompliant          =>  83,
-                                    kCGLPFADisplayMask        =>  84,
-                                    kCGLPFAPBuffer            =>  90,
-                                    kCGLPFARemotePBuffer      =>  91,
-                                    kCGLPFAAllowOfflineRenderers => 96,
-                                    kCGLPFAAcceleratedCompute =>  97,
-                                    kCGLPFAOpenGLProfile      =>  99,
-                                    kCGLPFAVirtualScreenCount => 128
+                                    kCGLPFARendererID            =>  70,
+                                    kCGLPFASingleRenderer        =>  71,
+                                    kCGLPFANoRecovery            =>  72,
+                                    kCGLPFAAccelerated           =>  73,
+                                    kCGLPFAClosestPolicy         =>  74,
+                                    kCGLPFARobust                =>  75,
+                                    kCGLPFABackingStore          =>  76,
+                                    kCGLPFAMPSafe                =>  78,
+                                    kCGLPFAWindow                =>  80,
+                                    kCGLPFAMultiScreen           =>  81,
+                                    kCGLPFACompliant             =>  83,
+                                    kCGLPFADisplayMask           =>  84,
+                                    kCGLPFAPBuffer               =>  90,
+                                    kCGLPFARemotePBuffer         =>  91,
+                                    kCGLPFAAllowOfflineRenderers =>  96,
+                                    kCGLPFAAcceleratedCompute    =>  97,
+                                    kCGLPFAOpenGLProfile         =>  99,
+                                    kCGLPFAVirtualScreenCount    => 128
                                    );
    for CGLPixelFormatAttribute'Size use C_Enum_Size;
    pragma Convention (C, CGLPixelFormatAttribute);

@@ -30,6 +30,7 @@ is
       end add;
 
 
+
       procedure Fetch (To    : out Commands;
                        Count : out Natural)
       is
@@ -637,8 +638,8 @@ is
 
 
 
-   procedure set_local_Anchor (Self : in out Item;   for_Joint : in Joint.view;
-                                                     To        : in math.Vector_3;
+   procedure set_local_Anchor (Self : in out Item;   for_Joint   : in Joint.view;
+                                                     To          : in math.Vector_3;
                                                      is_Anchor_A : in Boolean)
    is
    begin

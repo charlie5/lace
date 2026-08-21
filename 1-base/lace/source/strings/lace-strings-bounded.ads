@@ -45,40 +45,40 @@ is
 
       procedure Set_Bounded_String (Target : out Bounded_String;
                                     Source : in  String;
-                                    Drop   : in  Truncation := Error);
+                                    Drop   : in  Truncation    := Error);
       pragma Ada_05 (Set_Bounded_String);
 
       function Append (Left  : in Bounded_String;
                        Right : in Bounded_String;
-                       Drop  : in Truncation := Error) return Bounded_String;
+                       Drop  : in Truncation    := Error) return Bounded_String;
 
       function Append (Left  : in Bounded_String;
                        Right : in String;
-                       Drop  : in Truncation := Error) return Bounded_String;
+                       Drop  : in Truncation    := Error) return Bounded_String;
 
       function Append (Left  : in String;
                        Right : in Bounded_String;
-                       Drop  : in Truncation := Error) return Bounded_String;
+                       Drop  : in Truncation    := Error) return Bounded_String;
 
       function Append (Left  : in Bounded_String;
                        Right : in Character;
-                       Drop  : in Truncation := Error) return Bounded_String;
+                       Drop  : in Truncation    := Error) return Bounded_String;
 
       function Append (Left  : in Character;
                        Right : in Bounded_String;
-                       Drop  : in Truncation := Error) return Bounded_String;
+                       Drop  : in Truncation    := Error) return Bounded_String;
 
       procedure Append (Source   : in out Bounded_String;
                         new_Item : in     Bounded_String;
-                        Drop     : in     Truncation := Error);
+                        Drop     : in     Truncation    := Error);
 
       procedure Append (Source   : in out Bounded_String;
                         new_Item : in     String;
-                        Drop     : in     Truncation := Error);
+                        Drop     : in     Truncation    := Error);
 
       procedure Append (Source   : in out Bounded_String;
                         new_Item : in     Character;
-                        Drop     : in     Truncation := Error);
+                        Drop     : in     Truncation    := Error);
 
       function "&" (Left  : in Bounded_String;
                     Right : in Bounded_String) return Bounded_String;
@@ -175,13 +175,13 @@ is
 
       function Index (Source  : in Bounded_String;
                       Pattern : in String;
-                      Going   : in Direction := Forward;
+                      Going   : in Direction                      := Forward;
                       Mapping : in Maps.Character_Mapping_Function) return Natural;
 
       function Index (Source : in Bounded_String;
                       Set    : in Maps.Character_Set;
-                      Test   : in Membership := Inside;
-                      Going  : in Direction  := Forward) return Natural;
+                      Test   : in Membership        := Inside;
+                      Going  : in Direction         := Forward) return Natural;
 
       function Index (Source  : in Bounded_String;
                       Pattern : in String;
@@ -193,23 +193,23 @@ is
       function Index (Source  : in Bounded_String;
                       Pattern : in String;
                       From    : in Positive;
-                      Going   : in Direction := Forward;
+                      Going   : in Direction                      := Forward;
                       Mapping : in Maps.Character_Mapping_Function) return Natural;
       pragma Ada_05 (Index);
 
       function Index (Source : in Bounded_String;
                       Set    : in Maps.Character_Set;
                       From   : in Positive;
-                      Test   : in Membership := Inside;
-                      Going  : in Direction  := Forward) return Natural;
+                      Test   : in Membership        := Inside;
+                      Going  : in Direction         := Forward) return Natural;
       pragma Ada_05 (Index);
 
       function Index_Non_Blank (Source : in Bounded_String;
-                                Going  : in Direction := Forward) return Natural;
+                                Going  : in Direction     := Forward) return Natural;
 
       function Index_Non_Blank (Source : in Bounded_String;
                                 From   : in Positive;
-                                Going  : in Direction := Forward) return Natural;
+                                Going  : in Direction     := Forward) return Natural;
       pragma Ada_05 (Index_Non_Blank);
 
       function Count (Source  : in Bounded_String;
@@ -263,33 +263,33 @@ is
                               Low    : in Positive;
                               High   : in Natural;
                               By     : in String;
-                              Drop   : in Truncation := Error) return Bounded_String;
+                              Drop   : in Truncation    := Error) return Bounded_String;
 
       procedure Replace_Slice (Source : in out Bounded_String;
                                Low    : in     Positive;
                                High   : in     Natural;
                                By     : in     String;
-                               Drop   : in     Truncation := Error);
+                               Drop   : in     Truncation    := Error);
 
       function Insert (Source   : in Bounded_String;
                        Before   : in Positive;
                        new_Item : in String;
-                       Drop     : in Truncation := Error) return Bounded_String;
+                       Drop     : in Truncation    := Error) return Bounded_String;
 
       procedure Insert (Source   : in out Bounded_String;
                         Before   : in     Positive;
                         new_Item : in     String;
-                        Drop     : in     Truncation := Error);
+                        Drop     : in     Truncation    := Error);
 
       function Overwrite (Source   : in Bounded_String;
                           Position : in Positive;
                           new_Item : in String;
-                          Drop     : in Truncation := Error) return Bounded_String;
+                          Drop     : in Truncation    := Error) return Bounded_String;
 
       procedure Overwrite (Source   : in out Bounded_String;
                            Position : in     Positive;
                            new_Item : in     String;
-                           Drop     : in     Truncation := Error);
+                           Drop     : in     Truncation    := Error);
 
       function Delete (Source  : in Bounded_String;
                        From    : in Positive;
@@ -320,23 +320,23 @@ is
 
       function Head (Source : in Bounded_String;
                      Count  : in Natural;
-                     Pad    : in Character  := Space;
-                     Drop   : in Truncation := Error) return Bounded_String;
+                     Pad    : in Character     := Space;
+                     Drop   : in Truncation    := Error) return Bounded_String;
 
       procedure Head (Source : in out Bounded_String;
                       Count  : in     Natural;
-                      Pad    : in     Character  := Space;
-                      Drop   : in     Truncation := Error);
+                      Pad    : in     Character     := Space;
+                      Drop   : in     Truncation    := Error);
 
       function Tail (Source : in Bounded_String;
                      Count  : in Natural;
-                     Pad    : in Character  := Space;
-                     Drop   : in Truncation := Error) return Bounded_String;
+                     Pad    : in Character     := Space;
+                     Drop   : in Truncation    := Error) return Bounded_String;
 
       procedure Tail (Source : in out Bounded_String;
                       Count  : in     Natural;
-                      Pad    : in     Character  := Space;
-                      Drop   : in     Truncation := Error);
+                      Pad    : in     Character     := Space;
+                      Drop   : in     Truncation    := Error);
 
 
       ----------------------------------
@@ -362,7 +362,7 @@ is
 
       function Replicate (Count : in Natural;
                           Item  : in Bounded_String;
-                          Drop  : in Truncation := Error) return Bounded_String;
+                          Drop  : in Truncation    := Error) return Bounded_String;
 
    private
       -- Most of the implementation is in the separate non generic package
@@ -400,7 +400,7 @@ is
 
       procedure Set_Bounded_String (Target : out Bounded_String;
                                     Source : in  String;
-                                    Drop   : in  Truncation := Error)
+                                    Drop   : in  Truncation    := Error)
          renames Set_Super_String;
 
       function Length (Source : in Bounded_String) return Length_Range
@@ -411,42 +411,42 @@ is
 
       function Append (Left  : in Bounded_String;
                        Right : in Bounded_String;
-                       Drop  : in Truncation := Error) return Bounded_String
+                       Drop  : in Truncation    := Error) return Bounded_String
          renames Super_Append;
 
       function Append (Left  : in Bounded_String;
                        Right : in String;
-                       Drop  : in Truncation := Error) return Bounded_String
+                       Drop  : in Truncation    := Error) return Bounded_String
          renames Super_Append;
 
       function Append (Left  : in String;
                        Right : in Bounded_String;
-                       Drop  : in Truncation := Error) return Bounded_String
+                       Drop  : in Truncation    := Error) return Bounded_String
          renames Super_Append;
 
       function Append (Left  : in Bounded_String;
                        Right : in Character;
-                       Drop  : in Truncation := Error) return Bounded_String
+                       Drop  : in Truncation    := Error) return Bounded_String
          renames Super_Append;
 
       function Append (Left  : in Character;
                        Right : in Bounded_String;
-                       Drop  : in Truncation := Error) return Bounded_String
+                       Drop  : in Truncation    := Error) return Bounded_String
          renames Super_Append;
 
       procedure Append (Source   : in out Bounded_String;
                         new_Item : in     Bounded_String;
-                        Drop     : in     Truncation := Error)
+                        Drop     : in     Truncation    := Error)
          renames Super_Append;
 
       procedure Append (Source   : in out Bounded_String;
                         new_Item : in     String;
-                        Drop     : in     Truncation := Error)
+                        Drop     : in     Truncation    := Error)
          renames Super_Append;
 
       procedure Append (Source   : in out Bounded_String;
                         new_Item : in     Character;
-                        Drop     : in     Truncation := Error)
+                        Drop     : in     Truncation    := Error)
          renames Super_Append;
 
       function "&" (Left  : in Bounded_String;
@@ -563,14 +563,14 @@ is
 
       function Index (Source  : in Bounded_String;
                       Pattern : in String;
-                      Going   : in Direction := Forward;
+                      Going   : in Direction                      := Forward;
                       Mapping : in Maps.Character_Mapping_Function) return Natural
          renames Super_Index;
 
       function Index (Source : in Bounded_String;
                       Set    : in Maps.Character_Set;
-                      Test   : in Membership := Inside;
-                      Going  : in Direction  := Forward) return Natural
+                      Test   : in Membership        := Inside;
+                      Going  : in Direction         := Forward) return Natural
          renames Super_Index;
 
       function Index (Source  : in Bounded_String;
@@ -583,24 +583,24 @@ is
       function Index (Source  : in Bounded_String;
                       Pattern : in String;
                       From    : in Positive;
-                      Going   : in Direction := Forward;
+                      Going   : in Direction                      := Forward;
                       Mapping : in Maps.Character_Mapping_Function) return Natural
       renames Super_Index;
 
       function Index (Source : in Bounded_String;
                       Set    : in Maps.Character_Set;
                       From   : in Positive;
-                      Test   : in Membership := Inside;
-                      Going  : in Direction  := Forward) return Natural
+                      Test   : in Membership        := Inside;
+                      Going  : in Direction         := Forward) return Natural
       renames Super_Index;
 
       function Index_Non_Blank (Source : in Bounded_String;
-                                Going  : in Direction := Forward) return Natural
+                                Going  : in Direction     := Forward) return Natural
          renames Super_Index_Non_Blank;
 
       function Index_Non_Blank (Source : in Bounded_String;
                                 From   : in Positive;
-                                Going  : in Direction := Forward) return Natural
+                                Going  : in Direction     := Forward) return Natural
          renames Super_Index_Non_Blank;
 
       function Count (Source  : in Bounded_String;
@@ -652,38 +652,38 @@ is
                               Low    : in Positive;
                               High   : in Natural;
                               By     : in String;
-                              Drop   : in Truncation := Error) return Bounded_String
+                              Drop   : in Truncation    := Error) return Bounded_String
          renames Super_Replace_Slice;
 
       procedure Replace_Slice (Source : in out Bounded_String;
                                Low    : in     Positive;
                                High   : in     Natural;
                                By     : in     String;
-                               Drop   : in     Truncation := Error)
+                               Drop   : in     Truncation    := Error)
          renames Super_Replace_Slice;
 
       function Insert (Source   : in Bounded_String;
                        Before   : in Positive;
                        new_Item : in String;
-                       Drop     : in Truncation := Error) return Bounded_String
+                       Drop     : in Truncation    := Error) return Bounded_String
          renames Super_Insert;
 
       procedure Insert (Source   : in out Bounded_String;
                         Before   : in     Positive;
                         new_Item : in     String;
-                        Drop     : in     Truncation := Error)
+                        Drop     : in     Truncation    := Error)
          renames Super_Insert;
 
       function Overwrite (Source   : in Bounded_String;
                           Position : in Positive;
                           new_Item : in String;
-                          Drop     : in Truncation := Error) return Bounded_String
+                          Drop     : in Truncation    := Error) return Bounded_String
          renames Super_Overwrite;
 
       procedure Overwrite (Source   : in out Bounded_String;
                            Position : in     Positive;
                            new_Item : in     String;
-                           Drop     : in     Truncation := Error)
+                           Drop     : in     Truncation    := Error)
          renames Super_Overwrite;
 
       function Delete (Source  : in Bounded_String;
@@ -716,26 +716,26 @@ is
 
       function Head (Source : in Bounded_String;
                      Count  : in Natural;
-                     Pad    : in Character  := Space;
-                     Drop   : in Truncation := Error) return Bounded_String
+                     Pad    : in Character     := Space;
+                     Drop   : in Truncation    := Error) return Bounded_String
          renames Super_Head;
 
       procedure Head (Source : in out Bounded_String;
                       Count  : in     Natural;
-                      Pad    : in     Character  := Space;
-                      Drop   : in     Truncation := Error)
+                      Pad    : in     Character     := Space;
+                      Drop   : in     Truncation    := Error)
          renames Super_Head;
 
       function Tail (Source : in Bounded_String;
                      Count  : in Natural;
-                     Pad    : in Character  := Space;
-                     Drop   : in Truncation := Error) return Bounded_String
+                     Pad    : in Character     := Space;
+                     Drop   : in Truncation    := Error) return Bounded_String
          renames Super_Tail;
 
       procedure Tail (Source : in out Bounded_String;
                       Count  : in     Natural;
-                      Pad    : in     Character  := Space;
-                      Drop   : in     Truncation := Error)
+                      Pad    : in     Character     := Space;
+                      Drop   : in     Truncation    := Error)
          renames Super_Tail;
 
       function "*" (Left  : in Natural;
@@ -744,7 +744,7 @@ is
 
       function Replicate (Count : in Natural;
                           Item  : in Bounded_String;
-                          Drop  : in Truncation := Error) return Bounded_String
+                          Drop  : in Truncation    := Error) return Bounded_String
          renames Super_Replicate;
 
    end Generic_Bounded_Length;

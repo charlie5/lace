@@ -156,8 +156,8 @@ is
 
    type key_press_Response is new lace.Response.item with null record;
 
-   overriding
 
+   overriding
    procedure respond (Self : in out key_press_Response;   to_Event : in lace.Event.item'Class)
    is
       pragma Unreferenced (Self);
@@ -179,8 +179,8 @@ is
 
    type key_release_Response is new lace.Response.item with null record;
 
-   overriding
 
+   overriding
    procedure respond (Self : in out key_release_Response;   to_Event : in lace.Event.item'Class)
    is
       pragma Unreferenced (Self);
@@ -201,7 +201,7 @@ is
    the_key_press_Response   : aliased key_press_Response;
    the_key_release_Response : aliased key_release_Response;
 
-   use lace.Event.Utility;
+   use lace.Event.utility;
 
 begin
    the_Applet.Camera.Site_is ([0.0, 0.0, 20.0]);

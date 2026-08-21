@@ -20,11 +20,11 @@ is
    --- Forge
    --
 
-   function new_Text (Text     : in String;
-                      Font     : in openGL.Font.font_Id;
-                      Color    : in lucid_Color;
-                      texture_Details  : in texture_Set.item;
-                      Centered : in Boolean := True) return View;
+   function new_Text (Text            : in String;
+                      Font            : in openGL.Font.font_Id;
+                      Color           : in lucid_Color;
+                      texture_Details : in texture_Set.item;
+                      Centered        : in Boolean            := True) return View;
 
 
    --------------

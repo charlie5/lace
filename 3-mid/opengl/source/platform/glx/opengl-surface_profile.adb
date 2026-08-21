@@ -26,7 +26,7 @@ is
 
 
    procedure define (Self : in out Item;   Screen  : access openGL.Screen.item'Class;
-                                           Desired : in     Qualities := default_Qualities)
+                                           Desired : in     Qualities               := default_Qualities)
    is
       pragma Unreferenced (Desired);
 

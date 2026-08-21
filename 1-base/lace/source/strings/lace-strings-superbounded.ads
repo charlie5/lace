@@ -52,39 +52,39 @@ is
 
    procedure Set_Super_String (Target : out Super_String;
                                Source : in  String;
-                               Drop   : in  Truncation := Error);
+                               Drop   : in  Truncation  := Error);
 
    function Super_Append (Left  : in Super_String;
                           Right : in Super_String;
-                          Drop  : in Truncation := Error) return Super_String;
+                          Drop  : in Truncation  := Error) return Super_String;
 
    function Super_Append (Left  : in Super_String;
                           Right : in String;
-                          Drop  : in Truncation := Error) return Super_String;
+                          Drop  : in Truncation  := Error) return Super_String;
 
    function Super_Append (Left  : in String;
                           Right : in Super_String;
-                          Drop  : in Truncation := Error) return Super_String;
+                          Drop  : in Truncation  := Error) return Super_String;
 
    function Super_Append (Left  : in Super_String;
                           Right : in Character;
-                          Drop  : in Truncation := Error) return Super_String;
+                          Drop  : in Truncation  := Error) return Super_String;
 
    function Super_Append (Left  : in Character;
                           Right : in Super_String;
-                          Drop  : in Truncation := Error) return Super_String;
+                          Drop  : in Truncation  := Error) return Super_String;
 
    procedure Super_Append (Source   : in out Super_String;
                            new_Item : in     Super_String;
-                           Drop     : in     Truncation := Error);
+                           Drop     : in     Truncation  := Error);
 
    procedure Super_Append (Source   : in out Super_String;
                            new_Item : in     String;
-                           Drop     : in     Truncation := Error);
+                           Drop     : in     Truncation  := Error);
 
    procedure Super_Append (Source   : in out Super_String;
                            new_Item : in     Character;
-                           Drop     : in     Truncation := Error);
+                           Drop     : in     Truncation  := Error);
 
    function Concat (Left  : in Super_String;
                     Right : in Super_String) return Super_String;
@@ -182,13 +182,13 @@ is
 
    function Super_Index (Source  : in Super_String;
                          Pattern : in String;
-                         Going   : in Direction := Forward;
+                         Going   : in Direction                      := Forward;
                          Mapping : in Maps.Character_Mapping_Function) return Natural;
 
    function Super_Index (Source : in Super_String;
                          Set    : in Maps.Character_Set;
-                         Test   : in Membership := Inside;
-                         Going  : in Direction  := Forward) return Natural;
+                         Test   : in Membership        := Inside;
+                         Going  : in Direction         := Forward) return Natural;
 
    function Super_Index (Source  : in Super_String;
                          Pattern : in String;
@@ -199,21 +199,21 @@ is
    function Super_Index (Source  : in Super_String;
                          Pattern : in String;
                          From    : in Positive;
-                         Going   : in Direction := Forward;
+                         Going   : in Direction                      := Forward;
                          Mapping : in Maps.Character_Mapping_Function) return Natural;
 
    function Super_Index (Source : in Super_String;
                          Set    : in Maps.Character_Set;
                          From   : in Positive;
-                         Test   : in Membership := Inside;
-                         Going  : in Direction  := Forward) return Natural;
+                         Test   : in Membership        := Inside;
+                         Going  : in Direction         := Forward) return Natural;
 
    function Super_Index_Non_Blank (Source : in Super_String;
-                                   Going  : in Direction := Forward) return Natural;
+                                   Going  : in Direction   := Forward) return Natural;
 
    function Super_Index_Non_Blank (Source : in Super_String;
                                    From   : in Positive;
-                                   Going  : in Direction := Forward) return Natural;
+                                   Going  : in Direction   := Forward) return Natural;
 
    function Super_Count (Source  : in Super_String;
                          Pattern : in String;
@@ -265,33 +265,33 @@ is
                                  Low    : in Positive;
                                  High   : in Natural;
                                  By     : in String;
-                                 Drop   : in Truncation := Error) return Super_String;
+                                 Drop   : in Truncation  := Error) return Super_String;
 
    procedure Super_Replace_Slice (Source : in out Super_String;
                                   Low    : in     Positive;
                                   High   : in     Natural;
                                   By     : in     String;
-                                  Drop   : in     Truncation := Error);
+                                  Drop   : in     Truncation  := Error);
 
    function Super_Insert (Source   : in Super_String;
                           Before   : in Positive;
                           new_Item : in String;
-                          Drop     : in Truncation := Error) return Super_String;
+                          Drop     : in Truncation  := Error) return Super_String;
 
    procedure Super_Insert (Source   : in out Super_String;
                            Before   : in     Positive;
                            new_Item : in     String;
-                           Drop     : in     Truncation := Error);
+                           Drop     : in     Truncation  := Error);
 
    function Super_Overwrite (Source   : in Super_String;
                              Position : in Positive;
                              new_Item : in String;
-                             Drop     : in Truncation := Error) return Super_String;
+                             Drop     : in Truncation  := Error) return Super_String;
 
    procedure Super_Overwrite (Source   : in out Super_String;
                               Position : in     Positive;
                               new_Item : in     String;
-                              Drop     : in     Truncation := Error);
+                              Drop     : in     Truncation  := Error);
 
    function Super_Delete (Source  : in Super_String;
                           From    : in Positive;
@@ -322,23 +322,23 @@ is
 
    function Super_Head (Source : in Super_String;
                         Count  : in Natural;
-                        Pad    : in Character  := Space;
-                        Drop   : in Truncation := Error) return Super_String;
+                        Pad    : in Character   := Space;
+                        Drop   : in Truncation  := Error) return Super_String;
 
    procedure Super_Head (Source : in out Super_String;
                          Count  : in     Natural;
-                         Pad    : in     Character  := Space;
-                         Drop   : in     Truncation := Error);
+                         Pad    : in     Character   := Space;
+                         Drop   : in     Truncation  := Error);
 
    function Super_Tail (Source : in Super_String;
                         Count  : in Natural;
-                        Pad    : in Character  := Space;
-                        Drop   : in Truncation := Error) return Super_String;
+                        Pad    : in Character   := Space;
+                        Drop   : in Truncation  := Error) return Super_String;
 
    procedure Super_Tail (Source : in out Super_String;
                          Count  : in     Natural;
-                         Pad    : in     Character  := Space;
-                         Drop   : in     Truncation := Error);
+                         Pad    : in     Character   := Space;
+                         Drop   : in     Truncation  := Error);
 
 
    ----------------------------------
@@ -376,7 +376,7 @@ is
 
    function Super_Replicate (Count : in Natural;
                              Item  : in Super_String;
-                             Drop  : in Truncation := Error) return Super_String;
+                             Drop  : in Truncation  := Error) return Super_String;
 
 
 

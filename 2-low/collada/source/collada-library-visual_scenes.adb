@@ -230,6 +230,7 @@ is
    function Rotate_Z (Self : in Node) return Vector_4
    is
       use Math;
+
       the_Rotation : Transform;
    begin
       the_Rotation := fetch_Transform (Self, Rotate, "rotationZ");
@@ -338,6 +339,7 @@ is
    function Rotate_Y (Self : in Node) return Vector_4
    is
       use Math;
+
       the_Rotation : Transform;
    begin
       the_Rotation := fetch_Transform (Self, Rotate, "rotationY");
@@ -356,6 +358,7 @@ is
    function Rotate_X (Self : in Node) return Vector_4
    is
       use Math;
+
       the_Rotation : Transform;
    begin
       the_Rotation := fetch_Transform (Self, Rotate, "rotationX");
@@ -470,6 +473,7 @@ is
             else
                begin
                   return the_Children (i).Child (named => Named);
+
                exception
                   when constraint_Error => null;
                end;

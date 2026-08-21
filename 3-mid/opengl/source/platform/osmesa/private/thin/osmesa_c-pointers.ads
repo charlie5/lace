@@ -8,50 +8,73 @@ is
 
    --- GLenum_pointer
    --
+
    type GLenum_pointer is access all osmesa_c.GLenum;
+
 
    --- GLenum_pointers
    --
+
    type GLenum_pointers is array (interfaces.C.size_t range <>) of aliased osmesa_c.Pointers.GLenum_pointer;
+
 
    --- GLint_pointer
    --
+
    type GLint_pointer is access all osmesa_c.GLint;
+
 
    --- GLint_pointers
    --
+
    type GLint_pointers is array (interfaces.C.size_t range <>) of aliased osmesa_c.Pointers.GLint_pointer;
+
 
    --- GLsizei_pointer
    --
+
    type GLsizei_pointer is access all osmesa_c.GLsizei;
+
 
    --- GLsizei_pointers
    --
+
    type GLsizei_pointers is array (interfaces.C.size_t range <>) of aliased osmesa_c.Pointers.GLsizei_pointer;
+
 
    --- GLboolean_pointer
    --
+
    type GLboolean_pointer is access all osmesa_c.GLboolean;
+
 
    --- GLboolean_pointers
    --
+
    type GLboolean_pointers is array (interfaces.C.size_t range <>) of aliased osmesa_c.Pointers.GLboolean_pointer;
+
 
    --- OSMesaContext_pointer
    --
+
    type OSMesaContext_pointer is access all osmesa_c.OSMesaContext;
+
 
    --- OSMesaContext_pointers
    --
+
    type OSMesaContext_pointers is array (interfaces.C.size_t range <>) of aliased osmesa_c.Pointers.OSMesaContext_pointer;
+
 
    --- OSMESAproc_pointer
    --
+
    type OSMESAproc_pointer is access all osmesa_c.OSMESAproc;
+
 
    --- OSMESAproc_pointers
    --
+
    type OSMESAproc_pointers is array (interfaces.C.size_t range <>) of aliased osmesa_c.Pointers.OSMESAproc_pointer;
 
 

@@ -190,7 +190,7 @@ is
    is
       use lace.Subject_and_deferred_Observer.Forge;
    begin
-      Self.local_Subject_and_deferred_Observer := new_Subject_and_Observer (name => Name & " world" & Id'Image);
+      Self.local_Subject_and_deferred_Observer := new_Subject_and_Observer (Name => Name & " world" & Id'Image);
 
       Self.Id            := Id;
       Self.space_Kind    := space_Kind;
@@ -588,7 +588,7 @@ is
 
    overriding
    procedure add (Self : access Item;   the_Sprite   : in gel.Sprite.view;
-                                        and_Children : in Boolean := False)
+                                        and_Children : in Boolean        := False)
    is
       -- added_Event : gel.remote.World.sprite_added_Event;
 

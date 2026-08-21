@@ -187,8 +187,8 @@ is
       return HANDLE;
 
    function wglCreateLayerContext (Device_Context : in HDC;
-                                   Layer_Plane : in interfaces.C.int)
-                                      return HANDLE;
+                                   Layer_Plane    : in interfaces.C.int)
+                                         return HANDLE;
 
    function wglGetCurrentContext return HANDLE;
 

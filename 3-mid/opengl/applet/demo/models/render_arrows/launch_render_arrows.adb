@@ -1,6 +1,6 @@
 with
      openGL.Visual,
-     openGL.Model.Arrow.colored,
+     openGL.Model.arrow.colored,
      openGL.Demo;
 
 
@@ -22,11 +22,11 @@ begin
    declare
       -- The Models.
       --
-      the_Arrow_Model         : constant Model.Arrow.colored.view
-        := Model.Arrow.colored.new_Arrow (End_2 => [0.0, 5.0, 0.0]);
+      the_Arrow_Model         : constant Model.arrow.colored.view
+        := Model.arrow.colored.new_Arrow (End_2 => [0.0, 5.0, 0.0]);
 
-      the_spinner_Arrow_Model : constant Model.Arrow.colored.view
-        := Model.Arrow.colored.new_Arrow (End_1 => [0.0, -2.5, 0.0],
+      the_spinner_Arrow_Model : constant Model.arrow.colored.view
+        := Model.arrow.colored.new_Arrow (End_1 => [0.0, -2.5, 0.0],
                                           End_2 => [0.0,  2.5, 0.0]);
       -- The Sprites.
       --

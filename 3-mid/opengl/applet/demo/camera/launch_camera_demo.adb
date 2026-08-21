@@ -31,14 +31,14 @@ begin
    declare
       -- The Model.
       --
-      the_box_Model : constant openGL.Model.Box.colored.view
-        := openGL.Model.Box.colored.new_Box (size  => [0.5, 0.5, 0.5],
-                                             faces => [front => (colors => [others => (Blue,         Opaque)]),
-                                                       rear  => (colors => [others => (light_Blue,   Opaque)]),
-                                                       upper => (colors => [others => (Green,        Opaque)]),
-                                                       lower => (colors => [others => (forest_Green, Opaque)]),
-                                                       left  => (colors => [others => (Dark_Red,     Opaque)]),
-                                                       right => (colors => [others => (Red,          Opaque)])]);
+      the_box_Model : constant openGL.Model.box.colored.view
+        := openGL.Model.box.colored.new_Box (Size  => [0.5, 0.5, 0.5],
+                                             Faces => [Front => (Colors => [others => (Blue,         Opaque)]),
+                                                       Rear  => (Colors => [others => (light_Blue,   Opaque)]),
+                                                       Upper => (Colors => [others => (Green,        Opaque)]),
+                                                       Lower => (Colors => [others => (forest_Green, Opaque)]),
+                                                       Left  => (Colors => [others => (Dark_Red,     Opaque)]),
+                                                       Right => (Colors => [others => (Red,          Opaque)])]);
 
       the_Sprite : constant openGL.Visual.view
         := openGL.Visual.Forge.new_Visual (the_box_Model.all'Access);

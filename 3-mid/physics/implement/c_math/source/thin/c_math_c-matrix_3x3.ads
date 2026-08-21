@@ -24,20 +24,28 @@ is
          m22 : aliased c_math_c.Real;
       end record;
 
+
    --- Items
    --
+
    type Items is array (interfaces.C.size_t range <>) of aliased c_math_c.Matrix_3x3.Item;
+
 
    --- Pointer
    --
+
    type Pointer is access all c_math_c.Matrix_3x3.Item;
+
 
    --- Pointers
    --
+
    type Pointers is array (interfaces.C.size_t range <>) of aliased c_math_c.Matrix_3x3.Pointer;
+
 
    --- Pointer_pointer
    --
+
    type Pointer_pointer is access all c_math_c.Matrix_3x3.Pointer;
 
    function construct return c_math_c.Matrix_3x3.Item;

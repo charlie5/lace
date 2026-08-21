@@ -379,7 +379,7 @@ is
 
    function Index (Source  : in String;
                    Pattern : in String;
-                   Going   : in Direction := Forward;
+                   Going   : in Direction                      := Forward;
                    Mapping : in Maps.Character_Mapping_Function) return Natural
    is
       PL1 : constant Integer := Pattern'Length - 1;
@@ -466,8 +466,8 @@ is
 
    function Index (Source : in String;
                    Set    : in Maps.Character_Set;
-                   Test   : in Membership := Inside;
-                   Going  : in Direction  := Forward) return Natural
+                   Test   : in Membership        := Inside;
+                   Going  : in Direction         := Forward) return Natural
    is
    begin
       -- Forwards case
@@ -532,7 +532,7 @@ is
    function Index (Source  : in String;
                    Pattern : in String;
                    From    : in Positive;
-                   Going   : in Direction := Forward;
+                   Going   : in Direction                      := Forward;
                    Mapping : in Maps.Character_Mapping_Function) return Natural
    is
    begin
@@ -562,8 +562,8 @@ is
    function Index (Source : in String;
                    Set    : in Maps.Character_Set;
                    From   : in Positive;
-                   Test   : in Membership := Inside;
-                   Going  : in Direction  := Forward) return Natural
+                   Test   : in Membership        := Inside;
+                   Going  : in Direction         := Forward) return Natural
    is
    begin
       if Going = Forward

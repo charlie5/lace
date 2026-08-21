@@ -100,7 +100,7 @@ is
    function Index (Source  : in String;
                    Pattern : in String;
                    From    : in Positive;
-                   Going   : in Direction := Forward;
+                   Going   : in Direction                      := Forward;
                    Mapping : in Maps.Character_Mapping_Function) return Natural
    with
      Pre    =>
@@ -144,7 +144,7 @@ is
 
    function Index (Source  : in String;
                    Pattern : in String;
-                   Going   : in Direction := Forward;
+                   Going   : in Direction                      := Forward;
                    Mapping : in Maps.Character_Mapping_Function) return Natural
    with
      Pre    => Pattern'Length /= 0,
@@ -160,15 +160,15 @@ is
 
    function Index (Source : in String;
                    Set    : in Maps.Character_Set;
-                   Test   : in Membership := Inside;
-                   Going  : in Direction  := Forward) return Natural
+                   Test   : in Membership        := Inside;
+                   Going  : in Direction         := Forward) return Natural
      with Global => null;
 
    function Index (Source : in String;
                    Set    : in Maps.Character_Set;
                    From   : in Positive;
-                   Test   : in Membership := Inside;
-                   Going  : in Direction  := Forward) return Natural
+                   Test   : in Membership        := Inside;
+                   Going  : in Direction         := Forward) return Natural
    with
      Pre    => (if Source'Length /= 0 then From in Source'Range),
      Global => null;
@@ -186,7 +186,7 @@ is
                              From   : in Positive;
                              Going  : in Direction := Forward) return Natural
    with
-     Pre   => (if Source'Length /= 0 then From in Source'Range),
+     Pre    => (if Source'Length /= 0 then From in Source'Range),
      Global => null;
    pragma Ada_05 (Index_Non_Blank);
    -- Returns Index (Source, Maps.To_Set(Space), From, Outside, Going).
@@ -457,8 +457,8 @@ is
    procedure Trim (Source  : in out String;
                    Left    : in     Maps.Character_Set;
                    Right   : in     Maps.Character_Set;
-                   Justify : in     Alignment := ada.Strings.Left;
-                   Pad     : in     Character := Space)
+                   Justify : in     Alignment         := ada.Strings.Left;
+                   Pad     : in     Character         := Space)
      -- Incomplete contract.
      with Global => null;
    -- Equivalent to:

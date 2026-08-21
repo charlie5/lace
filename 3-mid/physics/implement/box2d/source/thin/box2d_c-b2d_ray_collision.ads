@@ -21,12 +21,16 @@ is
          Site_world   : aliased c_math_c.Vector_3.Item;
       end record;
 
+
    --- Item_array
    --
+
    type Item_array is array (interfaces.C.size_t range <>) of aliased box2d_c.b2d_ray_Collision.Item;
+
 
    --- Pointer
    --
+
    package C_Pointers is new interfaces.C.Pointers (Index              => interfaces.C.size_t,
                                                     Element            => box2d_c.b2d_ray_Collision.Item,
                                                     Element_array      => box2d_c.b2d_ray_Collision.item_array,
@@ -36,12 +40,16 @@ is
 
    subtype Pointer is C_Pointers.Pointer;
 
+
    --- Pointer_array
    --
+
    type Pointer_array is array (interfaces.C.size_t range <>) of aliased box2d_c.b2d_ray_Collision.Pointer;
+
 
    --- Pointer_pointer
    --
+
    package C_Pointer_Pointers is new interfaces.C.Pointers (Index              => interfaces.C.size_t,
                                                             Element            => box2d_c.b2d_ray_Collision.Pointer,
                                                             Element_array      => box2d_c.b2d_ray_Collision.Pointer_array,

@@ -7,6 +7,7 @@ with
      lace.Event.make_Observer,
      ada.Strings.unbounded;
 
+
 package chat.Client.local
 --
 -- Provides a local client.
@@ -50,6 +51,7 @@ is
    procedure Registrar_has_shutdown (Self : in out Item);
 
 
+
 private
 
    package Observer is new lace.Event.make_Observer (lace.Any.limited_item);
@@ -61,8 +63,9 @@ private
                         and chat.Client.item with
       record
             Name                   : unbounded_String;
-            Registrar_has_shutdown : Boolean := False;
-            Registrar_is_dead      : Boolean := False;
+            Registrar_has_shutdown : Boolean         := False;
+            Registrar_is_dead      : Boolean         := False;
       end record;
+
 
 end chat.Client.local;

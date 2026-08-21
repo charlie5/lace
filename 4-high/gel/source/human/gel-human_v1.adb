@@ -94,8 +94,8 @@ is
       function new_Human (World         : access gel        .World.item'Class;
                           Model         : access openGL     .Model.item'Class;
                           physics_Model : access std_Physics.Model.item'Class;
-                          Mass          : in     math.Real := 0.0;
-                          is_Kinematic  : in     Boolean   := False) return Human_v1.view
+                          Mass          : in     math.Real                   := 0.0;
+                          is_Kinematic  : in     Boolean                     := False) return Human_v1.view
       is
          Self : constant Human_v1.view := new Human_v1.item;
       begin
@@ -368,8 +368,8 @@ is
    procedure define (Self : in out Item;   World         : access gel        .World.item'Class;
                                            Model         : access openGL     .Model.item'Class;
                                            physics_Model : access std_Physics.Model.item'Class;
-                                           Mass          : in     math.Real := 0.0;
-                                           is_Kinematic  : in     Boolean   := True)
+                                           Mass          : in     math.Real                   := 0.0;
+                                           is_Kinematic  : in     Boolean                     := True)
    is
       pragma Unreferenced (Mass);
 
@@ -569,17 +569,16 @@ is
 --              else
                declare
                   the_graphics_Model : constant openGL.Model.box.colored.view
-                    := openGL.Model.Box.colored.new_Box
-                      (Size => [Scale (1) * my_Scale,   Scale (2) * my_Scale,   Scale (3) * my_Scale],
-                       Faces => [front => (colors => [others => (Red,     Opaque)]),
-                                 rear  => (colors => [others => (Blue,    Opaque)]),
-                                 upper => (colors => [others => (Green,   Opaque)]),
-                                 lower => (colors => [others => (Yellow,  Opaque)]),
-                                 left  => (colors => [others => (Cyan,    Opaque)]),
-                                 right => (colors => [others => (Magenta, Opaque)])]);
+                    := openGL.Model.box.colored.new_Box (Size  => [Scale (1) * my_Scale,   Scale (2) * my_Scale,   Scale (3) * my_Scale],
+                                                         Faces => [Front => (Colors => [others => (Red,     Opaque)]),
+                                                                   Rear  => (Colors => [others => (Blue,    Opaque)]),
+                                                                   Upper => (Colors => [others => (Green,   Opaque)]),
+                                                                   Lower => (Colors => [others => (Yellow,  Opaque)]),
+                                                                   Left  => (Colors => [others => (Cyan,    Opaque)]),
+                                                                   Right => (Colors => [others => (Magenta, Opaque)])]);
                begin
                   Self.bone_Sprites (the_Bone) := gel.Sprite.forge.new_Sprite (Name           => sprite_Name,
-                                                                               World          => gel.sprite.World_view (World),
+                                                                               World          => gel.Sprite.World_view (World),
                                                                                graphics_Model => the_graphics_Model,
                                                                                physics_Model  => the_physics_Model,
                                                                                owns_graphics  => True,
@@ -720,7 +719,7 @@ is
                                                                  is_Tangible => False);
          begin
             Self.skin_Sprite := gel.Sprite.forge.new_Sprite (Name           => "human.skin_Sprite",
-                                                             World          => gel.sprite.World_view (World),
+                                                             World          => gel.Sprite.World_view (World),
                                                              graphics_Model => the_human_graphics_Model,
                                                              physics_Model  =>the_physics_Model,
                                                              owns_graphics  => True,
