@@ -33,8 +33,8 @@ is
    --- Attributes
    --
 
-   function Name          (Self : in     Item) return Event.subject_Name                                   is abstract;
-   function next_Sequence (Self : in out Item;   for_Observer : in Observer.view) return Event.sequence_Id is abstract;
+   function Name          (Self : in     Item)                                    return Event.subject_Name is abstract;
+   function next_Sequence (Self : in out Item;   for_Observer : in Observer.view) return Event.sequence_Id  is abstract;
 
 
    -------------

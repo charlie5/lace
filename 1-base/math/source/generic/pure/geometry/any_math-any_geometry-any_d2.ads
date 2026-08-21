@@ -111,8 +111,8 @@ is
          Vertices : Sites (1 .. Vertex_Count);
       end record;
 
-   function  Area         (Self : in     Polygon) return Real;     -- Polygon must be convex.
-   function  Perimeter    (Self : in     Polygon) return Real;
+   function  Area         (Self : in     Polygon)                            return Real;     -- Polygon must be convex.
+   function  Perimeter    (Self : in     Polygon)                            return Real;
    function  Angle        (Self : in     Polygon;   at_Vertex : in Positive) return Radians;
 
    function  is_Triangle  (Self : in     Polygon) return Boolean;

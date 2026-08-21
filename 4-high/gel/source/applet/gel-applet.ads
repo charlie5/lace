@@ -64,8 +64,8 @@ is
    function last_Keypress  (Self : access Item) return        gel.Keyboard.Key;
 
 
-   function world_Count    (Self : in     Item) return Natural;
-   function Worlds         (Self : in     Item) return gel.World.views;
+   function world_Count    (Self : in     Item)                          return Natural;
+   function Worlds         (Self : in     Item)                          return gel.World.views;
    function World          (Self : in     Item;   Id : in world_Id := 1) return gel.World.view;
    function World_as_iFace (Self : in     Item;   Id : in world_Id := 1) return gel.remote.World.view;
 

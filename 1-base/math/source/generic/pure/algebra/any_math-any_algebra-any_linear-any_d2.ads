@@ -9,9 +9,9 @@ is
    --
 
    function  Interpolated           (From, To : in Vector_2;   Percent : in unit_Percentage) return Vector_2;
-   function  Distance               (From, To : in Vector_2) return Real;
-   function  Midpoint               (From, To : in Vector_2) return Vector_2;
-   function  Angle_between_pre_Norm (U, V     : in Vector_2) return Radians;
+   function  Distance               (From, To : in Vector_2)                                 return Real;
+   function  Midpoint               (From, To : in Vector_2)                                 return Vector_2;
+   function  Angle_between_pre_Norm (U, V     : in Vector_2)                                 return Radians;
    --
    -- Given that the vectors 'U' and 'V' are already normalized, returns a positive angle between 0 and 180 degrees.
 

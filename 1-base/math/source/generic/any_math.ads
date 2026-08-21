@@ -137,7 +137,7 @@ is
    --- Vector_2
    --
 
-   function to_Vector_2 (Self : in Vector_3) return Vector_2;
+   function to_Vector_2 (Self : in Vector_3)                                return Vector_2;
    function Image       (Self : in Vector_2;   Precision : in Natural := 5) return String;
 
    overriding
@@ -160,7 +160,7 @@ is
    --- Vector_3
    --
 
-   function to_Vector_3 (Self : in Vector_2;   Z : in Real := 0.0) return Vector_3;
+   function to_Vector_3 (Self : in Vector_2;   Z : in Real := 0.0)          return Vector_3;
    function Image       (Self : in Vector_3;   Precision : in Natural := 5) return String;
 
    overriding

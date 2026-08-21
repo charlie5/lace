@@ -51,7 +51,7 @@ is
    procedure Name_is (Self : in out Node;   Now : in Text);
 
    procedure add             (Self : in out Node;   the_Transform : in Transform);
-   function  Transforms      (Self : in     Node) return Transform_array;
+   function  Transforms      (Self : in     Node)                              return Transform_array;
    function  fetch_Transform (Self : access Node;   transform_Sid : in String) return access Transform;
 
    function  local_Transform (Self : in     Node) return Matrix_4x4;
@@ -83,7 +83,7 @@ is
    function  Parent    (Self : in     Node)     return Node_view;
    procedure Parent_is (Self : in out Node;   Now : in Node_view);
 
-   function  Children  (Self : in     Node)  return Nodes;
+   function  Children  (Self : in     Node)                        return Nodes;
    function  Child     (Self : in     Node;   Which : in Positive) return Node_view;
    function  Child     (Self : in     Node;   Named : in String  ) return Node_view;
 

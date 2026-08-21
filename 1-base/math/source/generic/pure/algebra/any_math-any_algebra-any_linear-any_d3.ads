@@ -133,7 +133,7 @@ is
    function  Versor   (Quat : in Quaternion) return Quaternion;               -- Produces the unit quaternion of Quat.
 
    function  Farthest (Quat : in Quaternion;   qd : in Quaternion) return Quaternion;   -- TODO: Document this.
-   function  Invert   (Quat : in Quaternion)    return Quaternion;
+   function  Invert   (Quat : in Quaternion)                       return Quaternion;
 
    function  Angle    (Quat : in Quaternion) return Radians;
    function  Axis     (Quat : in Quaternion) return Vector_3;

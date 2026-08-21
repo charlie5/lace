@@ -58,7 +58,7 @@ is
          Contact       : a_Contact;
       end record;
 
-   function manifold_Count (Self : in     Item) return Natural                             is abstract;
+   function manifold_Count (Self : in     Item)                        return Natural      is abstract;
    function Manifold       (Self : access Item;   Index : in Positive) return a_Manifold   is abstract;
 
 
