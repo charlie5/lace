@@ -1,10 +1,9 @@
 with
+     xml.Reader,
+
      ada.command_Line,
-
      ada.Text_IO,
-     ada.Strings.unbounded,
-
-     xml.Reader;
+     ada.Strings.unbounded;
 
 
 procedure launch_Outline

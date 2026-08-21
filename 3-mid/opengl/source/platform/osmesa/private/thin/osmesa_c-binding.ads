@@ -3,11 +3,11 @@
 with
      osmesa_c.Pointers,
 
-     interfaces.C,
-     interfaces.C.Strings,
-
      Swig,
-     swig.Pointers;
+     swig.Pointers,
+
+     interfaces.C,
+     interfaces.C.Strings;
 
 
 package osmesa_c.Binding
