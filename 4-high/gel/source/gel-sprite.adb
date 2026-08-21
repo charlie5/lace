@@ -51,12 +51,15 @@ is
          when physics.Model.multi_Sphere =>
             Self.Shape := physics_Shape_view (Self.World.Space.new_multisphere_Shape (Self.physics_Model.shape_Info.Sites.all,
                                                                                       Self.physics_Model.shape_Info.Radii.all));
+
          when physics.Model.Cone =>
             Self.Shape := physics_Shape_view (Self.World.Space.       new_cone_Shape (Radius => Real (Self.physics_Model.Scale (1) / 2.0),
                                                                                       Height => Real (Self.physics_Model.Scale (2))));
+
          when physics.Model.a_Capsule =>
             Self.Shape := physics_Shape_view (Self.World.Space.    new_capsule_Shape (Self.physics_Model.shape_Info.lower_Radius,
                                                                                       Self.physics_Model.shape_Info.Height));
+
          when physics.Model.Cylinder =>
             Self.Shape := physics_Shape_view (Self.World.Space.   new_cylinder_Shape (Self.physics_Model.shape_Info.half_Extents));
 
@@ -69,9 +72,11 @@ is
          when physics.Model.Plane =>
             Self.Shape := physics_Shape_view (Self.World.Space.      new_plane_Shape (Self.physics_Model.Shape_Info.plane_Normal,
                                                                                       Self.physics_Model.Shape_Info.plane_Offset));
+
          when physics.Model.Heightfield =>
             Self.Shape := physics_Shape_view (Self.World.Space.new_heightfield_Shape (Self.physics_Model.shape_Info.Heights.all,
                                                                                       Self.physics_Model.Scale));
+
          when physics.Model.Circle =>
             Self.Shape := physics_Shape_view (Self.World.Space.     new_circle_Shape (Self.physics_Model.shape_Info.circle_Radius));
 
