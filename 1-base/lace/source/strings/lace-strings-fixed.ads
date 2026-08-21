@@ -102,11 +102,9 @@ is
                    From    : in Positive;
                    Going   : in Direction                      := Forward;
                    Mapping : in Maps.Character_Mapping_Function) return Natural
-   with
-     Pre    =>
-       Pattern'Length /= 0
-         and then (if Source'Length /= 0 then From in Source'Range),
-     Global => null;
+     with Pre    =>          Pattern'Length /= 0
+                    and then (if Source'Length /= 0 then From in Source'Range),
+          Global => null;
    pragma Ada_05 (Index);
 
    function Index (Source  : in String;
@@ -114,11 +112,9 @@ is
                    From    : in Positive;
                    Going   : in Direction              := Forward;
                    Mapping : in Maps.Character_Mapping := Maps.Identity) return Natural
-   with
-     Pre    =>
-       Pattern'Length /= 0
-         and then (if Source'Length /= 0 then From in Source'Range),
-     Global => null;
+     with Pre    =>          Pattern'Length /= 0
+                    and then (if Source'Length /= 0 then From in Source'Range),
+          Global => null;
    pragma Ada_05 (Index);
 
    -- Each Index function searches, starting from From, for a slice of
@@ -138,17 +134,15 @@ is
                    Pattern : in String;
                    Going   : in Direction              := Forward;
                    Mapping : in Maps.Character_Mapping := Maps.Identity) return Natural
-   with
-     Pre    => Pattern'Length > 0,
-     Global => null;
+     with Pre    => Pattern'Length > 0,
+          Global => null;
 
    function Index (Source  : in String;
                    Pattern : in String;
                    Going   : in Direction                      := Forward;
                    Mapping : in Maps.Character_Mapping_Function) return Natural
-   with
-     Pre    => Pattern'Length /= 0,
-     Global => null;
+     with Pre    => Pattern'Length /= 0,
+          Global => null;
 
    -- If Going = Forward, returns:
    --
@@ -169,9 +163,8 @@ is
                    From   : in Positive;
                    Test   : in Membership        := Inside;
                    Going  : in Direction         := Forward) return Natural
-   with
-     Pre    => (if Source'Length /= 0 then From in Source'Range),
-     Global => null;
+     with Pre    => (if Source'Length /= 0 then From in Source'Range),
+          Global => null;
    pragma Ada_05 (Index);
    -- Index searches for the first or last occurrence of any of a set of
    -- characters (when Test=Inside), or any of the complement of a set of
@@ -185,9 +178,8 @@ is
    function Index_Non_Blank (Source : in String;
                              From   : in Positive;
                              Going  : in Direction := Forward) return Natural
-   with
-     Pre    => (if Source'Length /= 0 then From in Source'Range),
-     Global => null;
+     with Pre    => (if Source'Length /= 0 then From in Source'Range),
+          Global => null;
    pragma Ada_05 (Index_Non_Blank);
    -- Returns Index (Source, Maps.To_Set(Space), From, Outside, Going).
 
@@ -199,16 +191,14 @@ is
    function Count (Source  : in String;
                    Pattern : in String;
                    Mapping : in Maps.Character_Mapping := Maps.Identity) return Natural
-   with
-     Pre    => Pattern'Length /= 0,
-     Global => null;
+     with Pre    => Pattern'Length /= 0,
+          Global => null;
 
    function Count (Source  : in String;
                    Pattern : in String;
                    Mapping : in Maps.Character_Mapping_Function) return Natural
-   with
-     Pre    => Pattern'Length /= 0,
-     Global => null;
+     with Pre    => Pattern'Length /= 0,
+          Global => null;
 
    -- Returns the maximum number of nonoverlapping slices of Source that match
    -- Pattern with respect to Mapping. If Pattern is the null string then
@@ -226,9 +216,8 @@ is
                          Test   : in  Membership;
                          First  : out Positive;
                          Last   : out Natural)
-   with
-     Pre    => (if Source'Length /= 0 then From in Source'Range),
-     Global => null;
+     with Pre    => (if Source'Length /= 0 then From in Source'Range),
+          Global => null;
    pragma Ada_2012 (Find_Token);
    -- If Source is not the null string and From is not in Source'Range, then
    -- index_Error is raised. Otherwise, First is set to the index of the first
@@ -253,15 +242,13 @@ is
 
    function Translate (Source  : in String;
                        Mapping : in Maps.Character_Mapping_Function) return String
-   with
-     Post   => Translate'Result'Length = Source'Length,
-     Global => null;
+     with Post   => Translate'Result'Length = Source'Length,
+          Global => null;
 
    function Translate (Source  : in String;
                        Mapping : in Maps.Character_Mapping) return String
-   with
-     Post   => Translate'Result'Length = Source'Length,
-     Global => null;
+     with Post   => Translate'Result'Length = Source'Length,
+          Global => null;
 
    -- Returns the string S whose length is Source'Length and such that S (I)
    -- is the character to which Mapping maps the corresponding element of
@@ -289,12 +276,10 @@ is
                             Drop    : in     Truncation := Error;
                             Justify : in     Alignment  := Left;
                             Pad     : in     Character  := Space)
-   with
-     -- Incomplete contract.
-     Pre    =>
-       Low - 1 <= Source'Last
-         and then High >= Source'First - 1,
-     Global => null;
+   -- Incomplete contract.
+     with Pre    =>          Low - 1 <= Source'Last
+                    and then High >= Source'First - 1,
+          Global => null;
    -- If Low > Source'Last+1, or High < Source'First - 1, then index_Error is
    -- propagated. Otherwise:
    --
@@ -309,24 +294,21 @@ is
                            Low    : in Positive;
                            High   : in Natural;
                            By     : in String) return String
-   with
-     Pre            =>
-       Low - 1 <= Source'Last
-         and then High >= Source'First - 1
-         and then (if High >= Low
-                   then Natural'Max (0, Low - Source'First)
-                     <= Natural'Last - By'Length
-                      - Natural'Max (Source'Last - High, 0)
-                   else Source'Length <= Natural'Last - By'Length),
-     Contract_Cases =>
-       (High >= Low =>
-          Replace_Slice'Result'Length
-        = Natural'Max (0, Low - Source'First)
-        + By'Length
-        + Natural'Max (Source'Last - High, 0),
-        others      =>
-          Replace_Slice'Result'Length = Source'Length + By'Length),
-     Global         => null;
+     with Pre            =>          Low - 1 <= Source'Last
+                            and then High >= Source'First - 1
+                            and then (if High >= Low
+                                      then Natural'Max (0, Low - Source'First)
+                                        <= Natural'Last - By'Length
+                                         - Natural'Max (Source'Last - High, 0)
+                                      else Source'Length <= Natural'Last - By'Length),
+          Contract_Cases => (High >= Low =>
+                               Replace_Slice'Result'Length
+                             = Natural'Max (0, Low - Source'First)
+                             + By'Length
+                             + Natural'Max (Source'Last - High, 0),
+                             others      =>
+                               Replace_Slice'Result'Length = Source'Length + By'Length),
+          Global         => null;
    -- Equivalent to:
    --
    --    Move (Replace_Slice (Source, Low, High, By),
@@ -335,12 +317,10 @@ is
    function Insert (Source   : in String;
                     Before   : in Positive;
                     new_Item : in String) return String
-   with
-     Pre    =>
-       Before - 1 in Source'First - 1 .. Source'Last
-         and then Source'Length <= Natural'Last - new_Item'Length,
-     Post   => Insert'Result'Length = Source'Length + new_Item'Length,
-     Global => null;
+     with Pre    =>          Before - 1 in Source'First - 1 .. Source'Last
+                    and then Source'Length <= Natural'Last - new_Item'Length,
+          Post   => Insert'Result'Length = Source'Length + new_Item'Length,
+          Global => null;
    -- Propagates index_Error if Before is not in
    -- Source'First .. Source'Last+1; otherwise, returns
    -- Source (Source'First .. Before - 1)
@@ -350,26 +330,21 @@ is
                      Before   : in     Positive;
                      new_Item : in     String;
                      Drop     : in     Truncation := Error)
-   with
-     -- Incomplete contract.
-     Pre    => Before - 1 in Source'First - 1 .. Source'Last,
-     Global => null;
+   -- Incomplete contract.
+     with Pre    => Before - 1 in Source'First - 1 .. Source'Last,
+          Global => null;
    -- Equivalent to Move (Insert (Source, Before, new_Item), Source, Drop)
 
    function Overwrite (Source   : in String;
                        Position : in Positive;
                        new_Item : in String) return String
-   with
-     Pre    =>
-       Position - 1 in Source'First - 1 .. Source'Last
-         and then
-       (if Position - Source'First >= Source'Length - new_Item'Length
-        then Position - Source'First <= Natural'Last - new_Item'Length),
-     Post   =>
-       Overwrite'Result'Length
-     = Integer'Max (Source'Length,
-                    Position - Source'First + new_Item'Length),
-     Global => null;
+     with Pre    =>          Position - 1 in Source'First - 1 .. Source'Last
+                    and then (if Position - Source'First >= Source'Length - new_Item'Length
+                              then Position - Source'First <= Natural'Last - new_Item'Length),
+          Post   =>   Overwrite'Result'Length
+                    = Integer'Max (Source'Length,
+                                   Position - Source'First + new_Item'Length),
+          Global => null;
    -- Propagates index_Error if Position is not in
    -- Source'First .. Source'Last + 1; otherwise, returns the string obtained
    -- from Source by consecutively replacing characters starting at Position
@@ -381,25 +356,22 @@ is
                         Position : in     Positive;
                         new_Item : in     String;
                         Drop     : in     Truncation := Right)
-   with
-     -- Incomplete contract.
-     Pre    => Position - 1 in Source'First - 1 .. Source'Last,
-     Global => null;
+   -- Incomplete contract.
+     with Pre    => Position - 1 in Source'First - 1 .. Source'Last,
+          Global => null;
    -- Equivalent to Move(Overwrite(Source, Position, new_Item), Source, Drop)
 
    function Delete (Source  : in String;
                     From    : in Positive;
                     Through : in Natural) return String
-   with
-     Pre    => (if From <= Through
-                then (From in Source'Range
-                        and then Through <= Source'Last)),
-     Post   =>
-       Delete'Result'Length
-     = Source'Length - (if From <= Through
-                        then Through - From + 1
-                        else 0),
-     Global => null;
+     with Pre    => (if From <= Through
+                     then (From in Source'Range
+                             and then Through <= Source'Last)),
+          Post   =>   Delete'Result'Length
+                    = Source'Length - (if From <= Through
+                                       then Through - From + 1
+                                       else 0),
+          Global => null;
    -- If From <= Through, the returned string is
    -- Replace_Slice(Source, From, Through, ""); otherwise, it is Source with
    -- lower bound 1.
@@ -409,12 +381,11 @@ is
                      Through : in     Natural;
                      Justify : in     Alignment := Left;
                      Pad     : in     Character := Space)
-   with
-     -- Incomplete contract.
-     Pre    => (if From <= Through
-                then (From in Source'Range
-                        and then Through <= Source'Last)),
-     Global => null;
+   -- Incomplete contract.
+     with Pre    => (if From <= Through
+                     then (From in Source'Range
+                             and then Through <= Source'Last)),
+          Global => null;
    -- Equivalent to:
    --
    --     Move (Delete (Source, From, Through),
@@ -427,9 +398,8 @@ is
 
    function Trim (Source : in String;
                   Side   : in Trim_End) return String
-   with
-     Post   => Trim'Result'Length <= Source'Length,
-     Global => null;
+     with Post   => Trim'Result'Length <= Source'Length,
+          Global => null;
    -- Returns the string obtained by removing from Source all leading Space
    -- characters (if Side = Left), all trailing Space characters (if
    -- Side = Right), or all leading and trailing Space characters (if
@@ -448,9 +418,8 @@ is
    function Trim (Source : in String;
                   Left   : in Maps.Character_Set;
                   Right  : in Maps.Character_Set) return String
-   with
-     Post   => Trim'Result'Length <= Source'Length,
-     Global => null;
+     with Post   => Trim'Result'Length <= Source'Length,
+          Global => null;
    -- Returns the string obtained by removing from Source all leading
    -- characters in Left and all trailing characters in Right.
 
@@ -469,9 +438,8 @@ is
    function Head (Source : in String;
                   Count  : in Natural;
                   Pad    : in Character := Space) return String
-   with
-     Post   => Head'Result'Length = Count,
-     Global => null;
+     with Post   => Head'Result'Length = Count,
+          Global => null;
    -- Returns a string of length Count. If Count <= Source'Length, the string
    -- comprises the first Count characters of Source. Otherwise, its contents
    -- are Source concatenated with Count - Source'Length Pad characters.
@@ -490,9 +458,8 @@ is
    function Tail (Source : in String;
                   Count  : in Natural;
                   Pad    : in Character := Space) return String
-   with
-     Post   => Tail'Result'Length = Count,
-     Global => null;
+     with Post   => Tail'Result'Length = Count,
+          Global => null;
    -- Returns a string of length Count. If Count <= Source'Length, the string
    -- comprises the last Count characters of Source. Otherwise, its contents
    -- are Count-Source'Length Pad characters concatenated with Source.
@@ -515,16 +482,14 @@ is
 
    function "*" (Left  : in Natural;
                  Right : in Character) return String
-   with
-     Post   => "*"'Result'Length = Left,
-     Global => null;
+     with Post   => "*"'Result'Length = Left,
+          Global => null;
 
    function "*" (Left  : in Natural;
                  Right : in String) return String
-   with
-     Pre    => (if Right'Length /= 0 then Left <= Natural'Last / Right'Length),
-     Post   => "*"'Result'Length = Left * Right'Length,
-     Global => null;
+     with Pre    => (if Right'Length /= 0 then Left <= Natural'Last / Right'Length),
+          Post   => "*"'Result'Length = Left * Right'Length,
+          Global => null;
 
    -- These functions replicate a character or string a specified number of
    -- times. The first function returns a string whose length is Left and each
