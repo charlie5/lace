@@ -416,7 +416,6 @@ begin
       free (the_Applet);
    end;
 
-
 exception
    when E : others =>
       new_Line;

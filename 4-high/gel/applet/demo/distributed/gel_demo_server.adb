@@ -101,7 +101,6 @@ is
          the_World.destroy;
       end;
 
-
    exception
       when E : others =>
          put_Line ("Server unhandled exception ...");

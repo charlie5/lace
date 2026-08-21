@@ -77,7 +77,6 @@ is
 
       put_Line ("Client done.");
 
-
    exception
       when E : others =>
          put_Line ("Client unhandled exception ...");

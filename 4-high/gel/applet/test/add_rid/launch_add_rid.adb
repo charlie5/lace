@@ -180,7 +180,6 @@ begin
 
    gel.Applet.gui_world.free (the_Applet);
 
-
 exception
    when E : others =>
       new_Line;

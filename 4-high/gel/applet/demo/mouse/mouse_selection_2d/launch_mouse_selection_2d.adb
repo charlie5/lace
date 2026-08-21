@@ -123,7 +123,6 @@ begin
 
    lace.Event.utility.close;
 
-
 exception
    when E : others =>
       lace.Event.utility.close;
