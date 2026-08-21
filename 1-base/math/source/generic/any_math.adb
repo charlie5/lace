@@ -406,18 +406,18 @@ is
    --
    function Image (Self : in Real;   Precision : in Natural := 5) return String
    is
-      type Fixed_1  is delta  0.1            range -100_000_000_000_000_000.0 .. 100_000_000_000_000_000.0;
-      type Fixed_2  is delta  0.01           range  -10_000_000_000_000_000.0 ..  10_000_000_000_000_000.0;
-      type Fixed_3  is delta  0.001          range   -1_000_000_000_000_000.0 ..   1_000_000_000_000_000.0;
-      type Fixed_4  is delta  0.0001         range     -100_000_000_000_000.0 ..     100_000_000_000_000.0;
-      type Fixed_5  is delta  0.00001        range      -10_000_000_000_000.0 ..      10_000_000_000_000.0;
-      type Fixed_6  is delta  0.000001       range       -1_000_000_000_000.0 ..       1_000_000_000_000.0;
-      type Fixed_7  is delta  0.0000001      range         -100_000_000_000.0 ..         100_000_000_000.0;
-      type Fixed_8  is delta  0.00000001     range          -10_000_000_000.0 ..          10_000_000_000.0;
-      type Fixed_9  is delta  0.000000001    range           -1_000_000_000.0 ..           1_000_000_000.0;
-      type Fixed_10 is delta  0.0000000001   range             -100_000_000.0 ..             100_000_000.0;
-      type Fixed_11 is delta  0.00000000001  range              -10_000_000.0 ..              10_000_000.0;
-      type Fixed_12 is delta  0.000000000001 range               -1_000_000.0 ..               1_000_000.0;
+      type Fixed_1  is delta  0.1               range -100_000_000_000_000_000.0 .. 100_000_000_000_000_000.0;
+      type Fixed_2  is delta  0.01              range  -10_000_000_000_000_000.0 ..  10_000_000_000_000_000.0;
+      type Fixed_3  is delta  0.001             range   -1_000_000_000_000_000.0 ..   1_000_000_000_000_000.0;
+      type Fixed_4  is delta  0.0001            range     -100_000_000_000_000.0 ..     100_000_000_000_000.0;
+      type Fixed_5  is delta  0.000_01          range      -10_000_000_000_000.0 ..      10_000_000_000_000.0;
+      type Fixed_6  is delta  0.000_001         range       -1_000_000_000_000.0 ..       1_000_000_000_000.0;
+      type Fixed_7  is delta  0.000_000_1       range         -100_000_000_000.0 ..         100_000_000_000.0;
+      type Fixed_8  is delta  0.000_000_01      range          -10_000_000_000.0 ..          10_000_000_000.0;
+      type Fixed_9  is delta  0.000_000_001     range           -1_000_000_000.0 ..           1_000_000_000.0;
+      type Fixed_10 is delta  0.000_000_000_1   range             -100_000_000.0 ..             100_000_000.0;
+      type Fixed_11 is delta  0.000_000_000_01  range              -10_000_000.0 ..              10_000_000.0;
+      type Fixed_12 is delta  0.000_000_000_001 range               -1_000_000.0 ..               1_000_000.0;
    begin
       case Precision
       is

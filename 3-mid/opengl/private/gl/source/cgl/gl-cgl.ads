@@ -165,55 +165,55 @@ is
                      kCGLBadConnection
                     );
 
-   kCGLMonoscopicBit  : constant := 16#00000001#;
-   kCGLStereoscopicBit: constant := 16#00000002#;
-   kCGLSingleBufferBit: constant := 16#00000004#;
-   kCGLDoubleBufferBit: constant := 16#00000008#;
-   kCGLTripleBufferBit: constant := 16#00000010#;
-   kCGL0Bit           : constant := 16#00000001#;
-   kCGL1Bit           : constant := 16#00000002#;
-   kCGL2Bit           : constant := 16#00000004#;
-   kCGL3Bit           : constant := 16#00000008#;
-   kCGL4Bit           : constant := 16#00000010#;
-   kCGL5Bit           : constant := 16#00000020#;
-   kCGL6Bit           : constant := 16#00000040#;
-   kCGL8Bit           : constant := 16#00000080#;
-   kCGL10Bit          : constant := 16#00000100#;
-   kCGL12Bit          : constant := 16#00000200#;
-   kCGL16Bit          : constant := 16#00000400#;
-   kCGL24Bit          : constant := 16#00000800#;
-   kCGL32Bit          : constant := 16#00001000#;
-   kCGL48Bit          : constant := 16#00002000#;
-   kCGL64Bit          : constant := 16#00004000#;
-   kCGL96Bit          : constant := 16#00008000#;
-   kCGL128Bit         : constant := 16#00010000#;
-   kCGLRGB444Bit      : constant := 16#00000040#;
-   kCGLARGB4444Bit    : constant := 16#00000080#;
-   kCGLRGB444A8Bit    : constant := 16#00000100#;
-   kCGLRGB555Bit      : constant := 16#00000200#;
-   kCGLARGB1555Bit    : constant := 16#00000400#;
-   kCGLRGB555A8Bit    : constant := 16#00000800#;
-   kCGLRGB565Bit      : constant := 16#00001000#;
-   kCGLRGB565A8Bit    : constant := 16#00002000#;
-   kCGLRGB888Bit      : constant := 16#00004000#;
-   kCGLARGB8888Bit    : constant := 16#00008000#;
-   kCGLRGB888A8Bit    : constant := 16#00010000#;
-   kCGLRGB101010Bit   : constant := 16#00020000#;
-   kCGLARGB2101010Bit : constant := 16#00040000#;
-   kCGLRGB101010_A8Bit: constant := 16#00080000#;
-   kCGLRGB121212Bit   : constant := 16#00100000#;
-   kCGLARGB12121212Bit: constant := 16#00200000#;
-   kCGLRGB161616Bit   : constant := 16#00400000#;
-   kCGLRGBA16161616Bit: constant := 16#00800000#;
-   kCGLRGBFloat64Bit  : constant := 16#01000000#;
-   kCGLRGBAFloat64Bit : constant := 16#02000000#;
-   kCGLRGBFloat128Bit : constant := 16#04000000#;
-   kCGLRGBAFloat128Bit: constant := 16#08000000#;
-   kCGLRGBFloat256Bit : constant := 16#10000000#;
-   kCGLRGBAFloat256Bit: constant := 16#20000000#;
+   kCGLMonoscopicBit  : constant := 16#0000_0001#;
+   kCGLStereoscopicBit: constant := 16#0000_0002#;
+   kCGLSingleBufferBit: constant := 16#0000_0004#;
+   kCGLDoubleBufferBit: constant := 16#0000_0008#;
+   kCGLTripleBufferBit: constant := 16#0000_0010#;
+   kCGL0Bit           : constant := 16#0000_0001#;
+   kCGL1Bit           : constant := 16#0000_0002#;
+   kCGL2Bit           : constant := 16#0000_0004#;
+   kCGL3Bit           : constant := 16#0000_0008#;
+   kCGL4Bit           : constant := 16#0000_0010#;
+   kCGL5Bit           : constant := 16#0000_0020#;
+   kCGL6Bit           : constant := 16#0000_0040#;
+   kCGL8Bit           : constant := 16#0000_0080#;
+   kCGL10Bit          : constant := 16#0000_0100#;
+   kCGL12Bit          : constant := 16#0000_0200#;
+   kCGL16Bit          : constant := 16#0000_0400#;
+   kCGL24Bit          : constant := 16#0000_0800#;
+   kCGL32Bit          : constant := 16#0000_1000#;
+   kCGL48Bit          : constant := 16#0000_2000#;
+   kCGL64Bit          : constant := 16#0000_4000#;
+   kCGL96Bit          : constant := 16#0000_8000#;
+   kCGL128Bit         : constant := 16#0001_0000#;
+   kCGLRGB444Bit      : constant := 16#0000_0040#;
+   kCGLARGB4444Bit    : constant := 16#0000_0080#;
+   kCGLRGB444A8Bit    : constant := 16#0000_0100#;
+   kCGLRGB555Bit      : constant := 16#0000_0200#;
+   kCGLARGB1555Bit    : constant := 16#0000_0400#;
+   kCGLRGB555A8Bit    : constant := 16#0000_0800#;
+   kCGLRGB565Bit      : constant := 16#0000_1000#;
+   kCGLRGB565A8Bit    : constant := 16#0000_2000#;
+   kCGLRGB888Bit      : constant := 16#0000_4000#;
+   kCGLARGB8888Bit    : constant := 16#0000_8000#;
+   kCGLRGB888A8Bit    : constant := 16#0001_0000#;
+   kCGLRGB101010Bit   : constant := 16#0002_0000#;
+   kCGLARGB2101010Bit : constant := 16#0004_0000#;
+   kCGLRGB101010_A8Bit: constant := 16#0008_0000#;
+   kCGLRGB121212Bit   : constant := 16#0010_0000#;
+   kCGLARGB12121212Bit: constant := 16#0020_0000#;
+   kCGLRGB161616Bit   : constant := 16#0040_0000#;
+   kCGLRGBA16161616Bit: constant := 16#0080_0000#;
+   kCGLRGBFloat64Bit  : constant := 16#0100_0000#;
+   kCGLRGBAFloat64Bit : constant := 16#0200_0000#;
+   kCGLRGBFloat128Bit : constant := 16#0400_0000#;
+   kCGLRGBAFloat128Bit: constant := 16#0800_0000#;
+   kCGLRGBFloat256Bit : constant := 16#1000_0000#;
+   kCGLRGBAFloat256Bit: constant := 16#2000_0000#;
 
-   kCGLSupersampleBit : constant := 16#00000001#;
-   kCGLMultisampleBit : constant := 16#00000002#;
+   kCGLSupersampleBit : constant := 16#0000_0001#;
+   kCGLMultisampleBit : constant := 16#0000_0002#;
 
    type CGLPixelFormatAttribute_array is array (Positive range <>) of
      aliased CGLPixelFormatAttribute;
@@ -504,24 +504,24 @@ private
    pragma Convention (C, CGLOpenGLProfile);
 
    for CGLError use (kCGLNoError            => 0,
-                     kCGLBadAttribute       => 10000,
-                     kCGLBadProperty        => 10001,
-                     kCGLBadPixelFormat     => 10002,
-                     kCGLBadRendererInfo    => 10003,
-                     kCGLBadContext         => 10004,
-                     kCGLBadDrawable        => 10005,
-                     kCGLBadDisplay         => 10006,
-                     kCGLBadState           => 10007,
-                     kCGLBadValue           => 10008,
-                     kCGLBadMatch           => 10009,
-                     kCGLBadEnumeration     => 10010,
-                     kCGLBadOffScreen       => 10011,
-                     kCGLBadFullScreen      => 10012,
-                     kCGLBadWindow          => 10013,
-                     kCGLBadAddress         => 10014,
-                     kCGLBadCodeModule      => 10015,
-                     kCGLBadAlloc           => 10016,
-                     kCGLBadConnection      => 10017
+                     kCGLBadAttribute       => 10_000,
+                     kCGLBadProperty        => 10_001,
+                     kCGLBadPixelFormat     => 10_002,
+                     kCGLBadRendererInfo    => 10_003,
+                     kCGLBadContext         => 10_004,
+                     kCGLBadDrawable        => 10_005,
+                     kCGLBadDisplay         => 10_006,
+                     kCGLBadState           => 10_007,
+                     kCGLBadValue           => 10_008,
+                     kCGLBadMatch           => 10_009,
+                     kCGLBadEnumeration     => 10_010,
+                     kCGLBadOffScreen       => 10_011,
+                     kCGLBadFullScreen      => 10_012,
+                     kCGLBadWindow          => 10_013,
+                     kCGLBadAddress         => 10_014,
+                     kCGLBadCodeModule      => 10_015,
+                     kCGLBadAlloc           => 10_016,
+                     kCGLBadConnection      => 10_017
                     );
    for CGLError'Size use C_Enum_Size;
    pragma Convention (C, CGLError);

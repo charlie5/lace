@@ -15,7 +15,7 @@ is
 
    function almost_Equal (Left, Right : in Real) return Boolean
    is
-      Tolerance : constant := 0.00_000_1;
+      Tolerance : constant := 0.000_001;
    begin
       return abs (Left - Right) <= Tolerance;
    end almost_Equal;

@@ -99,7 +99,7 @@ is
       --
 
       declare
-         the_Real : constant Real := 1.1111_1111;
+         the_Real : constant Real := 1.111_111_11;
       begin
          assert (Image (the_Real,  0) = " 1",           "Image (a) ... failed ! ... '" & Image (the_Real,  0) & "'");
          assert (Image (the_Real,  1) = " 1.1",         "Image (b) ... failed ! ... '" & Image (the_Real,  1) & "'");

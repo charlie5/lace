@@ -11,7 +11,7 @@ is
    procedure define (Self : in out Item)
    is
    begin
-      Self.vanish_point_size_Min.Value_is (0.00_12);
+      Self.vanish_point_size_Min.Value_is (0.001_2);
    end define;
 
 

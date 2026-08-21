@@ -181,7 +181,7 @@ is
    EGL_VG_ALPHA_FORMAT_NONPRE      : constant := 16#308b#;
    EGL_VG_ALPHA_FORMAT_PRE         : constant := 16#308c#;
 
-   EGL_DISPLAY_SCALING             : constant := 10000;
+   EGL_DISPLAY_SCALING             : constant := 10_000;
 
    EGL_BUFFER_PRESERVED            : constant := 16#3094#;
    EGL_BUFFER_DESTROYED            : constant := 16#3095#;

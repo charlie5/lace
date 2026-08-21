@@ -16,7 +16,7 @@ is
 
         XML.Reader;
 
-   Line_Max      : constant := 60000;
+   Line_Max      : constant := 60_000;
 
    Depth         : Natural               := 0;
    XML_File      : File_type;

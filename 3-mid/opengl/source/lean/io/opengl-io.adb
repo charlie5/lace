@@ -567,10 +567,10 @@ is
                                              * Integer (Float'Ceiling (Float (FileInfo.Core.biWidth)))
                                              * Integer (FileInfo.Core.biHeight));
 
-         FileInfo.bV4RedMask    := 16#00FF0000#;
-         FileInfo.bV4GreenMask  := 16#0000FF00#;
-         FileInfo.bV4BlueMask   := 16#000000FF#;
-         FileInfo.bV4AlphaMask  := 16#FF000000#;
+         FileInfo.bV4RedMask    := 16#00FF_0000#;
+         FileInfo.bV4GreenMask  := 16#0000_FF00#;
+         FileInfo.bV4BlueMask   := 16#0000_00FF#;
+         FileInfo.bV4AlphaMask  := 16#FF00_0000#;
          FileInfo.bV4CSType     := 0;
          FileInfo.bV4Endpoints  := (others => (others => 0));
          FileInfo.bV4GammaRed   := 0;

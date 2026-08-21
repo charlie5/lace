@@ -604,7 +604,7 @@ is
                   extract565 (myswap_bytes, iter.all'Address, extractComponents);
                   for k in C.size_t' (0) .. 2
                   loop
-                     iter2.all := GLushort (extractComponents (k) * 65535.0);
+                     iter2.all := GLushort (extractComponents (k) * 65_535.0);
                      iter2     := iter2 + 1;
                   end loop;
 
@@ -612,7 +612,7 @@ is
                   extract4444 (myswap_bytes, iter.all'Address, extractComponents);
                   for k in C.size_t' (0) .. 3
                   loop
-                     iter2.all := GLushort (extractComponents (k) * 65535.0);
+                     iter2.all := GLushort (extractComponents (k) * 65_535.0);
                      iter2     := iter2 + 1;
                   end loop;
 
@@ -620,7 +620,7 @@ is
                   extract5551 (myswap_bytes, iter.all'Address, extractComponents);
                   for k in C.size_t' (0) .. 3
                   loop
-                     iter2.all := GLushort (extractComponents (k) * 65535.0);
+                     iter2.all := GLushort (extractComponents (k) * 65_535.0);
                      iter2     := iter2 + 1;
                   end loop;
 
@@ -676,7 +676,7 @@ is
                         iter2.all := GLushort (widget.f);
                         iter2     := iter2 + 1;
                      else
-                        iter2.all := GLushort (65535.0 * widget.f);
+                        iter2.all := GLushort (65_535.0 * widget.f);
                         iter2     := iter2 + 1;
                      end if;
 
@@ -833,7 +833,7 @@ is
                when GL_UNSIGNED_SHORT_5_6_5 =>
                   for k in C.size_t' (0) .. 2
                   loop
-                     shoveComponents (k) := GLfloat (iter2.all) / 65535.0;
+                     shoveComponents (k) := GLfloat (iter2.all) / 65_535.0;
                      iter2               := iter2 + 1;
                   end loop;
 
@@ -850,7 +850,7 @@ is
                when GL_UNSIGNED_SHORT_4_4_4_4 =>
                   for k in C.size_t' (0) .. 3
                   loop
-                     shoveComponents (k) := GLfloat (iter2.all) / 65535.0;
+                     shoveComponents (k) := GLfloat (iter2.all) / 65_535.0;
                      iter2               := iter2 + 1;
                   end loop;
 
@@ -867,7 +867,7 @@ is
                when GL_UNSIGNED_SHORT_5_5_5_1 =>
                   for k in C.size_t' (0) .. 3
                   loop
-                     shoveComponents (k) := GLfloat (iter2.all) / 65535.0;
+                     shoveComponents (k) := GLfloat (iter2.all) / 65_535.0;
                      iter2               := iter2 + 1;
                   end loop;
 
@@ -918,7 +918,7 @@ is
                         widget.f := GLfloat (iter2.all);
                         iter2    := iter2 + 1;
                      else
-                        widget.f := GLfloat (iter2.all) / 65535.0;
+                        widget.f := GLfloat (iter2.all) / 65_535.0;
                         iter2    := iter2 + 1;
                      end if;
 
@@ -929,7 +929,7 @@ is
                         widget.ui := GLuint (iter2.all);
                         iter2     := iter2 + 1;
                      else
-                        widget.ui := GLuint (iter2.all) * 65537;
+                        widget.ui := GLuint (iter2.all) * 65_537;
                         iter2     := iter2 + 1;
                      end if;
 
@@ -939,7 +939,7 @@ is
                         widget.i := GLint (iter2.all);
                         iter2    := iter2 + 1;
                      else
-                        widget.i := GLint ((GLuint (iter2.all) * 65537) / 2);
+                        widget.i := GLint ((GLuint (iter2.all) * 65_537) / 2);
                         iter2    := iter2 + 1;
                      end if;
                   end if;

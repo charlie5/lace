@@ -55,7 +55,7 @@ is
    is
       use ada.Containers;
 
-      type Fix is delta 0.00_1 range 0.0 .. 1000.0;
+      type Fix is delta 0.001 range 0.0 .. 1000.0;
 
       cell_Size  : constant Fix := 0.5;
       grid_Width : constant     := 10;

@@ -174,7 +174,7 @@ is
    GLX_VERSION                     : constant := 2;
    GLX_EXTENSIONS                  : constant := 3;
    GLX_CONFIG_CAVEAT               : constant := 16#20#;
-   GLX_DONT_CARE                   : constant := 16#ffffffff#;
+   GLX_DONT_CARE                   : constant := 16#ffff_ffff#;
    GLX_X_VISUAL_TYPE               : constant := 16#22#;
    GLX_TRANSPARENT_TYPE            : constant := 16#23#;
    GLX_TRANSPARENT_INDEX_VALUE     : constant := 16#24#;
@@ -228,9 +228,9 @@ is
    GLX_PBUFFER_WIDTH               : constant := 16#8041#;
    GLX_RGBA_BIT                    : constant := 16#1#;
    GLX_COLOR_INDEX_BIT             : constant := 16#2#;
-   GLX_PBUFFER_CLOBBER_MASK        : constant := 16#8000000#;
-   GLX_SAMPLE_BUFFERS              : constant := 16#186a0#;
-   GLX_SAMPLES                     : constant := 16#186a1#;
+   GLX_PBUFFER_CLOBBER_MASK        : constant := 16#800_0000#;
+   GLX_SAMPLE_BUFFERS              : constant := 16#1_86a0#;
+   GLX_SAMPLES                     : constant := 16#1_86a1#;
    GLX_PbufferClobber              : constant := 0;
    GLX_BufferSwapComplete          : constant := 1;
    a_a_GLX_NUMBER_EVENTS           : constant := 17;

@@ -80,22 +80,22 @@ is
               "T1 =>  & Image (the_Tri) &  area should be 0.5 ... failed !   " & Image (Area (the_Tri), 12));
 
 
-      the_Tri := (vertices => [[-0.11073643,  -0.179634809],
-                               [-0.0553682148, 0.410182595],
-                               [-0.0276841074, 0.705091298]]);
+      the_Tri := (vertices => [[-0.110_736_43,    -0.179_634_809],
+                               [-0.055_368_214_8,  0.410_182_595],
+                               [-0.027_684_107_4,  0.705_091_298]]);
       assert (Area (the_Tri) >= 0.0,
               "T2 =>  & Image (the_Tri) &  area should be positive ... failed !");
 
 
       the_Tri := (vertices => [[-1.0, -1.0],
                                [ 1.0, -1.0],
-                               [ 1.0, -0.999999]]);
+                               [ 1.0, -0.999_999]]);
       assert (Area (the_Tri) > 0.0,
               "T3 =>  & Image (the_Tri) &  area should be positive ... failed !");
 
-      the_Tri := (vertices => [[-0.11073643,  -0.179634809],
-                               [-0.0276841074, 0.705091298],
-                               [-0.0553682148, 0.410182595]]);
+      the_Tri := (vertices => [[-0.110_736_43,    -0.179_634_809],
+                               [-0.027_684_107_4,  0.705_091_298],
+                               [-0.055_368_214_8,  0.410_182_595]]);
       assert (Area (the_Tri) >= 0.0,
               "T4 =>  & Image (the_Tri) &  area should be positive ... failed !");
 
