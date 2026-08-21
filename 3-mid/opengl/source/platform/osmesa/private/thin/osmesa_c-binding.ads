@@ -12,7 +12,6 @@ with
 
 package osmesa_c.Binding
 is
-
    function OSMesaCreateContext (format    : in osmesa_c.GLenum;
                                  sharelist : in osmesa_c.OSMesaContext) return osmesa_c.OSMesaContext;
 

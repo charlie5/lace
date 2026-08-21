@@ -1,6 +1,5 @@
 package freetype_c.FT_BBox
 is
-
    type Item is
       record
          xMin : aliased FT_Pos;

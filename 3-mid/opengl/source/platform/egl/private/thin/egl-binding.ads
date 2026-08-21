@@ -8,7 +8,6 @@ with
 
 package eGL.Binding
 is
-
    function eglGetError                             return eGL.EGLint;
 
    function eglGetDisplay (display_id : in eGL.NativeDisplayType.Item) return eGL.EGLDisplay;

@@ -3,7 +3,6 @@ package collada.Library.controllers
 -- Models a collada 'controllers' library, which is a collection of controllers.
 --
 is
-
    type Inputs_view    is access all Library.Inputs;
    type int_Array_view is access all int_array;
 

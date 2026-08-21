@@ -1,6 +1,5 @@
 package freetype_c.FT_Bitmap
 is
-
    type Item is
       record
          Rows         : aliased c.int;

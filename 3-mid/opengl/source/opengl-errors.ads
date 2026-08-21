@@ -3,7 +3,6 @@ package openGL.Errors
 -- Provides utilities for displaying openGL errors.
 --
 is
-
    function  Current return String;
    --
    -- Returns a descriptive string of the last occurring openGL error.

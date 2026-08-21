@@ -14,7 +14,6 @@ package openGL.texture_Set
 -- Note that Mesa currently only supports 16 texture units.
 --
 is
-
    max_Textures : constant := 16;     -- 32;
 
    type detail_Count is range 0 .. max_Textures;

@@ -3,7 +3,6 @@ package openGL.Model.hexagon_Column
 -- Models a column with six sides.
 --
 is
-
    type Item is abstract new Model.item with private;
 
 

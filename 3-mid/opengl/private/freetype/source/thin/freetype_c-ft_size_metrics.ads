@@ -1,6 +1,5 @@
 package freetype_c.FT_Size_Metrics
 is
-
    type Item is
       record
          X_ppem      : aliased FT_UShort;

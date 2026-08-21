@@ -16,7 +16,6 @@ with
 
 package bullet_c.Binding
 is
-
    function b3d_new_Box (half_Extents : in c_math_c.Vector_3.Pointer) return bullet_c.Pointers.Shape_pointer;
 
    function b3d_new_Capsule (Radii  : in c_math_c.Vector_2.Pointer;

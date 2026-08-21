@@ -4,7 +4,6 @@ package openGL.IO.lat_long_Radius
 -- and radius triplets (one triplet per line) to an openGL IO model.
 --
 is
-
    function to_Model (model_File : in     String)              return IO.Model;
    function to_Model (math_Model : access Geometry_3d.a_Model) return IO.Model;
 

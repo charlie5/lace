@@ -3,7 +3,6 @@ package gl.Binding
 -- Provides functions common to all openGL profiles.
 --
 is
-
    procedure glActiveTexture     (Texture  : in     GLenum);
    procedure glBindTexture       (Target   : in     GLenum;
                                   Texture  : in     GLuint);

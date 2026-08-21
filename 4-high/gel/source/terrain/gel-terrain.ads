@@ -8,7 +8,6 @@ package gel.Terrain
 -- Provides a constructor for heightmap terrain.
 --
 is
-
    function new_Terrain (World        : in gel.World.view;
                          heights_File : in String;
                          texture_File : in String        := "";

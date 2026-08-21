@@ -9,8 +9,6 @@ package gel.Events with remote_Types
 -- Provides events for GEL.
 --
 is
-
-
    type window_Enter             is new lace.Event.item with null record;
    type window_Leave             is new lace.Event.item with null record;
 

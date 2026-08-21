@@ -1,6 +1,5 @@
 package freetype_c.Pointers
 is
-
    type FT_UShort_pointer       is access all FT_UShort;
    type FT_Int_pointer          is access all FT_Int;
    type FT_UInt_pointer         is access all FT_UInt;

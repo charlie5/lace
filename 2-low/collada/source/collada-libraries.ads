@@ -10,7 +10,6 @@ package collada.Libraries
 -- Provides a container for the specific collada library packages.
 --
 is
-
    type Item is
       record
          Geometries    : collada.Library.geometries   .item;

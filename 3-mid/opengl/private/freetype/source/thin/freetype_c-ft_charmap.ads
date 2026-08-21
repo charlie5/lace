@@ -4,7 +4,6 @@ with
 
 package freetype_c.FT_CharMap
 is
-
    subtype Item       is FT_CharMapRec.Pointer;
    type    Item_array is array (interfaces.C.Size_t range <>) of aliased FT_CharMap.Item;
 

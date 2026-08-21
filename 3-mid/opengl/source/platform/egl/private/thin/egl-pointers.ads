@@ -1,6 +1,5 @@
 package eGL.Pointers
 is
-
    type Display_pointer          is access all eGL.Display;
    type NativeWindowType_pointer is access all eGL.NativeWindowType;
    type NativePixmapType_pointer is access all eGL.NativePixmapType;

@@ -43,7 +43,6 @@ is
 
    package Forge
    is
-
       function new_Human (World         : access gel.World.item'Class;
 --                            Space         : in     gel.Sprite.physics_Space_view;
                           Model         : access openGL.Model     .item'Class;

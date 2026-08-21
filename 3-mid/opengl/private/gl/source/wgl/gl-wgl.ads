@@ -40,7 +40,6 @@ with
 
 package GL.WGL
 is
-
    WGL_FONT_LINES                 : constant := 8#0000#;
    WGL_FONT_POLYGONS              : constant := 1;
    WGL_SWAP_MAIN_PLANE            : constant := 1;

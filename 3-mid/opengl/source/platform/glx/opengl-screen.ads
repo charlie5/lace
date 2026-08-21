@@ -3,7 +3,6 @@ package openGL.Screen
 -- Models an openGL screen.
 --
 is
-
    type Item is tagged limited private;
 
 

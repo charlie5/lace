@@ -9,7 +9,6 @@ package openGL.surface_Profile
 -- Models an openGL surface profile.
 --
 is
-
    type Item  is tagged private;
    type View  is access all Item'Class;
 

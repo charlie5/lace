@@ -4,7 +4,6 @@ with
 
 package freetype_c.FT_Face
 is
-
    subtype Item       is Pointers.FT_FaceRec_pointer;
    type    Item_array is array (C.Size_t range <>) of aliased FT_Face.Item;
 

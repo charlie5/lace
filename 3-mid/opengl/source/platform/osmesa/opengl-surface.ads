@@ -16,7 +16,6 @@ package openGL.Surface
 -- Models an openGL surface.
 --
 is
-
    type Item  is tagged private;
    type Items is array (Positive range <>) of aliased Item;
 

@@ -1,6 +1,5 @@
 package freetype_c.FT_CharMapRec
 is
-
    type Item is
       record
          Face        : access  FT_FaceRec;

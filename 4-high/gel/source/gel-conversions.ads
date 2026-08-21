@@ -4,7 +4,6 @@ with
 
 package gel.Conversions
 is
-
    function to_GL   (Self : in math.Real)                  return opengl.Real;
    function to_GL   (Self : in math.Vector_3)              return opengl.Vector_3;
    function to_GL   (Self : in math.Matrix_3x3)            return opengl.Matrix_3x3;

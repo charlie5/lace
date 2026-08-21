@@ -8,7 +8,6 @@ package openGL.Display
 -- Models an openGL display.
 --
 is
-
    type Item is tagged private;
 
    function Default return Item;

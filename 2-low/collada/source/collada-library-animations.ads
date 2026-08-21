@@ -3,7 +3,6 @@ package collada.Library.animations
 -- Models a collada 'animations' library, which is a collection of animations.
 --
 is
-
    type Inputs_view    is access all Library.Inputs;
    type int_Array_view is access all int_array;
 

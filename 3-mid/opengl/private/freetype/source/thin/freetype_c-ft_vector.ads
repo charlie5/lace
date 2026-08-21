@@ -1,6 +1,5 @@
 package freetype_c.FT_Vector
 is
-
    type Item is
       record
          X : aliased FT_Pos;

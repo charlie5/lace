@@ -3,7 +3,6 @@ package openGL.Server
 -- Provides functions to query the GL server.
 --
 is
-
    type a_Version is
       record
          Major   : Integer;

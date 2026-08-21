@@ -3,7 +3,6 @@ package openGL.Renderer
 -- Provides a base class for all renderers.
 --
 is
-
    type Item is abstract tagged limited private;
    type View is access all Item'Class;
 

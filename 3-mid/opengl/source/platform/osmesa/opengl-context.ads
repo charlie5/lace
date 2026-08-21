@@ -12,7 +12,6 @@ package openGL.Context
 -- Models an openGL (GLX) context.
 --
 is
-
    type Item is tagged private;
    type View is access all Item'Class;
 

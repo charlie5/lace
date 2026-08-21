@@ -18,7 +18,6 @@ with
 
 package box2d_c.Binding
 is
-
    function b2d_new_Circle (Radius : in c_math_c.Real) return box2d_c.Pointers.Shape_pointer;
 
    function b2d_new_Polygon (Vertices     : in c_math_c.Vector_2.Pointer;

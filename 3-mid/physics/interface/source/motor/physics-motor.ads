@@ -6,8 +6,6 @@ with ada.strings.unbounded;
 
 package physics.Motor
 is
-
-
    type Item is abstract tagged
       record
          Name       : ada.strings.unbounded.unbounded_String;

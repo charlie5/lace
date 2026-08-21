@@ -7,7 +7,6 @@ package collada.Asset
 -- Models a collada asset.
 --
 is
-
    type Contributor is
       record
          Author         : Text;

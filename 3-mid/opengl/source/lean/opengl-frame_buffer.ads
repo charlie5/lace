@@ -4,7 +4,6 @@ with
 
 package openGL.Frame_Buffer
 is
-
    type Item is tagged private;
 
    null_Buffer : constant Item;

@@ -7,7 +7,6 @@ package openGL.Tasks
 -- Allow checking that a GL operation is called only in the GL renderer engine task.
 --
 is
-
    Renderer_Task : ada.task_Identification.Task_Id := ada.task_Identification.null_Task_Id;
    --
    -- The current renderer task.

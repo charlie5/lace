@@ -1,7 +1,6 @@
 generic
 package any_Math.any_Algebra.any_linear
 is
-
    pragma Pure;
 
 

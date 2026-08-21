@@ -8,7 +8,6 @@ with
 generic
 package any_Math.any_Geometry.any_d3.any_Modeller
 is
-
    type Item is tagged private;
    type View is access all Item;
 

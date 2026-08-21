@@ -1,7 +1,6 @@
 generic
 package any_Math.any_Random
 is
-
    function random_Real    (Lower : in Real := Real'First;
                             Upper : in Real := Real'Last)       return Real;
 

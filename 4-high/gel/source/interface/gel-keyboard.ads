@@ -8,7 +8,6 @@ package gel.Keyboard with remote_Types
 -- Provides an interface for a keyboard.
 --
 is
-
    type Item is  limited interface
              and lace.Subject.item;
 
