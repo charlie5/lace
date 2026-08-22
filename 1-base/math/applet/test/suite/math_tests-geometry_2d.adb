@@ -137,7 +137,7 @@ is
             assert (almost_Equal (Hexagon.Perimeter (the_Hex),  6.0 * the_Radius,  Tolerance),
                     "T6 => perimeter should be 6 times the side length" & Suffix);
 
-            assert (almost_Equal (Hexagon.Area (the_Hex),  1.5 * sqrt_3 * the_Radius ** 2,  Tolerance),
+            assert (almost_Equal (Hexagon.Area (the_Hex),  1.5 * sqrt_3 * the_Radius**2,  Tolerance),
                     "T7 => area should be 3*sqrt(3)/2 times the circumradius squared" & Suffix);
 
             assert (almost_Equal (Hexagon.horizontal_Distance (the_Hex),  1.5 * the_Radius,  Tolerance),

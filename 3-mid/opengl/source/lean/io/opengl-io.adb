@@ -447,11 +447,11 @@ is
    --- Bitmap File
    --
 
-   type U8  is mod 2 **  8;   for U8 'Size use  8;
-   type U16 is mod 2 ** 16;   for U16'Size use 16;
-   type U32 is mod 2 ** 32;   for U32'Size use 32;
+   type U8  is mod 2**8;    for U8 'Size use  8;
+   type U16 is mod 2**16;   for U16'Size use 16;
+   type U32 is mod 2**32;   for U32'Size use 32;
 
-   type I32 is range -2 ** 31 .. 2 ** 31 - 1;
+   type I32 is range -2**31 .. 2**31 - 1;
    for  I32'Size use 32;
 
 
