@@ -67,8 +67,7 @@ is
    procedure emit (Self : access Item;   the_Event : in Event.item'Class);
 
    overriding
-   function  emit (Self : access Item;   the_Event : in Event.item'Class)
-                   return subject.Observer_views;
+   function  emit (Self : access Item;   the_Event : in Event.item'Class) return subject.Observer_views;
 
    overriding
    procedure use_event_Emitter (Self : in out Item);

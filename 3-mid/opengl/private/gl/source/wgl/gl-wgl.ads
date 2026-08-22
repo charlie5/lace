@@ -164,101 +164,80 @@ is
 
    type PROC is access function return interfaces.C.int;
 
-   function wglDeleteContext (Rendering_Context : in HGLRC)
-      return interfaces.C.int;
+   function wglDeleteContext (Rendering_Context : in HGLRC) return interfaces.C.int;
 
    function wglMakeCurrent (Device_Context    : in HDC;
-                            Rendering_Context : in HGLRC)
-                               return interfaces.C.int;
+                            Rendering_Context : in HGLRC) return interfaces.C.int;
 
-   function wglSetPixelFormat (Device_Context    : in HDC;
-                               Pixel_Format      : in interfaces.C.int;
-                               Pixel_Format_Desc :
-                                  access Pixel_Format_Descriptor_Type)
-                                     return interfaces.C.int;
+   function wglSetPixelFormat (Device_Context    : in     HDC;
+                               Pixel_Format      : in     interfaces.C.int;
+                               Pixel_Format_Desc : access Pixel_Format_Descriptor_Type) return interfaces.C.int;
 
-   function wglSwapBuffers (Device_Context : in HDC)
-      return interfaces.C.int;
+   function wglSwapBuffers (Device_Context : in HDC) return interfaces.C.int;
 
    function wglGetCurrentDC return HANDLE;
 
-   function wglCreateContext (Device_Context : in HDC)
-      return HANDLE;
+   function wglCreateContext (Device_Context : in HDC) return HANDLE;
 
    function wglCreateLayerContext (Device_Context : in HDC;
-                                   Layer_Plane    : in interfaces.C.int)
-                                         return HANDLE;
+                                   Layer_Plane    : in interfaces.C.int) return HANDLE;
 
    function wglGetCurrentContext return HANDLE;
 
    function wglGetProcAddress (Proc_Desc : access interfaces.C.char) return PROC;
 
-   function wglChoosePixelFormat (Device_Context    : in HDC;
-                                  Pixel_Format_Desc :
-                                     access Pixel_Format_Descriptor_Type)
-                                        return interfaces.C.int;
+   function wglChoosePixelFormat (Device_Context    : in     HDC;
+                                  Pixel_Format_Desc : access Pixel_Format_Descriptor_Type) return interfaces.C.int;
 
 
    function wglCopyContext (Rendering_Context_Source : in HGLRC;
                             Rendering_Context_Dest   : in HGLRC;
-                            Mask                     :                             in interfaces.C.unsigned)
-                                  return interfaces.C.int;
+                            Mask                     : in interfaces.C.unsigned) return interfaces.C.int;
 
    function wglDescribeLayerPlane (Device_Context : in HDC;
                                    Pixel_Format   : in interfaces.C.int;
                                    Layer_Plane    : in interfaces.C.int;
                                    Bytes          : in interfaces.C.unsigned;
-                                   Plane_Desc     :                                   in Layer_Plane_Descriptor_Type)
-                                        return interfaces.C.int;
+                                   Plane_Desc     : in Layer_Plane_Descriptor_Type) return interfaces.C.int;
 
    function wglDescribePixelFormat (Device_Context    : in HDC;
                                     Layer_Plane       : in interfaces.C.int;
-                                    Bytes             :                                     in interfaces.C.unsigned;
-                                    Pixel_Format_Desc :                                     in Pixel_Format_Descriptor_Type)
-                                          return interfaces.C.int;
+                                    Bytes             : in interfaces.C.unsigned;
+                                    Pixel_Format_Desc : in Pixel_Format_Descriptor_Type) return interfaces.C.int;
 
-   function wglGetLayerPaletteEntries (Device_Context : in HDC;
-                                       Layer_Plane    : in interfaces.C.int;
-                                       Start          : in interfaces.C.int;
-                                       Entries        : in interfaces.C.int;
-                                       Color_Ref      :
-                                          access interfaces.C.long)
-                                             return interfaces.C.int;
+   function wglGetLayerPaletteEntries (Device_Context : in     HDC;
+                                       Layer_Plane    : in     interfaces.C.int;
+                                       Start          : in     interfaces.C.int;
+                                       Entries        : in     interfaces.C.int;
+                                       Color_Ref      : access interfaces.C.long) return interfaces.C.int;
 
-   function wglGetPixelFormat (Device_Context : in HDC)
-      return interfaces.C.int;
+   function wglGetPixelFormat (Device_Context : in HDC) return interfaces.C.int;
 
    function wglRealizeLayerPalette (Device_Context : in HDC;
                                     Layer_Plane    : in interfaces.C.int;
-                                    Realize        : in Boolean)
-                                       return interfaces.C.int;
+                                    Realize        : in Boolean) return interfaces.C.int;
 
    function wglSetLayerPaletteEntries (Device_Context  : in HDC;
                                        Layer_Plane     : in interfaces.C.int;
                                        Start           : in interfaces.C.int;
                                        Entries         : in interfaces.C.int;
-                                       Color_Reference : in COLORREF_Type)
-                                          return interfaces.C.int;
+                                       Color_Reference : in COLORREF_Type) return interfaces.C.int;
 
    function wglShareLists (Existing_Rendering_Context : in HGLRC;
-                           New_Rendering_Context      : in HGLRC)
-                              return interfaces.C.int;
+                           New_Rendering_Context      : in HGLRC) return interfaces.C.int;
 
    function wglSwapLayerBuffers (Device_Context : in HDC;
-                                 Planes         : in interfaces.C.unsigned)
-                                    return interfaces.C.int;
+                                 Planes         : in interfaces.C.unsigned) return interfaces.C.int;
 
    function wglUseFontBitmapsA (Device_Context : in HDC;
                                 First          : in interfaces.C.unsigned;
                                 Count          : in interfaces.C.unsigned;
-                                List_Base      : in interfaces.C.unsigned)
-                                   return interfaces.C.int;
+                                List_Base      : in interfaces.C.unsigned) return interfaces.C.int;
 
    function wglUseFontBitmapsW (Device_Context : in HDC;
                                 First          : in interfaces.C.unsigned;
                                 Count          : in interfaces.C.unsigned;
-                                List_Base      : in interfaces.C.unsigned)
-                                   return interfaces.C.int;
+                                List_Base      : in interfaces.C.unsigned) return interfaces.C.int;
 
    function wglUseFontOutlinesA (Device_Context    : in HDC;
                                  First             : in interfaces.C.unsigned;
@@ -267,8 +246,7 @@ is
                                  Deviation         : in interfaces.C.C_float;
                                  Extrusion         : in interfaces.C.C_float;
                                  Format            : in interfaces.C.int;
-                                 Glyph_Data_Buffer : in Glyph_Metrics_Float_Type)
-                                    return interfaces.C.int;
+                                 Glyph_Data_Buffer : in Glyph_Metrics_Float_Type) return interfaces.C.int;
 
    function wglUseFontOutlinesW (Device_Context    : in HDC;
                                  First             : in interfaces.C.unsigned;
@@ -277,31 +255,24 @@ is
                                  Deviation         : in interfaces.C.C_float;
                                  Extrusion         : in interfaces.C.C_float;
                                  Format            : in interfaces.C.int;
-                                 Glyph_Data_Buffer : in Glyph_Metrics_Float_Type)
-                                    return interfaces.C.int;
+                                 Glyph_Data_Buffer : in Glyph_Metrics_Float_Type) return interfaces.C.int;
 
    function SwapBuffers (Device_Context : in HDC) return
       interfaces.C.int;
 
-   function ChoosePixelFormat (Device_Context    : in HDC;
-                               Pixel_Format_Desc :
-                                 access Pixel_Format_Descriptor_Type)
-                                    return interfaces.C.int;
+   function ChoosePixelFormat (Device_Context    : in     HDC;
+                               Pixel_Format_Desc : access Pixel_Format_Descriptor_Type) return interfaces.C.int;
 
    function DescribePixelFormat (Device_Context    : in HDC;
                                  Pixel_Format      : in interfaces.C.int;
                                  Bytes             : in interfaces.C.unsigned;
-                                 Pixel_Format_Desc :                                  in Pixel_Format_Descriptor_Type)
-                                       return interfaces.C.int;
+                                 Pixel_Format_Desc : in Pixel_Format_Descriptor_Type) return interfaces.C.int;
 
-   function GetPixelFormat (Device_Context : in HDC)
-      return interfaces.C.int;
+   function GetPixelFormat (Device_Context : in HDC) return interfaces.C.int;
 
-   function SetPixelFormat (Device_Context    : in HDC;
-                            Pixel_Format      : in interfaces.C.int;
-                            Pixel_Format_Desc :
-                              access Pixel_Format_Descriptor_Type)
-                                 return interfaces.C.int;
+   function SetPixelFormat (Device_Context    : in     HDC;
+                            Pixel_Format      : in     interfaces.C.int;
+                            Pixel_Format_Desc : access Pixel_Format_Descriptor_Type) return interfaces.C.int;
 
 
 

@@ -477,7 +477,7 @@ is
                                                     Value          : in     GLfloat_Address);
    procedure glUniformMatrix4fv                    (Location       : in     GLint;
                                                     Count          : in     GLsizei;
-                                                    Transpose      : in GLboolean;
+                                                    Transpose      : in     GLboolean;
                                                     Value          : in     GLfloat_Address);
    procedure glUseProgram                          (Program        : in     GLuint);
    procedure glValidateProgram                     (Program        : in     GLuint);

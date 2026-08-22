@@ -87,8 +87,7 @@ is
                                 buffer  : in eGL.EGLint) return eGL.EGLBoolean;
 
    function eglSwapInterval (dpy      : in eGL.EGLDisplay;
-                             interval : in eGL.EGLint)
-      return     eGL.EGLBoolean;
+                             interval : in eGL.EGLint) return     eGL.EGLBoolean;
 
    function eglCreateContext (dpy           : in eGL.EGLDisplay;
                               config        : in eGL.EGLConfig;

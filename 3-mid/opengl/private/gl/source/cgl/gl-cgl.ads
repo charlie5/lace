@@ -227,31 +227,28 @@ is
 
    function CGLDestroyPixelFormat (pix : in CGLPixelFormatObject) return CGLError;
 
-   function CGLDescribePixelFormat (pix    : in CGLPixelFormatObject; pix_num : in GLint;
-                                    attrib : in CGLPixelFormatAttribute;
+   function CGLDescribePixelFormat (pix    : in     CGLPixelFormatObject; pix_num : in GLint;
+                                    attrib : in     CGLPixelFormatAttribute;
                                     value  : access GLint) return CGLError;
 
    procedure CGLReleasePixelFormat (pix : in CGLPixelFormatObject);
 
-   function CGLRetainPixelFormat (pix : in CGLPixelFormatObject)
-                                  return CGLPixelFormatObject;
+   function CGLRetainPixelFormat (pix : in CGLPixelFormatObject) return CGLPixelFormatObject;
 
-   function CGLGetPixelFormatRetainCount (pix : in CGLPixelFormatObject)
-                                          return GLuint;
+   function CGLGetPixelFormatRetainCount (pix : in CGLPixelFormatObject) return GLuint;
 
-   function CGLQueryRendererInfo (display_mask : in GLuint;
+   function CGLQueryRendererInfo (display_mask : in     GLuint;
                                   rend         : access CGLRendererInfoObject;
                                   nrend        : access GLint) return CGLError;
 
-   function CGLDestroyRendererInfo (rend : in CGLRendererInfoObject)
-                                    return CGLError;
+   function CGLDestroyRendererInfo (rend : in CGLRendererInfoObject) return CGLError;
 
-   function CGLDescribeRenderer (rend  : in CGLRendererInfoObject; rend_num : in GLint;
-                                 prop  : in CGLRendererProperty;
+   function CGLDescribeRenderer (rend  : in     CGLRendererInfoObject; rend_num : in GLint;
+                                 prop  : in     CGLRendererProperty;
                                  value : access GLint) return CGLError;
 
-   function CGLCreateContext (pix   : in CGLPixelFormatObject;
-                              share : in CGLContextObject;
+   function CGLCreateContext (pix   : in     CGLPixelFormatObject;
+                              share : in     CGLContextObject;
                               ctx   : access CGLContextObject) return CGLError;
 
    function CGLDestroyContext (ctx : in CGLContextObject) return CGLError;
@@ -267,15 +264,14 @@ is
 
    function CGLGetPixelFormat (ctx : in CGLContextObject) return CGLPixelFormatObject;
 
-   function CGLCreatePBuffer (width, height          : in GLsizei;
-                              target, internalFormat : in GLenum;
-                              max_level              : in GLint;
-                              pbuffer                : access CGLPBufferObject)
-                              return CGLError;
+   function CGLCreatePBuffer (width, height          : in     GLsizei;
+                              target, internalFormat : in     GLenum;
+                              max_level              : in     GLint;
+                              pbuffer                : access CGLPBufferObject) return CGLError;
 
    function CGLDestroyPBuffer (pbuffer : in CGLPBufferObject) return CGLError;
 
-   function CGLDescribePBuffer (obj                    : in CGLPBufferObject;
+   function CGLDescribePBuffer (obj                    : in     CGLPBufferObject;
                                 width, height          : access GLsizei;
                                 target, internalFormat : access GLenum;
                                 mipmap                 : access GLint) return CGLError;
@@ -284,8 +280,7 @@ is
                                 pbuffer : in CGLPBufferObject;
                                 source  : in GLenum) return CGLError;
 
-   function CGLRetainPBuffer (pbuffer : in CGLPBufferObject)
-                              return CGLPBufferObject;
+   function CGLRetainPBuffer (pbuffer : in CGLPBufferObject) return CGLPBufferObject;
 
    procedure CGLReleasePBuffer (pbuffer : in CGLPBufferObject);
 
@@ -294,14 +289,12 @@ is
    function CGLSetOffScreen (ctx           : in CGLContextObject;
                              width, height : in GLsizei;
                              rowbytes      : in GLint;
-                             baseaddr      : in interfaces.C.Extensions.void_ptr)
-                             return CGLError;
+                             baseaddr      : in interfaces.C.Extensions.void_ptr) return CGLError;
 
-   function CGLGetOffScreen (ctx           : in CGLContextObject;
+   function CGLGetOffScreen (ctx           : in     CGLContextObject;
                              width, height : access GLsizei;
                              rowbytes      : access GLint;
-                             baseaddr      : access interfaces.C.Extensions.void_ptr)
-                             return CGLError;
+                             baseaddr      : access interfaces.C.Extensions.void_ptr) return CGLError;
 
    function CGLSetFullScreen (ctx : in CGLContextObject) return CGLError;
 
@@ -313,7 +306,7 @@ is
                            face          : in GLenum;
                            level, screen : in GLint) return CGLError;
 
-   function CGLGetPBuffer (ctx           : in CGLContextObject;
+   function CGLGetPBuffer (ctx           : in     CGLContextObject;
                            pbuffer       : access CGLPBufferObject;
                            face          : access GLenum;
                            level, screen : access GLint) return CGLError;
@@ -322,41 +315,36 @@ is
 
    function CGLFlushDrawable (ctx : in CGLContextObject) return CGLError;
 
-   function CGLEnable (ctx : in CGLContextObject; pname : in CGLContextEnable)
-                       return CGLError;
+   function CGLEnable (ctx : in CGLContextObject; pname : in CGLContextEnable) return CGLError;
 
-   function CGLDisable (ctx : in CGLContextObject; pname : in CGLContextEnable)
-                        return CGLError;
+   function CGLDisable (ctx : in CGLContextObject; pname : in CGLContextEnable) return CGLError;
 
-   function CGLIsEnabled (ctx    : in CGLContextObject; pname : in CGLContextEnable;
+   function CGLIsEnabled (ctx    : in     CGLContextObject; pname : in CGLContextEnable;
                           enable : access GLint) return CGLError;
 
    function CGLSetParameter (ctx    : in CGLContextObject;
                              pname  : in CGLContextParameter;
                              params : access constant GLint) return CGLError;
 
-   function CGLGetParameter (ctx    : in CGLContextObject;
-                             pname  : in CGLContextParameter;
+   function CGLGetParameter (ctx    : in     CGLContextObject;
+                             pname  : in     CGLContextParameter;
                              params : access GLint) return CGLError;
 
-   function CGLSetVirtualScreen (ctx : in CGLContextObject; screen : in GLint)
-                                 return CGLError;
+   function CGLSetVirtualScreen (ctx : in CGLContextObject; screen : in GLint) return CGLError;
 
-   function CGLGetVirtualScreen (ctx : in CGLContextObject; screen : access GLint)
-                                 return CGLError;
+   function CGLGetVirtualScreen (ctx : in CGLContextObject; screen : access GLint) return CGLError;
 
    function CGLUpdateContext (ctx : in CGLContextObject) return CGLError;
 
    function CGLSetGlobalOption (pname  : in CGLGlobalOption;
                                 params : access constant GLint) return CGLError;
 
-   function CGLGetGlobalOption (pname  : in CGLGlobalOption;
+   function CGLGetGlobalOption (pname  : in     CGLGlobalOption;
                                 params : access GLint) return CGLError;
 
-   function CGLSetOption (pname : in CGLGlobalOption; param : in GLint)
-                          return CGLError;
+   function CGLSetOption (pname : in CGLGlobalOption; param : in GLint) return CGLError;
 
-   function CGLGetOption (pname : in CGLGlobalOption;
+   function CGLGetOption (pname : in     CGLGlobalOption;
                           param : access GLint) return CGLError;
 
    function CGLLockContext (ctx : in CGLContextObject) return CGLError;
@@ -365,8 +353,7 @@ is
 
    procedure CGLGetVersion (majorvers, minorvers : out GLint);
 
-   function CGLErrorString (error : in CGLError)
-                            return interfaces.C.Strings.chars_ptr;
+   function CGLErrorString (error : in CGLError) return interfaces.C.Strings.chars_ptr;
 
    function CGLSetCurrentContext (ctx : in CGLContextObject) return CGLError;
 

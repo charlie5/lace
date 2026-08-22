@@ -138,7 +138,7 @@ is
       case the_Primitive.Kind
       is
          when polyList =>
-            parse_polyList :
+            parse_polyList:
             declare
                P            : std_Collada.Int_array renames the_Primitive.P_List (1).all;
                inputs_Count : constant Natural      :=      the_Primitive.Inputs'Length;

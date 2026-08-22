@@ -143,20 +143,20 @@ is
    --
 
    function new_hinge_Joint      (Self : access Item;   Object_A,
-                                                        Object_B     : in Object.view;
+                                                        Object_B          : in Object.view;
                                                         Anchor_in_A,
-                                                        Anchor_in_B  : in Vector_3;
-                                                        pivot_Axis   : in Vector_3;
+                                                        Anchor_in_B       : in Vector_3;
+                                                        pivot_Axis        : in Vector_3;
                                                         low_Limit,
                                                         high_Limit        : in Real;
                                                         collide_Connected : in Boolean) return Joint.hinge.view is abstract;
 
    function new_hinge_Joint      (Self : access Item;   Object_A,
-                                                        Object_B     : in Object.view;
+                                                        Object_B          : in Object.view;
                                                         Frame_A,
-                                                        Frame_B      : in Matrix_4x4;
+                                                        Frame_B           : in Matrix_4x4;
                                                         low_Limit,
-                                                        high_Limit   : in Real;
+                                                        high_Limit        : in Real;
                                                         collide_Connected : in Boolean) return Joint.hinge.view is abstract;
 
    function new_hinge_Joint      (Self : access Item;   Object_A     : in Object.view;

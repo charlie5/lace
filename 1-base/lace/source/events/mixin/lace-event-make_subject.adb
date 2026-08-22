@@ -163,8 +163,7 @@ is
 
 
    overriding
-   function emit (Self : access Item;   the_Event : in Event.item'Class)
-                  return subject.Observer_views
+   function emit (Self : access Item;   the_Event : in Event.item'Class) return subject.Observer_views
    is
       use lace.Event.utility;
 

@@ -87,8 +87,7 @@ is
 
 
 
-      function new_shaft_Face (Vertices : in Geometry.lit_colored_textured.Vertex_array)
-                               return Geometry_view
+      function new_shaft_Face (Vertices : in Geometry.lit_colored_textured.Vertex_array) return Geometry_view
       is
          use Primitive;
 

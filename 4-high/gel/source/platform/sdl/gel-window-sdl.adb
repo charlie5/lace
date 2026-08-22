@@ -464,7 +464,7 @@ is
    --- Window Creator
    --
 
-   function window_Creator (Name : in String;
+   function window_Creator (Name   : in String;
                             Width,
                             Height : in Positive) return gel.Window.view
    is

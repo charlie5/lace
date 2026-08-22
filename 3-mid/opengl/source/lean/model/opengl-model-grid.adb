@@ -80,7 +80,7 @@ is
          Self.Geometry := Geometry.colored.new_Geometry;
       end if;
 
-      set_Sites :
+      set_Sites:
       declare
          row_Count    : constant Positive := line_Count (Self.Height);
          col_Count    : constant Positive := line_Count (Self.Width);

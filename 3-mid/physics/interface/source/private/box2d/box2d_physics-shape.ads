@@ -44,9 +44,8 @@ is
                                    Height       : in Real)        return physics.Shape.view;
    function new_cone_Shape        (Radius,
                                    Height       : in Real)        return physics.Shape.view;
-   function new_convex_hull_Shape (Points       : in physics.Vector_3_array)
-                                                                  return physics.Shape.view;
-   function new_cylinder_Shape    (half_Extents : in Vector_3)    return physics.Shape.view;
+   function new_convex_hull_Shape (Points       : in physics.Vector_3_array)  return physics.Shape.view;
+   function new_cylinder_Shape    (half_Extents : in Vector_3)                return physics.Shape.view;
    function new_heightfield_Shape (Width,
                                    Depth        : in Positive;
                                    Heights      : access constant Real;

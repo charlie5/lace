@@ -662,7 +662,7 @@ is
 
 
    function  almost_Equals (Self, Other : in Vector_3;
-                            Tolerance   : in     Real := Real'Base'model_Small) return Boolean
+                            Tolerance   : in Real    := Real'Base'model_Small) return Boolean
    is
    begin
       return          almost_Equals (Self (1), Other (1),  Tolerance)

@@ -13,7 +13,7 @@ is
    function new_hexagon_Column (Radius : in Real;
                                 Height : in Real;
                                 Upper,
-                                Lower  : in   hex_Face;
+                                Lower  : in hex_Face;
                                 Shaft  : in shaft_Face) return View
    is
       Self : constant View := new Item;
@@ -80,8 +80,7 @@ is
 
 
 
-      function new_shaft_Face (Vertices : access Geometry.lit_colored.Vertex_array)
-                               return Geometry.lit_colored.view
+      function new_shaft_Face (Vertices : access Geometry.lit_colored.Vertex_array) return Geometry.lit_colored.view
       is
          use Primitive;
 

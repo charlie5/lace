@@ -37,11 +37,9 @@ is
                                    Height       : in     Real)     return physics.Shape.view;
    function new_cone_Shape        (Radius,
                                    Height       : in     Real)     return physics.Shape.view;
-   function new_convex_hull_Shape (Points       : in     physics.Vector_3_array)
-                                                                   return physics.Shape.view;
-   function new_mesh_Shape        (Model        : access Geometry.d3.a_Model)
-                                                                   return physics.Shape.view;
-   function new_cylinder_Shape    (half_Extents : in     Vector_3) return physics.Shape.view;
+   function new_convex_hull_Shape (Points       : in     physics.Vector_3_array)  return physics.Shape.view;
+   function new_mesh_Shape        (Model        : access Geometry.d3.a_Model)     return physics.Shape.view;
+   function new_cylinder_Shape    (half_Extents : in     Vector_3)                return physics.Shape.view;
    function new_heightfield_Shape (Width,
                                    Depth        : in     Positive;
                                    Heights      : in     c_math_c.Pointers.Real_pointer;

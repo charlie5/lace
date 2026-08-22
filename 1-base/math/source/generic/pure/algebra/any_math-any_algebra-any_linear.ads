@@ -81,7 +81,7 @@ is
    function  euler_Angles (Self : in     Quaternion) return Vector_3;
 
 
-   function infinitesimal_Rotation_from (Self             : in     Quaternion;
+   function infinitesimal_Rotation_from (Self             : in Quaternion;
                                          angular_Velocity : in Vector_3) return Quaternion;
    --
    -- An infinitesimal rotation may be multiplied by a duration and then added to the original attitude
