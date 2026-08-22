@@ -27,7 +27,7 @@ with
 -- procedures.
 
 
-package lace.Strings.fixed with SPARK_Mode
+package lace.Strings.fixed with spark_Mode
 --
 -- Based on the 'ada.Strings.fixed' package provided by FSF GCC.
 --
@@ -301,7 +301,7 @@ is
                                         <= Natural'Last - By'Length
                                          - Natural'Max (Source'Last - High, 0)
                                       else Source'Length <= Natural'Last - By'Length),
-          Contract_Cases => (High >= Low =>
+          contract_Cases => (High >= Low =>
                                Replace_Slice'Result'Length
                              = Natural'Max (0, Low - Source'First)
                              + By'Length

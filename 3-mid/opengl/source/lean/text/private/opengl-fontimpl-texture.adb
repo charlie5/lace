@@ -244,7 +244,7 @@ is
    is
       use freetype.charMap;
 
-      Success   : constant Boolean                    := Self.CheckGlyph (to_characterCode (for_Character)) with unreferenced;
+      Success   : constant Boolean                    := Self.CheckGlyph (to_characterCode (for_Character)) with Unreferenced;
       the_Glyph : constant Glyph.Container.Glyph_view := Self.glyphList.Glyph (to_characterCode (for_Character));
    begin
       return Glyph.texture.item (the_Glyph.all).Quad ([0.0, 0.0, 0.0]);

@@ -62,7 +62,7 @@ private
 
       entry reset_Age;
 
-      pragma Storage_Size (20_000_000);
+      pragma storage_Size (20_000_000);
    end Evolver;
 
 

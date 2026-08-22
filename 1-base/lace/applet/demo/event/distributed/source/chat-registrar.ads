@@ -8,7 +8,7 @@ package chat.Registrar
 -- Limited to a maximum of 5_000 chat clients running at once.
 --
 is
-   pragma remote_Call_interface;
+   pragma remote_call_Interface;
 
    Name_already_used : exception;
 

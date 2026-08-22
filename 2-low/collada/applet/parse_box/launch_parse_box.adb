@@ -8,7 +8,7 @@ procedure launch_parse_Box
 --
 is
    the_Asset : collada.Document.item := collada.document.to_Document ("./box.dae")
-     with unreferenced;
+     with Unreferenced;
 begin
    null;
 end launch_parse_Box;

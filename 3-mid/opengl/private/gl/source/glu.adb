@@ -106,7 +106,7 @@ is
             when f  =>   f  : GLfloat;
          end case;
       end record;
-   pragma Unchecked_Union (Type_Widget);
+   pragma unchecked_Union (Type_Widget);
 
 
 

@@ -357,7 +357,7 @@ is
    is
       use freeType_C.Binding;
 
-      Status : FT_Error with unreferenced;
+      Status : FT_Error with Unreferenced;
    begin
       Status := FT_Done_FreeType (the_FT_Library);
    end finalize;
@@ -371,7 +371,7 @@ is
 
    use freeType_C.Binding;
 
-   Status : FT_Error with unreferenced;
+   Status : FT_Error with Unreferenced;
 
 begin
    Status := FT_init_FreeType (the_FT_Library'Access);
