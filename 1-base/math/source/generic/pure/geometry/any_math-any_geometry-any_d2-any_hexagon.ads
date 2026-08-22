@@ -73,7 +73,7 @@ is
 
    type Coordinates is
       record
-         Row, Col: Positive;
+         Row, Col : Positive;
       end record;
 
 

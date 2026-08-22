@@ -824,7 +824,7 @@ is
       V : Vector_4 := Vector_4 (Right & 1.0);
    begin
       V := Left * V;
-      return Vector_3 (V (1..3));
+      return Vector_3 (V (1 .. 3));
    end "*";
 
 

@@ -134,8 +134,8 @@ is
          Self.Bounds.Box :=    Self.Bounds.Box
                             or all_Geometries (i).Bounds.Box;
 
-         Self.Bounds.Ball:= Real'Max (Self.Bounds.Ball,
-                                      all_Geometries (i).Bounds.Ball);
+         Self.Bounds.Ball := Real'Max (Self.Bounds.Ball,
+                                       all_Geometries (i).Bounds.Ball);
       end loop;
 
 

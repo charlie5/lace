@@ -721,7 +721,7 @@ is
             Self.skin_Sprite := gel.Sprite.forge.new_Sprite (Name           => "human.skin_Sprite",
                                                              World          => gel.Sprite.World_view (World),
                                                              graphics_Model => the_human_graphics_Model,
-                                                             physics_Model  =>the_physics_Model,
+                                                             physics_Model  => the_physics_Model,
                                                              owns_graphics  => True,
                                                              owns_physics   => True,
                                                              is_kinematic   => is_Kinematic);

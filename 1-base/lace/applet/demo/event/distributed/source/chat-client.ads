@@ -36,7 +36,7 @@ is
 
    type Message (Length : Natural) is new lace.Event.item with
       record
-         Text : String (1..Length);
+         Text : String (1 .. Length);
       end record;
 
    unknown_Client : exception;

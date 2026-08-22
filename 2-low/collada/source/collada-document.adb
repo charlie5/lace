@@ -61,11 +61,11 @@ is
       end if;
 
       loop
-         if         From (Start .. Cursor-1) /= ""
-           and then From (Start .. Cursor-1) /= "" & ada.Characters.latin_1.LF
+         if         From (Start .. Cursor - 1) /= ""
+           and then From (Start .. Cursor - 1) /= "" & ada.Characters.latin_1.LF
          then
             Count             := Count + 1;
-            the_Array (Count) := Integer'Value (From (Start .. Cursor-1));
+            the_Array (Count) := Integer'Value (From (Start .. Cursor - 1));
          end if;
 
          Start  := Cursor + 1;
@@ -109,11 +109,11 @@ is
          end if;
 
          loop
-            if         From (Start .. Cursor-1) /= ""
-              and then From (Start .. Cursor-1) /= "" & ada.Characters.latin_1.LF
+            if         From (Start .. Cursor - 1) /= ""
+              and then From (Start .. Cursor - 1) /= "" & ada.Characters.latin_1.LF
             then
                Count             := Count + 1;
-               the_Array (Count) := math.Real'Value (From (Start .. Cursor-1));
+               the_Array (Count) := math.Real'Value (From (Start .. Cursor - 1));
             end if;
 
             Start  := Cursor + 1;
@@ -158,11 +158,11 @@ is
          end if;
 
          loop
-            if         From (Start .. Cursor-1) /= ""
-              and then From (Start .. Cursor-1) /= "" & ada.Characters.latin_1.LF
+            if         From (Start .. Cursor - 1) /= ""
+              and then From (Start .. Cursor - 1) /= "" & ada.Characters.latin_1.LF
             then
                Count             := Count + 1;
-               the_Array (Count) := +From (Start .. Cursor-1);
+               the_Array (Count) := +From (Start .. Cursor - 1);
             end if;
 
             Start  := Cursor + 1;

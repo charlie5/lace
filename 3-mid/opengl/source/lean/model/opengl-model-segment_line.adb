@@ -47,7 +47,7 @@ is
    begin
       if Self.Points.Length <= 2
       then
-         return [1..0 => <>];
+         return [1 .. 0 => <>];
       end if;
 
       for i in the_Indices'Range

@@ -101,8 +101,8 @@ is
 
       function all_client_Info return client_Info_array
       is
-         Count  : Natural                           := 0;
-         Result : client_Info_array (1..max_Clients);
+         Count  : Natural                             := 0;
+         Result : client_Info_array (1 .. max_Clients);
       begin
          for i in Clients'Range
          loop
@@ -113,7 +113,7 @@ is
             end if;
          end loop;
 
-         return Result (1..Count);
+         return Result (1 .. Count);
       end all_client_Info;
 
    end safe_Clients;

@@ -40,7 +40,7 @@ is
    begin
       for i in Self.Sources'Range
       loop
-         if Self.Sources (i).Id = source_Name (source_Name'First+1 .. source_Name'Last)
+         if Self.Sources (i).Id = source_Name (source_Name'First + 1 .. source_Name'Last)
          then
             return Self.Sources (i);
          end if;
@@ -98,10 +98,10 @@ is
       the_Matrix :          Matrix_4x4;
 
    begin
-      the_Matrix := [1 => [Raw (First),    Raw (First+1),  Raw (First+2),  Raw (First+3)],   -- These are column vectors.
-                     2 => [Raw (First+4),  Raw (First+5),  Raw (First+6),  Raw (First+7)],
-                     3 => [Raw (First+8),  Raw (First+9),  Raw (First+10), Raw (First+11)],
-                     4 => [Raw (First+12), Raw (First+13), Raw (First+14), Raw (First+15)]];
+      the_Matrix := [1 => [Raw (First),      Raw (First + 1),  Raw (First + 2),  Raw (First + 3)],   -- These are column vectors.
+                     2 => [Raw (First + 4),  Raw (First + 5),  Raw (First + 6),  Raw (First + 7)],
+                     3 => [Raw (First + 8),  Raw (First + 9),  Raw (First + 10), Raw (First + 11)],
+                     4 => [Raw (First + 12), Raw (First + 13), Raw (First + 14), Raw (First + 15)]];
 
       return the_Matrix;
    end bind_shape_Matrix_of;
@@ -117,10 +117,10 @@ is
    begin
       for i in the_Poses'Range
       loop
-         the_Poses (i) := [1 => [Raw (First),    Raw (First+1),  Raw (First+2),  Raw (First+3)],   -- These are column vectors.
-                           2 => [Raw (First+4),  Raw (First+5),  Raw (First+6),  Raw (First+7)],
-                           3 => [Raw (First+8),  Raw (First+9),  Raw (First+10), Raw (First+11)],
-                           4 => [Raw (First+12), Raw (First+13), Raw (First+14), Raw (First+15)]];
+         the_Poses (i) := [1 => [Raw (First),      Raw (First + 1),  Raw (First + 2),  Raw (First + 3)],   -- These are column vectors.
+                           2 => [Raw (First + 4),  Raw (First + 5),  Raw (First + 6),  Raw (First + 7)],
+                           3 => [Raw (First + 8),  Raw (First + 9),  Raw (First + 10), Raw (First + 11)],
+                           4 => [Raw (First + 12), Raw (First + 13), Raw (First + 14), Raw (First + 15)]];
          First := First + 16;
       end loop;
 

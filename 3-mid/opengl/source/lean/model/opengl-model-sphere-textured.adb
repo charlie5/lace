@@ -172,9 +172,9 @@ is
          loop
             if i mod 2 = 1
             then
-               Pad               := the_Indices (i);
-               the_Indices (i)   := the_Indices (i+1);
-               the_Indices (i+1) := Pad;
+               Pad                 := the_Indices (i);
+               the_Indices (i)     := the_Indices (i + 1);
+               the_Indices (i + 1) := Pad;
             end if;
          end loop;
       end;

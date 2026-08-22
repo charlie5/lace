@@ -48,7 +48,7 @@ begin
 --     for Count in 1 .. 100
    loop
 --        the_Space.evolve (by => 1.0/60.0);
-      delay 1.0/500.0;
+      delay 1.0 / 500.0;
       put_Line (  "Sites ~ Ball => "   & Image (the_Ball  .Site)
                 & "        Ground => " & Image (the_Ground.Site));
    end loop;

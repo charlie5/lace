@@ -19,7 +19,7 @@ is
    begin
       for i in Self.Sources'Range
       loop
-         if Self.Sources (i).Id = source_Name (source_Name'First+1 .. source_Name'Last)
+         if Self.Sources (i).Id = source_Name (source_Name'First + 1 .. source_Name'Last)
          then
             return Self.Sources (i);
          end if;

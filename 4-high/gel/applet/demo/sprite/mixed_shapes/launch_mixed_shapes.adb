@@ -271,7 +271,7 @@ begin
          --
          s              : constant := 0.5;
          the_hull_Model : constant openGL.Model.box.colored.view
-           := openGL.Model.box.colored.new_Box (Size  => [s*2.0, s*2.0, s*2.0],
+           := openGL.Model.box.colored.new_Box (Size  => [s * 2.0, s * 2.0, s * 2.0],
                                                 Faces => [Front => (Colors => [others => (Shade_of (Green, 1.0), Opaque)]),
                                                           Rear  => (Colors => [others => (Shade_of (Green, 0.5), Opaque)]),
                                                           Upper => (Colors => [others => (Shade_of (Green, 0.4), Opaque)]),

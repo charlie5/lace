@@ -431,9 +431,9 @@ is
       -- 00000111,11100000 == 0x07e0
       -- 00000000,00011111 == 0x001f
 
-      pragma assert (0.0 <= shoveComponents(0) and shoveComponents(0) <= 1.0);
-      pragma assert (0.0 <= shoveComponents(1) and shoveComponents(1) <= 1.0);
-      pragma assert (0.0 <= shoveComponents(2) and shoveComponents(2) <= 1.0);
+      pragma assert (0.0 <= shoveComponents (0) and shoveComponents (0) <= 1.0);
+      pragma assert (0.0 <= shoveComponents (1) and shoveComponents (1) <= 1.0);
+      pragma assert (0.0 <= shoveComponents (2) and shoveComponents (2) <= 1.0);
 
       -- due to limited precision, need to round before shoving
       --
@@ -643,7 +643,7 @@ is
                         iter2     := iter2 + 1;
                      else
                         -- rough approx
-                        iter2.all := GLushort (widget.s(0)) * 2;
+                        iter2.all := GLushort (widget.s (0)) * 2;
                         iter2     := iter2 + 1;
                      end if;
 
@@ -657,16 +657,16 @@ is
                   | GL_FLOAT =>
                   if myswap_bytes /= 0
                   then
-                     widget.ub(0) := GLubyte_view (iter + 3).all;
-                     widget.ub(1) := GLubyte_view (iter + 2).all;
-                     widget.ub(2) := GLubyte_view (iter + 1).all;
-                     widget.ub(3) := GLubyte_view (iter + 0).all;
+                     widget.ub (0) := GLubyte_view (iter + 3).all;
+                     widget.ub (1) := GLubyte_view (iter + 2).all;
+                     widget.ub (2) := GLubyte_view (iter + 1).all;
+                     widget.ub (3) := GLubyte_view (iter + 0).all;
 
                   else
-                     widget.ub(0) := GLubyte_view (iter + 0).all;
-                     widget.ub(1) := GLubyte_view (iter + 1).all;
-                     widget.ub(2) := GLubyte_view (iter + 2).all;
-                     widget.ub(3) := GLubyte_view (iter + 3).all;
+                     widget.ub (0) := GLubyte_view (iter + 0).all;
+                     widget.ub (1) := GLubyte_view (iter + 1).all;
+                     widget.ub (2) := GLubyte_view (iter + 2).all;
+                     widget.ub (3) := GLubyte_view (iter + 3).all;
                   end if;
 
                   if gl_Type = GL_FLOAT

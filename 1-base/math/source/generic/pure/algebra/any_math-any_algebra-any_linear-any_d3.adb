@@ -789,7 +789,7 @@ is
 
             theta_0 : constant Real       := arcCos (Dot);               -- theta_0 = Angle between input vectors.
             theta   : constant Real       := theta_0 * P;                -- theta   = Angle between Q1 and result.
-            Q3      : constant Quaternion := Normalised (Q2 - Q1*Dot);
+            Q3      : constant Quaternion := Normalised (Q2 - Q1 * Dot);
          begin
             return Q1 * Cos (theta)  +  Q3 * Sin (theta);
          end;

@@ -404,15 +404,15 @@ is
       --
       type Byte_array is array (Integer range <>) of aliased GLUByte;
 
-      subtype Size_Test_a is Byte_array (1..19);
+      subtype Size_Test_a is Byte_array (1 .. 19);
       subtype Size_Test_b is ada.Streams.Stream_Element_array (1 .. 19);
 
-      Workaround_possible: constant Boolean :=          Size_Test_a'Size      = Size_Test_b'Size
-                                               and then Size_Test_a'Alignment = Size_Test_b'Alignment;
+      Workaround_possible : constant Boolean :=          Size_Test_a'Size      = Size_Test_b'Size
+                                                and then Size_Test_a'Alignment = Size_Test_b'Alignment;
    begin
       Tasks.check;
 
-      pPicData:= convert (PicData (0)'Address);
+      pPicData := convert (PicData (0)'Address);
 
       GLReadPixels (0, 0,
                     GLSizei (Width),
