@@ -1,5 +1,6 @@
 package GLX.Pointers
 is
+
    --- VisualID_pointer
    --
 

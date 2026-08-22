@@ -3,6 +3,7 @@ package lace.Text.forge
 -- Provides constructors for Text.
 --
 is
+
    ---------
    --- Files
    --

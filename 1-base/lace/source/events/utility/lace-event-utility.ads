@@ -12,6 +12,7 @@ package lace.Event.utility
 -- Provides convenience subprograms for working with events.
 --
 is
+
    ---------------
    --- Event Kinds
    --

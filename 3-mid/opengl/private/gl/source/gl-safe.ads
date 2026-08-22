@@ -8,6 +8,7 @@ package GL.safe
 -- Provides types, constants and functions specific to the openGL 'Safety Critical' profile.
 --
 is
+
    ---------
    --- Types
    --

@@ -9,6 +9,7 @@ package openGL.Buffer
 -- Models a buffer object.
 --
 is
+
    --------------
    --- Core Types
    --

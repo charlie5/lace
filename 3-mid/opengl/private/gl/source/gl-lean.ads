@@ -8,6 +8,7 @@ package GL.lean
 -- Provides types, constants and functions specific to the openGL 'Embedded' profile.
 --
 is
+
    ---------
    --- Types
    --

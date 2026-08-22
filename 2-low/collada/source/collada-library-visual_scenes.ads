@@ -3,6 +3,7 @@ package collada.Library.visual_scenes
 -- Models a collada 'visual_scenes' library, which contains node/joint hierachy info.
 --
 is
+
    -------------
    --- Transform
    --

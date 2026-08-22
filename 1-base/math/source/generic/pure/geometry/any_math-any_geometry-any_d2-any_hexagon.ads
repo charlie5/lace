@@ -14,6 +14,7 @@ package any_Math.any_Geometry.any_d2.any_Hexagon with Pure
 --                 3   2
 --
 is
+
    -------------
    --- vertex_Id
    --

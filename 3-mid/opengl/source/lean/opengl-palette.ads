@@ -10,6 +10,7 @@ package openGL.Palette
 --    - http://en.wikipedia.org/wiki/List_of_colors
 --
 is
+
    --------------------
    --- Color Primitives
    --

@@ -10,6 +10,7 @@ package swig.Pointers
 -- Contains pointers to Swig related C type definitions not found in the 'interfaces.C' family.
 --
 is
+
    --- void_ptr
    --
 

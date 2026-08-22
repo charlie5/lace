@@ -3,6 +3,7 @@ package lace.wide_Text.forge
 -- Provides constructors for wide Text.
 --
 is
+
    ---------
    --- Files
    --

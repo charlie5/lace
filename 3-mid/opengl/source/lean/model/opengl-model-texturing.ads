@@ -7,6 +7,7 @@ package openGL.Model.texturing
 -- Provides texturing support for models.
 --
 is
+
    -------------
    --- Mixin ---
    -------------

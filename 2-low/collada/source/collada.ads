@@ -8,6 +8,7 @@ package Collada
 -- Provides a namespace and core types for the Collada package family.
 --
 is
+
    --------
    --- Text
    --

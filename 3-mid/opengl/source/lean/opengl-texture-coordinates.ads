@@ -3,6 +3,7 @@ package openGL.Texture.Coordinates
 -- Provides openGL texture co-ordinates.
 --
 is
+
    ---------------
    --- 2D Textures
    --
