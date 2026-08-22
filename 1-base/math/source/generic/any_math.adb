@@ -75,14 +75,14 @@ is
    function almost_Zero (Self : in Real) return Boolean
    is
    begin
-      return  abs Self <= Real'Base'Model_Small;
+      return  abs Self <= Real'Base'model_Small;
    end almost_Zero;
 
 
 
    function  almost_Equals (Self,
                             Other,
-                            Tolerance : in Real := Real'Base'Model_Small) return Boolean
+                            Tolerance : in Real := Real'Base'model_Small) return Boolean
    is
    begin
       return          Self <= Other + Tolerance
@@ -662,7 +662,7 @@ is
 
 
    function  almost_Equals (Self, Other : in Vector_3;
-                            Tolerance   : in     Real := Real'Base'Model_Small) return Boolean
+                            Tolerance   : in     Real := Real'Base'model_Small) return Boolean
    is
    begin
       return          almost_Equals (Self (1), Other (1),  Tolerance)

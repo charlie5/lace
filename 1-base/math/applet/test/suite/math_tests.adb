@@ -63,13 +63,13 @@ is
       begin
          assert (    almost_Zero (0.0                        ),  "almost_Zero (0.0) ... failed !");
 
-         assert (    almost_Zero (0.0 + Real'Base'Model_Small),  "almost_Zero (0.0 + Real'Base'Model_Small) ... failed !");
-         assert (not almost_Zero (0.0 + Real'Base'Model_Small
-                                      + Real'Base'Model_Small),  "not almost_Zero (0.0 + Real'Base'Model_Small + Real'Base'Model_Small) ... failed !");
+         assert (    almost_Zero (0.0 + Real'Base'model_Small),  "almost_Zero (0.0 + Real'Base'Model_Small) ... failed !");
+         assert (not almost_Zero (0.0 + Real'Base'model_Small
+                                      + Real'Base'model_Small),  "not almost_Zero (0.0 + Real'Base'Model_Small + Real'Base'Model_Small) ... failed !");
 
-         assert (    almost_Zero (0.0 - Real'Base'Model_Small),  "almost_Zero (0.0 - Real'Base'Model_Small) ... failed !");
-         assert (not almost_Zero (0.0 - Real'Base'Model_Small
-                                      - Real'Base'Model_Small),  "not almost_Zero (0.0 - Real'Base'Model_Small - Real'Base'Model_Small) ... failed !");
+         assert (    almost_Zero (0.0 - Real'Base'model_Small),  "almost_Zero (0.0 - Real'Base'Model_Small) ... failed !");
+         assert (not almost_Zero (0.0 - Real'Base'model_Small
+                                      - Real'Base'model_Small),  "not almost_Zero (0.0 - Real'Base'Model_Small - Real'Base'Model_Small) ... failed !");
       end;
 
 

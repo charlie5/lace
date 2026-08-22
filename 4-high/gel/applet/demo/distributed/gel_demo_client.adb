@@ -70,8 +70,8 @@ is
 
       -- Close.
       --
-      gel_demo_services.World.deregister (the_Mirror         => the_Applet.client_World.all'access,
-                                          Mirror_as_Observer => the_Applet.client_World.all'access);
+      gel_demo_services.World.deregister (the_Mirror         => the_Applet.client_World.all'Access,
+                                          Mirror_as_Observer => the_Applet.client_World.all'Access);
       the_Applet.destroy;
       gel_demo_Server.item.stop;
 

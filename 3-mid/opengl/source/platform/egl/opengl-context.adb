@@ -15,7 +15,7 @@ is
         System;
 
 
-   procedure define (Self : in out Item;   the_Display         : access opengl.Display.item'class;
+   procedure define (Self : in out Item;   the_Display         : access opengl.Display.item'Class;
                                            the_surface_Profile : in     opengl.surface_Profile.item)
    is
       use

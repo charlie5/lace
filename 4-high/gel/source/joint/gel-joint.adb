@@ -18,7 +18,7 @@ is
    --- Forge
    --
 
-   procedure define (Self : access Item;   Sprite_A, Sprite_B : access gel.Sprite.item'class)
+   procedure define (Self : access Item;   Sprite_A, Sprite_B : access gel.Sprite.item'Class)
    is
    begin
       Self.Sprite_A := Sprite_A;
@@ -44,7 +44,7 @@ is
    --- Attributes
    --
 
-   function Sprite_A (Self : in Item'Class) return access gel.Sprite.item'class
+   function Sprite_A (Self : in Item'Class) return access gel.Sprite.item'Class
    is
    begin
       return Self.Sprite_A;
@@ -52,7 +52,7 @@ is
 
 
 
-   function Sprite_B (Self : in Item'Class) return access gel.Sprite.item'class
+   function Sprite_B (Self : in Item'Class) return access gel.Sprite.item'Class
    is
    begin
       return Self.Sprite_B;

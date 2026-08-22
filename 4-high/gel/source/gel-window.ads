@@ -50,8 +50,8 @@ is
    function is_Open          (Self : in     Item) return Boolean;
    function is_Exposed       (Self : in     Item) return Boolean;
 
-   function Keyboard         (Self : access Item) return access gel.Keyboard.item'class;
-   function Mouse            (Self : access Item) return access gel.Mouse.item'class;
+   function Keyboard         (Self : access Item) return access gel.Keyboard.item'Class;
+   function Mouse            (Self : access Item) return access gel.Mouse.item'Class;
 
    function Width            (Self : in     Item) return Positive;
    function Height           (Self : in     Item) return Positive;

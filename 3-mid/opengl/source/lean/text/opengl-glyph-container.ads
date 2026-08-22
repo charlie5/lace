@@ -113,7 +113,7 @@ is
 
 private
 
-   type    charMap_view  is access all freetype.charMap.item'class;
+   type    charMap_view  is access all freetype.charMap.item'Class;
    package glyph_Vectors is new ada.Containers.Vectors (Positive, Glyph_view);
 
    type Item is tagged

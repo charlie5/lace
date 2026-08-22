@@ -8,7 +8,7 @@ is
    function World return gel.remote.World.view
    is
    begin
-      return gel_demo_Server.the_server_World.all'access;
+      return gel_demo_Server.the_server_World.all'Access;
    end World;
 
 

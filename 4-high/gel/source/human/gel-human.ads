@@ -265,7 +265,7 @@ private
          scene_Joints       :         human.scene_Joints;
          root_Joint         :         collada.Library.visual_scenes.Node_view;
 
-         Model              : access  openGL.Model.item'class;
+         Model              : access  openGL.Model.item'Class;
          program_Parameters : aliased skin_program_Parameters;
 
          Channels           :         animation_Channels;

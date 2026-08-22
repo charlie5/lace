@@ -10,7 +10,7 @@ is
    type Item  is tagged limited private;
    type Items is array (Positive range <>) of aliased Item;
 
-   type View  is access all Item'class;
+   type View  is access all Item'Class;
    type Views is array (Positive range <>) of View;
 
    type Kind is (Vertex, Fragment);

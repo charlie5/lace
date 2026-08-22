@@ -57,7 +57,7 @@ is
    function  almost_Zero   (Self      : in     Real) return Boolean;
    function  almost_Equals (Self,
                             Other,
-                            Tolerance : in     Real := Real'Base'Model_Small) return Boolean;
+                            Tolerance : in     Real := Real'Base'model_Small) return Boolean;
 
    function  Clamped (Self  : in     Real;   Low, High : in Real) return Real;
    procedure clamp   (Self  : in out Real;   Low, High : in Real);
@@ -187,7 +187,7 @@ is
    function "abs" (Right : in Vector_3) return Vector_3;
 
    function  almost_Equals (Self, Other : in Vector_3;
-                            Tolerance   : in     Real := Real'Base'Model_Small) return Boolean;
+                            Tolerance   : in     Real := Real'Base'model_Small) return Boolean;
 
 
    ------------

@@ -11,7 +11,7 @@ is
    type Item is  limited interface
              and lace.Subject.item;
 
-   type View is access all Item'class;
+   type View is access all Item'Class;
 
 
    --------

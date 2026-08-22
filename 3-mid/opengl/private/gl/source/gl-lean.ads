@@ -514,8 +514,8 @@ is
 
 private
 
-   for GLintptr  'Size use standard'Address_Size;
-   for GLsizeiptr'Size use standard'Address_Size;
+   for GLintptr  'Size use standard'address_Size;
+   for GLsizeiptr'Size use standard'address_Size;
 
 
    -------------

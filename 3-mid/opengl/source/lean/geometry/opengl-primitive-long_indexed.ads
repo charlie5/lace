@@ -11,7 +11,7 @@ is
    type    Item  is limited new Primitive.item with private;
    subtype Class is Item'Class;
 
-   type    View  is access all Item'class;
+   type    View  is access all Item'Class;
    type    Views is array (Index_t range <>) of View;
 
 

@@ -24,8 +24,8 @@ is
    subtype long_Long             is long_long_Integer;
    type    unsigned_long_Long    is mod 2**64;
 
-   type    intptr_t              is range -(2 ** (Standard'Address_Size - Integer'(1))) .. +(2 ** (Standard'Address_Size - Integer'(1)) - 1);
-   type   uintptr_t              is mod 2**Standard'Address_Size;
+   type    intptr_t              is range -(2 ** (Standard'address_Size - Integer'(1))) .. +(2 ** (Standard'address_Size - Integer'(1)) - 1);
+   type   uintptr_t              is mod 2**Standard'address_Size;
 
 
    subtype int8_t                is interfaces.Integer_8;

@@ -124,7 +124,7 @@ is
 
 
 
-   function Keyboard (Self : access Item) return access gel.Keyboard.item'class
+   function Keyboard (Self : access Item) return access gel.Keyboard.item'Class
    is
    begin
       return Self.Keyboard;
@@ -132,7 +132,7 @@ is
 
 
 
-   function Mouse (Self : access Item) return access gel.Mouse.item'class
+   function Mouse (Self : access Item) return access gel.Mouse.item'Class
    is
    begin
       return Self.Mouse;

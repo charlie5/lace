@@ -98,8 +98,8 @@ is
 
       function new_Human (World         : access gel.World.item'Class;
 --                            Space         : in     gel.Sprite.physics_Space_view;
-                          Model         : access openGL.Model     .item'class;
-                          physics_Model : access standard.physics.Model.item'class;
+                          Model         : access openGL          .Model.item'Class;
+                          physics_Model : access standard.physics.Model.item'Class;
                           Mass          : in     math.Real           := 0.0;
                           is_Kinematic  : in     Boolean             := False) return Human.view
       is
@@ -1094,7 +1094,7 @@ is
    is
    begin
       Self.program_Parameters.Program_is (opengl.Program.view (opengl.Geometry.lit_textured_skinned.Program));
-      Self.base_Sprite.program_Parameters_are (Self.program_Parameters'Unchecked_Access);
+      Self.base_Sprite.program_Parameters_are (Self.program_Parameters'unchecked_Access);
    end enable_Graphics;
 
 

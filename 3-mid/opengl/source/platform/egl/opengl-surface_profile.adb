@@ -114,7 +114,7 @@ is
 
 
 
-   function fetch_All (the_Display : access opengl.Display.item'class) return surface_Profile.items
+   function fetch_All (the_Display : access opengl.Display.item'Class) return surface_Profile.items
    is
       use type EGLBoolean;
 

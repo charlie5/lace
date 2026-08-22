@@ -58,7 +58,7 @@ is
                                               Screen      : access openGL.Screen .item'Class;
                                               Desired     : in     Qualities                := default_Qualities);
 
-   function  fetch_All (the_Display : access openGL.Display.item'class) return surface_Profile.items;
+   function  fetch_All (the_Display : access openGL.Display.item'Class) return surface_Profile.items;
 
 
    --------------

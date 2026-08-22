@@ -1326,7 +1326,7 @@ is
       if the_display_Mode /= Bones
       then
          Self.program_Parameters.Program_is (opengl.Program.view (opengl.Geometry.lit_textured_skinned.Program));
-         Self.skin_Sprite.program_Parameters_are (Self.program_Parameters'Unchecked_Access);
+         Self.skin_Sprite.program_Parameters_are (Self.program_Parameters'unchecked_Access);
 --           Self.base_Sprite.program_Parameters_are (Self.program_Parameters'Unchecked_Access);
       end if;
    end enable_Graphics;

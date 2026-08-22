@@ -40,7 +40,7 @@ begin
    the_Box.Site_is ([0.0,  0.0,  0.0]);
 
 
-   for Each in the_Balls'range
+   for Each in the_Balls'Range
    loop
       the_Applet.gui_World.add (the_Balls (Each));       -- Add ball.
       the_Balls (Each).Site_is ([0.0,  10.0,  0.0]);
@@ -52,7 +52,7 @@ begin
       the_Applet.freshen;                                -- Handle any new events and update the screen.
    end loop;
 
-   for Each in the_Balls'range
+   for Each in the_Balls'Range
    loop
       the_Applet.gui_World.rid (the_Balls (Each));        -- Rid ball.
       gel.Sprite.free (the_Balls (Each));

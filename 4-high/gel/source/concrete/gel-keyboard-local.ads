@@ -10,7 +10,7 @@ is
    type Item is limited new lace.Subject.local.item
                         and gel.Keyboard.item with private;
 
-   type View is access all Item'class;
+   type View is access all Item'Class;
 
 
 

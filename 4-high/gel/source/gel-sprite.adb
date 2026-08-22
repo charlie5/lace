@@ -427,7 +427,7 @@ is
 
 
 
-   function physics_Model (Self : in Item) return access physics.Model.item'class
+   function physics_Model (Self : in Item) return access physics.Model.item'Class
    is
    begin
       return Self.physics_Model;
@@ -621,7 +621,7 @@ is
    is
       the_spin_Delta : constant Matrix_3x3 := to_Spin * Inverse (Self.Spin);   -- The rotation matrix describing the amount by which Self has rotated.
 
-      procedure spin_Children (the_Sprite : in Sprite.item'class)
+      procedure spin_Children (the_Sprite : in Sprite.item'Class)
       is
       begin
          if the_Sprite.child_Joints.Is_Empty
