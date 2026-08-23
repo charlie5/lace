@@ -77,13 +77,13 @@ begin
                     Mass         => 1.0,
                     is_Kinematic => False);
 
-   -- my_Human.base_Sprite.rotate (to_spin => x_Rotation_from (to_Radians (0.0)));
+   -- my_Human.base_Sprite.rotate (to_Spin => x_Rotation_from (to_Radians (0.0)));
 --     my_Human.base_Sprite.move   ((0.0, 2.0, 0.0));
    the_Applet.gui_World.add (my_Human.base_Sprite, and_Children => True);      -- Add the human
 --     my_Human.base_Sprite.move ((0.0,  0.0,  0.0));                             --
 
 
---     my_Human.skin_Sprite.rotate (to_spin =>  (x_Rotation_from (to_Radians (0.0))));
+--     my_Human.skin_Sprite.rotate (to_Spin =>  (x_Rotation_from (to_Radians (0.0))));
 --     my_Human.skin_Sprite.move   ((0.0, 2.0, 0.0));
    the_Applet.gui_World.add (my_Human.skin_Sprite);                                 -- Add human skin.
 

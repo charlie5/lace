@@ -5,7 +5,7 @@
 package openGL.Surface.privvy
 is
 
---     function to_glx (Self : in Surface.item'Class) return glx.GLXDrawable;
+--     function to_GLX (Self : in Surface.item'Class) return glx.GLXDrawable;
 
    procedure dummy;
 

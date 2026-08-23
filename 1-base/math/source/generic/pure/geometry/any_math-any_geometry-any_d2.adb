@@ -331,10 +331,12 @@ is
    is
       use Functions;
 
-      a     : constant Real := Distance (next_Vertex   (Self, to_vertex => at_Vertex),
-                                         prior_Vertex  (Self, to_vertex => at_Vertex));
-      b     : constant Real := Distance (Self.Vertices (at_Vertex),                     next_Vertex  (Self, to_vertex => at_Vertex));
-      c     : constant Real := Distance (Self.Vertices (at_Vertex),                     prior_Vertex (Self, to_vertex => at_Vertex));
+      a     : constant Real := Distance (next_Vertex   (Self, to_Vertex => at_Vertex),
+                                         prior_Vertex  (Self, to_Vertex => at_Vertex));
+      b     : constant Real := Distance (Self.Vertices (at_Vertex),
+                                         next_Vertex   (Self, to_Vertex => at_Vertex));
+      c     : constant Real := Distance (Self.Vertices (at_Vertex),
+                                         prior_Vertex  (Self, to_Vertex => at_Vertex));
 
       cos_A : constant Real := (b**2 + c**2 - a**2) / (2.0 * b * c);
 

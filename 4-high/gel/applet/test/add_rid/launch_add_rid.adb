@@ -154,12 +154,12 @@ begin
                         null;
 
                      when add_rid_Joint =>
-                        mid_Ball.move (to_site =>  mid_Ball.parent_Joint.Sprite_A.Site
+                        mid_Ball.move (to_Site =>  mid_Ball.parent_Joint.Sprite_A.Site
                                                  + mid_Ball_initial_Offset);
                         the_Applet.gui_World.add (mid_Ball.parent_Joint);
 
                      when add_rid_Object =>
---                          mid_Ball.move (to_site =>  mid_Ball.parent_Joint.Sprite_A.Site
+--                          mid_Ball.move (to_Site =>  mid_Ball.parent_Joint.Sprite_A.Site
 --                                                   + mid_Ball_initial_Offset);
                         the_Applet.gui_World.add (mid_Ball, and_children => False);
 --                          the_Applet.gui_World.add (mid_Ball.parent_Joint);

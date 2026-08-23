@@ -552,7 +552,7 @@ is
       for i in 1 .. Integer (Self.child_Joints.Length)
       loop
          child_Sprite := Self.child_Joints.Element (i).Sprite_B;
-         child_Sprite.move (to_site => child_Sprite.Site + the_Offset);            -- Recurse.
+         child_Sprite.move (to_Site => child_Sprite.Site + the_Offset);            -- Recurse.
       end loop;
 
       Self.Site_is (to_Site);

@@ -1,7 +1,7 @@
 package openGL.surface_Profile.privvy
 is
 
---     function to_glx (Self : in Item'Class) return glx.GLXFBConfig;
+--     function to_GLX (Self : in Item'Class) return glx.GLXFBConfig;
 
    procedure dummy;
 

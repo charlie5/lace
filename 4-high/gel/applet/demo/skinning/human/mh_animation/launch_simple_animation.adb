@@ -86,11 +86,11 @@ begin
       --- Setup the human model.
       --
 
-      --  -- the_Human.base_Sprite.rotate (to_spin => x_Rotation_from (to_Radians (0.0)));
-      -- the_Human.base_Sprite.rotate (to_spin => y_Rotation_from (to_Radians (90.0)));
+      --  -- the_Human.base_Sprite.rotate (to_Spin => x_Rotation_from (to_Radians (0.0)));
+      -- the_Human.base_Sprite.rotate (to_Spin => y_Rotation_from (to_Radians (90.0)));
 --        the_Human.base_Sprite.move   ((0.0, -10.0, 0.0));
 
---        the_Human.skin_Sprite.rotate (to_spin =>  (y_Rotation_from (to_Radians (45.0))));
+--        the_Human.skin_Sprite.rotate (to_Spin =>  (y_Rotation_from (to_Radians (45.0))));
 --        the_Human.skin_Sprite.move   ((0.0, 5.0, 0.0));
 
       the_Applet.gui_World.add (the_Human.base_Sprite, and_Children => True);           -- Add human.
