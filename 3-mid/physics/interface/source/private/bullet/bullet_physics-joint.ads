@@ -17,7 +17,7 @@ package bullet_Physics.Joint
 is
    type Item is abstract limited new physics.Joint.item with
       record
-         C         : bullet_c.Pointers.Joint_pointer;
+         C         :        bullet_c.Pointers.Joint_pointer;
          user_Data : access lace.Any.limited_item'Class;
       end record;
 

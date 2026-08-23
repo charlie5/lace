@@ -235,9 +235,9 @@ private
          Cursor        :        math.Index                             := 0;
 
          Angles        : access collada.float_array;
-         initial_Angle : math.Real;
-         current_Angle : math.Real                 := 0.0;
-         interp_Delta  : math.Real                 := 0.0;
+         initial_Angle :        math.Real;
+         current_Angle :        math.Real          := 0.0;
+         interp_Delta  :        math.Real          := 0.0;
 
          initial_Site      : math.Vector_3;
          current_Site      : math.Vector_3;

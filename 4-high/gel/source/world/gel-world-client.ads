@@ -125,7 +125,7 @@ private
 
    type Item is limited new gel.World.item with
       record
-         Age_at_last_mirror_update : Duration          := 0.0;
+         Age_at_last_mirror_update :         Duration  := 0.0;
          all_Sprites               : aliased sprite_Map;
 
          -- Motion Updates

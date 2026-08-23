@@ -59,7 +59,7 @@ private
 
          is_Modified    : Boolean               := False;
 
-         Vertices : Geometry.colored_textured.Vertex_array_view := new geometry.colored_textured.Vertex_array (1 .. 4);
+         Vertices :        Geometry.colored_textured.Vertex_array_view := new geometry.colored_textured.Vertex_array (1 .. 4);
          Geometry : access Geometry.colored_textured.item'Class;
       end record;
 

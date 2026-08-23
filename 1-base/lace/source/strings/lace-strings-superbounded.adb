@@ -332,11 +332,11 @@ is
                           Right : in Super_String;
                           Drop  : in Truncation  := Error) return Super_String
    is
-      Max_Length : constant Positive    := Left.Max_Length;
-      Result : Super_String (Max_Length);
-      Llen   : constant Natural         := Left.Current_Length;
-      Rlen   : constant Natural         := Right.Current_Length;
-      Nlen   : constant Natural         := Llen + Rlen;
+      Max_Length : constant Positive        := Left.Max_Length;
+      Result     : Super_String (Max_Length);
+      Llen       : constant Natural         := Left.Current_Length;
+      Rlen       : constant Natural         := Right.Current_Length;
+      Nlen       : constant Natural         := Llen + Rlen;
 
    begin
       if Nlen <= Max_Length
@@ -424,11 +424,11 @@ is
                           Right : in String;
                           Drop  : in ada.Strings.Truncation := ada.Strings.Error) return Super_String
    is
-      Max_Length : constant Positive    := Left.Max_Length;
-      Result : Super_String (Max_Length);
-      Llen   : constant Natural         := Left.Current_Length;
-      Rlen   : constant Natural         := Right'Length;
-      Nlen   : constant Natural         := Llen + Rlen;
+      Max_Length : constant Positive        := Left.Max_Length;
+      Result     : Super_String (Max_Length);
+      Llen       : constant Natural         := Left.Current_Length;
+      Rlen       : constant Natural         := Right'Length;
+      Nlen       : constant Natural         := Llen + Rlen;
 
    begin
       if Nlen <= Max_Length
@@ -476,9 +476,9 @@ is
                            Drop     : in     Truncation  := Error)
    is
       Max_Length : constant Positive := Source.Max_Length;
-      Llen   : constant Natural := Source.Current_Length;
-      Rlen   : constant Natural := new_Item'Length;
-      Nlen   : constant Natural := Llen + Rlen;
+      Llen       : constant Natural  := Source.Current_Length;
+      Rlen       : constant Natural  := new_Item'Length;
+      Nlen       : constant Natural  := Llen + Rlen;
 
    begin
       if Nlen <= Max_Length
@@ -640,9 +640,9 @@ is
                           Right : in Super_String;
                           Drop  : in ada.Strings.Truncation := ada.Strings.Error) return Super_String
    is
-      Max_Length : constant Positive    := Right.Max_Length;
-      Result : Super_String (Max_Length);
-      Rlen   : constant Natural         := Right.Current_Length;
+      Max_Length : constant Positive        := Right.Max_Length;
+      Result     : Super_String (Max_Length);
+      Rlen       : constant Natural         := Right.Current_Length;
 
    begin
       if Rlen < Max_Length

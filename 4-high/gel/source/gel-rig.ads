@@ -330,11 +330,11 @@ private
          current_Site      :        Vector_3;         --
          site_interp_Delta :        Vector_3;         --
 
-         initial_Transform :        Transform;        -- For matrix interpolation during 'full_transform' animation.
-         current_Transform :        Transform;        --
-         slerp_Time        :        Real;             -- Slerp Time (T) value in range '0.0 .. 1.0'.     -- TODO: use 'unit_Interval' type.
-         Transforms        :        Transforms_view;
-         Transform_interp_Delta :   Real;             -- Rate at which the SLERP time parameter increases.
+         initial_Transform      : Transform;         -- For matrix interpolation during 'full_transform' animation.
+         current_Transform      : Transform;         --
+         slerp_Time             : Real;              -- Slerp Time (T) value in range '0.0 .. 1.0'.     -- TODO: use 'unit_Interval' type.
+         Transforms             : Transforms_view;
+         Transform_interp_Delta : Real;              -- Rate at which the SLERP time parameter increases.
       end record;
 
    subtype channel_Id is scene_joint_Id;
@@ -379,7 +379,7 @@ private
 
          overall_Site            : Vector_3 := [0.0, 0.0, 0.0];
 
-         Model                   : openGL.Model.view;
+         Model                   :         openGL.Model.view;
          program_Parameters      : aliased skin_program_Parameters;
       end record;
 

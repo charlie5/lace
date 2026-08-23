@@ -57,9 +57,9 @@ is
          object_Name      : Text;
          group_Name       : Text;
 
-         Sites   : Sites_view;
-         Coords  : Coordinates_2D_view;
-         Normals : Normals_view;
+         Sites   :        Sites_view;
+         Coords  :        Coordinates_2D_view;
+         Normals :        Normals_view;
          Faces   : access wavefront.Faces;
       end record;
 

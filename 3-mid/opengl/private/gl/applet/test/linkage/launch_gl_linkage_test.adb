@@ -81,10 +81,10 @@ begin
            lean,
            System;
 
-      a_GLenum       : GLenum;
-      a_GLuint       : GLuint;
-      a_GLboolean    : GLboolean;
-      a_C_int        : interfaces.C.int;
+      a_GLenum       :        GLenum;
+      a_GLuint       :        GLuint;
+      a_GLboolean    :        GLboolean;
+      a_C_int        :        interfaces.C.int;
       GLubyte_access : access GLubyte;
    begin
       glAttachShader                        (0, 0);
