@@ -22,10 +22,10 @@ is
    subtype Shape_pointer is C_Shape_Pointers.Pointer;
 
 
-   --- Shape_pointer_array
+   --- Shape_pointers
    --
 
-   type Shape_pointer_array is array (interfaces.C.size_t range <>) of aliased box2d_c.Pointers.Shape_pointer;
+   type Shape_pointers is array (interfaces.C.size_t range <>) of aliased box2d_c.Pointers.Shape_pointer;
 
 
    --- Object_pointer
@@ -39,10 +39,10 @@ is
    subtype Object_pointer is C_Object_Pointers.Pointer;
 
 
-   --- Object_pointer_array
+   --- Object_pointers
    --
 
-   type Object_pointer_array is array (interfaces.C.size_t range <>) of aliased box2d_c.Pointers.Object_pointer;
+   type Object_pointers is array (interfaces.C.size_t range <>) of aliased box2d_c.Pointers.Object_pointer;
 
 
    --- Joint_pointer
@@ -56,10 +56,10 @@ is
    subtype Joint_pointer is C_Joint_Pointers.Pointer;
 
 
-   --- Joint_pointer_array
+   --- Joint_pointers
    --
 
-   type Joint_pointer_array is array (interfaces.C.size_t range <>) of aliased box2d_c.Pointers.Joint_pointer;
+   type Joint_pointers is array (interfaces.C.size_t range <>) of aliased box2d_c.Pointers.Joint_pointer;
 
 
    --- Space_pointer
@@ -73,10 +73,10 @@ is
    subtype Space_pointer is C_Space_Pointers.Pointer;
 
 
-   --- Space_pointer_array
+   --- Space_pointers
    --
 
-   type Space_pointer_array is array (interfaces.C.size_t range <>) of aliased box2d_c.Pointers.Space_pointer;
+   type Space_pointers is array (interfaces.C.size_t range <>) of aliased box2d_c.Pointers.Space_pointer;
 
 
    --- b2Joint_pointer
@@ -90,10 +90,10 @@ is
    subtype b2Joint_pointer is C_b2Joint_Pointers.Pointer;
 
 
-   --- b2Joint_pointer_array
+   --- b2Joint_pointers
    --
 
-   type b2Joint_pointer_array is array (interfaces.C.size_t range <>) of aliased box2d_c.Pointers.b2Joint_pointer;
+   type b2Joint_pointers is array (interfaces.C.size_t range <>) of aliased box2d_c.Pointers.b2Joint_pointer;
 
 
 end box2d_c.Pointers;

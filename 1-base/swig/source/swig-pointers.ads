@@ -49,15 +49,15 @@ is
                                                          Element            => swig.bool,
                                                          Element_array      => bool_array,
                                                          default_Terminator => 0);
-   subtype bool_pointer       is c_bool_Pointers.Pointer;
-   type    bool_pointer_array is array (interfaces.c.size_t range <>) of aliased bool_pointer;
+   subtype bool_pointer  is c_bool_Pointers.Pointer;
+   type    bool_pointers is array (interfaces.c.size_t range <>) of aliased bool_pointer;
 
 
    -- bool**
    --
    package c_bool_pointer_Pointers is new interfaces.c.Pointers (Index              => interfaces.c.size_t,
                                                                  Element            => bool_pointer,
-                                                                 Element_array      => bool_pointer_array,
+                                                                 Element_array      => bool_pointers,
                                                                  default_Terminator => null);
    subtype bool_pointer_pointer is c_bool_pointer_Pointers.Pointer;
 
@@ -76,11 +76,11 @@ is
 
    -- char** []
    --
-   type chars_ptr_pointer_array is array (interfaces.c.size_t range <>) of aliased chars_ptr_pointer;
+   type chars_ptr_pointers is array (interfaces.c.size_t range <>) of aliased chars_ptr_pointer;
 
    package c_chars_ptr_pointer_Pointers is new interfaces.c.Pointers (Index              => interfaces.c.size_t,
                                                                       Element            => chars_ptr_pointer,
-                                                                      Element_array      => chars_ptr_pointer_array,
+                                                                      Element_array      => chars_ptr_pointers,
                                                                       default_Terminator => null);
    subtype chars_ptr_pointer_pointer is c_chars_ptr_pointer_Pointers.Pointer;
 
@@ -142,11 +142,11 @@ is
 
    -- int**
    --
-   type int_pointer_array is array (interfaces.c.size_t range <>) of aliased int_pointer;
+   type int_pointers is array (interfaces.c.size_t range <>) of aliased int_pointer;
 
    package c_int_pointer_Pointers is new interfaces.c.Pointers (Index              => interfaces.c.size_t,
                                                                 Element            => int_pointer,
-                                                                Element_array      => int_pointer_array,
+                                                                Element_array      => int_pointers,
                                                                 default_Terminator => null);
    subtype int_pointer_pointer is c_int_pointer_Pointers.Pointer;
 
