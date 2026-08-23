@@ -112,10 +112,10 @@ is
          end if;
 
          vertex_Count                := vertex_Count + 1;
-         the_Vertices (vertex_Count) := (long_Index_t (  site_Id),
-                                         long_Index_t ( coord_Id),
-                                         long_Index_t (normal_Id),
-                                         null_Id);
+         the_Vertices (vertex_Count) := (site_Id    => long_Index_t (  site_Id),
+                                         coord_Id   => long_Index_t ( coord_Id),
+                                         normal_Id  => long_Index_t (normal_Id),
+                                         weights_Id => null_Id);
          exit when Last + 1 >= Self'Last;
       end loop;
 

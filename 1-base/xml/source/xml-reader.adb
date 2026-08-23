@@ -139,10 +139,10 @@ is
       pragma import (C, XML_ParserCreate, "XML_ParserCreate");
 
    begin
-      return new Parser_Rec' (XML_ParserCreate (null),
-                              null,
-                              null,
-                              null);
+      return new Parser_Rec' (XML_Parser    => XML_ParserCreate (null),
+                              Start_Handler => null,
+                              End_Handler   => null,
+                              CD_Handler    => null);
    end Create_Parser;
 
 

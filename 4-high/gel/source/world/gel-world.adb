@@ -495,10 +495,10 @@ is
          return ray_Collision' (near_Sprite => null,
                                 others      => <>);
       else
-         return ray_Collision' (to_GEL (physics_Collision.near_Object),
-                                    physics_Collision.hit_Fraction,
-                                    physics_Collision.Normal_world,
-                                    physics_Collision.  Site_world);
+         return ray_Collision' (near_Sprite  => to_GEL (physics_Collision.near_Object),
+                                hit_Fraction => physics_Collision.hit_Fraction,
+                                Normal_world => physics_Collision.Normal_world,
+                                Site_world   => physics_Collision.  Site_world);
       end if;
    end cast_Ray;
 
