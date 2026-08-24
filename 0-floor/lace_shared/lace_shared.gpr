@@ -4,7 +4,7 @@ is
    -- Scenario Variables
    --
 
-   type OS_type           is ("Windows_NT", "Linux", "MacOSX");
+   type OS_type           is ("Windows_NT", "Linux");
    type build_Mode_type   is ("debug", "fast", "small");
 
    lace_OS           : OS_type           := external ("Lace_OS", "Linux");
@@ -67,9 +67,6 @@ is
                                                     & "-gnatVcdeimoprst";
 --                                                  & "-gnatVf"             -- (2016) turned off floating point validity check, seems to give
                                                                             -- false positives on a scalar product for collision detection
-
-            when "MacOSX" =>
-               null;
          end case;
 
       when "fast" =>
@@ -86,9 +83,6 @@ is
                                                     & "-ftree-vectorize"
                                                     & "-mfpmath=sse"
                                                     & "-msse3";
-
-            when "MacOSX" =>
-               null;
          end case;
 
       when "small" =>
@@ -100,9 +94,6 @@ is
 
             when "Windows_NT"  =>
                compiler_Options := compiler_Options & small_Options;
-
-            when "MacOSX" =>
-               null;
          end case;
    end case;
 
@@ -112,11 +103,6 @@ is
 
    case lace_OS
    is
-      when "MacOSX" =>
-         compiler_Options := compiler_Options & "-gnatf"
-                                              & "-gnatE"
-                                              & "-gnatVcfimorst";
-
       when "Linux" =>
          binder_Options   := binder_Options   & "-static";
 
@@ -133,7 +119,6 @@ is
       is
          when "Linux"      => for Default_Switches ("adacontrol") use ("-Ftgnat_short");
          when "Windows_NT" => for Default_Switches ("adacontrol") use ("-F", "gnat_short");
-         when "MacOSX"     => for Default_Switches ("adacontrol") use ();
       end case;
    end Ide;
 
