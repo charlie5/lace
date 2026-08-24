@@ -45,10 +45,16 @@ is
    procedure define (Self : in out Item;   use_vertex_Shader   : in Shader.view;
                                            use_fragment_Shader : in Shader.view)
    is
+      use type a_gl_Program;
    begin
       Tasks.check;
 
       Self.gl_Program := glCreateProgram;
+
+      if Self.gl_Program = 0
+      then
+         raise Error with "glCreateProgram failed ~ is an openGL context current ?";
+      end if;
 
       glAttachShader (Self.gl_Program,    use_vertex_Shader.gl_Shader);
       glAttachShader (Self.gl_Program,  use_fragment_Shader.gl_Shader);
@@ -61,7 +67,7 @@ is
       declare
          use type C.int;
 
-         Status : aliased gl.glInt;
+         Status : aliased gl.glInt := 0;     -- Default to failure, in case 'glGetProgramiv' does not write Status.
       begin
          glGetProgramiv (Self.gl_Program,
                          GL_LINK_STATUS,
