@@ -17,12 +17,15 @@ is
    binder_Options   := ();
 
    style_Options    := ("-gnaty3",     -- Check 3-space indentation.
-                        "-gnatyk",     -- Check casings: k:keywords.
-                        "-gnatybfhi",  -- Check b: no blanks at end of lines, f: no ff/vtabs, h: no htabs, i: if-then layout.
+                        "-gnatyb",     -- Check no blanks at end of lines.
+                        "-gnatye",     -- Check that labels on end statements (ending subprograms), and on exit statements (exiting named loops), are present.
+                        "-gnatyf",     -- Check no ff/vtabs.
+                        "-gnatyh",     -- Check no htabs.
+                        "-gnatyi",     -- Check if-then layout.
+                        "-gnatyk",     -- Check keyword casings.
                         "-gnatyl",     -- Check that layout follows the reference manual style.
                         "-gnatyO",     -- Check that overriding subprograms are explicitly marked as such.
-                        "-gnatye",     -- Check that labels on end statements (ending subprograms), and on exit statements (exiting named loops), are present.
-                        "-gnatyx");    -- Check x:no extra parens.
+                        "-gnatyx");    -- Check no extra parens.
 
    compiler_Options :=   ("-gnat2022",
                           "-gnatwa",
@@ -31,13 +34,11 @@ is
 
    fast_Options     := ("-O3",
                         "-gnatn",
-                        -- "-gnatp",   -- TODO: This breaks opengl code. Investigate more.
                         "-funroll-loops",
                         "-ftracer",
                         "-g");         -- TODO: Temporary for profiling. Make a new build mode for profiling.
 
    small_Options    := ("-Os",
-                        "-gnatp",
                         "-fno-inline",
                         "-ffunction-sections",
                         "-falign-jumps=0",
@@ -114,27 +115,20 @@ is
    -- Define the packages.
    --
 
-   package Ide is
-      case lace_OS
-      is
-         when "Linux"      => for Default_Switches ("adacontrol") use ("-Ftgnat_short");
-         when "Windows_NT" => for Default_Switches ("adacontrol") use ("-F", "gnat_short");
-      end case;
+   package Ide
+   is
+      for Default_Switches ("adacontrol") use ("-F", "gnat_short");
    end Ide;
 
 
-   package Builder is
-      for Default_Switches ("ada") use ("-C", "-j0");
+   package Builder
+   is
+      for Default_Switches ("ada") use ("-C", "-j0", "-gnat2022");
 
       case lace_build_Mode
       is
-         when "debug" =>
-            for Global_Configuration_Pragmas use "debug.pra";
-            for Default_Switches ("ada") use ("-C", "-j0", "-gnat2022");   -- TODO: Create and use a builder_Options variable ?
-
-         when "fast" =>
-            for Global_Configuration_Pragmas use "debug.pra";              -- TODO: Without this, openGL fails. Investigate.
-            for Default_Switches ("ada") use ("-C", "-j0", "-gnat2022");
+         when "debug" | "fast" =>
+            for Global_Configuration_Pragmas use "debug.pra";   -- TODO: Without this, fast openGL fails. Investigate.
 
          when "small" =>
             null;
@@ -142,12 +136,14 @@ is
    end Builder;
 
 
-   package Compiler is
+   package Compiler
+   is
       for Default_Switches ("ada") use compiler_Options;
    end Compiler;
 
 
-   package Binder is
+   package Binder
+   is
       for Default_Switches ("ada") use binder_Options;
    end Binder;
 
