@@ -44,7 +44,7 @@ is
       Tasks.check;
       glDeleteTextures (1, the_Name'Access);
       Errors.log;
-end free;
+   end free;
 
 
    ---------

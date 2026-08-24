@@ -300,20 +300,23 @@ is
                   Self.safe_Camera_updates_Map.fetch_all_Updates (all_Updates, Length);
                end render;
 
-            or accept add_Font (font_Id : in Font.font_Id)
+            or
+               accept add_Font (font_Id : in Font.font_Id)
                do
                   new_font_Name := font_Id.Name;
                   new_font_Size := font_Id.Size;
                end add_Font;
 
-            or accept Screenshot (Filename   : in String;
+            or
+               accept Screenshot (Filename   : in String;
                                   with_Alpha : in Boolean := False)
                do
                   new_snapshot_Name  := to_Asset (Filename);
                   snapshot_has_Alpha := with_Alpha;
                end Screenshot;
 
-            or accept Stop
+            or
+               accept Stop
                do
                   Done := True;
                end Stop;

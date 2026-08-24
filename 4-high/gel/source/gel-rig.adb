@@ -1139,7 +1139,7 @@ is
                Self.joint_Sprites (the_collada_Joint).all.Spin_is (Inverse (get_Rotation    (Self.scene_Joints (the_collada_Joint).Transform)));
 
                return Self.scene_Joints (the_collada_Joint).Transform;
-            end case;
+         end case;
       end joint_Transform_for;
 
 

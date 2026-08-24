@@ -52,8 +52,9 @@ begin
       --
       while not Demo.Done
       loop
-         if scaling_Up then Scale := Scale + [0.001, 0.001, 0.001];
-                       else Scale := Scale - [0.001, 0.001, 0.001];
+         if scaling_Up
+         then   Scale := Scale + [0.001, 0.001, 0.001];
+         else   Scale := Scale - [0.001, 0.001, 0.001];
          end if;
 
          if    Scale (1) > 2.0   then scaling_Up := False;
