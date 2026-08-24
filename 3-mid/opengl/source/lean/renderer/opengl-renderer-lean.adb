@@ -268,6 +268,8 @@ is
          do
             Done := True;
          end Stop;
+      or
+         terminate;
       end select;
 
       -- put_Line ("renderer CONTEXT 1 " & Self.Context'Image);
@@ -312,6 +314,8 @@ is
                do
                   Done := True;
                end Stop;
+            or
+               terminate;
             end select;
 
             exit when Done;

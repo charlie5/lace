@@ -331,6 +331,8 @@ is
                culling             := do_cull;
                Self.cull_Completed := False;
             end cull;
+         or
+            terminate;
          end select;
 
          exit when Done;
