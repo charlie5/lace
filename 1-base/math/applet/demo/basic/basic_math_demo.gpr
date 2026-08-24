@@ -1,9 +1,10 @@
 with
-     "math";
+     "math",
+     "lace_shared";
 
 project Basic_Math_Demo
 is
-   for Object_Dir use "build";
+   for Object_Dir use lace_Shared.object_Dir;
    for Exec_Dir   use ".";
    for Main       use ("launch_basic_math_demo.adb");
 

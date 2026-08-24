@@ -5,7 +5,7 @@ with
 
 project Hello_SDL_GEL
 is
-   for Object_Dir use "build";
+   for Object_Dir use lace_Shared.object_Dir;
    for Exec_Dir   use ".";
    for Main       use ("launch_hello_gel.adb");
    for Languages  use ("Ada");

@@ -7,7 +7,7 @@ project lace_simple_deferred_Events_Demo
 is
     for Create_Missing_Dirs use "True";
 
-    for Object_Dir  use "build";
+    for Object_Dir  use lace_Shared.object_Dir;
     for Exec_Dir    use ".";
     for Source_Dirs use (".");
     for Main        use ("launch_simple_deferred_events_demo.adb");

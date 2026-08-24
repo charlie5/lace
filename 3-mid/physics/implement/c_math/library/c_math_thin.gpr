@@ -9,7 +9,7 @@ project c_Math_thin
 is
    for Languages       use ("Ada");
    for Source_Dirs     use ("../source", "../source/thin");
-   for Object_Dir      use "build";
+   for Object_Dir      use lace_Shared.object_Dir;
    for Library_Dir     use "lib";
    for Library_Ali_Dir use "objects";
 --   for Library_Name    use "c_Math_thin";

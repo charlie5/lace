@@ -5,7 +5,7 @@ with
 
 project full_Demo
 is
-   for Object_Dir use "build";
+   for Object_Dir use lace_Shared.object_Dir;
    for Exec_Dir   use ".";
    for Main       use ("launch_full_demo.adb");
    for Languages  use ("Ada");

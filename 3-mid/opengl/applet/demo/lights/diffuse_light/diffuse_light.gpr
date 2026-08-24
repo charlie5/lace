@@ -5,7 +5,7 @@ with
 
 project diffuse_Light
 is
-   for Object_Dir use "build";
+   for Object_Dir use lace_Shared.object_Dir;
    for Exec_Dir   use ".";
    for Main       use ("launch_diffuse_light.adb");
 

@@ -1,7 +1,10 @@
+with
+     "lace_shared";
+
 project Swig
 is
    for Source_Dirs     use (".", "../source");
-   for Object_Dir      use "build";
+   for Object_Dir      use lace_Shared.object_Dir;
    for Exec_Dir        use ".";
    for Library_Dir     use "lib";
    for Library_Ali_Dir use "objects";

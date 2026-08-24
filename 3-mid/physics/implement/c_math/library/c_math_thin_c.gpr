@@ -6,7 +6,7 @@ project c_Math_Thin_C
 is
    for Languages       use ("c++");
    for Source_Dirs     use ("../source/c");
-   for Object_Dir      use "build";
+   for Object_Dir      use lace_Shared.object_Dir;
 --   for Library_Dir     use "lib";
 --   for Library_Ali_Dir use "objects";
 --   for Library_Name    use "c_Math_Thin_C";
@@ -19,7 +19,7 @@ is
    package Compiler is
       for Default_Switches ("c++") use ("-g",
                                         "-Wno-return-type-c-linkage",
-                                        "-I../source/c");
+                                        "-I" & project'Project_Dir & "../source/c");
    end Compiler;
 
    package Ide      renames Lace_shared.Ide;

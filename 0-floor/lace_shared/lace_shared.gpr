@@ -11,6 +11,11 @@ is
    lace_build_Mode   : build_Mode_type   := external ("Lace_Build_Mode", "debug");
 
 
+   -- Each build mode keeps its own objects, so switching modes forces no recompiles.
+   --
+   object_Dir   := "build/" & lace_build_Mode;
+
+
    -- Declare various options.
    --
 

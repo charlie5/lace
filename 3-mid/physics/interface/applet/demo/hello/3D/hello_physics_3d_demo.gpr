@@ -4,7 +4,7 @@ with
 
 project Hello_Physics_3D_Demo
 is
-   for Object_Dir use "build";
+   for Object_Dir use lace_Shared.object_Dir;
    for Exec_Dir   use ".";
    for Main       use ("launch_hello_physics_interface_3d_demo.adb");
 

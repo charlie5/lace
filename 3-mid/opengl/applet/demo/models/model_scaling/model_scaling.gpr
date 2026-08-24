@@ -4,7 +4,7 @@ with
 
 project Model_scaling
 is
-   for Object_Dir use "build";
+   for Object_Dir use lace_Shared.object_Dir;
    for Exec_Dir use ".";
    for Main use ("launch_model_scaling.adb");
 
