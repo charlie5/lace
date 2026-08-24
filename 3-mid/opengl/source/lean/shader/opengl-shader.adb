@@ -74,7 +74,8 @@ is
 
       -- use ada.Text_IO;
 
-      use type interfaces.C.char_array;
+      use type interfaces.C.char_array,
+               a_gl_Shader;
 
       the_Source       : aliased          C.char_array    := Source;
       the_Source_ptr   : aliased constant chars_ptr       := to_chars_ptr (the_Source'unchecked_Access);
@@ -88,6 +89,11 @@ is
       if Kind = Vertex
       then   Self.gl_Shader := glCreateShader (GL_VERTEX_SHADER);
       else   Self.gl_Shader := glCreateShader (GL_FRAGMENT_SHADER);
+      end if;
+
+      if Self.gl_Shader = 0
+      then
+         raise Error with "glCreateShader failed ~ is an openGL context current ?";
       end if;
 
       Errors.log;
@@ -104,14 +110,12 @@ is
       declare
          use interfaces.C;
 
-         Status : aliased gl.glInt;
+         Status : aliased gl.glInt := 0;     -- Default to failure, in case 'glGetShaderiv' does not write Status.
       begin
          glGetShaderiv (Self.gl_Shader,
                         GL_COMPILE_STATUS,
                         Status'unchecked_Access);
-         if         Status = 0
-           and then Debugging
-           -- and then False
+         if Status = 0
          then
             declare
                compile_Log : constant String := Self.shader_info_Log;
