@@ -5,7 +5,7 @@ is
    --
 
    type OS_type           is ("Windows_NT", "Linux");
-   type build_Mode_type   is ("debug", "fast", "small");
+   type build_Mode_type   is ("debug", "fast", "profile", "small");
 
    lace_OS           : OS_type           := external ("Lace_OS", "Linux");
    lace_build_Mode   : build_Mode_type   := external ("Lace_Build_Mode", "debug");
@@ -35,8 +35,7 @@ is
    fast_Options     := ("-O3",
                         "-gnatn",
                         "-funroll-loops",
-                        "-ftracer",
-                        "-g");         -- TODO: Temporary for profiling. Make a new build mode for profiling.
+                        "-ftracer");
 
    small_Options    := ("-Os",
                         "-fno-inline",
@@ -86,6 +85,11 @@ is
                                                     & "-msse3";
          end case;
 
+      when "profile" =>
+         compiler_Options := compiler_Options & fast_Options       -- As "fast", but keep debug info and frame
+                                              & "-g"               -- pointers so the profiler can see call chains.
+                                              & "-fno-omit-frame-pointer";
+
       when "small" =>
          case lace_OS
          is
@@ -127,7 +131,7 @@ is
 
       case lace_build_Mode
       is
-         when "debug" | "fast" =>
+         when "debug" | "fast" | "profile" =>
             for Global_Configuration_Pragmas use "debug.pra";   -- TODO: Without this, fast openGL fails. Investigate.
 
          when "small" =>
