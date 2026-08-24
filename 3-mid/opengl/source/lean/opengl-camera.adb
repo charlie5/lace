@@ -375,6 +375,8 @@ is
          new_Line;
          put_Line ("Unhandled exception in openGL camera Cull engine.");
          put_Line (ada.Exceptions.Exception_Information (E));
+
+         Self.cull_Completed := True;   -- Unblock any client awaiting cull completion.
    end cull_Engine;
 
 

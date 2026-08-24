@@ -22,7 +22,18 @@ is
       Command : Character;
       Avail   : Boolean;
    begin
-      get_Immediate (Command, Avail);
+      if Self.keyboard_Ended
+      then
+         return;
+      end if;
+
+      begin
+         get_Immediate (Command, Avail);
+      exception
+         when End_Error =>   -- Standard input has ended (it is closed, or is not a terminal),
+            Self.keyboard_Ended := True;   -- so the keyboard is gone for good: stop polling.
+            return;
+      end;
 
       if Avail
       then

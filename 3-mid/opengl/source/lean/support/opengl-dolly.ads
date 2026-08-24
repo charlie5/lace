@@ -26,6 +26,7 @@ private
    type Item (Camera : openGL.Camera.view) is tagged
       record
          quit_Requested : Boolean   := False;
+         keyboard_Ended : Boolean   := False;
          last_Character : Character := ada.Characters.Latin_1.NUL;
          Speed          : Real      := 1.0;
       end record;
