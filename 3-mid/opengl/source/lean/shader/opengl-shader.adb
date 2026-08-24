@@ -47,23 +47,19 @@ is
    is
       use type interfaces.C.char_array;
 
-      snippet_Id : Natural := 0;
-
-      function combine_Snippets return C.char_array
+      function combine_Snippets (From : in Positive) return C.char_array
       is
       begin
-         snippet_Id := snippet_Id + 1;
-
-         if snippet_Id < shader_Snippets'Last
+         if From < shader_Snippets'Last
          then
-            return read_text_File (to_String (shader_Snippets (snippet_Id))) & combine_Snippets;
+            return read_text_File (to_String (shader_Snippets (From))) & combine_Snippets (From + 1);
          else
-            return read_text_File (to_String (shader_Snippets (snippet_Id)));
+            return read_text_File (to_String (shader_Snippets (From)));
          end if;
       end combine_Snippets;
 
    begin
-      return   combine_Snippets
+      return   combine_Snippets (shader_Snippets'First)
              & (1 => C.char (ada.Characters.Latin_1.NUL));
    end to_C_char_array;
 
