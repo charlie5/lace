@@ -3,7 +3,6 @@
 set -e
 
 gprbuild -XOS=Linux              \
-         -Xrestrictions=xgc      \
          -Xopengl_platform=glx   \
          -Xopengl_profile=desk   \
          -XBuild_Mode=debug      \

@@ -13,7 +13,6 @@ GPR project paths and scenario variables come from the environment. Nothing buil
 ```bash
 export opengl_profile=desk     # safe | lean | desk
 export opengl_platform=glx     # egl | glx | osmesa
-export restrictions=xgc        # xgc | ravenscar
 export OS=Linux
 export FLORIST_BUILD=default
 
@@ -21,7 +20,7 @@ export LACE=/path/to/lace
 source $LACE/lace-gpr_paths.sh   # prepends every component's library dir to GPR_PROJECT_PATH
 ```
 
-Additional scenario variables (defined in `0-floor/lace_shared/lace_shared.gpr`, which every project imports): `Lace_Build_Mode` (`debug`* | `fast` | `small`), `Lace_OS` (`Linux`* | `Windows_NT` | `MacOSX`), `Lace_Restrictions` (`xgc`* | `ravenscar`). Pass with `-X`, e.g. `gprbuild -P foo.gpr -XLace_Build_Mode=fast`.
+Additional scenario variables (defined in `0-floor/lace_shared/lace_shared.gpr`, which every project imports): `Lace_Build_Mode` (`debug`* | `fast` | `small`), `Lace_OS` (`Linux`* | `Windows_NT` | `MacOSX`). Pass with `-X`, e.g. `gprbuild -P foo.gpr -XLace_Build_Mode=fast`.
 
 ## Build and test commands
 
