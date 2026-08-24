@@ -4,6 +4,7 @@ with
      openGL.Camera,
      openGL.Palette,
      openGL.Model.billboard.textured,
+     openGL.Geometry.         lit_colored_skinned,
      openGL.Geometry.        lit_textured_skinned,
      openGL.Geometry.lit_colored_textured_skinned,
      openGL.Font.texture,
@@ -245,8 +246,9 @@ is
    task
    body Engine
    is
-      the_Context : Context.view; -- with unreferenced;
-      Done        : Boolean     := False;
+      the_Context      : Context.view; -- with unreferenced;
+      Done             : Boolean      := False;
+      programs_Defined : Boolean      := False;
 
    begin
       select
@@ -269,16 +271,6 @@ is
       end select;
 
       -- put_Line ("renderer CONTEXT 1 " & Self.Context'Image);
-
-      gl_Lock.acquire;
-      Self.context_Setter.all;
-
-      openGL.Geometry.        lit_textured_skinned.define_Program;
-      openGL.Geometry.lit_colored_textured_skinned.define_Program;
-
-      Self.context_Clearer.all;
-      gl_Lock.release;
-
 
       while not Done
       loop
@@ -362,6 +354,18 @@ is
             else
                gl_Lock.acquire;
                Self.context_Setter.all;
+
+               if not programs_Defined
+               then
+                  -- The GL context first becomes current here, once the window exists,
+                  -- so the shared skinned programs cannot be defined earlier at engine start.
+                  --
+                  openGL.Geometry.         lit_colored_skinned.define_Program;
+                  openGL.Geometry.        lit_textured_skinned.define_Program;
+                  openGL.Geometry.lit_colored_textured_skinned.define_Program;
+
+                  programs_Defined := True;
+               end if;
 
                Self.update_Impostors_and_draw_Visuals (all_Updates (1 .. Length));
 
