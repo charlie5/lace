@@ -73,7 +73,7 @@ Points that span multiple files:
 
 ## Coding style
 
-Defined in `document/coding style/coding_style.md` and enforced by GNAT style switches (`-gnaty…` in `lace_shared.gpr`); `-gnatwa` warnings are on.
+Defined in the Ada formatting guide at `/eden/forge/applet/tool/ada_formatting_guide/` — numbered prose chapters in `guide/` plus a compilable hand-formatted `examples/` corpus; consult it before writing or formatting Ada code, and never run gnatpp (no formatter can produce this style). The machine-checkable subset is enforced by GNAT style switches (`-gnaty…` in `lace_shared.gpr`); `-gnatwa` warnings are on.
 
 - Identifier casing is distinctive: nouns capitalise their first letter, other words are lowercase — `procedure reverse_Elements (in_Container : in Container)`, `the_Grid`, `heights_File`.
 - Namespace packages are referenced in lowercase: `lace.Events`, `ada.Containers`, `openGL.Model`.
