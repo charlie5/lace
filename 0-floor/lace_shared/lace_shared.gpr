@@ -131,10 +131,10 @@ is
 
       case lace_build_Mode
       is
-         when "debug" | "fast" | "profile" =>
-            for Global_Configuration_Pragmas use "debug.pra";   -- TODO: Without this, fast openGL fails. Investigate.
+         when "debug" =>
+            for Global_Configuration_Pragmas use "debug.pra";
 
-         when "small" =>
+         when "fast" | "profile" | "small" =>
             null;
       end case;
    end Builder;
