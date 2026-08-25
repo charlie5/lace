@@ -1,0 +1,9 @@
+#version 300 es
+//
+//  GLSL ES 3.00 ~ generated from the desktop shader of the same name.
+//
+//  Fragment shaders must declare default precisions, which desktop GLSL supplies implicitly.
+//
+precision highp float;
+precision highp int;
+precision highp sampler2D;

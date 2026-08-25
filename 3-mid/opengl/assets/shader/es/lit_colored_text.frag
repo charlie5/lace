@@ -1,11 +1,18 @@
-#version 410
-
-
-
+#version 300 es
+//
+//  GLSL ES 3.00 ~ generated from the desktop shader of the same name.
+//
+//  Fragment shaders must declare default precisions, which desktop GLSL supplies implicitly.
+//
+precision highp float;
+precision highp int;
+precision highp sampler2D;
 // Texturing snippet.
 //
 uniform int         texture_Count;
-uniform sampler2D   Textures        [16];
+const   int         max_Textures = 16;
+
+uniform sampler2D   Textures        [max_Textures];
 uniform float       Fade            [16];
 uniform bool        texture_Applies [16];
 uniform vec2        Tiling          [16];
