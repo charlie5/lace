@@ -1,7 +1,11 @@
 with
-     openGL.Renderer.lean,
+     openGL.Display,
+     openGL.Screen,
+     openGL.surface_Profile,
+     openGL.Context,
+     openGL.Surface,
+     openGL.Tasks,
 
-     gtk.Widget,
      gtk.Main,
      gtk.Window,
      gtk.Handlers,
@@ -9,7 +13,15 @@ with
      gdk.Types.Keysyms,
      gdk.Event,
 
-     ada.Text_IO;
+     gl.Binding,
+
+     cairo,
+     glib,
+
+     ada.task_Identification,
+     ada.Text_IO,
+     interfaces.C,
+     System;
 
 
 package body gel.Window.gtk
@@ -21,6 +33,44 @@ is
         ada.Text_IO;
 
    function to_gel_Key (From : in gdk.Types.gdk_Key_Type) return gel.keyboard.Key;
+
+
+   ---------------------
+   --- Engine GL state
+   --
+
+   -- The renderer Engine task drives the drawing widget's native X window directly with
+   -- EGL: its context is made current exactly once and then stays with the Engine task,
+   -- which swaps the window surface itself after each frame. GDK is never told about any
+   -- GL content, so widget painting takes the plain cairo path, and no per-frame context
+   -- migration, GL composite, or X11 window read-back ('XShmGetImage') occurs at all.
+
+   type engine_GL_State is
+      record
+         window_Id : Natural := 0;         -- The drawing widget's native X window id.
+         GL_ready  : Boolean := False;     -- True once the Engine has bound its context.
+         Mapped    : Boolean := False;     -- True while the window is mapped (swaps are only legal then).
+
+         Display   : aliased openGL.Display        .item;
+         Screen    : aliased openGL.Screen         .item;
+         Profile   :         openGL.surface_Profile.item;
+         Context   :         openGL.Context        .item;
+         Surface   :         openGL.Surface        .item;
+      end record;
+
+
+   -- Gdk calls not bound by GtkAda.
+   --
+   function gdk_window_ensure_native       (Window    : in gdk.Gdk_Window) return glib.Gboolean;
+   function gdk_x11_window_get_xid         (Window    : in gdk.Gdk_Window) return interfaces.C.unsigned_long;
+   function gdk_screen_get_default        return System.Address;
+   function gdk_x11_screen_lookup_visual   (Screen    : in System.Address;
+                                            xvisualid : in interfaces.C.unsigned) return gdk.Gdk_Visual;
+
+   pragma import (C, gdk_window_ensure_native,     "gdk_window_ensure_native");
+   pragma import (C, gdk_x11_window_get_xid,       "gdk_x11_window_get_xid");
+   pragma import (C, gdk_screen_get_default,       "gdk_screen_get_default");
+   pragma import (C, gdk_x11_screen_lookup_visual, "gdk_x11_screen_lookup_visual");
 
 
    -------------
@@ -78,14 +128,13 @@ is
    procedure realize_Event_Cb (Widget    : access gtk_Widget_Record'Class;
                                user_Data : in     Window.gtk.view)
    is
-      gl_Area    : constant std_gtk.glArea.gtk_glArea  := std_gtk.glArea.gtk_glArea (Widget);
-      gel_Window :          Window.gtk.item'Class renames user_Data.all;
-      top_Window :          gtk_Window;
+      gel_Window : Window.gtk.item'Class renames user_Data.all;
+      top_Window : gtk_Window;
    begin
       -- put_Line ("realize_Event_Cb");
 
       gel_Window.is_Open := True;
-      top_Window         := gtk_Window (gl_Area.get_Toplevel);
+      top_Window         := gtk_Window (Widget.get_Toplevel);
 
       Callbacks_with_gel_Window_user_Data_and_return_Boolean.connect (top_Window,
                                                                       "key_press_event",
@@ -96,7 +145,53 @@ is
                                                                       "key_release_event",
                                                                       Callbacks_with_gel_Window_user_Data_and_return_Boolean.to_Marshaller (key_release_Event_Cb'Access),
                                                                       user_Data => user_Data);
+
+      -- Make the widget's Gdk window native and note its X window id, so
+      -- the renderer Engine can drive it directly with EGL.
+      --
+      declare
+         use type glib.Gboolean;
+      begin
+         if gdk_window_ensure_native (Widget.get_Window) = 0
+         then
+            put_Line ("gel.Window.gtk ~ Unable to make the GL widget's window native !");
+         else
+            gel_Window.engine_GL.window_Id := Natural (gdk_x11_window_get_xid (Widget.get_Window));
+         end if;
+      end;
    end realize_Event_Cb;
+
+
+
+   function map_Event_Cb (Self      : access gtk_Widget_record'Class;
+                          Event     : in     gdk.Event.gdk_Event;
+                          user_Data : in     Window.gtk.view) return Boolean
+   --
+   -- Tracks whether the widget's window is mapped: the Engine renders regardless,
+   -- but the driver refuses to swap buffers on an unmapped window.
+   --
+   is
+      pragma Unreferenced (Self, Event);
+
+      gel_Window : Window.gtk.item'Class renames user_Data.all;
+   begin
+      gel_Window.engine_GL.Mapped := True;
+      return False;
+   end map_Event_Cb;
+
+
+
+   function unmap_Event_Cb (Self      : access gtk_Widget_record'Class;
+                            Event     : in     gdk.Event.gdk_Event;
+                            user_Data : in     Window.gtk.view) return Boolean
+   is
+      pragma Unreferenced (Self, Event);
+
+      gel_Window : Window.gtk.item'Class renames user_Data.all;
+   begin
+      gel_Window.engine_GL.Mapped := False;
+      return False;
+   end unmap_Event_Cb;
 
 
 
@@ -129,13 +224,16 @@ is
 
 
 
-   function render_Event_Cb (Self    :          access std_gtk.glArea   .gtk_glArea_record   'Class;
-                             Context : not null access     gdk.glContext.gdk_glContext_record'Class) return Boolean
+   function draw_Event_Cb (Self : access gtk_Widget_record'Class;
+                           Cr   : cairo.cairo_Context) return Boolean
+   --
+   -- Claims the widget's draw, so GTK paints nothing over the Engine's GL frames.
+   --
    is
-      pragma Unreferenced (Self, Context);
+      pragma Unreferenced (Self, Cr);
    begin
       return True;
-   end render_Event_Cb;
+   end draw_Event_Cb;
 
 
 
@@ -214,13 +312,34 @@ is
    is
       pragma Unreferenced (Title, Width, Height);
 
-      use
-           std_gtk.glArea,
-           gdk    .glContext;
+      use std_gtk.Drawing_Area;
    begin
-      Self.gl_Area := gtk_glArea_new;
-      Self.gl_Area.set_use_ES (True);
+      Self.engine_GL := new engine_GL_State;
+
+      gtk_New (Self.gl_Area);
       Self.gl_Area.Set_Can_Focus (True);
+
+      -- Choose an EGL profile up front and give the widget the matching X visual,
+      -- so the Engine can later create an EGL window surface on the widget's window.
+      --
+      -- The Engine gets its own EGL display connection: sharing GDK's Xlib connection
+      -- across tasks is unsafe without XInitThreads. X window and visual ids are
+      -- server-side, so they remain valid across connections.
+      --
+      Self.engine_GL.Display := openGL.Display.Default;
+      Self.engine_GL.Profile.define (Self.engine_GL.Display'Access,
+                                     Self.engine_GL.Screen 'Access);
+
+      Self.gl_Area.set_Visual (gdk_x11_screen_lookup_visual
+                                 (gdk_screen_get_default,
+                                  interfaces.C.unsigned (Self.engine_GL.Profile.native_Visual)));
+
+      -- The Engine paints the widget via EGL, so GTK must leave it alone entirely:
+      -- no background, no draw, and no double-buffer copy over the GL frames.
+      --
+      Self.gl_Area.set_app_Paintable    (True);
+      Self.gl_Area.set_double_Buffered  (False);
+      Self.gl_Area.on_Draw (draw_Event_Cb'Access);
 
       Callbacks_with_gel_Window_user_Data.connect (Self.gl_Area,
                                                    "realize",
@@ -228,7 +347,7 @@ is
                                                    user_Data => View (Self));
 
       Callbacks_with_gel_Window_user_Data.connect (Self.gl_Area,
-                                                   "resize",
+                                                   "size-allocate",
                                                    Callbacks_with_gel_Window_user_Data.to_Marshaller (gl_Area_resize_Event_Cb'Access),
                                                    user_Data => View (Self));
 
@@ -236,8 +355,6 @@ is
                                                    "unrealize",
                                                    Callbacks_with_gel_Window_user_Data.to_Marshaller (unrealize_Event_Cb'Access),
                                                    user_Data => View (Self));
-
-      Self.gl_Area.on_Render (render_Event_Cb'Access);
 
       Self.gl_Area.add_Events (Button_press_Mask);
       Callbacks_with_gel_Window_user_Data_and_return_Boolean.connect (Self.gl_Area,
@@ -254,7 +371,16 @@ is
                                                                       "motion-notify-event",
                                                                       Callbacks_with_gel_Window_user_Data_and_return_Boolean.to_Marshaller (Pointer_motion_Event_Cb'Access),
                                                                       user_Data => View (Self));
-      Self.gl_Context := Self.gl_Area.get_Context;
+
+      Callbacks_with_gel_Window_user_Data_and_return_Boolean.connect (Self.gl_Area,
+                                                                      "map-event",
+                                                                      Callbacks_with_gel_Window_user_Data_and_return_Boolean.to_Marshaller (map_Event_Cb'Access),
+                                                                      user_Data => View (Self));
+
+      Callbacks_with_gel_Window_user_Data_and_return_Boolean.connect (Self.gl_Area,
+                                                                      "unmap-event",
+                                                                      Callbacks_with_gel_Window_user_Data_and_return_Boolean.to_Marshaller (unmap_Event_Cb'Access),
+                                                                      user_Data => View (Self));
    end define;
 
 
@@ -302,38 +428,63 @@ is
    use gel.Keyboard;
 
 
-   function gl_Area (Self : in Item) return std_gtk.GLArea.Gtk_GLArea
+   function gl_Area (Self : in Item) return std_gtk.Widget.gtk_Widget
    is
    begin
-      return Self.gl_Area;
+      return std_gtk.Widget.gtk_Widget (Self.gl_Area);
    end gl_Area;
-
-
-
-   -- procedure set_Context (Self : in out Item;   To : in gdk.glContext.gdk_glContext)
-   -- is
-   -- begin
-   --     Self.gl_Context := To;
-   -- end set_Context;
 
 
 
    overriding
    procedure enable_GL (Self : in Item)
    is
-      use gdk.GLContext;
-
-      use type std_gtk.glArea.gtk_GLArea;
+      State : engine_GL_State renames Self.engine_GL.all;
    begin
-      -- ada.Text_IO.Put_Line ("gel.window.gtk.enble_GL: attempting to make context current");
-
-      if          Self.is_Open
-        and then (         Self.gl_Area             /= null
-                  and then Self.gl_Area.get_Context /= null)
-      then
-         Self.gl_Area.make_Current;
+      if State.GL_ready or else State.window_Id = 0
+      then     -- Already bound, or the widget is not yet realized ('GL_is_ready' gates the Engine).
+         return;
       end if;
+
+      -- First call from the renderer Engine: bind EGL to the widget's native window.
+      -- The display and profile were prepared in 'define'; the context is made
+      -- current once only and then stays with the Engine task.
+      --
+      State.Context.define (State.Display'Access, State.Profile);
+      State.Surface.define (State.Profile, State.Display, State.window_Id);
+      State.Context.make_Current (read_Surface  => State.Surface,
+                                  write_Surface => State.Surface);
+      State.GL_ready := True;
+
+      -- Report the openGL version.
+      --
+      declare
+         use gl.Binding;
+
+         GL_MAJOR_VERSION : constant := 16#821B#;     -- Absent from 'gl.Binding'.
+         GL_MINOR_VERSION : constant := 16#821C#;
+
+         Major, Minor : aliased gl.GLint;
+      begin
+         glGetIntegerv (GL_MAJOR_VERSION, Major'unchecked_Access);
+         glGetIntegerv (GL_MINOR_VERSION, Minor'unchecked_Access);
+
+         put_Line ("openGL Version ~ Major:" & Major'Image & "   Minor:" & Minor'Image);
+      end;
    end enable_GL;
+
+
+
+   overriding
+   function GL_is_ready (Self : in Item) return Boolean
+   is
+   begin
+      return Self.engine_GL.window_Id /= 0
+        and Self.engine_GL.Mapped;
+      --
+      -- The window must be mapped before the Engine binds: the driver sizes the
+      -- surface's buffers at creation, and refuses swaps on unmapped windows.
+   end GL_is_ready;
 
 
 
@@ -341,7 +492,7 @@ is
    procedure disable_GL (Self : in Item)
    is
    begin
-      gdk.glContext.clear_Current;
+      null;     -- The Engine's context intentionally remains current in the Engine task.
    end disable_GL;
 
 
@@ -349,8 +500,19 @@ is
    overriding
    procedure swap_GL (Self : in out Item)
    is
+      use type ada.task_Identification.Task_Id;
    begin
-      null;
+      if ada.task_Identification.current_Task /= openGL.Tasks.Renderer_Task
+      then     -- Only the Engine's swap presents a frame ('gel.Applet.freshen' also
+         return;     -- calls in from the client task, where no GL context is current).
+      end if;
+
+      if         Self.is_Open
+        and then Self.engine_GL.GL_ready
+        and then Self.engine_GL.Mapped
+      then
+         Self.engine_GL.Surface.swap_Buffers;
+      end if;
    end swap_GL;
 
 
@@ -362,18 +524,11 @@ is
       while std_gtk.Main.Events_pending
       loop
          declare
-            Ignore : Boolean;
+            Ignore : Boolean := std_gtk.Main.main_Iteration;
          begin
-            openGL.Renderer.lean.gl_Lock.acquire;
-            Ignore := std_gtk.Main.main_Iteration;
-            openGL.Renderer.lean.gl_Lock.release;
+            null;
          end;
       end loop;
-
-      if Self.is_Open
-      then
-         Self.gl_Area.queue_Render;
-      end if;
    end freshen;
 
 
@@ -658,4 +813,5 @@ is
 
 begin
    gel.Window.use_create_Window (window_Creator'Access);
+
 end gel.Window.gtk;

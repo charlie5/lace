@@ -67,6 +67,10 @@ is
 
    procedure emit_Events (Self : in out Item)   is null;
    procedure enable_GL   (Self : in     Item)   is null;
+
+   function  GL_is_ready (Self : in     Item) return Boolean;
+   --
+   -- True when the window is ready for its GL context to be bound (see 'enable_GL').
    procedure disable_GL  (Self : in     Item)   is null;
    procedure swap_GL     (Self : in out Item)   is null;
    procedure freshen     (Self : in     Item)   is null;

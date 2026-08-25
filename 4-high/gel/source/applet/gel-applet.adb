@@ -51,6 +51,14 @@ is
 
 
 
+   function my_context_Checker return Boolean
+   is
+   begin
+      return global_Window.GL_is_ready;
+   end my_context_Checker;
+
+
+
    overriding
    procedure respond (Self : in out add_new_Sprite;   to_Event : in lace.Event.item'Class)
    is
@@ -111,6 +119,7 @@ is
 
       Self.Renderer.Context_Setter_is  (my_context_Setter 'unrestricted_Access);
       Self.Renderer.Context_Clearer_is (my_context_Clearer'unrestricted_Access);
+      Self.Renderer.Context_Checker_is (my_context_Checker'unrestricted_Access);
       Self.Renderer.start_Engine;
 
       Self.Renderer.add_Font (Self.       Font);

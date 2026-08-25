@@ -1,14 +1,17 @@
 with
-     gtk.glArea;
+     gtk.Widget;
 
 private
 with
-     gdk.glContext;
+     gtk.Drawing_Area;
 
 
 package gel.Window.gtk
 --
 -- Provides a GTK implementation of a window.
+--
+-- The world view is a plain drawing widget whose native X window the renderer
+-- Engine drives directly with EGL, so GDK never composites GL content itself.
 --
 is
    type Item is new gel.Window.item with private;
@@ -40,7 +43,9 @@ is
 
    package std_gtk renames standard.GTK;
 
-   function gl_Area (Self : in Item) return std_gtk.GLArea.Gtk_GLArea;
+   function gl_Area (Self : in Item) return std_gtk.Widget.gtk_Widget;
+   --
+   -- The widget displaying the rendered world, for packing into a GTK layout.
 
 
    --------------
@@ -49,6 +54,8 @@ is
 
    overriding
    procedure enable_GL   (Self : in     Item);
+   overriding
+   function  GL_is_ready (Self : in     Item) return Boolean;
    overriding
    procedure disable_GL  (Self : in     Item);
    overriding
@@ -60,10 +67,15 @@ is
 
 private
 
+   type engine_GL_State;
+   type engine_GL_State_view is access all engine_GL_State;
+   --
+   -- Holds the Engine's EGL display, context and window surface. Completed in the body.
+
    type Item is new gel.Window.item with
       record
-         gl_Area    : std_gtk.glArea   .gtk_glArea;
-         gl_Context :     gdk.glContext.gdk_glContext;
+         gl_Area   : std_gtk.Drawing_Area.gtk_Drawing_Area;
+         engine_GL :         engine_GL_State_view;
       end record;
 
 

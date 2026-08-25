@@ -116,6 +116,15 @@ is
    --- Attributes
    --
 
+   function GL_is_ready (Self : in Item) return Boolean
+   is
+      pragma Unreferenced (Self);
+   begin
+      return True;
+   end GL_is_ready;
+
+
+
    function Surface (Self : in Item) return openGL.Surface.view
    is
    begin
