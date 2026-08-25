@@ -54,11 +54,16 @@ is
 
    type context_Setter  is access procedure;
    type context_Clearer is access procedure;
+   type context_Checker is access function return Boolean;
    type Swapper         is access procedure;
 
    procedure Context_is         (Self : in out Item;   Now : in Context.view);
    procedure Context_Setter_is  (Self : in out Item;   Now : in context_Setter);
    procedure Context_Clearer_is (Self : in out Item;   Now : in context_Clearer);
+   procedure Context_Checker_is (Self : in out Item;   Now : in context_Checker);
+   --
+   -- When set, the Engine skips rendering frames until the checker returns True
+   -- (i.e. until the windowing system is ready for the GL context to be bound).
    procedure Swapper_is         (Self : in out Item;   Now : in Swapper);
 
 
@@ -334,6 +339,7 @@ private
          Context            :         openGL.Context.view;
          context_Setter     :         lean.context_Setter;
          context_Clearer    :         lean.context_Clearer := no_context_Clearer'Access;
+         context_Checker    :         lean.context_Checker;
          Swapper            :         lean.Swapper;
          swap_Required      :         Boolean;
          is_Busy            :         Boolean            := False;

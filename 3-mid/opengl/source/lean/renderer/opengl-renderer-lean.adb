@@ -102,6 +102,14 @@ is
 
 
 
+   procedure Context_Checker_is (Self : in out Item;   Now : in context_Checker)
+   is
+   begin
+      Self.context_Checker := Now;
+   end Context_Checker_is;
+
+
+
    procedure context_Clearer_is (Self : in out Item;   Now : in context_Clearer)
    is
    begin
@@ -354,6 +362,19 @@ is
 
                Self.context_Clearer.all;
                gl_Lock.release;
+
+            elsif        Self.context_Checker /= null
+              and then not Self.context_Checker.all
+            then
+               -- The window is not ready for GL yet: skip the frame, dropping its updates.
+               --
+               for i in 1 .. Length
+               loop
+                  all_Updates (i).Updates.impostor_updates_Last := 0;
+                  all_Updates (i).Updates.visuals_Last          := 0;
+               end loop;
+
+               Self.is_Busy := False;
 
             else
                gl_Lock.acquire;
