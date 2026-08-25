@@ -2,6 +2,7 @@ with
      opengl.Display        .privvy,
      opengl.surface_Profile.privvy,
      opengl.Surface        .privvy,
+     opengl.API,
 
      egl.Binding,
      ada.Text_IO,
@@ -23,19 +24,16 @@ is
            opengl.Display        .privvy,
            opengl.surface_Profile.privvy;
 
-      contextAttribs : EGLint_array := [EGL_NONE];     -- Desktop GL ~ the driver provides its highest compatible version.
-
-      use type EGLBoolean;
-
-      Status : constant EGLBoolean := eglBindAPI (EGL_OPENGL_API);
-      --
-      -- The bound API is per-thread and decides the kind of context created, so it
-      -- must be bound here, in the task which creates and uses the context.
+      contextAttribs : EGLint_array := (case API.Current
+                                        is
+                                           when API.desktop_GL => [EGL_NONE],                              -- The driver provides its
+                                           when API.GLES       => [EGL_CONTEXT_CLIENT_VERSION, 3,          -- highest compatible version.
+                                                                   EGL_NONE]);
    begin
-      if Status = EGL_FALSE
-      then
-         raise openGL.Error with "Failed to bind the OpenGL API with eGL.";
-      end if;
+      Display.bind_client_API;
+      --
+      -- The bound API is per-task and decides the kind of context created, so it
+      -- must be bound here, in the task which creates and uses the context.
 
       Self.egl_Context := eglCreateContext (to_eGL (the_Display.all),
                                             to_eGL (the_surface_Profile),

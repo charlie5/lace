@@ -1,6 +1,8 @@
 with eGL.Binding,
      eGL.Pointers,
 
+     openGL.API,
+
      ada.unchecked_Conversion,
      System;
 
@@ -13,13 +15,28 @@ is
         eGL.Pointers;
 
 
+   procedure bind_client_API
+   is
+      use type eGL.EGLBoolean;
+
+      Status : constant EGLBoolean := eglBindAPI (case API.Current
+                                                  is
+                                                     when API.desktop_GL => EGL_OPENGL_API,
+                                                     when API.GLES       => EGL_OPENGL_ES_API);
+   begin
+      if Status = egl_False
+      then
+         raise openGL.Error with "Failed to bind the " & API.Current'Image & " client API with eGL.";
+      end if;
+   end bind_client_API;
+
+
    function open (native_Display : in eGL.Pointers.Display_pointer) return Item
    is
       use type System.Address,  eGL.EGLBoolean;
 
       the_Display : Display.item;
       Success     : EGLBoolean;
-      Status      : EGLBoolean;
 
    begin
       the_Display.Thin := eglGetDisplay (native_Display);
@@ -37,12 +54,7 @@ is
          raise openGL.Error with "Failed to initialise eGL using the Display.";
       end if;
 
-      Status := eglBindAPI (EGL_OPENGL_API);       -- Desktop GL ~ the shader assets use desktop GLSL versions.
-
-      if Status = egl_False
-      then
-         raise openGL.Error with "Failed to bind the OpenGL API with eGL.";
-      end if;
+      bind_client_API;
 
       return the_Display;
    end open;

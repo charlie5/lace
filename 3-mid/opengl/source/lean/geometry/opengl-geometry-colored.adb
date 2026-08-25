@@ -1,4 +1,5 @@
 with
+     openGL.API,
      openGL.Shader,
      openGL.Program,
      openGL.Buffer.general,
@@ -64,8 +65,8 @@ is
             Attribute_1   : Attribute.view;
             Attribute_2   : Attribute.view;
          begin
-            vertex_Shader  .define (Shader.Vertex,   "assets/opengl/shader/colored.vert");
-            fragment_Shader.define (Shader.Fragment, "assets/opengl/shader/colored.frag");
+            vertex_Shader  .define (Shader.Vertex,   API.shader_Folder & "colored.vert");
+            fragment_Shader.define (Shader.Fragment, API.shader_Folder & "colored.frag");
 
             the_Program := new openGL.Program.item;
             the_Program.define (vertex_Shader  'Access,

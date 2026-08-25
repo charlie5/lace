@@ -10,6 +10,9 @@ is
    type Platform is ("egl", "glx", "osmesa");
    The_Platform : Platform := external ("opengl_platform", "egl");
 
+   type client_API is ("desktop", "gles");
+   The_API : client_API := external ("opengl_api", "desktop");
+
    for Create_Missing_Dirs use "True";
 
    for Object_Dir   use lace_Shared.object_Dir;
@@ -25,8 +28,9 @@ is
 
    
    for Source_Dirs use ("../source",
-                        "../source/profile/"  & external ("opengl_profile",  "lean"), 
-                        "../source/platform/" & external ("opengl_platform", "egl"), 
+                        "../source/api/"      & external ("opengl_api",      "desktop"),
+                        "../source/profile/"  & external ("opengl_profile",  "lean"),
+                        "../source/platform/" & external ("opengl_platform", "egl"),
                         "../source/platform/" & external ("opengl_platform", "egl") & "/private", 
                         "../source/platform/" & external ("opengl_platform", "egl") & "/private/thin");
 

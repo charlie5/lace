@@ -1,4 +1,5 @@
 with
+     openGL.API,
      openGL.Shader,
      openGL.Buffer.general,
      openGL.Program,
@@ -74,10 +75,10 @@ is
             Attribute_3 : Attribute.view;
 
          begin
-            vertex_Shader  .define (Shader.Vertex,   "assets/opengl/shader/colored_textured.vert");
-            fragment_Shader.define (Shader.Fragment, (asset_Names' (1 => to_Asset ("assets/opengl/shader/version.header"),
-                                                                    2 => to_Asset ("assets/opengl/shader/texturing-frag.snippet"),
-                                                                    3 => to_Asset ("assets/opengl/shader/colored_textured.frag"))));
+            vertex_Shader  .define (Shader.Vertex,   API.shader_Folder & "colored_textured.vert");
+            fragment_Shader.define (Shader.Fragment, (asset_Names' (1 => to_Asset (API.shader_Folder & "version.header"),
+                                                                    2 => to_Asset (API.shader_Folder & "texturing-frag.snippet"),
+                                                                    3 => to_Asset (API.shader_Folder & "colored_textured.frag"))));
 
             the_Program := new openGL.Program.item;
             the_Program.define (vertex_Shader  'Access,

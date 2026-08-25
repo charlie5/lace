@@ -21,6 +21,13 @@ is
    -- so EGL shares the same X connection as the windowing toolkit.
 
 
+   procedure bind_client_API;
+   --
+   -- Binds the client API which openGL targets (see 'openGL.API'), for the calling task.
+   -- The bound API is per-task and decides the kind of context which is created, so each
+   -- task which creates a context must bind it.
+
+
 
 private
 

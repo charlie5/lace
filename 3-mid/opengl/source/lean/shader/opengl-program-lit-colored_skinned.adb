@@ -1,4 +1,5 @@
 with
+     openGL.API,
      ada.Strings.fixed;
 
 
@@ -50,8 +51,8 @@ is
 --     begin
 --        white_Texture := openGL.Texture.to_Texture (white_Image);
 --
---        the_vertex_Shader  .define (openGL.Shader.Vertex,   "assets/opengl/shader/lit_textured_skinned.vert");
---        the_fragment_Shader.define (openGL.Shader.Fragment, "assets/opengl/shader/lit_textured_skinned.frag");
+--        the_vertex_Shader  .define (openGL.Shader.Vertex,   API.shader_Folder & "lit_textured_skinned.vert");
+--        the_fragment_Shader.define (openGL.Shader.Fragment, API.shader_Folder & "lit_textured_skinned.frag");
 --
 --        Self.define (the_vertex_Shader  'Access,
 --                     the_fragment_Shader'Access);

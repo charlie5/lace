@@ -58,7 +58,11 @@ is
    
    package Linker
    is
-      for Linker_Options use ("-g", "-lEGL", "-lGLESv2", "-lSDL2");   
+      case Opengl_Core.The_API
+      is
+         when "desktop" =>   for Linker_Options use ("-g", "-lEGL", "-lGL",     "-lSDL2");
+         when "gles"    =>   for Linker_Options use ("-g", "-lEGL", "-lGLESv2", "-lSDL2");
+      end case;
    end Linker;
 
 end Opengl;

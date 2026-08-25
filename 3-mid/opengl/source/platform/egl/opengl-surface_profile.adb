@@ -1,6 +1,7 @@
 with
      eGL.binding,
      openGL.Display.privvy,
+     openGL.API,
      interfaces.C,
      ada.Text_IO;
 
@@ -15,6 +16,16 @@ is
 
 
    subtype egl_attribute_List is EGLint_array;
+
+
+   EGL_OPENGL_ES3_BIT : constant := 16#40#;     -- Absent from the thin binding.
+
+   renderable_Bit : constant EGLint := (case API.Current
+                                        is
+                                           when API.desktop_GL => EGL_OPENGL_BIT,
+                                           when API.GLES       => EGL_OPENGL_ES3_BIT);
+   --
+   -- The kind of client API a config must be able to render.
 
 
    function to_egl_Attributes (Desired : in Qualities) return egl_attribute_List
@@ -34,7 +45,7 @@ is
 
    begin
       add (EGL_SURFACE_TYPE,    EGL_WINDOW_BIT);
-      add (EGL_RENDERABLE_TYPE, EGL_OPENGL_BIT);       -- Desktop GL configs.
+      add (EGL_RENDERABLE_TYPE, renderable_Bit);
 
       if Desired.color_Buffer.Bits_blue /= Irrelevant
       then
@@ -158,7 +169,7 @@ is
       loop
          if         Attribute (Each.egl_Config, EGL_NATIVE_VISUAL_ID) = EGLint (native_Visual)
            and then has_Bit (Attribute (Each.egl_Config, EGL_SURFACE_TYPE),    EGL_WINDOW_BIT)
-           and then has_Bit (Attribute (Each.egl_Config, EGL_RENDERABLE_TYPE), EGL_OPENGL_BIT)
+           and then has_Bit (Attribute (Each.egl_Config, EGL_RENDERABLE_TYPE), renderable_Bit)
            and then Attribute (Each.egl_Config, EGL_DEPTH_SIZE) >= min_Depth
          then
             Self.egl_Config := Each.egl_Config;

@@ -1,4 +1,5 @@
 with
+     openGL.API,
      openGL.Program.lit,
      openGL.Buffer.general,
      openGL.Shader,
@@ -80,10 +81,10 @@ is
       begin
          the_Program.Program := new openGL.Program.lit.item;
 
-         the_Program.  vertex_Shader.define (Shader.Vertex,   "assets/opengl/shader/lit_colored.vert");
-         the_Program.fragment_Shader.define (Shader.Fragment, (asset_Names' (1 => to_Asset ("assets/opengl/shader/version.header"),
-                                                                             2 => to_Asset ("assets/opengl/shader/lighting-frag.snippet"),
-                                                                             3 => to_Asset ("assets/opengl/shader/lit_colored.frag"))));
+         the_Program.  vertex_Shader.define (Shader.Vertex,   API.shader_Folder & "lit_colored.vert");
+         the_Program.fragment_Shader.define (Shader.Fragment, (asset_Names' (1 => to_Asset (API.shader_Folder & "version.header"),
+                                                                             2 => to_Asset (API.shader_Folder & "lighting-frag.snippet"),
+                                                                             3 => to_Asset (API.shader_Folder & "lit_colored.frag"))));
 
          the_Program.Program.define (the_Program.  vertex_Shader'Access,
                                      the_Program.fragment_Shader'Access);

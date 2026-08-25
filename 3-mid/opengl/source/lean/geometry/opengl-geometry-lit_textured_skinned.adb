@@ -1,4 +1,5 @@
 with
+     openGL.API,
      openGL.Shader,
      openGL.Attribute,
      openGL.Buffer.general,
@@ -106,11 +107,11 @@ is
 
       -- Define the shaders and program.
       --
-      vertex_Shader  .define (Shader.Vertex,   "assets/opengl/shader/lit_textured_skinned.vert");
-      fragment_Shader.define (Shader.Fragment, (asset_Names' (1 => to_Asset ("assets/opengl/shader/version.header"),
-                                                              2 => to_Asset ("assets/opengl/shader/lighting-frag.snippet"),
-                                                              3 => to_Asset ("assets/opengl/shader/texturing-frag.snippet"),
-                                                              4 => to_Asset ("assets/opengl/shader/lit_textured.frag"))));
+      vertex_Shader  .define (Shader.Vertex,   API.shader_Folder & "lit_textured_skinned.vert");
+      fragment_Shader.define (Shader.Fragment, (asset_Names' (1 => to_Asset (API.shader_Folder & "version.header"),
+                                                              2 => to_Asset (API.shader_Folder & "lighting-frag.snippet"),
+                                                              3 => to_Asset (API.shader_Folder & "texturing-frag.snippet"),
+                                                              4 => to_Asset (API.shader_Folder & "lit_textured.frag"))));
       the_Program.define (vertex_Shader  'Access,
                           fragment_Shader'Access);
       the_Program.enable;
