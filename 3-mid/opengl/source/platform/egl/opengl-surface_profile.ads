@@ -60,13 +60,24 @@ is
                                            Screen      : access openGL.Screen .item'Class;
                                            Desired     : in     Qualities                := default_Qualities);
 
+   procedure define (Self : in out Item;   the_Display   : access opengl.Display.item'Class;
+                                           native_Visual : in     Natural;
+                                           Desired       : in     Qualities              := default_Qualities);
+   --
+   -- Chooses a profile whose native visual id matches the given one, as needed to
+   -- create a window surface on a foreign (e.g. toolkit-created) native window.
+
    function fetch_All (the_Display : access opengl.Display.item'Class) return surface_Profile.items;
 
 
 
    -- Attributes
    --
-   function Quality   (Self : in Item) return Qualities;
+   function Quality       (Self : in Item) return Qualities;
+
+   function native_Visual (Self : in Item) return Natural;
+   --
+   -- The native visual id (an X visual id under X11) of the profile's config.
 
 
 

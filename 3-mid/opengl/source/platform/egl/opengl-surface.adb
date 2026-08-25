@@ -54,7 +54,7 @@ is
                                  Self.egl_Surface);
       if Success = EGL_FALSE
       then
-         raise opengl.Error with "unable to swap egl buffers";
+         raise opengl.Error with "unable to swap egl buffers ~ egl error" & eglGetError'Image;
       end if;
    end swap_Buffers;
 

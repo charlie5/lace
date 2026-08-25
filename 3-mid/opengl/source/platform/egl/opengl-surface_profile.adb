@@ -1,7 +1,8 @@
 with
      eGL.binding,
      openGL.Display.privvy,
-     interfaces.C;
+     interfaces.C,
+     ada.Text_IO;
 
 
 package body opengl.surface_Profile
@@ -33,7 +34,7 @@ is
 
    begin
       add (EGL_SURFACE_TYPE,    EGL_WINDOW_BIT);
-      add (EGL_RENDERABLE_TYPE, EGL_OPENGL_ES2_BIT);
+      add (EGL_RENDERABLE_TYPE, EGL_OPENGL_BIT);       -- Desktop GL configs.
 
       if Desired.color_Buffer.Bits_blue /= Irrelevant
       then
@@ -114,6 +115,74 @@ is
 
 
 
+   procedure define (Self : in out Item;   the_Display   : access opengl.Display.item'Class;
+                                           native_Visual : in     Natural;
+                                           Desired       : in     Qualities              := default_Qualities)
+   is
+      use type EGLBoolean,
+               EGLint;
+
+      function Attribute (Config : in EGLConfig;   Which : in EGLint) return EGLint
+      is
+         Value   : aliased EGLint := 0;
+         Success :         EGLBoolean;
+      begin
+         Success := eglGetConfigAttrib (to_eGL (the_Display.all),
+                                        Config,
+                                        Which,
+                                        Value'unchecked_Access);
+         if Success = EGL_FALSE
+         then
+            raise opengl.Error with "eglGetConfigAttrib failed";
+         end if;
+
+         return Value;
+      end Attribute;
+
+
+      function has_Bit (Mask, Bit : in EGLint) return Boolean
+      is
+         use type Unsigned_32;
+      begin
+         return (Unsigned_32 (Mask) and Unsigned_32 (Bit)) /= 0;
+      end has_Bit;
+
+
+      min_Depth : constant EGLint := (if Desired.depth_buffer_Bits = Irrelevant
+                                      then 0
+                                      else EGLint (Desired.depth_buffer_Bits));
+   begin
+      Self.Display := the_Display;
+
+      for Each of fetch_All (the_Display)
+      loop
+         if         Attribute (Each.egl_Config, EGL_NATIVE_VISUAL_ID) = EGLint (native_Visual)
+           and then has_Bit (Attribute (Each.egl_Config, EGL_SURFACE_TYPE),    EGL_WINDOW_BIT)
+           and then has_Bit (Attribute (Each.egl_Config, EGL_RENDERABLE_TYPE), EGL_OPENGL_BIT)
+           and then Attribute (Each.egl_Config, EGL_DEPTH_SIZE) >= min_Depth
+         then
+            Self.egl_Config := Each.egl_Config;
+            return;
+         end if;
+      end loop;
+
+      -- No match: report what was sought and what is available, then fail.
+      --
+      ada.Text_IO.put_Line ("openGL.surface_Profile ~ no config matches native visual"
+                            & native_Visual'Image & " with depth >=" & min_Depth'Image & ". Available:");
+      for Each of fetch_All (the_Display)
+      loop
+         ada.Text_IO.put_Line ("   visual" & Attribute (Each.egl_Config, EGL_NATIVE_VISUAL_ID)'Image
+                               & "   depth" & Attribute (Each.egl_Config, EGL_DEPTH_SIZE)'Image
+                               & "   surface_type" & Attribute (Each.egl_Config, EGL_SURFACE_TYPE)'Image
+                               & "   renderable" & Attribute (Each.egl_Config, EGL_RENDERABLE_TYPE)'Image);
+      end loop;
+
+      raise desired_Qualities_unavailable;
+   end define;
+
+
+
    function fetch_All (the_Display : access opengl.Display.item'Class) return surface_Profile.items
    is
       use type EGLBoolean;
@@ -156,6 +225,27 @@ is
          return the_Profiles;
       end;
    end fetch_All;
+
+
+
+   function native_Visual (Self : in Item) return Natural
+   is
+      use type EGLBoolean;
+
+      Value   : aliased EGLint := 0;
+      Success :         EGLBoolean;
+   begin
+      Success := eglGetConfigAttrib (to_eGL (Self.Display.all),
+                                     Self.egl_Config,
+                                     EGL_NATIVE_VISUAL_ID,
+                                     Value'unchecked_Access);
+      if Success = EGL_FALSE
+      then
+         raise opengl.Error with "eglGetConfigAttrib failed";
+      end if;
+
+      return Natural (Value);
+   end native_Visual;
 
 
 
