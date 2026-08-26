@@ -248,6 +248,22 @@ is
 
 
    overriding
+   procedure continuous_Physics_is (Self : in out Item;   Now : in Boolean)
+   is
+      use interfaces.C;
+
+      procedure b2d_Space_continuous_Physics_is (Self : in box2d_c.Pointers.Space_pointer;
+                                                 Now  : in interfaces.C.int);
+      pragma import (C, b2d_Space_continuous_Physics_is,
+                        "b2d_Space_continuous_Physics_is");
+      --
+      -- Imported directly, rather than through the swig binding, since that is generated.
+   begin
+      b2d_Space_continuous_Physics_is (Self.C, (if Now then 1 else 0));
+   end continuous_Physics_is;
+
+
+
    function object_Count (Self : in Item) return Natural
    is
    begin

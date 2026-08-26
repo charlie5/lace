@@ -16,6 +16,8 @@ extern "C"
   struct Space*      b2d_new_Space ();
   void               b2d_free_Space       (Space*   Self);
 
+  void               b2d_Space_continuous_Physics_is (Space*   Self,   int   Now);
+
   void               b2d_Space_add_Object (Space*   Self,    Object*     the_Object);
   void               b2d_Space_rid_Object (Space*   Self,    Object*     the_Object);
 

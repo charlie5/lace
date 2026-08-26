@@ -34,6 +34,15 @@ is
    procedure rid    (Self : in out Item;   the_Object : in Object.view)   is abstract;
    procedure evolve (Self : in out Item;   By         : in Duration)      is abstract;
 
+   procedure continuous_Physics_is (Self : in out Item;   Now : in Boolean)   is null;
+   --
+   -- Continuous collision detection stops a fast body tunnelling through a thin one, at the
+   -- cost of a time of impact solve for every contact between a moving body and static
+   -- geometry. A world of many constantly moving bodies pays that on every step, and a
+   -- world whose bodies are slow relative to their size gains nothing for it.
+   --
+   -- Null by default: a backend which does not offer the choice simply keeps its own.
+
 
    type Real_view is access all Real;
 

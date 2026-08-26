@@ -213,6 +213,16 @@ b2d_new_Space ()
 
 
 void
+b2d_Space_continuous_Physics_is (Space*   Self,
+                                 int      Now)
+{
+  b2World*   the_World = (b2World*) Self;
+
+  the_World->SetContinuousPhysics (Now != 0);
+}
+
+
+void
 b2d_free_Space (struct Space*    Self)
 {
   b2World*   the_World = to_World (Self);
