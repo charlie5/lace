@@ -491,6 +491,14 @@ is
 
 
 
+   procedure evolve_Physics_is (Self : in out Item;   Now : in Boolean)
+   is
+   begin
+      Self.evolve_Physics := Now;
+   end evolve_Physics_is;
+
+
+
    function cast_Ray (Self : in Item;   From, To : in Vector_3) return ray_Collision
    is
       use type physics.Object.view;
@@ -983,7 +991,10 @@ is
 
       -- Evolve the physics.
       --
-      Self.physics_Space.evolve (evolve_Period);     -- Evolve the physics space.
+      if Self.evolve_Physics
+      then
+         Self.physics_Space.evolve (evolve_Period);     -- Evolve the physics space.
+      end if;
 
       -- Handle evnts.
       --

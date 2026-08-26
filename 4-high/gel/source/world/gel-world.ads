@@ -68,6 +68,14 @@ is
    procedure Gravity_is      (Self : in out Item;   Now : in Vector_3);
 
    procedure continuous_Physics_is (Self : in out Item;   Now : in Boolean);
+
+   procedure evolve_Physics_is (Self : in out Item;   Now : in Boolean);
+   --
+   -- Whether 'evolve' steps the physics space at all. A mirrored world has no use for it:
+   -- its sprites are placed by interpolating the motion the server sends, which sets each
+   -- body's transform directly, so a step merely solves them away from where they were
+   -- just put. Queries still work when it is off, since setting a transform keeps the
+   -- broad phase current.
    --
    -- Whether the physics space guards against a fast body tunnelling through a thin one.
    -- A world of many constantly moving bodies pays a time of impact solve per contact with
@@ -446,6 +454,7 @@ private
 
          space_Kind      :         physics.space_Kind;
          physics_Space   : aliased physics.Space.view;
+         evolve_Physics  :         Boolean := True;
 
          Renderer        : access  openGL.Renderer.lean.item'Class;         -- Is *not* owned by Item.
 
