@@ -31,6 +31,7 @@ is
       Self.pending_Events.add (the_Event,
                                Sequence,
                                from_Subject);
+      Self.has_pending_Events := True;     -- After the add, never before. See the declaration.
    end receive;
 
 
@@ -135,55 +136,64 @@ is
       end actuate;
 
 
-      the_subject_Events : constant subject_events_Pairs := Self.pending_Events.fetch;
-
    begin
-      for i in the_subject_Events'Range
-      loop
-         declare
-            function  less_than (L, R : in event_sequence_Pair) return Boolean
-            is
-               (L.Sequence < R.Sequence);
+      if not Self.has_pending_Events
+      then
+         return;     -- Nothing is queued, so do not take the lock to discover it.
+      end if;
 
-            package   Sorter     is new event_Vectors.generic_Sorting ("<" => less_than);
-            procedure deallocate is new ada.unchecked_Deallocation (String, String_view);
+      Self.has_pending_Events := False;     -- Before the drain. See the declaration.
 
-            subject_Name : String_view  := the_subject_Events (i).Subject;
-            the_Events   : event_Vector := the_subject_Events (i).Events;
-         begin
-            if Self.Responses.contains (subject_Name.all)
-            then
-               if not Self.sequence_Id_Map.contains (subject_Name.all)
+      declare
+         the_subject_Events : constant subject_events_Pairs := Self.pending_Events.fetch;
+      begin
+         for i in the_subject_Events'Range
+         loop
+            declare
+               function  less_than (L, R : in event_sequence_Pair) return Boolean
+               is
+                  (L.Sequence < R.Sequence);
+
+               package   Sorter     is new event_Vectors.generic_Sorting ("<" => less_than);
+               procedure deallocate is new ada.unchecked_Deallocation (String, String_view);
+
+               subject_Name : String_view  := the_subject_Events (i).Subject;
+               the_Events   : event_Vector := the_subject_Events (i).Events;
+            begin
+               if Self.Responses.contains (subject_Name.all)
                then
-                  Self.sequence_Id_Map.insert (subject_Name.all, 0);
+                  if not Self.sequence_Id_Map.contains (subject_Name.all)
+                  then
+                     Self.sequence_Id_Map.insert (subject_Name.all, 0);
+                  end if;
+
+                  Sorter.sort (the_Events);
+                  actuate     (Self.Responses.Element (subject_Name.all),
+                               the_Events,
+                               subject_Name.all);
+
+               else
+                  declare
+                     Message : constant String :=   "*** Warning *** ~ "
+                                                  & my_Name
+                                                  & " has no responses for events from "
+                                                  & subject_Name.all
+                                                  & ".";
+                  begin
+                     if Observer.Logger /= null
+                     then
+                        Observer.Logger.log (Message);
+                     else
+                        raise program_Error with Message;
+                     end if;
+                  end;
                end if;
 
-               Sorter.sort (the_Events);
-               actuate     (Self.Responses.Element (subject_Name.all),
-                            the_Events,
-                            subject_Name.all);
+               deallocate (subject_Name);
+            end;
+         end loop;
 
-            else
-               declare
-                  Message : constant String :=   "*** Warning *** ~ "
-                                               & my_Name
-                                               & " has no responses for events from "
-                                               & subject_Name.all
-                                               & ".";
-               begin
-                  if Observer.Logger /= null
-                  then
-                     Observer.Logger.log (Message);
-                  else
-                     raise program_Error with Message;
-                  end if;
-               end;
-            end if;
-
-            deallocate (subject_Name);
-         end;
-      end loop;
-
+      end;
    end respond;
 
 
