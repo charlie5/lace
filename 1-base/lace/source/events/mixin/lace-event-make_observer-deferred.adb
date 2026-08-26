@@ -40,7 +40,12 @@ is
    is
       use Event_Vectors;
 
-      my_Name : constant String := Observer.item'Class (Self.all).Name;
+      function my_Name return String
+      is (Observer.item'Class (Self.all).Name);
+      --
+      -- Only the warnings below ever look at the name, and 'Name' rebuilds a 'String' from
+      -- an unbounded one. Fetched eagerly, as a constant, every observer paid for that on
+      -- every respond ~ once per sprite per frame in a game world ~ and discarded it unread.
 
 
       procedure actuate (the_Responses     : in event_response_Map;
