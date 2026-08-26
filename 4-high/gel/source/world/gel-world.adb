@@ -483,6 +483,14 @@ is
 
 
 
+   procedure continuous_Physics_is (Self : in out Item;   Now : in Boolean)
+   is
+   begin
+      Self.physics_Space.continuous_Physics_is (Now);
+   end continuous_Physics_is;
+
+
+
    function cast_Ray (Self : in Item;   From, To : in Vector_3) return ray_Collision
    is
       use type physics.Object.view;

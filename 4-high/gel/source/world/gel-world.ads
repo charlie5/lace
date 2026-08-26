@@ -67,6 +67,13 @@ is
 
    procedure Gravity_is      (Self : in out Item;   Now : in Vector_3);
 
+   procedure continuous_Physics_is (Self : in out Item;   Now : in Boolean);
+   --
+   -- Whether the physics space guards against a fast body tunnelling through a thin one.
+   -- A world of many constantly moving bodies pays a time of impact solve per contact with
+   -- static geometry on every step, and gains nothing by it when its bodies are slow
+   -- relative to their size.
+
    function  space_Kind      (Self : in     Item)     return physics.space_Kind;
    function  Space           (Self : in     Item)     return physics.Space.view;
 
