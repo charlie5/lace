@@ -616,8 +616,7 @@ is
    is
       use type remote.World.sequence_Id;
 
-      all_Sprites : id_Maps_of_sprite.Map renames Self.all_Sprites.Map.fetch_all;
-      the_Id      : gel.sprite_Id;
+      the_Id : gel.sprite_Id;
 
    begin
       if seq_Id > Self.seq_Id.Value
@@ -632,7 +631,7 @@ is
                declare
                   use remote.World;
 
-                  the_Sprite         : constant Sprite.view   := all_Sprites.Element (the_Id);
+                  the_Sprite         : constant Sprite.view   := Self.all_Sprites.Map.fetch (the_Id);
                   new_Site           : constant Vector_3      := refined (Now (i).Site);
                   -- site_Delta         :          Vector_3;
                   -- min_teleport_Delta : constant               := 20.0;
@@ -691,20 +690,11 @@ is
       -- Interpolate Id transforms.
       --
       declare
-         use id_Maps_of_sprite;
-
-         -- all_Sprites   : constant id_Maps_of_sprite.Map    := Self.id_Map_of_sprite;
-         all_Sprites   : id_Maps_of_sprite.Map    renames Self.all_Sprites.Map.fetch_all;
-         Cursor        : id_Maps_of_sprite.Cursor :=      all_Sprites.First;
-         the_Sprite    : gel.Sprite.view;
-
+         all_Sprites : constant Sprite.Views := Self.all_Sprites.Map.fetch_Views;
       begin
-         while has_Element (Cursor)
+         for the_Sprite of all_Sprites
          loop
-            the_Sprite := Sprite.view (Element (Cursor));
             the_Sprite.interpolate_Motion;
-
-            next (Cursor);
          end loop;
       end;
 
