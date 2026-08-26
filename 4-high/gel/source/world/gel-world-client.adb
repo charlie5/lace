@@ -683,8 +683,8 @@ is
    procedure evolve (Self : in out Item)
    is
    begin
-      Self.Age := Self.Age + evolve_Period;
-
+      --  The age is advanced by the base class 'evolve', below.
+      --
       Self.respond;
       Self.local_Subject_and_deferred_Observer.respond;
 
