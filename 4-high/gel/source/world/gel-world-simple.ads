@@ -51,6 +51,11 @@ private
    function  fetch (From : in     sprite_Map) return id_Maps_of_sprite.Map;
 
    overriding
+   function  fetch    (From : in sprite_Map;   Id : in sprite_Id) return Sprite.view;
+   overriding
+   function  Contains (From : in sprite_Map;   Id : in sprite_Id) return Boolean;
+
+   overriding
    procedure add   (To   : in out sprite_Map;   the_Sprite : in Sprite.view);
 
    overriding

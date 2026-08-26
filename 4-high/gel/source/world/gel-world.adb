@@ -614,7 +614,7 @@ is
    function fetch_Sprite (Self : in out Item'Class;   Id : in sprite_Id) return gel.Sprite.view
    is
    begin
-      return Self.all_Sprites.fetch.Element (Id);
+      return Self.all_Sprites.fetch (Id);
    end fetch_Sprite;
 
 
@@ -622,7 +622,7 @@ is
    function sprite_Exists (Self : in out Item'Class;   Id : in sprite_Id) return Boolean
    is
    begin
-      return Self.all_Sprites.fetch.Contains (Id);
+      return Self.all_Sprites.Contains (Id);
    end sprite_Exists;
 
 
@@ -1233,7 +1233,7 @@ is
    overriding
    procedure kick_Sprite (Self : in out Item;   sprite_Id : in gel.sprite_Id)
    is
-      the_Sprite : constant gel.Sprite.view := Item'Class (Self).all_Sprites.fetch.Element (sprite_Id);
+      the_Sprite : constant gel.Sprite.view := Item'Class (Self).all_Sprites.fetch (sprite_Id);
    begin
       log ("KICK");
       the_Sprite.Speed_is ([0.0, 0.1, 0.0]);

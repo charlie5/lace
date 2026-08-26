@@ -135,6 +135,11 @@ is
    procedure add   (To   : in out sprite_Map;   the_Sprite : in Sprite.view) is abstract;
    procedure rid   (From : in out sprite_Map;   the_Sprite : in Sprite.view) is abstract;
 
+   function  fetch    (From : in sprite_Map;   Id : in sprite_Id) return Sprite.view is abstract;
+   function  Contains (From : in sprite_Map;   Id : in sprite_Id) return Boolean     is abstract;
+   --
+   -- One sprite, without copying the map to reach it.
+
 
    function all_Sprites (Self : access Item) return access sprite_Map'Class is abstract;
 

@@ -747,6 +747,24 @@ is
 
 
    overriding
+   function fetch (From : in sprite_Map;   Id : in sprite_Id) return Sprite.view
+   is
+   begin
+      return From.Map.fetch (Id);
+   end fetch;
+
+
+
+   overriding
+   function Contains (From : in sprite_Map;   Id : in sprite_Id) return Boolean
+   is
+   begin
+      return From.Map.Contains (Id);
+   end Contains;
+
+
+
+   overriding
    function fetch (From : in sprite_Map) return id_Maps_of_sprite.Map
    is
    begin
@@ -833,6 +851,14 @@ is
       begin
          return Map.Element (Id);
       end fetch;
+
+
+
+      function Contains (Id : in sprite_Id) return Boolean
+      is
+      begin
+         return Map.Contains (Id);
+      end Contains;
 
 
 

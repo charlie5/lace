@@ -203,6 +203,24 @@ is
 
 
    overriding
+   function fetch (From : in sprite_Map;   Id : in sprite_Id) return Sprite.view
+   is
+   begin
+      return From.Map.Element (Id);
+   end fetch;
+
+
+
+   overriding
+   function Contains (From : in sprite_Map;   Id : in sprite_Id) return Boolean
+   is
+   begin
+      return From.Map.Contains (Id);
+   end Contains;
+
+
+
+   overriding
    procedure add (To : in out sprite_Map;   the_Sprite : in Sprite.view)
    is
    begin
