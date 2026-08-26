@@ -88,7 +88,10 @@ private
       function  fetch_Views return Sprite.Views;
 
    private
-      Map : id_Maps_of_sprite.Map;
+      procedure refresh_Views;
+
+      Map       : id_Maps_of_sprite.Map;
+      all_Views : sprite_Views_view;     -- Rebuilt by 'add' and 'rid'. See 'fetch_Views'.
    end safe_id_Map_of_sprite;
 
 

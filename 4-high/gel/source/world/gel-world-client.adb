@@ -825,6 +825,16 @@ is
    protected
    body safe_id_Map_of_sprite
    is
+      procedure refresh_Views
+      is
+         procedure free is new ada.unchecked_Deallocation (Sprite.Views, sprite_Views_view);
+      begin
+         free (all_Views);
+         all_Views := new Sprite.Views' (to_Views (Map));
+      end refresh_Views;
+
+
+
       procedure add (the_Sprite : in Sprite.view)
       is
       begin
@@ -832,6 +842,7 @@ is
          -- raise Program_Error;
          Map.insert (the_Sprite.Id,
                      the_Sprite);
+         refresh_Views;
       end add;
 
 
@@ -840,6 +851,7 @@ is
       is
       begin
          Map.delete (the_Sprite.Id);
+         refresh_Views;
       end rid;
 
 
@@ -869,16 +881,13 @@ is
 
       function fetch_Views return Sprite.Views
       is
-         the_Views : Sprite.Views (1 .. math.Index (Map.Length));
-         Count     : math.Index := 0;
       begin
-         for Each of Map
-         loop
-            Count             := Count + 1;
-            the_Views (Count) := Each;
-         end loop;
+         if all_Views = null
+         then
+            return Sprite.null_Sprites;
+         end if;
 
-         return the_Views;
+         return all_Views.all;
       end fetch_Views;
 
    end safe_id_Map_of_sprite;

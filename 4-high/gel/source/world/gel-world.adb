@@ -641,6 +641,22 @@ is
 
 
 
+   function to_Views (From : in id_Maps_of_sprite.Map) return Sprite.Views
+   is
+      the_Views : Sprite.Views (1 .. math.Index (From.Length));
+      Count     : math.Index := 0;
+   begin
+      for Each of From
+      loop
+         Count             := Count + 1;
+         the_Views (Count) := Each;
+      end loop;
+
+      return the_Views;
+   end to_Views;
+
+
+
    function sprite_Transforms (Self : in out Item'Class) return sprite_transform_Pairs
    is
       all_Sprites : constant Sprite.Views := Self.all_Sprites.fetch_Views;

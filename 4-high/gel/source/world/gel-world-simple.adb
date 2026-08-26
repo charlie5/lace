@@ -1,6 +1,8 @@
 with
      physics.Forge,
-     openGL.Renderer.lean;
+     openGL.Renderer.lean,
+
+     ada.unchecked_Deallocation;
 
 
 package body gel.World.simple
@@ -118,18 +120,25 @@ is
    overriding
    function fetch_Views (From : in sprite_Map) return Sprite.Views
    is
-      the_Views : Sprite.Views (1 .. math.Index (From.Map.Length));
-      Count     : math.Index := 0;
    begin
-      for Each of From.Map
-      loop
-         Count             := Count + 1;
-         the_Views (Count) := Each;
-      end loop;
+      if From.all_Views = null
+      then
+         return Sprite.null_Sprites;
+      end if;
 
-      return the_Views;
+      return From.all_Views.all;
    end fetch_Views;
 
+
+
+
+   procedure refresh_Views (Self : in out sprite_Map)
+   is
+      procedure free is new ada.unchecked_Deallocation (Sprite.Views, sprite_Views_view);
+   begin
+      free (Self.all_Views);
+      Self.all_Views := new Sprite.Views' (to_Views (Self.Map));
+   end refresh_Views;
 
 
 
@@ -138,6 +147,7 @@ is
    is
    begin
       To.Map.insert (the_Sprite.Id, the_Sprite);
+      refresh_Views (To);
    end add;
 
 
@@ -147,6 +157,7 @@ is
    is
    begin
       From.Map.delete (the_Sprite.Id);
+      refresh_Views (From);
    end rid;
 
 

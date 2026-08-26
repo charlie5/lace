@@ -145,6 +145,17 @@ is
    -- Every sprite, as a flat array. Use this to iterate: copying the map itself
    -- re-allocates a node per sprite and rebuilds the hash table, which is pure
    -- overhead in a per-frame loop and grows with the world.
+   --
+   -- The implementations keep the array between calls and rebuild it in 'add' and 'rid',
+   -- since the sprites change far more rarely than the callers ask. Walking the map to
+   -- build it is the dear part ~ a scattered node chase ~ and it now happens once per
+   -- change instead of once per frame per world.
+
+   type sprite_Views_view is access Sprite.Views;
+
+   function  to_Views (From : in id_Maps_of_sprite.Map) return Sprite.Views;
+   --
+   -- Fills the flat array from the map. For the implementations of 'fetch_Views'.
 
 
    function all_Sprites (Self : access Item) return access sprite_Map'Class is abstract;

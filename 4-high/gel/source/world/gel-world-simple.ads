@@ -44,7 +44,8 @@ private
 
    type sprite_Map is limited new World.sprite_Map with
       record
-         Map : id_Maps_of_sprite.Map;
+         Map       : id_Maps_of_sprite.Map;
+         all_Views : sprite_Views_view;     -- Rebuilt by 'add' and 'rid'. See 'fetch_Views'.
       end record;
 
    overriding
