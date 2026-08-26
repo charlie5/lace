@@ -423,6 +423,14 @@ private
          physics_Model           : physics.Model.view;
          owns_Physics            : Boolean;
 
+         is_Static               : Boolean := True;
+         --
+         --  Whether the body never moves. It follows the physics model's mass, which is
+         --  settled when the model is attached and does not change under the sprite, so it
+         --  is cached here rather than chased through the model on every ask. Reached via
+         --  the access, it was a likely cache miss per sprite ~ dear enough that using it
+         --  to skip work in a per frame loop cost more than the work it skipped.
+
          World                   : World_view;
          Shape                   : physics_Shape_view;
          Solid                   : physics_Object_view;

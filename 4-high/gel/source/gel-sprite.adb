@@ -126,6 +126,8 @@ is
 
       Self.Visual.Model_is (graphics_Model.all'unchecked_Access);
       Self.physics_Model := physics.Model.view (physics_Model);
+      Self.is_Static     :=        Self.physics_Model  = null
+                            or else Self.physics_Model.Mass = 0.0;
       Self.owns_Graphics := owns_Graphics;
       Self.owns_Physics  := owns_Physics;
 
@@ -333,7 +335,7 @@ is
    function is_Static (Self : in Item) return Boolean
    is
    begin
-      return Self.Mass = 0.0;
+      return Self.is_Static;
    end is_Static;
 
 
@@ -437,8 +439,11 @@ is
 
    procedure physics_Model_is (Self : in out Item;   Now : in physics.Model.view)
    is
+      use type physics.Model.view;
    begin
       Self.physics_Model := Now;
+      Self.is_Static     :=        Now  = null
+                            or else Now.Mass = 0.0;
    end physics_Model_is;
 
 
