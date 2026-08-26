@@ -140,6 +140,12 @@ is
    --
    -- One sprite, without copying the map to reach it.
 
+   function  fetch_Views (From : in sprite_Map) return Sprite.Views is abstract;
+   --
+   -- Every sprite, as a flat array. Use this to iterate: copying the map itself
+   -- re-allocates a node per sprite and rebuilds the hash table, which is pure
+   -- overhead in a per-frame loop and grows with the world.
+
 
    function all_Sprites (Self : access Item) return access sprite_Map'Class is abstract;
 

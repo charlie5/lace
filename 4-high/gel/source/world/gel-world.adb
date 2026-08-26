@@ -643,29 +643,20 @@ is
 
    function sprite_Transforms (Self : in out Item'Class) return sprite_transform_Pairs
    is
-      use id_Maps_of_sprite;
+      all_Sprites : constant Sprite.Views := Self.all_Sprites.fetch_Views;
 
-      all_Sprites : id_Maps_of_sprite.Map    renames Self.all_Sprites.fetch;
-      Cursor      : id_Maps_of_sprite.Cursor :=      all_Sprites.First;
-
-      the_sprite_Transforms : sprite_transform_Pairs (1 .. Natural (all_Sprites.Length)) := (others => <>);
+      the_sprite_Transforms : sprite_transform_Pairs (1 .. all_Sprites'Length) := (others => <>);
       Count                 : Natural := 0;
 
-      the_Sprite : Sprite.view;
-
    begin
-      while has_Element (Cursor)
+      for the_Sprite of all_Sprites
       loop
-         the_Sprite := Element (Cursor);
-
          if not the_Sprite.is_Destroyed
          then
             Count                         := Count + 1;
             the_sprite_Transforms (Count) := (Sprite    => the_Sprite,
                                               Transform => the_Sprite.Transform);
          end if;
-
-         next (Cursor);
       end loop;
 
       return the_sprite_Transforms (1 .. Count);
@@ -1014,16 +1005,10 @@ is
       -- Perform responses to events for all sprites.
       --
       declare
-         use id_Maps_of_sprite;
-
-         all_Sprites : id_Maps_of_sprite.Map    renames Item'Class (Self).all_Sprites.fetch;
-         Cursor      : id_Maps_of_sprite.Cursor :=      all_Sprites.First;
-         the_Sprite  : Sprite.view;
+         all_Sprites : constant Sprite.Views := Item'Class (Self).all_Sprites.fetch_Views;
       begin
-         while has_Element (Cursor)
+         for the_Sprite of all_Sprites
          loop
-            the_Sprite := Element (Cursor);
-
             begin
                if not the_Sprite.is_Destroyed
                then
@@ -1038,8 +1023,6 @@ is
                   put_Line (ada.Exceptions.exception_Information (E));
                   new_Line (2);
             end;
-
-            next (Cursor);
          end loop;
       end;
 

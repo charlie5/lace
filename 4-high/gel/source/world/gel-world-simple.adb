@@ -115,6 +115,22 @@ is
       return From.Map.Contains (Id);
    end Contains;
 
+   overriding
+   function fetch_Views (From : in sprite_Map) return Sprite.Views
+   is
+      the_Views : Sprite.Views (1 .. math.Index (From.Map.Length));
+      Count     : math.Index := 0;
+   begin
+      for Each of From.Map
+      loop
+         Count             := Count + 1;
+         the_Views (Count) := Each;
+      end loop;
+
+      return the_Views;
+   end fetch_Views;
+
+
 
 
    overriding

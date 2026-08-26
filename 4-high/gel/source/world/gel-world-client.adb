@@ -765,6 +765,14 @@ is
 
 
    overriding
+   function fetch_Views (From : in sprite_Map) return Sprite.Views
+   is
+   begin
+      return From.Map.fetch_Views;
+   end fetch_Views;
+
+
+   overriding
    function fetch (From : in sprite_Map) return id_Maps_of_sprite.Map
    is
    begin
@@ -867,6 +875,21 @@ is
       begin
          return Map;
       end fetch_all;
+
+
+      function fetch_Views return Sprite.Views
+      is
+         the_Views : Sprite.Views (1 .. math.Index (Map.Length));
+         Count     : math.Index := 0;
+      begin
+         for Each of Map
+         loop
+            Count             := Count + 1;
+            the_Views (Count) := Each;
+         end loop;
+
+         return the_Views;
+      end fetch_Views;
 
    end safe_id_Map_of_sprite;
 

@@ -122,70 +122,63 @@ is
       -- Update dynamics in client worlds.
       --
       declare
-         use
-              id_Maps_of_sprite,
-              remote.World;
-
-         all_Sprites            :          id_Maps_of_sprite.Map    renames Self.all_Sprites.fetch;
-         Cursor                 :          id_Maps_of_sprite.Cursor :=      all_Sprites.First;
-
-
-         the_Sprite             :          gel.Sprite.view;
+         use remote.World;
 
          is_a_mirrored_World    : constant Boolean := not Self.Clients.is_Empty;
          mirror_Updates_are_due : constant Boolean := Self.Age >= Self.Age_at_last_Clients_update + client_update_Period;
-         updates_Count          :          Natural := 0;
-
-         the_motion_Updates     :          remote.World.motion_Updates (1 .. Integer (all_Sprites.Length));
 
       begin
          if        is_a_mirrored_World
            and then mirror_Updates_are_due
          then
-            while has_Element (Cursor)
-            loop
-               the_Sprite := Sprite.view (Element (Cursor));
+            declare
+               all_Sprites        : constant gel.Sprite.Views := Self.all_Sprites.fetch_Views;
+               --
+               -- Taken only when an update is actually due: this runs every frame.
 
-               declare
-                  the_Site : constant Vector_3   := the_Sprite.Site;
-                  the_Spin : constant Matrix_3x3 := the_Sprite.Spin;
-               begin
-                  if the_Sprite.has_Moved (current_Site => the_Site,
-                                           current_Spin => the_Spin)
-                  then
-                     updates_Count                      := updates_Count + 1;
-                     the_motion_Updates (updates_Count) := (Id   => the_Sprite.Id,
-                                                            Site => coarsen (the_Site),
-                                                            Spin => coarsen (to_Quaternion (the_Spin)));
-                  end if;
-               end;
+               updates_Count      :          Natural := 0;
+               the_motion_Updates :          remote.World.motion_Updates (1 .. all_Sprites'Length);
+            begin
+               for the_Sprite of all_Sprites
+               loop
+                  declare
+                     the_Site : constant Vector_3   := the_Sprite.Site;
+                     the_Spin : constant Matrix_3x3 := the_Sprite.Spin;
+                  begin
+                     if the_Sprite.has_Moved (current_Site => the_Site,
+                                              current_Spin => the_Spin)
+                     then
+                        updates_Count                      := updates_Count + 1;
+                        the_motion_Updates (updates_Count) := (Id   => the_Sprite.Id,
+                                                               Site => coarsen (the_Site),
+                                                               Spin => coarsen (to_Quaternion (the_Spin)));
+                     end if;
+                  end;
+               end loop;
 
-               next (Cursor);
-            end loop;
+               -- Send updated sprite motions to all registered client worlds.
+               --
+               Self.Age_at_last_clients_update := Self.Age;
+               Self.seq_Id                     := Self.seq_Id + 1;
 
-            -- Send updated sprite motions to all registered client worlds.
-            --
-            Self.Age_at_last_clients_update := Self.Age;
-            Self.seq_Id                     := Self.seq_Id + 1;
+               if updates_Count > 0
+               then
+                  declare
+                     use World.server.world_Vectors;
 
-            if updates_Count > 0
-            then
-               declare
-                  use World.server.world_Vectors;
-
-                  Cursor     : world_Vectors.Cursor := Self.Clients.First;
-                  the_Mirror : remote.World.view;
-               begin
-                  while has_Element (Cursor)
-                  loop
-                     the_Mirror := Element (Cursor);
-                     the_Mirror.motion_Updates_are (Self.seq_Id,
-                                                    the_motion_Updates (1 .. updates_Count));
-                     next (Cursor);
-                  end loop;
-               end;
-            end if;
-
+                     Cursor     : world_Vectors.Cursor := Self.Clients.First;
+                     the_Mirror : remote.World.view;
+                  begin
+                     while has_Element (Cursor)
+                     loop
+                        the_Mirror := Element (Cursor);
+                        the_Mirror.motion_Updates_are (Self.seq_Id,
+                                                       the_motion_Updates (1 .. updates_Count));
+                        next (Cursor);
+                     end loop;
+                  end;
+               end if;
+            end;
          end if;
       end;
 
@@ -217,6 +210,22 @@ is
    begin
       return From.Map.Contains (Id);
    end Contains;
+
+   overriding
+   function fetch_Views (From : in sprite_Map) return Sprite.Views
+   is
+      the_Views : Sprite.Views (1 .. math.Index (From.Map.Length));
+      Count     : math.Index := 0;
+   begin
+      for Each of From.Map
+      loop
+         Count             := Count + 1;
+         the_Views (Count) := Each;
+      end loop;
+
+      return the_Views;
+   end fetch_Views;
+
 
 
 
