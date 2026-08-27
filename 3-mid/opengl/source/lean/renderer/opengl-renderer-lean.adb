@@ -374,7 +374,8 @@ is
                   all_Updates (i).Updates.visuals_Last          := 0;
                end loop;
 
-               Self.is_Busy := False;
+               Self.drawn_Frames := Self.drawn_Frames + 1;
+               Self.is_Busy      := False;
 
             else
                gl_Lock.acquire;
@@ -406,7 +407,8 @@ is
                Self.free_old_Models;
                Self.free_old_Impostors;
 
-               Self.is_Busy := False;
+               Self.drawn_Frames := Self.drawn_Frames + 1;
+               Self.is_Busy      := False;
 
             end if;
 
@@ -495,6 +497,14 @@ is
    begin
       return Self.is_Busy;
    end is_Busy;
+
+
+
+   function drawn_Frames (Self : in Item) return frame_Count
+   is
+   begin
+      return Self.drawn_Frames;
+   end drawn_Frames;
 
 
 

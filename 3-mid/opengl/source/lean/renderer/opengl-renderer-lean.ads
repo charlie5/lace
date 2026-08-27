@@ -125,6 +125,14 @@ is
 
    function  is_Busy      (Self : in Item) return Boolean;
 
+   type frame_Count is new long_Integer with Atomic;
+
+   function  drawn_Frames (Self : in Item) return frame_Count;
+   --
+   -- The count of frames the engine has completed, drawn or dropped. Once two further
+   -- frames complete, nothing queued before the count was read is still held by the
+   -- engine ~ the fence used when freeing a destroyed sprite's visual.
+
    procedure draw         (Self : in out Item;   the_Visuals            : in Visual.views;
                                                  camera_world_Transform : in Matrix_4x4;
                                                  view_Transform         : in Matrix_4x4;
@@ -343,6 +351,7 @@ private
          Swapper            :         lean.Swapper;
          swap_Required      :         Boolean;
          is_Busy            :         Boolean            := False;
+         drawn_Frames       :         frame_Count        := 0;     -- Written by the engine task alone.
       end record;
 
 
