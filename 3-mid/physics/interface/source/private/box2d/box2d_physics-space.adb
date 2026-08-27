@@ -458,6 +458,8 @@ is
    is
       the_c_Object : constant Object_pointer := box2d_physics.Object.view (the_Object).C;
    begin
+      Self.object_Map.exclude (the_c_Object);     -- Else 'evolve' would update the dynamics
+      --                                             of an object which may since be freed.
       b2d_Space_rid_Object (Self.C, the_c_Object);
    end rid;
 
