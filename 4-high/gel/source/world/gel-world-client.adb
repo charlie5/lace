@@ -363,12 +363,31 @@ is
       declare
          the_Event  : constant gel.Events.rid_sprite_Event
            := gel.events.rid_sprite_Event (to_Event);
-
-         the_Sprite : constant gel.Sprite.view := Self.World.fetch_Sprite (the_Event.Id);
       begin
-         Self.World.rid (the_Sprite);
-         Self.World.emit (remote.world.sprite_ridded_Event' (Id   => the_Event.Id,
-                                                             Name => lace.Text.forge.to_Text_128 (the_Sprite.Name)));
+         if not Self.World.sprite_Exists (the_Event.Id)
+         then     -- This client never knew of the sprite: it was created and mirrored
+                  -- before the client had registered with the server world.
+            log ("Warning: Received rid for unknown sprite" & the_Event.Id'Image & ".");
+            return;
+         end if;
+
+         declare
+            the_Sprite : constant gel.Sprite.view := Self.World.fetch_Sprite (the_Event.Id);
+         begin
+            Self.World.rid (the_Sprite);
+            Self.World.emit (remote.world.sprite_ridded_Event' (Id   => the_Event.Id,
+                                                                Name => lace.Text.forge.to_Text_128 (the_Sprite.Name)));
+
+            -- Ridding only takes the sprite out of the map. Destroy it too, so that it
+            -- is freed on the next pass ~ a mirror sprite owns neither model, so this
+            -- frees the sprite, its visual, its shape and its solid, and leaves the
+            -- shared models alone.
+            --
+            if not the_Sprite.is_Destroyed
+            then
+               the_Sprite.destroy (and_Children => True);
+            end if;
+         end;
       end;
 
    end respond;

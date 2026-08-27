@@ -201,7 +201,7 @@ is
 
       use
            gel.Joint,
-           physics.Model,
+           openGL.Visual,
            physics.Object,
            physics.Shape;
 
@@ -219,11 +219,11 @@ is
          free (child_Joint);
       end loop;
 
-      if Self.owns_Physics
-      then
-         free (Self.physics_Model);
-      end if;
-
+      -- Only what the sprite alone owns is freed. The models are not: the world registers
+      -- them by id in its model maps, and mirror sprites fetch them by id, so their
+      -- lifetime is the world's.
+      --
+      free (Self.Visual);
       free (Self.Shape);
       free (Self.Solid);
 

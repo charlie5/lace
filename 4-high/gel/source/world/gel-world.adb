@@ -581,33 +581,58 @@ is
 
    procedure destroy (Self : in out Item;   the_Sprite : in gel.Sprite.view)
    is
+      the_Set : free_Set renames Self.free_Sets (Self.current_free_Set);
    begin
-      null;     -- TODO
-      -- Self.Commands.add ((Kind   => destroy_Sprite,
-      --                      Sprite => the_Sprite));
+      if the_Set.Count = the_Set.Entries'Last
+      then
+         return;     -- The set is full. Better to leak one than to overrun.
+      end if;
+
+      the_Set.Count                   := the_Set.Count + 1;
+      the_Set.Entries (the_Set.Count) := (Sprite => the_Sprite,
+                                          Frame  => (if Self.Renderer = null then 0
+                                                     else long_Integer (Self.Renderer.drawn_Frames)));
    end destroy;
 
 
 
-   function free_sprite_Set (Self : access Item) return gel.Sprite.views
+   procedure free_pending_Sprites (Self : access Item)
    is
-      prior_set_Index : Integer;
+      prior_Index : constant Integer := Self.current_free_Set;
+      prior_Set   : free_Set renames Self.free_Sets (prior_Index);
    begin
-      if Self.current_free_Set = 1
-      then   prior_set_Index := 2;
-      else   prior_set_Index := 1;
-      end if;
+      -- Anything destroyed from here on goes to the other set, and waits for the next pass.
+      --
+      Self.current_free_Set := (if prior_Index = 1 then 2 else 1);
 
-      declare
-         the_Set : constant gel.Sprite.views
-           := Self.free_Sets (prior_set_Index).Sprites (1 .. Self.free_Sets (prior_set_Index).Count);
-      begin
-         Self.free_Sets (prior_set_Index).Count := 0;
-         Self.current_free_Set                  := prior_set_Index;
+      for i in 1 .. prior_Set.Count
+      loop
+         declare
+            Each : free_Entry renames prior_Set.Entries (i);
+         begin
+            if Self.Renderer = null
+              or else long_Integer (Self.Renderer.drawn_Frames) >= Each.Frame + 2
+            then
+               gel.Sprite.free (Each.Sprite);
+            else
+               -- The render engine may still hold its visual: carry it over, keeping
+               -- its stamp, and try again next pass.
+               --
+               declare
+                  the_Set : free_Set renames Self.free_Sets (Self.current_free_Set);
+               begin
+                  if the_Set.Count /= the_Set.Entries'Last
+                  then
+                     the_Set.Count                   := the_Set.Count + 1;
+                     the_Set.Entries (the_Set.Count) := Each;
+                  end if;
+               end;
+            end if;
+         end;
+      end loop;
 
-         return the_Set;
-      end;
-   end free_sprite_Set;
+      prior_Set.Count := 0;
+   end free_pending_Sprites;
 
 
 
@@ -1041,6 +1066,10 @@ is
             end;
          end loop;
       end;
+
+      -- Free whatever was destroyed during the previous pass.
+      --
+      free_pending_Sprites (Item'Class (Self)'unchecked_Access);
 
    end evolve;
 

@@ -105,10 +105,14 @@ is
    --
 
    function  new_sprite_Id   (Self : access Item)                                    return sprite_Id;
-   function  free_sprite_Set (Self : access Item)                                    return gel.Sprite.views;
    function  fetch_Sprite    (Self : in out Item'Class;   Id         : in sprite_Id) return gel.Sprite.view;
    function  sprite_Exists   (Self : in out Item'Class;   Id         : in sprite_Id) return Boolean;
    procedure destroy         (Self : in out Item;         the_Sprite : in gel.Sprite.view);
+
+   procedure free_pending_Sprites (Self : access Item);
+   --
+   -- Frees the sprites destroyed during the previous pass. Called at the end of 'evolve'.
+
    procedure set_Scale       (Self : in out Item;         for_Sprite : in gel.Sprite.view;
                                                           To         : in Vector_3);
 
@@ -433,13 +437,30 @@ private
 
 
 
+   type free_Entry is
+      record
+         Sprite : gel.Sprite.view;
+         Frame  : long_Integer;     -- The renderer's frame count when destroyed.
+      end record;
+
+   type free_Entries is array (1 .. 10_000) of free_Entry;
+
    type free_Set is
       record
-         Sprites  : gel.Sprite.views (1 .. 10_000);
-         Count    : Natural                       := 0;
+         Entries : free_Entries;
+         Count   : Natural     := 0;
       end record;
 
    type free_Sets is array (1 .. 2) of free_Set;
+
+   -- A sprite destroyed during one pass is freed at the end of the next, never during the
+   -- pass which destroyed it: the physics may still be holding it. Two sets are kept and
+   -- swapped, so anything freed has been unreachable for a whole pass.
+   --
+   -- A world with a renderer must also wait on the render engine, which holds queued
+   -- visuals across frames on its own schedule: each entry is stamped with the engine's
+   -- frame count at destruction, and is only freed once two further frames have
+   -- completed. Till then it is carried over from pass to pass.
 
 
    ---------------
