@@ -114,6 +114,20 @@ is
 
 private
 
+   -- The uniform locations are stable once the program is linked. Fetching one by
+   -- name allocates and asks GL, so each program caches its locations, filled on
+   -- first use ~ 'set_Uniforms' runs on the GL thread, after linking.
+   --
+   type base_uniform_Cache is
+      record
+         Filled        : Boolean := False;
+         mvp_Transform : Variable.uniform.mat4;
+         Scale         : Variable.uniform.vec3;
+      end record;
+
+   type base_uniform_Cache_view is access base_uniform_Cache;
+
+
    type Item is tagged limited
       record
          gl_Program      : gl.GLuint  := 0;
@@ -126,6 +140,8 @@ private
          mvp_Transform   : Matrix_4x4;
          Scale           : Vector_3  := [1.0, 1.0, 1.0];
          Fade            : Real      := 0.0;
+
+         uniform_Cache   : base_uniform_Cache_view := new base_uniform_Cache;
       end record;
 
 

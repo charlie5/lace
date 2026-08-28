@@ -41,30 +41,22 @@ is
            openGL.Conversions,
            linear_Algebra_3d;
 
-      the_model_transform_Uniform        : constant Variable.uniform.mat4 := Self.uniform_Variable ("model_Transform");
-      the_inverse_model_rotation_Uniform : constant Variable.uniform.mat3 := Self.uniform_Variable ("inverse_model_Rotation");
-
-      the_camera_site_Uniform            : constant Variable.uniform.vec3 := Self.uniform_Variable ("camera_Site");
-      the_light_count_Uniform            : constant Variable.uniform.int  := Self.uniform_Variable ("light_Count");
-      the_specular_color_Uniform         : constant Variable.uniform.vec3 := Self.uniform_Variable ("specular_Color");
+      Cache : lit_uniform_Cache renames Self.lit_Cache.all;
    begin
-      openGL.Program.item (Self).set_Uniforms;
+      if not Cache.Filled
+      then
+         Cache.model_Transform        := Self.uniform_Variable ("model_Transform");
+         Cache.inverse_model_Rotation := Self.uniform_Variable ("inverse_model_Rotation");
+         Cache.camera_Site            := Self.uniform_Variable ("camera_Site");
+         Cache.light_Count            := Self.uniform_Variable ("light_Count");
+         Cache.specular_Color         := Self.uniform_Variable ("specular_Color");
+         Cache.Filled                 := True;
+      end if;
 
-      the_camera_site_Uniform.Value_is (Self.camera_Site);
-      the_model_transform_Uniform       .Value_is (Self.model_Transform);
-      the_inverse_model_rotation_Uniform.Value_is (Inverse (get_Rotation (Self.model_Transform)));
-
-      -- Lights.
-      --
-      the_light_count_Uniform   .Value_is (Self.light_Count);
-      the_specular_color_Uniform.Value_is (to_Vector_3 (Self.specular_Color));
-
-      for i in 1 .. Self.light_Count
+      while Cache.lights_Filled < Self.light_Count
       loop
          declare
-            use Light;
-
-            Light : openGL.Light.item renames Self.Lights (i);
+            i : constant Positive := Cache.lights_Filled + 1;
 
             function light_Name return String
             is
@@ -75,26 +67,49 @@ is
                return "Lights[" & Trim (Integer'Image (i - 1), Left) & "]";
             end light_Name;
 
-            site_Uniform                : constant Variable.uniform.vec4  := Self.uniform_Variable (light_Name & ".Site");
-            strength_Uniform            : constant Variable.uniform.float := Self.uniform_Variable (light_Name & ".Strength");
-            color_Uniform               : constant Variable.uniform.vec3  := Self.uniform_Variable (light_Name & ".Color");
-            attenuation_Uniform         : constant Variable.uniform.float := Self.uniform_Variable (light_Name & ".Attenuation");
-            ambient_coefficient_Uniform : constant Variable.uniform.float := Self.uniform_Variable (light_Name & ".ambient_Coefficient");
-            cone_angle_Uniform          : constant Variable.uniform.float := Self.uniform_Variable (light_Name & ".cone_Angle");
-            cone_direction_Uniform      : constant Variable.uniform.vec3  := Self.uniform_Variable (light_Name & ".cone_Direction");
+         begin
+            Cache.Lights (i) := (Site                => Self.uniform_Variable (light_Name & ".Site"),
+                                 Strength            => Self.uniform_Variable (light_Name & ".Strength"),
+                                 Color               => Self.uniform_Variable (light_Name & ".Color"),
+                                 Attenuation         => Self.uniform_Variable (light_Name & ".Attenuation"),
+                                 ambient_Coefficient => Self.uniform_Variable (light_Name & ".ambient_Coefficient"),
+                                 cone_Angle          => Self.uniform_Variable (light_Name & ".cone_Angle"),
+                                 cone_Direction      => Self.uniform_Variable (light_Name & ".cone_Direction"));
+            Cache.lights_Filled := i;
+         end;
+      end loop;
+
+      openGL.Program.item (Self).set_Uniforms;
+
+      Cache.camera_Site           .Value_is (Self.camera_Site);
+      Cache.model_Transform       .Value_is (Self.model_Transform);
+      Cache.inverse_model_Rotation.Value_is (Inverse (get_Rotation (Self.model_Transform)));
+
+      -- Lights.
+      --
+      Cache.light_Count   .Value_is (Self.light_Count);
+      Cache.specular_Color.Value_is (to_Vector_3 (Self.specular_Color));
+
+      for i in 1 .. Self.light_Count
+      loop
+         declare
+            use Light;
+
+            Light    : openGL.Light.item renames Self.Lights (i);
+            Uniforms : light_uniform_Set renames Cache.Lights (i);
          begin
             case Light.Kind
             is
-            when Diffuse =>   site_Uniform.Value_is (Vector_4 (Light.Site & 1.0));
-            when Direct  =>   site_Uniform.Value_is (Vector_4 (Light.Site & 0.0));    -- '0.0' tells shader that this light is 'direct'.
+            when Diffuse =>   Uniforms.Site.Value_is (Vector_4 (Light.Site & 1.0));
+            when Direct  =>   Uniforms.Site.Value_is (Vector_4 (Light.Site & 0.0));    -- '0.0' tells shader that this light is 'direct'.
             end case;
 
-            color_Uniform              .Value_is (to_Vector_3 (Light.Color));
-            strength_Uniform           .Value_is (Real        (Light.Strength));
-            attenuation_Uniform        .Value_is (             Light.Attenuation);
-            ambient_coefficient_Uniform.Value_is (             Light.ambient_Coefficient);
-            cone_angle_Uniform         .Value_is (Real        (Light.cone_Angle));
-            cone_direction_Uniform     .Value_is (             Light.cone_Direction);
+            Uniforms.Color              .Value_is (to_Vector_3 (Light.Color));
+            Uniforms.Strength           .Value_is (Real        (Light.Strength));
+            Uniforms.Attenuation        .Value_is (             Light.Attenuation);
+            Uniforms.ambient_Coefficient.Value_is (             Light.ambient_Coefficient);
+            Uniforms.cone_Angle         .Value_is (Real        (Light.cone_Angle));
+            Uniforms.cone_Direction     .Value_is (             Light.cone_Direction);
          end;
       end loop;
    end set_Uniforms;

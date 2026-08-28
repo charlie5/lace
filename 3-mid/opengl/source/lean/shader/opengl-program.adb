@@ -374,11 +374,17 @@ is
 
    procedure set_Uniforms (Self : in Item)
    is
-      the_mvp_Uniform   : constant Variable.uniform.mat4 := Self.uniform_Variable ("mvp_Transform");
-      the_scale_Uniform : constant Variable.uniform.vec3 := Self.uniform_Variable ("Scale");
+      Cache : base_uniform_Cache renames Self.uniform_Cache.all;
    begin
-      the_mvp_Uniform  .Value_is (Self.mvp_Transform);
-      the_scale_Uniform.Value_is (Self.Scale);
+      if not Cache.Filled
+      then
+         Cache.mvp_Transform := Self.uniform_Variable ("mvp_Transform");
+         Cache.Scale         := Self.uniform_Variable ("Scale");
+         Cache.Filled        := True;
+      end if;
+
+      Cache.mvp_Transform.Value_is (Self.mvp_Transform);
+      Cache.Scale        .Value_is (Self.Scale);
    end set_Uniforms;
 
 
