@@ -40,7 +40,11 @@ is
    --
 
    procedure enable (for_Model   : in     openGL.Model.view;
-                     Uniforms    : in     texturing.Uniforms);
+                     Uniforms    : in     texturing.Uniforms;
+                     Fade        : in     Real               := 0.0);
+   --
+   -- 'Fade' is the fade of the visual being drawn, combined with each of the
+   -- model's own texture fades ~ the model is shared, the fade is per visual.
 
    procedure create (Uniforms    :    out texturing.Uniforms;
                      for_Program : in     openGL.Program.view);

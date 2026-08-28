@@ -356,6 +356,22 @@ is
 
 
 
+   procedure Fade_is (Self : in out Item;   Now : in Real)
+   is
+   begin
+      Self.Fade := Now;
+   end Fade_is;
+
+
+
+   function Fade (Self : in Item) return Real
+   is
+   begin
+      return Self.Fade;
+   end Fade;
+
+
+
    procedure set_Uniforms (Self : in Item)
    is
       the_mvp_Uniform   : constant Variable.uniform.mat4 := Self.uniform_Variable ("mvp_Transform");

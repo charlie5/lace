@@ -49,8 +49,8 @@ is
 
 
    procedure enable (for_Model   : in openGL.Model.view;
-                     Uniforms    : in texturing.Uniforms)
-                     -- texture_Set : in openGL.texture_Set.Item)
+                     Uniforms    : in texturing.Uniforms;
+                     Fade        : in Real               := 0.0)
    is
       use
            GL.Binding,
@@ -65,7 +65,8 @@ is
          loop
             Uniforms.Textures (i).tiling_Uniform         .Value_is (Vector_2' ((for_Model.Tiling  (Which => i).S,
                                                                                 for_Model.Tiling  (Which => i).T)));
-            Uniforms.Textures (i).fade_Uniform           .Value_is (Real     (for_Model.Fade      (Which => i)));
+            Uniforms.Textures (i).fade_Uniform           .Value_is (Real'Max (Real (for_Model.Fade (Which => i)),
+                                                                     Fade));
             Uniforms.Textures (i).texture_applied_Uniform.Value_is (for_Model.texture_Applied     (Which => i));
 
             glUniform1i     (Uniforms.Textures (i).texture_Uniform.gl_Variable,
@@ -211,7 +212,8 @@ is
       is
       begin
          texturing.enable (for_Model   => Self.Model.all'Access,
-                           Uniforms    => texture_Uniforms);
+                           Uniforms    => texture_Uniforms,
+                           Fade        => Self.Program.Fade);
       end enable_Textures;
 
 

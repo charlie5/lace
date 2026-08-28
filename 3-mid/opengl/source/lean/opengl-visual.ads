@@ -39,6 +39,12 @@ is
    procedure Scale_is            (Self : in out Item;   Now : in Vector_3);
    function  Scale               (Self : in     Item)     return Vector_3;
 
+   procedure Fade_is             (Self : in out Item;   Now : in Real);
+   function  Fade                (Self : in     Item)     return Real;
+   --
+   -- '0.0' is no fading, '1.0' is fully faded (ie invisible). Per visual, so that
+   -- visuals sharing a model may fade independently.
+
    procedure is_Terrain          (Self : in out Item;   Now : in Boolean := True);
    function  is_Terrain          (Self : in     Item)     return Boolean;
 
@@ -77,6 +83,7 @@ private
       record
          Model              : openGL.Model.view;
          Scale              : Vector_3         := [1.0, 1.0, 1.0];
+         Fade               : Real             := 0.0;
 
          camera_Transform   : Matrix_4x4;
          Transform          : Matrix_4x4;

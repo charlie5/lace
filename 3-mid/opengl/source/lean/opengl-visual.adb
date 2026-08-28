@@ -17,6 +17,7 @@ is
                                   Transform          => Identity_4x4,
                                   mvp_Transform      => Identity_4x4,
                                   Scale              => Scale,
+                                  Fade               => 0.0,
                                   program_Parameters => null,
                                   is_Terrain         => is_Terrain,
                                   face_Count         => 1,
@@ -64,6 +65,22 @@ is
    begin
       Self.Scale := Now;
    end Scale_is;
+
+
+
+   function Fade (Self : in Item) return Real
+   is
+   begin
+      return Self.Fade;
+   end Fade;
+
+
+
+   procedure Fade_is (Self : in out Item;   Now : in Real)
+   is
+   begin
+      Self.Fade := Now;
+   end Fade_is;
 
 
 

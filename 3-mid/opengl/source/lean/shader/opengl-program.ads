@@ -92,6 +92,14 @@ is
    procedure model_Matrix_is             (Self : in out Item;   Now : in Matrix_4x4)  is null;
    procedure Lights_are                  (Self : in out Item;   Now : in Light.items) is null;
    procedure Scale_is                    (Self : in out Item;   Now : in Vector_3);
+
+   procedure Fade_is                     (Self : in out Item;   Now : in Real);
+   function  Fade                        (Self : in     Item)     return Real;
+   --
+   -- The fade of the visual being drawn ~ per draw, like the scale. '0.0' is no
+   -- fading, '1.0' is fully faded. Applied by 'Geometry.texturing.enable', where
+   -- it is combined with the model's own texture fades.
+
    procedure set_Uniforms                (Self : in     Item);
 
 
@@ -117,6 +125,7 @@ private
 
          mvp_Transform   : Matrix_4x4;
          Scale           : Vector_3  := [1.0, 1.0, 1.0];
+         Fade            : Real      := 0.0;
       end record;
 
 

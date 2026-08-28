@@ -542,6 +542,7 @@ is
                                                  := openGL.Model.billboard.textured.view (the_Impostor.Visual.Model);
          begin
             the_Impostor.Visual.Scale_is         (the_Impostor.Target.Scale);
+            the_Impostor.Visual.Fade_is          (the_Impostor.Target.Fade);
             the_Impostor.Visual.is_Terrain       (the_Impostor.Target.is_Terrain);
             the_Impostor.Visual.face_Count_is    (the_Impostor.Target.face_Count);
             the_Impostor.Visual.apparent_Size_is (the_Impostor.Target.apparent_Size);
@@ -773,6 +774,7 @@ is
             current_Program.camera_Site_is   (get_Translation (camera_world_Transform));
             current_Program.Lights_are       (Lights);
             current_Program.Scale_is         (the_Couple.Visual.Scale);
+            current_Program.Fade_is          (the_Couple.Visual.Fade);
 
             if the_Couple.Visual.program_Parameters /= null
             then
@@ -837,6 +839,7 @@ is
             current_Program.model_Matrix_is  (the_Couple.Visual.Transform);
             current_Program.Lights_are       (Lights);
             current_Program.Scale_is         (the_Couple.Visual.Scale);
+            current_Program.Fade_is          (the_Couple.Visual.Fade);
 
             if the_Couple.Visual.program_Parameters /= null
             then
