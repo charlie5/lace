@@ -277,6 +277,19 @@ b2d_Space_rid_Object (Space*    Self,
 
 
 void
+b2d_Space_discard_Moves (Space*   Self)
+{
+  b2World*   the_World = (b2World*) Self;
+
+  // The buffered proxy moves are only consumed when the world is stepped, so a
+  // world which is never stepped (a client mirror) must discard them, else the
+  // buffer grows without bound. Ray casts use the tree, not the buffer.
+  //
+  const_cast<b2ContactManager&> (the_World->GetContactManager()).m_broadPhase.ClearMoves();
+}
+
+
+void
 b2d_Space_add_Joint (Space*   Self, 
                      Joint*   the_Joint)
 {

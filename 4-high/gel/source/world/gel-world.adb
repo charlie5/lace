@@ -1026,6 +1026,12 @@ is
       if Self.evolve_Physics
       then
          Self.physics_Space.evolve (evolve_Period);     -- Evolve the physics space.
+      else
+         -- A mirror world moves its solids every pass but never steps its space, so
+         -- the motion buffered for collision detection must be discarded, else it
+         -- accumulates without bound. Ray casts are unaffected.
+         --
+         Self.physics_Space.discard_Moves;
       end if;
 
       -- Handle evnts.

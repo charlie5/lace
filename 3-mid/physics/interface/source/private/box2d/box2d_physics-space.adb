@@ -248,6 +248,17 @@ is
 
 
    overriding
+   procedure discard_Moves (Self : in out Item)
+   is
+      procedure b2d_Space_discard_Moves (Self : in box2d_c.Pointers.Space_pointer);
+      pragma import (C, b2d_Space_discard_Moves,
+                        "b2d_Space_discard_Moves");
+   begin
+      b2d_Space_discard_Moves (Self.C);
+   end discard_Moves;
+
+
+
    procedure continuous_Physics_is (Self : in out Item;   Now : in Boolean)
    is
       use interfaces.C;

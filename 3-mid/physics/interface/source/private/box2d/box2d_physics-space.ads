@@ -42,6 +42,9 @@ is
    overriding
    procedure continuous_Physics_is (Self : in out Item;   Now : in Boolean);
 
+   overriding
+   procedure discard_Moves (Self : in out Item);
+
 
 
 private

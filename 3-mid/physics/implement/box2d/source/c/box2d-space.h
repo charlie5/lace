@@ -20,6 +20,7 @@ extern "C"
 
   void               b2d_Space_add_Object (Space*   Self,    Object*     the_Object);
   void               b2d_Space_rid_Object (Space*   Self,    Object*     the_Object);
+  void               b2d_Space_discard_Moves (Space*   Self);
 
   void               b2d_Space_add_Joint  (Space*   Self,    Joint*      the_Joint);
   void               b2d_Space_rid_Joint  (Space*   Self,    Joint*      the_Joint);

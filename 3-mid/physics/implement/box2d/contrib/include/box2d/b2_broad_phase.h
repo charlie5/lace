@@ -108,6 +108,11 @@ public:
 	/// @param newOrigin the new origin with respect to the old origin
 	void ShiftOrigin(const b2Vec2& newOrigin);
 
+	/// Discard the buffered proxy moves. The buffer is only consumed by
+	/// UpdatePairs, so in a world which is never stepped it would otherwise
+	/// grow without bound.
+	void ClearMoves();
+
 private:
 
 	friend class b2DynamicTree;

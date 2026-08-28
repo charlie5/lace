@@ -35,6 +35,11 @@ is
    procedure evolve (Self : in out Item;   By         : in Duration)      is abstract;
 
    procedure continuous_Physics_is (Self : in out Item;   Now : in Boolean)   is null;
+
+   procedure discard_Moves (Self : in out Item) is null;
+   --
+   -- Discards motion buffered for collision detection. A space which is moved but
+   -- never evolved must discard it each pass, else it accumulates without bound.
    --
    -- Continuous collision detection stops a fast body tunnelling through a thin one, at the
    -- cost of a time of impact solve for every contact between a moving body and static
