@@ -24,6 +24,7 @@ is
    linker_Options   := ();
 
    style_Options    := ("-gnaty3",     -- Check 3-space indentation.
+                        "-gnatyA",     -- Check that array attributes index one-dimensional arrays without an index.
                         "-gnatyb",     -- Check no blanks at end of lines.
                         "-gnatye",     -- Check that labels on end statements (ending subprograms), and on exit statements (exiting named loops), are present.
                         "-gnatyf",     -- Check no ff/vtabs.
