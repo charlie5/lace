@@ -20,6 +20,7 @@ is
    --
 
    binder_Options   := ();
+   linker_Options   := ();
 
    style_Options    := ("-gnaty3",     -- Check 3-space indentation.
                         "-gnatyb",     -- Check no blanks at end of lines.
@@ -43,11 +44,8 @@ is
                         "-ftracer");
 
    small_Options    := ("-Os",
-                        "-fno-inline",
-                        "-ffunction-sections",
-                        "-falign-jumps=0",
-                        "-falign-loops=0",
-                        "-falign-functions=0");
+                        "-ffunction-sections",     -- Give each subprogram and object its own section, so the
+                        "-fdata-sections");        -- linker can discard those which are unreferenced.
 
 
    -- Modify options to cater for the build mode.
@@ -99,15 +97,8 @@ is
                                               & "-fno-omit-frame-pointer";
 
       when "small" =>
-         case lace_OS
-         is
-            when "Linux"  =>
-               compiler_Options := compiler_Options & small_Options
-                                                    & "-fdata-sections";
-
-            when "Windows_NT"  =>
-               compiler_Options := compiler_Options & small_Options;
-         end case;
+         compiler_Options := compiler_Options & small_Options;
+         linker_Options   := linker_Options   & "-Wl,--gc-sections";
    end case;
 
 
@@ -149,6 +140,12 @@ is
    is
       for Default_Switches ("ada") use binder_Options;
    end Binder;
+
+
+   package Linker
+   is
+      for Linker_Options use linker_Options;   -- Reaches the link of every importing main, with no need to rename this package.
+   end Linker;
 
 
 end lace_Shared;
