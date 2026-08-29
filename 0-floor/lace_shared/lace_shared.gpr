@@ -68,14 +68,17 @@ is
                                                                                                     -- honours in the main project) so every project gets it.
 
       when "fast" =>
+         binder_Options   := binder_Options   & "-E";              -- Tracebacks in exception occurrences (addresses only, lacking '-g').
          compiler_Options := compiler_Options & fast_Options;
 
       when "profile" =>
+         binder_Options   := binder_Options   & "-Es";
          compiler_Options := compiler_Options & fast_Options       -- As "fast", but keep debug info and frame
                                               & "-g"               -- pointers so the profiler can see call chains.
                                               & "-fno-omit-frame-pointer";
 
       when "small" =>
+         binder_Options   := binder_Options   & "-E";
          compiler_Options := compiler_Options & small_Options;
          linker_Options   := linker_Options   & "-Wl,--gc-sections";
    end case;
