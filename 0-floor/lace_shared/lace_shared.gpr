@@ -76,20 +76,7 @@ is
          end case;
 
       when "fast" =>
-         case lace_OS
-         is
-            when "Linux"  =>
-               compiler_Options := compiler_Options & fast_Options
-                                                    & "-fomit-frame-pointer";
-
-            when "Windows_NT"  =>
-               compiler_Options := compiler_Options & fast_Options
-                                                    & "-fipa-cp-clone"
-                                                    & "-fgcse-after-reload"
-                                                    & "-ftree-vectorize"
-                                                    & "-mfpmath=sse"
-                                                    & "-msse3";
-         end case;
+         compiler_Options := compiler_Options & fast_Options;
 
       when "profile" =>
          compiler_Options := compiler_Options & fast_Options       -- As "fast", but keep debug info and frame
