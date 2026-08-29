@@ -4,11 +4,8 @@ is
    -- Scenario Variables
    --
 
-   type OS_type           is ("Windows_NT", "Linux");
    type build_Mode_type   is ("debug", "fast", "profile", "small");
 
-   lace_OS           : OS_type           := external ("Lace_OS",                     -- Windows sets 'OS' to "Windows_NT" natively, so
-                                                       external ("OS", "Linux"));    -- only a cross build need set 'Lace_OS'.
    lace_build_Mode   : build_Mode_type   := external ("Lace_Build_Mode", "debug");
 
 
@@ -20,7 +17,8 @@ is
    -- Declare various options.
    --
 
-   binder_Options   := ();
+   binder_Options   := ("-static");   -- Link the GNAT runtime statically, so executables run without a matching libgnat installed.
+                                      -- Each build mode adds tracebacks in exception occurrences: '-Es' (symbolic) where there is '-g', else '-E'.
    linker_Options   := ();
 
    style_Options    := ("-gnaty3",     -- Check 3-space indentation.
@@ -40,6 +38,9 @@ is
                           "-fno-strict-aliasing")     -- Pointers converted via Unchecked_Conversion (GL bindings, GEL) and the overlays
                        & style_Options;               -- alias objects of other types, which the optimiser must not assume never happens.
 
+   debug_Pragmas    := "-gnatec=" & Project'Project_Dir & "debug.pra";   -- Initialize_Scalars; a compiler switch, since gprbuild honours
+                                                                          -- Builder'Global_Configuration_Pragmas only in the main project.
+
    fast_Options     := ("-O3",
                         "-gnatn",
                         "-funroll-loops",
@@ -57,18 +58,16 @@ is
    is
       when "debug" =>
          binder_Options   := binder_Options   & "-Es";
-         compiler_Options := compiler_Options & "-O0"
-                                              & "-gnata"
-                                              & "-gnateE"                -- Extra debug info in 'constraint_Error' messages.
-                                              & "-fstack-check"
-                                              & "-g"
+         compiler_Options := compiler_Options & "-gnata"
                                               & "-gnatVa"
-                                              & ("-gnatec=" & Project'Project_Dir & "debug.pra");   -- Initialize_Scalars ~ as a compiler switch (rather than
-                                                                                                    -- Builder'Global_Configuration_Pragmas, which gprbuild only
-                                                                                                    -- honours in the main project) so every project gets it.
+                                              & "-fstack-check"
+                                              & "-gnateE"                -- Extra debug info in 'constraint_Error' messages.
+                                              & "-g"
+                                              & "-O0"
+                                              & debug_Pragmas;
 
       when "fast" =>
-         binder_Options   := binder_Options   & "-E";              -- Tracebacks in exception occurrences (addresses only, lacking '-g').
+         binder_Options   := binder_Options   & "-E";
          compiler_Options := compiler_Options & fast_Options;
 
       when "profile" =>
@@ -81,19 +80,6 @@ is
          binder_Options   := binder_Options   & "-E";
          compiler_Options := compiler_Options & small_Options;
          linker_Options   := linker_Options   & "-Wl,--gc-sections";
-   end case;
-
-
-   -- Modify options to cater for the operating system.
-   --
-
-   case lace_OS
-   is
-      when "Linux" =>
-         binder_Options   := binder_Options   & "-static";   -- Link the GNAT runtime statically, so executables run without a matching libgnat installed.
-
-      when "Windows_NT" =>
-         null;
    end case;
 
 
