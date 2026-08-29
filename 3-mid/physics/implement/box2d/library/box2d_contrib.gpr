@@ -11,7 +11,6 @@ is
    for Library_Ali_Dir use "objects";
 --   for Library_Name    use "box2d_contrib";
 
-   package Ide      renames Lace_shared.Ide;
    package Builder  renames Lace_shared.Builder;
    package Binder   renames Lace_shared.Binder;
 

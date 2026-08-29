@@ -18,7 +18,6 @@ is
       for Body_Suffix ("c++") use ".cpp";
    end Naming;
 
-   package Ide     renames Lace_shared.Ide;
    package Builder renames Lace_shared.Builder;
    package Binder  renames Lace_shared.Binder;
 

@@ -10,7 +10,6 @@ is
 --   for Library_Dir  use "lib";
 --   for Library_Name use "freetype_ada";
 
-   package Ide      renames Lace_shared.Ide;
    package Builder  renames Lace_shared.Builder;
    package Compiler renames Lace_shared.Compiler;
    package Binder   renames Lace_shared.Binder;

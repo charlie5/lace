@@ -12,7 +12,6 @@ is
    for Library_Ali_Dir use "objects";
 --   for Library_Name    use "Bullet_Thin_C";
 
-   package Ide      renames Lace_shared.Ide;
    package Builder  renames Lace_shared.Builder;
 
    package Naming is

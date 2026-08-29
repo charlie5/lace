@@ -10,7 +10,6 @@ is
    for Main       use ("launch_drop_ball_on_box.adb");
    for Languages  use ("Ada");
 
-   package Ide      renames Lace_shared.Ide;
    package Builder  renames Lace_shared.Builder;
    package Compiler renames Lace_shared.Compiler;
    package Binder   renames Lace_shared.Binder;

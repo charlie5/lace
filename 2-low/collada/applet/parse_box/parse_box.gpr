@@ -12,7 +12,6 @@ is
    for Main        use ("launch_parse_box.adb");
 
 
-   package Ide      renames Lace_shared.Ide;
    package Builder  renames Lace_shared.Builder;
    package Compiler renames Lace_shared.Compiler;
    package Binder   renames Lace_shared.Binder;

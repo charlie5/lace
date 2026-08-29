@@ -96,12 +96,6 @@ is
    -- Define the packages.
    --
 
-   package Ide
-   is
-      for Default_Switches ("adacontrol") use ("-F", "gnat_short");
-   end Ide;
-
-
    package Builder
    is
       for Default_Switches ("ada") use ("-j0");

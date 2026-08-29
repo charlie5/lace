@@ -23,7 +23,6 @@ is
                                         "-Wno-return-type-c-linkage");
    end Compiler;
 
-   package Ide      renames Lace_shared.Ide;
    package Builder  renames Lace_shared.Builder;
 
 end Bullet_Thin_Cxx;

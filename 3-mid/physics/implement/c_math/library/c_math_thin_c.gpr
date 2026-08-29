@@ -22,7 +22,6 @@ is
                                         "-I" & project'Project_Dir & "../source/c");
    end Compiler;
 
-   package Ide      renames Lace_shared.Ide;
    package Builder  renames Lace_shared.Builder;
    package Binder   renames Lace_shared.Binder;
 

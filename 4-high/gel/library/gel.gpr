@@ -30,7 +30,6 @@ is
                             "../source/terrain",
                             "../source/world");
 
-   package Ide      renames Lace_shared.Ide;
    package Builder  renames Lace_shared.Builder;
    package Compiler renames Lace_shared.Compiler;
 

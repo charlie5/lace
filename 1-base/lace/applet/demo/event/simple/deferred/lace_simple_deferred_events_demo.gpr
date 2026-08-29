@@ -12,7 +12,6 @@ is
     for Source_Dirs use (".");
     for Main        use ("launch_simple_deferred_events_demo.adb");
 
-    package Ide      renames Lace_shared.Ide;
     package Builder  renames Lace_shared.Builder;
     package Compiler renames Lace_shared.Compiler;
     package Binder   renames Lace_shared.Binder;

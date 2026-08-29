@@ -8,7 +8,6 @@ is
    for Source_Dirs use (".", "../source/thin");
    for Object_Dir  use lace_Shared.object_Dir;
 
-   package Ide      renames Lace_shared.Ide;
    package Builder  renames Lace_shared.Builder;
    package Compiler renames Lace_shared.Compiler;
    package Binder   renames Lace_shared.Binder;

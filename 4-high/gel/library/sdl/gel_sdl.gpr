@@ -14,7 +14,6 @@ is
    for Library_Ali_Dir use "objects";
 --   for Library_Name    use "GEL_sdl";
 
-   package Ide      renames Lace_shared.Ide;
    package Builder  renames Lace_shared.Builder;
    package Compiler renames Lace_shared.Compiler;
 
