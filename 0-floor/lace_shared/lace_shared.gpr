@@ -37,8 +37,8 @@ is
 
    compiler_Options :=   ("-gnat2022",
                           "-gnatwa",
-                          "-fno-strict-aliasing")
-                       & style_Options;
+                          "-fno-strict-aliasing")     -- Pointers converted via Unchecked_Conversion (GL bindings, GEL) and the overlays
+                       & style_Options;               -- alias objects of other types, which the optimiser must not assume never happens.
 
    fast_Options     := ("-O3",
                         "-gnatn",
@@ -90,7 +90,7 @@ is
    case lace_OS
    is
       when "Linux" =>
-         binder_Options   := binder_Options   & "-static";
+         binder_Options   := binder_Options   & "-static";   -- Link the GNAT runtime statically, so executables run without a matching libgnat installed.
 
       when "Windows_NT" =>
          null;
