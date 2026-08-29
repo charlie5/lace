@@ -60,20 +60,10 @@ is
                                               & "-gnateE"                -- Extra debug info in 'constraint_Error' messages.
                                               & "-fstack-check"
                                               & "-g"
+                                              & "-gnatVa"
                                               & ("-gnatec=" & Project'Project_Dir & "debug.pra");   -- Initialize_Scalars ~ as a compiler switch (rather than
                                                                                                     -- Builder'Global_Configuration_Pragmas, which gprbuild only
                                                                                                     -- honours in the main project) so every project gets it.
-         case lace_OS
-         is
-            when "Linux"  =>
-               compiler_Options := compiler_Options & "-gnatVa";
-
-            when "Windows_NT"  =>
-               compiler_Options := compiler_Options & "-fno-inline"
-                                                    & "-gnatVcdeimoprst";
---                                                  & "-gnatVf"             -- (2016) turned off floating point validity check, seems to give
-                                                                            -- false positives on a scalar product for collision detection
-         end case;
 
       when "fast" =>
          compiler_Options := compiler_Options & fast_Options;
