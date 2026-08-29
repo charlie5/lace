@@ -52,7 +52,7 @@ is
 
    package Compiler is
       for Default_Switches ("ada")               use Lace_shared.Compiler_Options;
-      for         Switches ("opengl-images.adb") use ("-O0");
+      for         Switches ("opengl-images.adb") use Lace_shared.Compiler_Options & "-O0";
    end Compiler;
 
    package Binder renames Lace_shared.Binder;
