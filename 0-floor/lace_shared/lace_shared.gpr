@@ -126,7 +126,7 @@ is
 
    package Builder
    is
-      for Default_Switches ("ada") use ("-C", "-j0", "-gnat2022");
+      for Default_Switches ("ada") use ("-j0");
    end Builder;
 
 
