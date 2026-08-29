@@ -259,6 +259,7 @@ is
 
 
 
+   overriding
    procedure continuous_Physics_is (Self : in out Item;   Now : in Boolean)
    is
       use interfaces.C;
@@ -275,6 +276,7 @@ is
 
 
 
+   overriding
    function object_Count (Self : in Item) return Natural
    is
    begin
