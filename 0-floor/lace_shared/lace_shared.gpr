@@ -1,5 +1,5 @@
 abstract
-project lace_Shared
+project Lace_shared
 is
    -- Scenario Variables
    --
@@ -110,4 +110,4 @@ is
    end Linker;
 
 
-end lace_Shared;
+end Lace_shared;
