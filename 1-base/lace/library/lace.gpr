@@ -1,30 +1,20 @@
-with 
---   "florist",
-   "lace_shared";
---   "ashell";
+with
+     "lace_shared";
 
 
---library
+library
 project Lace
 is
    for Create_Missing_Dirs use "True";
 
-   for Object_Dir      use lace_Shared.object_Dir;
-   for Exec_Dir        use ".";
-   for Library_Dir     use "lib";
-   for Library_Ali_Dir use "objects";
---   for Library_Name    use "Lace";
+   for Object_Dir   use Lace_shared.object_Dir;
+   for Library_Dir  use "lib/" & Lace_shared.lace_build_Mode;   -- Per build mode, like the objects, so switching modes never links a stale archive.
+   for Library_Name use "lace";
 
    for Source_Dirs use ("../source",
                         "../source/containers",
---                        "../source/environ",
                         "../source/dice",
-                        "../source/events",
-                        "../source/events/concrete",
-                        "../source/events/interface",
-                        "../source/events/mixin",
-                        "../source/events/mixin/private",
-                        "../source/events/utility",
+                        "../source/events/**",
                         "../source/jobs",
                         "../source/strings",
                         "../source/text/**");
