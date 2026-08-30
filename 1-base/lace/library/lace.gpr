@@ -2,14 +2,14 @@ with
      "lace_shared";
 
 
-library
+-- Not a library project: lace.Events has 'remote_Types' units, which a PolyORB partition must compile against
+-- PolyORB's own System.Partition_Interface, so 'po_gnatdist' has to recompile them itself (see the DSA demos).
+--
 project Lace
 is
    for Create_Missing_Dirs use "True";
 
-   for Object_Dir   use Lace_shared.object_Dir;
-   for Library_Dir  use "lib/" & Lace_shared.lace_build_Mode;   -- Per build mode, like the objects, so switching modes never links a stale archive.
-   for Library_Name use "lace";
+   for Object_Dir  use Lace_shared.object_Dir;
 
    for Source_Dirs use ("../source",
                         "../source/containers",
