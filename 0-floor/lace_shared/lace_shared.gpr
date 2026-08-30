@@ -38,9 +38,6 @@ is
                           "-fno-strict-aliasing")     -- Pointers converted via Unchecked_Conversion (GL bindings, GEL) and the overlays
                        & style_Options;               -- alias objects of other types, which the optimiser must not assume never happens.
 
-   debug_Pragmas    := "-gnatec=" & Project'Project_Dir & "debug.pra";   -- Initialize_Scalars; a compiler switch, since gprbuild honours
-                                                                          -- Builder'Global_Configuration_Pragmas only in the main project.
-
    fast_Options     := ("-O3",
                         "-gnatn",
                         "-funroll-loops",
@@ -63,8 +60,7 @@ is
                                               & "-fstack-check"
                                               & "-gnateE"                -- Extra debug info in 'constraint_Error' messages.
                                               & "-g"
-                                              & "-O0"
-                                              & debug_Pragmas;
+                                              & "-O0";
 
       when "fast" =>
          binder_Options   := binder_Options   & "-E";
@@ -95,6 +91,14 @@ is
    package Compiler
    is
       for Default_Switches ("ada") use compiler_Options;
+
+      case lace_build_Mode
+      is
+         when "debug" =>
+            for Local_Configuration_Pragmas use Project'Project_Dir & "debug.pra";   -- Initialize_Scalars. Local, since gprbuild honours the Builder's global
+         when others =>                                                              -- pragmas only in the main project; and an attribute rather than a '-gnatec'
+            null;                                                                    -- switch, which gprbuild cannot track and so recompiles every unit, every build.
+      end case;
    end Compiler;
 
 
