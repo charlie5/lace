@@ -3,20 +3,13 @@ with
 
 project Swig
 is
-   for Source_Dirs use (".", "../source");
+   for Create_Missing_Dirs use "True";
+
+   for Source_Dirs use ("../source");
    for Object_Dir  use Lace_shared.object_Dir;
 
-   package Builder is
-      for Default_Switches ("ada") use ("-g");
-   end Builder;
-
-   package Compiler is
-      for Default_Switches ("ada") use ("-gnato", "-fstack-check", "-g", "-gnata");
-   end Compiler;
-
-   package Binder is
-      for Default_Switches ("ada") use ("-E");
-   end Binder;
+   package Builder  renames Lace_shared.Builder;
+   package Compiler renames Lace_shared.Compiler;
+   package Binder   renames Lace_shared.Binder;
 
 end Swig;
-
