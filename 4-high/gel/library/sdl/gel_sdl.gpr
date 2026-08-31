@@ -3,22 +3,14 @@ with
      "sdlada",
      "lace_shared";
 
---library
 project GEL_sdl
 is
    for Create_Missing_Dirs use "True";
 
-   for Source_Dirs     use ("../../source/platform/sdl");
-   for Object_Dir      use lace_Shared.object_Dir;
-   for Library_Dir     use "lib";
-   for Library_Ali_Dir use "objects";
---   for Library_Name    use "GEL_sdl";
+   for Source_Dirs use ("../../source/platform/sdl");
+   for Object_Dir  use Lace_shared.object_Dir;
 
    package Builder  renames Lace_shared.Builder;
    package Compiler renames Lace_shared.Compiler;
-
---   package Linker is
---      for Linker_Options use ("-g", "-lSDL2");
---   end Linker;
 
 end GEL_sdl;

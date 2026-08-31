@@ -2,20 +2,17 @@ with
      "freetype_thin",
      "lace_shared";
 
---library
 project Freetype
 is
-   for Source_Dirs  use ("../source");
-   for Object_Dir   use lace_Shared.object_Dir;
---   for Library_Dir  use "lib";
---   for Library_Name use "freetype_ada";
+   for Source_Dirs use ("../source");
+   for Object_Dir  use Lace_shared.object_Dir;
 
    package Builder  renames Lace_shared.Builder;
    package Compiler renames Lace_shared.Compiler;
    package Binder   renames Lace_shared.Binder;
-   
+
    package Linker is
       for Linker_Options use ("-g");
    end Linker;
-  
+
 end Freetype;

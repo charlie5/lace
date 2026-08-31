@@ -1,10 +1,9 @@
 with
      "opengl_core",
-     "../private/freetype/library/freetype", 
+     "../private/freetype/library/freetype",
      "collada",
      "lace_shared";
 
---library
 project Opengl
 is
    type Profile is ("safe", "lean", "desk");
@@ -12,35 +11,33 @@ is
 
    for Create_Missing_Dirs use "True";
 
-   for Object_Dir   use lace_Shared.object_Dir;
-   for Library_Dir  use "lib";
---   for Library_Name use "opengl";
+   for Object_Dir use Lace_shared.object_Dir;
 
    case The_Profile is
       when "safe" =>
          for Source_Dirs use ("../source/safe");
 
       when "lean" =>
-         for Source_Dirs use ("../source/lean", 
+         for Source_Dirs use ("../source/lean",
                               "../source/lean/buffer",
                               "../source/lean/geometry",
                               "../source/lean/light",
                               "../source/lean/model",
                               "../source/lean/renderer",
                               "../source/lean/shader",
-                              "../source/lean/support", 
+                              "../source/lean/support",
                               "../source/lean/text",
                               "../source/lean/io",
                               "../source/lean/text/private");
       when "desk" =>
-         for Source_Dirs use ("../source/lean", 
+         for Source_Dirs use ("../source/lean",
                               "../source/lean/buffer",
                               "../source/lean/geometry",
                               "../source/lean/light",
                               "../source/lean/model",
                               "../source/lean/renderer",
                               "../source/lean/shader",
-                              "../source/lean/support", 
+                              "../source/lean/support",
                               "../source/lean/text",
                               "../source/lean/io",
                               "../source/lean/text/private",
@@ -55,7 +52,7 @@ is
       for Default_Switches ("ada")           use Lace_shared.Compiler_Options;
       for         Switches ("opengl-io.adb") use Lace_shared.Compiler_Options & "-O0";
    end Compiler;
-   
+
    package Linker
    is
       case Opengl_Core.The_API

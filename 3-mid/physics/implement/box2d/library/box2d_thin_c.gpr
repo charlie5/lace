@@ -3,15 +3,11 @@ with
      "box2d_contrib",
      "lace_shared";
 
---library
 project Box2d_Thin_C
 is
-   for Languages       use ("c++");
-   for Source_Dirs     use ("../source/c");
-   for Object_Dir      use lace_Shared.object_Dir;
-   for Library_Dir     use "lib";
-   for Library_Ali_Dir use "objects";
---   for Library_Name    use "box2d_thin_c";
+   for Languages   use ("c++");
+   for Source_Dirs use ("../source/c");
+   for Object_Dir  use Lace_shared.object_Dir;
 
    package Naming is
       for Spec_Suffix ("c++") use ".h";

@@ -1,10 +1,9 @@
-with 
+with
      "../private/gl/library/gl",
      "../private/gid/gid",
      "math",
      "lace_shared";
-     
---library
+
 project Opengl_Core
 is
    type Platform is ("egl", "glx", "osmesa");
@@ -15,38 +14,36 @@ is
 
    for Create_Missing_Dirs use "True";
 
-   for Object_Dir   use lace_Shared.object_Dir;
-   for Library_Dir  use "lib";
---   for Library_Name use "opengl_core";
+   for Object_Dir use Lace_shared.object_Dir;
 
 
-   case The_Platform is 
+   case The_Platform is
       when "egl"    =>   for Languages    use ("Ada");
       when "glx"    =>   for Languages    use ("Ada", "C");
       when "osmesa" =>   for Languages    use ("Ada", "C");
-   end case; 
+   end case;
 
-   
+
    for Source_Dirs use ("../source",
                         "../source/api/"      & external ("opengl_api",      "desktop"),
                         "../source/profile/"  & external ("opengl_profile",  "lean"),
                         "../source/platform/" & external ("opengl_platform", "egl"),
-                        "../source/platform/" & external ("opengl_platform", "egl") & "/private", 
+                        "../source/platform/" & external ("opengl_platform", "egl") & "/private",
                         "../source/platform/" & external ("opengl_platform", "egl") & "/private/thin");
 
    package Naming
    is
       case Lace_shared.lace_Build_Mode
       is
-         when "debug" => 
-            for Body ("openGL.Errors.Debugging") use "opengl-errors-debugging.adb";  
-      
-         when others  => 
-            for Body ("openGL.Errors.Debugging") use "opengl-errors-not_debugging.adb";  
+         when "debug" =>
+            for Body ("openGL.Errors.Debugging") use "opengl-errors-debugging.adb";
+
+         when others  =>
+            for Body ("openGL.Errors.Debugging") use "opengl-errors-not_debugging.adb";
       end case;
    end Naming;
-      
-        
+
+
    package Builder renames Lace_shared.Builder;
 
 

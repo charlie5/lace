@@ -2,15 +2,11 @@ with
      "c_math_thin_c",
      "lace_shared";
 
---library
 project c_Math_Thin_Cxx
 is
-   for Languages       use ("c++");
-   for Source_Dirs     use ("../source/thin");
-   for Object_Dir      use lace_Shared.object_Dir;
-   for Library_Dir     use "lib";
-   for Library_Ali_Dir use "objects";
---   for Library_Name    use "c_Math_Thin_Cxx";
+   for Languages   use ("c++");
+   for Source_Dirs use ("../source/thin");
+   for Object_Dir  use Lace_shared.object_Dir;
 
    package Naming is
       for Spec_Suffix ("c++") use ".h";
@@ -18,7 +14,7 @@ is
    end Naming;
 
    package Compiler is
-      for Default_Switches ("c++") use ("-g", 
+      for Default_Switches ("c++") use ("-g",
                                         "-fPIC",
                                         "-Wno-return-type-c-linkage",
                                         "-I" & project'Project_Dir & "../source/c");
