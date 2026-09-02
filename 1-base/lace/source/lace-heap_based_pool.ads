@@ -1,18 +1,6 @@
-generic
-   type Item is private;
-   type View is access all Item;
+with
+     lace.fast_Pool;
 
-   pool_Size : Positive := 5_000;
-
-package lace.heap_based_Pool
-is
-
-   ---------
-   --- Forge
-   --
-
-   function  new_Item     return View;
-   procedure free (Self : in out View);
-
-
-end lace.heap_based_Pool;
+generic package lace.heap_based_Pool renames lace.fast_Pool;
+--
+-- The two pools grew byte-identical, so one now renames the other.
