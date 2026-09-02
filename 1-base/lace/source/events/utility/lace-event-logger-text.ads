@@ -92,8 +92,8 @@ private
 
    type Item is limited new Logger.item with
       record
-         File    : ada.Text_IO.File_type;
-         Ignored : event_kind_Set;
+         File    : aliased ada.Text_IO.File_type;
+         Ignored :         event_kind_Set;
       end record;
 
 

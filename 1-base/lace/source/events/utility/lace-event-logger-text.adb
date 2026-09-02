@@ -11,6 +11,47 @@ is
         ada.Text_IO;
 
 
+   -------------------------------------------------------------------------
+   --- The log file is shared by every task, so serialise the writes to it.
+   --
+
+   type File_view is access all ada.Text_IO.File_type;
+
+
+   protected Gate
+   is
+      procedure put_Line (File        : in File_view;
+                          Message     : in String;
+                          blank_First : in Boolean := False);
+      procedure close    (File        : in File_view);
+   end Gate;
+
+
+   protected
+   body Gate
+   is
+      procedure put_Line (File        : in File_view;
+                          Message     : in String;
+                          blank_First : in Boolean := False)
+      is
+      begin
+         if blank_First
+         then
+            ada.Text_IO.new_Line (File.all);
+         end if;
+
+         ada.Text_IO.put_Line (File.all, Message);
+      end put_Line;
+
+
+      procedure close (File : in File_view)
+      is
+      begin
+         ada.Text_IO.close (File.all);
+      end close;
+   end Gate;
+
+
    ---------
    --- Forge
    --
@@ -30,7 +71,7 @@ is
    procedure destruct (Self : in out Item)
    is
    begin
-      close (Self.File);
+      Gate.close (Self.File'unchecked_Access);
    end destruct;
 
 
@@ -44,13 +85,14 @@ is
                                                    for_Kind : in Event.Kind)
    is
    begin
-      put_Line (Self.File,   "new Connection => "
-                           & From.Name
-                           & " observes "
-                           & To.Name
-                           & " for event kind "
-                           & Name_of (for_Kind)
-                           & ".");
+      Gate.put_Line (Self.File'unchecked_Access,
+                       "new Connection => "
+                     & From.Name
+                     & " observes "
+                     & To.Name
+                     & " for event kind "
+                     & Name_of (for_Kind)
+                     & ".");
    end log_Connection;
 
 
@@ -75,13 +117,14 @@ is
       end from_Name;
 
    begin
-      put_Line (Self.File,   "Disconnection => "
-                           & from_Name
-                           & " no longer observes "
-                           & To.Name
-                           & " for event kind "
-                           & Name_of (for_Kind)
-                           & ".");
+      Gate.put_Line (Self.File'unchecked_Access,
+                       "Disconnection => "
+                     & from_Name
+                     & " no longer observes "
+                     & To.Name
+                     & " for event kind "
+                     & Name_of (for_Kind)
+                     & ".");
    end log_Disconnection;
 
 
@@ -113,14 +156,15 @@ is
          return;
       end if;
 
-      new_Line (Self.File);
-      put_Line (Self.File,   "Emit     => "
-                           & From.Name
-                           & "  emits       "
-                           & Name_of (Kind_of (the_Event))
-                           & " to "
-                           & to_Name
-                           & ".");
+      Gate.put_Line (Self.File'unchecked_Access,
+                       "Emit     => "
+                     & From.Name
+                     & "  emits       "
+                     & Name_of (Kind_of (the_Event))
+                     & " to "
+                     & to_Name
+                     & ".",
+                     blank_First => True);
    end log_Emit;
 
 
@@ -148,14 +192,15 @@ is
          return;
       end if;
 
-      new_Line (Self.File);
-      put_Line (Self.File,   "Send     => "
-                           & From.Name
-                           & "  sends       "
-                           & Name_of (Kind_of (the_Event))
-                           & " to "
-                           & to_Name
-                           & ".");
+      Gate.put_Line (Self.File'unchecked_Access,
+                       "Send     => "
+                     & From.Name
+                     & "  sends       "
+                     & Name_of (Kind_of (the_Event))
+                     & " to "
+                     & to_Name
+                     & ".",
+                     blank_First => True);
    end log_Send;
 
 
@@ -167,11 +212,12 @@ is
                                                      from_Subject : in subject_Name)
    is
    begin
-      put_Line (Self.File,   "new Response   => "
-                           & of_Observer.Name
-                           & " responds to " & Name_of (to_Kind)
-                           & " from "        & from_Subject
-                           & " with "        & the_Response.Name);
+      Gate.put_Line (Self.File'unchecked_Access,
+                       "new Response   => "
+                     & of_Observer.Name
+                     & " responds to " & Name_of (to_Kind)
+                     & " from "        & from_Subject
+                     & " with "        & the_Response.Name);
    end log_new_Response;
 
 
@@ -183,15 +229,16 @@ is
                                                      from_Subject : in subject_Name)
    is
    begin
-      put_Line (Self.File,   "rid Response => "
-                           & of_Observer.Name
-                           & " no longer responds to "
-                           & Name_of (to_Kind)
-                           & " from "
-                           & from_Subject
-                           & " with "
-                           & the_Response.Name
-                           & ".");
+      Gate.put_Line (Self.File'unchecked_Access,
+                       "rid Response => "
+                     & of_Observer.Name
+                     & " no longer responds to "
+                     & Name_of (to_Kind)
+                     & " from "
+                     & from_Subject
+                     & " with "
+                     & the_Response.Name
+                     & ".");
    end log_rid_Response;
 
 
@@ -208,15 +255,16 @@ is
          return;
       end if;
 
-      put_Line (Self.File,   "Response => "
-                           & of_Observer.Name
-                           & " responds to "
-                           & Name_of (to_Kind (to_Event'Tag))
-                           & " from "
-                           & from_Subject
-                           & " with "
-                           & the_Response.Name
-                           & ".");
+      Gate.put_Line (Self.File'unchecked_Access,
+                       "Response => "
+                     & of_Observer.Name
+                     & " responds to "
+                     & Name_of (to_Kind (to_Event'Tag))
+                     & " from "
+                     & from_Subject
+                     & " with "
+                     & the_Response.Name
+                     & ".");
    end log_Response;
 
 
@@ -225,7 +273,7 @@ is
    procedure log (Self : in out Item;   Message : in String)
    is
    begin
-      put_Line (Self.File, Message);
+      Gate.put_Line (Self.File'unchecked_Access, Message);
    end log;
 
 
@@ -234,7 +282,7 @@ is
    procedure ignore (Self : in out Item;   Kind : in Event.Kind)
    is
    begin
-      Self.Ignored.insert (Kind);
+      Self.Ignored.include (Kind);     -- 'include', so a repeated ignore is harmless.
    end ignore;
 
 
