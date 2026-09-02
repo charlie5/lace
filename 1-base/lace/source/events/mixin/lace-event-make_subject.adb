@@ -133,12 +133,22 @@ is
             for i in my_Observers'Range
             loop
                begin
-                  Self.sequence_Id_Map.get_Next (Sequence,
-                                                 for_Name => my_Observers (i).Name);
+                  declare
+                     observer_Name : constant String := my_Observers (i).Name;     -- Fetched first ~ it fails when the observer is dead.
+                  begin
+                     Self.sequence_Id_Map.get_Next (Sequence,
+                                                    for_Name => observer_Name);
+                     begin
+                        my_Observers (i).receive (the_Event,
+                                                  from_Subject => Subject.item'Class (Self.all).Name,
+                                                  Sequence     => Sequence);
 
-                  my_Observers (i).receive (the_Event,
-                                            from_Subject => Subject.item'Class (Self.all).Name,
-                                            Sequence     => Sequence);
+                     exception
+                        when system.RPC.communication_Error
+                           | storage_Error =>
+                           Self.sequence_Id_Map.decrement (for_Name => observer_Name);     -- Restore the undelivered sequence id.
+                     end;
+                  end;
 
                   if Subject.Logger /= null
                   then
@@ -150,14 +160,7 @@ is
                exception
                   when system.RPC.communication_Error
                      | storage_Error =>
-                     Self.sequence_Id_Map.decrement (for_Name => my_Observers (i).Name);     -- Restore the undelivered sequence id.
-
-                     if Subject.Logger /= null
-                     then
-                        Subject.Logger.log_Emit (Subject.view (Self),
-                                                 my_Observers (i),
-                                                 the_Event);
-                     end if;
+                     null;   -- The observer is dead, so its name cannot be fetched.
                end;
             end loop;
          end;
@@ -183,12 +186,23 @@ is
       for i in my_Observers'Range
       loop
          begin
-            Self.sequence_Id_Map.get_Next (s_Id,
-                                           for_Name => my_Observers (i).Name);
+            declare
+               observer_Name : constant String := my_Observers (i).Name;     -- Fetched first ~ it fails when the observer is dead.
+            begin
+               Self.sequence_Id_Map.get_Next (s_Id,
+                                              for_Name => observer_Name);
+               begin
+                  my_Observers (i).receive (the_Event,
+                                            from_Subject => Subject.view (Self).Name,
+                                            Sequence     => s_Id);
 
-            my_Observers (i).receive (the_Event,
-                                      from_Subject => Subject.view (Self).Name,
-                                      Sequence     => s_Id);
+               exception
+                  when system.RPC.communication_Error
+                     | storage_Error =>
+                     Self.sequence_Id_Map.decrement (for_Name => observer_Name);     -- Restore the undelivered sequence id.
+                     raise;
+               end;
+            end;
 
             if Subject.Logger /= null
             then
@@ -200,8 +214,6 @@ is
          exception
             when system.RPC.communication_Error
                | storage_Error =>
-               Self.sequence_Id_Map.decrement (for_Name => my_Observers (i).Name);     -- Restore the undelivered sequence id.
-
                bad_Count                 := bad_Count + 1;
                bad_Observers (bad_Count) := my_Observers (i);
          end;
@@ -234,12 +246,21 @@ is
    begin
       if Self.Sender = null
       then
-         Self.sequence_Id_Map.get_Next (s_Id,
-                                        for_Name => to_Observer.Name);
+         declare
+            observer_Name : constant String := to_Observer.Name;     -- Fetched first ~ it fails when the observer is dead.
          begin
-            to_Observer.receive (the_Event,
-                                 from_Subject => Subject.view (Self).Name,
-                                 Sequence     => s_Id);
+            Self.sequence_Id_Map.get_Next (s_Id,
+                                           for_Name => observer_Name);
+            begin
+               to_Observer.receive (the_Event,
+                                    from_Subject => Subject.view (Self).Name,
+                                    Sequence     => s_Id);
+
+            exception
+               when system.RPC.communication_Error
+                  | storage_Error =>
+                  Self.sequence_Id_Map.decrement (for_Name => observer_Name);     -- Restore the undelivered sequence id.
+            end;
 
             if Subject.Logger /= null
             then
@@ -247,18 +268,6 @@ is
                                         to_Observer,
                                         the_Event);
             end if;
-
-         exception
-            when system.RPC.communication_Error
-               | storage_Error =>
-               Self.sequence_Id_Map.decrement (for_Name => to_Observer.Name);     -- Restore the undelivered sequence id.
-
-               if Subject.Logger /= null
-               then
-                  Subject.Logger.log_Send (Subject.view (Self),
-                                           to_Observer,
-                                           the_Event);
-               end if;
          end;
 
       else
