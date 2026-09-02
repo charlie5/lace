@@ -29,11 +29,13 @@ is
       end roll;
 
 
+
       procedure reset
       is
       begin
          ada.Numerics.float_Random.reset (the_Generator);
       end reset;
+
 
 
       procedure reset (Initiator : in Integer)

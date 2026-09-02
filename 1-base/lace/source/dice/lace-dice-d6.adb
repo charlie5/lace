@@ -33,11 +33,13 @@ is
       end roll;
 
 
+
       procedure reset
       is
       begin
          d6_Random.reset (the_Generator);
       end reset;
+
 
 
       procedure reset (Initiator : in Integer)

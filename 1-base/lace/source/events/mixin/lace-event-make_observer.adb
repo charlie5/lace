@@ -81,6 +81,7 @@ is
                                  & " has no responses for events from "
                                  & from_Subject
                                  & ".");
+
          else
             raise program_Error with   my_Name
                                      & " has no responses for events from "
