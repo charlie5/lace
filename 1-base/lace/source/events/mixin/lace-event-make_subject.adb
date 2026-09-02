@@ -12,15 +12,21 @@ is
 
    procedure destroy (Self : in out Item)
    is
+      procedure free is new ada.unchecked_Deallocation (event_Emitter.item'Class,
+                                                        event_Emitter_view);
+      procedure free is new ada.unchecked_Deallocation (event_Sender.item'Class,
+                                                        event_Sender_view);
    begin
       if Self.Emitter /= null
       then
          Self.Emitter.destroy;
+         free (Self.Emitter);
       end if;
 
       if Self.Sender /= null
       then
          Self.Sender.destroy;
+         free (Self.Sender);
       end if;
 
       Self.safe_Observers.destruct;
@@ -378,20 +384,27 @@ is
 
 
 
-      function observer_Count return Natural     -- TODO: This is wrong.
+      function observer_Count return Natural
       is
          use event_kind_Maps_of_event_observers;
 
-         Cursor : event_kind_Maps_of_event_observers.Cursor := the_Observers.First;
-         Count  : Natural := 0;
+         Cursor  : event_kind_Maps_of_event_observers.Cursor := the_Observers.First;
+         Counted : event_Observer_Vector;
       begin
          while has_Element (Cursor)
          loop
-            Count := Count + Natural (Element (Cursor).Length);
+            for each_Observer of Element (Cursor).all
+            loop
+               if not Counted.contains (each_Observer)     -- An observer may be registered for several kinds,
+               then                                        -- yet must be counted only once.
+                  Counted.append (each_Observer);
+               end if;
+            end loop;
+
             next (Cursor);
          end loop;
 
-         return Count;
+         return Natural (Counted.Length);
       end observer_Count;
 
    end safe_Observers;
