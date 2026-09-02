@@ -346,6 +346,12 @@ is
          end;
       end loop;
 
+      if         Delimiter'Length in 1 .. Self.Length
+        and then Self.Data (Self.Length - Delimiter'Length + 1 .. Self.Length) = Delimiter
+      then                                                      -- Handle case where final characters are the delimiter.
+         Count := Count + 1;                                    -- Allow for an empty token.
+      end if;
+
       if Count > max_Tokens
       then
          raise Error with   "Token count"
@@ -368,6 +374,11 @@ is
                                                Capacity => Text_Capacity,
                                                Trim     => Trim);
          end loop;
+
+         if Index < Count
+         then                                                      -- Final characters are the delimiter.
+            the_Tokens (Count) := any_to_Text ("", Capacity => Text_Capacity);     -- Add an empty token.
+         end if;
 
          return the_Tokens;
       end;
