@@ -65,30 +65,57 @@ is
                                               Trim       : in Boolean   := False;
                                               max_Tokens : in Positive  := 8 * 1024) return Array_type
    is
+      Count : Natural  := 0;
+      From  : Positive := 1;
    begin
+      -- Count the tokens, so the token array need be no larger than required.
+      --
+      while From <= Self.Length
+      loop
+         declare
+            Token : constant String := next_Token (Self, Delimiter, From) with Unreferenced;
+         begin
+            Count := Count + 1;
+         end;
+      end loop;
+
+      if         Self.Length > 0
+        and then Self.Data (Self.Length) = Delimiter
+      then                                                      -- Handle case where final character is the delimiter.
+         Count := Count + 1;                                    -- Allow for an empty token.
+      end if;
+
+      if Count > max_Tokens
+      then
+         raise Error with   "Token count"
+                          & Count'Image
+                          & " exceeds max_Tokens"
+                          & max_Tokens'Image
+                          & ".";
+      end if;
+
       declare
-         the_Tokens : Array_type (1 .. max_Tokens);
-         Count      : Natural                     := 0;
-         From       : Positive                    := 1;
+         the_Tokens : Array_type (1 .. Count);
+         Index      : Natural := 0;
       begin
+         From := 1;
+
          while From <= Self.Length
          loop
-            Count              := Count + 1;
-            the_Tokens (Count) := any_to_Text (next_Token (Self,
+            Index              := Index + 1;
+            the_Tokens (Index) := any_to_Text (next_Token (Self,
                                                            Delimiter,
                                                            From),
-                                               capacity => Text_Capacity,
-                                               trim     => Trim);
+                                               Capacity => Text_Capacity,
+                                               Trim     => Trim);
          end loop;
 
-         if         Self.Length > 0
-           and then Self.Data (Self.Length) = Delimiter
-         then                                                      -- Handle case where final character is the delimiter.
-            Count              := Count + 1;
-            the_Tokens (Count) := any_to_Text ("", capacity => Text_Capacity);     -- Add an empty token.
+         if Index < Count
+         then                                                      -- Final character is the delimiter.
+            the_Tokens (Count) := any_to_Text ("", Capacity => Text_Capacity);     -- Add an empty token.
          end if;
 
-         return the_Tokens (1 .. Count);
+         return the_Tokens;
       end;
 
    exception
@@ -193,7 +220,7 @@ is
                                                Array_type    => Text.items_128k,
                                                any_to_Text   => to_Text);
 
-   function Tokens_512k is new any_Tokens_chr (Text_Capacity => 512,
+   function Tokens_512k is new any_Tokens_chr (Text_Capacity => 512 * 1024,
                                                Component     => Text.item_512k,
                                                Array_type    => Text.items_512k,
                                                any_to_Text   => to_Text);
@@ -304,20 +331,50 @@ is
    is
       use Text.Cursor;
 
-      mySelf     : aliased Item                        := Self;
-      Cursor     :         Text.Cursor.item            := First (mySelf'Access);
-      Count      :         Natural                     := 0;
-      the_Tokens :         Array_type (1 .. max_Tokens);
+      mySelf : aliased Item             := Self;
+      Cursor :         Text.Cursor.item := First (mySelf'Access);
+      Count  :         Natural          := 0;
    begin
+      -- Count the tokens, so the token array need be no larger than required.
+      --
       while Cursor.has_Element
       loop
-         Count              := Count + 1;
-         the_Tokens (Count) := any_to_Text (Cursor.next_Token (Delimiter),
-                                            capacity => Text_Capacity,
-                                            trim     => Trim);
+         declare
+            Token : constant String := Cursor.next_Token (Delimiter) with Unreferenced;
+         begin
+            Count := Count + 1;
+         end;
       end loop;
 
-      return the_Tokens (1 .. Count);
+      if Count > max_Tokens
+      then
+         raise Error with   "Token count"
+                          & Count'Image
+                          & " exceeds max_Tokens"
+                          & max_Tokens'Image
+                          & ".";
+      end if;
+
+      declare
+         the_Tokens : Array_type (1 .. Count);
+         Index      : Natural := 0;
+      begin
+         Cursor := First (mySelf'Access);
+
+         while Cursor.has_Element
+         loop
+            Index              := Index + 1;
+            the_Tokens (Index) := any_to_Text (Cursor.next_Token (Delimiter),
+                                               Capacity => Text_Capacity,
+                                               Trim     => Trim);
+         end loop;
+
+         return the_Tokens;
+      end;
+
+   exception
+      when storage_Error =>
+         raise stack_Error with "Stack size exceeded. Increase stack size via '$ ulimit -s unlimited' or similar.";
    end any_Tokens_str;
 
 

@@ -1,7 +1,7 @@
 package lace.wide_Text.all_Tokens
 --
 -- Some of these functions require a very large stack size.
--- If a Storage_Error is raised, try setting stack size to 'unlimited'.
+-- If a stack_Error is raised, try setting stack size to 'unlimited'.
 --
 -- $ ulimit -s unlimited
 --
