@@ -101,7 +101,15 @@ is
                ada.Text_IO.put_Line ("Error detected in 'lace.event_Sender.Sender' task.");
                ada.Text_IO.put_Line ("Subject:  '" & subject_Name.Element & "'.");
                ada.Text_IO.put_Line ("Event:    '" & Event.Element'Image  & "'.");
-               ada.Text_IO.put_Line ("Observer: '" & the_Observer.Name    & "'.");
+
+               begin
+                  ada.Text_IO.put_Line ("Observer: '" & the_Observer.Name & "'.");
+
+               exception
+                  when others =>
+                     ada.Text_IO.put_Line ("Observer: unavailable ~ the observer is dead.");
+               end;
+
                ada.Text_IO.put_Line ("Continuing.");
                ada.Text_IO.new_Line (2);
          end;
@@ -114,7 +122,15 @@ is
          ada.Text_IO.put_Line ("Fatal error detected in 'lace.event_Sender.Sender' task.");
          ada.Text_IO.put_Line ("Subject:  '" & subject_Name.Element & "'.");
          ada.Text_IO.put_Line ("Event:    '" & Event.Element'Image  & "'.");
-         ada.Text_IO.put_Line ("Observer: '" & the_Observer.Name    & "'.");
+
+         begin
+            ada.Text_IO.put_Line ("Observer: '" & the_Observer.Name & "'.");
+
+         exception
+            when others =>
+               ada.Text_IO.put_Line ("Observer: unavailable ~ the observer is dead.");
+         end;
+
          ada.Text_IO.new_Line (2);
    end Sender;
 
@@ -188,6 +204,8 @@ is
          for Each of new_send_Details
          loop
             declare
+               use type ada.Exceptions.Exception_Id;
+
                the_Sender : Sender_view;
             begin
                the_Senders.get (the_Sender);
@@ -207,18 +225,27 @@ is
 
             exception
                when E : others =>
-                  if the_Sender /= null
+                  if          the_Sender /= null
+                     and then ada.Exceptions.exception_Identity (E) = tasking_Error'Identity
                   then
-                     the_Senders.add (the_Sender);     -- Return the undispatched sender to the pool.
-                  end if;
+                     the_Senders.add (the_Sender);     -- The dead task never engaged, so return it to the pool.
+                  end if;                              -- Any other exception reached the sender too, which returns itself.
 
                   ada.Text_IO.new_Line;
                   ada.Text_IO.put_Line (ada.Exceptions.exception_Information (E));
                   ada.Text_IO.new_Line;
                   ada.Text_IO.put_Line ("Error detected in 'lace.event_Sender.send_Delegator'.");
                   ada.Text_IO.put_Line ("Subject  '" & the_subject_Name.Element & "'.");
-                  ada.Text_IO.put_Line ("Observer '" & Each.Observer.Name       & "'.");
-                  ada.Text_IO.put_Line ("Event    '" & Each.Event'Image         & "'.");
+
+                  begin
+                     ada.Text_IO.put_Line ("Observer '" & Each.Observer.Name & "'.");
+
+                  exception
+                     when others =>
+                        ada.Text_IO.put_Line ("Observer unavailable ~ the observer is dead.");
+                  end;
+
+                  ada.Text_IO.put_Line ("Event    '" & Each.Event'Image & "'.");
                   ada.Text_IO.put_Line ("Continuing.");
                   ada.Text_IO.new_Line (2);
             end;

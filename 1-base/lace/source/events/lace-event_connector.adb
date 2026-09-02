@@ -210,6 +210,7 @@ is
          loop
             declare
                use lace.Text;
+               use type ada.Exceptions.Exception_Id;
 
                the_Connector : Connector_view;
             begin
@@ -227,10 +228,11 @@ is
 
             exception
                when E : others =>
-                  if the_Connector /= null
+                  if          the_Connector /= null
+                     and then ada.Exceptions.exception_Identity (E) = tasking_Error'Identity
                   then
-                     idle_Connectors.add (the_Connector);     -- Return the undispatched connector to the pool.
-                  end if;
+                     idle_Connectors.add (the_Connector);     -- The dead task never engaged, so return it to the pool.
+                  end if;                                     -- Any other exception reached the connector too, which returns itself.
 
                   new_Line;
                   put_Line (ada.Exceptions.exception_Information (E));
@@ -370,6 +372,11 @@ is
    is
    begin
       Self.Delegator.stop;
+
+      while not Self.Delegator'Terminated     -- Await the delegator, which uses 'Self.Connections' until it exits.
+      loop
+         delay 0.001;
+      end loop;
    end destruct;
 
 

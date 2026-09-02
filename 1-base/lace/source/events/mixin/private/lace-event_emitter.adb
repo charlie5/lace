@@ -109,7 +109,15 @@ is
                ada.Text_IO.put_Line ("Error detected in 'lace.event_Emitter.Emitter' task.");
                ada.Text_IO.put_Line ("Subject:  '" & subject_Name.Element & "'.");
                ada.Text_IO.put_Line ("Event:    '" & Event.Element'Image  & "'.");
-               ada.Text_IO.put_Line ("Observer: '" & the_Observer.Name    & "'.");
+
+               begin
+                  ada.Text_IO.put_Line ("Observer: '" & the_Observer.Name & "'.");
+
+               exception
+                  when others =>
+                     ada.Text_IO.put_Line ("Observer: unavailable ~ the observer is dead.");
+               end;
+
                ada.Text_IO.put_Line ("Continuing.");
                ada.Text_IO.new_Line (2);
          end;
@@ -122,7 +130,15 @@ is
          ada.Text_IO.put_Line ("Fatal error detected in 'lace.event_Emitter.Emitter' task.");
          ada.Text_IO.put_Line ("Subject:  '" & subject_Name.Element & "'.");
          ada.Text_IO.put_Line ("Event:    '" & Event.Element'Image  & "'.");
-         ada.Text_IO.put_Line ("Observer: '" & the_Observer.Name    & "'.");
+
+         begin
+            ada.Text_IO.put_Line ("Observer: '" & the_Observer.Name & "'.");
+
+         exception
+            when others =>
+               ada.Text_IO.put_Line ("Observer: unavailable ~ the observer is dead.");
+         end;
+
          ada.Text_IO.new_Line (2);
    end Emitter;
 
@@ -207,10 +223,13 @@ is
                for each_Observer of the_Observers
                loop
                   declare
-                     the_Emitter :          Emitter_view;
-                     Sequence    : constant Event.sequence_Id := the_Subject.next_Sequence (for_Observer => each_Observer);
+                     use type ada.Exceptions.Exception_Id;
 
+                     the_Emitter : Emitter_view;
+                     Sequence    : Event.sequence_Id;
                   begin
+                     Sequence := the_Subject.next_Sequence (for_Observer => each_Observer);     -- Fails when the observer is dead.
+
                      the_Emitters.get (the_Emitter);
 
                      if the_Emitter = null
@@ -228,10 +247,11 @@ is
 
                   exception
                      when E : others =>
-                        if the_Emitter /= null
+                        if          the_Emitter /= null
+                           and then ada.Exceptions.exception_Identity (E) = tasking_Error'Identity
                         then
-                           the_Emitters.add (the_Emitter);     -- Return the undispatched emitter to the pool.
-                        end if;
+                           the_Emitters.add (the_Emitter);     -- The dead task never engaged, so return it to the pool.
+                        end if;                                -- Any other exception reached the emitter too, which returns itself.
 
                         ada.Text_IO.new_Line;
                         ada.Text_IO.put_Line (ada.Exceptions.exception_Information (E));
