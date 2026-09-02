@@ -33,8 +33,8 @@ is
    function to_Duration (From : in lace.Time.item) return Duration
    is
    begin
-      return   Duration (From.Hours   * 60 * 60)
-             + Duration (From.Minutes * 60)
+      return   Duration (From.Hours)   * 60 * 60
+             + Duration (From.Minutes) * 60
              + Duration (From.Seconds)
              + Duration (From.microSeconds) / 1_000_000.0;
    end to_Duration;
@@ -46,17 +46,17 @@ is
       Pad    : Duration := From;
       Result : Time.item;
    begin
-      Result.Hours := Hours (Float'Floor (Float (Pad / (60.0 * 60.0))));
+      Result.Hours := Hours (long_Float'Floor (long_Float (Pad / (60.0 * 60.0))));
       Pad          := Pad - 60.0 * 60.0 * Duration (Result.Hours);
 
-      Result.Minutes := Minutes (Float'Floor (Float (Pad / 60.0)));
+      Result.Minutes := Minutes (long_Float'Floor (long_Float (Pad / 60.0)));
       Pad            := Pad - 60.0 * Duration (Result.Minutes);
 
-      Result.Seconds := Seconds (Float'Floor (Float (Pad)));
+      Result.Seconds := Seconds (long_Float'Floor (long_Float (Pad)));
       Pad            := Duration'Max (Pad - Duration (Result.Seconds),
                                       0.0);
 
-      Result.microSeconds := microSeconds (Float'Floor (Float (Pad * 1_000_000.0)));
+      Result.microSeconds := microSeconds (long_Float'Floor (long_Float (Pad * 1_000_000.0)));
 
       return Result;
    end to_Time;
