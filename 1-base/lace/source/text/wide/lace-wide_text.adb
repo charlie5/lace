@@ -196,7 +196,7 @@ is
    function delete (Self : in Item;   From    : in Positive;
                                       Through : in Natural := Natural'Last) return Item
    is
-      Result : Item (Self.Capacity);
+      Result : Item := Self;
    begin
       delete (Result, From, Through);
       return Result;
