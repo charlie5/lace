@@ -31,16 +31,32 @@ is
    function expand_GLOB (GLOB : in String) return String
    --
    -- The pattern applies to the final path component ~ 'dir/*.txt' works, 'dir/*/x.txt' does not.
+   -- Matches are returned sorted, prefixed as the pattern was. When nothing matches (or the folder
+   -- does not exist), the pattern is echoed back verbatim, as a shell would.
    --
    is
-      use ada.Directories;
+      use
+           ada.Directories,
+           ada.Strings.fixed;
 
-      the_Folder  : constant String := containing_Directory (GLOB);
-      the_Pattern : constant String := simple_Name          (GLOB);
+      slash_Position : constant Natural := Index (GLOB, "/", going => ada.Strings.Backward);
+
+      the_Folder  : constant String := (if    slash_Position = 0          then "."
+                                        elsif slash_Position = GLOB'First then "/"
+                                        else  GLOB (GLOB'First .. slash_Position - 1));
+
+      the_Prefix  : constant String := (if slash_Position = 0 then ""
+                                                              else GLOB (GLOB'First .. slash_Position));
+
+      the_Pattern : constant String := (if slash_Position = 0 then GLOB
+                                                              else GLOB (slash_Position + 1 .. GLOB'Last));
+
+      package name_Vectors is new ada.Containers.indefinite_Vectors (Positive, String);
+      package Sorter       is new name_Vectors.generic_Sorting;
 
       the_Search : search_Type;
       the_Entry  : directory_Entry_type;
-      Result     : unbounded_String;
+      the_Names  : name_Vectors.Vector;
    begin
       start_Search (the_Search,
                     Directory => the_Folder,
@@ -56,18 +72,38 @@ is
             if          Name /= "."
                and then Name /= ".."
             then
-               if Result /= ""
-               then
-                  append (Result, " ");
-               end if;
-
-               append (Result, full_Name (the_Entry));
+               the_Names.append (Name);
             end if;
          end;
       end loop;
 
       end_Search (the_Search);
-      return +Result;
+      Sorter.sort (the_Names);
+
+      if the_Names.is_Empty
+      then
+         return GLOB;     -- No match ~ echo the pattern, as a shell would.
+      end if;
+
+      declare
+         Result : unbounded_String;
+      begin
+         for Each of the_Names
+         loop
+            if Result /= ""
+            then
+               append (Result, " ");
+            end if;
+
+            append (Result, the_Prefix & Each);
+         end loop;
+
+         return +Result;
+      end;
+
+   exception
+      when ada.IO_Exceptions.Name_Error =>
+         return GLOB;     -- The folder does not exist ~ echo the pattern, as a shell would.
    end expand_GLOB;
 
 
