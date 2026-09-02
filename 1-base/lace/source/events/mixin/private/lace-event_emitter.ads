@@ -31,14 +31,6 @@ is
 
 private
 
-   ------------
-   --- Emitter.
-   --
-
-   type Emitter;
-   type Emitter_view is access Emitter;
-
-
    ---------------
    --- Containers.
    --

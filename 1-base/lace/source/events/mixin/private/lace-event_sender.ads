@@ -5,8 +5,8 @@ with
 
 private
 with
-     ada.Containers.Vectors,
-     ada.Containers.indefinite_Holders;
+     lace.Event.Containers,
+     ada.Containers.Vectors;
 
 
 package lace.event_Sender with remote_Types
@@ -33,24 +33,13 @@ is
 
 private
 
-   use type lace.Event.item'Class;
-
-   package event_Holders  is new ada.Containers.indefinite_Holders (Element_type => lace.Event.item'Class);
-   subtype event_Holder   is     event_Holders.Holder;
+   subtype event_Holder is Event.Containers.event_Holder;
 
    type send_Details is
       record
          Event    : event_Holder;
          Observer : lace.Observer.view;
       end record;
-
-
-   -----------
-   --- Sender.
-   --
-
-   type Sender;
-   type Sender_view is access Sender;
 
 
    --------------------------
