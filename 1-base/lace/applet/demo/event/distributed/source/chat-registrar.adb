@@ -220,10 +220,8 @@ is
                   for i in 1 .. dead_Count
                   loop
                      begin
-                        put_Line (  "Ridding "
-                                  & (+Dead (i).Name)
-                                  & " from "
-                                  & Each.Name);
+                        put_Line ("Ridding " & (+Dead (i).Name));
+
                         Each.deregister_Client ( Dead (i).as_Observer,
                                                 +Dead (i).Name);
 
@@ -231,9 +229,11 @@ is
                         when chat.Client.unknown_Client =>
                            put_Line (  "Deregister of "
                                      & (+Dead (i).Name)
-                                     & " from "
-                                     & Each.Name
                                      & " is not needed.");
+
+                        when system.RPC.communication_Error
+                           | storage_Error =>
+                           null;   -- This client died meanwhile ~ the next check will rid it.
                      end;
                   end loop;
                end loop;
@@ -266,7 +266,13 @@ is
          end;
       end loop;
 
-      check_Client_lives.halt;
+      begin
+         check_Client_lives.halt;
+
+      exception
+         when tasking_Error =>
+            null;   -- The check task has already died.
+      end;
    end shutdown;
 
 
