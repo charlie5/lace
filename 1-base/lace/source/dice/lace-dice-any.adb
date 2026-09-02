@@ -4,7 +4,45 @@ with
 
 package body lace.Dice.any
 is
-   the_float_Generator : ada.Numerics.float_Random.Generator;
+   ------------------------------------------------------------------
+   --- The generator is shared by every task, so guard it with a lock.
+   --
+
+   protected safe_Generator
+   is
+      procedure roll  (Chance    :    out Float);
+      procedure reset;
+      procedure reset (Initiator : in     Integer);
+
+   private
+      the_Generator : ada.Numerics.float_Random.Generator;
+   end safe_Generator;
+
+
+   protected
+   body safe_Generator
+   is
+      procedure roll (Chance : out Float)
+      is
+      begin
+         Chance := ada.Numerics.float_Random.Random (the_Generator);
+      end roll;
+
+
+      procedure reset
+      is
+      begin
+         ada.Numerics.float_Random.reset (the_Generator);
+      end reset;
+
+
+      procedure reset (Initiator : in Integer)
+      is
+      begin
+         ada.Numerics.float_Random.reset (the_Generator,
+                                          Initiator);
+      end reset;
+   end safe_Generator;
 
 
    ---------
@@ -38,19 +76,20 @@ is
    overriding
    function Roll (Self : in Item) return Natural
    is
-      use ada.Numerics.float_Random;
-
       the_Roll : Integer := 0;
+      Chance   : Float;
    begin
       for Each in 1 .. Self.roll_Count
       loop
+         safe_Generator.roll (Chance);
+
          the_Roll :=   the_Roll
-                     + Integer (  Random (the_float_Generator)
-                                * Float  (Self.side_Count)
-                                + 0.5);
+                     + Integer'Min (Self.side_Count,     -- 'Chance' can be 1.0, so clamp to the side count.
+                                    Integer (Float'Floor (Chance * Float (Self.side_Count))) + 1);
       end loop;
 
-      return the_Roll + Self.Modifier;
+      return Natural'Max (the_Roll + Self.Modifier,
+                          0);
    end Roll;
 
 
@@ -61,11 +100,10 @@ is
    procedure Seed_is (Now : in Integer)
    is
    begin
-      ada.Numerics.float_Random.reset (the_float_Generator,
-                                       Initiator => Now);
+      safe_Generator.reset (Initiator => Now);
    end Seed_is;
 
 
 begin
-   ada.Numerics.float_Random.reset (the_float_Generator);
+   safe_Generator.reset;
 end lace.Dice.any;
