@@ -553,6 +553,45 @@ would be needed to trigger it), `folder_Lock`'s I/O inside a protected action
 destroy chain (no in-tree user constructs one).
 
 
+## 6. Design pass
+
+Three design-level issues noted during the review, addressed after the two
+defect passes.
+
+### 6.1 User responses ran inside a protected action
+
+**Files:** `events/mixin/lace-event-make_observer.ads/.adb`
+
+An instant observer's `receive` ran the user's `respond` callback (and the
+logging around it) inside the `safe_Responses` protected action. A response
+that called `add` or `rid` on its own observer deadlocked on the protected
+object, and running arbitrary user code — potentially blocking I/O and
+remote calls included — inside a protected action is a bounded error
+besides. The protected object now only *looks up* the response (a new
+`find` operation returning the response view, whether the subject is known,
+and the response count in one atomic read); `receive` dispatches the
+response and does all logging outside the lock. The deferred observer
+already dispatched outside the lock; the instant path now matches.
+
+### 6.2 `make_Subject.destroy` leaked its emitter and sender
+
+**File:** `events/mixin/lace-event-make_subject.adb`
+
+`destroy` stopped the emitter/sender delegators but never freed the
+heap-allocated `event_Emitter.item` / `event_Sender.item` objects, and a
+second destroy re-entered them. Since destroy became synchronous (§3.2) the
+delegator tasks are terminated when it returns, so the objects are now
+freed and the views nulled — a repeated destroy is harmless.
+
+### 6.3 `observer_Count` counted an observer once per registered kind
+
+**File:** `events/mixin/lace-event-make_subject.adb`
+
+The body summed the per-kind vector lengths (and carried a
+`TODO: This is wrong` comment), so an observer registered for three event
+kinds counted three times. It now counts distinct observer views.
+
+
 ## Verification
 
 - **Full tree:** `5-all/applet/build_all` compiles every component and demo
@@ -589,3 +628,10 @@ rebuilt with `po_gnatdist` against the fixed sources and run locally
 crossed partitions in both directions, join/leave notifications fired,
 deregistration completed cleanly, and both clients exited normally with no
 hang at shutdown.
+
+The design pass was re-verified end to end: a clean full-tree `build_all`,
+all 34 regression checks, both simple event demos, the `simple_chat` DSA run
+repeated (the instant observer's receive is exactly the restructured path),
+and the `chains_2d` and `mixed_joints_2d` gel demos run live under X and
+closed via `WM_DELETE_WINDOW`, so the full applet, world and sprite teardown
+executes. Every run exits cleanly.
