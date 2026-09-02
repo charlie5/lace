@@ -803,6 +803,56 @@ class-wide events sent through the potentially-remote subject interface
 must be transportable) and a clean synchronous destroy.
 
 
+## 10. Deduplication pass
+
+The re-review's altitude findings all pointed at one habit: the same logic
+maintained in several copies, which this series repeatedly had to patch in
+lockstep.
+
+### 10.1 `sequence_Id` is now modular
+
+**Files:** `events/lace-event.ads`,
+`events/mixin/private/lace-event-containers.adb`
+
+`lace.Event.sequence_Id` became `mod 2**32`, so wrapping is a property of
+the type rather than an if-expression hand-copied into `get_Next`,
+`increment` and `decrement`. This changes the id's stream representation
+(the old range type had a 64-bit base), which only matters across DSA
+partitions — and partitions are always rebuilt together by `po_gnatdist`.
+
+### 10.2 The emitter and sender share their delivery machinery
+
+**Files:** `events/mixin/private/lace-event_courier.ads/.adb` (new),
+`events/mixin/private/lace-event_emitter.ads/.adb`,
+`events/mixin/private/lace-event_sender.ads/.adb`
+
+After the reserve/commit pass (§9) the two bodies were ~95% identical. The
+courier tasks, pool, delivery reports, per-observer channels, dispatching
+and shutdown now live once, in the generic `lace.event_Courier`
+(parameterised only by the names used in its log messages). The emitter and
+sender bodies keep exactly what differs: the emitter expands each event to
+every observer of its kind; the sender queues each event to one named
+observer.
+
+### 10.3 `heap_based_Pool` renames `fast_Pool`
+
+**File:** `lace-heap_based_pool.ads`
+
+The two pool generics had become byte-identical apart from the unit name;
+`lace.heap_based_Pool` is now a library-unit renaming of `lace.fast_Pool`.
+
+### 10.4 The dice share one random source
+
+**Files:** `dice/lace-dice-random.ads/.adb` (new), `dice/lace-dice-any.adb`,
+`dice/lace-dice-d6.adb`
+
+The verbatim-duplicated `safe_Generator` protected objects collapsed into
+the private child `lace.Dice.random`, which also owns the single clamped
+uniform-draw formula (`d6` previously used its own `discrete_Random`
+instance). One behavioural note: `Seed_is` in either dice package now seeds
+the shared source.
+
+
 ## Verification
 
 - **Full tree:** `5-all/applet/build_all` compiles every component and demo
