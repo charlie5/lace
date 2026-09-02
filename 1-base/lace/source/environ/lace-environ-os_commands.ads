@@ -12,7 +12,7 @@ is
    --- Attributes
    --
 
-   function Path_to            (Command    : in String)      return Paths.Folder;
+   function Path_to            (Command    : in String)      return Paths.File;
 
    function Executable_on_Path (Executable : in Paths.File)  return Boolean;
    --

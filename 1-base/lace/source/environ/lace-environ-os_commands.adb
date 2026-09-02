@@ -13,11 +13,11 @@ is
    use ada.Exceptions;
 
 
-   function Path_to (Command : in String) return Paths.Folder
+   function Path_to (Command : in String) return Paths.File
    is
       use Paths;
    begin
-      return to_Folder (run_OS ("which " & Command));
+      return to_File (run_OS ("which " & escaped (Command)));
    end Path_to;
 
 
