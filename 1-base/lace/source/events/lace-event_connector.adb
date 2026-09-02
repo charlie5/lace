@@ -97,19 +97,27 @@ is
 
          exception
             when E : others =>
+               connector_Pool.add (Myself);     -- Return the connector to the safe pool before logging, which may itself fail.
+
                new_Line;
                put_Line (ada.Exceptions.exception_Information (E));
                put_Line ("Error detected in 'lace.event_Connector.Connector' task.");
                new_Line;
-               put_Line ("Subject:  '" &   my_Connection.Subject.Name  & "'.");
-               put_Line ("Observer: '" &   my_Connection.Observer.Name & "'.");
-               put_Line ("Event:    '" & (+my_Connection.event_Kind)   & "'.");
-               put_Line ("Response  '" &   my_Connection.Response.Name & "'.");
+
+               begin
+                  put_Line ("Subject:  '" &   my_Connection.Subject.Name  & "'.");
+                  put_Line ("Observer: '" &   my_Connection.Observer.Name & "'.");
+                  put_Line ("Event:    '" & (+my_Connection.event_Kind)   & "'.");
+                  put_Line ("Response  '" &   my_Connection.Response.Name & "'.");
+
+               exception
+                  when others =>
+                     put_Line ("... details unavailable ~ a party to the connection is dead.");
+               end;
+
                new_Line;
                put_Line ("Continuing.");
                new_Line (2);
-
-               connector_Pool.add (Myself);     -- Return the connector to the safe pool.
          end;
       end loop;
 
@@ -119,10 +127,18 @@ is
          put_Line (ada.Exceptions.exception_Information (E));
          put_Line ("Fatal error detected in 'lace.event_Connector.Connector' task.");
          new_Line;
-         put_Line ("Subject:  '" &   my_Connection.Subject.Name  & "'.");
-         put_Line ("Observer: '" &   my_Connection.Observer.Name & "'.");
-         put_Line ("Event:    '" & (+my_Connection.event_Kind)   & "'.");
-         put_Line ("Response  '" &   my_Connection.Response.Name & "'.");
+
+         begin
+            put_Line ("Subject:  '" &   my_Connection.Subject.Name  & "'.");
+            put_Line ("Observer: '" &   my_Connection.Observer.Name & "'.");
+            put_Line ("Event:    '" & (+my_Connection.event_Kind)   & "'.");
+            put_Line ("Response  '" &   my_Connection.Response.Name & "'.");
+
+         exception
+            when others =>
+               put_Line ("... details unavailable ~ a party to the connection is dead.");
+         end;
+
          new_Line (2);
    end Connector;
 
@@ -147,7 +163,7 @@ is
       is
          use type ada.Containers.Count_type;
       begin
-         return all_Connectors.Length = idle_Connectors.Length;
+         return idle_Connectors.Length >= all_Connectors.Length;
       end all_Connectors_are_idle;
 
 
@@ -211,15 +227,28 @@ is
 
             exception
                when E : others =>
+                  if the_Connector /= null
+                  then
+                     idle_Connectors.add (the_Connector);     -- Return the undispatched connector to the pool.
+                  end if;
+
                   new_Line;
                   put_Line (ada.Exceptions.exception_Information (E));
                   new_Line;
                   put_Line ("Error detected in 'lace.event_Connector.connector_Delegator'.");
                   new_Line;
-                  put_Line ("Subject:  '" &   each_Connection.Subject.Name  & "'.");
-                  put_Line ("Observer: '" &   each_Connection.Observer.Name & "'.");
-                  put_Line ("Event:    '" & (+each_Connection.event_Kind)   & "'.");
-                  put_Line ("Response  '" &   each_Connection.Response.Name & "'.");
+
+                  begin
+                     put_Line ("Subject:  '" &   each_Connection.Subject.Name  & "'.");
+                     put_Line ("Observer: '" &   each_Connection.Observer.Name & "'.");
+                     put_Line ("Event:    '" & (+each_Connection.event_Kind)   & "'.");
+                     put_Line ("Response  '" &   each_Connection.Response.Name & "'.");
+
+                  exception
+                     when others =>
+                        put_Line ("... details unavailable ~ a party to the connection is dead.");
+                  end;
+
                   new_Line;
                   put_Line ("Continuing.");
                   new_Line (2);
