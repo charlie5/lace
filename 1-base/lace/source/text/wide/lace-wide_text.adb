@@ -235,15 +235,20 @@ is
       Natural'read (Stream, Capacity);
       Natural'read (Stream, Length);
 
-      declare
-         Data : wide_String (1 .. Capacity);
-      begin
-         wide_String'read (Stream, Data (1 .. Length));
+      if Length > Capacity
+      then
+         raise Error with   "Corrupt text stream ~ length"
+                          & Length'Image
+                          & " exceeds capacity"
+                          & Capacity'Image
+                          & ".";
+      end if;
 
-         return (Capacity => Capacity,
-                 Data     => Data,
-                 Length   => Length);
-      end;
+      return Result : Item (Capacity)     -- Built in place, so a large text does not need a stack-sized copy.
+      do
+         wide_String'read (Stream, Result.Data (1 .. Length));
+         Result.Length := Length;
+      end return;
    end Item_input;
 
 
