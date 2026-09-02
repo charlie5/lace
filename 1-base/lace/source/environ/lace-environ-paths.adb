@@ -624,21 +624,16 @@ is
 
    procedure save (Self : in File;   Data : in environ.Data)
    is
+      type Element_array is new environ.Data (Data'Range);
+
+      package Binary_IO is new ada.Direct_IO (Element_array);
+      use     Binary_IO;
+
+      File : File_type;
    begin
-      check (Self);
-
-      declare
-         type Element_array is new environ.Data  (Data'Range);
-
-         package Binary_IO is new ada.Direct_IO (Element_array);
-         use     Binary_IO;
-
-         File : File_type;
-      begin
-         create (File, out_File, +Self);
-         write  (File, Element_array (Data));
-         close  (File);
-      end;
+      create (File, out_File, +Self);
+      write  (File, Element_array (Data));
+      close  (File);
    end save;
 
 
@@ -698,7 +693,7 @@ is
          File   : Binary_IO.File_type;
          Result : Element_array;
       begin
-         open  (File, out_File, +Self);
+         open  (File, in_File, +Self);
          read  (File, Result);
          close (File);
 
