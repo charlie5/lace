@@ -715,17 +715,10 @@ before an `else`) were brought back to the guide.
 
 ### Known limitations, deliberately retained
 
-The re-review also flagged four things that are design decisions rather
-than oversights; they stand, documented:
+The re-review also flagged things that are design decisions rather
+than oversights; they stand, documented (the async sequence-id loss that
+originally headed this list was later fixed properly — see §9):
 
-- **Async sequence-id loss** — a delivery that fails inside a pooled
-  emitter/sender worker still burns its sequence id (stalling that
-  subject's deferred observers), because a rollback from the worker is
-  unsound: the delegator may have issued later ids meanwhile, and a
-  decrement would then duplicate one. A sound fix needs a reserve/commit id
-  protocol. The same reasoning limits the synchronous rollback (§3.6) to
-  single-task emitters — concurrent emits to one subject can still
-  interleave take and rollback.
 - **Responses dispatch outside the lock** (§6.1) — restoring per-observer
   response serialisation would restore the add/rid deadlock; responses that
   mutate shared state must synchronise themselves, and response objects
@@ -758,6 +751,56 @@ The last two such calls — `log_new_Response` / `log_rid_Response` inside
 mutate the maps (`rid` reports whether the subject's last response was
 removed), and the enclosing plain procedures do the sequence-map upkeep
 and the logging, exactly as `receive` already did after §6.1.
+
+
+## 9. Reserve/commit sequence-id pass
+
+**Files:** `events/interface/lace-subject.ads`,
+`events/mixin/lace-event-make_subject.ads/.adb`,
+`events/mixin/private/lace-event_emitter.adb`,
+`events/mixin/private/lace-event_sender.ads/.adb`,
+`1-base/lace/applet/test/regression/` (new coverage)
+
+The one remaining *unsound* failure path: a delivery that failed inside a
+pooled emitter/sender worker burned its sequence id, permanently stalling
+that subject's deferred observers, and no rollback from the worker was
+possible — the delegator might have issued later ids for the same observer
+meanwhile, so a decrement would forge a duplicate.
+
+The fix removes the "meanwhile". The emitter and sender delegators now
+route deliveries through per-observer **channels**: each observer has a
+pending queue and at most one delivery in flight; a worker reports back
+when its delivery ends (success or failure), which reopens the channel for
+the next dispatch. With deliveries serialised per observer, the id can be
+taken *by the worker, immediately before `receive`* — the observer's name
+is fetched first (a dead observer fails there, before any id is taken) —
+and restored immediately on a failed delivery, soundly, because no later
+id can exist for that observer. The next delivery reuses the id, so the
+observer-side sequence stays contiguous and the deferred-observer livelock
+class is gone. Cross-observer and cross-subject parallelism is unchanged;
+per-observer serialisation only removes a concurrency the sequence-check
+machinery existed to compensate for.
+
+Supporting changes: `lace.Subject`'s `next_Sequence` now takes the observer
+*name* (fetched once, guarded) instead of a view, and gained
+`restore_Sequence`; the sender's queued details no longer carry a
+precomputed id; a delegator that finds a worker dead at dispatch
+(`Tasking_Error`) frees the corpse and retries the still-queued delivery
+with a fresh worker, rather than dropping the event.
+
+The synchronous emit/send rollback (§3.6/§7.3) keeps its documented caveat:
+it is sound for a single emitting task per subject; concurrent synchronous
+emits to one subject can still interleave take and rollback. Mixing
+synchronous `emit` calls with an installed emitter has the same property.
+
+Coverage: the async machinery previously had **no user in the entire tree**
+— nothing called `use_event_Emitter`/`use_event_Sender`, which is how the
+id-loss survived every demo and test. `test_regression` now drives the
+emitter end to end: 100 events through a subject with an emitter to a
+deferred observer, asserting complete, in-order delivery (the event and
+response types live in the new `regression_Events` remote-types unit, since
+class-wide events sent through the potentially-remote subject interface
+must be transportable) and a clean synchronous destroy.
 
 
 ## Verification

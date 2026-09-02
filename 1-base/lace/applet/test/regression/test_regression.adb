@@ -10,6 +10,12 @@ with
      lace.Containers.shuffle_Vector,
      lace.fast_Pool,
      lace.Environ.Paths,
+     lace.Event.utility,
+     lace.Subject,
+     lace.Observer,
+     lace.Subject_and_deferred_Observer,
+
+     regression_Events,
 
      ada.Calendar,
      ada.Command_Line,
@@ -361,6 +367,47 @@ begin
       end loop;
 
       check (tiny_Pool.new_Item /= null, "pools: freeing beyond the pool size is harmless");
+   end;
+
+
+   --- Events: the asynchronous emitter
+   --
+   declare
+      use lace.Subject_and_deferred_Observer,
+          regression_Events;
+
+      S : View := Forge.new_Subject_and_Observer ("regression_subject");
+      O : View := Forge.new_Subject_and_Observer ("regression_observer");
+
+      the_Response : aliased counting_Response;
+   begin
+      lace.Subject.view (S).use_event_Emitter;
+
+      lace.Event.utility.connect (the_Observer  => lace.Observer.view (O),
+                                  to_Subject    => lace.Subject.view (S),
+                                  with_Response => the_Response'unchecked_Access,
+                                  to_event_Kind => lace.Event.utility.to_Kind (tick_Event'Tag));
+
+      for i in 1 .. 100
+      loop
+         lace.Subject.view (S).emit (tick_Event' (lace.Event.item with Id => i));
+      end loop;
+
+      for i in 1 .. 500
+      loop
+         lace.Observer.view (O).respond;
+
+         exit when the_Response.Count = 100;
+         delay 0.01;
+      end loop;
+
+      check (the_Response.Count = 100, "events: the emitter delivers every event");
+      check (the_Response.in_Order,    "events: the emitter preserves emission order");
+
+      free (S);
+      free (O);
+
+      check (True, "events: emitter subject and observer destroy cleanly");
    end;
 
 
