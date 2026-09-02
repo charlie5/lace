@@ -61,6 +61,11 @@ is
       First  : Natural  := 1;
       Last   : Natural;
    begin
+      if Pattern = ""
+      then
+         return;
+      end if;
+
       while First <= Self.Length
       loop
          Last := First + Pattern'Length - 1;

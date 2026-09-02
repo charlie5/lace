@@ -29,6 +29,11 @@ is
       Result   : wide_String (1 .. Length);
       i        : Natural        := 0;
    begin
+      if Length = 0
+      then
+         return "";
+      end if;
+
       open  (the_File, in_File, String (Filename));
       read  (the_File, Pad);
       close (the_File);
