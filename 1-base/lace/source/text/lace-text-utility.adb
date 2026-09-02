@@ -36,7 +36,8 @@ is
 
       -- Corner case: Pattern exactly matches tail of Self.
       --
-      if Self.Data (Self.Length - Pattern'Length + 1 .. Self.Length) = Pattern
+      if          Pattern'Length <= Self.Length
+         and then Self.Data (Self.Length - Pattern'Length + 1 .. Self.Length) = Pattern
       then
          Tail_matches_Pattern := True;
       end if;
