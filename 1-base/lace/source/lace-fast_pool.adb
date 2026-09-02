@@ -1,5 +1,10 @@
+with
+     ada.unchecked_Deallocation;
+
+
 package body lace.fast_Pool
 is
+   procedure deallocate is new ada.unchecked_Deallocation (Item, View);
 
    type Views is array (1 .. pool_Size) of View;
 
@@ -38,8 +43,18 @@ is
         when True
       is
       begin
-         Count             := Count + 1;
-         Available (Count) := the_Item;
+         if Count = pool_Size
+         then
+            declare
+               Doomed : View := the_Item;
+            begin
+               deallocate (Doomed);     -- The pool is full.
+            end;
+
+         else
+            Count             := Count + 1;
+            Available (Count) := the_Item;
+         end if;
       end free;
    end Pool;
 

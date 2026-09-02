@@ -169,7 +169,7 @@ is
 
 
    actual_pool_Size : Positive;
-   prior_HWM        : Positive;
+   prior_HWM        : Natural := 0;
    HWM_Filename     : constant String := "." & Name & "-high_water_mark";
 
 
@@ -183,7 +183,7 @@ is
            ada.Streams,
            ada.Streams.Stream_IO;
 
-      HWM  : constant Positive        := Pool.max_array_Size + Pool.max_heap_Size;
+      HWM  : constant Natural         := Pool.max_array_Size + Pool.max_heap_Size;
       File :          File_type;
       S    : access   root_Stream_type;
    begin
