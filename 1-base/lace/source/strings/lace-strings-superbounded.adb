@@ -1193,7 +1193,7 @@ is
                               Drop     : in     ada.Strings.Truncation := ada.Strings.Error)
    is
       Max_Length : constant Positive := Source.Max_Length;
-      Endpos     : constant Positive := Position + new_Item'Length - 1;
+      Endpos     : constant Natural  := Position + new_Item'Length - 1;     -- Natural, since 'new_Item' may be empty.
       Slen       : constant Natural  := Source.Current_Length;
       Droplen    : Natural;
 
