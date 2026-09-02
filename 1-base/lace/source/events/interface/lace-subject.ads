@@ -33,8 +33,17 @@ is
    --- Attributes
    --
 
-   function Name          (Self : in     Item)                                    return Event.subject_Name is abstract;
-   function next_Sequence (Self : in out Item;   for_Observer : in Observer.view) return Event.sequence_Id  is abstract;
+   function Name (Self : in Item) return Event.subject_Name is abstract;
+
+   function next_Sequence (Self : in out Item;   for_observer_Name : in String) return Event.sequence_Id is abstract;
+   --
+   -- Takes the next send sequence id for the named observer.
+
+   procedure restore_Sequence (Self : in out Item;   for_observer_Name : in String) is abstract;
+   --
+   -- Returns an id taken via 'next_Sequence' whose delivery failed, so the next delivery reuses it.
+   -- Sound only while no later id has been taken for the same observer, which requires deliveries
+   -- to a given observer to be serialised.
 
 
    -------------

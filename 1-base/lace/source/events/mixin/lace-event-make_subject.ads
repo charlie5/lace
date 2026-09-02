@@ -45,7 +45,10 @@ is
    function observer_Count (Self : in Item) return Natural;
 
    overriding
-   function next_Sequence  (Self : in out Item;   for_Observer : in Observer.view) return Event.sequence_Id;
+   function  next_Sequence    (Self : in out Item;   for_observer_Name : in String) return Event.sequence_Id;
+
+   overriding
+   procedure restore_Sequence (Self : in out Item;   for_observer_Name : in String);
 
 
    --------------

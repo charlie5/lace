@@ -56,14 +56,23 @@ is
 
 
    overriding
-   function next_Sequence (Self : in out Item;   for_Observer : in Observer.view) return Event.sequence_Id
+   function next_Sequence (Self : in out Item;   for_observer_Name : in String) return Event.sequence_Id
    is
       Sequence : sequence_Id;
    begin
       Self.sequence_Id_Map.get_Next (Sequence,
-                                     for_Observer.Name);
+                                     for_observer_Name);
       return Sequence;
    end next_Sequence;
+
+
+
+   overriding
+   procedure restore_Sequence (Self : in out Item;   for_observer_Name : in String)
+   is
+   begin
+      Self.sequence_Id_Map.decrement (for_Name => for_observer_Name);
+   end restore_Sequence;
 
 
    --------------
@@ -285,8 +294,7 @@ is
 
       else
          Self.Sender.add (the_Event,
-                          for_Observer => to_Observer,
-                          from_Subject => lace.Subject.view (Self));
+                          for_Observer => to_Observer);
       end if;
    end send;
 
