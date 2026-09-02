@@ -25,7 +25,7 @@ is
    -- Maps to the extended name of 'ada.Tags.Tag_type' value of each derived
    -- event class (see 'Conversions' section in 'lace.Event.utility').
 
-   type sequence_Id is range 0 .. 2**32 - 1;
+   type sequence_Id is mod 2**32;     -- Wraps at the last id, matching the observers' expected sequence wrap.
 
 
    ---------
