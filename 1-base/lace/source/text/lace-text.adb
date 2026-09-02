@@ -207,12 +207,18 @@ is
                                                 Through : in Natural := Natural'Last)
    is
       Thru : constant Natural := Natural'Min (Through, Self.Length);
-      Tail : constant String  := Self.Data (Thru + 1 .. Self.Length);
    begin
-      Self.Data (From .. From + Tail'Length - 1) := Tail;
-      Self.Length                                :=   Self.Length
-                                                    - (Natural'Min (Thru,
-                                                                    Self.Length) - From + 1);
+      if Thru < From
+      then
+         return;     -- The range is empty, inverted or past the end, so there is nothing to delete.
+      end if;
+
+      declare
+         Tail : constant String := Self.Data (Thru + 1 .. Self.Length);
+      begin
+         Self.Data (From .. From + Tail'Length - 1) := Tail;
+         Self.Length                                := Self.Length - (Thru - From + 1);
+      end;
    end delete;
 
 
@@ -222,11 +228,11 @@ is
 
    function Item_input (Stream : access ada.Streams.root_Stream_type'Class) return Item
    is
-      Capacity : Positive;
+      Capacity : Natural;
       Length   : Natural;
    begin
-      Positive'read (Stream, Capacity);
-      Natural 'read (Stream, Length);
+      Natural'read (Stream, Capacity);
+      Natural'read (Stream, Length);
 
       declare
          Data : String (1 .. Capacity);
@@ -245,8 +251,8 @@ is
                           the_Item : in     Item)
    is
    begin
-      Positive'write (Stream, the_Item.Capacity);
-      Natural 'write (Stream, the_Item.Length);
+      Natural'write (Stream, the_Item.Capacity);
+      Natural'write (Stream, the_Item.Length);
       String  'write (Stream, the_Item.Data (1 .. the_Item.Length));
    end Item_output;
 
