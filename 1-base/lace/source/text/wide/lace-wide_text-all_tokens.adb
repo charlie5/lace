@@ -346,10 +346,10 @@ is
          end;
       end loop;
 
-      if         Delimiter'Length in 1 .. Self.Length
-        and then Self.Data (Self.Length - Delimiter'Length + 1 .. Self.Length) = Delimiter
-      then                                                      -- Handle case where final characters are the delimiter.
-         Count := Count + 1;                                    -- Allow for an empty token.
+      if         Self.Length > 0
+        and then not Cursor.at_End
+      then                                                      -- The scan ended by consuming a delimiter at the very end.
+         Count := Count + 1;                                    -- Allow for a final empty token.
       end if;
 
       if Count > max_Tokens

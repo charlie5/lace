@@ -23,6 +23,11 @@ is
 
    function  has_Element (Self : in     Item) return Boolean;
 
+   function  at_End      (Self : in     Item) return Boolean;
+   --
+   -- True once a scan has consumed the remainder of the text with no delimiter at the very end
+   -- (a scan which ends by consuming a final delimiter leaves the cursor just past the end instead).
+
    function  next_Token  (Self : in out Item;   Delimiter  : in Character := ' ';
                                                 Trim       : in Boolean   := False) return String;
    function  next_Token  (Self : in out Item;   Delimiter  : in String;
