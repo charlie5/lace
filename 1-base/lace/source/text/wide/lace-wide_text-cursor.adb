@@ -87,7 +87,7 @@ is
                   Self.Current := delimiter_Position;
 
                else
-                  Self.Current := delimiter_Position + Delimiter'Length - 1;
+                  Self.Current := delimiter_Position + Delimiter'Length;     -- Move past the delimiter, lest the next repeat find it again.
                end if;
             end if;
          end;
@@ -218,6 +218,11 @@ is
       First : Positive;
       Last  : Natural;
    begin
+      if at_End (Self)
+      then
+         raise no_data_Error;
+      end if;
+
       Text := Self.Target.Data (Self.Current .. Self.Target.Length);
       find_Token (Text, integer_Numerals, Inside, First, Last);
 
@@ -241,6 +246,11 @@ is
       First : Positive;
       Last  : Natural;
    begin
+      if at_End (Self)
+      then
+         raise no_data_Error;
+      end if;
+
       Text := Self.Target.Data (Self.Current .. Self.Target.Length);
       find_Token (Text, integer_Numerals, Inside, First, Last);
 
@@ -264,6 +274,11 @@ is
       First : Positive;
       Last  : Natural;
    begin
+      if at_End (Self)
+      then
+         raise no_data_Error;
+      end if;
+
       Text := Self.Target.Data (Self.Current .. Self.Target.Length);
       find_Token (Text, float_Numerals, Inside, First, Last);
 
