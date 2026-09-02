@@ -688,6 +688,31 @@ sender twins (§3.2), so the `Connections` queue cannot be used after the
 enclosing object is reclaimed; the delegator's pool re-add is gated on
 `Tasking_Error` as in §7.2.
 
+### 7.8 Deregistering a dead observer raised from inside the lock
+
+**Files:** `events/mixin/lace-event-make_subject.ads/.adb`
+
+Found not by review but by the new partition-failure test (below):
+`safe_Observers.rid` called `the_Observer.Name` — a remote call, on an
+observer being deregistered precisely because it died — inside the protected
+action. The `communication_Error` escaped `deregister`, crossed DSA back
+into the caller (in the demo: the registrar's client-checker task, killing
+it, after which `shutdown`'s `halt` raised `Tasking_Error` out of the
+program). `rid` now just reports whether the observer remains registered
+for any other kind, and `deregister` fetches the name outside the lock,
+guarded — a dead observer leaves at most a stale sequence-map entry, which
+is unreachable and harmless. The `check_Client_lives` task and `shutdown`
+in the chat demo's registrar were hardened for the same scenario.
+
+### 7.9 Small leftovers
+
+`shuffle_Vector` crashed on a vector with fewer than two elements (the
+`Index_type` conversion of a zero length); it now returns at once. The text
+logger's `destruct` closed an already-closed file on a second call; the
+Gate now tolerates it. And six formatting-guide deviations in code added by
+this series (two-blank gaps in the new protected bodies, a missing blank
+before an `else`) were brought back to the guide.
+
 ### Known limitations, deliberately retained
 
 The re-review also flagged four things that are design decisions rather
@@ -766,3 +791,11 @@ extended to 40 checks (overlapping-delimiter tokenisation, the empty-pattern
 replace procedure, the empty wide file, and the sorted / prefix-preserving /
 pattern-echoing `expand_GLOB` contract) — full-tree `build_all`, all applet
 tests, both event demos and the DSA chat run all pass.
+
+Finally, the testing gap this whole exercise exposed — every serious late
+finding lived in the DSA *failure* paths — is now covered by a checked-in
+test: `1-base/lace/applet/demo/event/distributed/test/partition_failure/test.sh`
+starts the name server, the registrar and two chat clients, kills one client
+with SIGKILL mid-conversation, and asserts that the survivor's next
+broadcast completes, that survivor and registrar both exit cleanly, and that
+no partition reports an unhandled exception. Its first run caught §7.8.
