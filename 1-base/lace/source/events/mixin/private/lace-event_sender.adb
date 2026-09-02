@@ -94,6 +94,8 @@ is
 
          exception
             when E : others =>
+               sender_Pool.add (Myself);                                     -- Return the sender to the safe pool before logging, which may itself fail.
+
                ada.Text_IO.new_Line;
                ada.Text_IO.put_Line (ada.Exceptions.exception_Information (E));
                ada.Text_IO.put_Line ("Error detected in 'lace.event_Sender.Sender' task.");
@@ -102,7 +104,6 @@ is
                ada.Text_IO.put_Line ("Observer: '" & the_Observer.Name    & "'.");
                ada.Text_IO.put_Line ("Continuing.");
                ada.Text_IO.new_Line (2);
-               sender_Pool.add      (Myself);                                -- Return the sender to the safe pool.
          end;
       end loop;
 
@@ -127,6 +128,7 @@ is
    is
       the_subject_Name :         string_Holder;
       the_Senders      : aliased safe_Senders;
+      sender_Count     :         Natural     := 0;
 
       the_send_Details :         safe_send_Details_view;
       new_send_Details :         send_Details_Vector;
@@ -140,11 +142,19 @@ is
                                                            Sender_view);
          the_Sender : Sender_view;
       begin
+         -- Await busy senders, so none can touch 'the_Senders' after this task exits.
+         --
+         while sender_Count > 0
          loop
             the_Senders.get (the_Sender);
-            exit when the_Sender = null;
 
-            free (the_Sender);
+            if the_Sender = null
+            then
+               delay 0.001;     -- A busy sender has yet to return to the pool.
+            else
+               free (the_Sender);
+               sender_Count := sender_Count - 1;
+            end if;
          end loop;
       end shutdown;
 
@@ -184,7 +194,8 @@ is
 
                if the_Sender = null
                then
-                  the_Sender := new Sender;
+                  the_Sender   := new Sender;
+                  sender_Count := sender_Count + 1;
                end if;
 
                the_Sender.send (Self         => the_Sender,
@@ -196,6 +207,11 @@ is
 
             exception
                when E : others =>
+                  if the_Sender /= null
+                  then
+                     the_Senders.add (the_Sender);     -- Return the undispatched sender to the pool.
+                  end if;
+
                   ada.Text_IO.new_Line;
                   ada.Text_IO.put_Line (ada.Exceptions.exception_Information (E));
                   ada.Text_IO.new_Line;
@@ -307,6 +323,11 @@ is
    is
    begin
       Self.Delegator.stop;
+
+      while not Self.Delegator'Terminated     -- Await the delegator, which uses 'Self.send_Details' until it exits.
+      loop
+         delay 0.001;
+      end loop;
    end destroy;
 
 

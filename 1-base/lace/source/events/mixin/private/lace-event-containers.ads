@@ -44,7 +44,10 @@ is
 
       procedure get_Next  (Id       :    out Event.sequence_Id;
                            for_Name : in     String);
-      procedure decrement (for_Name : in     String);     -- TODO: Rid.
+      procedure increment (for_Name : in     String);
+      procedure decrement (for_Name : in     String);
+
+      function  Element   (for_Name : in     String) return Event.sequence_Id;
 
    private
       the_Map : name_Map_of_sequence_Id;

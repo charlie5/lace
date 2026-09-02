@@ -2,6 +2,7 @@ with
      lace.Event.Logger,
      lace.Event.utility,
 
+     ada.Text_IO,
      ada.unchecked_Deallocation;
 
 
@@ -28,11 +29,7 @@ is
    is
    begin
       Self.Responses.add (Self, the_Response, to_Kind, from_Subject);
-
-      if not Self.sequence_Id_Map.contains (from_Subject)
-      then
-         Self.sequence_Id_Map.insert (from_Subject, 0);
-      end if;
+      Self.sequence_Id_Map.add (from_Subject);
    end add;
 
 
@@ -70,12 +67,8 @@ is
                                             Sequence     : in sequence_Id)
    is
    begin
-      if not Self.sequence_Id_Map.contains (from_Subject)
-      then
-         Self.sequence_Id_Map.insert (from_Subject, 0);
-      end if;
-
-      Self.Responses.receive (Self, the_Event, from_Subject);
+      Self.sequence_Id_Map.add (from_Subject);
+      Self.Responses.receive  (Self, the_Event, from_Subject);
    end receive;
 
 
@@ -112,6 +105,8 @@ is
 
             next (Cursor);
          end loop;
+
+         my_Responses.clear;     -- Rid the dangling views, so a repeated destroy is harmless.
       end destroy;
 
 
@@ -154,7 +149,7 @@ is
 
          if my_Responses.Element (from_Subject).is_Empty
          then
-            Self.sequence_Id_Map.delete (from_Subject);
+            Self.sequence_Id_Map.rid (from_Subject);
          end if;
 
          if Observer.Logger /= null
@@ -215,73 +210,78 @@ is
 
          use type lace.Observer.view;
 
-         the_Responses :          event_response_Map    renames my_Responses.Element (from_Subject).all;
-         the_Response  : constant event_response_Maps.Cursor := the_Responses.find (to_Kind (the_Event'Tag));
-
-         my_Name : constant String := Observer.item'Class (Self.all).Name;
+         function my_Name return String
+         is (Observer.item'Class (Self.all).Name);
 
       begin
-         if has_Element (the_Response)
+         if not my_Responses.contains (from_Subject)
          then
-            Element (the_Response).respond (the_Event);
-
-            if Observer.Logger /= null
-            then
-               Observer.Logger.log_Response (Element (the_Response),
-                                             Observer.view (Self),
-                                             the_Event,
-                                             from_Subject);
-            end if;
-
-         elsif relay_Target /= null
-         then
-            -- Self.relay_Target.notify (the_Event, from_Subject_Name);   -- todo: Re-enable event relays.
-
-            if Observer.Logger /= null
-            then
-               Observer.Logger.log ("[Warning] ~ Relayed events are currently disabled.");
-            else
-               raise program_Error with "Event relaying is currently disabled.";
-            end if;
-
-         else
-            if Observer.Logger /= null
-            then
-               Observer.Logger.log (  "[Warning] ~ Observer "
-                                    & my_Name
-                                    & " has no response to "
-                                    & Name_of (the_Event)
-                                    & " from "
-                                    & from_Subject
-                                    & ".");
-               Observer.Logger.log ("            count of responses =>" & the_Responses.Length'Image);
-
-            else
-               raise program_Error with   "Observer "
-                                        & my_Name
-                                        & " has no response to "
-                                        & Name_of (the_Event)
-                                        & " from "
-                                        & from_Subject
-                                        & ".";
-            end if;
-         end if;
-
-      exception
-         when constraint_Error =>
             if Observer.Logger /= null
             then
                Observer.Logger.log (  my_Name
                                     & " has no responses for events from "
                                     & from_Subject
                                     & ".");
-
             else
                raise program_Error with   my_Name
                                         & " has no responses for events from "
                                         & from_Subject
                                         & ".";
             end if;
+
+            return;
+         end if;
+
+         declare
+            the_Responses :          event_response_Map    renames my_Responses.Element (from_Subject).all;
+            the_Response  : constant event_response_Maps.Cursor := the_Responses.find (to_Kind (the_Event'Tag));
+         begin
+            if has_Element (the_Response)
+            then
+               Element (the_Response).respond (the_Event);
+
+               if Observer.Logger /= null
+               then
+                  Observer.Logger.log_Response (Element (the_Response),
+                                                Observer.view (Self),
+                                                the_Event,
+                                                from_Subject);
+               end if;
+
+            elsif relay_Target /= null
+            then
+               -- Event relaying awaits re-implementation, so warn and drop the event.
+               --
+               if Observer.Logger /= null
+               then
+                  Observer.Logger.log ("[Warning] ~ Relayed events are currently disabled.");
+               else
+                  ada.Text_IO.put_Line ("[Warning] ~ Relayed events are currently disabled.");
+               end if;
+
+            else
+               if Observer.Logger /= null
+               then
+                  Observer.Logger.log (  "[Warning] ~ Observer "
+                                       & my_Name
+                                       & " has no response to "
+                                       & Name_of (the_Event)
+                                       & " from "
+                                       & from_Subject
+                                       & ".");
+                  Observer.Logger.log ("            count of responses =>" & the_Responses.Length'Image);
+
+               else
+                  raise program_Error with   "Observer "
+                                           & my_Name
+                                           & " has no response to "
+                                           & Name_of (the_Event)
+                                           & " from "
+                                           & from_Subject
+                                           & ".";
+               end if;
+            end if;
+         end;
       end receive;
 
    end safe_Responses;

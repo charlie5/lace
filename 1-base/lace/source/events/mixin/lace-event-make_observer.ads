@@ -146,7 +146,7 @@ private
    with
       record
          Responses       : safe_Responses;
-         sequence_Id_Map : Containers.name_Map_of_sequence_Id;     -- Contains the next expected sequence ID from each subject.
+         sequence_Id_Map : Containers.safe_sequence_Id_Map;     -- Contains the next expected sequence ID from each subject.
       end record;
 
 

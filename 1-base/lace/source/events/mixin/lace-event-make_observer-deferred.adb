@@ -1,6 +1,8 @@
 with
      lace.Event.Logger,
      lace.Event.utility,
+
+     ada.Text_IO,
      ada.unchecked_Deallocation;
 
 
@@ -53,8 +55,7 @@ is
                          the_Events        : in Event_Vector;
                          from_subject_Name : in Event.subject_Name)
       is
-         expected_Sequence : Containers.name_Maps_of_sequence_Id.Reference_type renames Self.sequence_Id_Map (from_subject_Name);
-         Cursor            : Event_Vectors.Cursor                               :=      the_Events.First;
+         Cursor : Event_Vectors.Cursor := the_Events.First;
       begin
          while has_Element (Cursor)
          loop
@@ -71,11 +72,11 @@ is
                Response     : constant event_response_Maps.Cursor := the_Responses.find (to_Kind (the_Event'Tag));
 
             begin
-               -- put_Line ("observer " & my_Name & " from " & from_subject_Name & "     seq" & the_Sequence'Image & "     exp seq " & sequence_Id' (expected_Sequence)'Image);
+               -- put_Line ("observer " & my_Name & " from " & from_subject_Name & "     seq" & the_Sequence'Image & "     exp seq " & Self.sequence_Id_Map.Element (from_subject_Name)'Image);
 
-               if the_Sequence = expected_Sequence
+               if the_Sequence = Self.sequence_Id_Map.Element (from_subject_Name)
                then
-                  expected_Sequence := expected_Sequence + 1;
+                  Self.sequence_Id_Map.increment (from_subject_Name);
 
                   if has_Element (Response)
                   then
@@ -91,13 +92,13 @@ is
 
                   elsif Self.Responses.relay_Target /= null
                   then
-                     -- Self.relay_Target.notify (the_Event, from_Subject_Name);   -- todo: Re-enable relayed events.
-
+                     -- Event relaying awaits re-implementation, so warn and drop the event.
+                     --
                      if Observer.Logger /= null
                      then
                         Observer.Logger.log ("[Warning] ~ Relayed events are currently disabled.");
                      else
-                        raise program_Error with "Event relaying is currently disabled.";
+                        ada.Text_IO.put_Line ("[Warning] ~ Relayed events are currently disabled.");
                      end if;
 
                   else
@@ -162,10 +163,7 @@ is
             begin
                if Self.Responses.contains (subject_Name.all)
                then
-                  if not Self.sequence_Id_Map.contains (subject_Name.all)
-                  then
-                     Self.sequence_Id_Map.insert (subject_Name.all, 0);
-                  end if;
+                  Self.sequence_Id_Map.add (subject_Name.all);
 
                   Sorter.sort (the_Events);
                   actuate     (Self.Responses.Element (subject_Name.all),
@@ -322,6 +320,8 @@ is
 
             next (Cursor);
          end loop;
+
+         the_Map.clear;     -- Rid the dangling views, so a repeated free is harmless.
       end free;
 
    end safe_subject_Map_of_safe_events;

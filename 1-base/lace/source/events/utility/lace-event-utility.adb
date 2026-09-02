@@ -126,6 +126,9 @@ is
             procedure deallocate is new ada.unchecked_Deallocation (Event.Logger.text.item'Class,
                                                                     Event.Logger.text.view);
          begin
+            lace.Subject .Logger_is (null);
+            lace.Observer.Logger_is (null);
+
             the_Logger.destruct;
             deallocate (the_Logger);
          end;

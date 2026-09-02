@@ -144,6 +144,7 @@ is
                exception
                   when system.RPC.communication_Error
                      | storage_Error =>
+                     Self.sequence_Id_Map.decrement (for_Name => my_Observers (i).Name);     -- Restore the undelivered sequence id.
 
                      if Subject.Logger /= null
                      then
@@ -193,6 +194,8 @@ is
          exception
             when system.RPC.communication_Error
                | storage_Error =>
+               Self.sequence_Id_Map.decrement (for_Name => my_Observers (i).Name);     -- Restore the undelivered sequence id.
+
                bad_Count                 := bad_Count + 1;
                bad_Observers (bad_Count) := my_Observers (i);
          end;
@@ -242,6 +245,7 @@ is
          exception
             when system.RPC.communication_Error
                | storage_Error =>
+               Self.sequence_Id_Map.decrement (for_Name => to_Observer.Name);     -- Restore the undelivered sequence id.
 
                if Subject.Logger /= null
                then
@@ -283,6 +287,8 @@ is
 
             next (Cursor);
          end loop;
+
+         the_Observers.clear;     -- Rid the dangling views, so a repeated destruct is harmless.
       end destruct;
 
 

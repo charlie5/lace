@@ -38,12 +38,29 @@ is
 
 
 
+      procedure increment (for_Name : in String)
+      is
+         next_Id : name_Maps_of_sequence_Id.Reference_type renames the_Map (for_Name);
+      begin
+         next_Id := next_Id + 1;
+      end increment;
+
+
+
       procedure decrement (for_Name : in String)
       is
          next_Id : name_Maps_of_sequence_Id.Reference_type renames the_Map (for_Name);
       begin
          next_Id := next_Id - 1;
       end decrement;
+
+
+
+      function Element (for_Name : in String) return Event.sequence_Id
+      is
+      begin
+         return the_Map.Element (for_Name);
+      end Element;
 
    end safe_sequence_Id_Map;
 

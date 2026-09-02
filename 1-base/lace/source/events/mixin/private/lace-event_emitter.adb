@@ -102,6 +102,8 @@ is
 
          exception
             when E : others =>
+               emitter_Pool.add (Myself);                                    -- Return the emitter to the safe pool before logging, which may itself fail.
+
                ada.Text_IO.new_Line;
                ada.Text_IO.put_Line (ada.Exceptions.exception_Information (E));
                ada.Text_IO.put_Line ("Error detected in 'lace.event_Emitter.Emitter' task.");
@@ -110,8 +112,6 @@ is
                ada.Text_IO.put_Line ("Observer: '" & the_Observer.Name    & "'.");
                ada.Text_IO.put_Line ("Continuing.");
                ada.Text_IO.new_Line (2);
-
-               emitter_Pool.add     (Myself);                                -- Return the emitter to the safe pool.
          end;
       end loop;
 
@@ -138,6 +138,7 @@ is
       the_subject_Name :         string_Holder;
 
       the_Emitters     : aliased safe_Emitters;
+      emitter_Count    :         Natural         := 0;
 
       the_Events       :         safe_Events_view;
       new_Events       :         event_Vector;
@@ -150,11 +151,19 @@ is
                                                            Emitter_view);
          the_Emitter : Emitter_view;
       begin
+         -- Await busy emitters, so none can touch 'the_Emitters' after this task exits.
+         --
+         while emitter_Count > 0
          loop
             the_Emitters.get (the_Emitter);
-            exit when the_Emitter = null;
 
-            free (the_Emitter);
+            if the_Emitter = null
+            then
+               delay 0.001;     -- A busy emitter has yet to return to the pool.
+            else
+               free (the_Emitter);
+               emitter_Count := emitter_Count - 1;
+            end if;
          end loop;
       end shutdown;
 
@@ -206,7 +215,8 @@ is
 
                      if the_Emitter = null
                      then
-                        the_Emitter := new Emitter;
+                        the_Emitter   := new Emitter;
+                        emitter_Count := emitter_Count + 1;
                      end if;
 
                      the_Emitter.emit (Self         => the_Emitter,
@@ -218,6 +228,11 @@ is
 
                   exception
                      when E : others =>
+                        if the_Emitter /= null
+                        then
+                           the_Emitters.add (the_Emitter);     -- Return the undispatched emitter to the pool.
+                        end if;
+
                         ada.Text_IO.new_Line;
                         ada.Text_IO.put_Line (ada.Exceptions.exception_Information (E));
                         ada.Text_IO.new_Line;
@@ -334,6 +349,11 @@ is
    is
    begin
       Self.Delegator.stop;
+
+      while not Self.Delegator'Terminated     -- Await the delegator, which uses 'Self.Events' until it exits.
+      loop
+         delay 0.001;
+      end loop;
    end destroy;
 
 
