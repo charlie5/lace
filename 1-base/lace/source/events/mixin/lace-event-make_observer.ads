@@ -121,9 +121,14 @@ private
       --- Operations
       --
 
-      procedure receive (Self         : access Item'Class;
-                         the_Event    : in     Event.item'Class;
-                         from_Subject : in     Event.subject_Name);
+      procedure find (from_Subject   : in     Event.subject_Name;
+                      to_Kind        : in     Event.Kind;
+                      the_Response   :    out Response.view;
+                      subject_Known  :    out Boolean;
+                      response_Count :    out Natural);
+      --
+      -- Looks up the response for an event kind. The caller dispatches the response
+      -- outside the protected action, so a response may itself add or rid responses.
 
    private
       my_Responses : subject_Map_of_event_responses;

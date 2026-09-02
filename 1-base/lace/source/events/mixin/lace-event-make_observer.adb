@@ -56,9 +56,76 @@ is
                                             from_Subject : in Event.subject_Name;
                                             Sequence     : in sequence_Id)
    is
+      use lace.Event.utility;
+
+      function my_Name return String
+      is (Observer.item'Class (Self.all).Name);
+
+      the_Response   : Response.view;
+      subject_Known  : Boolean;
+      response_Count : Natural;
    begin
       Self.sequence_Id_Map.add (from_Subject);
-      Self.Responses.receive  (Self, the_Event, from_Subject);
+
+      Self.Responses.find (from_Subject,
+                           to_Kind (the_Event'Tag),
+                           the_Response,
+                           subject_Known,
+                           response_Count);
+
+      if not subject_Known
+      then
+         if Observer.Logger /= null
+         then
+            Observer.Logger.log (  my_Name
+                                 & " has no responses for events from "
+                                 & from_Subject
+                                 & ".");
+         else
+            raise program_Error with   my_Name
+                                     & " has no responses for events from "
+                                     & from_Subject
+                                     & ".";
+         end if;
+
+         return;
+      end if;
+
+      if the_Response = null
+      then
+         if Observer.Logger /= null
+         then
+            Observer.Logger.log (  "[Warning] ~ Observer "
+                                 & my_Name
+                                 & " has no response to "
+                                 & Name_of (the_Event)
+                                 & " from "
+                                 & from_Subject
+                                 & ".");
+            Observer.Logger.log ("            count of responses =>" & response_Count'Image);
+
+         else
+            raise program_Error with   "Observer "
+                                     & my_Name
+                                     & " has no response to "
+                                     & Name_of (the_Event)
+                                     & " from "
+                                     & from_Subject
+                                     & ".";
+         end if;
+
+         return;
+      end if;
+
+      the_Response.respond (the_Event);     -- Dispatched outside the protected action, so a response may add or rid responses.
+
+      if Observer.Logger /= null
+      then
+         Observer.Logger.log_Response (the_Response,
+                                       Observer.view (Self),
+                                       the_Event,
+                                       from_Subject);
+      end if;
    end receive;
 
 
@@ -172,78 +239,37 @@ is
       --- Operations
       --
 
-      procedure receive (Self         : access Item'Class;
-                         the_Event    : in     Event.item'Class;
-                         from_Subject : in     Event.subject_Name)
+      procedure find (from_Subject   : in     Event.subject_Name;
+                      to_Kind        : in     Event.Kind;
+                      the_Response   :    out Response.view;
+                      subject_Known  :    out Boolean;
+                      response_Count :    out Natural)
       is
-         use
-              event_response_Maps,
-              subject_Maps_of_event_responses,
-              lace.Event.utility,
-              ada.Containers;
-
-         function my_Name return String
-         is (Observer.item'Class (Self.all).Name);
-
+         use event_response_Maps;
       begin
-         if not my_Responses.contains (from_Subject)
-         then
-            if Observer.Logger /= null
-            then
-               Observer.Logger.log (  my_Name
-                                    & " has no responses for events from "
-                                    & from_Subject
-                                    & ".");
-            else
-               raise program_Error with   my_Name
-                                        & " has no responses for events from "
-                                        & from_Subject
-                                        & ".";
-            end if;
+         subject_Known := my_Responses.contains (from_Subject);
 
+         if not subject_Known
+         then
+            the_Response   := null;
+            response_Count := 0;
             return;
          end if;
 
          declare
             the_Responses :          event_response_Map    renames my_Responses.Element (from_Subject).all;
-            the_Response  : constant event_response_Maps.Cursor := the_Responses.find (to_Kind (the_Event'Tag));
+            Cursor        : constant event_response_Maps.Cursor := the_Responses.find (to_Kind);
          begin
-            if has_Element (the_Response)
+            response_Count := Natural (the_Responses.Length);
+
+            if has_Element (Cursor)
             then
-               Element (the_Response).respond (the_Event);
-
-               if Observer.Logger /= null
-               then
-                  Observer.Logger.log_Response (Element (the_Response),
-                                                Observer.view (Self),
-                                                the_Event,
-                                                from_Subject);
-               end if;
-
+               the_Response := Element (Cursor);
             else
-               if Observer.Logger /= null
-               then
-                  Observer.Logger.log (  "[Warning] ~ Observer "
-                                       & my_Name
-                                       & " has no response to "
-                                       & Name_of (the_Event)
-                                       & " from "
-                                       & from_Subject
-                                       & ".");
-                  Observer.Logger.log ("            count of responses =>" & the_Responses.Length'Image);
-
-               else
-                  raise program_Error with   "Observer "
-                                           & my_Name
-                                           & " has no response to "
-                                           & Name_of (the_Event)
-                                           & " from "
-                                           & from_Subject
-                                           & ".";
-               end if;
+               the_Response := null;
             end if;
          end;
-      end receive;
+      end find;
 
    end safe_Responses;
 
