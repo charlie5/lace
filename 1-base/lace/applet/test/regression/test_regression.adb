@@ -228,12 +228,35 @@ begin
    end;
 
    declare
+      use lace.Text.all_Tokens;
+
+      the_Tokens : constant lace.Text.items_1k := Tokens (to_Text ("aaa"), Delimiter => "aa");
+   begin
+      check (         the_Tokens'Length = 2
+             and then to_String (the_Tokens (1)) = ""
+             and then to_String (the_Tokens (2)) = "a",
+             "text: an overlapping delimiter tail fabricates no token");
+   end;
+
+   declare
+      use lace.Text.utility;
+
+      T : lace.Text.item := to_Text ("abc");
+   begin
+      replace (T, Pattern => "", By => "xyz");
+      check (to_String (T) = "abc", "text: the replace procedure ignores an empty pattern");
+   end;
+
+   declare
       use lace.wide_Text;
    begin
-      lace.Environ.Paths.save (lace.Environ.Paths.to_File (Root & "/wide.txt"), "hello wide");
+      lace.Environ.Paths.save  (lace.Environ.Paths.to_File (Root & "/wide.txt"), "hello wide");
+      lace.Environ.Paths.touch (lace.Environ.Paths.to_File (Root & "/empty.txt"));
 
       check (forge.to_String (forge.Filename (Root & "/wide.txt")) = "hello wide",
              "wide text: forge.to_String reads a file");
+      check (forge.to_String (forge.Filename (Root & "/empty.txt")) = "",
+             "wide text: forge.to_String of an empty file is empty");
    end;
 
 
@@ -396,7 +419,15 @@ begin
                 and then Index (Expanded, "g2.txt")   > 0
                 and then Index (Expanded, "skip.dat") = 0,
                 "environ: expand_GLOB");
+
+         check (Expanded = Root & "/glob/g1.txt " & Root & "/glob/g2.txt",
+                "environ: expand_GLOB sorts matches and keeps the prefix");
       end;
+
+      check (expand_GLOB (Root & "/glob/*.nope") = Root & "/glob/*.nope",
+             "environ: expand_GLOB echoes an unmatched pattern");
+      check (expand_GLOB (Root & "/no_such_folder/*.txt") = Root & "/no_such_folder/*.txt",
+             "environ: expand_GLOB echoes a pattern in a missing folder");
 
       ensure_Folder (to_Folder (Root & "/globbed"));
       copy_Files    (Root & "/glob/*.txt", To => to_Folder (Root & "/globbed"));

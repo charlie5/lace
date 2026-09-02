@@ -592,6 +592,131 @@ The body summed the per-kind vector lengths (and carried a
 kinds counted three times. It now counts distinct observer views.
 
 
+## 7. Re-review pass
+
+A second full review of `1-base/lace/source` was run after all the above to
+check the fixes themselves. It confirmed every earlier defect stayed fixed —
+and found a batch of new ones, almost all in the DSA *failure* paths that
+the happy-path tests (local and distributed) cannot reach. This pass fixes
+them.
+
+### 7.1 Failure handlers dereferenced the dead observer
+
+**Files:** `events/mixin/lace-event-make_subject.adb`,
+`events/mixin/private/lace-event_emitter.adb`,
+`events/mixin/private/lace-event_sender.adb`
+
+The emit/send failure handlers introduced in §3.6 named the observer via
+`my_Observers (i).Name` — a remote call on the very observer whose death
+raised the exception — so the handler re-raised, the remaining observers
+never received the event, and the id was never restored. The observer's
+name is now fetched once, before delivery (a failure there is handled per
+observer without touching the counter), and the handlers use the saved
+name. The emitter/sender worker and fatal handlers got the same dead-party
+guards around their `Observer:` log lines that the connector already had,
+so a failed delivery can no longer kill a pooled worker task. The emitter
+delegator also now takes `next_Sequence` inside its handled region, so one
+dead observer no longer brings down the whole delegator through its fatal
+handler.
+
+### 7.2 A rendezvous-body exception double-freed a pooled worker
+
+**Files:** `events/mixin/private/lace-event_emitter.adb`,
+`events/mixin/private/lace-event_sender.adb`,
+`events/lace-event_connector.adb`
+
+An exception raised inside an `accept` body propagates to *both* rendezvous
+partners, so the worker's return-to-pool (§3.1) and the delegator's
+return-undispatched-worker each added the same view — and the count-driven
+shutdown then deallocated the same task object twice. The delegator now
+returns a worker only on `Tasking_Error` (the callee never engaged); any
+other exception reached the worker too, which returns itself.
+
+### 7.3 The sequence rollback fired after successful delivery
+
+**File:** `events/mixin/lace-event-make_subject.adb`
+
+The §3.6 `decrement` handler also covered the logging *after* a successful
+`receive`, so a failure in `log_Emit`/`log_Send` rolled back an id that had
+in fact been delivered, producing a duplicate. The rollback is now scoped
+to the `receive` call alone.
+
+### 7.4 `expand_GLOB` behaviour restored
+
+**File:** `environ/lace-environ-paths.adb`
+
+The §4.2 rewrite changed observable behaviour: matches came back in raw
+directory order (the old bash echo sorted them), bare globs gained a `./`
+prefix via `full_Name` (breaking `move_Files`' self-move comparison), a
+no-match glob returned an empty string (silently turning `rid_Files` of a
+typo'd pattern into a no-op), and a missing folder leaked `Name_Error`.
+Matches are now sorted and prefixed exactly as the pattern was written, and
+an unmatched pattern (or one naming a missing folder) is echoed back
+verbatim — the shell's behaviour, which downstream `check` calls turn into
+the same `Error` as before.
+
+### 7.5 String-delimiter tokens fabricated a trailing empty token
+
+**Files:** `text/lace-text-all_tokens.adb`,
+`text/wide/lace-wide_text-all_tokens.adb`, `text/lace-text-cursor.ads`,
+`text/wide/lace-wide_text-cursor.ads`
+
+The §5.6 trailing-delimiter test examined the raw text tail, so a tail that
+merely *overlapped* a delimiter occurrence (splitting `"aaa"` on `"aa"`)
+fabricated an extra empty token. The test now asks the cursor where the
+scan actually ended (`at_End`, made public for the purpose: it is false
+after a scan only when a final delimiter was consumed), which cannot
+disagree with the fill pass.
+
+### 7.6 Dropped guards restored
+
+**Files:** `text/wide/lace-wide_text-forge.adb`,
+`text/lace-text-utility.adb`, `text/wide/lace-wide_text-utility.adb`
+
+The §5.7 wide file reader lost its narrow twin's empty-file guard (an empty
+file raised `End_Error`), and the `replace` procedure never got the
+empty-pattern guard the function form gained in §5.5 (an empty pattern
+looped forever or overflowed capacity). Both guards are now in place, both
+widths.
+
+### 7.7 Connector hardening completed
+
+**File:** `events/lace-event_connector.adb`
+
+`destruct` now waits for the delegator's termination like its emitter and
+sender twins (§3.2), so the `Connections` queue cannot be used after the
+enclosing object is reclaimed; the delegator's pool re-add is gated on
+`Tasking_Error` as in §7.2.
+
+### Known limitations, deliberately retained
+
+The re-review also flagged four things that are design decisions rather
+than oversights; they stand, documented:
+
+- **Async sequence-id loss** — a delivery that fails inside a pooled
+  emitter/sender worker still burns its sequence id (stalling that
+  subject's deferred observers), because a rollback from the worker is
+  unsound: the delegator may have issued later ids meanwhile, and a
+  decrement would then duplicate one. A sound fix needs a reserve/commit id
+  protocol. The same reasoning limits the synchronous rollback (§3.6) to
+  single-task emitters — concurrent emits to one subject can still
+  interleave take and rollback.
+- **Responses dispatch outside the lock** (§6.1) — restoring per-observer
+  response serialisation would restore the add/rid deadlock; responses that
+  mutate shared state must synchronise themselves, and response objects
+  must not be freed while events are in flight.
+- **`destroy` must not race `emit`/`send`** (§6.2) — destroy frees the
+  emitter/sender; callers must stop emitting before destroying, as with
+  any deallocation.
+- **The logger's `Gate` performs `Text_IO` inside a protected action** — a
+  bounded error (RM 9.5.1) that GNAT's default runtime permits; a
+  `Detect_Blocking` runtime would reject it. A proper fix means a
+  seize/release lock held across the I/O and moving the remaining
+  in-action logging (`safe_Responses.add`/`rid`) out of the protected
+  object — left for its own pass. The `Ignored` set is likewise read
+  concurrently with `ignore`; call `ignore` during setup only.
+
+
 ## Verification
 
 - **Full tree:** `5-all/applet/build_all` compiles every component and demo
@@ -635,3 +760,9 @@ repeated (the instant observer's receive is exactly the restructured path),
 and the `chains_2d` and `mixed_joints_2d` gel demos run live under X and
 closed via `WM_DELETE_WINDOW`, so the full applet, world and sprite teardown
 executes. Every run exits cleanly.
+
+The re-review pass (§7) was verified the same way, with the regression suite
+extended to 40 checks (overlapping-delimiter tokenisation, the empty-pattern
+replace procedure, the empty wide file, and the sorted / prefix-preserving /
+pattern-echoing `expand_GLOB` contract) — full-tree `build_all`, all applet
+tests, both event demos and the DSA chat run all pass.
