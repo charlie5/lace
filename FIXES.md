@@ -853,6 +853,23 @@ instance). One behavioural note: `Seed_is` in either dice package now seeds
 the shared source.
 
 
+## 11. Remainders
+
+**Files:** `text/lace-text.adb`, `text/wide/lace-wide_text.adb`,
+`1-base/lace/alire.toml`, `4-high/gel/alire.toml`
+
+`Item_input` trusted a stream-supplied capacity and length: a corrupt DSA
+stream could request an arbitrarily large stack allocation, and a length
+beyond the capacity died on a bare range check. The length is now validated
+against the capacity (raising `Error` with a clear message), and the text
+is built in place in the function result instead of through a stack-sized
+local copy — so large texts no longer transit the primary stack twice.
+
+The Alire crate versions were brought up to date: `lace` to 2.0.0 (this
+series changes the public Observer and Subject interfaces) and `lace_gel`
+to 1.0.1 (an internal change only).
+
+
 ## Verification
 
 - **Full tree:** `5-all/applet/build_all` compiles every component and demo
