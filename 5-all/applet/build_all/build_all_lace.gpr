@@ -11,6 +11,7 @@ with
      "../../../1-base/lace/applet/test/environ/general/test_environ_general",
      "../../../1-base/lace/applet/test/environ/paths/test_environ_paths",
      "../../../1-base/lace/applet/test/job/test_job",
+     "../../../1-base/lace/applet/test/regression/test_regression",
      "../../../1-base/lace/applet/test/text/test_text",
 
      "../../../1-base/math/applet/demo/basic/basic_math_demo",

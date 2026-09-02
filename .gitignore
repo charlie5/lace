@@ -128,6 +128,8 @@ test_text_replace
 test_environ_general
 HelloWorld*
 test_dice
+test_regression
+1-base/lace/applet/test/regression/work/
 launch_hexagon_test
 launch_render_hex_grid
 

@@ -572,9 +572,20 @@ destroy chain (no in-tree user constructs one).
 The second (below-cap) pass was verified the same way: a clean full-tree
 `build_all`, the existing applet tests (`test_text`, `test_job`, `test_dice`,
 the three environ tests, both event demos), and the targeted check program
-extended to 32 checks — inverted-range delete, the empty-text stream
+extended to 34 checks — inverted-range delete, the empty-text stream
 round-trip, cursor repeat-advance and end-of-cursor behaviour, replace beyond
 the old ceilings and on empty texts, trailing-delimiter token agreement, the
 wide file reader, 10,000 bounded dice rolls with both extremes reached, the
 negative-modifier floor, element-preserving randomised shuffles, and
 over-freeing a two-slot pool. All pass.
+
+That check program is now a permanent test applet,
+`1-base/lace/applet/test/regression` (`test_regression`), wired into
+`build_all` like the other tests.
+
+The events overhaul was also exercised under DSA: the `simple_chat` demo was
+rebuilt with `po_gnatdist` against the fixed sources and run locally
+(`po_cos_naming` + registrar partition + two client partitions). Messages
+crossed partitions in both directions, join/leave notifications fired,
+deregistration completed cleanly, and both clients exited normally with no
+hang at shutdown.

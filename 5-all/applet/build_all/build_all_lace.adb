@@ -11,6 +11,7 @@ with
      test_Environ_general,
      test_Environ_Paths,
      test_Job,
+     test_Regression,
      test_Text_replace,
 
      launch_basic_math_Demo,
@@ -100,6 +101,7 @@ begin
    test_Environ_general;
    test_Environ_Paths;
    test_Job;
+   test_Regression;
    test_Text_replace;
 
    launch_basic_math_Demo;
