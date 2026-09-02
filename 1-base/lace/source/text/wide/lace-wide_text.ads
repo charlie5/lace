@@ -3,11 +3,13 @@ with
      ada.Streams;
 
 
-package lace.wide_Text     -- with Pure
+package lace.wide_Text
 --
 -- Models a string of wide text characters.
 --
 is
+   pragma Pure;
+
    type Item (Capacity : Natural) is private;
 
    Error : exception;

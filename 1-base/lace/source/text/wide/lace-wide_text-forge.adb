@@ -1,5 +1,5 @@
 with
-     ada.Characters.wide_latin_1,
+     ada.Characters.latin_1,
      ada.Directories,
      ada.Direct_IO,
      ada.wide_Text_IO;
@@ -17,16 +17,16 @@ is
            ada.Characters,
            ada.Directories;
 
-      Length : constant Natural := Natural (Size (String (Filename)));
+      Length : constant Natural := Natural (Size (String (Filename)));     -- The file size in bytes.
 
-      subtype sized_String is wide_String (1 .. Length);
+      subtype sized_String is String (1 .. Length);
 
       package my_IO is new ada.Direct_IO (sized_String);
       use     my_IO;
 
       the_File : my_IO.File_type;
       Pad      : sized_String;
-      Result   : sized_String;
+      Result   : wide_String (1 .. Length);
       i        : Natural        := 0;
    begin
       open  (the_File, in_File, String (Filename));
@@ -35,10 +35,10 @@ is
 
       for Each of Pad
       loop
-         if Each /= wide_latin_1.CR
+         if Each /= latin_1.CR
          then
             i          := i + 1;
-            Result (i) := Each;
+            Result (i) := wide_Character'Val (Character'Pos (Each));
          end if;
       end loop;
 
