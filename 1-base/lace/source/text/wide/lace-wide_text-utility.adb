@@ -1,6 +1,6 @@
 with
-     lace.wide_Text.all_Tokens,
-     ada.Strings.wide_fixed;
+     ada.Strings.wide_fixed,
+     ada.Strings.wide_unbounded;
 
 
 package body lace.wide_Text.utility
@@ -18,73 +18,35 @@ is
    function replace (Self : in wide_Text.item;   Pattern : in wide_String;
                                                  By      : in wide_String) return wide_Text.item
    is
-      Tail_matches_Pattern : Boolean := False;
+      use ada.Strings.wide_unbounded;
+
+      Result : unbounded_wide_String;
+      First  : Positive := 1;
    begin
-      -- Corner case: Pattern exactly matches Self.
-      --
-      if Self.Data (1 .. Self.Length) = Pattern
+      if Pattern = ""
       then
-         declare
-            Result : wide_Text.item (Capacity => Natural'Max (By'Length,
-                                                              Self.Capacity));
-         begin
-            Result.Length                := By'Length;
-            Result.Data (1 .. By'Length) := By;
-            return Result;
-         end;
+         return Self;
       end if;
 
-      -- Corner case: Pattern exactly matches tail of Self.
-      --
-      if          Pattern'Length <= Self.Length
-         and then Self.Data (Self.Length - Pattern'Length + 1 .. Self.Length) = Pattern
-      then
-         Tail_matches_Pattern := True;
-      end if;
-
-      -- General case.
-      --
-      declare
-         use lace.wide_Text.all_Tokens;
-
-         the_Tokens : constant wide_Text.items_1k := Tokens (Self, Delimiter => Pattern);
-         Size       :          Natural       := 0;
-      begin
-         for Each of the_Tokens
-         loop
-            Size := Size + Each.Length;
-         end loop;
-
-         Size := Size + (the_Tokens'Length - 1) * By'Length;
-
-         if Tail_matches_Pattern
+      while First <= Self.Length
+      loop
+         if          First + Pattern'Length - 1 <= Self.Length
+            and then Self.Data (First .. First + Pattern'Length - 1) = Pattern
          then
-            Size := Size + By'Length;
+            append (Result, By);
+            First := First + Pattern'Length;
+
+         else
+            append (Result, Self.Data (First));
+            First := First + 1;
          end if;
+      end loop;
 
-         declare
-            First  : Positive := 1;
-            Last   : Natural;
-            Result : wide_Text.item (Capacity => Natural'Max (Size,
-                                                              Self.Capacity));
-         begin
-            for Each of the_Tokens
-            loop
-               Last                        := First + Each.Length - 1;
-               Result.Data (First .. Last) := Each.Data (1 .. Each.Length);
-
-               exit when Last = Size;
-
-               First                       := Last  + 1;
-               Last                        := First + By'Length - 1;
-               Result.Data (First .. Last) := By;
-
-               First := Last + 1;
-            end loop;
-
-            Result.Length := Size;
-            return Result;
-         end;
+      declare
+         Image : constant wide_String := to_wide_String (Result);
+      begin
+         return to_Text (Image, Capacity => Natural'Max (Image'Length,
+                                                         Self.Capacity));
       end;
    end replace;
 
@@ -99,6 +61,7 @@ is
       First  : Natural  := 1;
       Last   : Natural;
    begin
+      while First <= Self.Length
       loop
          Last := First + Pattern'Length - 1;
 
@@ -118,8 +81,6 @@ is
             Cursor               := Cursor + 1;
             First                := First  + 1;
          end if;
-
-         exit when First > Self.Length;
       end loop;
 
       Self.Length                  := Cursor - 1;
