@@ -1,4 +1,6 @@
 with
+     system.RPC,
+
      ada.Text_IO,
      ada.Exceptions,
      ada.unchecked_Deallocation;
@@ -15,9 +17,22 @@ is
    subtype string_Holder  is string_Holders.Holder;
 
 
-   package sender_Vectors  is new ada.Containers.Vectors (Positive,
-                                                          Sender_view);
+   package sender_Vectors is new ada.Containers.Vectors (Positive,
+                                                         Sender_view);
    subtype sender_Vector  is sender_Vectors.Vector;
+
+
+   use type lace.Observer.view;
+
+   package observer_Vectors is new ada.Containers.Vectors (Positive,
+                                                           lace.Observer.view);
+   subtype observer_Vector  is observer_Vectors.Vector;
+
+
+   package pending_Vectors is new ada.Containers.Vectors (Positive,
+                                                          event_Holder,
+                                                          event_Holders."=");
+   subtype pending_Vector  is pending_Vectors.Vector;
 
 
    -----------------
@@ -37,6 +52,26 @@ is
    type safe_Senders_view is access all safe_Senders;
 
 
+   -----------------
+   --- Safe reports.
+   --
+   -- Each sender reports its observer here when a delivery ends, successfully
+   -- or not, which reopens the observer's channel for the next delivery.
+   --
+
+   protected
+   type safe_Reports
+   is
+      procedure add   (the_Observer  : in     lace.Observer.view);
+      procedure fetch (the_Observers :    out observer_Vector);
+
+   private
+      Completed : observer_Vector;
+   end safe_Reports;
+
+   type safe_Reports_view is access all safe_Reports;
+
+
    -----------
    --- Sender.
    --
@@ -48,7 +83,8 @@ is
                   the_Event    : in lace.Event.item'Class;
                   To           : in lace.Observer.view;
                   from_Subject : in String;
-                  Sequence     : in Event.sequence_Id;
+                  Subject      : in lace.Subject.view;
+                  Reports      : in safe_Reports_view;
                   Senders      : in safe_Senders_view);
    end Sender;
 
@@ -61,8 +97,10 @@ is
       Event        : event_Holder;
       the_Observer : lace.Observer.view;
       subject_Name : string_Holder;
-      the_Sequence : lace.Event.sequence_Id;
+      the_Subject  : lace.Subject.view;
+      the_Reports  : safe_Reports_view;
       sender_Pool  : safe_Senders_view;
+
    begin
       loop
          begin
@@ -71,30 +109,51 @@ is
                             the_Event    : in lace.Event.item'Class;
                             To           : in lace.Observer.view;
                             from_Subject : in String;
-                            Sequence     : in lace.Event.sequence_Id;
+                            Subject      : in lace.Subject.view;
+                            Reports      : in safe_Reports_view;
                             Senders      : in safe_Senders_view)
                do
-                  Event       .replace_Element (the_Event);
-                  subject_Name.replace_Element (from_Subject);
-
-                  the_Sequence := Sequence;
                   Myself       := Self;
                   the_Observer := To;
+                  the_Subject  := Subject;
 
+                  the_Reports  := Reports;
                   sender_Pool  := Senders;
+
+                  Event       .replace_Element (the_Event);
+                  subject_Name.replace_Element (from_Subject);
                end send;
             or
                terminate;
             end select;
 
-            the_Observer.receive (Event.Reference,
-                                  from_Subject => subject_Name.Element,
-                                  Sequence     => the_Sequence);
-            sender_Pool.add      (Myself);                                   -- Return the sender to the safe pool.
+            declare
+               observer_Name : constant String := the_Observer.Name;     -- Fails when the observer is dead, so no id is taken.
+
+               Sequence : constant lace.Event.sequence_Id
+                 := the_Subject.next_Sequence (for_observer_Name => observer_Name);
+            begin
+               the_Observer.receive (Event.Reference,
+                                     from_Subject => subject_Name.Element,
+                                     Sequence     => Sequence);
+
+            exception
+               when system.RPC.communication_Error
+                  | storage_Error =>
+                  the_Subject.restore_Sequence (for_observer_Name => observer_Name);     -- Sound ~ deliveries are serialised per observer,
+                  raise;                                                                 -- so no later id exists for this observer.
+            end;
+
+            the_Reports.add (the_Observer);                              -- Reopen the observer's channel.
+            sender_Pool.add (Myself);                                    -- Return the sender to the safe pool.
 
          exception
             when E : others =>
-               sender_Pool.add (Myself);                                     -- Return the sender to the safe pool before logging, which may itself fail.
+               if the_Reports /= null
+               then
+                  the_Reports.add (the_Observer);                        -- Reopen the observer's channel and return the sender
+                  sender_Pool.add (Myself);                              -- to the safe pool before logging, which may itself fail.
+               end if;
 
                ada.Text_IO.new_Line;
                ada.Text_IO.put_Line (ada.Exceptions.exception_Information (E));
@@ -142,8 +201,11 @@ is
    task
    body send_Delegator
    is
+      the_Subject      :         lace.Subject.view;
       the_subject_Name :         string_Holder;
+
       the_Senders      : aliased safe_Senders;
+      the_Reports      : aliased safe_Reports;
       sender_Count     :         Natural     := 0;
 
       the_send_Details :         safe_send_Details_view;
@@ -151,14 +213,66 @@ is
 
       Done             :         Boolean     := False;
 
+      use type ada.Exceptions.Exception_Id;
+
+      procedure free is new ada.unchecked_Deallocation (Sender,
+                                                        Sender_view);
+
+      --------------------------------------------------------------------------
+      --- Channels ~ deliveries to a given observer are serialised via a channel,
+      ---            so a failed delivery's sequence id can be safely reissued.
+      --
+
+      type Channel is
+         record
+            Observer : lace.Observer.view;
+            Busy     : Boolean := False;
+            Pending  : pending_Vector;
+         end record;
+
+      package channel_Vectors is new ada.Containers.Vectors (Positive, Channel);
+
+      Channels : channel_Vectors.Vector;
+
+
+      function channel_Index (for_Observer : in lace.Observer.view) return Positive
+      is
+      begin
+         for i in 1 .. Natural (Channels.Length)
+         loop
+            if Channels (i).Observer = for_Observer
+            then
+               return i;
+            end if;
+         end loop;
+
+         Channels.append (Channel' (Observer => for_Observer,
+                                    Busy     => False,
+                                    Pending  => pending_Vectors.empty_Vector));
+         return Positive (Channels.Length);
+      end channel_Index;
+
+
+      function all_Channels_are_idle return Boolean
+      is
+      begin
+         for Each of Channels
+         loop
+            if Each.Busy or else not Each.Pending.is_Empty
+            then
+               return False;
+            end if;
+         end loop;
+
+         return True;
+      end all_Channels_are_idle;
+
 
       procedure shutdown
       is
-         procedure free is new ada.unchecked_Deallocation (Sender,
-                                                           Sender_view);
          the_Sender : Sender_view;
       begin
-         -- Await busy senders, so none can touch 'the_Senders' after this task exits.
+         -- Await busy senders, so none can touch 'the_Senders' or 'the_Reports' after this task exits.
          --
          while sender_Count > 0
          loop
@@ -179,8 +293,10 @@ is
       accept start (Subject      : in lace.Subject.view;
                     send_Details : in safe_send_Details_view)
       do
-         the_subject_Name.replace_Element (Subject.Name);
+         the_Subject      := Subject;
          the_send_Details := send_Details;
+
+         the_subject_Name.replace_Element (Subject.Name);
       end start;
 
 
@@ -196,60 +312,83 @@ is
          end select;
 
 
-         exit when          Done
-                   and then the_send_Details.is_Empty;
-
+         -- Queue each new event on the channel of its target observer.
+         --
          the_send_Details.get (new_send_Details);
 
          for Each of new_send_Details
          loop
-            declare
-               use type ada.Exceptions.Exception_Id;
+            Channels (channel_Index (Each.Observer)).Pending.append (Each.Event);
+         end loop;
 
+
+         -- Reopen the channels of completed deliveries.
+         --
+         declare
+            freed_Observers : observer_Vector;
+         begin
+            the_Reports.fetch (freed_Observers);
+
+            for each_Observer of freed_Observers
+            loop
+               Channels (channel_Index (each_Observer)).Busy := False;
+            end loop;
+         end;
+
+
+         -- Dispatch one pending delivery per idle channel.
+         --
+         for i in 1 .. Natural (Channels.Length)
+         loop
+            declare
                the_Sender : Sender_view;
             begin
-               the_Senders.get (the_Sender);
-
-               if the_Sender = null
+               if         not Channels (i).Busy
+                 and then not Channels (i).Pending.is_Empty
                then
-                  the_Sender   := new Sender;
-                  sender_Count := sender_Count + 1;
-               end if;
+                  the_Senders.get (the_Sender);
 
-               the_Sender.send (Self         => the_Sender,
-                                the_Event    => Each.Event.Element,
-                                To           => Each.Observer,
-                                from_Subject => the_subject_Name.Element,
-                                Sequence     => Each.Sequence,
-                                Senders      => the_Senders'unchecked_Access);
+                  if the_Sender = null
+                  then
+                     the_Sender   := new Sender;
+                     sender_Count := sender_Count + 1;
+                  end if;
+
+                  the_Sender.send (Self         => the_Sender,
+                                   the_Event    => Channels (i).Pending.first_Element.Element,
+                                   To           => Channels (i).Observer,
+                                   from_Subject => the_subject_Name.Element,
+                                   Subject      => the_Subject,
+                                   Reports      => the_Reports'unchecked_Access,
+                                   Senders      => the_Senders'unchecked_Access);
+
+                  Channels (i).Pending.delete_First;
+                  Channels (i).Busy := True;
+               end if;
 
             exception
                when E : others =>
                   if          the_Sender /= null
                      and then ada.Exceptions.exception_Identity (E) = tasking_Error'Identity
                   then
-                     the_Senders.add (the_Sender);     -- The dead task never engaged, so return it to the pool.
-                  end if;                              -- Any other exception reached the sender too, which returns itself.
+                     free (the_Sender);                        -- The dead task never engaged ~ discard it and
+                     sender_Count := sender_Count - 1;         -- retry the delivery with a fresh sender.
+                  end if;
 
                   ada.Text_IO.new_Line;
                   ada.Text_IO.put_Line (ada.Exceptions.exception_Information (E));
                   ada.Text_IO.new_Line;
                   ada.Text_IO.put_Line ("Error detected in 'lace.event_Sender.send_Delegator'.");
-                  ada.Text_IO.put_Line ("Subject  '" & the_subject_Name.Element & "'.");
-
-                  begin
-                     ada.Text_IO.put_Line ("Observer '" & Each.Observer.Name & "'.");
-
-                  exception
-                     when others =>
-                        ada.Text_IO.put_Line ("Observer unavailable ~ the observer is dead.");
-                  end;
-
-                  ada.Text_IO.put_Line ("Event    '" & Each.Event'Image & "'.");
+                  ada.Text_IO.put_Line ("Subject '" & the_subject_Name.Element & "'.");
                   ada.Text_IO.put_Line ("Continuing.");
                   ada.Text_IO.new_Line (2);
             end;
          end loop;
+
+
+         exit when          Done
+                   and then the_send_Details.is_Empty
+                   and then all_Channels_are_idle;
 
          delay 0.001;
       end loop;
@@ -333,6 +472,32 @@ is
    end safe_Senders;
 
 
+   -----------------
+   --- Safe reports.
+   --
+
+   protected
+   body safe_Reports
+   is
+
+      procedure add (the_Observer : in lace.Observer.view)
+      is
+      begin
+         Completed.append (the_Observer);
+      end add;
+
+
+
+      procedure fetch (the_Observers : out observer_Vector)
+      is
+      begin
+         the_Observers := Completed;
+         Completed.clear;
+      end fetch;
+
+   end safe_Reports;
+
+
    ----------------------
    --- event_Sender item.
    --
@@ -360,14 +525,12 @@ is
 
 
    procedure add (Self : in out Item;   new_Event    : in lace.Event.item'Class;
-                                        for_Observer : in lace.Observer.view;
-                                        from_Subject : in lace.Subject.view)
+                                        for_Observer : in lace.Observer.view)
    is
       use event_Holders;
    begin
       Self.send_Details.add (send_Details' (Event    => to_Holder (new_Event),
-                                            Observer => for_Observer,
-                                            Sequence => from_Subject.next_Sequence (for_Observer => for_Observer)));
+                                            Observer => for_Observer));
    end add;
 
 

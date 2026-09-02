@@ -27,8 +27,7 @@ is
    --
 
    procedure add     (Self : in out Item;   new_Event    : in lace.Event.item'Class;
-                                            for_Observer : in lace.Observer.view;
-                                            from_Subject : in lace.Subject.view);
+                                            for_Observer : in lace.Observer.view);
 
 
 
@@ -43,7 +42,6 @@ private
       record
          Event    : event_Holder;
          Observer : lace.Observer.view;
-         Sequence : lace.Event.sequence_Id;
       end record;
 
 
