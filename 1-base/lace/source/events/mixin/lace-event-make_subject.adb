@@ -92,8 +92,21 @@ is
    procedure deregister (Self : in out Item;   the_Observer : in Observer.view;
                                                of_Kind      : in Event.Kind)
    is
+      still_Registered : Boolean;
    begin
-      Self.safe_Observers.rid (the_Observer, of_Kind, Self.sequence_Id_Map);
+      Self.safe_Observers.rid (the_Observer, of_Kind, still_Registered);
+
+      if not still_Registered
+      then
+         begin
+            Self.sequence_Id_Map.rid (the_Observer.Name);
+
+         exception
+            when system.RPC.communication_Error
+               | storage_Error =>
+               null;   -- The observer is dead, so its name cannot be fetched. Its stale sequence entry is harmless.
+         end;
+      end if;
 
       if Subject.Logger /= null
       then
@@ -332,39 +345,31 @@ is
 
 
 
-      procedure rid (the_Observer    : in     Observer.view;
-                     of_Kind         : in     Event.Kind;
-                     sequence_Id_Map : in out Containers.safe_sequence_Id_Map)
+      procedure rid (the_Observer     : in     Observer.view;
+                     of_Kind          : in     Event.Kind;
+                     still_Registered :    out Boolean)
       is
          the_event_Observers : event_Observer_Vector renames the_Observers.Element (of_Kind).all;
       begin
          the_event_Observers.delete (the_event_Observers.find_Index (the_Observer));
 
-         declare
-            Found : Boolean := False;
-         begin
-            for each_of_the_event_Observers of the_Observers
-            loop
-               declare
-                  the_event_Observers : event_Observer_Vector renames each_of_the_event_Observers.all;
-               begin
-                  for each_Observer of the_event_Observers
-                  loop
-                     if each_Observer = the_Observer
-                     then
-                        Found := True;
-                        exit;
-                     end if;
-                  end loop;
-               end;
-            end loop;
+         still_Registered := False;
 
-            if not Found
-            then
-               sequence_Id_Map.rid (the_Observer.Name);
-            end if;
-
-         end;
+         for each_of_the_event_Observers of the_Observers
+         loop
+            declare
+               the_event_Observers : event_Observer_Vector renames each_of_the_event_Observers.all;
+            begin
+               for each_Observer of the_event_Observers
+               loop
+                  if each_Observer = the_Observer
+                  then
+                     still_Registered := True;
+                     exit;
+                  end if;
+               end loop;
+            end;
+         end loop;
       end rid;
 
 
