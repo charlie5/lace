@@ -5,10 +5,17 @@ with
 procedure lace.Containers.shuffle_Vector (the_Vector : in out Vectors.Vector)
 is
    use ada.Numerics.float_Random;
+
    use type Vectors.Index_type;
+   use type ada.Containers.Count_type;
 
    the_Generator : Generator;
 begin
+   if the_Vector.Length < 2
+   then
+      return;     -- Nothing to shuffle.
+   end if;
+
    reset (the_Generator);
 
    for i in reverse 2 .. Vectors.Index_type (the_Vector.Length)    -- Start from 2, since swapping the

@@ -44,10 +44,14 @@ is
       end put_Line;
 
 
+
       procedure close (File : in File_view)
       is
       begin
-         ada.Text_IO.close (File.all);
+         if ada.Text_IO.is_Open (File.all)     -- Tolerate a repeated destruct.
+         then
+            ada.Text_IO.close (File.all);
+         end if;
       end close;
    end Gate;
 
