@@ -33,7 +33,7 @@ is
          next_Id : name_Maps_of_sequence_Id.Reference_type renames the_Map (for_Name);
       begin
          Id      := next_Id;
-         next_Id := next_Id + 1;
+         next_Id := (if next_Id = Event.sequence_Id'Last then 0 else next_Id + 1);     -- Wrap at the last id.
       end get_Next;
 
 
@@ -42,7 +42,7 @@ is
       is
          next_Id : name_Maps_of_sequence_Id.Reference_type renames the_Map (for_Name);
       begin
-         next_Id := next_Id + 1;
+         next_Id := (if next_Id = Event.sequence_Id'Last then 0 else next_Id + 1);     -- Wrap at the last id.
       end increment;
 
 
@@ -51,7 +51,7 @@ is
       is
          next_Id : name_Maps_of_sequence_Id.Reference_type renames the_Map (for_Name);
       begin
-         next_Id := next_Id - 1;
+         next_Id := (if next_Id = 0 then Event.sequence_Id'Last else next_Id - 1);     -- Wrap at the first id.
       end decrement;
 
 
