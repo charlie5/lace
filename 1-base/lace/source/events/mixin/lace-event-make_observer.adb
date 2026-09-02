@@ -27,8 +27,16 @@ is
                                         from_Subject : in Event.subject_Name)
    is
    begin
-      Self.Responses.add (Self, the_Response, to_Kind, from_Subject);
+      Self.Responses.add (the_Response, to_Kind, from_Subject);
       Self.sequence_Id_Map.add (from_Subject);
+
+      if Observer.Logger /= null
+      then
+         Observer.Logger.log_new_Response (the_Response,
+                                           Observer.item'Class (Self.all),
+                                           to_Kind,
+                                           from_Subject);
+      end if;
    end add;
 
 
@@ -38,8 +46,22 @@ is
                                         to_Kind      : in Event.Kind;
                                         from_Subject : in Event.subject_Name)
    is
+      subject_Freed : Boolean;
    begin
-      Self.Responses.rid (Self, the_Response, to_Kind, from_Subject);
+      Self.Responses.rid (to_Kind, from_Subject, subject_Freed);
+
+      if subject_Freed
+      then
+         Self.sequence_Id_Map.rid (from_Subject);
+      end if;
+
+      if Observer.Logger /= null
+      then
+         Observer.Logger.log_rid_Response (the_Response,
+                                           Observer.item'Class (Self.all),
+                                           to_Kind,
+                                           from_Subject);
+      end if;
 
    exception
       when storage_Error =>
@@ -172,10 +194,9 @@ is
       --- Responses
       --
 
-      procedure add (Self         : access Item'Class;
-                     the_Response : in     Response.view;
-                     to_Kind      : in     Event.Kind;
-                     from_Subject : in     Event.subject_Name)
+      procedure add (the_Response : in Response.view;
+                     to_Kind      : in Event.Kind;
+                     from_Subject : in Event.subject_Name)
       is
       begin
          if not my_Responses.contains (from_Subject)
@@ -186,37 +207,17 @@ is
 
          my_Responses.Element (from_Subject).insert (to_Kind,
                                                      the_Response);
-         if Observer.Logger /= null
-         then
-            Observer.Logger.log_new_Response (the_Response,
-                                              Observer.item'Class (Self.all),
-                                              to_Kind,
-                                              from_Subject);
-         end if;
       end add;
 
 
 
-      procedure rid (Self         : access Item'Class;
-                     the_Response : in     Response.view;
-                     to_Kind      : in     Event.Kind;
-                     from_Subject : in     Event.subject_Name)
+      procedure rid (to_Kind       : in     Event.Kind;
+                     from_Subject  : in     Event.subject_Name;
+                     subject_Freed :    out Boolean)
       is
       begin
          my_Responses.Element (from_Subject).delete (to_Kind);
-
-         if my_Responses.Element (from_Subject).is_Empty
-         then
-            Self.sequence_Id_Map.rid (from_Subject);
-         end if;
-
-         if Observer.Logger /= null
-         then
-            Observer.Logger.log_rid_Response (the_Response,
-                                              Observer.item'Class (Self.all),
-                                              to_Kind,
-                                              from_Subject);
-         end if;
+         subject_Freed := my_Responses.Element (from_Subject).is_Empty;
       end rid;
 
 

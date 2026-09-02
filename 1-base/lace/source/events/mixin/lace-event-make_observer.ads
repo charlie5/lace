@@ -103,15 +103,13 @@ private
       --- Responses
       --
 
-      procedure add (Self         : access Item'Class;
-                     the_Response : in     Response.view;
-                     to_Kind      : in     Event.Kind;
-                     from_Subject : in     Event.subject_Name);
+      procedure add (the_Response : in Response.view;
+                     to_Kind      : in Event.Kind;
+                     from_Subject : in Event.subject_Name);
 
-      procedure rid (Self         : access Item'Class;
-                     the_Response : in     Response.view;
-                     to_Kind      : in     Event.Kind;
-                     from_Subject : in     Event.subject_Name);
+      procedure rid (to_Kind       : in     Event.Kind;
+                     from_Subject  : in     Event.subject_Name;
+                     subject_Freed :    out Boolean);
 
       function  Contains (Subject : in Event.subject_Name) return Boolean;
       function  Element  (Subject : in Event.subject_Name) return event_response_Map;

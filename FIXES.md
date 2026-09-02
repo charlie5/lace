@@ -733,13 +733,31 @@ than oversights; they stand, documented:
 - **`destroy` must not race `emit`/`send`** (§6.2) — destroy frees the
   emitter/sender; callers must stop emitting before destroying, as with
   any deallocation.
-- **The logger's `Gate` performs `Text_IO` inside a protected action** — a
-  bounded error (RM 9.5.1) that GNAT's default runtime permits; a
-  `Detect_Blocking` runtime would reject it. A proper fix means a
-  seize/release lock held across the I/O and moving the remaining
-  in-action logging (`safe_Responses.add`/`rid`) out of the protected
-  object — left for its own pass. The `Ignored` set is likewise read
-  concurrently with `ignore`; call `ignore` during setup only.
+
+
+## 8. Logger pass
+
+**Files:** `events/utility/lace-event-logger-text.adb`,
+`events/mixin/lace-event-make_observer.ads/.adb`
+
+The §5.14 serialisation guarded the shared log file with a protected
+`Gate` whose operations performed the `Text_IO` themselves — a potentially
+blocking operation inside a protected action, which is a bounded error
+(RM 9.5.1): tolerated by GNAT's default runtime, rejected under
+`Detect_Blocking`, and in any case blocking other tasks at ceiling
+priority behind disk I/O. This pass replaces it with a seize/release lock
+(a protected entry/procedure pair) held *across* the writes, which
+therefore happen in plain task context. The `Ignored` set — previously
+read by `log_Emit`/`log_Send`/`log_Response` unsynchronised against
+`ignore` — is accessed under the same lock.
+
+For that to be sound, no logger call may come from inside a protected
+action any more (an entry call there would be the same bounded error).
+The last two such calls — `log_new_Response` / `log_rid_Response` inside
+`safe_Responses.add`/`rid` — moved out: the protected operations now only
+mutate the maps (`rid` reports whether the subject's last response was
+removed), and the enclosing plain procedures do the sequence-map upkeep
+and the logging, exactly as `receive` already did after §6.1.
 
 
 ## Verification
