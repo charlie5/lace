@@ -29,26 +29,25 @@ is
       package Sorter is new job_Vectors.generic_Sorting;
 
 
-      Now    : constant ada.Calendar.Time  := ada.Calendar.Clock;
-      Cursor :          job_Vectors.Cursor := Self.Jobs.to_Cursor (1);
-
-      use job_Vectors;
+      Now   : constant ada.Calendar.Time := ada.Calendar.Clock;
+      Index :          Positive          := 1;
 
    begin
       Sorter.sort (Self.Jobs);
 
-      while has_Element (Cursor)
+      while Index <= Self.Jobs.last_Index
       loop
          declare
-            the_Job : Job_view renames Element (Cursor);
+            the_Job : constant Job_view := Self.Jobs.Element (Index);
          begin
             exit when the_Job.Due > Now;
 
             if the_Job.Due = Never
             then
-               Self.Jobs.delete (Cursor);
+               Self.Jobs.delete (Index);   -- The next job shifts down into this slot.
             else
                the_Job.perform;
+               Index := Index + 1;
             end if;
          end;
       end loop;
