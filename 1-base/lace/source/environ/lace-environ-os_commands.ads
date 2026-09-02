@@ -18,6 +18,11 @@ is
    --
    -- Returns True if the Executable exists on the environment PATH variable.
 
+   function escaped            (Argument   : in String)      return String;
+   --
+   -- Escapes the characters which are special in a 'run_OS' command line
+   -- (space, quote, backslash and pipe), so the argument passes through verbatim.
+
 
    --------------
    --- Operations

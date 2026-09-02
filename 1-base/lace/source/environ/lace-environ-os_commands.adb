@@ -38,6 +38,28 @@ is
 
 
 
+   function escaped (Argument : in String) return String
+   is
+      Result : String (1 .. 2 * Argument'Length);
+      Last   : Natural := 0;
+   begin
+      for Each of Argument
+      loop
+         if Each in ' ' | '"' | '\' | '|'
+         then
+            Last          := Last + 1;
+            Result (Last) := '\';
+         end if;
+
+         Last          := Last + 1;
+         Result (Last) := Each;
+      end loop;
+
+      return Result (1 .. Last);
+   end escaped;
+
+
+
    procedure run_OS (command_Line : in String;
                      Input        : in String := "")
    is

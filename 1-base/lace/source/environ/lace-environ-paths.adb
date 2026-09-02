@@ -29,26 +29,45 @@ is
 
 
    function expand_GLOB (GLOB : in String) return String
+   --
+   -- The pattern applies to the final path component ~ 'dir/*.txt' works, 'dir/*/x.txt' does not.
+   --
    is
-      use ada.Text_IO;
+      use ada.Directories;
 
-      FileName : constant File     := +"/tmp/lace_environ_temporary_shell.sh";
-      File     :          File_type;
+      the_Folder  : constant String := containing_Directory (GLOB);
+      the_Pattern : constant String := simple_Name          (GLOB);
+
+      the_Search : search_Type;
+      the_Entry  : directory_Entry_type;
+      Result     : unbounded_String;
    begin
-      create   (File, out_File, +FileName);
-      put_Line (File, "echo " & GLOB);
-      close    (File);
+      start_Search (the_Search,
+                    Directory => the_Folder,
+                    Pattern   => the_Pattern);
 
-      change_Mode (Path (FileName), To => "a+rwx");
+      while more_Entries (the_Search)
+      loop
+         get_next_Entry (the_Search, the_Entry);
 
-      declare
-         use lace.Environ.OS_Commands;
+         declare
+            Name : constant String := simple_Name (the_Entry);
+         begin
+            if          Name /= "."
+               and then Name /= ".."
+            then
+               if Result /= ""
+               then
+                  append (Result, " ");
+               end if;
 
-         Output : constant String := run_OS ("bash " & (+FileName));
-      begin
-         rid_File (FileName);
-         return Output;
-      end;
+               append (Result, full_Name (the_Entry));
+            end if;
+         end;
+      end loop;
+
+      end_Search (the_Search);
+      return +Result;
    end expand_GLOB;
 
 
@@ -100,9 +119,9 @@ is
          use lace.Environ.OS_Commands;
 
          Output : constant String := run_OS (  "ln -s "
-                                             & (+Self)
+                                             & escaped (+Self)
                                              & " "
-                                             & (+To));
+                                             & escaped (+To));
       begin
          if Output /= ""
          then
@@ -125,7 +144,7 @@ is
          Output : constant String := run_OS (  "chmod -R "
                                              & To
                                              & " "
-                                             & (+Self));
+                                             & escaped (+Self));
       begin
          if Output /= ""
          then
@@ -148,7 +167,7 @@ is
          Output : constant String := run_OS (  "chown -R "
                                              & To
                                              & " "
-                                             & (+Self));
+                                             & escaped (+Self));
       begin
          if Output /= ""
          then
@@ -468,9 +487,9 @@ is
       check (To);
 
       run_OS (  "cp -fr "
-              & (+Self)
+              & escaped (+Self)
               & " "
-              & (+To));
+              & escaped (+To));
    end copy_Folder;
 
 
@@ -483,9 +502,9 @@ is
       check (To);
 
       run_OS (  "mv "
-              & (+Self)
+              & escaped (+Self)
               & " "
-              & (+To));
+              & escaped (+To));
    end move_Folder;
 
 
@@ -879,7 +898,7 @@ is
    is
       use lace.Environ.OS_Commands;
 
-      Output : constant String := run_OS ("touch " & (+Self));
+      Output : constant String := run_OS ("touch " & escaped (+Self));
    begin
       if Output /= ""
       then
@@ -957,10 +976,9 @@ is
                Output  : constant String := run_OS (  "tar "
                                                     & Options
                                                     & " "
-                                                    & (+the_Path)
-                                                    & format_Suffix (the_Format)
+                                                    & escaped ((+the_Path) & format_Suffix (the_Format))
                                                     & " "
-                                                    & (+the_Path));
+                                                    & escaped (+the_Path));
             begin
                if Output /= ""
                then
@@ -972,7 +990,7 @@ is
             declare
                Output : constant String := run_OS (  "gzip --force --keep --rsyncable"
                                                    & level_Flag
-                                                   & " " & (+the_Path));
+                                                   & " " & escaped (+the_Path));
             begin
                if Output /= ""
                then
@@ -984,7 +1002,7 @@ is
             declare
                Output : constant String := run_OS (  "bzip2 --force --keep"
                                                    & level_Flag
-                                                   & " " & (+the_Path));
+                                                   & " " & escaped (+the_Path));
             begin
                if Output /= ""
                then
@@ -994,7 +1012,7 @@ is
 
          when Xz =>
             declare
-               Output : constant String := run_OS ("xz --force --keep --threads=0 " & (+the_Path));
+               Output : constant String := run_OS ("xz --force --keep --threads=0 " & escaped (+the_Path));
             begin
                if Output /= ""
                then
@@ -1039,7 +1057,7 @@ is
                   Output  : constant String := run_OS (  "tar "
                                                        & Options
                                                        & " "
-                                                       & (+Name));
+                                                       & escaped (+Name));
                begin
                   if Output /= ""
                   then
@@ -1049,7 +1067,7 @@ is
 
             when Gz =>
                declare
-                  Output : constant String := run_OS ("gunzip --force --keep " & (+Name));
+                  Output : constant String := run_OS ("gunzip --force --keep " & escaped (+Name));
                begin
                   if Output /= ""
                   then
@@ -1059,7 +1077,7 @@ is
 
             when Bz2 =>
                declare
-                  Output : constant String := run_OS ("bunzip2 --force --keep " & (+Name));
+                  Output : constant String := run_OS ("bunzip2 --force --keep " & escaped (+Name));
                begin
                   if Output /= ""
                   then
@@ -1069,7 +1087,7 @@ is
 
             when Xz =>
                declare
-                  Output : constant String := run_OS ("xz --decompress --force --keep " & (+Name));
+                  Output : constant String := run_OS ("xz --decompress --force --keep " & escaped (+Name));
                begin
                   if Output /= ""
                   then
