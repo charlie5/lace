@@ -370,6 +370,189 @@ through it. Backslash-escaping (rather than double-quoting) is deliberate:
 the pipeline sniffer looks for.
 
 
+## 5. Below-cap findings (second pass)
+
+The review confirmed more defects than its report cap allowed; this second
+pass fixes those as well.
+
+### 5.1 `lace.Text.delete` (procedure form) grew the text on an inverted range
+
+**Files:** `text/lace-text.adb`, `text/wide/lace-wide_text.adb`
+
+`delete (Self, From => 5, Through => 2)` subtracted a negative count from
+`Length`, *growing* the text over uninitialised data. An empty, inverted or
+past-the-end range is now an explicit no-op.
+
+### 5.2 Empty texts could not survive a stream round-trip
+
+**Files:** `text/lace-text.adb`, `text/wide/lace-wide_text.adb`
+
+`Item_input` read the capacity with `Positive'read`, so a streamed empty text
+(capacity 0) raised `Constraint_Error` on arrival — breaking DSA transfers of
+empty texts. Capacity is now streamed as `Natural` on both sides (same wire
+representation, so existing streams are unaffected).
+
+### 5.3 `Cursor.advance` re-found the same delimiter on repeats
+
+**Files:** `text/lace-text-cursor.adb`, `text/wide/lace-wide_text-cursor.adb`
+
+With `skip_Delimiter => False` and `Repeat > 0`, intermediate iterations
+positioned the cursor *on* the last character of the found delimiter
+(`+ Delimiter'Length - 1`), so a one-character delimiter was found again by
+the next repeat and the cursor never advanced past the first hit.
+Intermediate repeats now step fully past the delimiter.
+
+### 5.4 `Cursor.get_Integer` / `get_Real` crashed at the cursor end
+
+**Files:** same as 5.3
+
+At the cursor end (`Current = 0`) these built the slice
+`Data (0 .. Length)` — `Constraint_Error` instead of the documented
+`no_data_Error`. Both now test `at_End` first and raise `no_data_Error`.
+
+### 5.5 `utility.replace` (function form) had hidden capacity ceilings
+
+**Files:** `text/lace-text-utility.adb`, `text/wide/lace-wide_text-utility.adb`
+
+The function tokenised with the fixed `items_1k` instantiation: any segment
+between pattern occurrences longer than 1024 characters, or more than 8192
+segments, raised `Error`; an empty input crashed on a negative size
+computation. Rewritten as a single scan appending to an unbounded buffer — no
+tokeniser, no ceilings, and the earlier tail-match guard becomes unnecessary.
+The **wide procedure form** additionally fabricated a character when applied
+to an empty text (its post-check loop ran once on empty input); it now uses
+the narrow variant's pre-check `while` loop.
+
+### 5.6 String- and character-delimiter `Tokens` disagreed on a trailing delimiter
+
+**Files:** `text/lace-text-all_tokens.adb`, `text/wide/lace-wide_text-all_tokens.adb`
+
+The character variant deliberately yields a final empty token when the text
+ends with the delimiter; the string variant silently didn't. The string
+variant now matches.
+
+### 5.7 `lace.wide_Text.forge.to_String` failed on every file
+
+**File:** `text/wide/lace-wide_text-forge.adb`
+
+It sized a `wide_String` by the file's *byte* count and `Direct_IO`-read it —
+asking for twice the file's bytes, so every call raised `End_Error`. The file
+is now read as bytes and converted character-by-character (Latin-1), with the
+CR stripping retained.
+
+### 5.8 `lace.wide_Text` had lost `pragma Pure`
+
+**File:** `text/wide/lace-wide_text.ads`
+
+The narrow `lace.Text` is `Pure`; the wide spec carried only a
+`-- with Pure` comment, which prevents `Remote_Types`/`Pure` clients from
+depending on it. The pragma is restored.
+
+### 5.9 `lace.Dice` rolled out of range and raced its generator
+
+**Files:** `dice/lace-dice-any.adb`, `dice/lace-dice-d6.adb`
+
+`any.Roll` computed each die as `Integer (Random * Sides + 0.5)` — Ada's
+rounding conversion means `Random = 1.0` yielded `Sides + 1`. It also
+returned `the_Roll + Modifier` directly into a `Natural`, so a sufficiently
+negative modifier raised `Constraint_Error` (`d6` already floored at 0). Both
+packages also shared one package-global generator across every task with no
+synchronisation — a data race, since `Random` mutates the generator. Each die
+is now `Integer'Min (Sides, Floor (Random * Sides) + 1)`, the modified total
+floors at 0, and both generators live inside a protected object.
+
+### 5.10 `shuffle_Vector` produced one fixed permutation every run
+
+**File:** `containers/lace-containers-shuffle_vector.adb`
+
+Each loop iteration instantiated a *fresh, unseeded* generator, so every run
+of the program produced the same deterministic (and far from uniform)
+"shuffle". Now a single time-seeded generator drives a standard Fisher-Yates
+pass (with the `Random = 1.0` pick clamped to the slot range).
+
+### 5.11 `fast_Pool` / `heap_based_Pool` overflowed on surplus frees
+
+**Files:** `lace-fast_pool.adb`, `lace-heap_based_pool.adb`
+
+`new_Item` allocates fresh items when the pool is empty, but `free` blindly
+appended — freeing more items than `pool_Size` indexed past the array and
+raised `Constraint_Error` inside the protected entry. A free into a full pool
+now deallocates the item instead.
+
+### 5.12 `array_based_Pool` crashed at program exit for an unused pool
+
+**File:** `lace-array_based_pool.adb`
+
+The high-water-mark finaliser declared `HWM : Positive`, so a pool that was
+never used (mark 0) raised `Constraint_Error` during finalisation; and
+`prior_HWM` was read uninitialised when no mark file existed yet. Both are
+now `Natural`, with `prior_HWM` defaulting to 0.
+
+### 5.13 A dead connection party could hang program exit
+
+**File:** `events/lace-event_connector.adb`
+
+The connector task's failure handler logged
+`my_Connection.Subject.Name` / `.Observer.Name` / `.Response.Name` — remote
+dereferences of the very views whose failure landed it in the handler. The
+re-raise skipped the pool return, the delegator's
+`all_Connectors_are_idle` wait never completed, and the program hung at
+exit. Connectors now return to the pool *before* logging, the detail
+dereferences are wrapped in their own handler (in the delegator's handlers
+too), an undispatched connector is returned to the pool on dispatch failure,
+and the idle test uses `>=` so a miscount degrades gracefully instead of
+hanging.
+
+### 5.14 The text logger's file was written by many tasks unsynchronised
+
+**Files:** `events/utility/lace-event-logger-text.ads/.adb`
+
+Every `log_*` operation wrote the shared `File_type` directly, and the
+callers include concurrent emitter/sender pool tasks — interleaved and
+formally erroneous concurrent I/O. All writes (and the close) now go through
+a protected `Gate`, with each message built *before* the protected call so
+remote `Name` fetches never run under the lock. `ignore` also used
+`insert`, so ignoring the same event kind twice raised `Constraint_Error`;
+it now uses `include`.
+
+### 5.15 Sequence ids overflowed at the type bound
+
+**File:** `events/mixin/private/lace-event-containers.adb`
+
+`sequence_Id` spans `0 .. 2**32 - 1`; `get_Next`/`increment` raised
+`Constraint_Error` at the last id (roughly 4 billion events per observer —
+distant, but a stream-killing cliff). All three counter operations now wrap,
+and since subject and observer counters move through the same operations,
+the deferred observer's expected-sequence check stays consistent across the
+wrap.
+
+### 5.16 `superbounded` `Overwrite` (procedure form) rejected empty insertions
+
+**File:** `strings/lace-strings-superbounded.adb`
+
+The procedure form declared `Endpos : Positive := Position + new_Item'Length - 1`,
+so overwriting with an empty string at position 1 computed 0 and raised
+`Constraint_Error` in the declarative part (the function form declares it
+`Natural` and returns early). Now `Natural`, making an empty overwrite the
+no-op it should be.
+
+### 5.17 `OS_Commands.Path_to` mistyped its result
+
+**Files:** `environ/lace-environ-os_commands.ads/.adb`
+
+`which <command>` names an executable *file*, but `Path_to` returned it as a
+`Paths.Folder`. It now returns `Paths.File` (no in-tree callers existed),
+and the command name passes through `escaped` like every other interpolation.
+
+### Reviewed and deliberately left alone
+
+Three "plausible" findings were examined and not changed: the `Connection`
+record's `item_256` event-kind capacity (a >256-character event kind name
+would be needed to trigger it), `folder_Lock`'s I/O inside a protected action
+(effectively dead code today), and the instant subject-and-observer combo's
+destroy chain (no in-tree user constructs one).
+
+
 ## Verification
 
 - **Full tree:** `5-all/applet/build_all` compiles every component and demo
@@ -386,8 +569,12 @@ the pipeline sniffer looks for.
   a new file, `expand_GLOB`, `copy_Files` with a glob, `copy_Folder` of
   `my folder`, and `touch` of `sp ace.txt`. All pass.
 
-Confirmed review findings that fell below the report cap (empty-text stream
-round-trip breaking DSA, cursor `get_Integer`/`get_Real` end-of-cursor
-crashes, the unseeded `shuffle_Vector`, dice modifier/rounding defects, pool
-free overflows, and others) remain unfixed apart from the two noted above
-(§2.2, §3.5's third site).
+The second (below-cap) pass was verified the same way: a clean full-tree
+`build_all`, the existing applet tests (`test_text`, `test_job`, `test_dice`,
+the three environ tests, both event demos), and the targeted check program
+extended to 32 checks — inverted-range delete, the empty-text stream
+round-trip, cursor repeat-advance and end-of-cursor behaviour, replace beyond
+the old ceilings and on empty texts, trailing-delimiter token agreement, the
+wide file reader, 10,000 bounded dice rolls with both extremes reached, the
+negative-modifier floor, element-preserving randomised shuffles, and
+over-freeing a two-slot pool. All pass.
