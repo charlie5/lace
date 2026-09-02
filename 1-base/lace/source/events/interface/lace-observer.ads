@@ -41,8 +41,6 @@ is
                                         to_Kind      : in Event.Kind;
                                         from_Subject : in Event.subject_Name) is abstract;
 
-   procedure relay_responseless_Events (Self : in out Item;   To : in Observer.view) is abstract;
-
 
    --------------
    --- Operations

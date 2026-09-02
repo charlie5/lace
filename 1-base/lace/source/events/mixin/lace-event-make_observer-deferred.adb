@@ -1,8 +1,6 @@
 with
      lace.Event.Logger,
      lace.Event.utility,
-
-     ada.Text_IO,
      ada.unchecked_Deallocation;
 
 
@@ -65,8 +63,6 @@ is
                     Event.utility,
                     ada.Containers;
 
-               use type Observer.view;
-
                the_Event    : constant Event.item'Class           := Element (Cursor).Event.Element;
                the_Sequence : constant sequence_Id                := Element (Cursor).Sequence;
                Response     : constant event_response_Maps.Cursor := the_Responses.find (to_Kind (the_Event'Tag));
@@ -88,17 +84,6 @@ is
                                                       Observer.view (Self),
                                                       the_Event,
                                                       from_subject_Name);
-                     end if;
-
-                  elsif Self.Responses.relay_Target /= null
-                  then
-                     -- Event relaying awaits re-implementation, so warn and drop the event.
-                     --
-                     if Observer.Logger /= null
-                     then
-                        Observer.Logger.log ("[Warning] ~ Relayed events are currently disabled.");
-                     else
-                        ada.Text_IO.put_Line ("[Warning] ~ Relayed events are currently disabled.");
                      end if;
 
                   else

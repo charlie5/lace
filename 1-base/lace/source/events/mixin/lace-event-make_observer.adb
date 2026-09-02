@@ -2,7 +2,6 @@ with
      lace.Event.Logger,
      lace.Event.utility,
 
-     ada.Text_IO,
      ada.unchecked_Deallocation;
 
 
@@ -46,15 +45,6 @@ is
       when storage_Error =>
          null;   -- The observer is dead.
    end rid;
-
-
-
-   overriding
-   procedure relay_responseless_Events (Self : in out Item;   To : in Observer.view)
-   is
-   begin
-      Self.Responses.relay_responseless_Events (To);
-   end relay_responseless_Events;
 
 
    --------------
@@ -163,22 +153,6 @@ is
 
 
 
-      procedure relay_responseless_Events (To : in Observer.view)
-      is
-      begin
-         my_relay_Target := To;
-      end relay_responseless_Events;
-
-
-
-      function relay_Target return Observer.view
-      is
-      begin
-         return my_relay_Target;
-      end relay_Target;
-
-
-
       function Contains (Subject : in Event.subject_Name) return Boolean
       is
       begin
@@ -207,8 +181,6 @@ is
               subject_Maps_of_event_responses,
               lace.Event.utility,
               ada.Containers;
-
-         use type lace.Observer.view;
 
          function my_Name return String
          is (Observer.item'Class (Self.all).Name);
@@ -246,17 +218,6 @@ is
                                                 Observer.view (Self),
                                                 the_Event,
                                                 from_Subject);
-               end if;
-
-            elsif relay_Target /= null
-            then
-               -- Event relaying awaits re-implementation, so warn and drop the event.
-               --
-               if Observer.Logger /= null
-               then
-                  Observer.Logger.log ("[Warning] ~ Relayed events are currently disabled.");
-               else
-                  ada.Text_IO.put_Line ("[Warning] ~ Relayed events are currently disabled.");
                end if;
 
             else

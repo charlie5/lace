@@ -161,23 +161,6 @@ is
 
 
    overriding
-   procedure log_Relay (Self : in out Item;   From      : in Observer.view;
-                                              To        : in Observer.view;
-                                              the_Event : in Event.item'Class)
-   is
-   begin
-      put_Line (Self.File,   "Relay => "
-                           & From.Name
-                           & " relays "
-                           & Name_of (Kind_of (the_Event))
-                           & " to "
-                           & To.Name
-                           & ".");
-   end log_Relay;
-
-
-
-   overriding
    procedure log_new_Response (Self : in out Item;   the_Response : in Response.view;
                                                      of_Observer  : in Observer.item'Class;
                                                      to_Kind      : in Event.Kind;

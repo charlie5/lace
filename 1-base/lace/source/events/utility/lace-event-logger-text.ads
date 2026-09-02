@@ -66,10 +66,6 @@ is
                                                  To           : in Observer.view;
                                                  the_Event    : in Event.item'Class);
    overriding
-   procedure log_Relay    (Self : in out Item;   From         : in Observer.view;
-                                                 To           : in Observer.view;
-                                                 the_Event    : in Event.item'Class);
-   overriding
    procedure log_Response (Self : in out Item;   the_Response : in Response.view;
                                                  of_Observer  : in Observer.view;
                                                  to_Event     : in Event.item'Class;

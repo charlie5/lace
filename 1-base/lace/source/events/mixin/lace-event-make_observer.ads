@@ -43,8 +43,6 @@ is
    procedure rid (Self : access Item;   the_Response : in Response.view;
                                         to_Kind      : in Event.Kind;
                                         from_Subject : in Event.subject_Name);
-   overriding
-   procedure relay_responseless_Events (Self : in out Item;   To : in Observer.view);
 
 
    --------------
@@ -115,10 +113,6 @@ private
                      to_Kind      : in     Event.Kind;
                      from_Subject : in     Event.subject_Name);
 
-      procedure relay_responseless_Events (To : in Observer.view);
-
-      function  relay_Target return Observer.view;
-
       function  Contains (Subject : in Event.subject_Name) return Boolean;
       function  Element  (Subject : in Event.subject_Name) return event_response_Map;
 
@@ -132,8 +126,7 @@ private
                          from_Subject : in     Event.subject_Name);
 
    private
-      my_Responses    : subject_Map_of_event_responses;
-      my_relay_Target : Observer.view;
+      my_Responses : subject_Map_of_event_responses;
    end safe_Responses;
 
 
