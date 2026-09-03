@@ -1,8 +1,9 @@
 with
      gel.Events,
-     physics.Forge,
      openGL.Renderer.lean,
      lace.Event.utility,
+
+     system.RPC,
 
      ada.Text_IO,
      ada.unchecked_Deallocation;
@@ -19,7 +20,6 @@ is
 
    procedure log (Message : in String)
                   renames ada.text_IO.put_Line;
-   pragma Unreferenced (log);
 
 
    ---------
@@ -32,23 +32,6 @@ is
    begin
       deallocate (Self);
    end free;
-
-
-
-   procedure define (Self : in out Item'Class;   Name       : in     String;
-                                                 Id         : in     world_Id;
-                                                 space_Kind : in     physics.space_Kind;
-                                                 Renderer   : access openGL.Renderer.lean.item'Class);
-
-   overriding
-   procedure destroy (Self : in out Item)
-   is
-   begin
-      physics.Space.free (Self.physics_Space);
-
-      lace.Subject_and_deferred_Observer.item (Self).destroy;     -- Destroy base class.
-      lace.Subject_and_deferred_Observer.free (Self.local_Subject_and_deferred_Observer);
-   end destroy;
 
 
 
@@ -89,24 +72,53 @@ is
    end Forge;
 
 
-   ----------
-   --- Define
+   -----------
+   --- Clients
    --
 
-   procedure define  (Self : in out Item'Class;   Name       : in     String;
-                                                  Id         : in     world_Id;
-                                                  space_Kind : in     physics.space_Kind;
-                                                  Renderer   : access openGL.Renderer.lean.Item'Class)
+   protected
+   body safe_Clients
    is
-      use lace.Subject_and_deferred_Observer.Forge;
-   begin
-      Self.local_Subject_and_deferred_Observer := new_Subject_and_Observer (Name => Name & " world" & Id'Image);
+      procedure add (the_Mirror : in remote.World.view)
+      is
+      begin
+         Clients.append (the_Mirror);
+      end add;
 
-      Self.Id            := Id;
-      Self.space_Kind    := space_Kind;
-      Self.Renderer      := Renderer;
-      Self.physics_Space := physics.Forge.new_Space (space_Kind);
-   end define;
+
+
+      procedure rid (the_Mirror : in     remote.World.view;
+                     Found      :    out Boolean)
+      is
+         use world_Vectors;
+
+         Index : constant world_Vectors.extended_Index := Clients.find_Index (the_Mirror);
+      begin
+         Found := Index /= no_Index;
+
+         if Found
+         then
+            Clients.delete (Index);
+         end if;
+      end rid;
+
+
+
+      function fetch return world_Vector
+      is
+      begin
+         return Clients;
+      end fetch;
+
+
+
+      function is_Empty return Boolean
+      is
+      begin
+         return Clients.is_Empty;
+      end is_Empty;
+
+   end safe_Clients;
 
 
    --------------
@@ -164,17 +176,35 @@ is
                if updates_Count > 0
                then
                   declare
-                     use World.server.world_Vectors;
-
-                     Cursor     : world_Vectors.Cursor := Self.Clients.First;
-                     the_Mirror : remote.World.view;
+                     the_Clients  : constant world_Vector := Self.Clients.fetch;
+                     dead_Clients :          world_Vector;
                   begin
-                     while has_Element (Cursor)
+                     for the_Mirror of the_Clients
                      loop
-                        the_Mirror := Element (Cursor);
-                        the_Mirror.motion_Updates_are (Self.seq_Id,
-                                                       the_motion_Updates (1 .. updates_Count));
-                        next (Cursor);
+                        begin
+                           the_Mirror.motion_Updates_are (Self.seq_Id,
+                                                          the_motion_Updates (1 .. updates_Count));
+                        exception
+                           when system.RPC.communication_Error
+                              | storage_Error =>
+                              dead_Clients.append (the_Mirror);     -- The client is dead or unreachable.
+                        end;
+                     end loop;
+
+                     -- Evict any dead clients, so one cannot stall the world forever.
+                     --
+                     for the_Mirror of dead_Clients
+                     loop
+                        declare
+                           Found : Boolean;
+                        begin
+                           Self.Clients.rid (the_Mirror, Found);
+
+                           if Found
+                           then
+                              log ("Evicting a dead client mirror.");
+                           end if;
+                        end;
                      end loop;
                   end;
                end if;
@@ -183,85 +213,6 @@ is
       end;
 
    end evolve;
-
-
-
-   overriding
-   function fetch (From : in sprite_Map) return id_Maps_of_sprite.Map
-   is
-   begin
-      return From.Map;
-   end fetch;
-
-
-
-   overriding
-   function fetch (From : in sprite_Map;   Id : in sprite_Id) return Sprite.view
-   is
-   begin
-      return From.Map.Element (Id);
-   end fetch;
-
-
-
-   overriding
-   function Contains (From : in sprite_Map;   Id : in sprite_Id) return Boolean
-   is
-   begin
-      return From.Map.Contains (Id);
-   end Contains;
-
-   overriding
-   function fetch_Views (From : in sprite_Map) return Sprite.Views
-   is
-   begin
-      if From.all_Views = null
-      then
-         return Sprite.null_Sprites;
-      end if;
-
-      return From.all_Views.all;
-   end fetch_Views;
-
-
-
-
-   procedure refresh_Views (Self : in out sprite_Map)
-   is
-      procedure free is new ada.unchecked_Deallocation (Sprite.Views, sprite_Views_view);
-   begin
-      free (Self.all_Views);
-      Self.all_Views := new Sprite.Views' (to_Views (Self.Map));
-   end refresh_Views;
-
-
-
-   overriding
-   procedure add (To : in out sprite_Map;   the_Sprite : in Sprite.view)
-   is
-   begin
-      To.Map.insert (the_Sprite.Id, the_Sprite);
-      refresh_Views (To);
-   end add;
-
-
-
-   overriding
-   procedure rid (From : in out sprite_Map;   the_Sprite : in Sprite.view)
-   is
-   begin
-      From.Map.delete (the_Sprite.Id);
-      refresh_Views (From);
-   end rid;
-
-
-
-   overriding
-   function all_Sprites (Self : access Item) return access World.sprite_Map'Class
-   is
-   begin
-      return Self.all_Sprites'Access;
-   end all_Sprites;
 
 
    -----------------------
@@ -273,7 +224,7 @@ is
                                              Mirror_as_observer : in lace.Observer.view)
    is
    begin
-      Self.Clients.append (the_Mirror);
+      Self.Clients.add (the_Mirror);
 
       Self.register (Mirror_as_observer, to_Kind (remote.World.new_graphics_model_Event'Tag));
       Self.register (Mirror_as_observer, to_Kind (remote.World. new_physics_model_Event'Tag));
@@ -287,8 +238,14 @@ is
    procedure deregister (Self : access Item;   the_Mirror         : in remote.World.view;
                                                Mirror_as_observer : in lace.Observer.view)
    is
+      Found : Boolean;
    begin
-      Self.Clients.delete (Self.Clients.find_Index (the_Mirror));
+      Self.Clients.rid (the_Mirror, Found);
+
+      if not Found
+      then
+         return;     -- An unknown mirror ~ nothing to deregister.
+      end if;
 
       Self.deregister (Mirror_as_observer, to_Kind (remote.World.new_graphics_model_Event'Tag));
       Self.deregister (Mirror_as_observer, to_Kind (remote.World. new_physics_model_Event'Tag));

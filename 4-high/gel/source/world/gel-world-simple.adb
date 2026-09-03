@@ -1,33 +1,13 @@
 with
-     physics.Forge,
-     openGL.Renderer.lean,
-
-     ada.unchecked_Deallocation;
+     openGL.Renderer.lean;
 
 
 package body gel.World.simple
 is
-   -- procedure log (Message : in String)
-   --                 renames ada.text_IO.put_Line;
-
 
    ---------
    --- Forge
    --
-
-   -- procedure free (Self : in out View)
-   -- is
-   --     procedure deallocate is new ada.unchecked_Deallocation (Item'Class, View);
-   -- begin
-   --     deallocate (Self);
-   -- end free;
-
-
-
-   procedure define (Self : in out Item'Class;   Name       : in     String;
-                                                 Id         : in     world_Id;
-                                                 space_Kind : in     physics.space_Kind;
-                                                 Renderer   : access openGL.Renderer.lean.item'Class);
 
    package body Forge
    is
@@ -64,110 +44,6 @@ is
       end new_World;
 
    end Forge;
-
-
-   ----------
-   --- Define
-   --
-
-   procedure define  (Self : in out Item'Class;   Name       : in     String;
-                                                  Id         : in     world_Id;
-                                                  space_Kind : in     physics.space_Kind;
-                                                  Renderer   : access openGL.Renderer.lean.Item'Class)
-   is
-      use lace.Subject_and_deferred_Observer.Forge;
-   begin
-      Self.local_Subject_and_deferred_Observer := new_Subject_and_Observer (Name => Name & " world" & Id'Image);
-
-      Self.Id         := Id;
-      Self.space_Kind := space_Kind;
-      Self.Renderer   := Renderer;
-      -- Self.sprite_Count := 0;
-
-      Self.physics_Space := physics.Forge.new_Space (space_Kind);
-   end define;
-
-
-   --------------
-   --- sprite_Map
-   --
-
-   overriding
-   function fetch (From : in sprite_Map) return id_Maps_of_sprite.Map
-   is
-   begin
-      return From.Map;
-   end fetch;
-
-
-
-   overriding
-   function fetch (From : in sprite_Map;   Id : in sprite_Id) return Sprite.view
-   is
-   begin
-      return From.Map.Element (Id);
-   end fetch;
-
-
-
-   overriding
-   function Contains (From : in sprite_Map;   Id : in sprite_Id) return Boolean
-   is
-   begin
-      return From.Map.Contains (Id);
-   end Contains;
-
-   overriding
-   function fetch_Views (From : in sprite_Map) return Sprite.Views
-   is
-   begin
-      if From.all_Views = null
-      then
-         return Sprite.null_Sprites;
-      end if;
-
-      return From.all_Views.all;
-   end fetch_Views;
-
-
-
-
-   procedure refresh_Views (Self : in out sprite_Map)
-   is
-      procedure free is new ada.unchecked_Deallocation (Sprite.Views, sprite_Views_view);
-   begin
-      free (Self.all_Views);
-      Self.all_Views := new Sprite.Views' (to_Views (Self.Map));
-   end refresh_Views;
-
-
-
-   overriding
-   procedure add (To : in out sprite_Map;   the_Sprite : in Sprite.view)
-   is
-   begin
-      To.Map.insert (the_Sprite.Id, the_Sprite);
-      refresh_Views (To);
-   end add;
-
-
-
-   overriding
-   procedure rid (From : in out sprite_Map;   the_Sprite : in Sprite.view)
-   is
-   begin
-      From.Map.delete (the_Sprite.Id);
-      refresh_Views (From);
-   end rid;
-
-
-
-   overriding
-   function all_Sprites (Self : access Item) return access World.sprite_Map'Class
-   is
-   begin
-      return Self.all_Sprites'unchecked_Access;
-   end all_Sprites;
 
 
 end gel.World.simple;

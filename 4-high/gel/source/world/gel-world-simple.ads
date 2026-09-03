@@ -8,7 +8,6 @@ package gel.World.simple
 -- Provides a simple gel world.
 --
 is
-   -- pragma suppress (Container_Checks);     -- Suppress expensive tamper checks.
 
    type Item  is limited new gel.World.item
    with private;
@@ -38,45 +37,7 @@ is
 
 private
 
-   --------------
-   --- sprite_Map
-   --
-
-   type sprite_Map is limited new World.sprite_Map with
-      record
-         Map       : id_Maps_of_sprite.Map;
-         all_Views : sprite_Views_view;     -- Rebuilt by 'add' and 'rid'. See 'fetch_Views'.
-      end record;
-
-   overriding
-   function  fetch (From : in     sprite_Map) return id_Maps_of_sprite.Map;
-
-   overriding
-   function  fetch    (From : in sprite_Map;   Id : in sprite_Id) return Sprite.view;
-   overriding
-   function  Contains (From : in sprite_Map;   Id : in sprite_Id) return Boolean;
-   overriding
-   function  fetch_Views (From : in sprite_Map) return Sprite.Views;
-
-   overriding
-   procedure add   (To   : in out sprite_Map;   the_Sprite : in Sprite.view);
-
-   overriding
-   procedure rid   (From : in out sprite_Map;   the_Sprite : in Sprite.view);
-
-
-   --------------
-   --- World Item
-   --
-
-   type Item is limited new gel.World.item with
-      record
-         all_Sprites : aliased sprite_Map;
-      end record;
-
-
-   overriding
-   function all_Sprites (Self : access Item) return access World.sprite_Map'Class;
+   type Item is limited new gel.World.item with null record;
 
 
 end gel.World.simple;

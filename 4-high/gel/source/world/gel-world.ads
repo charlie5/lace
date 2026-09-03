@@ -48,6 +48,10 @@ is
    --- Forge
    --
 
+   procedure define  (Self : in out Item'Class;   Name       : in     String;
+                                                  Id         : in     world_Id;
+                                                  space_Kind : in     physics.space_Kind;
+                                                  Renderer   : access openGL.Renderer.lean.item'Class);
    overriding
    procedure destroy (Self : in out Item);
    procedure free    (Self : in out View);
@@ -162,7 +166,7 @@ is
    -- Fills the flat array from the map. For the implementations of 'fetch_Views'.
 
 
-   function all_Sprites (Self : access Item) return access sprite_Map'Class is abstract;
+   function all_Sprites (Self : access Item) return access sprite_Map'Class;
 
 
 
@@ -437,6 +441,57 @@ private
 
 
 
+   ----------------------
+   --- Safe sprite map
+   --
+   -- One protected implementation serves every world: the maps are read and
+   -- written concurrently by the main loop and, in a DSA server, by PolyORB
+   -- tasks executing remote calls.
+   --
+
+   protected
+   type safe_id_Map_of_sprite
+   is
+      procedure add (the_Sprite : in Sprite.view);
+      procedure rid (the_Sprite : in Sprite.view);
+
+      function  fetch       (Id : in sprite_Id) return Sprite.view;
+      function  Contains    (Id : in sprite_Id) return Boolean;
+      function  fetch_all                       return id_Maps_of_sprite.Map;
+      function  fetch_Views                     return Sprite.Views;
+
+      procedure destruct;
+
+   private
+      procedure refresh_Views;
+
+      Map       : id_Maps_of_sprite.Map;
+      all_Views : sprite_Views_view;     -- Rebuilt by 'add' and 'rid'. See 'fetch_Views'.
+   end safe_id_Map_of_sprite;
+
+
+   type safe_sprite_Map is limited new sprite_Map with
+      record
+         Map : safe_id_Map_of_sprite;
+      end record;
+
+   overriding
+   function  fetch (From : in     safe_sprite_Map) return id_Maps_of_sprite.Map;
+
+   overriding
+   function  fetch    (From : in safe_sprite_Map;   Id : in sprite_Id) return Sprite.view;
+   overriding
+   function  Contains (From : in safe_sprite_Map;   Id : in sprite_Id) return Boolean;
+   overriding
+   function  fetch_Views (From : in safe_sprite_Map) return Sprite.Views;
+
+   overriding
+   procedure add   (To   : in out safe_sprite_Map;   the_Sprite : in Sprite.view);
+
+   overriding
+   procedure rid   (From : in out safe_sprite_Map;   the_Sprite : in Sprite.view);
+
+
    type free_Entry is
       record
          Sprite : gel.Sprite.view;
@@ -500,6 +555,10 @@ private
          evolve_Physics  :         Boolean := True;
 
          Renderer        : access  openGL.Renderer.lean.item'Class;         -- Is *not* owned by Item.
+
+         -- Sprites
+         --
+         the_Sprites     : aliased safe_sprite_Map;
 
          -- Models
          --

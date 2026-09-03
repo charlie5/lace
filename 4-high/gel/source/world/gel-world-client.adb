@@ -2,7 +2,6 @@ with
      gel.Events,
 
      physics.remote.Model,
-     physics.Forge,
 
      openGL.remote_Model,
      openGL.Renderer.lean,
@@ -31,29 +30,23 @@ is
    --- Forge
    --
 
+   overriding
+   procedure destroy (Self : in out Item)
+   is
+      procedure free is new ada.unchecked_Deallocation (safe_sequence_Id, safe_sequence_Id_view);
+   begin
+      gel.World.item (Self).destroy;     -- Destroy the base class.
+      free (Self.seq_Id);
+   end destroy;
+
+
+
    procedure free (Self : in out View)
    is
       procedure deallocate is new ada.unchecked_Deallocation (Item'Class, View);
    begin
       deallocate (Self);
    end free;
-
-
-
-   procedure define (Self : in out Item'Class;   Name       : in     String;
-                                                 Id         : in     world_Id;
-                                                 space_Kind : in     physics.space_Kind;
-                                                 Renderer   : access openGL.Renderer.lean.item'Class);
-
-   overriding
-   procedure destroy (Self : in out Item)
-   is
-   begin
-      physics.Space.free (Self.physics_Space);
-
-      lace.Subject_and_deferred_Observer.item (Self).destroy;     -- Destroy base class.
-      lace.Subject_and_deferred_Observer.free (Self.local_Subject_and_deferred_Observer);
-   end destroy;
 
 
 
@@ -135,70 +128,6 @@ is
    end to_Sprite;
 
 
-   --------------------------------
-   --- 'create_new_Sprite' Response
-   --
-
-   type create_new_Sprite is new lace.Response.item with
-      record
-         World          :        gel.World.view;
-         Models         : access id_Maps_of_graphics_model        .Map;
-         physics_Models : access id_Maps_of_physics_model.Map;
-      end record;
-
-
-   overriding
-   function Name (Self : in create_new_Sprite) return String;
-
-
-
-   overriding
-   procedure respond (Self : in out create_new_Sprite;   to_Event : in lace.Event.item'Class)
-   is
-   begin
-      raise Program_Error with "???";
-      -- declare
-      --     the_Event  : constant gel.Events.new_sprite_Event := gel.Events.new_sprite_Event (to_Event);
-      --     the_Sprite : constant gel.Sprite.view             := to_Sprite (the_Event.Pair,
-      --                                                                     Self.Models.all,
-      --                                                                     Self.physics_Models.all,
-      --                                                                     Self.World);
-      -- begin
-      --     Self.World.add (the_Sprite);
-      -- end;
-   end respond;
-
-
-
-   overriding
-   function Name (Self : in create_new_Sprite) return String
-   is
-      pragma Unreferenced (Self);
-   begin
-      return "create_new_Sprite";
-   end Name;
-
-
-   ----------
-   --- Define
-   --
-
-   procedure define  (Self : in out Item'Class;   Name       : in     String;
-                                                  Id         : in     world_Id;
-                                                  space_Kind : in     physics.space_Kind;
-                                                  Renderer   : access openGL.Renderer.lean.Item'Class)
-   is
-      use lace.Subject_and_deferred_Observer.Forge;
-   begin
-      Self.local_Subject_and_deferred_Observer := new_Subject_and_Observer (Name => Name & " world" & Id'Image);
-
-      Self.Id            := Id;
-      Self.space_Kind    := space_Kind;
-      Self.Renderer      := Renderer;
-      Self.physics_Space := physics.Forge.new_Space (space_Kind);
-   end define;
-
-
    -------------------------------
    --- new_graphics_model_Response
    --
@@ -207,6 +136,8 @@ is
       record
          World : gel.World.view;
       end record;
+
+   type new_graphics_model_Response_view is access all new_graphics_model_Response;
 
 
    overriding
@@ -218,7 +149,6 @@ is
    is
       the_Event : constant remote.World.new_graphics_model_Event := remote.World.new_graphics_model_Event (to_Event);
    begin
-      -- log ("gel.world.client ~ new graphics model response ~ model id:" & the_Event.Model.Id'Image);
       Self.World.add (new openGL.Model.item'Class' (openGL.Model.item'Class (the_Event.Model.all)));
    end respond;
 
@@ -233,9 +163,6 @@ is
    end Name;
 
 
-   the_new_graphics_model_Response : aliased new_graphics_model_Response;
-
-
    ------------------------------
    --- new_physics_model_Response
    --
@@ -244,6 +171,8 @@ is
       record
          World : gel.World.view;
       end record;
+
+   type new_physics_model_Response_view is access all new_physics_model_Response;
 
 
    overriding
@@ -255,7 +184,6 @@ is
    is
       the_Event : constant remote.World.new_physics_model_Event := remote.World.new_physics_model_Event (to_Event);
    begin
-      -- log ("gel.world.client ~ new physics model response ~ model id:" & the_Event.Model.Id'Image);
       Self.World.add (new physics.Model.item'Class' (physics.Model.item'Class (the_Event.Model.all)));
    end respond;
 
@@ -270,9 +198,6 @@ is
    end Name;
 
 
-   the_new_physics_model_Response : aliased new_physics_model_Response;
-
-
    --------------------------
    --- my_new_sprite_Response
    --
@@ -283,6 +208,8 @@ is
          graphics_Models : access id_Maps_of_graphics_model.Map;
          physics_Models  : access id_Maps_of_physics_model .Map;
       end record;
+
+   type my_new_sprite_Response_view is access all my_new_sprite_Response;
 
 
    overriding
@@ -314,18 +241,6 @@ is
 
 
 
-   procedure define (Self : in out my_new_sprite_Response;   World          : in     gel.World.view;
-                                                             Models         : access id_Maps_of_graphics_model.Map;
-                                                             physics_Models : access id_Maps_of_physics_model.Map)
-   is
-   begin
-      Self.World           := World;
-      Self.graphics_Models := Models;
-      Self.physics_Models  := physics_Models;
-   end define;
-
-
-
    overriding
    function Name (Self : in my_new_sprite_Response) return String
    is
@@ -334,8 +249,6 @@ is
       return "my_new_sprite_Response";
    end Name;
 
-   the_my_new_sprite_Response : aliased my_new_sprite_Response;
-
 
    --------------------------
    --- my_rid_sprite_Response
@@ -343,10 +256,10 @@ is
 
    type my_rid_sprite_Response is new lace.Response.item with
       record
-         World           :        gel.World.view;
-         graphics_Models : access id_Maps_of_graphics_model.Map;
-         physics_Models  : access id_Maps_of_physics_model .Map;
+         World : gel.World.view;
       end record;
+
+   type my_rid_sprite_Response_view is access all my_rid_sprite_Response;
 
 
    overriding
@@ -374,14 +287,12 @@ is
          declare
             the_Sprite : constant gel.Sprite.view := Self.World.fetch_Sprite (the_Event.Id);
          begin
-            Self.World.rid (the_Sprite);
             Self.World.emit (remote.world.sprite_ridded_Event' (Id   => the_Event.Id,
                                                                 Name => lace.Text.forge.to_Text_128 (the_Sprite.Name)));
 
-            -- Ridding only takes the sprite out of the map. Destroy it too, so that it
-            -- is freed on the next pass ~ a mirror sprite owns neither model, so this
-            -- frees the sprite, its visual, its shape and its solid, and leaves the
-            -- shared models alone.
+            -- Destroying rids the sprite from the world and frees it on a later
+            -- pass ~ a mirror sprite owns neither model, so this frees the sprite,
+            -- its visual, its shape and its solid, and leaves the shared models alone.
             --
             if not the_Sprite.is_Destroyed
             then
@@ -394,18 +305,6 @@ is
 
 
 
-   procedure define (Self : in out my_rid_sprite_Response;   World          : in     gel.World.view;
-                                                             Models         : access id_Maps_of_graphics_model.Map;
-                                                             physics_Models : access id_Maps_of_physics_model.Map)
-   is
-   begin
-      Self.World           := World;
-      Self.graphics_Models := Models;
-      Self.physics_Models  := physics_Models;
-   end define;
-
-
-
    overriding
    function Name (Self : in my_rid_sprite_Response) return String
    is
@@ -413,8 +312,6 @@ is
    begin
       return "my_rid_sprite_Response";
    end Name;
-
-   the_my_rid_sprite_Response : aliased my_rid_sprite_Response;
 
 
    -------------------
@@ -428,40 +325,46 @@ is
 
    procedure is_a_Mirror (Self : access Item'Class;   of_World : in remote.World.view)
    is
+      -- The responses are allocated per world, so a client may mirror several
+      -- server worlds without one world's responses being re-aimed at another.
+      --
+      graphics_Response : constant new_graphics_model_Response_view := new new_graphics_model_Response;
+      physics_Response  : constant new_physics_model_Response_view  := new new_physics_model_Response;
+      new_Response      : constant my_new_sprite_Response_view      := new my_new_sprite_Response;
+      rid_Response      : constant my_rid_sprite_Response_view      := new my_rid_sprite_Response;
+
    begin
       -- New graphics model response.
       --
-      the_new_graphics_model_Response.World := Self.all'Access;
+      graphics_Response.World := Self.all'Access;
 
-      Self.add (the_Response => the_new_graphics_model_Response'Access,
+      Self.add (the_Response => lace.Response.view (graphics_Response),
                 to_Kind      => to_Kind (remote.World.new_graphics_model_Event'Tag),
                 from_Subject => of_World.Name);
 
       -- New physics model response.
       --
-      the_new_physics_model_Response.World := Self.all'Access;
+      physics_Response.World := Self.all'Access;
 
-      Self.add (the_new_physics_model_Response'Access,
+      Self.add (lace.Response.view (physics_Response),
                 to_Kind (remote.World.new_physics_model_Event'Tag),
                 from_Subject => of_World.Name);
 
-      -- New Id response.
+      -- New sprite response.
       --
-      define   (the_my_new_sprite_Response, World          => Self.all'Access,
-                                            Models         => Self.graphics_Models'Access,
-                                            physics_Models => Self. physics_Models'Access);
+      new_Response.World           := Self.all'Access;
+      new_Response.graphics_Models := Self.graphics_Models'Access;
+      new_Response.physics_Models  := Self. physics_Models'Access;
 
-      Self.add (the_my_new_sprite_Response'Access,
+      Self.add (lace.Response.view (new_Response),
                 to_Kind (gel.Events.new_sprite_Event'Tag),
                 from_Subject => of_World.Name);
 
-      -- Rid Id response.
+      -- Rid sprite response.
       --
-      define   (the_my_rid_sprite_Response, World          => Self.all'Access,
-                                            Models         => Self.graphics_Models'Access,
-                                            physics_Models => Self. physics_Models'Access);
+      rid_Response.World := Self.all'Access;
 
-      Self.add (the_my_rid_sprite_Response'Access,
+      Self.add (lace.Response.view (rid_Response),
                 to_Kind (gel.Events.rid_sprite_Event'Tag),
                 from_Subject => of_World.Name);
 
@@ -469,10 +372,6 @@ is
       --
       declare
          use remote.World.id_Maps_of_graphics_model;
-
-         -- the_server_graphics_Models : constant remote.World.id_Map_of_graphics_model := of_World.graphics_Models;     -- Fetch graphics models from the server.
-         -- the_server_physics_Models  : constant remote.World.id_Map_of_physics_model  := of_World. physics_Models;     -- Fetch physics  models from the server.
-         -- the_server_Sprites         : remote.World.sprite_model_Pairs                := of_World.Sprites;             -- Fetch sprites         from the server.
 
          the_server_graphics_Models : remote.World.id_Map_of_graphics_model;
          the_server_physics_Models  : remote.World.id_Map_of_physics_model;
@@ -515,29 +414,12 @@ is
          end physics_model_Fetcher;
 
 
-         -- task      sprite_Fetcher;
-         -- task body sprite_Fetcher
-         -- is
-         -- begin
-         --     the_server_Sprites := of_World.Sprites;                     -- Fetch sprites from the server.
-         -- exception
-         --     when E : others =>
-         --        log ("");
-         --        log ("__________________________________________________________________________");
-         --        log ("Error detected in 'sprite_Fetcher'.");
-         --        log (ada.Exceptions.exception_Information (E));
-         --        log ("__________________________________________________________________________");
-         --        log ("");
-         -- end sprite_Fetcher;
-
-
          the_server_Sprites : constant remote.World.sprite_model_Pairs := of_World.Sprites;
 
 
       begin
          while not (         graphics_model_Fetcher'Terminated
                     and then  physics_model_Fetcher'Terminated)
-                    -- and then          sprite_Fetcher'Terminated)
          loop
             delay 0.05;
          end loop;
@@ -579,8 +461,7 @@ is
          -- Create our local sprites.
          --
          declare
-            the_Sprite         :          gel.Sprite.view;
-            -- the_server_Sprites : constant remote.World.sprite_model_Pairs := of_World.Sprites;
+            the_Sprite : gel.Sprite.view;
          begin
             for i in the_server_Sprites'Range
             loop
@@ -588,9 +469,6 @@ is
                                         Self.graphics_Models,
                                         Self. physics_Models,
                                         gel.World.view (Self));
-               -- log ("*** gel.world.client.is_a_Mirror.add sprite ~ " & the_Sprite.Name'Image);
-
-               -- the_Sprite.Spin_is (z_Rotation_from (to_Radians (90.0)));
                Self.add (the_Sprite);
             end loop;
          end;
@@ -606,218 +484,58 @@ is
    --
 
    overriding
-   procedure add (Self : access Item;   the_Sprite   : in gel.Sprite.view;
-                                        and_Children : in Boolean        := False)
-   is
-      -- added_Event : gel.remote.World.sprite_added_Event;
-
-   begin
-      -- log ("gel.world.client.add (sprite and children) " & the_Sprite.Name & the_Sprite.Id'Image);
-      gel.World.item (Self.all).add (the_Sprite, and_Children);     -- Do base class.
-      -- Self.all_Sprites.Map.add (the_Sprite);
-
-      -- added_Event.Id := the_Sprite.Id;
-
-      -- log ("****** gel.world.client.add " & the_Sprite.Name);
-      -- if the_Sprite.Id /= 50000000
-      -- then
-      --     raise Program_Error;
-      -- end if;
-
-      -- Self.emit (added_Event);
-   end add;
-
-
-
-   overriding
    procedure motion_Updates_are (Self : in Item;   seq_Id : in remote.World.sequence_Id;
                                                    Now    : in remote.World.motion_Updates)
    is
       use type remote.World.sequence_Id;
 
+      stale_Window : constant := 64;
+      --
+      -- Updates may arrive out of order, so a recently superseded id is dropped.
+      -- An id far older than the latest means the server has restarted (or the
+      -- id has wrapped), so the mirror resynchronises to it instead of freezing.
+
+      Latest : constant remote.World.sequence_Id := Self.seq_Id.Value;
+
       the_Id : gel.sprite_Id;
 
    begin
-      if seq_Id > Self.seq_Id.Value
+      if        seq_Id = Latest
+        or else Latest - seq_Id < stale_Window     -- A modular difference ~ small only for a recently superseded id.
       then
-         Self.seq_Id.Value_is (seq_Id);
-
-         for i in Now'Range
-         loop
-            begin
-               the_Id := Now (i).Id;
-
-               declare
-                  use remote.World;
-
-                  the_Sprite         : constant Sprite.view   := Self.all_Sprites.Map.fetch (the_Id);
-                  new_Site           : constant Vector_3      := refined (Now (i).Site);
-                  -- site_Delta         :          Vector_3;
-                  -- min_teleport_Delta : constant               := 20.0;
-
-                  new_Spin           : constant Quaternion    := refined (Now (i).Spin);
-                  -- new_Spin           : constant Matrix_3x3        := Now (i).Spin;
-
-               begin
-                  -- site_Delta := new_Site - the_Sprite.desired_Site;
-                  --
-                  -- if        abs site_Delta (1) > min_teleport_Delta
-                  --    or else abs site_Delta (2) > min_teleport_Delta
-                  --    or else abs site_Delta (3) > min_teleport_Delta
-                  -- then
-                  --     log ("Teleport.");
-                  --     the_Sprite.Site_is (new_Site);   -- Sprite has been 'teleported', so move it now
-                  -- end if;                             -- to prevent later interpolation.
-
-
-                  -- the_Sprite.Site_is (new_Site);
-                  -- the_Sprite.Spin_is (to_Rotation (Axis  => new_Spin.V,
-                  --                                   Angle => new_Spin.R));
-
-                  -- the_Sprite.Spin_is (to_Matrix (to_Quaternion (new_Spin)));
-
-                  -- the_Sprite.desired_Dynamics_are (Site => new_Site,
-                  --                                   Spin => to_Quaternion (new_Spin));
-
-                  the_Sprite.desired_Dynamics_are (Site => new_Site,
-                                                   Spin => new_Spin);
-
-                  -- the_Sprite.desired_Site_is (new_Site);
-                  -- the_Sprite.desired_Spin_is (new_Spin);
-               end;
-
-            exception
-               when constraint_Error =>
-                  log ("Warning: Received motion updates for unknown sprite" & the_Id'Image & ".");
-            end;
-         end loop;
-
+         return;
       end if;
+
+      Self.seq_Id.Value_is (seq_Id);
+
+      for i in Now'Range
+      loop
+         begin
+            the_Id := Now (i).Id;
+
+            declare
+               use remote.World;
+
+               the_Sprite : constant Sprite.view := Self.the_Sprites.Map.fetch (the_Id);
+               new_Site   : constant Vector_3    := refined (Now (i).Site);
+               new_Spin   : constant Quaternion  := refined (Now (i).Spin);
+
+            begin
+               the_Sprite.desired_Dynamics_are (Site => new_Site,
+                                                Spin => new_Spin);
+            end;
+
+         exception
+            when constraint_Error =>
+               log ("Warning: Received motion updates for unknown sprite" & the_Id'Image & ".");
+         end;
+      end loop;
    end motion_Updates_are;
 
 
 
-   overriding
-   procedure evolve (Self : in out Item)
-   is
-   begin
-      --  The age is advanced by the base class 'evolve', below.
-      --
-      Self.respond;
-      Self.local_Subject_and_deferred_Observer.respond;
-
-      -- Interpolate Id transforms.
-      --
-      declare
-         all_Sprites : constant Sprite.Views := Self.all_Sprites.Map.fetch_Views;
-      begin
-         for the_Sprite of all_Sprites
-         loop
-            the_Sprite.interpolate_Motion;
-         end loop;
-      end;
-
-
-      gel.World.item (Self).evolve;
-
-      --  -- Perform responses to events for all sprites.
-      --  --
-      -- declare
-      --     use id_Maps_of_sprite;
-      --
-      --     all_Sprites : constant id_Maps_of_sprite.Map    := Item'Class (Self).all_Sprites.fetch;
-      --     Cursor      :          id_Maps_of_sprite.Cursor := all_Sprites.First;
-      --     the_Sprite  :          Sprite.view;
-      -- begin
-      --     while has_Element (Cursor)
-      --     loop
-      --        the_Sprite := Element (Cursor);
-      --
-      --        begin
-      --           if not the_Sprite.is_Destroyed
-      --           then
-      --              the_Sprite.respond;
-      --           end if;
-      --
-      --        exception
-      --           when E : others =>
-      --              log ("");   log ("");
-      --              log ("Error in 'gel.World.client.evolve' Id response.");
-      --              log ("");
-      --              log (ada.Exceptions.exception_Information (E));
-      --              log ("");   log ("");
-      --        end;
-      --
-      --        next (Cursor);
-      --     end loop;
-      -- end;
-   end evolve;
-
-
-
-   overriding
-   function fetch (From : in sprite_Map;   Id : in sprite_Id) return Sprite.view
-   is
-   begin
-      return From.Map.fetch (Id);
-   end fetch;
-
-
-
-   overriding
-   function Contains (From : in sprite_Map;   Id : in sprite_Id) return Boolean
-   is
-   begin
-      return From.Map.Contains (Id);
-   end Contains;
-
-
-
-   overriding
-   function fetch_Views (From : in sprite_Map) return Sprite.Views
-   is
-   begin
-      return From.Map.fetch_Views;
-   end fetch_Views;
-
-
-   overriding
-   function fetch (From : in sprite_Map) return id_Maps_of_sprite.Map
-   is
-   begin
-      return From.Map.fetch_all;
-   end fetch;
-
-
-
-   overriding
-   procedure add (To : in out sprite_Map;   the_Sprite : in Sprite.view)
-   is
-   begin
-      To.Map.add (the_Sprite);
-   end add;
-
-
-
-   overriding
-   procedure rid (To : in out sprite_Map;   the_Sprite : in Sprite.view)
-   is
-   begin
-      To.Map.rid (the_Sprite);
-   end rid;
-
-
-
-   overriding
-   function all_Sprites (Self : access Item) return access World.sprite_Map'Class
-   is
-   begin
-      return Self.all_Sprites'Access;
-   end all_Sprites;
-
-
-   --------------
-   --- Containers
+   ---------------------
+   --- safe_sequence_Id
    --
 
    protected
@@ -841,75 +559,28 @@ is
 
 
 
-   protected
-   body safe_id_Map_of_sprite
+   overriding
+   procedure evolve (Self : in out Item)
    is
-      procedure refresh_Views
-      is
-         procedure free is new ada.unchecked_Deallocation (Sprite.Views, sprite_Views_view);
+   begin
+      --  The age is advanced by the base class 'evolve', below.
+      --
+      Self.respond;
+      Self.local_Subject_and_deferred_Observer.respond;
+
+      -- Interpolate sprite transforms.
+      --
+      declare
+         all_Sprites : constant Sprite.Views := Self.the_Sprites.Map.fetch_Views;
       begin
-         free (all_Views);
-         all_Views := new Sprite.Views' (to_Views (Map));
-      end refresh_Views;
+         for the_Sprite of all_Sprites
+         loop
+            the_Sprite.interpolate_Motion;
+         end loop;
+      end;
 
-
-
-      procedure add (the_Sprite : in Sprite.view)
-      is
-      begin
-         -- log ("safe_id_Map_of_sprite" & the_Sprite.Id'Image);
-         -- raise Program_Error;
-         Map.insert (the_Sprite.Id,
-                     the_Sprite);
-         refresh_Views;
-      end add;
-
-
-
-      procedure rid (the_Sprite : in Sprite.view)
-      is
-      begin
-         Map.delete (the_Sprite.Id);
-         refresh_Views;
-      end rid;
-
-
-
-      function fetch (Id : in sprite_Id) return Sprite.view
-      is
-      begin
-         return Map.Element (Id);
-      end fetch;
-
-
-
-      function Contains (Id : in sprite_Id) return Boolean
-      is
-      begin
-         return Map.Contains (Id);
-      end Contains;
-
-
-
-      function fetch_all return id_Maps_of_sprite.Map
-      is
-      begin
-         return Map;
-      end fetch_all;
-
-
-      function fetch_Views return Sprite.Views
-      is
-      begin
-         if all_Views = null
-         then
-            return Sprite.null_Sprites;
-         end if;
-
-         return all_Views.all;
-      end fetch_Views;
-
-   end safe_id_Map_of_sprite;
+      gel.World.item (Self).evolve;
+   end evolve;
 
 
 end gel.World.client;

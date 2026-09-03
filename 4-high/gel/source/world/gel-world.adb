@@ -1,4 +1,6 @@
 with
+     gel.Events,
+
      physics.Object,
      physics.Forge,
 
@@ -39,18 +41,81 @@ is
 
 
 
-   procedure define (Self : in out Item'Class;   Name       : in     String;
-                                                 Id         : in     world_Id;
-                                                 space_Kind : in     physics.space_Kind;
-                                                 Renderer   : access openGL.Renderer.lean.item'Class);
-   pragma Unreferenced (define);
-
    overriding
    procedure destroy (Self : in out Item)
    is
    begin
-      -- Free record components.
+      -- Destroy any sprites still in the world.
       --
+      declare
+         the_Sprites : constant Sprite.Views := Item'Class (Self).all_Sprites.fetch_Views;
+      begin
+         for the_Sprite of the_Sprites
+         loop
+            if not the_Sprite.is_Destroyed
+            then
+               the_Sprite.destroy (and_Children => False);
+            end if;
+         end loop;
+      end;
+
+      -- Free every sprite pending in both free sets ~ the world is going away,
+      -- so no renderer delay applies.
+      --
+      for s in Self.free_Sets'Range
+      loop
+         for i in 1 .. Self.free_Sets (s).Count
+         loop
+            gel.Sprite.free (Self.free_Sets (s).Entries (i).Sprite);
+         end loop;
+
+         Self.free_Sets (s).Count := 0;
+      end loop;
+
+      -- Free the models, whose lifetime is the world's.
+      --
+      declare
+         use id_Maps_of_graphics_model;
+
+         Cursor    : id_Maps_of_graphics_model.Cursor := Self.graphics_Models.First;
+         the_Model : openGL.Model.view;
+      begin
+         while has_Element (Cursor)
+         loop
+            the_Model := Element (Cursor);
+
+            if Self.Renderer /= null
+            then
+               Self.Renderer.free (the_Model);     -- The renderer disposes of GL resources safely.
+            else
+               openGL.Model.free (the_Model);
+            end if;
+
+            next (Cursor);
+         end loop;
+
+         Self.graphics_Models.clear;
+      end;
+
+      declare
+         use id_Maps_of_physics_model;
+
+         Cursor    : id_Maps_of_physics_model.Cursor := Self.physics_Models.First;
+         the_Model : physics.Model.view;
+      begin
+         while has_Element (Cursor)
+         loop
+            the_Model := Element (Cursor);
+            physics.Model.free (the_Model);
+
+            next (Cursor);
+         end loop;
+
+         Self.physics_Models.clear;
+      end;
+
+      Self.the_Sprites.Map.destruct;     -- Frees the flat views array.
+
       physics.Space.free (Self.physics_Space);
 
       lace.Subject_and_deferred_Observer.item (Self).destroy;     -- Destroy base class.
@@ -583,6 +648,14 @@ is
    is
       the_Set : free_Set renames Self.free_Sets (Self.current_free_Set);
    begin
+      -- Destruction implies removal: take the sprite out of the world's map and
+      -- physics space now, so nothing fetches or steps it while it awaits freeing.
+      --
+      if Item'Class (Self).all_Sprites.Contains (the_Sprite.Id)
+      then
+         rid (Item'Class (Self), the_Sprite);
+      end if;
+
       if the_Set.Count = the_Set.Entries'Last
       then
          return;     -- The set is full. Better to leak one than to overrun.
@@ -598,13 +671,12 @@ is
 
    procedure free_pending_Sprites (Self : access Item)
    is
-      prior_Index : constant Integer := Self.current_free_Set;
+      prior_Index : constant Integer := (if Self.current_free_Set = 1 then 2 else 1);
       prior_Set   : free_Set renames Self.free_Sets (prior_Index);
-   begin
-      -- Anything destroyed from here on goes to the other set, and waits for the next pass.
       --
-      Self.current_free_Set := (if prior_Index = 1 then 2 else 1);
-
+      -- The set filled during the previous pass. The set filled during this pass
+      -- waits: a sprite is never freed during the pass which destroyed it.
+   begin
       for i in 1 .. prior_Set.Count
       loop
          declare
@@ -632,6 +704,11 @@ is
       end loop;
 
       prior_Set.Count := 0;
+
+      -- Anything destroyed from here on goes to the just-emptied set; what was
+      -- destroyed during this pass waits in the other set for the next pass.
+      --
+      Self.current_free_Set := prior_Index;
    end free_pending_Sprites;
 
 
@@ -710,11 +787,10 @@ is
 
    procedure destroy (Self : in out Item;   the_Joint : in gel.Joint.view)
    is
+      Doomed : gel.Joint.view := the_Joint;
    begin
-      null;     -- TODO
-      -- Self.Commands.add ((kind   => free_Joint,
-      --                      sprite => null,
-      --                      joint  => the_Joint));
+      Self.physics_Space.rid (the_Joint.Physics.all'Access);     -- Remove the constraint, so the sprites part.
+      gel.Joint.free (Doomed);
    end destroy;
 
 
@@ -791,6 +867,21 @@ is
          end if;
 
          Item'Class (Self.all).all_Sprites.add (Single'unchecked_Access);
+
+         -- Tell any registered mirrors of the new sprite.
+         --
+         declare
+            the_Event : gel.Events.new_sprite_Event;
+         begin
+            the_Event.Pair := (sprite_Id         => Single.Id,
+                               sprite_Name       => lace.Text.forge.to_Text_64 (Single.Name),
+                               graphics_model_Id => Single.graphics_Model.Id,
+                               physics_model_Id  => Single.physics_Model.Id,
+                               Mass              => Single.Mass,
+                               Transform         => Single.Transform,
+                               is_Visible        => Single.is_Visible);
+            Self.emit (the_Event);
+         end;
       end add_single_Sprite;
 
    begin
@@ -837,6 +928,15 @@ is
          end if;
 
          Self.all_Sprites.rid (Single'unchecked_Access);     -- TODO: Handle grandchildren and so on.
+
+         -- Tell any registered mirrors of the ridded sprite.
+         --
+         declare
+            the_Event : gel.Events.rid_sprite_Event;
+         begin
+            the_Event.Id := Single.Id;
+            Self.emit (the_Event);
+         end;
       end rid_single_Sprite;
 
    begin
@@ -1258,6 +1358,152 @@ is
       Self.last_used_model_Id         := graphics_model_Id (Before - 1);
       Self.last_used_physics_model_Id := physics .model_Id (Before - 1);
    end reserve_Ids;
+
+
+   ------------------
+   --- Safe sprite map
+   --
+
+   protected
+   body safe_id_Map_of_sprite
+   is
+      procedure refresh_Views
+      is
+         procedure free is new ada.unchecked_Deallocation (Sprite.Views, sprite_Views_view);
+      begin
+         free (all_Views);
+         all_Views := new Sprite.Views' (to_Views (Map));
+      end refresh_Views;
+
+
+
+      procedure add (the_Sprite : in Sprite.view)
+      is
+      begin
+         Map.insert (the_Sprite.Id,
+                     the_Sprite);
+         refresh_Views;
+      end add;
+
+
+
+      procedure rid (the_Sprite : in Sprite.view)
+      is
+      begin
+         Map.delete (the_Sprite.Id);
+         refresh_Views;
+      end rid;
+
+
+
+      function fetch (Id : in sprite_Id) return Sprite.view
+      is
+      begin
+         return Map.Element (Id);
+      end fetch;
+
+
+
+      function Contains (Id : in sprite_Id) return Boolean
+      is
+      begin
+         return Map.Contains (Id);
+      end Contains;
+
+
+
+      function fetch_all return id_Maps_of_sprite.Map
+      is
+      begin
+         return Map;
+      end fetch_all;
+
+
+
+      function fetch_Views return Sprite.Views
+      is
+      begin
+         if all_Views = null
+         then
+            return Sprite.null_Sprites;
+         end if;
+
+         return all_Views.all;
+      end fetch_Views;
+
+
+
+      procedure destruct
+      is
+         procedure free is new ada.unchecked_Deallocation (Sprite.Views, sprite_Views_view);
+      begin
+         Map.clear;
+         free (all_Views);
+      end destruct;
+
+   end safe_id_Map_of_sprite;
+
+
+
+   overriding
+   function fetch (From : in safe_sprite_Map) return id_Maps_of_sprite.Map
+   is
+   begin
+      return From.Map.fetch_all;
+   end fetch;
+
+
+
+   overriding
+   function fetch (From : in safe_sprite_Map;   Id : in sprite_Id) return Sprite.view
+   is
+   begin
+      return From.Map.fetch (Id);
+   end fetch;
+
+
+
+   overriding
+   function Contains (From : in safe_sprite_Map;   Id : in sprite_Id) return Boolean
+   is
+   begin
+      return From.Map.Contains (Id);
+   end Contains;
+
+
+
+   overriding
+   function fetch_Views (From : in safe_sprite_Map) return Sprite.Views
+   is
+   begin
+      return From.Map.fetch_Views;
+   end fetch_Views;
+
+
+
+   overriding
+   procedure add (To : in out safe_sprite_Map;   the_Sprite : in Sprite.view)
+   is
+   begin
+      To.Map.add (the_Sprite);
+   end add;
+
+
+
+   overriding
+   procedure rid (From : in out safe_sprite_Map;   the_Sprite : in Sprite.view)
+   is
+   begin
+      From.Map.rid (the_Sprite);
+   end rid;
+
+
+
+   function all_Sprites (Self : access Item) return access sprite_Map'Class
+   is
+   begin
+      return Self.the_Sprites'unchecked_Access;
+   end all_Sprites;
 
 
    -----------

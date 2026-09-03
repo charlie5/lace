@@ -5,10 +5,9 @@ with
 
 package gel.World.client
 --
--- Provides a gel world.
+-- Provides a gel world which mirrors a server world.
 --
 is
-   -- pragma suppress (Container_Checks);     -- Suppress expensive tamper checks.
 
    type Item  is limited new gel.World.item with private;
 
@@ -34,7 +33,6 @@ is
    end Forge;
 
 
-
    overriding
    procedure destroy (Self : in out Item);
    procedure free    (Self : in out View);
@@ -45,14 +43,7 @@ is
    --
 
    overriding
-   procedure add (Self : access Item;   the_Sprite   : in gel.Sprite.view;
-                                        and_Children : in Boolean        := False);
-
-   overriding
    procedure evolve (Self : in out Item);
-
-   -- overriding
-   -- procedure wait_on_evolve (Self : in out Item);
 
 
    --------------------
@@ -68,56 +59,8 @@ is
    -- 'Self' must use 'in' mode to ensure async transmission with DSA.
 
 
-   ----------
-   --- Events
-   --
-
-
 
 private
-
-   protected
-   type safe_id_Map_of_sprite
-   is
-      procedure add (the_Sprite : in Sprite.view);
-      procedure rid (the_Sprite : in Sprite.view);
-
-      function  fetch (Id : in sprite_Id) return Sprite.view;
-      function  Contains (Id : in sprite_Id) return Boolean;
-      function  fetch_all return id_Maps_of_sprite.Map;
-      function  fetch_Views return Sprite.Views;
-
-   private
-      procedure refresh_Views;
-
-      Map       : id_Maps_of_sprite.Map;
-      all_Views : sprite_Views_view;     -- Rebuilt by 'add' and 'rid'. See 'fetch_Views'.
-   end safe_id_Map_of_sprite;
-
-
-
-   type sprite_Map is limited new World.sprite_Map with
-      record
-         Map : safe_id_Map_of_sprite;
-      end record;
-
-   overriding
-   function  fetch (From : in sprite_Map) return id_Maps_of_sprite.Map;
-
-   overriding
-   function  fetch    (From : in sprite_Map;   Id : in sprite_Id) return Sprite.view;
-   overriding
-   function  Contains (From : in sprite_Map;   Id : in sprite_Id) return Boolean;
-   overriding
-   function  fetch_Views (From : in sprite_Map) return Sprite.Views;
-
-   overriding
-   procedure add   (To   : in out sprite_Map;   the_Sprite : in Sprite.view);
-
-   overriding
-   procedure rid   (To   : in out sprite_Map;   the_Sprite : in Sprite.view);
-
-
 
    protected
    type safe_sequence_Id
@@ -137,17 +80,12 @@ private
 
    type Item is limited new gel.World.item with
       record
-         Age_at_last_mirror_update :         Duration  := 0.0;
-         all_Sprites               : aliased sprite_Map;
+         Age_at_last_mirror_update : Duration := 0.0;
 
          -- Motion Updates
          --
          seq_Id : safe_sequence_Id_view := new safe_sequence_Id;
       end record;
-
-
-   overriding
-   function all_Sprites (Self : access Item) return access World.sprite_Map'Class;
 
 
 end gel.World.client;

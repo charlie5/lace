@@ -12,7 +12,6 @@ package gel.World.server
 -- Provides a gel world server.
 --
 is
-   -- pragma suppress (Container_Checks);     -- Suppress expensive tamper checks.
 
    type Item  is limited new gel.World.item
    with private;
@@ -39,10 +38,7 @@ is
    end Forge;
 
 
-
-   overriding
-   procedure destroy (Self : in out Item);
-   procedure free    (Self : in out View);
+   procedure free (Self : in out View);
 
 
    --------------
@@ -73,31 +69,22 @@ private
    subtype world_Vector  is     world_Vectors.Vector;
 
 
-   --------------
-   --- sprite_Map
+   protected
+   type safe_Clients
+   is
+      procedure add (the_Mirror : in     remote.World.view);
+      procedure rid (the_Mirror : in     remote.World.view;
+                     Found      :    out Boolean);
+
+      function  fetch    return world_Vector;
+      function  is_Empty return Boolean;
+
+   private
+      Clients : world_Vector;
+   end safe_Clients;
    --
-
-   type sprite_Map is limited new World.sprite_Map with
-      record
-         Map       : id_Maps_of_sprite.Map;
-         all_Views : sprite_Views_view;     -- Rebuilt by 'add' and 'rid'. See 'fetch_Views'.
-      end record;
-
-   overriding
-   function  fetch (From : in     sprite_Map) return id_Maps_of_sprite.Map;
-
-   overriding
-   function  fetch    (From : in sprite_Map;   Id : in sprite_Id) return Sprite.view;
-   overriding
-   function  Contains (From : in sprite_Map;   Id : in sprite_Id) return Boolean;
-   overriding
-   function  fetch_Views (From : in sprite_Map) return Sprite.Views;
-
-   overriding
-   procedure add   (To   : in out sprite_Map;   the_Sprite : in Sprite.view);
-
-   overriding
-   procedure rid   (From : in out sprite_Map;   the_Sprite : in Sprite.view);
+   -- Protected ~ 'register' and 'deregister' arrive on PolyORB tasks while
+   -- 'evolve' walks the list on the main task.
 
 
    --------------
@@ -106,19 +93,13 @@ private
 
    type Item is limited new gel.World.item with
       record
-         Age_at_last_Clients_update : Duration    := 0.0;
-         Clients                    : World_vector;
-
-         all_Sprites : aliased sprite_Map;
+         Age_at_last_Clients_update : Duration := 0.0;
+         Clients                    : safe_Clients;
 
          -- Motion Updates
          --
          seq_Id : remote.World.sequence_Id := 0;
       end record;
-
-
-   overriding
-   function all_Sprites (Self : access Item) return access World.sprite_Map'Class;
 
 
 end gel.World.server;
