@@ -181,10 +181,22 @@ is
       the_Model     : openGL.io.Model              := load_Model;
       the_Map       : io_vertex_Map_of_gl_vertex_id;
 
-      the_Vertices  : any_Vertex_array_view := new any_Vertex_array' (1 .. 100_000 => <>);
+      function face_vertex_Count return long_Index_t
+      is
+         Count : long_Index_t := 0;
+      begin
+         for f in the_Model.Faces'Range
+         loop
+            Count := Count + Vertices_of (the_Model.Faces (f))'Length;
+         end loop;
+
+         return Count;
+      end face_vertex_Count;
+
+      the_Vertices  : any_Vertex_array_view := new any_Vertex_array (1 .. face_vertex_Count);   -- An upper bound on the unique vertices.
       vertex_Count  : openGL.long_Index_t   := 0;
 
-      tri_Count     : Index_t := 0;
+      tri_Count     : long_Index_t := 0;
       Normals_known : Boolean := False;
 
       -- TODO: Use one set of gl face vertices and 2 sets of indices (1 for tris and 1 for quads).
@@ -311,7 +323,7 @@ is
       --
       declare
          tri_indices_Count :          long_Index_t                        := 0;
-         tri_indices_Last  : constant long_Index_t                        := long_Index_t (tri_Count) * 3;
+         tri_indices_Last  : constant long_Index_t                        := tri_Count * 3;
          tri_Indices       : aliased  long_Indices (1 .. tri_indices_Last);
 
          procedure add_to_Tri (the_Vertex : in io.Vertex)
@@ -371,30 +383,30 @@ is
                then
                   set_Normals:
                   declare
-                     type Normals_view is access all Normals;
+                     type Normals_view is access all many_Normals;
 
-                     function get_Sites return Sites
+                     function get_Sites return many_Sites
                      is
-                        Result : Sites := [1 .. my_Vertices'Length => <>];
+                        Result : many_Sites (my_Vertices'Range);
                      begin
                         for i in Result'Range
                         loop
-                           Result (i) := my_Vertices (long_Index_t (i)).Site;
+                           Result (i) := my_Vertices (i).Site;
                         end loop;
 
                         return Result;
                      end get_Sites;
 
-                     the_Sites   : constant openGL.Sites := get_Sites;
+                     the_Sites   : constant many_Sites   := get_Sites;
                      the_Normals :          Normals_view := Geometry.Normals_of (Primitive.Triangles,
                                                                                  tri_Indices,
                                                                                  the_Sites);
-                     procedure deallocate is new ada.unchecked_Deallocation (Normals, Normals_view);
+                     procedure deallocate is new ada.unchecked_Deallocation (many_Normals, Normals_view);
 
                   begin
                      for i in my_Vertices'Range
                      loop
-                        my_Vertices (i).Normal := the_Normals (Index_t (i));
+                        my_Vertices (i).Normal := the_Normals (i);
                         my_Vertices (i).Shine  := default_Shine;
                      end loop;
 
@@ -504,7 +516,7 @@ is
             Self.Bounds.Box.Lower (3) := Self.Bounds.Box.Lower (3) - 0.2;     -- TODO: This is dubious at best.
          end if;
 
-         Self.Geometry.is_Transparent (now => False);
+         Self.Geometry.is_Transparent (now => Self.has_lucid_Texture);
          Self.Geometry.Label_is       (to_String (Self.Model) & "-" & to_String (Self.Texture));
       end;
 

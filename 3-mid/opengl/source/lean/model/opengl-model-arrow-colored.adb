@@ -58,7 +58,6 @@ is
       the_Indices   : aliased  Indices               := [1 .. indices_Count => <>];
       the_Primitive :          Primitive.indexed.view;
    begin
-      Geometry.free (Self.Geometry);
       Self.Geometry := Geometry.colored.new_Geometry;
 
       set_Colors:
@@ -74,7 +73,6 @@ is
 
       -- Main line.
       --
-      Self.Geometry.free_Primitives;
 
       the_Indices   := [1, 2];
       the_Primitive := Primitive.indexed.new_Primitive (Primitive.Lines, the_Indices, line_Width => Self.line_Width);
@@ -146,7 +144,11 @@ is
    procedure modify (Self : in out Item)
    is
    begin
-      Self.Geometry.Vertices_are (Self.Vertices);
+      if Self.Geometry /= null
+      then
+         Self.Geometry.Vertices_are (Self.Vertices);
+      end if;
+
       Self.set_Bounds;
       Self.is_Modified := False;
    end modify;

@@ -83,7 +83,13 @@ is
 
          if Self.texture_Name /= null_Asset
          then
-            Self.Texture := IO.to_Texture (Self.texture_Name);
+            if Self.owns_Texture
+            then
+               Self.Texture.destroy;     -- Release the texture of the prior build.
+            end if;
+
+            Self.Texture      := IO.to_Texture (Self.texture_Name);
+            Self.owns_Texture := True;
          end if;
 
          if Self.Lucid
@@ -94,7 +100,8 @@ is
                then
                   set_Image (Self.Texture, Self.lucid_Image.all);
                else
-                  Self.Texture := openGL.Texture.Forge.to_Texture (Self.lucid_Image.all);
+                  Self.Texture      := openGL.Texture.Forge.to_Texture (Self.lucid_Image.all);
+                  Self.owns_Texture := True;
                end if;
             end if;
 
@@ -105,7 +112,8 @@ is
                then
                   Self.Texture.set_Image (Self.Image.all);
                else
-                  Self.Texture := openGL.Texture.Forge.to_Texture (Self.Image.all);
+                  Self.Texture      := openGL.Texture.Forge.to_Texture (Self.Image.all);
+                  Self.owns_Texture := True;
                end if;
             end if;
          end if;
@@ -124,8 +132,23 @@ is
    procedure Texture_is (Self : in out Item;   Now : in openGL.Texture.Object)
    is
    begin
-      Self.Texture := Now;
+      Self.Texture      := Now;
+      Self.owns_Texture := False;     -- The texture belongs to the caller.
    end Texture_is;
+
+
+
+   overriding
+   procedure destroy (Self : in out Item)
+   is
+   begin
+      if Self.owns_Texture
+      then
+         Self.Texture.destroy;
+      end if;
+
+      destroy (Model.item (Self));
+   end destroy;
 
 
 

@@ -187,14 +187,14 @@ is
       end set_Indices;
 
 
+      the_Geometry.Vertices_are (the_Vertices);     -- Sets the transparency from the vertex colors.
+
       if Self.Image /= null_Asset
       then
-         the_Geometry.Texture_is (Textures.fetch (Self.Image));
-         the_Geometry.is_Transparent (now => the_Geometry.Texture.is_Transparent);
+         the_Geometry.Texture_is     (Textures.fetch (Self.Image));
+         the_Geometry.is_Transparent (now =>    the_Geometry.is_Transparent
+                                             or the_Geometry.Texture.is_Transparent);
       end if;
-
-      the_Geometry.is_Transparent (False);
-      the_Geometry.Vertices_are   (the_Vertices);
 
       declare
          the_Primitive : constant Primitive.indexed.view

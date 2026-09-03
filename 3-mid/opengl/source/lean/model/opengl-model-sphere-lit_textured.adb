@@ -175,13 +175,13 @@ is
       end set_Indices;
 
 
+      the_Geometry.Vertices_are (the_Vertices);
+
       if Self.Image /= null_Asset
       then
-         the_Geometry.Texture_is (Textures.fetch (Self.Image));
+         the_Geometry.Texture_is     (Textures.fetch (Self.Image));
          the_Geometry.is_Transparent (now => the_Geometry.Texture.is_Transparent);
       end if;
-
-      the_Geometry.Vertices_are (the_Vertices);
 
       declare
          the_Primitive : constant Primitive.indexed.view

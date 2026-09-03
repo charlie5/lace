@@ -67,8 +67,6 @@ is
       begin
          the_Geometry.Vertices_are (Vertices);
          the_Geometry.add          (Primitive.view (the_Primitive));
-
-         the_Geometry.is_Transparent (True);     -- TODO: Do transparency properly.
          the_Geometry.Model_is       (Self.all'unchecked_Access);
 
          return the_Geometry;

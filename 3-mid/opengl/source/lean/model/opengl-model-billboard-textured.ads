@@ -39,6 +39,8 @@ is
    overriding
    function  to_GL_Geometries   (Self : access Item;   Textures : access Texture.name_Map_of_texture'Class;
                                                        Fonts    : in     Font.font_id_Map_of_font) return Geometry.views;
+   overriding
+   procedure destroy            (Self : in out Item);
 
    procedure Texture_is         (Self : in out Item;   Now : in Texture.Object);
    function  Texture            (Self : in     Item)     return Texture.Object;
@@ -58,6 +60,7 @@ private
          texture_Name   : asset_Name            := null_Asset;
          Texture        : openGL.Texture.Object := openGL.Texture.null_Object;                           -- The texture to be applied to the billboard face.
          texture_Coords : Coordinates           := [(0.0, 0.0), (1.0, 0.0), (1.0, 1.0), (0.0, 1.0)];     -- TODO: Should be constant/static ?
+         owns_Texture   : Boolean               := False;     -- True when 'Texture' was created here (from 'texture_Name' or an image), so it is ours to release.
 
          case Lucid is
             when True  => lucid_Image : lucid_Image_view;

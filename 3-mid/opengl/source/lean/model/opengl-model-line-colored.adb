@@ -50,10 +50,7 @@ is
       the_Primitive :          Primitive.indexed.view;
 
    begin
-      if Self.Geometry = null
-      then
-         Self.Geometry := Geometry.colored.new_Geometry;
-      end if;
+      Self.Geometry := Geometry.colored.new_Geometry;     -- A new geometry for each build, since the base frees the prior one.
 
       set_Sites:
       begin
@@ -88,7 +85,11 @@ is
       use Geometry.colored;
    begin
       Self.Vertices (for_End).Site := Now;
-      Self.Geometry.Vertices_are (Self.Vertices);
+
+      if Self.Geometry /= null
+      then
+         Self.Geometry.Vertices_are (Self.Vertices);
+      end if;
 
       Self.set_Bounds;
    end Site_is;

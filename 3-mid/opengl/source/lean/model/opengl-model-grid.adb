@@ -75,10 +75,7 @@ is
       the_Primitive : Primitive.non_indexed.view;
 
    begin
-      if Self.Geometry = null
-      then
-         Self.Geometry := Geometry.colored.new_Geometry;
-      end if;
+      Self.Geometry := Geometry.colored.new_Geometry;     -- A new geometry for each build, since the base frees the prior one.
 
       set_Sites:
       declare

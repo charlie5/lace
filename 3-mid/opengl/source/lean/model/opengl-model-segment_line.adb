@@ -45,7 +45,7 @@ is
       the_Indices   : aliased       Indices := [1 .. indices_Count => <>];
 
    begin
-      if Self.Points.Length <= 2
+      if Self.Points.Length < 2
       then
          return [1 .. 0 => <>];
       end if;
@@ -184,7 +184,14 @@ is
 
       the_Vector : constant Vector_3 := the_Segment.Last - the_Segment.First;
    begin
-      return arcTan (the_Vector (3) / the_Vector (1));
+      if         the_Vector (1) = 0.0
+        and then the_Vector (3) = 0.0
+      then
+         return 0.0;     -- A vertical segment has no angle in the plane.
+      end if;
+
+      return arcTan (Y => the_Vector (3),
+                     X => the_Vector (1));
    end Angle_in_xz_plane;
 
 

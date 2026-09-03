@@ -165,19 +165,22 @@ is
       end set_Indices;
 
 
-      declare
-         Pad : Index_t;
-      begin
-         for i in the_Indices'Range
-         loop
-            if i mod 2 = 1
-            then
-               Pad                 := the_Indices (i);
-               the_Indices (i)     := the_Indices (i + 1);
-               the_Indices (i + 1) := Pad;
-            end if;
-         end loop;
-      end;
+      if Self.is_Skysphere
+      then     -- Reverse the winding, so the faces point inward and are seen from inside the sphere.
+         declare
+            Pad : Index_t;
+         begin
+            for i in the_Indices'Range
+            loop
+               if i mod 2 = 1
+               then
+                  Pad                 := the_Indices (i);
+                  the_Indices (i)     := the_Indices (i + 1);
+                  the_Indices (i + 1) := Pad;
+               end if;
+            end loop;
+         end;
+      end if;
 
       if Self.Image /= null_Asset
       then

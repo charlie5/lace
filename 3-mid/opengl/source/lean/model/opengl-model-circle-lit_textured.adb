@@ -95,8 +95,6 @@ is
             the_Geometry.is_Transparent (Now   => the_Geometry.Texture.is_Transparent);
          end loop;
 
-         the_Geometry.is_Transparent (True);     -- TODO: Do transparency properly.
-
          return the_Geometry;
       end new_Geometry;
 

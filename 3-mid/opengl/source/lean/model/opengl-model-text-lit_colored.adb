@@ -4,7 +4,8 @@ with
      openGL.Primitive.indexed,
      openGL.Texture,
 
-     ada.Directories;
+     ada.Directories,
+     ada.unchecked_Deallocation;
 
 
 package body openGL.Model.Text.lit_colored
@@ -50,7 +51,9 @@ is
    overriding
    procedure Text_is (Self : in out Item;   Now : in String)
    is
+      procedure free is new ada.unchecked_Deallocation (String, String_view);
    begin
+      free (Self.Text);
       Self.Text          := new String (1 .. Now'Length);
       Self.Text.all      := Now;                             -- NB: This results in Text'First = 1.
       Self.needs_Rebuild := True;

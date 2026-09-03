@@ -51,12 +51,17 @@ is
 
          function the_Indices return Indices
          is
-            Result : Indices (1 .. the_Sites'Length);
+            Count  : constant long_Index_t := the_Sites'Length;
+            Result :          Indices (1 .. Count + 2);
          begin
-            for i in Result'Range
+            Result (1) := Index_t (Count + 1);     -- The fan's centre is the centroid vertex.
+
+            for i in 1 .. Count
             loop
-               Result (i) := Index_t (i);
+               Result (i + 1) := Index_t (i);
             end loop;
+
+            Result (Result'Last) := 1;               -- Close the fan.
 
             return Result;
          end the_Indices;
@@ -86,8 +91,6 @@ is
                                          Now   => Textures.fetch (Self.texture_Details.Details (i).Texture));
             the_Geometry.is_Transparent (Now   => the_Geometry.Texture.is_Transparent);
          end loop;
-
-         the_Geometry.is_Transparent (True);     -- TODO: Do transparency properly.
 
          return the_Geometry;
       end new_Geometry;

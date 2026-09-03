@@ -129,7 +129,11 @@ is
    procedure modify (Self : in out Item)
    is
    begin
-      Self.Geometry.Vertices_are (Self.Vertices.all);
+      if Self.Geometry /= null
+      then
+         Self.Geometry.Vertices_are (Self.Vertices.all);
+      end if;
+
       Self.is_Modified := False;
    end modify;
 

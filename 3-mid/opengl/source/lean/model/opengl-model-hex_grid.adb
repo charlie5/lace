@@ -233,7 +233,8 @@ is
                   begin
                      for Each in 1 .. the_Vertex.shared_Count
                      loop
-                        Height := Height + Heights (Row, Col);
+                        Height := Height + Heights (Index_t (the_Vertex.shared_Hexes (Each).Row),
+                                                    Index_t (the_Vertex.shared_Hexes (Each).Col));
                      end loop;
 
                      Height          := Height / Real (the_Vertex.shared_Count);
@@ -245,9 +246,9 @@ is
                                   Real'Min (min_Site (2), the_Vertex.Site (2)),
                                   Real'Min (min_Site (3), the_Vertex.Site (3))];
 
-                     max_Site := [Real'Max (min_Site (1), the_Vertex.Site (1)),
-                                  Real'Max (min_Site (2), the_Vertex.Site (2)),
-                                  Real'Max (min_Site (3), the_Vertex.Site (3))];
+                     max_Site := [Real'Max (max_Site (1), the_Vertex.Site (1)),
+                                  Real'Max (max_Site (2), the_Vertex.Site (2)),
+                                  Real'Max (max_Site (3), the_Vertex.Site (3))];
                   end;
                end loop;
 
@@ -259,9 +260,9 @@ is
 
       set_GL_Vertices:
       declare
-         Center    : constant Site := [(max_Site (1) - min_Site (1)) / 2.0,
-                                       (max_Site (2) - min_Site (2)) / 2.0,
-                                       (max_Site (3) - min_Site (3)) / 2.0];
+         Center    : constant Site := [(max_Site (1) + min_Site (1)) / 2.0,
+                                       (max_Site (2) + min_Site (2)) / 2.0,
+                                       (max_Site (3) + min_Site (3)) / 2.0];
 
          vertex_Id :          Index_t    := 0;
          Color     : constant rgba_Color := Self.Color;
