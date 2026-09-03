@@ -36,7 +36,7 @@ is
 
    function Name   (Self : in Object) return Buffer.a_Name;
    function Kind   (Self : in Object) return Buffer.a_Kind is abstract;
-   function Length (Self : in Object) return Positive;
+   function Length (Self : in Object) return Natural;
 
 
    --------------
@@ -108,7 +108,7 @@ private
    type Object is abstract tagged limited
       record
          Name   : aliased Buffer.a_Name := 0;
-         Length :         Positive;
+         Length :         Natural := 0;
       end record;
 
    overriding

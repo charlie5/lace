@@ -22,9 +22,14 @@ is
       function to_chars_ptr is new ada.unchecked_Conversion (GLubyte_pointer,
                                                              c.Strings.chars_ptr);
 
-      Result : constant String := c.Strings.Value (to_chars_ptr (glGetString (GL_VERSION)));
+      the_Version : constant GLubyte_pointer := glGetString (GL_VERSION);
    begin
-      return Result;
+      if the_Version = null
+      then
+         raise openGL.Error with "glGetString (GL_VERSION) returned null ~ is an openGL context current ?";
+      end if;
+
+      return c.Strings.Value (to_chars_ptr (the_Version));
    end Version;
 
 
@@ -34,6 +39,8 @@ is
       use
            GL,
            GL.Binding;
+
+      check_is_OK : constant Boolean := openGL.Tasks.Check with Unreferenced;
 
       Major : aliased glInt;
       Minor : aliased glInt;

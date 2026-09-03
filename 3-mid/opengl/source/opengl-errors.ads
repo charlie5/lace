@@ -6,7 +6,7 @@ is
    function  Current return String;
    --
    -- Returns a descriptive string of the last occurring openGL error.
-   -- Returns "", when no error exists.
+   -- Returns "no error" when no error exists (and "" when not debugging).
    -- Clears any existing error.
 
    procedure log (Prefix : in String := "");

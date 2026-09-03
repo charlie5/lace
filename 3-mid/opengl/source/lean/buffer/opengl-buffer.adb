@@ -100,7 +100,7 @@ is
 
 
 
-   function Length (Self : in Object) return Positive
+   function Length (Self : in Object) return Natural
    is
    begin
       return Self.Length;

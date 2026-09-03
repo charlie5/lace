@@ -46,7 +46,7 @@ is
    begin
       for i in Self'Range
       loop
-         the_Array (Index_t (i)) := Vector_3 (Self (i) & 0.0);
+         the_Array (Index_t (i - Self'First + 1)) := Vector_3 (Self (i) & 0.0);
       end loop;
 
       return the_Array;
@@ -145,7 +145,7 @@ is
    begin
       for Row in Self'Range (1)
       loop
-         for Col in Self'Range (1)
+         for Col in Self'Range (2)
          loop
             Self (Row, Col) := Self (Row, Col) * By;
          end loop;
@@ -202,6 +202,11 @@ is
    is
       the_Name : String (asset_Name'Range);
    begin
+      if Self'Length > the_Name'Length
+      then
+         raise openGL.Error with "Asset name '" & Self & "' exceeds" & Integer'Image (the_Name'Length) & " characters.";
+      end if;
+
       the_Name (1               .. Self'Length)   := Self;
       the_Name (Self'Length + 1 .. the_Name'Last) := [others => ' '];
 

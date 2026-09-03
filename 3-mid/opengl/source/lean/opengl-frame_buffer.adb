@@ -135,6 +135,9 @@ is
 
       glClear (GL_COLOR_BUFFER_BIT);
       openGL.Errors.log;
+
+      glBindFramebuffer (GL_FRAMEBUFFER, 0);
+      openGL.Errors.log;
    end Texture_is;
 
 

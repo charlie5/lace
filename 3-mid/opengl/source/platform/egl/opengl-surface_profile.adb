@@ -47,6 +47,12 @@ is
       add (EGL_SURFACE_TYPE,    EGL_WINDOW_BIT);
       add (EGL_RENDERABLE_TYPE, renderable_Bit);
 
+      if Desired.color_Buffer.Bits_red /= Irrelevant
+      then
+         add (EGL_RED_SIZE,
+              EGLint (Desired.color_Buffer.Bits_red));
+      end if;
+
       if Desired.color_Buffer.Bits_blue /= Irrelevant
       then
          add (EGL_BLUE_SIZE,

@@ -93,6 +93,16 @@ is
 
          glTexParameteri (GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);      Errors.log;
 
+         glTexImage2D (GL_TEXTURE_2D,
+                       0,
+                       GL_RGBA,
+                       GLsizei (Dimensions.Width),
+                       GLsizei (Dimensions.Height),
+                       0,
+                       GL_RGBA,
+                       GL_UNSIGNED_BYTE,
+                       null);                                                   Errors.log;   -- Allocate (uninitialised) storage.
+
          return Self;
       end to_Texture;
 
@@ -130,6 +140,7 @@ is
    is
    begin
       free (Self.Name);     -- Release the GL texture name.
+      Self.Name := 0;
    end destroy;
 
 
@@ -137,7 +148,13 @@ is
    procedure free (Self : in out Object)
    is
    begin
-      free (Self.Pool.all, Self);     -- Release 'Self' from it's pool for later re-use.
+      if Self.Pool = null
+      then
+         destroy (Self);                 -- Not pooled, so release the GL texture name.
+      else
+         free (Self.Pool.all, Self);     -- Release 'Self' to its pool for later re-use.
+         Self.Name := 0;
+      end if;
    end free;
 
 
@@ -210,7 +227,7 @@ is
                     0,
                     GL_RGB,
                     GL_UNSIGNED_BYTE,
-                    +the_Image (1, 1).Red'Address);                             Errors.log;
+                    +the_Image (the_Image'First (1), the_Image'First (2)).Red'Address);                             Errors.log;
 
       if use_Mipmaps
       then
@@ -253,7 +270,7 @@ is
                     0,
                     GL_RGBA,
                     GL_UNSIGNED_BYTE,
-                    +the_Image (1, 1).Primary.Red'Address);                     Errors.log;
+                    +the_Image (the_Image'First (1), the_Image'First (2)).Primary.Red'Address);                     Errors.log;
 
       if use_Mipmaps
       then
@@ -280,11 +297,7 @@ is
       pragma assert (Self.Name > 0);
    begin
       Tasks.check;
-
-      gl.Binding.glTexParameteri (GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);   Errors.log;
-      gl.Binding.glTexParameteri (GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);   Errors.log;
-
-      glBindTexture (GL.GL_TEXTURE_2D, Self.Name);                                Errors.log;
+      glBindTexture (GL.GL_TEXTURE_2D, Self.Name);   Errors.log;
    end enable;
 
 
@@ -358,10 +371,13 @@ is
       loop
          for i in 1 .. Each.Last
          loop
-            destroy    (Each.Textures (i));
-            deallocate (Each);
+            destroy (Each.Textures (i));
          end loop;
+
+         deallocate (Each);
       end loop;
+
+      the_Pool.Map.clear;
    end destroy;
 
 
@@ -448,15 +464,26 @@ is
          return;
       end if;
 
-      raise Program_Error with "TODO: free texture from pool";
---        declare
---           unused_texture_List : constant pool_texture_List_view
---             := Self.unused_Textures_for_size (the_Texture.Size_width,
---                                               the_Texture.Size_height);
---        begin
---           unused_texture_List.Last                                := unused_texture_List.Last + 1;
---           unused_texture_List.Textures (unused_texture_List.Last) := the_Texture;
---        end;
+      declare
+         unused_List : pool_texture_List_view;
+      begin
+         if From.Map.contains (the_Texture.Dimensions)
+         then
+            unused_List := From.Map.Element (the_Texture.Dimensions);
+         else
+            unused_List := new pool_texture_List;
+            From.Map.insert (the_Texture.Dimensions, unused_List);
+         end if;
+
+         if unused_List.Last = unused_List.Textures'Last
+         then     -- The pool is full for this size, so release the GL texture name instead.
+            free (the_Texture.Name);
+            return;
+         end if;
+
+         unused_List.Last                        := unused_List.Last + 1;
+         unused_List.Textures (unused_List.Last) := the_Texture;
+      end;
    end free;
 
 

@@ -81,12 +81,14 @@ is
 
    type Detail is
       record
-         Object         : texture.Object;
-         Texture        : asset_Name;
-         Fade           : fade_Level;
-         texture_Tiling : Tiling;
-         texture_Apply  : Boolean;   -- If the texture is to be applied to the visual.
+         Object         : texture.Object := texture.null_Object;
+         Texture        : asset_Name     := null_Asset;
+         Fade           : fade_Level     := 0.0;
+         texture_Tiling : Tiling         := (S => 1.0,  T => 1.0);
+         texture_Apply  : Boolean        := False;   -- If the texture is to be applied to the visual.
       end record;
+   --
+   -- The defaults make a default 'Item' (one detail, no texture) valid, as some models never set their details.
 
    type Detail_array is array (detail_Count range <>) of Detail;
 
