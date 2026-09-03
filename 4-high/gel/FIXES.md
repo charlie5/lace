@@ -210,3 +210,108 @@ server) is environment-fragile to drive headless and was not completed in
 session; the path is validated by clean compilation, successful DSA stub
 generation, and its equivalence to the already-working model-event mirroring
 mechanism.
+
+
+---
+
+
+# Round 2 — re-review fixes, 2026-09-04
+
+A second /code-review pass over `4-high/gel/source`, run on the round-1
+result, found that several of the mirror-protocol guards narrowed their
+races rather than closed them, and that two converted loud failures into
+silent desyncs. This round reworks the protocol around three root causes
+instead of patching each symptom.
+
+
+## 2.1. Registration is now atomic: `register` returns the world snapshot
+
+`gel.remote.World.register` is now a function returning a
+`mirror_Snapshot` — the graphics models, physics models, sprites and
+current motion sequence id — captured by the server only *after*
+subscribing the observer. A change happening around registration can
+therefore arrive both in the snapshot and as an event, but never in
+neither; the client applies both idempotently (the world's model `add`
+already skipped known ids; the sprite paths now check before adding).
+This closes the lost-sprite and ghost-sprite windows at the source, and
+replaces the client's two polling fetch-tasks and three RPCs with one
+call. The sequence id in the snapshot resynchronises the mirror, so a
+reconnect after a server restart starts clean.
+
+The old sequence guard's 64-id "stale window" — which froze a fresh mirror
+near the wrap point and rewound on a long-delayed burst — is replaced by
+serial-number acceptance: an update is applied iff its id is ahead of the
+latest by less than half the id space.
+
+## 2.2. Registration and disconnection are symmetric and idempotent
+
+The server keeps each mirror as a (mirror, observer) pair. `register`
+dedupes — a repeated registration cannot double the event subscriptions —
+and one `disconnect` routine (used by both `deregister` and eviction) rids
+the pair *and* deregisters the observer from all four event kinds, so an
+evicted client no longer leaks observer registrations that the server then
+pays a failed RPC for on every sprite event. Eviction is again limited to
+`communication_Error | storage_Error` (a genuinely dead transport), logged
+with `exception_Information`; any other exception propagates loudly
+instead of silently cutting off a live client.
+
+## 2.3. Teardown is ordered and drained
+
+The client world's destroy now: deregisters itself from the mirrored
+server (kept on record from `is_a_Mirror`), closes a gate inside
+`safe_sequence_Id` — barring new motion updates and blocking until
+in-flight ones drain — and only then destroys the base. On the server, an
+update round is bracketed (`begin_Round`/`end_Round`) and `rid` waits for
+the round to end, so once a disconnect returns, no update call can still
+reach the departed mirror. The `seq_Id` gate is deliberately never freed:
+a straggling asynchronous update off the network must find a closed gate,
+not freed memory (one small allocation lives for the program; the round-1
+free reintroduced exactly that dangling risk).
+
+## 2.4. Client-local sprite ids cannot shadow server ids
+
+A client world now allocates local sprite ids downward from
+`sprite_Id'Last`, while server ids grow upward from 1 — so the duplicate
+guard can no longer silently drop a server sprite whose id collides with a
+locally created one.
+
+## 2.5. A sprite with missing models recovers instead of being dropped
+
+If a `new_sprite_Event` refers to models the client does not yet hold, the
+client now re-fetches the server's model maps (adding only the missing
+ones) and retries, rather than dropping the sprite forever with a warning.
+The duplicate-sprite path now also emits the `sprite_added_Event`
+acknowledgement, so an observer counting acks is not starved.
+
+## 2.6. `is_Closing` removed: mirrors are told of ridded sprites at world destroy
+
+The round-1 `is_Closing` flag suppressed sprite events for *all* observers
+during world destroy — wrong across DSA partitions, where a client mirror
+outlives the server's world and was left rendering ghosts. The flag (and
+its unsynchronized cross-task read) is gone: teardown emits rid events as
+usual, and the subject machinery is destroyed after the sprites, so the
+emissions are safe.
+
+## 2.7. Cleanups from the re-review
+
+The model maps are probed once per arriving sprite (cursors passed to
+`to_Sprite`, which now takes the model views). The demo client's redundant
+second registration is gone (`is_a_Mirror` registers). The demo's
+`gel_demo_Server.item.stop` — a rendezvous with the *client partition's*
+local, never-started copy of the server task, which hung the client at
+exit since the demo was written — is replaced by an RCI
+`gel_demo_Services.stop_Server` that reaches the server partition. The DSA
+builder's hard-coded gcc-15.1.1 `a-sttebu.ali` path now uses
+`$(gcc -dumpversion)`.
+
+
+## Round 2 verification
+
+- Full-tree `build_all` clean; `po_gnatdist` builds both partitions.
+- `chains_2d` and `mixed_shapes` run and exit cleanly.
+- **The DSA demo now works end to end, for the first time**: the client
+  mirrors the server's sprites via the register snapshot (motion updates
+  apply with no unknown-sprite warnings), and closing the client window
+  runs the whole reworked teardown — deregister, gate drain, world/applet
+  destroy — prints "Client done.", stops the server through the new RCI
+  call, and both partitions exit on their own.
