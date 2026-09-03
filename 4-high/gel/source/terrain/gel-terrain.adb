@@ -11,8 +11,6 @@ with
 
 package body gel.Terrain
 is
-   type Heightfield_view is access all physics.Heightfield;
-
    type height_Map_view is access all opengl.height_Map;
    type height_map_Grid is array (math.Index range <>,
                                   math.Index range <>) of height_Map_view;
@@ -37,7 +35,7 @@ is
    function new_Terrain (World        : in gel.World.view;
                          heights_File : in String;
                          texture_File : in String        := "";
-                         Scale        : in math.Vector_3 := (1.0, 1.0, 1.0)) return access gel.Sprite.Grid
+                         Scale        : in math.Vector_3 := [1.0, 1.0, 1.0]) return access gel.Sprite.Grid
    is
       use Math;
 
@@ -49,7 +47,7 @@ is
       total_Width : constant Real     := Real (the_Pixels'Length (2) - 1) * Scale (1);
       total_Depth : constant Real     := Real (the_Pixels'Length (1) - 1) * Scale (3);
 
-      base_Centre : constant Vector_3 := (0.0, 0.0, 0.0);
+      base_Centre : constant Vector_3 := [0.0, 0.0, 0.0];
 
 
       function Grid_last (total_Size, tile_Size : in Positive) return math.Index
@@ -114,8 +112,8 @@ is
                                             math.Index (the_Pixels'Last (2)));
 
                the_heightmap_Grid (Row, Col)
-                 := new opengl.height_Map' (Region (the_Pixels.all, (Index_t (row_First), Index_t (row_Last)),
-                                                                    (Index_t (col_First), Index_t (col_Last))));
+                 := new opengl.height_Map' (Region (the_Pixels.all, [Index_t (row_First), Index_t (row_Last)],
+                                                                    [Index_t (col_First), Index_t (col_Last)]));
             end loop;
          end loop;
       end;
@@ -125,7 +123,11 @@ is
       declare
          site_X_offset,
          site_Z_offset : Real := 0.0;
-         site_Y_Offset : Real;
+
+         global_height_Extents : constant opengl.Vector_2 := opengl.height_Extent (the_Pixels.all);
+         global_mid_Height     : constant Real
+           := Real (  global_height_Extents (1)
+                    + (global_height_Extents (2) - global_height_Extents (1)) / 2.0);
 
          tile_X_Offset : Real := 0.0;
          tile_Z_Offset : Real := total_Depth;
@@ -174,8 +176,8 @@ is
                                                 Scale       => Scale,
                                                 shape_Info  => (physics.Model.Heightfield,
                                                                 Heights      => to_Physics (the_Region),
-                                                                height_range => (the_height_Range (1),
-                                                                                 the_height_Range (2))),
+                                                                height_range => [the_height_Range (1),
+                                                                                 the_height_Range (2)]),
                                                 Shape       => null,
                                                 Mass        => 0.0,
                                                 Friction    => 0.5,
@@ -184,14 +186,20 @@ is
 
                   the_height_Extents : constant opengl.Vector_2 := opengl.height_Extent (the_Region.all);
                   the_Sprite         : gel.Sprite.view     renames the_sprite_Grid (Row, Col);
-                  the_Site           : vector_3;
+
+                  site_Y_offset : constant Real := (  Real (  the_height_Extents (1)
+                                                            + (the_height_Extents (2) - the_height_Extents (1)) / 2.0)
+                                                    - global_mid_Height)
+                                                   * Scale (2);
+                  --
+                  -- Each tile model is centred on its own mid-height, so the site restores its
+                  -- elevation relative to the whole map's mid-height, keeping tile seams
+                  -- continuous (and a single tile terrain placed exactly as before).
+
+                  the_Site : constant Vector_3 := [site_X_offset,
+                                                   site_Y_offset,
+                                                   site_Z_offset];
                begin
-                  -- the_ground_Model.Scale := (Scale (1),
-                  --                             Scale (2),
-                  --                             Scale (3));
-
-                  the_Site := (0.0, 0.0, 0.0);
-
                   the_Sprite := gel.Sprite.Forge.new_Sprite (Name           => "Terrain" & Row'Image & Col'Image,
                                                              World          => sprite.World_view (World),
                                                              at_Site        => the_Site,
@@ -201,10 +209,6 @@ is
                                                              owns_Graphics  => True,
                                                              owns_Physics   => True);
 
-                  site_y_Offset := math.Real (  the_height_Extents (1)
-                                              + (the_height_Extents (2) - the_height_Extents (1)) / 2.0);
-
-                  -- the_sprite_Grid (Row, Col).Site_is (the_Site + base_Centre);
                   the_Sprite. Site_is (the_Site + base_Centre);
                   the_Sprite.Scale_is (Scale);
 
