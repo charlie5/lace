@@ -249,7 +249,7 @@ is
 
    procedure emit_focus_in_Event (Self : in out Item'Class)
    is
-      the_Event : gel.Events.window_Leave;
+      the_Event : gel.Events.window_Focus_In;
    begin
       Self.emit (the_Event);
    end emit_focus_in_Event;
@@ -258,7 +258,7 @@ is
 
    procedure emit_focus_out_Event (Self : in out Item'Class)
    is
-      the_Event : gel.Events.window_Leave;
+      the_Event : gel.Events.window_Focus_Out;
    begin
       Self.emit (the_Event);
    end emit_focus_out_Event;
