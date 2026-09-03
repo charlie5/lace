@@ -78,7 +78,7 @@ is
    procedure Label_is (Self : in out Item'Class;   Now : in String)
    is
    begin
-      overwrite (Self.Label, 1, Now);
+      Self.Label := to_unbounded_String (Now);
    end Label_is;
 
 
@@ -265,7 +265,7 @@ is
 
          when triangle_Fan =>
             if for_Point = 1
-            then   return 1;
+            then   return Indices (Indices'First);     -- The fan's centre vertex.
             else   return Indices (for_Facet - 1 + for_Point);
             end if;
 
@@ -307,16 +307,11 @@ is
 
 
 
-   function facet_Count_in is new any_facet_Count_in (any_Index_t => Index_t,
-                                                      any_Indices => Indices);
-   pragma Unreferenced (facet_Count_in);
-
-
    ----------
    --- Facets
    --
 
-   type Facet  is array (     Index_t range 1 .. 3) of Index_t;     -- An 'indexed' triangle.
+   type Facet  is array (     Index_t range 1 .. 3) of long_Index_t;     -- An 'indexed' triangle.
    type Facets is array (long_Index_t range   <>  ) of Facet;
 
    type Facets_view is access all Facets;
@@ -328,14 +323,14 @@ is
       type any_Indices is array (long_Index_t range <>) of any_Index_t;
 
    function any_Facets_of (face_Kind : in primitive.facet_Kind;
-                           Indices   : in any_Indices) return access Facets;
+                           Indices   : in any_Indices) return Facets_view;
    --
    -- 'Facets_of' returns all non-redundant facets.
 
 
 
    function any_Facets_of (face_Kind : in primitive.facet_Kind;
-                           Indices   : in any_Indices) return access Facets
+                           Indices   : in any_Indices) return Facets_view
    is
       use openGL.Primitive;
 
@@ -352,9 +347,9 @@ is
       for Each in the_Facets'Range
       loop
          declare
-            P1 : constant Index_t := Index_t (vertex_Id_in (face_Kind, Indices,  Each, 1));
-            P2 : constant Index_t := Index_t (vertex_Id_in (face_Kind, Indices,  Each, 2));
-            P3 : constant Index_t := Index_t (vertex_Id_in (face_Kind, Indices,  Each, 3));
+            P1 : constant long_Index_t := long_Index_t (vertex_Id_in (face_Kind, Indices,  Each, 1));
+            P2 : constant long_Index_t := long_Index_t (vertex_Id_in (face_Kind, Indices,  Each, 2));
+            P3 : constant long_Index_t := long_Index_t (vertex_Id_in (face_Kind, Indices,  Each, 3));
          begin
             if not (        P1 = P2
                     or else P1 = P3
@@ -395,55 +390,54 @@ is
    end any_Facets_of;
 
 
-
-   function Facets_of is new any_Facets_of (Index_t,
-                                            Indices);
-   pragma Unreferenced (Facets_of);
-
-
    -----------
    --- Normals
    --
 
-   type Normals_view is access Normals;
-
-
    generic
-      type any_Index_t is range <>;
-      type any_Indices is array (long_Index_t range <>) of any_Index_t;
+      type any_Index_t  is range <>;
+      type any_Indices  is array (long_Index_t range <>) of any_Index_t;
+
+      type site_Index_t is range <>;
+      type any_Sites    is array (site_Index_t range <>) of aliased Vector_3;
+      type any_Normals  is array (site_Index_t range <>) of aliased Vector_3;
 
    function any_Normals_of (face_Kind : in primitive.facet_Kind;
                             Indices   : in any_Indices;
-                            Sites     : in openGL.Sites) return access Normals;
+                            Sites     : in any_Sites) return access any_Normals;
 
 
    function any_Normals_of (face_Kind : in primitive.facet_Kind;
                             Indices   : in any_Indices;
-                            Sites     : in openGL.Sites) return access Normals
+                            Sites     : in any_Sites) return access any_Normals
    is
       function Facets_of is new any_Facets_of (any_Index_t,
                                                any_Indices);
 
-      the_Normals : constant Normals_view := new Normals (Sites'Range);
-      the_Facets  :          Facets_view  :=     Facets_of (face_Kind,
-                                                            Indices).all'unchecked_Access;
+      type Normals_view is access any_Normals;
+
+      the_Normals : constant Normals_view := new any_Normals (Sites'Range);
+      the_Facets  :          Facets_view  := Facets_of (face_Kind, Indices);
 
       type facet_Normals      is array (long_Index_t range 1 .. the_Facets'Length) of Normal;
       type facet_Normals_view is access all facet_Normals;
 
-      procedure free is new ada.unchecked_Deallocation (facet_Normals, facet_Normals_view);     -- TODO: Should not be needed since freeing will occur when 'facet_Normals_view' goes out of scope ?
+      procedure free is new ada.unchecked_Deallocation (facet_Normals, facet_Normals_view);
 
       the_facet_Normals : facet_Normals_view := new facet_Normals;
       N                 : Vector_3;
       length_N          : Real;
+
+      function Site_of (Id : in long_Index_t) return Vector_3
+      is (Sites (site_Index_t (Id)));
 
    begin
       -- Calculate normal at each facet.
       --
       for Each in the_Facets'Range
       loop
-         N :=   (Sites (the_Facets (Each)(2)) - Sites (the_Facets (Each)(1)))
-              * (Sites (the_Facets (Each)(3)) - Sites (the_Facets (Each)(1)));
+         N :=   (Site_of (the_Facets (Each)(2)) - Site_of (the_Facets (Each)(1)))
+              * (Site_of (the_Facets (Each)(3)) - Site_of (the_Facets (Each)(1)));
 
          length_N := abs (N);
 
@@ -456,7 +450,7 @@ is
       -- Calculate normal at each vertex.
       --
       declare
-         Id     : Index_t;
+         Id     : site_Index_t;
          Length : Real;
       begin
          for Each in the_Normals'Range
@@ -468,7 +462,7 @@ is
          loop
             for p in Index_t' (1) .. 3
             loop
-               Id               := the_Facets (f) (p);
+               Id               := site_Index_t (the_Facets (f) (p));
                the_Normals (Id) := the_Normals (Id) + the_facet_Normals (f);
             end loop;
          end loop;
@@ -496,8 +490,11 @@ is
                         Indices   : in openGL.Indices;
                         Sites     : in openGL.Sites) return access Normals
    is
-      function my_Normals_of is new any_Normals_of (any_Index_t => Index_t,
-                                                    any_Indices => openGL.Indices);
+      function my_Normals_of is new any_Normals_of (any_Index_t  => Index_t,
+                                                    any_Indices  => openGL.Indices,
+                                                    site_Index_t => Index_t,
+                                                    any_Sites    => openGL.Sites,
+                                                    any_Normals  => openGL.Normals);
    begin
       return my_Normals_of (face_Kind,
                             Indices,
@@ -510,8 +507,28 @@ is
                         Indices   : in openGL.long_Indices;
                         Sites     : in openGL.Sites) return access Normals
    is
-      function my_Normals_of is new any_Normals_of (any_Index_t => long_Index_t,
-                                                    any_Indices => openGL.long_Indices);
+      function my_Normals_of is new any_Normals_of (any_Index_t  => long_Index_t,
+                                                    any_Indices  => openGL.long_Indices,
+                                                    site_Index_t => Index_t,
+                                                    any_Sites    => openGL.Sites,
+                                                    any_Normals  => openGL.Normals);
+   begin
+      return my_Normals_of (face_Kind,
+                            Indices,
+                            Sites).all'unchecked_Access;
+   end Normals_of;
+
+
+
+   function Normals_of (face_Kind : in primitive.facet_Kind;
+                        Indices   : in openGL.long_Indices;
+                        Sites     : in openGL.many_Sites) return access many_Normals
+   is
+      function my_Normals_of is new any_Normals_of (any_Index_t  => long_Index_t,
+                                                    any_Indices  => openGL.long_Indices,
+                                                    site_Index_t => long_Index_t,
+                                                    any_Sites    => openGL.many_Sites,
+                                                    any_Normals  => openGL.many_Normals);
    begin
       return my_Normals_of (face_Kind,
                             Indices,

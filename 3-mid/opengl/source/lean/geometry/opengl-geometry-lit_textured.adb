@@ -30,6 +30,7 @@ is
    fragment_Shader      : aliased Shader.item;
 
    the_Program          :          openGL.Program.lit.view;
+   the_Uniforms         :          texturing.Uniforms_view;
 
    Name_1               : constant String := "Site";
    Name_2               : constant String := "Normal";
@@ -137,7 +138,7 @@ is
                             name    => +attribute_4_Name_ptr);
       Errors.log;
 
-      textured_Geometry.create_Uniforms (for_Program => the_Program.all'Access);
+      the_Uniforms := texturing.new_Uniforms (for_Program => the_Program.all'Access);
    end create_Program;
 
 
@@ -156,7 +157,8 @@ is
       end if;
 
 
-      Self.Program_is (the_Program.all'Access);
+      Self.Program_is  (the_Program.all'Access);
+      Self.Uniforms_are (the_Uniforms);
       return Self;
    end new_Geometry;
 
@@ -201,6 +203,7 @@ is
    is
       use openGL_Buffer_of_geometry_Vertices.Forge;
    begin
+      Buffer.free (Self.Vertices);
       Self.Vertices       := new openGL_Buffer_of_geometry_Vertices.Object' (to_Buffer (Now,
                                                                                         usage => Buffer.static_Draw));
       Self.is_Transparent := is_Transparent (Now);
@@ -223,6 +226,7 @@ is
    is
       use openGL_large_Buffer_of_geometry_Vertices.Forge;
    begin
+      Buffer.free (Self.Vertices);
       Self.Vertices       := new openGL_large_Buffer_of_geometry_Vertices.Object' (to_Buffer (Now,
                                                                                               usage => Buffer.static_Draw));
       Self.is_Transparent := is_Transparent (Now);
@@ -238,16 +242,6 @@ is
          Self.Bounds_are (bounding_Box (Count => Now'Length));
       end;
    end Vertices_are;
-
-
-
-   overriding
-   procedure Indices_are  (Self : in out Item;   Now       : in Indices;
-                                                 for_Facia : in Positive)
-   is
-   begin
-      raise Error with "TODO";
-   end Indices_are;
 
 
 end openGL.Geometry.lit_textured;

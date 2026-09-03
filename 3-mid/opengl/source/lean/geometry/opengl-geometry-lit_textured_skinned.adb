@@ -24,6 +24,7 @@ is
 
    the_Program     : aliased openGL.Program.lit.textured_skinned.item;
    is_Defined      :         Boolean                                 := False;
+   the_Uniforms    :         texturing.Uniforms_view;
 
    Name_1 : constant String := "Site";
    Name_2 : constant String := "Normal";
@@ -72,7 +73,8 @@ is
    is
       Self : constant Geometry_view := new Geometry.lit_textured_skinned.item;
    begin
-      Self.Program_is (the_Program'Access);
+      Self.Program_is   (the_Program'Access);
+      Self.Uniforms_are (the_Uniforms);
       return Self;
    end new_Geometry;
 
@@ -204,6 +206,8 @@ is
                             index   => the_Program.Attribute (named => Name_6).gl_Location,
                             name    => +attribute_6_Name_ptr);
       Errors.log;
+
+      the_Uniforms := texturing.new_Uniforms (for_Program => the_Program'Access);
    end define_Program;
 
 
@@ -219,16 +223,6 @@ is
 
 
 
-   overriding
-   procedure Indices_are  (Self : in out Item;   Now       : in Indices;
-                                                 for_Facia : in Positive)
-   is
-   begin
-      raise Error with "openGL.Geometry.lit_textured_skinned - 'Indices_are' ~ TODO";
-   end Indices_are;
-
-
-
    package openGL_Buffer_of_geometry_Vertices is new Buffer.general (base_Object   => Buffer.array_Object,
                                                                      Index         => long_Index_t,
                                                                      Element       => Vertex,
@@ -238,6 +232,7 @@ is
    is
       use openGL_Buffer_of_geometry_Vertices.Forge;
    begin
+      Buffer.free (Self.Vertices);
       Self.Vertices       := new openGL_Buffer_of_geometry_Vertices.object' (to_Buffer (Now,
                                                                                         usage => Buffer.static_Draw));
       Self.is_Transparent :=    Self.is_Transparent

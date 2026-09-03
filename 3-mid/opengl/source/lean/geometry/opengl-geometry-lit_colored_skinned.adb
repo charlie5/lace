@@ -146,7 +146,7 @@ is
 
       Attribute_4 := new_Attribute (Name        => Name_4,
                                     gl_Location => the_Program.attribute_Location (Name_4),
-                                    Size        => 4,
+                                    Size        => 1,
                                     data_Kind   => Attribute.GL_FLOAT,
                                     Stride      => lit_colored_skinned.Vertex'Size / 8,
                                     Offset      =>   Sample.Shine'Address
@@ -222,16 +222,6 @@ is
 
 
 
-   overriding
-   procedure Indices_are  (Self : in out Item;   Now       : in Indices;
-                                                 for_Facia : in Positive)
-   is
-   begin
-      raise Error with "openGL.Geometry.lit_coloured_textured_skinned - 'Indices_are' ~ TODO";
-   end Indices_are;
-
-
-
    package openGL_Buffer_of_geometry_Vertices is new Buffer.general (base_Object   => Buffer.array_Object,
                                                                      Index         => long_Index_t,
                                                                      Element       => Vertex,
@@ -241,6 +231,7 @@ is
    is
       use openGL_Buffer_of_geometry_Vertices.Forge;
    begin
+      Buffer.free (Self.Vertices);
       Self.Vertices       := new openGL_Buffer_of_geometry_Vertices.object' (to_Buffer (Now,
                                                                                         usage => Buffer.static_Draw));
       Self.is_Transparent :=    Self.is_Transparent

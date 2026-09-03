@@ -45,10 +45,6 @@ is
 
    procedure Vertices_are (Self : in out Item;   Now : in Vertex_array);
 
-   overriding
-   procedure Indices_are  (Self : in out Item;   Now       : in Indices;
-                                                 for_Facia : in Positive);
-
    function  Program return openGL.Program.lit.textured_skinned.view;
 
 

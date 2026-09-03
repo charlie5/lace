@@ -28,6 +28,9 @@ is
    overriding
    procedure set_Uniforms    (Self : in     Item);
 
+   overriding
+   procedure destroy         (Self : in out Item);
+
    procedure specular_Color_is (Self : in out Item;   Now : in Color);
 
 

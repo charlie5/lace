@@ -133,6 +133,7 @@ private
          gl_Program      : gl.GLuint  := 0;
          vertex_Shader   : Shader.view;
          fragment_Shader : Shader.view;
+         owns_Shaders    : Boolean    := False;     -- True when the shaders were created by 'define (Files)', so 'destroy' releases them.
 
          Attributes      : openGL.Attribute.views (1 .. 8);
          attribute_Count : Natural                        := 0;

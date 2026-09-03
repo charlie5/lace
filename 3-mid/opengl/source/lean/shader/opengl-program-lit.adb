@@ -1,15 +1,33 @@
 with
      openGL.Conversions,
-     ada.Strings.fixed;
+     ada.Strings.fixed,
+     ada.unchecked_Deallocation;
 
 
 package body openGL.Program.lit
 is
 
    overriding
+   procedure destroy (Self : in out Item)
+   is
+      procedure free is new ada.unchecked_Deallocation (lit_uniform_Cache, lit_uniform_Cache_view);
+   begin
+      openGL.Program.item (Self).destroy;
+      free (Self.lit_Cache);
+   end destroy;
+
+
+
+   overriding
    procedure Lights_are (Self : in out Item;   Now : in Light.items)
    is
    begin
+      if Now'Length > Self.Lights'Length
+      then
+         raise openGL.Error with   "Too many lights:" & Integer'Image (Now'Length)
+                                 & " (the maximum is" & Integer'Image (Self.Lights'Length) & ").";
+      end if;
+
       Self.light_Count              := Now'Length;
       Self.Lights (1 .. Now'Length) := Now;
    end Lights_are;

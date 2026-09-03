@@ -46,6 +46,8 @@ is
       use GL.Binding;
    begin
       Tasks.check;
+
+      openGL.Primitive.item (Self).render;   -- Do base class render.
       glDrawArrays (Thin (Self.facet_Kind),
                     0,
                     gl.GLint (Self.vertex_Count));

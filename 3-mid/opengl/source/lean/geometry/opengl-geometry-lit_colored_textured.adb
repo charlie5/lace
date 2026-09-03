@@ -34,6 +34,7 @@ is
          vertex_Shader   : aliased Shader.item;
          fragment_Shader : aliased Shader.item;
          Program         :         openGL.Program.lit.view;
+         Uniforms        :         texturing.Uniforms_view;     -- Each program has its own texturing uniform locations.
       end record;
 
    type Programs is array (program_Id) of aliased Program;
@@ -192,12 +193,7 @@ is
                                Index   =>  the_Program.Program.Attribute (named => Name_5).gl_Location,
                                Name    => +attribute_5_Name_ptr);
          Errors.log;
-
-
-
-         -- TODO: This will fail. Split this package into 'lit_colored_textured' and 'lit_colored_text'.
-         --
-         textured_Geometry.create_Uniforms (for_Program => the_Program.Program.all'Access);
+         the_Program.Uniforms := texturing.new_Uniforms (for_Program => the_Program.Program.all'Access);
       end define;
 
 
@@ -225,9 +221,11 @@ is
       if texture_is_Alpha
       then
          Self.is_Transparent := True;
-         Self.Program_is (the_Programs (alpha_Texture).Program.all'Access);
+         Self.Program_is   (the_Programs (alpha_Texture).Program.all'Access);
+         Self.Uniforms_are (the_Programs (alpha_Texture).Uniforms);
       else
-         Self.Program_is (the_Programs ( rgba_Texture).Program.all'Access);
+         Self.Program_is   (the_Programs ( rgba_Texture).Program.all'Access);
+         Self.Uniforms_are (the_Programs ( rgba_Texture).Uniforms);
       end if;
 
       return Self;
@@ -288,16 +286,6 @@ is
          Self.Bounds_are (bounding_Box (Count => Now'Length));
       end;
    end Vertices_are;
-
-
-
-   overriding
-   procedure Indices_are  (Self : in out Item;   Now       : in Indices;
-                                                 for_Facia : in Positive)
-   is
-   begin
-      raise Error with "TODO";
-   end Indices_are;
 
 
 end openGL.Geometry.lit_colored_textured;

@@ -1,5 +1,4 @@
 with
-     openGL.API,
      ada.Strings.fixed;
 
 
@@ -169,63 +168,6 @@ is
                                                   "bone_Matrices[" & Trim (Integer'Image (i - 1), Left) & "]");
       end loop;
    end define;
-
-
-
-   overriding
-   procedure set_Uniforms (Self : in Item)
-   is
-      -- the_inverse_modelview_matrix_Uniform : constant Variable.uniform.mat3  := Self.uniform_Variable ("inv_modelview_Matrix");
-      -- the_shine_Uniform                    : constant Variable.uniform.float := Self.uniform_Variable ("Shine");
-
-   begin
-      openGL.Program.lit.item (Self).set_Uniforms;
-
-      -- the_shine_Uniform                   .Value_is (Self.Shine);
-      -- the_inverse_modelview_matrix_Uniform.Value_is (Self.inverse_modelview_Matrix);
-
-      -- Lights
-      --
---        for i in Self.directional_Light'Range
---        loop
---           declare
---              Light : openGL.Light.directional.item renames Self.directional_Light (i);
---
---              function light_Name return String
---              is
---                 use ada.Strings,
---                     ada.Strings.fixed;
---              begin
---                 return "Lights[" & Trim (Integer'Image (i - 1), Left) & "]";
---              end light_Name;
---
---              use openGL.Conversions;
---
---              -- the_light_direction_Uniform      : constant Variable.uniform.vec3 := Self.uniform_Variable (light_Name & ".direction");
---              -- the_light_halfplane_Uniform      : constant Variable.uniform.vec3 := Self.uniform_Variable (light_Name & ".halfplane");
---
---              -- the_light_ambient_color_Uniform  : constant Variable.uniform.vec4 := Self.uniform_Variable (light_Name & ".ambient_color");
---              -- the_light_diffuse_color_Uniform  : constant Variable.uniform.vec4 := Self.uniform_Variable (light_Name & ".diffuse_color");
---              -- the_light_specular_color_Uniform : constant Variable.uniform.vec4 := Self.uniform_Variable (light_Name & ".specular_color");
---           begin
---              -- the_light_direction_Uniform.Value_is (Light.Direction);
---              -- the_light_halfplane_Uniform.Value_is (Light.halfplane_Vector);
---
---              -- the_light_ambient_color_Uniform .Value_is (to_Vector_4 (Light.ambient_Color));
---              -- the_light_diffuse_color_Uniform .Value_is (to_Vector_4 (Light.diffuse_Color));
---              -- the_light_specular_color_Uniform.Value_is (to_Vector_4 (Light.specular_Color));
---              null;
---           end;
---        end loop;
-
-      -- Texture
-      --
-      declare
-         sampler_Uniform : constant Variable.uniform.int := Self.uniform_Variable ("sTexture");
-      begin
-         sampler_Uniform.Value_is (0);
-      end;
-   end set_Uniforms;
 
 
 

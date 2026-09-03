@@ -3,7 +3,8 @@ with
      openGL.Errors,
      GL.lean,
      System,
-     ada.unchecked_Conversion;
+     ada.unchecked_Conversion,
+     ada.unchecked_Deallocation;
 
 
 package body openGL.Attribute
@@ -25,8 +26,9 @@ is
 
    procedure destroy (Self : in out Item)
    is
+      procedure free is new ada.unchecked_Deallocation (String, String_view);
    begin
-      null;
+      free (Self.Name);
    end destroy;
 
 

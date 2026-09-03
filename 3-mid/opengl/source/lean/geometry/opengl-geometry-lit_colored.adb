@@ -122,7 +122,7 @@ is
                                        Stride      => lit_colored.Vertex'Size / 8,
                                        Offset      =>   Sample.Shine    'Address
                                                       - Sample.Site (1) 'Address,
-                                       Normalized  => True);
+                                       Normalized  => False);
 
          the_Program.Program.add (Attribute_1);
          the_Program.Program.add (Attribute_2);

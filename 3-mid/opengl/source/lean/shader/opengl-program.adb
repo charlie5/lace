@@ -5,6 +5,7 @@ with
      GL.lean,
 
      ada.Characters.latin_1,
+     ada.unchecked_Deallocation,
      interfaces.C.Strings;
 
 
@@ -15,8 +16,6 @@ is
         Interfaces;
 
    compiling_in_debug_Mode : constant Boolean := True;
-
-   type Shader_view is access all Shader.item'Class;
 
 
    --------------
@@ -97,23 +96,36 @@ is
    is
       use openGL.Shader;
 
-      the_vertex_Shader   : constant Shader_view := new openGL.Shader.item;
-      the_fragment_Shader : constant Shader_view := new openGL.Shader.item;
+      the_vertex_Shader   : constant Shader.view := new openGL.Shader.item;
+      the_fragment_Shader : constant Shader.view := new openGL.Shader.item;
    begin
       the_vertex_Shader  .define (openGL.Shader.vertex,     use_vertex_Shader_File);
       the_fragment_Shader.define (openGL.Shader.fragment, use_fragment_Shader_File);
 
-      Self.define (the_vertex_Shader  .all'Access,
-                   the_fragment_Shader.all'Access);
+      Self.owns_Shaders := True;     -- Set before 'define', so a link failure still releases them.
+      Self.define (the_vertex_Shader,
+                   the_fragment_Shader);
    end define;
 
 
 
    procedure destroy (Self : in out Item)
    is
+      procedure free is new ada.unchecked_Deallocation (Shader.item'Class,  Shader.view);
+      procedure free is new ada.unchecked_Deallocation (base_uniform_Cache, base_uniform_Cache_view);
    begin
       Tasks.check;
       glDeleteProgram (Self.gl_Program);
+      Self.gl_Program := 0;
+
+      if Self.owns_Shaders
+      then
+         Self.  vertex_Shader.destroy;   free (Self.  vertex_Shader);
+         Self.fragment_Shader.destroy;   free (Self.fragment_Shader);
+         Self.owns_Shaders := False;
+      end if;
+
+      free (Self.uniform_Cache);
    end destroy;
 
 
@@ -152,12 +164,12 @@ is
          gl_Location : constant gl.GLint := glGetAttribLocation (Self.gl_Program,
                                                                  to_GLchar_access (attribute_Name));
       begin
+         C.Strings.free (attribute_Name);
+
          if gl_Location = -1
          then
             raise Error with "Requested attribute '" & Named & "' has no gl location in program.";
          end if;
-
-         C.Strings.free (attribute_Name);
 
          return gl.GLuint (gl_Location);
       end;

@@ -25,23 +25,6 @@ is
 
 
 
-   overriding
-   procedure set_Uniforms (Self : in Item)
-   is
-   begin
-      openGL.Program.lit.item (Self).set_Uniforms;
-
-      -- Texture
-      --
-      declare
-         sampler_Uniform : constant Variable.uniform.int := Self.uniform_Variable ("Texture");
-      begin
-         sampler_Uniform.Value_is (0);
-      end;
-   end set_Uniforms;
-
-
-
    procedure bone_Transform_is (Self : in Item;   Which : in Integer;
                                                   Now   : in Matrix_4x4)
    is

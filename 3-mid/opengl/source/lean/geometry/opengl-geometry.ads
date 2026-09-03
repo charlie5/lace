@@ -112,6 +112,10 @@ is
                         Indices   : in openGL.long_Indices;
                         Sites     : in openGL.Sites) return access Normals;
 
+   function Normals_of (face_Kind : in primitive.facet_Kind;
+                        Indices   : in openGL.long_Indices;
+                        Sites     : in openGL.many_Sites) return access many_Normals;
+
 
 
 private

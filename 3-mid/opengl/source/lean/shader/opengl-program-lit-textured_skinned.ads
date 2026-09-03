@@ -11,9 +11,6 @@ is
    procedure define (Self : in out Item;   use_vertex_Shader   : in Shader.view;
                                            use_fragment_Shader : in Shader.view);
 
-   overriding
-   procedure set_Uniforms (Self : in Item);
-
    procedure bone_Transform_is (Self : in Item;   Which : in Integer;
                                                   Now   : in Matrix_4x4);
 

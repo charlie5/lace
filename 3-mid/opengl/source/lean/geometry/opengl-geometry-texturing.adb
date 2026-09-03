@@ -75,6 +75,8 @@ is
             glBindTexture   (GL_TEXTURE_2D,
                              for_Model.texture_Object (i).Name);                             Errors.log;
          end loop;
+
+         glActiveTexture (GL_TEXTURE0);                                                      Errors.log;   -- Leave unit 0 active for code which binds without choosing a unit.
       end if;
 
       Uniforms.Count.Value_is (for_Model.texture_Count);
@@ -111,20 +113,27 @@ is
    end create;
 
 
+   function new_Uniforms (for_Program : in openGL.Program.view) return Uniforms_view
+   is
+      the_Uniforms : constant Uniforms_view := new texturing.Uniforms;
+   begin
+      create (the_Uniforms.all, for_Program);
+      return the_Uniforms;
+   end new_Uniforms;
+
+
    -------------
    --- Mixin ---
    -------------
 
    package body Mixin
    is
-      texture_Uniforms : texturing.Uniforms;
 
-
-      procedure create_Uniforms (for_Program : in openGL.Program.view)
+      procedure Uniforms_are (Self : in out Item;   Now : in Uniforms_view)
       is
       begin
-         create (texture_Uniforms, for_Program);
-      end create_Uniforms;
+         Self.Uniforms := Now;
+      end Uniforms_are;
 
 
 
@@ -211,8 +220,13 @@ is
       procedure enable_Textures (Self : in out Item)
       is
       begin
+         if Self.Uniforms = null
+         then
+            raise openGL.Error with "Texturing uniforms have not been set for geometry '" & Geometry.Label (Self) & "'.";
+         end if;
+
          texturing.enable (for_Model   => Self.Model.all'Access,
-                           Uniforms    => texture_Uniforms,
+                           Uniforms    => Self.Uniforms.all,
                            Fade        => Self.Program.Fade);
       end enable_Textures;
 

@@ -50,6 +50,14 @@ is
                      for_Program : in     openGL.Program.view);
 
 
+   type Uniforms_view is access all texturing.Uniforms;
+
+   function new_Uniforms (for_Program : in openGL.Program.view) return Uniforms_view;
+   --
+   -- Uniform locations are per program, so each program needs its own set, which is
+   -- then given to every geometry using that program (see 'Mixin.Uniforms_are').
+
+
    -------------
    --- Mixin ---
    -------------
@@ -60,7 +68,9 @@ is
       type Item is new Geometry.item with private;
 
 
-      procedure create_Uniforms (for_Program : in     openGL.Program.view);
+      procedure Uniforms_are (Self : in out Item;   Now : in Uniforms_view);
+      --
+      -- The texturing uniforms of the geometry's program. Must be set before rendering.
 
 
       overriding
@@ -96,7 +106,10 @@ is
 
    private
 
-      type Item is new Geometry.item with null record;
+      type Item is new Geometry.item with
+         record
+            Uniforms : Uniforms_view;
+         end record;
 
    end Mixin;
 
