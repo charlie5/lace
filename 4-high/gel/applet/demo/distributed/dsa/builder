@@ -13,7 +13,7 @@ gprclean -r -P ../gel_demo.gpr -Xopengl_platform=egl -Xopengl_profile=lean
 ## Build
 #
 mkdir --parents  dsa/x86_64-unknown-linux-gnu/obj
-cp /usr/lib/gcc/x86_64-pc-linux-gnu/15.1.1/adalib/a-sttebu.ali \
+cp /usr/lib/gcc/x86_64-pc-linux-gnu/$(gcc -dumpversion)/adalib/a-sttebu.ali \
    dsa/x86_64-unknown-linux-gnu/obj
 
 set +e

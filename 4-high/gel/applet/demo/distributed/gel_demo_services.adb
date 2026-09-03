@@ -12,4 +12,12 @@ is
    end World;
 
 
+
+   procedure stop_Server
+   is
+   begin
+      gel_demo_Server.item.stop;
+   end stop_Server;
+
+
 end gel_demo_Services;

@@ -1,6 +1,5 @@
 with
      gel_demo_Services,
-     gel_demo_Server,
 
      gel.Applet.client_World,
      gel.Window.setup,
@@ -36,9 +35,7 @@ is
 
       -- Register the client world as a mirror of the server world.
       --
-      the_Applet.client_World.is_a_Mirror (of_World           => gel_demo_Services.World);
-      gel_demo_Services.World.register    (the_Mirror         => the_Applet.client_World.all'Access,
-                                           Mirror_as_observer => the_Applet.client_World.all'Access);
+      the_Applet.client_World.is_a_Mirror (of_World => gel_demo_Services.World);
 
       -- Setup.
       --
@@ -73,7 +70,7 @@ is
       gel_demo_services.World.deregister (the_Mirror         => the_Applet.client_World.all'Access,
                                           Mirror_as_Observer => the_Applet.client_World.all'Access);
       the_Applet.destroy;
-      gel_demo_Server.item.stop;
+      gel_demo_Services.stop_Server;     -- Reaches the task in the server partition.
 
       put_Line ("Client done.");
 

@@ -11,5 +11,7 @@ is
 
    function World return gel.remote.World.view;
 
+   procedure stop_Server;
+
 
 end gel_demo_Services;
