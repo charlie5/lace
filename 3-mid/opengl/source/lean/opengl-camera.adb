@@ -1,6 +1,7 @@
 with
      ada.Text_IO,
-     ada.Exceptions;
+     ada.Exceptions,
+     ada.unchecked_Deallocation;
 
 
 package body openGL.Camera
@@ -20,10 +21,14 @@ is
       Self.Culler    .define;
       Self.Impostorer.define;
 
-      Self.world_Transform := Identity_4x4;
-      Self. view_Transform := Identity_4x4;
-      Self.Viewport        := (Min => [0, 0],
-                               Max => [0, 0]);
+      Self.world_Transform      := Identity_4x4;
+      Self. view_Transform      := Identity_4x4;
+      Self.projection_Transform := to_Perspective (FoVy   => Self.FoVy,
+                                                   Aspect => Self.Aspect,
+                                                   zNear  => Self.near_Plane_Distance,
+                                                   zFar   => Self. far_Plane_Distance);
+      Self.Viewport             := (Min => [0, 0],
+                                    Max => [0, 0]);
    end define;
 
 
@@ -309,11 +314,13 @@ is
    task
    body cull_Engine
    is
-      Done             : Boolean := False;
-      culling          : Boolean;
+      type Visuals_view is access Visual.views;
 
-      all_Visuals      : openGL.Visual.views (1 .. 20_000);
-      all_Visuals_last : Natural;
+      procedure free is new ada.unchecked_Deallocation (Visual.views, Visuals_view);
+
+      Done        : Boolean := False;
+      culling     : Boolean;
+      all_Visuals : Visuals_view;     -- A copy of the visuals to cull, on the heap since there is no bound on their number.
 
    begin
       loop
@@ -325,9 +332,7 @@ is
          or
             accept cull (the_Visuals : in Visual.views;   do_cull : in Boolean)
             do
-               all_Visuals (the_Visuals'Range) := the_Visuals;
-               all_visuals_Last                := the_Visuals'Last;
-
+               all_Visuals         := new Visual.views' (the_Visuals);
                culling             := do_cull;
                Self.cull_Completed := False;
             end cull;
@@ -337,35 +342,43 @@ is
 
          exit when Done;
 
-         declare
-            function get_Visuals return Visual.views
-            is
-            begin
-               if culling
-               then
-                  return Self.Culler.cull (the_Visuals    => all_Visuals (1 .. all_Visuals_last),
-                                           Camera_Frustum => Self.current_Planes,
-                                           Camera_Site    => Self.Site);
-
-               else
-                  return all_Visuals (1 .. all_visuals_Last);
-               end if;
-            end get_Visuals;
-
-            the_Visuals : Visual.views := get_Visuals;
-
          begin
-            if Self.Impostors_allowed
-            then
-               Self.Impostorer.Renderer_is (Self.Renderer);
-               Self.Impostorer.substitute  (the_Visuals,
-                                            Camera => Self);
-            end if;
+            declare
+               function get_Visuals return Visual.views
+               is
+               begin
+                  if culling
+                  then
+                     return Self.Culler.cull (the_Visuals    => all_Visuals.all,
+                                              Camera_Frustum => Self.current_Planes,
+                                              Camera_Site    => Self.Site);
+                  else
+                     return all_Visuals.all;
+                  end if;
+               end get_Visuals;
 
-            Self.Renderer.queue_Visuals (the_Visuals, Self);
+               the_Visuals : Visual.views := get_Visuals;
 
-            Self.cull_Completed := True;
+            begin
+               if Self.Impostors_allowed
+               then
+                  Self.Impostorer.Renderer_is (Self.Renderer);
+                  Self.Impostorer.substitute  (the_Visuals,
+                                               Camera => Self);
+               end if;
+
+               Self.Renderer.queue_Visuals (the_Visuals, Self);
+            end;
+
+         exception
+            when E : others =>     -- Drop this frame's visuals, but keep culling later frames.
+               new_Line;
+               put_Line ("Exception in openGL camera cull engine (frame dropped).");
+               put_Line (ada.Exceptions.Exception_Information (E));
          end;
+
+         free (all_Visuals);
+         Self.cull_Completed := True;
       end loop;
 
       Self.Impostorer.destruct;

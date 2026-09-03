@@ -92,7 +92,7 @@ private
          program_Parameters : program.Parameters_view;
 
          is_Terrain         : Boolean  := False;
-         face_Count         : Positive := 1;
+         face_Count         : Natural  := 1;
 
          apparent_Size      : Real;     -- A measure of how large the visual is in screen size.
       end record;

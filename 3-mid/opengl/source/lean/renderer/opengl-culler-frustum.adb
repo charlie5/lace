@@ -68,7 +68,7 @@ is
                                     camera_Frustum : in openGL.frustum.Plane_array;
                                     camera_Site    : in Vector_3) return Visual.views
    is
-      visible_Objects : Visual.views (the_Visuals'Range);
+      visible_Objects : Visual.views (1 .. the_Visuals'Length);
       Last            : Natural                         := 0;
 
       the_Object      : Visual.view;

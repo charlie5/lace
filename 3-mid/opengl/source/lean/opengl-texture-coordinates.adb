@@ -31,19 +31,18 @@ is
       declare
          half_Width  : constant Real := (Max (1) - Min (1))  /  2.0;
          half_Height : constant Real := (Max (2) - Min (2))  /  2.0;
+
+         function normalised (Offset, half_Extent : in Real) return Real
+         is (if half_Extent = 0.0
+             then 0.5                                 -- A degenerate extent maps every vertex to the middle.
+             else (Offset / half_Extent + 1.0) / 2.0);   -- Range -1.0 .. 1.0 becomes 0.0 .. 1.0.
       begin
          for i in the_Vertices'Range
          loop
             Coords := the_Vertices (i) - Centroid;      -- The centroid is now the origin.
 
-            Coords (1) := Coords (1) / half_Width;
-            Coords (2) := Coords (2) / half_Height;     -- The coords are now in range -1.0 .. 1.0.
-
-            Coords (1) := (Coords (1) + 1.0)  /  2.0;
-            Coords (2) := (Coords (2) + 1.0)  /  2.0;     -- The coords are now in range 0.0 .. 1.0.
-
-            Result.Coords (Index_t (i)) := (Coords (1),
-                                            Coords (2));
+            Result.Coords (Index_t (i - the_Vertices'First + 1)) := (normalised (Coords (1), half_Width),
+                                                                     normalised (Coords (2), half_Height));
          end loop;
       end;
 

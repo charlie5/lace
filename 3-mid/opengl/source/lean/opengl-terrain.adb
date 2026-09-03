@@ -46,10 +46,14 @@ is
 
       function Grid_last (total_Size, tile_Size : in Positive) return math.Index
       is
-         Last : constant math.Index := math.Index (  1
-                                                   + (total_Size - 1) / tile_Size);
+         Stride : constant Positive := tile_Size - 1;     -- Adjacent tiles share an edge, so each tile past the first adds 'tile_Size - 1' samples.
       begin
-         return Last;
+         if total_Size <= tile_Size
+         then
+            return 1;
+         else
+            return math.Index (1 + (total_Size - tile_Size + Stride - 1) / Stride);
+         end if;
       end Grid_last;
 
 
@@ -92,7 +96,7 @@ is
          site_Y_Offset : Real;
 
          tile_X_Offset : Real := 0.0;
-         tile_Z_Offset : Real := total_Depth;
+         tile_Z_Offset : Real := 0.0;
 
          tile_X_Scale  : Real;
          tile_Z_Scale  : Real;
@@ -103,7 +107,6 @@ is
             site_X_Offset := Real (Tile_Width) / 2.0 * Scale (1);
 
             tile_X_Offset := 0.0;
-            tile_Z_Offset := Real (Row - 1) * Depth (the_Heightmap_Grid (Row, 1).all) * Scale (3);
 
             for Col in the_Visual_Grid'Range (2)
             loop
@@ -154,6 +157,8 @@ is
                   end if;
                end;
             end loop;
+
+            tile_Z_Offset := tile_Z_Offset + Depth (the_Heightmap_Grid (Row, 1).all) * Scale (3);
 
             if Row /= the_Visual_Grid'Last (1)
             then

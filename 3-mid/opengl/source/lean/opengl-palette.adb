@@ -5,18 +5,45 @@ with
 package body openGL.Palette
 is
    package random_Colors is new ada.Numerics.discrete_Random (Color_Value);
-   use     random_Colors;
 
-   the_Generator : random_Colors.Generator;
+
+   protected safe_Generator     -- Random generators are not task safe, and any task may ask for a random color.
+   is
+      procedure reset;
+      procedure next (Value : out color_Value);
+   private
+      the_Generator : random_Colors.Generator;
+   end safe_Generator;
+
+
+   protected
+   body safe_Generator
+   is
+      procedure reset
+      is
+      begin
+         random_Colors.reset (the_Generator);
+      end reset;
+
+
+      procedure next (Value : out color_Value)
+      is
+      begin
+         Value := random_Colors.random (the_Generator);
+      end next;
+   end safe_Generator;
 
 
 
    function random_Color return Color
    is
+      Red, Green, Blue : color_Value;
    begin
-      return +(random (the_Generator),
-               random (the_Generator),
-               random (the_Generator));
+      safe_Generator.next (Red);
+      safe_Generator.next (Green);
+      safe_Generator.next (Blue);
+
+      return +(Red, Green, Blue);
    end random_Color;
 
 
@@ -64,5 +91,5 @@ is
 
 
 begin
-   reset (the_Generator);
+   safe_Generator.reset;
 end openGL.Palette;

@@ -119,8 +119,17 @@ is
       declare
          transposed_camera_Attitude : constant Matrix_3x3 := Transpose (Camera.Spin);
 
-         Impostor_updates           :          openGL.Renderer.lean.impostor_Updates (1 .. 20_000);
-         impostor_updates_Last      :          Natural                                            := 0;
+         type impostor_Updates_view is access openGL.Renderer.lean.impostor_Updates;
+
+         procedure free is new ada.unchecked_Deallocation (openGL.Renderer.lean.impostor_Updates,
+                                                           impostor_Updates_view);
+
+         updates_Buffer             : impostor_Updates_view := new openGL.Renderer.lean.impostor_Updates (1 .. the_Visuals'Length);
+         --
+         -- At most one update per visual. Kept on the heap, since this runs on the camera's cull task.
+
+         Impostor_updates           : openGL.Renderer.lean.impostor_Updates renames updates_Buffer.all;
+         impostor_updates_Last      : Natural                               := 0;
 
          procedure add (the_Impostor : in Impostor.view)
          is
@@ -204,7 +213,7 @@ is
                               add (the_Impostor);
                            else
                               declare  -- Add impostor to appropriate load balancing slot.
-                                 target_face_Count : constant Positive := impostor_Target.face_Count;
+                                 target_face_Count : constant Natural  := impostor_Target.face_Count;
 
                                  function Slot_Id return Positive
                                  is
@@ -272,6 +281,7 @@ is
 
          Self.Renderer.queue_Impostor_updates (Impostor_updates (1 .. impostor_updates_Last),
                                                Camera);
+         free (updates_Buffer);
       end;
 
    end substitute;
