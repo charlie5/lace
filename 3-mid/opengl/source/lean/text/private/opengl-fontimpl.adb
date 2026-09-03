@@ -73,6 +73,8 @@ is
       if Self.Err = 0
       then
          Self.glyphList := new Glyph.Container.item' (to_glyph_Container (Self.Face'Access));
+      else
+         raise Error with "Unable to create a face for the font in memory.";
       end if;
    end define;
 
@@ -428,7 +430,7 @@ is
       pragma unreferenced (Length);
 
       Advance : Real    := 0.0;
-      ustr    : Integer := 1;
+      ustr : Integer := Text'First;
       i       : Integer := 0;
 
    begin
@@ -445,13 +447,12 @@ is
          begin
             ustr := ustr + 1;
 
-            if ustr <= Text'Length
+            if ustr <= Text'Last
             then   nextChar := Text (ustr);
             else   nextChar := Character'Val (0);
             end if;
 
-            if         nextChar /= Character'Val (0)
-              and then Self.CheckGlyph (to_characterCode (thisChar))
+            if Self.CheckGlyph (to_characterCode (thisChar))
             then
                Advance := Advance + Self.glyphList.Advance (to_characterCode (thisChar),
                                                             to_characterCode (nextChar));
@@ -482,7 +483,7 @@ is
    is
       use type freetype.charMap.characterCode;
 
-      ustr : Integer  := 1;
+      ustr : Integer := Text'First;
       i    : Integer  := 0;
       Pos  : Vector_3 := Position;
 
@@ -499,17 +500,16 @@ is
          begin
             ustr := ustr + 1;
 
-            if ustr <= Text'Length
+            if ustr <= Text'Last
             then   nextChar := Text (ustr);
             else   nextChar := Character'Val (0);
             end if;
 
-            if         nextChar /= Character'Val (0)
-              and then Self.CheckGlyph (to_characterCode (thisChar))
+            if Self.CheckGlyph (to_characterCode (thisChar))
             then
                Pos := Pos + Self.glyphList.render (to_characterCode (thisChar),
                                                    to_characterCode (nextChar),
-                                                   Position,
+                                                   Pos,
                                                    renderMode);
             end if;
 

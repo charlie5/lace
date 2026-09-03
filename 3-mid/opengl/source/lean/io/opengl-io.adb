@@ -81,9 +81,10 @@ is
            Texture;
 
       Extent  : constant Extent_2d := openGL.Viewport.Extent;
-      Frame   :          Image (1 .. Index_t (Extent.Width),
-                                1 .. Index_t (Extent.Height));
+      Frame   :          Image (1 .. Index_t (Extent.Height),
+                                1 .. Index_t (Extent.Width));
    begin
+      glPixelStorei (GL_PACK_ALIGNMENT, 1);     -- The image rows are not padded.
       glReadPixels (0, 0,
                     GLsizei (Extent.Width),
                     GLsizei (Extent.Height),
@@ -762,8 +763,7 @@ is
       -- Written 1st time to take place (but # of frames unknown)
       -- Written 2nd time for setting # of frames, sizes, etc.
       --
-      calc_bmp_size    : constant U32           := U32 (((width)) * height * 3);
-      -- !! stuff to multiple of 4 !!
+      calc_bmp_size    : constant U32           := U32 (4 * ((width * 3 + 3) / 4) * height);     -- Rows are padded to 4 bytes, as 'write_raw_Frame' writes them.
       index_size       : constant U32           := U32 (frames) * 16;
       movie_size       : constant U32           := 4 + U32 (frames) * (calc_bmp_size + 8);
       second_list_size : constant U32           := 4 + 64 + 48;

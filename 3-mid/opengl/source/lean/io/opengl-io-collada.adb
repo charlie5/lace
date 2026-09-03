@@ -191,7 +191,7 @@ is
                      is
                         when 3      => the_Face := (Triangle, the_Vertices);
                         when 4      => the_Face := (Quad,     the_Vertices);
-                        when others => put_Line ("parse_polyList ~ unhandled vertex count:" & vertex_Count'Image);
+                        when others => the_Face := (Polygon,  new Vertices' (the_Vertices));   -- NB: Model.any skips polygon faces.
                      end case;
 
                      face_Count             := face_Count + 1;
@@ -248,7 +248,7 @@ is
                      is
                         when 3      => the_Face := (Triangle, the_Vertices);
                         when 4      => the_Face := (Quad,     the_Vertices);
-                        when others => put_Line ("parse_Polygons ~ unhandled vertex count:" & vertex_Count'Image);
+                        when others => the_Face := (Polygon,  new Vertices' (the_Vertices));   -- NB: Model.any skips polygon faces.
                      end case;
 
                      face_Count             := face_Count + 1;

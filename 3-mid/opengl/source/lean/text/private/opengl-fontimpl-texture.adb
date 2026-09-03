@@ -1,14 +1,15 @@
 with
      openGL.Glyph.texture,
      openGL.Glyph.Container,
-     openGL.Palette,
      openGL.Tasks,
 
      GL.Binding,
      GL.lean,
      GL.Pointers,
 
-     freetype_c.Binding;
+     freetype_c.Binding,
+
+     ada.unchecked_Deallocation;
 
 
 package body openGL.FontImpl.Texture
@@ -244,9 +245,16 @@ is
    is
       use freetype.charMap;
 
-      Success   : constant Boolean                    := Self.CheckGlyph (to_characterCode (for_Character)) with Unreferenced;
+      use type Glyph.Container.Glyph_view;
+
+      Success   : constant Boolean                    := Self.CheckGlyph (to_characterCode (for_Character));
       the_Glyph : constant Glyph.Container.Glyph_view := Self.glyphList.Glyph (to_characterCode (for_Character));
    begin
+      if not Success or else the_Glyph = null
+      then
+         raise openGL.Error with "No glyph for character '" & for_Character & "' (freetype error" & Self.Err'Image & ").";
+      end if;
+
       return Glyph.texture.item (the_Glyph.all).Quad ([0.0, 0.0, 0.0]);
    end Quad;
 
@@ -303,7 +311,6 @@ is
    function CreateTexture (Self : access Item) return openGL.Texture.texture_Name
    is
       use
-           openGL.Palette,
            GL,
            GL.Binding;
    begin
@@ -314,8 +321,13 @@ is
       declare
          use GL.Pointers;
 
-         the_Image : Image (1 .. Index_t (Self.textureHeight),
-                            1 .. Index_t (Self.textureWidth)) := (others => [others => +Black]);
+         type grey_Image_view is access grey_Image;
+
+         procedure free is new ada.unchecked_Deallocation (grey_Image, grey_Image_view);
+
+         the_Image : grey_Image_view := new grey_Image' (1 .. Index_t (Self.textureHeight) => [1 .. Index_t (Self.textureWidth) => 0]);
+         --
+         -- A cleared alpha image, one byte per texel and on the heap since it may be megabytes.
 
          textID    : aliased openGL.Texture.texture_Name;
       begin
@@ -332,7 +344,9 @@ is
                        Self.textureWidth, Self.textureHeight,
                        0,                 GL_ALPHA,
                        GL_UNSIGNED_BYTE,
-                       to_GLvoid_access (the_Image (1, 1).Red'Access));
+                       to_GLvoid_access (the_Image (1, 1)'Access));
+         free (the_Image);
+
          return textID;
       end;
    end CreateTexture;

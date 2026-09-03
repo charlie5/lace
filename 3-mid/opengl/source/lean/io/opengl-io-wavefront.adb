@@ -167,21 +167,41 @@ is
 
             elsif Head (the_Line, 2) = "f "
             then
+               if face_Count = the_Faces'Length
+               then
+                  raise Model_too_complex with "'" & model_File & "' has more than" & Integer'Image (the_Faces'Length) & " faces.";
+               end if;
+
                face_Count             := face_Count + 1;
                the_Faces (face_Count) := to_Facet (the_Line (3 .. the_Line'Last));
 
             elsif Head (the_Line, 2) = "v "
             then
+               if site_Count = the_Sites'Length
+               then
+                  raise Model_too_complex with "'" & model_File & "' has more than" & Integer'Image (the_Sites'Length) & " sites.";
+               end if;
+
                site_Count             := site_Count + 1;
                the_Sites (site_Count) := to_Vector_3 (the_Line (3 .. the_Line'Last));
 
             elsif Head (the_Line, 3) = "vt "
             then
+               if coord_Count = the_Coords'Length
+               then
+                  raise Model_too_complex with "'" & model_File & "' has more than" & Integer'Image (the_Coords'Length) & " coords.";
+               end if;
+
                coord_Count              := coord_Count + 1;
                the_Coords (coord_Count) := to_Coordinate (the_Line (4 .. the_Line'Last));
 
             elsif Head (the_Line, 3) = "vn "
             then
+               if normal_Count = the_Normals'Length
+               then
+                  raise Model_too_complex with "'" & model_File & "' has more than" & Integer'Image (the_Normals'Length) & " normals.";
+               end if;
+
                normal_Count               := normal_Count + 1;
                the_Normals (normal_Count) := to_Vector_3 (the_Line (4 .. the_Line'Last));
 
@@ -354,22 +374,42 @@ is
 
             elsif Head (the_Line, 2) = "f "
             then
+               if face_Count = the_Faces'Length
+               then
+                  raise Model_too_complex with "'" & model_Path & "' has more than" & Integer'Image (the_Faces'Length) & " faces.";
+               end if;
+
                face_Count             := face_Count + 1;
                the_Faces (face_Count) := (a_Facet,
                                           to_Facet (the_Line (3 .. the_Line'Last)));
 
             elsif Head (the_Line, 2) = "v "
             then
+               if site_Count = the_Sites'Length
+               then
+                  raise Model_too_complex with "'" & model_Path & "' has more than" & Integer'Image (the_Sites'Length) & " sites.";
+               end if;
+
                site_Count             := site_Count + 1;
                the_Sites (site_Count) := to_Vector_3 (the_Line (3 .. the_Line'Last));
 
             elsif Head (the_Line, 3) = "vt "
             then
+               if coord_Count = the_Coords'Length
+               then
+                  raise Model_too_complex with "'" & model_Path & "' has more than" & Integer'Image (the_Coords'Length) & " coords.";
+               end if;
+
                coord_Count              := coord_Count + 1;
                the_Coords (coord_Count) := to_Coordinate (the_Line (4 .. the_Line'Last));
 
             elsif Head (the_Line, 3) = "vn "
             then
+               if normal_Count = the_Normals'Length
+               then
+                  raise Model_too_complex with "'" & model_Path & "' has more than" & Integer'Image (the_Normals'Length) & " normals.";
+               end if;
+
                normal_Count               := normal_Count + 1;
                the_Normals (normal_Count) := to_Vector_3 (the_Line (4 .. the_Line'Last));
 
@@ -403,6 +443,15 @@ is
                   else
                      Get (the_Line (3 .. the_Line'Last), the_Id, Last);
                   end if;
+
+                  if face_Count = the_Faces'Length
+
+                  then
+
+                     raise Model_too_complex with "'" & model_Path & "' has more than" & Integer'Image (the_Faces'Length) & " faces.";
+
+                  end if;
+
 
                   face_Count             := face_Count + 1;
                   the_Faces (face_Count) := (a_Group,

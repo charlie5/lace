@@ -223,6 +223,7 @@ private
       record
          Visual   : openGL.Visual  .view;
          Geometry : openGL.Geometry.view;
+         Depth    : Real := 0.0;     -- The visual's camera-space depth, used to sort lucid geometries.
       end record;
 
    type visual_geometry_Couples      is array (math.Index range <>) of visual_geometry_Couple;

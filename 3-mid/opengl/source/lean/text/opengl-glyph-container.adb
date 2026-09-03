@@ -104,12 +104,17 @@ is
 
    function Advance (Self : in Item;   Character         : in freetype.charMap.characterCode;
                                        nextCharacterCode : in freetype.charMap.characterCode) return Real
-   is
-      Left  : constant freetype.charMap.glyphIndex := Self.charMap.FontIndex (Character);
+   is      Left  : constant freetype.charMap.glyphIndex := Self.charMap.FontIndex (Character);
       Right : constant freetype.charMap.glyphIndex := Self.charMap.FontIndex (nextCharacterCode);
+      the_Glyph : constant Glyph_view := Self.Glyph (Character);
    begin
+      if the_Glyph = null
+      then
+         raise openGL.Error with "Advance: no glyph loaded for character code" & Character'Image & ".";
+      end if;
+
       return Real (Self.Face.KernAdvance (Integer (Left),
-                                          Integer (Right)) (1)  +  Float (Self.Glyph (Character).Advance));
+                                          Integer (Right)) (1)  +  Float (the_Glyph.Advance));
    end Advance;
 
 

@@ -338,64 +338,27 @@ is
    is
       initial_X : constant openGL.Real := -6.0;
       initial_Y : constant openGL.Real :=  6.0;
+      Pad       : constant openGL.Real :=  3.0;
+      per_Row   : constant Positive    :=  5;
 
-      X    :          openGL.Real := initial_X;
-      Y    :          openGL.Real := initial_Y;
-      Pad  : constant openGL.Real := 3.0;
-      i    :          Positive    := 1;
-
-      procedure set_next_Visual_Site
-      is
-      begin
-         the_Visuals (i).Site_is ([X, Y, 0.0]);
-
-         i := i + 1;
-         X := X + Pad;
-      end set_next_Visual_Site;
-
-
-
-      procedure new_Line
-      is
-      begin
-         X := initial_X;
-         Y := Y - Pad;
-      end new_Line;
-
+      X : openGL.Real := initial_X;
+      Y : openGL.Real := initial_Y;
+      n : Natural     := 0;
    begin
-      set_next_Visual_Site;
-      set_next_Visual_Site;
-      set_next_Visual_Site;
-      set_next_Visual_Site;
+      for Each of the_Visuals
+      loop
+         Each.Site_is ([X, Y, 0.0]);
 
-      new_Line;
-      set_next_Visual_Site;
-      set_next_Visual_Site;
-      set_next_Visual_Site;
-      set_next_Visual_Site;
-      set_next_Visual_Site;
+         n := n + 1;
 
-      new_Line;
-      set_next_Visual_Site;
-      set_next_Visual_Site;
-
-      new_Line;
-      set_next_Visual_Site;
-      set_next_Visual_Site;
-      set_next_Visual_Site;
-
-      new_Line;
-      set_next_Visual_Site;
-      set_next_Visual_Site;
-      set_next_Visual_Site;
-
-      new_Line;
-      set_next_Visual_Site;
-      set_next_Visual_Site;
-      set_next_Visual_Site;
-
-      new_Line;
-      set_next_Visual_Site;
+         if n mod per_Row = 0
+         then
+            X := initial_X;
+            Y := Y - Pad;
+         else
+            X := X + Pad;
+         end if;
+      end loop;
    end layout;
 
 

@@ -155,8 +155,8 @@ is
             the_Camera  : constant Camera_view             := all_Updates (i).Camera;
             the_Updates : constant updates_for_Camera_view := all_Updates (i).Updates;
          begin
-            Viewport.Extent_is ((the_Camera.Viewport.Max (1),
-                                 the_Camera.Viewport.Max (2)));
+            Viewport.Extent_is ((the_Camera.Viewport.Max (1) - the_Camera.Viewport.Min (1) + 1,      -- 'Max' is the last pixel, not the extent.
+                                 the_Camera.Viewport.Max (2) - the_Camera.Viewport.Min (2) + 1));
 
             Self.update_Impostors (the_Updates.impostor_Updates (1 .. the_Updates.impostor_updates_Last),
                                    camera_world_Transform => the_Camera.World_Transform,
@@ -176,8 +176,8 @@ is
             the_Updates : constant updates_for_Camera_view := all_Updates (i).Updates;
             clear_Frame : constant Boolean                 := i = all_Updates'First;
          begin
-            Viewport.Extent_is ((the_Camera.Viewport.Max (1),
-                                 the_Camera.Viewport.Max (2)));
+            Viewport.Extent_is ((the_Camera.Viewport.Max (1) - the_Camera.Viewport.Min (1) + 1,      -- 'Max' is the last pixel, not the extent.
+                                 the_Camera.Viewport.Max (2) - the_Camera.Viewport.Min (2) + 1));
 
             Self.draw (the_Visuals            => the_Updates.Visuals (1 .. the_Updates.visuals_Last),
                        camera_world_Transform => the_Camera.World_Transform,
@@ -348,9 +348,12 @@ is
 
             if new_font_Name /= null_Asset
             then
-               Self.Fonts.insert ((new_font_Name,
-                                   new_font_Size),
-                                   Font.texture.new_Font_texture (to_String (new_font_Name)).all'Access);
+               if not Self.Fonts.contains ((new_font_Name, new_font_Size))
+               then
+                  Self.Fonts.insert ((new_font_Name,
+                                      new_font_Size),
+                                      Font.texture.new_Font_texture (to_String (new_font_Name)).all'Access);
+               end if;
 
             elsif new_snapshot_Name /= null_Asset
             then
@@ -443,6 +446,8 @@ is
          new_Line;
          put_Line ("Unhandled exception in openGL Renderer engine !");
          put_Line (ada.Exceptions.Exception_Information (E));
+
+         Self.is_Busy := False;     -- Unblock any client awaiting the engine.
    end Engine;
 
 
@@ -571,8 +576,8 @@ is
 
             -- Get a new sized texture, if needed.
             --
-            if        Natural (the_Update.current_Width_pixels)  /= the_Model.Texture.Size.Width
-              or else Natural (the_Update.current_Height_pixels) /= the_Model.Texture.Size.Height
+            if        Natural (texture_Width)  /= the_Model.Texture.Size.Width
+              or else Natural (texture_Height) /= the_Model.Texture.Size.Height
             then
                free (Self.texture_Pool, the_Model.Texture);
                the_Model.Texture_is (new_Texture (From => Self.texture_Pool'Access,
@@ -685,6 +690,8 @@ is
             declare
                opaque_Geometries : Model.access_Geometry_views renames the_Visual.Model.opaque_Geometries;
                lucid_Geometries  : Model.access_Geometry_views renames the_Visual.Model. lucid_Geometries;
+
+               the_Depth         : constant Real := Vector_4' (get_Translation (the_Visual.Transform) * view_Transform) (3);   -- Camera-space depth: negative Z is forward.
             begin
                the_Visual.mvp_Transform_is (the_Visual.Transform * view_and_perspective_Transform);
 
@@ -693,8 +700,9 @@ is
                   for i in opaque_Geometries'Range
                   loop
                      opaque_Count                           := opaque_Count + 1;
-                     Self.all_opaque_Couples (opaque_Count) := (visual   => the_Visual,
-                                                                Geometry => opaque_Geometries (i));
+                     Self.all_opaque_Couples (opaque_Count) := (Visual   => the_Visual,
+                                                            Geometry => opaque_Geometries (i),
+                                                            Depth    => 0.0);
                   end loop;
                end if;
 
@@ -703,8 +711,9 @@ is
                   for i in lucid_Geometries'Range
                   loop
                      lucid_Count                          := lucid_Count + 1;
-                     Self.all_lucid_Couples (lucid_Count) := (visual   => the_Visual,
-                                                              Geometry => lucid_Geometries (i));
+                     Self.all_lucid_Couples (lucid_Count) := (Visual   => the_Visual,
+                                                           Geometry => lucid_Geometries (i),
+                                                           Depth    => the_Depth);
                   end loop;
                end if;
 
@@ -805,8 +814,8 @@ is
          function Heap_less_than (Left, Right : in Natural) return Boolean
          is
          begin
-            return   Self.all_lucid_Couples (Left) .Visual.Transform (4, 3)   -- Depth_in_camera_space   -- NB: In camera space, negative Z is
-                   < Self.all_lucid_Couples (Right).Visual.Transform (4, 3);  --                                forward, so use '<'.
+            return   Self.all_lucid_Couples (Left) .Depth     -- In camera space, negative Z is forward, so '<' draws the farthest first.
+                 < Self.all_lucid_Couples (Right).Depth;
          end Heap_less_than;
 
          the_Couple      : visual_geometry_Couple;
@@ -925,6 +934,11 @@ is
             First : constant Integer := the_camera_Updates.impostor_updates_Last + 1;
             Last  : constant Integer := the_camera_Updates.impostor_updates_Last + the_Updates'Length;
          begin
+            if Last > the_camera_Updates.Impostor_updates'Last
+            then
+               raise buffer_Overflow with "More than" & Integer'Image (max_Visuals) & " impostor updates queued for a camera.";
+            end if;
+
             the_camera_Updates.Impostor_updates (First .. Last) := the_Updates;
             the_camera_Updates.impostor_updates_Last            := Last;
          end;
@@ -952,6 +966,11 @@ is
             First : constant Integer := the_camera_Updates.visuals_Last + 1;
             Last  : constant Integer := the_camera_Updates.visuals_Last + the_Visuals'Length;
          begin
+            if Last > the_camera_Updates.Visuals'Last
+            then
+               raise buffer_Overflow with "More than" & Integer'Image (max_Visuals) & " visuals queued for a camera.";
+            end if;
+
             the_camera_Updates.Visuals (First .. Last) := the_Visuals;
             the_camera_Updates.visuals_Last            := Last;
          end;
