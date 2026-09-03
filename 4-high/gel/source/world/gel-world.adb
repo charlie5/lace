@@ -45,7 +45,8 @@ is
    procedure destroy (Self : in out Item)
    is
    begin
-      -- Destroy any sprites still in the world.
+      -- Destroy any sprites still in the world. Each destroy emits its rid event
+      -- as usual, so a mirror that outlives this world is told to drop its sprites.
       --
       declare
          the_Sprites : constant Sprite.Views := Item'Class (Self).all_Sprites.fetch_Views;
@@ -1063,8 +1064,17 @@ is
    --
 
    overriding
-   procedure   register (Self : access Item;   the_Mirror         : in remote.World.view;
-                                               Mirror_as_observer : in lace.Observer.view) is null;
+   function register (Self : access Item;   the_Mirror         : in remote.World.view;
+                                            Mirror_as_observer : in lace.Observer.view) return remote.World.mirror_Snapshot
+   is
+      pragma unreferenced (Self, the_Mirror, Mirror_as_observer);
+   begin
+      return (sprite_Count => 0,     -- A plain world keeps no mirrors: an empty snapshot.
+              seq_Id       => 0,
+              others       => <>);
+   end register;
+
+
    overriding
    procedure deregister (Self : access Item;   the_Mirror         : in remote.World.view;
                                                Mirror_as_observer : in lace.Observer.view) is null;

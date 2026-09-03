@@ -5,6 +5,7 @@ with
 
      system.RPC,
 
+     ada.Exceptions,
      ada.Text_IO,
      ada.unchecked_Deallocation;
 
@@ -20,6 +21,12 @@ is
 
    procedure log (Message : in String)
                   renames ada.text_IO.put_Line;
+
+
+   procedure disconnect (Self : in out Item;   the_Mirror : in remote.World.view);
+   --
+   -- Undo a mirror's registration: rid it from the client list and, when it was
+   -- registered, deregister its observer from every mirrored event kind.
 
 
    ---------
@@ -79,36 +86,73 @@ is
    protected
    body safe_Clients
    is
-      procedure add (the_Mirror : in remote.World.view)
+
+      function index_Of (the_Mirror : in remote.World.view) return client_Vectors.extended_Index
       is
       begin
-         Clients.append (the_Mirror);
+         for i in Clients.first_Index .. Clients.last_Index
+         loop
+            if Clients.Element (i).Mirror = the_Mirror
+            then
+               return i;
+            end if;
+         end loop;
+
+         return client_Vectors.no_Index;
+      end index_Of;
+
+
+
+      procedure add (the_Mirror  : in     remote.World .view;
+                     as_Observer : in     lace.Observer.view;
+                     was_Added   :    out Boolean)
+      is
+      begin
+         was_Added := index_Of (the_Mirror) = client_Vectors.no_Index;
+
+         if was_Added
+         then
+            Clients.append (client_Pair' (Mirror   => the_Mirror,
+                                          Observer => as_Observer));
+         end if;
       end add;
 
 
 
-      procedure rid (the_Mirror : in     remote.World.view;
-                     Found      :    out Boolean)
+      entry rid (the_Mirror   : in     remote.World .view;
+                 the_Observer :    out lace.Observer.view;
+                 Found        :    out Boolean)
+        when not round_Active
       is
-         use world_Vectors;
-
-         Index : constant world_Vectors.extended_Index := Clients.find_Index (the_Mirror);
+         Index : constant client_Vectors.extended_Index := index_Of (the_Mirror);
       begin
-         Found := Index /= no_Index;
+         Found := Index /= client_Vectors.no_Index;
 
          if Found
          then
+            the_Observer := Clients.Element (Index).Observer;
             Clients.delete (Index);
+         else
+            the_Observer := null;
          end if;
       end rid;
 
 
 
-      function fetch return world_Vector
+      procedure begin_Round (Now : out client_Vector)
       is
       begin
-         return Clients;
-      end fetch;
+         round_Active := True;
+         Now          := Clients;
+      end begin_Round;
+
+
+
+      procedure end_Round
+      is
+      begin
+         round_Active := False;
+      end end_Round;
 
 
 
@@ -176,35 +220,42 @@ is
                if updates_Count > 0
                then
                   declare
-                     the_Clients  : constant world_Vector := Self.Clients.fetch;
-                     dead_Clients :          world_Vector;
+                     the_Clients  : client_Vector;
+                     dead_Clients : client_Vector;
                   begin
-                     for the_Mirror of the_Clients
-                     loop
-                        begin
-                           the_Mirror.motion_Updates_are (Self.seq_Id,
-                                                          the_motion_Updates (1 .. updates_Count));
-                        exception
-                           when system.RPC.communication_Error
-                              | storage_Error =>
-                              dead_Clients.append (the_Mirror);     -- The client is dead or unreachable.
-                        end;
-                     end loop;
+                     Self.Clients.begin_Round (the_Clients);
 
-                     -- Evict any dead clients, so one cannot stall the world forever.
+                     begin
+                        for the_Client of the_Clients
+                        loop
+                           begin
+                              the_Client.Mirror.motion_Updates_are (Self.seq_Id,
+                                                                    the_motion_Updates (1 .. updates_Count));
+                           exception
+                              when E : system.RPC.communication_Error
+                                     | storage_Error =>
+                                 -- The mirror is dead or unreachable: disconnect it rather
+                                 -- than die with it. Any other exception is a genuine bug
+                                 -- and is left to propagate loudly.
+                                 --
+                                 log ("Mirror update failed ~ disconnecting the mirror.");
+                                 log (ada.Exceptions.exception_Information (E));
+                                 dead_Clients.append (the_Client);
+                           end;
+                        end loop;
+
+                        Self.Clients.end_Round;
+                     exception
+                        when others =>
+                           Self.Clients.end_Round;
+                           raise;
+                     end;
+
+                     -- Disconnect any dead clients, so one cannot stall the world forever.
                      --
-                     for the_Mirror of dead_Clients
+                     for the_Client of dead_Clients
                      loop
-                        declare
-                           Found : Boolean;
-                        begin
-                           Self.Clients.rid (the_Mirror, Found);
-
-                           if Found
-                           then
-                              log ("Evicting a dead client mirror.");
-                           end if;
-                        end;
+                        disconnect (Self, the_Client.Mirror);
                      end loop;
                   end;
                end if;
@@ -220,17 +271,61 @@ is
    --
 
    overriding
-   procedure register (Self : access Item;   the_Mirror         : in remote.World.view;
-                                             Mirror_as_observer : in lace.Observer.view)
+   function register (Self : access Item;   the_Mirror         : in remote.World.view;
+                                            Mirror_as_observer : in lace.Observer.view) return remote.World.mirror_Snapshot
    is
+      was_Added : Boolean;
    begin
-      Self.Clients.add (the_Mirror);
+      Self.Clients.add (the_Mirror, Mirror_as_observer, was_Added);
 
-      Self.register (Mirror_as_observer, to_Kind (remote.World.new_graphics_model_Event'Tag));
-      Self.register (Mirror_as_observer, to_Kind (remote.World. new_physics_model_Event'Tag));
-      Self.register (Mirror_as_observer, to_Kind (gel.events  .new_sprite_Event        'Tag));
-      Self.register (Mirror_as_observer, to_Kind (gel.events  .rid_sprite_Event        'Tag));
+      if was_Added
+      then
+         Self.register (Mirror_as_observer, to_Kind (remote.World.new_graphics_model_Event'Tag));
+         Self.register (Mirror_as_observer, to_Kind (remote.World. new_physics_model_Event'Tag));
+         Self.register (Mirror_as_observer, to_Kind (gel.events  .new_sprite_Event        'Tag));
+         Self.register (Mirror_as_observer, to_Kind (gel.events  .rid_sprite_Event        'Tag));
+      end if;
+
+      -- Capture the snapshot only now, after the observer is subscribed, so an
+      -- addition or removal happening meanwhile can appear in both the snapshot
+      -- and an event (the mirror applies them idempotently) but never in neither.
+      -- The sequence id is read first, so an overlapping motion round is replayed
+      -- rather than lost, and the models last, so every snapshot sprite's models
+      -- are present.
+      --
+      declare
+         the_seq_Id          : constant remote.World.sequence_Id              := Self.seq_Id;
+         the_Sprites         : constant remote.World.sprite_model_Pairs       := Self.Sprites;
+         the_graphics_Models : constant remote.World.id_Map_of_graphics_model := graphics_Models (Self.all);
+         the_physics_Models  : constant remote.World.id_Map_of_physics_model  := physics_Models  (Self.all);
+      begin
+         return (sprite_Count    => the_Sprites'Length,
+                 Sprites         => the_Sprites,
+                 graphics_Models => the_graphics_Models,
+                 physics_Models  => the_physics_Models,
+                 seq_Id          => the_seq_Id);
+      end;
    end register;
+
+
+
+   procedure disconnect (Self : in out Item;   the_Mirror : in remote.World.view)
+   is
+      the_Observer : lace.Observer.view;
+      Found        : Boolean;
+   begin
+      Self.Clients.rid (the_Mirror, the_Observer, Found);
+
+      if not Found
+      then
+         return;     -- An unknown (or already disconnected) mirror ~ nothing to undo.
+      end if;
+
+      Self.deregister (the_Observer, to_Kind (remote.World.new_graphics_model_Event'Tag));
+      Self.deregister (the_Observer, to_Kind (remote.World. new_physics_model_Event'Tag));
+      Self.deregister (the_Observer, to_Kind (gel.events  .new_sprite_Event        'Tag));
+      Self.deregister (the_Observer, to_Kind (gel.events  .rid_sprite_Event        'Tag));
+   end disconnect;
 
 
 
@@ -238,19 +333,9 @@ is
    procedure deregister (Self : access Item;   the_Mirror         : in remote.World.view;
                                                Mirror_as_observer : in lace.Observer.view)
    is
-      Found : Boolean;
+      pragma unreferenced (Mirror_as_observer);     -- The observer given at registration is on record.
    begin
-      Self.Clients.rid (the_Mirror, Found);
-
-      if not Found
-      then
-         return;     -- An unknown mirror ~ nothing to deregister.
-      end if;
-
-      Self.deregister (Mirror_as_observer, to_Kind (remote.World.new_graphics_model_Event'Tag));
-      Self.deregister (Mirror_as_observer, to_Kind (remote.World. new_physics_model_Event'Tag));
-      Self.deregister (Mirror_as_observer, to_Kind (gel.events  .new_sprite_Event        'Tag));
-      Self.deregister (Mirror_as_observer, to_Kind (gel.events  .rid_sprite_Event        'Tag));
+      disconnect (Self.all, the_Mirror);
    end deregister;
 
 

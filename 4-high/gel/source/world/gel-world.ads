@@ -299,8 +299,8 @@ is
    interpolation_Steps  : constant Natural;
 
    overriding
-   procedure   register (Self : access Item;   the_Mirror         : in remote.World.view;
-                                               Mirror_as_observer : in lace.Observer.view);
+   function    register (Self : access Item;   the_Mirror         : in remote.World.view;
+                                               Mirror_as_observer : in lace.Observer.view) return remote.World.mirror_Snapshot;
    overriding
    procedure deregister (Self : access Item;   the_Mirror         : in remote.World.view;
                                                Mirror_as_observer : in lace.Observer.view);

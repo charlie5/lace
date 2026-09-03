@@ -35,9 +35,9 @@ is
 
    -- Registration
    --
+   -- 'register' subscribes the mirror and returns the world snapshot: see the
+   -- 'mirror_Snapshot' declaration below the model and motion declarations it needs.
 
-   procedure   register (Self : access Item;   the_Mirror         : in World.view;
-                                               Mirror_as_observer : in lace.Observer.view)   is abstract;
    procedure deregister (Self : access Item;   the_Mirror         : in World.view;
                                                Mirror_as_observer : in lace.Observer.view)   is abstract;
 
@@ -177,6 +177,27 @@ is
 
    procedure motion_Updates_are (Self : in Item;   seq_Id : in sequence_Id;
                                                    Now    : in motion_Updates) is abstract;
+
+
+   ------------------------
+   --- Mirror Registration
+   --
+
+   type mirror_Snapshot (sprite_Count : math.Index) is
+      record
+         graphics_Models : id_Map_of_graphics_model;
+         physics_Models  : id_Map_of_physics_model;
+         Sprites         : sprite_model_Pairs (1 .. sprite_Count);
+         seq_Id          : sequence_Id;
+      end record;
+   --
+   -- All a new mirror needs to begin: the model and sprite populations and the
+   -- current motion sequence id. A server captures it only after subscribing the
+   -- observer, so an addition or removal can appear in both the snapshot and an
+   -- event (the mirror applies them idempotently) but can never fall between the two.
+
+   function register (Self : access Item;   the_Mirror         : in World.view;
+                                            Mirror_as_observer : in lace.Observer.view) return mirror_Snapshot   is abstract;
 
 
    --------------------------

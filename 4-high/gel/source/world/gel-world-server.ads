@@ -46,8 +46,8 @@ is
    --
 
    overriding
-   procedure   register (Self : access Item;   the_Mirror         : in remote.World.view;
-                                               Mirror_as_observer : in lace.Observer.view);
+   function    register (Self : access Item;   the_Mirror         : in remote.World.view;
+                                               Mirror_as_observer : in lace.Observer.view) return remote.World.mirror_Snapshot;
    overriding
    procedure deregister (Self : access Item;   the_Mirror         : in remote.World.view;
                                                Mirror_as_observer : in lace.Observer.view);
@@ -65,26 +65,41 @@ private
 
    use type remote.World.view;
 
-   package world_Vectors is new ada.Containers.Vectors (Positive, remote.World.view);
-   subtype world_Vector  is     world_Vectors.Vector;
+   type client_Pair is
+      record
+         Mirror   : remote.World .view;
+         Observer : lace.Observer.view;     -- The observer given at registration, kept
+      end record;                           -- so a disconnect can undo every subscription.
+
+   package client_Vectors is new ada.Containers.Vectors (Positive, client_Pair);
+   subtype client_Vector  is     client_Vectors.Vector;
 
 
    protected
    type safe_Clients
    is
-      procedure add (the_Mirror : in     remote.World.view);
-      procedure rid (the_Mirror : in     remote.World.view;
-                     Found      :    out Boolean);
+      procedure add (the_Mirror  : in     remote.World .view;
+                     as_Observer : in     lace.Observer.view;
+                     was_Added   :    out Boolean);
+      entry     rid (the_Mirror  : in     remote.World .view;
+                     the_Observer :   out lace.Observer.view;
+                     Found       :    out Boolean);
 
-      function  fetch    return world_Vector;
+      procedure begin_Round (Now : out client_Vector);
+      procedure end_Round;
+
       function  is_Empty return Boolean;
 
    private
-      Clients : world_Vector;
+      Clients      : client_Vector;
+      round_Active : Boolean := False;
    end safe_Clients;
    --
-   -- Protected ~ 'register' and 'deregister' arrive on PolyORB tasks while
-   -- 'evolve' walks the list on the main task.
+   -- Protected ~ 'register' and 'deregister' arrive on PolyORB tasks while 'evolve'
+   -- walks the list on the main task. 'add' reports whether the mirror was new, so a
+   -- repeated registration cannot double the event subscriptions. An update round is
+   -- bracketed by 'begin_Round'/'end_Round', and 'rid' waits for the round to end, so
+   -- a mirror whose disconnect has completed can no longer receive an update call.
 
 
    --------------
@@ -98,7 +113,7 @@ private
 
          -- Motion Updates
          --
-         seq_Id : remote.World.sequence_Id := 0;
+         seq_Id : remote.World.sequence_Id := 0 with Atomic;     -- Written by 'evolve', read by 'register' on a PolyORB task.
       end record;
 
 
