@@ -3,7 +3,6 @@ with
      gel.Dolly.simple,
      gel.Dolly.following,
      gel.Camera.forge,
-     gel.Joint,
      gel.Events,
 
      openGL.Palette,
@@ -514,7 +513,7 @@ is
                end loop;
 
                exit when culls_Completed;
-               delay Duration'Small;
+               delay 0.000_1;     -- Yield meaningfully while the cullers work, rather than spinning.
             end;
          end loop;
       end;
@@ -526,15 +525,8 @@ is
 
    procedure add (Self : in out Item;   the_Sprite : in gel.Sprite.view)
    is
-      child_Joints : constant gel.Joint.views := the_Sprite.child_Joints;
    begin
-      -- Add children and their joints.
-      --
-      for i in child_Joints'Range
-      loop
-         Self          .add (the_Sprite.child_Joints (i).Sprite_B);
-         Self.World (1).add (the_Sprite.child_Joints (i));
-      end loop;
+      Self.World (1).add (the_Sprite, and_Children => True);
    end add;
 
 
