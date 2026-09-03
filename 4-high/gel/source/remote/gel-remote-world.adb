@@ -165,14 +165,25 @@ is
       function to_motion_Updates is new ada.unchecked_Conversion (the_Stream_Element_Array, the_motion_Updates);
 
       the_Stream_Array : the_Stream_Element_Array;
+      First            : Stream_Element_Offset := the_Stream_Array'First;
       Last             : Stream_Element_Offset;
 
    begin
-      read (Stream.all, the_Stream_Array, Last);
+      -- A single read may legally return only part of the buffer, so loop until it is full.
+      --
+      while First <= the_Stream_Array'Last
+      loop
+         read (Stream.all, the_Stream_Array (First .. the_Stream_Array'Last), Last);
 
-      pragma assert (Last = the_Stream_Array'Last);
+         if Last < First
+         then
+            raise constraint_Error with "Stream ended before the motion updates were fully read.";
+         end if;
 
-      Item := to_motion_Updates (the_Stream_Array (1 .. Last));
+         First := Last + 1;
+      end loop;
+
+      Item := to_motion_Updates (the_Stream_Array);
    end motion_Updates_read;
 
 

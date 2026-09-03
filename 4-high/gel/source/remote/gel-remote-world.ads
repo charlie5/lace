@@ -173,7 +173,7 @@ is
    for motion_Updates'read  use motion_Updates_read;
 
 
-   type sequence_Id is range 0 .. 2**32 - 1;
+   type sequence_Id is mod 2**32;     -- Wraps, so a long lived server cannot overflow it.
 
    procedure motion_Updates_are (Self : in Item;   seq_Id : in sequence_Id;
                                                    Now    : in motion_Updates) is abstract;
