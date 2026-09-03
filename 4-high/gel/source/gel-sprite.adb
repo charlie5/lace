@@ -199,24 +199,15 @@ is
       pragma assert (Self.is_Destroyed);
 
       use
-           gel.Joint,
            openGL.Visual,
            physics.Object,
            physics.Shape;
 
       procedure deallocate is new ada.unchecked_Deallocation (Sprite.item'Class, Sprite.view);
 
-      procedure deallocate is new ada.unchecked_Deallocation (Joint.views,       access_Joint_views);
-      pragma Unreferenced (deallocate);
-
-      child_Joint : Joint.view;
-
    begin
-      for Each in 1 .. Integer (Self.child_Joints.Length)
-      loop
-         child_Joint := Self.child_Joints.Element (Each);
-         free (child_Joint);
-      end loop;
+      -- The child joints are already gone: 'destroy' detached every child, and each
+      -- detach removed the joint from the physics space and freed it.
 
       -- Only what the sprite alone owns is freed. The models are not: the world registers
       -- them by id in its model maps, and mirror sprites fetch them by id, so their
