@@ -374,6 +374,16 @@ call away; **LOW** = latent, edge case or API trap.
   in-loop renaming of `Index` are gone; the rotation setters take
   `Radians`.
 - `Mode` returns the rig's motion mode.
+- An animated rig jittered and sank: the sprite carrying the skin was a
+  dynamic body of mass 1 whatever mass the demo asked for, so gravity
+  pulled the figure down every frame while the bone bodies, teleported to
+  the animated pose and back to the bind pose each frame, made the joint
+  solver kick it. Measured on the golfer, the base sprite sank 0.9 units
+  in 150 frames, reversing direction on 63 of 98 frames; the golf swing's
+  slow phases made this visible where the jump's own motion hid it.
+  `define` now takes the motion mode, builds an Animation rig from
+  kinematic bodies, and gives the skin sprite the requested mass; the
+  demos say `Mode => Animation` at definition.
 
 
 ## 2. The humans

@@ -52,6 +52,7 @@ is
                                            Model        : in String;
                                            Mass         : in Real                        := 0.0;
                                            is_Kinematic : in Boolean                     := False;
+                                           Mode         : in motion_Mode                 := Animation;
                                            Display      : in display_Mode                := Skin;
                                            bone_Details : in gel.Rig.bone_id_Map_of_details := gel.Rig.bone_id_Maps_of_details.empty_Map)
    is
@@ -61,7 +62,7 @@ is
                                                 texture_Details  => openGL.texture_Set.to_Set ([1 => openGL.to_Asset ("assets/gel/Face1.bmp")]),
                                                 Texture_is_lucid => False);
 
-      Self.Rig.define (World, Self.Model.all'Access, Mass, is_Kinematic, bone_Details);
+      Self.Rig.define (World, Self.Model.all'Access, Mass, is_Kinematic, Mode, bone_Details);
 
       World.add (Self.Rig.base_Sprite, and_Children => True);
       Self.Rig.enable_Graphics;
@@ -94,12 +95,13 @@ is
                           Model        : in String;
                           Mass         : in Real                        := 0.0;
                           is_Kinematic : in Boolean                     := False;
+                          Mode         : in motion_Mode                 := Animation;
                           Display      : in display_Mode                := Skin;
                           bone_Details : in gel.Rig.bone_id_Map_of_details := gel.Rig.bone_id_Maps_of_details.empty_Map) return View
       is
          Self : constant View := new Item;
       begin
-         Self.define (World, Model, Mass, is_Kinematic, Display, bone_Details);
+         Self.define (World, Model, Mass, is_Kinematic, Mode, Display, bone_Details);
          return Self;
       end new_Human;
    end Forge;

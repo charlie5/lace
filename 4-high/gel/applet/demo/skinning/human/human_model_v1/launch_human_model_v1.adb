@@ -38,7 +38,6 @@ begin
                     Model   => "assets/human-default-animated-01_01.dae",
                     Mass    => 1.0,
                     Display => gel.Human.Bones);
-   my_Human.motion_Mode_is (gel.Human.Animation);
 
    the_Applet.gui_World.add (the_Ground);
    the_Ground.Site_is ([0.0, -10.0, 0.0]);

@@ -45,7 +45,6 @@ begin
                                                                is_Kinematic => True,
                                                                Display      => gel.Human.Skin_and_Bones);
    begin
-      the_Human.motion_Mode_is (gel.Human.Animation);
 
       if add_Balls
       then

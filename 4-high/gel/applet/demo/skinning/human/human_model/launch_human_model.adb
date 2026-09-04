@@ -43,7 +43,6 @@ begin
                     Mass         => 1.0,
                     bone_Details => gel.Human.makehuman_Details);
    my_Human.Site_is ([0.0, 10.0, 0.0]);
-   my_Human.motion_Mode_is (gel.Human.Animation);
 
    the_Applet.gui_World.add (the_Ground);
    the_Ground.Site_is ([0.0, -10.0, 0.0]);

@@ -136,7 +136,8 @@ is
       function new_Rig (in_World                : in gel.World.view;
                         Model                   : in openGL.Model.view;
                         Mass                    : in Real             := 0.0;
-                        is_Kinematic            : in Boolean          := False) return Rig.view;
+                        is_Kinematic            : in Boolean          := False;
+                        Mode                    : in motion_Mode      := Dynamics) return Rig.view;
 
       function new_Rig (bone_Sprites            : in bone_id_Map_of_sprite;
                         joint_inv_bind_Matrices : in inverse_bind_matrix_Vector;
@@ -150,7 +151,13 @@ is
                                            Model        : in openGL.Model.view;
                                            Mass         : in Real                   := 0.0;
                                            is_Kinematic : in Boolean                := False;
+                                           Mode         : in motion_Mode            := Dynamics;
                                            bone_Details : in bone_id_Map_of_details := bone_id_Maps_of_details.empty_Map);
+   --
+   -- 'Mass' is that of the sprite carrying the skin; each bone weighs 1. A rig
+   -- defined for Animation is built from kinematic bodies, since an animation
+   -- poses them itself; 'motion_Mode_is' changes how the joints are posed but not
+   -- how the bodies are simulated, so a rig meant to animate should say so here.
 
 
    procedure destroy (Self : in out Item);

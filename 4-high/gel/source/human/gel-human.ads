@@ -46,10 +46,12 @@ is
                                            Model        : in String;
                                            Mass         : in Real                        := 0.0;
                                            is_Kinematic : in Boolean                     := False;
+                                           Mode         : in motion_Mode                 := Animation;
                                            Display      : in display_Mode                := Skin;
                                            bone_Details : in gel.Rig.bone_id_Map_of_details := gel.Rig.bone_id_Maps_of_details.empty_Map);
    --
    -- Builds the rig from the collada file 'Model' and adds the human to the world.
+   -- A human made for Animation is built from kinematic bodies (see gel.Rig.define).
 
    procedure destroy (Self : in out Item);
    --
@@ -64,6 +66,7 @@ is
                           Model        : in String;
                           Mass         : in Real                        := 0.0;
                           is_Kinematic : in Boolean                     := False;
+                          Mode         : in motion_Mode                 := Animation;
                           Display      : in display_Mode                := Skin;
                           bone_Details : in gel.Rig.bone_id_Map_of_details := gel.Rig.bone_id_Maps_of_details.empty_Map) return View;
    end Forge;

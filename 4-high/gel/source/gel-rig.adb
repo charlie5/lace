@@ -68,11 +68,12 @@ is
       function new_Rig (in_World     : in gel.World.view;
                         Model        : in openGL.Model.view;
                         Mass         : in Real             := 0.0;
-                        is_Kinematic : in Boolean          := False) return Rig.view
+                        is_Kinematic : in Boolean          := False;
+                        Mode         : in motion_Mode      := Dynamics) return Rig.view
       is
          Self : constant Rig.view := new Rig.item;
       begin
-         Self.define (in_World, Model, Mass, is_Kinematic);
+         Self.define (in_World, Model, Mass, is_Kinematic, Mode);
 
          return Self;
       end new_Rig;
@@ -312,8 +313,11 @@ is
                                            Model        : in openGL.Model.view;
                                            Mass         : in Real                   := 0.0;
                                            is_Kinematic : in Boolean                := False;
+                                           Mode         : in motion_Mode            := Dynamics;
                                            bone_Details : in bone_id_Map_of_details := bone_id_Maps_of_details.empty_Map)
    is
+      Kinematic : constant Boolean := is_Kinematic or Mode = Animation;     -- An animation poses the bodies itself.
+
       use
            collada.Document,
            collada.Library,
@@ -446,10 +450,8 @@ is
       procedure create_Bone (the_Bone    : in bone_Id;
                              start_Joint : in scene_joint_Id;
                              end_Point   : in Vector_3;
-                             Scale       : in Vector_3;
-                             Mass        : in Real)
+                             Scale       : in Vector_3)
       is
-         pragma Unreferenced (Mass);
          use opengl.Palette;
 
          new_Sprite    :          gel.Sprite.view;
@@ -466,13 +468,13 @@ is
                physics_Model : constant standard.physics.Model.View
                  := standard.physics.Model.Forge.new_physics_Model (shape_Info  => (Kind         => Cube,
                                                                                     half_Extents => Size / 2.0),
-                                                                    Mass        => 1.0);
+                                                                    Mass        => Mass);
             begin
                new_Sprite := gel.Sprite.Forge.new_Sprite (Name           => "Skin Sprite",
                                                           World          => gel.Sprite.World_view (in_World),
                                                           graphics_Model => Model,
                                                           physics_Model  => physics_Model,
-                                                          is_Kinematic   => is_Kinematic);
+                                                          is_Kinematic   => Kinematic);
             end;
 
             new_Sprite.Site_is ([0.0, 0.0, 0.0]);
@@ -489,7 +491,7 @@ is
                                                                      3      => Green,
                                                                      4      => Blue,
                                                                      others => Red],
-                                                    is_Kinematic => is_Kinematic);
+                                                    is_Kinematic => Kinematic);
             new_Sprite.Site_is (the_bone_Site);
             new_Sprite.Spin_is (Inverse (get_Rotation (Self.joint_bind_Matrix (start_Joint))));
 
@@ -580,8 +582,7 @@ is
                       end_Point,
                       [the_bone_Details.width_Factor * bone_Length,
                        bone_Length * 0.90,
-                       the_bone_Details.depth_Factor * bone_Length],
-                      1.0);
+                       the_bone_Details.depth_Factor * bone_Length]);
 
          if Parent /= (+"")
          then
@@ -615,6 +616,7 @@ is
    begin
       Self.root_Joint := the_root_Joint;                 -- Remember our root joint.
       Self.Model      := Model.all'unchecked_Access;     -- Remember our model.
+      Self.Mode       := Mode;
 
 
       --- Parse Controllers.

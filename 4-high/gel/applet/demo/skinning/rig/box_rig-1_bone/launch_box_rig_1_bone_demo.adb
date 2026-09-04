@@ -75,15 +75,14 @@ begin
 
    the_Rig.define (the_Applet.gui_World,
                    the_rig_Model.all'Access,
-                   Mass         => 0.0,
-                   is_Kinematic => False);
+                   Mass => 0.0,
+                   Mode => Animation);
 
    the_Rig.Spin_is (x_Rotation_from (to_Radians (-90.0)));
 
    the_Applet.gui_World.add (the_Rig.base_Sprite, and_Children => True);     -- Add the rigs armature sprite.
 
    the_Rig.enable_Graphics;
-   the_Rig.motion_Mode_is (Animation);
    the_Rig.assume_Pose;
 
    next_render_Time := ada.Calendar.clock;
