@@ -1,4 +1,5 @@
 with
+     ada.unchecked_Deallocation,
      physics.Object;
 
 
@@ -34,9 +35,19 @@ is
 
    overriding
    procedure destroy (Self : in out Item)
+   --
+   -- The world has already removed the joint from the physics space.
+   --
    is
+      my_Physics : std_physics.Joint.view := std_physics.Joint.view (Self.Physics);
+
+      procedure deallocate is new ada.unchecked_Deallocation (std_physics.Joint.item'Class,
+                                                              std_physics.Joint.view);
    begin
-      raise Error with "TODO";
+      my_Physics.destruct;
+      deallocate (my_Physics);
+
+      Self.Physics := null;
    end destroy;
 
 
