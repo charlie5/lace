@@ -1,52 +1,53 @@
 with
-     ada.Strings.unbounded,
      ada.Text_IO;
 
 
 package XML.Writer
+--
+-- Writes an XML document to a text file, indenting nested elements. Character
+-- data put directly after a start tag stays on the tag's line.
+--
 is
-   use ada.Strings.unbounded;
+   type Item is tagged limited private;
 
 
-   procedure start_Document (F : in ada.Text_IO.File_type);
-   procedure end_Document   (F : in ada.Text_IO.File_type);
+   procedure start_Document (Self : in out Item;   File : in ada.Text_IO.File_access);
+   --
+   -- Writes the XML declaration to the file, which must be open for output.
 
-   procedure start (F     : in ada.Text_IO.File_type;
-                    Name  : in String;
-                    Atts  : in Attributes_view);
+   procedure end_Document   (Self : in out Item);
+   --
+   -- Raises unbalanced_Error if any element is still open.
 
-   procedure start (F     : in ada.Text_IO.File_type;
-                    Name  : in unbounded_String;
-                    Atts  : in Attributes_view);
 
-   procedure finish (F    : in ada.Text_IO.File_type;
-                     Name : in String);
+   procedure start  (Self : in out Item;   Name : in String;
+                                           Atts : in Attributes_t := no_Attributes);
+   procedure finish (Self : in out Item;   Name : in String);
 
-   procedure finish (F    : in ada.Text_IO.File_type;
-                     Name : in unbounded_String);
+   procedure empty  (Self : in out Item;   Name : in String;
+                                           Atts : in Attributes_t := no_Attributes);
 
-   procedure empty (F     : in ada.Text_IO.File_type;
-                    Name  : in String;
-                    Atts  : in Attributes_view);
+   procedure put    (Self : in out Item;   Data : in String);
+   --
+   -- Writes character data, escaped.
 
-   procedure empty (F     : in ada.Text_IO.File_type;
-                    Name  : in unbounded_String;
-                    Atts  : in Attributes_view);
 
-   function "+"    (K, V : in String)                                  return Attribute_t;
-   function "+"    (K, V : in String)                                  return Attributes_view;
-   function "+"    (K    : in unbounded_String;
-                    V    : in String)                                  return Attribute_t;
-   function "+"    (K    : in unbounded_String;
-                    V    : in String)                                  return Attributes_view;
-   function "+"    (K    : in String;
-                    V    : in unbounded_String)                        return Attribute_t;
-   function "+"    (K    : in String;
-                    V    : in unbounded_String)                        return Attributes_view;
+   function "+" (Name, Value : in String) return Attribute_t;
+   --
+   -- An attribute, for aggregates such as ["id" + "1", "name" + "box"].
 
-   function MkAtt  (L, R : in Attribute_t)                             return Attributes_view;
-   function "&"    (L, R : in Attribute_t)                             return Attributes_view;
-   function "&"    (L    : in Attributes_view;   R : in Attribute_t)   return Attributes_view;
 
+   unbalanced_Error : exception;
+
+
+
+private
+
+   type Item is tagged limited
+      record
+         File     : ada.Text_IO.File_access;
+         Depth    : Natural := 0;
+         open_Tag : Boolean := False;     -- The cursor sits on the line of a start tag.
+      end record;
 
 end XML.Writer;
