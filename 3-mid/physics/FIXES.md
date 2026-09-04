@@ -198,6 +198,14 @@ implemented), which was the next thing to raise at teardown once the space
 could rid a joint. They now destruct and free their physics joint like the
 hinge does.
 
+`gel.Applet.destroy` freed the worlds, and with them every visual, straight
+after the last frame request, while the renderer task could still be
+drawing that frame: closing a demo window ended in a segfault in the
+renderer (reported as Storage_Error) and then Tasking_Error when the
+applet stopped the dead task. Found while verifying this branch and
+reproducible on master. The applet now waits for the renderer to finish
+the frame in flight before the worlds go.
+
 
 ## 7. Not changed
 

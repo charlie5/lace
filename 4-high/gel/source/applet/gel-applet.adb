@@ -159,6 +159,14 @@ is
       the_World  : gel.World.view;
 
    begin
+      -- Let the renderer finish any frame in flight: it draws the worlds' visuals,
+      -- which are about to be freed.
+      --
+      while Self.Renderer.is_Busy
+      loop
+         delay 0.001;
+      end loop;
+
       while has_Element (Cursor)
       loop
          world_Info := Element (Cursor);
