@@ -52,7 +52,6 @@ with
 
      launch_hello_physics_interface_2D_Demo,
      launch_hello_physics_interface_3D_Demo,
-     launch_test_Engine,
 
 --     launch_Client,
 --     launch_Server,
@@ -142,7 +141,6 @@ begin
 
    launch_hello_physics_interface_2D_Demo;
    launch_hello_physics_interface_3D_Demo;
-   launch_test_Engine;
 
 -- launch_Client;
 -- launch_Server;

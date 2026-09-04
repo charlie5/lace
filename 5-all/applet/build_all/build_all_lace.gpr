@@ -76,7 +76,6 @@ with
 
      "../../../3-mid/physics/interface/applet/demo/hello/2D/hello_physics_2d_demo",
      "../../../3-mid/physics/interface/applet/demo/hello/3D/hello_physics_3d_demo",
-     "../../../3-mid/physics/interface/applet/demo/test_engine/test_engine",
      "physics",
 
 --     "../../../4-high/gel/applet/demo/distributed/dsa/demo_dsa",
