@@ -7,237 +7,286 @@ with
 
 package body XML.Reader
 is
+   package C renames interfaces.C;
+   package S renames interfaces.C.Strings;
 
-   package C renames Interfaces.C;
-   package S renames Interfaces.C.Strings;
-
-
-   type XML_Char     is new C.unsigned_short;
-   type XML_Char_ptr is access all XML_Char;
-   type Char_ptr_ptr is access all S.chars_ptr;
+   use ada.Exceptions;
 
 
+   -------------
+   --- Expat API
+   --
+
+   XML_STATUS_OK : constant C.int := 1;     -- Of 'enum XML_Status'.
 
 
-   procedure XML_SetUserData (XML_Parser : in XML_Parser_ptr;
-                              Parser_ptr : in Parser);
+   function  XML_ParserCreate (Encoding : in S.chars_ptr) return System.Address;
+   pragma import (C, XML_ParserCreate, "XML_ParserCreate");
 
+   procedure XML_ParserFree (Expat : in System.Address);
+   pragma import (C, XML_ParserFree, "XML_ParserFree");
+
+   procedure XML_SetUserData (Expat     : in System.Address;
+                              user_Data : in Parser);
    pragma import (C, XML_SetUserData, "XML_SetUserData");
 
+   function  XML_Parse (Expat    : in System.Address;
+                        Text     : in System.Address;
+                        Length   : in C.int;
+                        is_Final : in C.int) return C.int;
+   pragma import (C, XML_Parse, "XML_Parse");
 
+   procedure XML_StopParser (Expat     : in System.Address;
+                             Resumable : in C.unsigned_char);
+   pragma import (C, XML_StopParser, "XML_StopParser");
 
-   procedure Internal_Start_Handler (My_Parser : in Parser;
-                                     Name      : in S.chars_ptr;
-                                     AttAdd    : in System.Address);
+   function  XML_GetErrorCode (Expat : in System.Address) return C.int;
+   pragma import (C, XML_GetErrorCode, "XML_GetErrorCode");
 
-   pragma Convention (C, Internal_Start_Handler);
+   function  XML_ErrorString (Code : in C.int) return S.chars_ptr;
+   pragma import (C, XML_ErrorString, "XML_ErrorString");
 
-   procedure Internal_Start_Handler (My_Parser : in Parser;
-                                     Name      : in S.chars_ptr;
-                                     AttAdd    : in System.Address)
-   is
+   function  XML_GetCurrentLineNumber (Expat : in System.Address) return C.unsigned_long;
+   pragma import (C, XML_GetCurrentLineNumber, "XML_GetCurrentLineNumber");
 
-      use
-           S,
-
-           System,
-           System.Storage_Elements;
-
-      procedure free is new ada.unchecked_Deallocation (Attributes_t,   Attributes_view);
-
-      function To_CP is new ada.unchecked_Conversion   (System.Address, Char_ptr_ptr);
-
-      AA_Size             : Storage_Offset;
-
-      the_Attribute_Array : Attributes_view;
-      N_Atts              : Natural;
-      Atts                : System.Address;
-
-   begin
-      -- Calculate the size of a single attribute (name or value) pointer.
-      --
-      AA_Size := S.chars_ptr'Size / System.Storage_Unit;
-
-      -- Count the number of attributes by scanning for a null pointer.
-      --
-      N_Atts := 0;
-      Atts   := AttAdd;
-
-      while To_CP (Atts).all /= S.null_ptr
-      loop
-         N_Atts := N_Atts + 1;
-         Atts   := Atts   + (AA_Size * 2);
-      end loop;
-
-      -- Allocate a new attribute array of the correct size.
-      --
-      the_Attribute_Array := new Attributes_t (1 .. N_Atts);
-
-      -- Convert the attribute strings to unbounded_String.
-      --
-      Atts := AttAdd;
-
-      for Att in 1 .. N_Atts
-      loop
-         the_Attribute_Array (Att).Name  := to_unbounded_String (S.Value (To_CP (Atts).all));
-         Atts                            := Atts + AA_Size;
-         the_Attribute_Array (Att).Value := to_unbounded_String (S.Value (To_CP (Atts).all));
-         Atts                            := Atts + AA_Size;
-      end loop;
-
-      -- Call the user's handler.
-      --
-      My_Parser.Start_Handler (to_unbounded_String (S.Value (Name)),
-                               the_Attribute_Array);
-
-      -- Give back the attribute array.
-      --
-      free (the_Attribute_Array);
-   end Internal_Start_Handler;
+   function  XML_GetCurrentColumnNumber (Expat : in System.Address) return C.unsigned_long;
+   pragma import (C, XML_GetCurrentColumnNumber, "XML_GetCurrentColumnNumber");
 
 
 
-   procedure Internal_End_Handler (My_Parser : in Parser;
-                                   Name      : in S.chars_ptr);
+   ------------
+   --- Handlers
+   --
 
-   pragma Convention (C, Internal_End_Handler);
-
-   procedure Internal_End_Handler (My_Parser : in Parser;
-                                   Name      : in S.chars_ptr)
+   procedure fail (Self : in Parser;   Error : in Exception_Occurrence)
+   --
+   -- Keeps the first exception raised by a handler and stops expat, so that no
+   -- exception crosses its C frames; 'parse' re-raises it.
+   --
    is
    begin
-      My_Parser.End_Handler (to_unbounded_String (S.Value (Name)));
-   end Internal_End_Handler;
-
-
-
-   procedure Internal_CD_Handler (My_Parser : in Parser;
-                                  Data      : in S.chars_ptr;
-                                  Len       : in C.int);
-
-   pragma Convention (C, Internal_CD_Handler);
-
-   procedure Internal_CD_Handler (My_Parser : in Parser;
-                                  Data      : in S.chars_ptr;
-                                  Len       : in C.int)
-   is
-      the_Data : constant unbounded_String := to_unbounded_String (S.Value (Data,  C.size_t (Len)));
-
-   begin
-      if the_Data /= ""
+      if exception_Identity (Self.Failure) = Null_Id
       then
-         My_Parser.CD_Handler (the_Data);
+         save_Occurrence (Self.Failure, Error);
       end if;
-   end Internal_CD_Handler;
+
+      XML_StopParser (Self.Expat, Resumable => 0);
+   end fail;
 
 
 
-   function Create_Parser return Parser
+   procedure start_Handler (Self : in Parser;
+                            Name : in S.chars_ptr;
+                            Atts : in System.Address);
+   pragma Convention (C, start_Handler);
+
+   procedure start_Handler (Self : in Parser;
+                            Name : in S.chars_ptr;
+                            Atts : in System.Address)
+   --
+   -- 'Atts' is a null-terminated array of name and value string pointers.
+   --
    is
+      use System,
+          System.Storage_Elements;
+      use type S.chars_ptr;
 
-      function XML_ParserCreate (Encoding : in XML_Char_ptr) return XML_Parser_ptr;
-      pragma import (C, XML_ParserCreate, "XML_ParserCreate");
+      type chars_ptr_view is access all S.chars_ptr;
+      function to_View is new ada.unchecked_Conversion (System.Address, chars_ptr_view);
+
+      pointer_Size : constant Storage_Offset := S.chars_ptr'Size / System.Storage_Unit;
+
+
+      function attribute_Count return Natural
+      is
+         Count   : Natural := 0;
+         Address : System.Address := Atts;
+      begin
+         while to_View (Address).all /= S.null_ptr
+         loop
+            Count   := Count   + 1;
+            Address := Address + 2 * pointer_Size;
+         end loop;
+
+         return Count;
+      end attribute_Count;
+
+
+      the_Attributes : Attributes_t (1 .. attribute_Count);
+      Address        : System.Address := Atts;
 
    begin
-      return new Parser_Rec' (XML_Parser    => XML_ParserCreate (null),
-                              Start_Handler => null,
-                              End_Handler   => null,
-                              CD_Handler    => null);
-   end Create_Parser;
+      for Each of the_Attributes
+      loop
+         Each.Name  := to_unbounded_String (S.Value (to_View (Address).all));
+         Address    := Address + pointer_Size;
+
+         Each.Value := to_unbounded_String (S.Value (to_View (Address).all));
+         Address    := Address + pointer_Size;
+      end loop;
+
+      Self.start_Handler (S.Value (Name), the_Attributes);
+
+   exception
+      when E : others =>
+         fail (Self, E);
+   end start_Handler;
 
 
 
-   procedure set_Element_Handler (The_Parser    : in Parser;
-                                  Start_Handler : in Start_Element_Handler;
-                                  End_Handler   : in End_Element_Handler)
+   procedure end_Handler (Self : in Parser;
+                          Name : in S.chars_ptr);
+   pragma Convention (C, end_Handler);
+
+   procedure end_Handler (Self : in Parser;
+                          Name : in S.chars_ptr)
    is
-      type Internal_Start_Element_Handler is access procedure (My_Parser : in Parser;
-                                                               Name      : in S.chars_ptr;
-                                                               AttAdd    : in System.Address);
-      pragma Convention (C, Internal_Start_Element_Handler);
+   begin
+      Self.end_Handler (S.Value (Name));
+
+   exception
+      when E : others =>
+         fail (Self, E);
+   end end_Handler;
 
 
-      type Internal_End_Element_Handler   is access procedure (My_Parser : in Parser;
-                                                               Name      : in S.chars_ptr);
-      pragma Convention (C, Internal_End_Element_Handler);
+
+   procedure data_Handler (Self   : in Parser;
+                           Data   : in System.Address;
+                           Length : in C.int);
+   pragma Convention (C, data_Handler);
+
+   procedure data_Handler (Self   : in Parser;
+                           Data   : in System.Address;
+                           Length : in C.int)
+   --
+   -- 'Data' is not null-terminated.
+   --
+   is
+      the_Data : String (1 .. Natural (Length))
+        with Import, Address => Data;
+   begin
+      Self.data_Handler (the_Data);
+
+   exception
+      when E : others =>
+         fail (Self, E);
+   end data_Handler;
 
 
-      procedure XML_SetElementHandler (XML_Parser    : in XML_Parser_ptr;
-                                       Start_Handler : in Internal_Start_Element_Handler;
-                                       End_Handler   : in Internal_End_Element_Handler);
+
+   ---------
+   --- Forge
+   --
+
+   function new_Parser return Parser
+   is
+      Self : constant Parser := new Parser_Rec;
+   begin
+      Self.Expat := XML_ParserCreate (S.null_ptr);
+      save_Occurrence (Self.Failure, Null_Occurrence);
+
+      XML_SetUserData (Self.Expat, Self);
+      return Self;
+   end new_Parser;
+
+
+
+   procedure free (Self : in out Parser)
+   is
+      procedure deallocate is new ada.unchecked_Deallocation (Parser_Rec, Parser);
+   begin
+      if Self /= null
+      then
+         XML_ParserFree (Self.Expat);
+         deallocate (Self);
+      end if;
+   end free;
+
+
+
+   --------------
+   --- Attributes
+   --
+
+   procedure set_Element_Handler (Self          : in Parser;
+                                  start_Handler : in start_element_Handler;
+                                  end_Handler   : in end_element_Handler)
+   is
+      type start_Callback is access procedure (Self : in Parser;
+                                               Name : in S.chars_ptr;
+                                               Atts : in System.Address);
+      pragma Convention (C, start_Callback);
+
+      type end_Callback   is access procedure (Self : in Parser;
+                                               Name : in S.chars_ptr);
+      pragma Convention (C, end_Callback);
+
+      procedure XML_SetElementHandler (Expat : in System.Address;
+                                       Start : in start_Callback;
+                                       Stop  : in end_Callback);
       pragma import (C, XML_SetElementHandler, "XML_SetElementHandler");
 
    begin
-      XML_SetUserData (The_Parser.XML_Parser,
-                       The_Parser);
+      Self.start_Handler := start_Handler;
+      Self.end_Handler   := end_Handler;
 
-      The_Parser.Start_Handler := Start_Handler;
-      The_Parser.End_Handler   := End_Handler;
-
-      XML_SetElementHandler (The_Parser.XML_Parser, Internal_Start_Handler'Access,
-                                                    Internal_End_Handler  'Access);
+      XML_SetElementHandler (Self.Expat, Reader.start_Handler'Access,
+                                         Reader.end_Handler  'Access);
    end set_Element_Handler;
 
 
 
-   procedure set_Character_Data_Handler (The_Parser : in Parser;
-                                         CD_Handler : in Character_Data_Handler)
+   procedure set_Character_Data_Handler (Self         : in Parser;
+                                         data_Handler : in character_data_Handler)
    is
+      type data_Callback is access procedure (Self   : in Parser;
+                                              Data   : in System.Address;
+                                              Length : in C.int);
+      pragma Convention (C, data_Callback);
 
-      type Internal_Character_Data_Handler is access procedure  (My_Parser : in Parser;
-                                                                 Data      : in S.chars_ptr;
-                                                                 Len       : in C.int);
-      pragma Convention (C, Internal_Character_Data_Handler);
-
-      procedure XML_SetCharacterDataHandler (XML_Parser : in XML_Parser_ptr;
-                                             CD_Handler : in Internal_Character_Data_Handler);
+      procedure XML_SetCharacterDataHandler (Expat : in System.Address;
+                                             Data  : in data_Callback);
       pragma import (C, XML_SetCharacterDataHandler, "XML_SetCharacterDataHandler");
 
    begin
-      XML_SetUserData             (The_Parser.XML_Parser, The_Parser);
-      The_Parser.CD_Handler := CD_Handler;
-      XML_SetCharacterDataHandler (The_Parser.XML_Parser, Internal_CD_Handler'Access);
+      Self.data_Handler := data_Handler;
+      XML_SetCharacterDataHandler (Self.Expat, Reader.data_Handler'Access);
    end set_Character_Data_Handler;
 
 
 
-   procedure parse (The_Parser : in Parser;
-                    XML        : in String;
-                    Is_Final   : in Boolean)
+   --------------
+   --- Operations
+   --
+
+   procedure parse (Self     : in Parser;
+                    Text     : in String;
+                    is_Final : in Boolean)
    is
+      use type C.int;
 
-      function XML_Parse (XML_Parser : in XML_Parser_ptr;
-                          XML        : in S.chars_ptr;
-                          Len        : in C.int;
-                          Is_Final   : in C.int) return C.int;
-      pragma import (C, XML_Parse, "XML_Parse");
-
-      use C;
-
-      XML_STATUS_ERROR : constant C.int := 0;
-      pragma Unreferenced (XML_STATUS_ERROR);
-      XML_STATUS_OK    : constant C.int := 1;
-
-      Final_Flag       :          C.int;
-      Status           :          C.int;
-      XML_Data         :          S.chars_ptr;
-
+      Status : constant C.int := XML_Parse (Self.Expat,
+                                            Text'Address,
+                                            C.int (Text'Length),
+                                            Boolean'Pos (is_Final));
    begin
-      if Is_Final
-      then   Final_Flag := 1;
-      else   Final_Flag := 0;
+      if exception_Identity (Self.Failure) /= Null_Id
+      then
+         declare
+            Failure : Exception_Occurrence;
+         begin
+            save_Occurrence (Failure,      Self.Failure);
+            save_Occurrence (Self.Failure, Null_Occurrence);
+            reraise_Occurrence (Failure);
+         end;
       end if;
-
-      XML_Data := S.New_Char_Array (C.To_C (XML));
-      Status   := XML_Parse (The_Parser.XML_Parser,
-                             XML_Data,
-                             C.int (XML'Length),
-                             Final_Flag);
-      S.free (XML_Data);
 
       if Status /= XML_STATUS_OK
       then
-         raise XML_Parse_Error;
+         raise parse_Error with   "line"     & XML_GetCurrentLineNumber   (Self.Expat)'Image
+                                & ", column" & XML_GetCurrentColumnNumber (Self.Expat)'Image
+                                & ": "       & S.Value (XML_ErrorString (XML_GetErrorCode (Self.Expat)));
       end if;
    end parse;
 

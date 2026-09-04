@@ -1,59 +1,69 @@
+private
 with
-     ada.Strings.unbounded;
+     ada.Exceptions;
+
+with
+     System;
 
 
 package XML.Reader
+--
+-- Binds the expat parser. The handlers are called back from within 'parse'; an
+-- exception raised by a handler stops the parse and is re-raised by 'parse'.
+--
 is
-   use ada.Strings.unbounded;
-
-
    type Parser is private;
 
-   function Create_Parser return Parser;
+
+   ---------
+   --- Forge
+   --
+
+   function  new_Parser return Parser;
+   procedure free (Self : in out Parser);
 
 
+   --------------
+   --- Attributes
+   --
 
-   type Start_Element_Handler is access procedure (Name : in     unbounded_String;
-                                                   Atts : in XML.Attributes_view);
-   type End_Element_Handler   is access procedure (Name : in     unbounded_String);
-
-
-   procedure set_Element_Handler (The_Parser    : in Parser;
-                                  Start_Handler : in Start_Element_Handler;
-                                  End_Handler   : in End_Element_Handler);
-
+   type start_element_Handler  is access procedure (Name : in String;
+                                                    Atts : in Attributes_t);
+   type end_element_Handler    is access procedure (Name : in String);
+   type character_data_Handler is access procedure (Data : in String);
 
 
-   type Character_Data_Handler is access procedure (Data : in unbounded_String);
+   procedure set_Element_Handler        (Self          : in Parser;
+                                         start_Handler : in start_element_Handler;
+                                         end_Handler   : in end_element_Handler);
 
-   procedure set_Character_Data_Handler (The_Parser : in Parser;
-                                         CD_Handler : in Character_Data_Handler);
+   procedure set_Character_Data_Handler (Self          : in Parser;
+                                         data_Handler  : in character_data_Handler);
 
 
+   --------------
+   --- Operations
+   --
 
-   procedure parse (The_Parser : in Parser;
-                    XML        : in String;
-                    Is_Final   : in Boolean);
-
-   XML_Parse_Error : exception;
+   procedure parse (Self     : in Parser;
+                    Text     : in String;
+                    is_Final : in Boolean);
+   --
+   -- Raises parse_Error, with the line and column, when the text is not well-formed.
 
 
 
 private
 
-   type XML_Parser_ptr is access all Character;  -- Essentially, C's "void *".
-
-   type Parser_Rec is
+   type Parser_Rec is limited
       record
-         XML_Parser    : XML_Parser_ptr;
-         Start_Handler : Start_Element_Handler;
-         End_Handler   : End_Element_Handler;
-         CD_Handler    : Character_Data_Handler;
+         Expat         : System.Address;                     -- The expat 'XML_Parser'.
+         start_Handler : start_element_Handler;
+         end_Handler   : end_element_Handler;
+         data_Handler  : character_data_Handler;
+         Failure       : ada.Exceptions.Exception_Occurrence; -- Raised by a handler, re-raised by 'parse'.
       end record;
 
    type Parser is access Parser_Rec;
-
---   pragma Linker_Options ("-lexpat");
-
 
 end XML.Reader;

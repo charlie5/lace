@@ -8,8 +8,8 @@ procedure launch_Tree
 -- Loads an xml file, parses it into a tree and displays the tree.
 --
 is
-   the_Tree : constant xml.Element := xml.to_XML ("./box.dae");
-   Depth    :          Natural     := 0;
+   the_Tree : xml.Element_view := xml.to_XML ("./box.dae");
+   Depth    : Natural          := 0;
 
 
    procedure show_Element (the_Element : in xml.Element)
@@ -28,9 +28,9 @@ is
 
       put_Line (the_Element.Name);
 
-      for Each in the_Children'Range
+      for Each of the_Children
       loop
-         show_Element (the_Children (Each).all);
+         show_Element (Each.all);
       end loop;
 
       Depth := Depth - 1;
@@ -38,5 +38,6 @@ is
 
 
 begin
-   show_Element (the_Tree);
+   show_Element (the_Tree.all);
+   xml.free (the_Tree);
 end launch_Tree;

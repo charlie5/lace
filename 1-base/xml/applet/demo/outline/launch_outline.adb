@@ -2,31 +2,32 @@ with
      xml.Reader,
 
      ada.command_Line,
-     ada.Text_IO,
-     ada.Strings.unbounded;
+     ada.Text_IO;
 
 
 procedure launch_Outline
+--
+-- Outlines an xml file, feeding the parser a line at a time.
+--
 is
    use
         ada.command_Line,
         ada.Text_IO,
-        ada.Strings.unbounded,
 
         XML.Reader;
 
    Line_Max      : constant := 60_000;
 
-   Depth         : Natural               := 0;
+   Depth         : Natural   := 0;
    XML_File      : File_type;
-   MyParser      : Parser;
+   the_Parser    : Parser;
    Done          : Boolean;
    Buffer        : String (1 .. Line_Max);
    Buffer_Length : Natural;
 
 
-   procedure Starter (Name : in unbounded_String;
-                      Atts : in XML.Attributes_view)
+   procedure Starter (Name : in String;
+                      Atts : in XML.Attributes_t)
    is
    begin
       for Pad in 1 .. Depth
@@ -34,14 +35,14 @@ is
          put ("   ");
       end loop;
 
-      put (to_String (Name));
+      put (Name);
 
-      for Att in Atts'Range
+      for Each of Atts
       loop
          put (  " "
-              & Atts (Att).Name
+              & Each.Name
               & " = "
-              & Atts (Att).Value);
+              & Each.Value);
       end loop;
 
       new_Line;
@@ -51,7 +52,7 @@ is
 
 
 
-   procedure Ender (Name : in unbounded_String)
+   procedure Ender (Name : in String)
    is
       pragma Unreferenced (Name);
    begin
@@ -60,10 +61,10 @@ is
 
 
 
-   procedure my_data_Handler (Data : in unbounded_String)
+   procedure my_data_Handler (Data : in String)
    is
    begin
-      put_Line ("my_data_Handler: '" & to_String (Data) & "'");
+      put_Line ("my_data_Handler: '" & Data & "'");
    end my_data_Handler;
 
 
@@ -74,22 +75,24 @@ begin
    else
       open (XML_File, In_File, Argument (1));
 
-      MyParser := Create_Parser;
-      set_Element_Handler (MyParser, Starter'unrestricted_Access,
-                                     Ender  'unrestricted_Access);
-
-      set_Character_Data_Handler (MyParser, my_data_Handler'unrestricted_Access);
+      the_Parser := new_Parser;
+      set_Element_Handler        (the_Parser, Starter'unrestricted_Access,
+                                              Ender  'unrestricted_Access);
+      set_Character_Data_Handler (the_Parser, my_data_Handler'unrestricted_Access);
 
       loop
          get_Line (XML_File, Buffer, Buffer_Length);
 
          Done := end_of_File (XML_File);
 
-         parse (MyParser,
-                Buffer (1 .. Buffer_Length),
+         parse (the_Parser,
+                Buffer (1 .. Buffer_Length) & ASCII.LF,     -- Restore the terminator get_Line dropped.
                 Done);
 
          exit when Done;
       end loop;
+
+      close (XML_File);
+      free  (the_Parser);
    end if;
 end launch_Outline;

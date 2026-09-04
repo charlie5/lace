@@ -505,12 +505,18 @@ is
    is
       use XML;
 
-      the_xml_Tree     : constant        xml.Element := xml.to_XML (Filename);
-      the_collada_Tree : constant access xml.Element := the_xml_Tree.Child (named => "COLLADA");
+      the_xml_Tree     :          xml.Element_view := xml.to_XML (Filename);
+      the_collada_Tree : constant xml.Element_view := the_xml_Tree;
 
       the_Document     : Document.item;
 
    begin
+      if the_collada_Tree.Name /= "COLLADA"
+      then
+         xml.free (the_xml_Tree);
+         raise Error with Filename & ": document element is '" & the_collada_Tree.Name & "', not 'COLLADA'";
+      end if;
+
       parse_the_asset_Element:
       declare
          the_Asset             : constant access xml.Element := the_collada_Tree.Child (named => "asset");
@@ -592,7 +598,7 @@ is
                for Each in the_Geometries'Range
                loop
                   declare
-                     the_xml_Geometry : access xml.Element renames the_Geometries (Each);
+                     the_xml_Geometry : xml.Element_view renames the_Geometries (Each);
                      the_Geometry     :        Geometry    renames the_Document.Libraries.Geometries.Contents (Each);
 
                      the_xml_Id       : constant access xml.Attribute_t'Class := the_xml_Geometry.Attribute ("id");
@@ -608,7 +614,7 @@ is
 
                      parse_Mesh:
                      declare
-                        the_xml_Mesh       :          access xml.Element  renames the_xml_Geometry.Child ("mesh");
+                        the_xml_Mesh       : xml.Element_view renames the_xml_Geometry.Child ("mesh");
                         the_xml_Vertices   : constant access xml.Element  :=      the_xml_Mesh    .Child ("vertices");
                         the_xml_Sources    : constant        xml.Elements :=      the_xml_Mesh.Children  ("source");
                      begin
@@ -690,7 +696,7 @@ is
                for Each in the_Controllers'Range
                loop
                   declare
-                     the_xml_Controller : access xml.Element renames the_Controllers (Each);
+                     the_xml_Controller : xml.Element_view renames the_Controllers (Each);
                      the_Controller     :        Controller  renames the_Document.Libraries.controllers.Contents (Each);
 
                      the_xml_Id   : constant access xml.Attribute_t'Class := the_xml_Controller.Attribute ("id");
@@ -706,7 +712,7 @@ is
 
                      parse_Skin:
                      declare
-                        the_xml_Skin    : access xml.Element renames the_xml_Controller.Child ("skin");
+                        the_xml_Skin    : xml.Element_view renames the_xml_Controller.Child ("skin");
 
                         the_xml_Sources : constant        xml.Elements := the_xml_Skin.Children ("source");
                         the_xml_Matrix  : constant access xml.Element  := the_xml_Skin.Child    ("bind_shape_matrix");
@@ -754,7 +760,7 @@ is
                loop
                   declare
                      the_visual_Scene   :        visual_Scene renames the_document.Libraries.visual_Scenes.Contents (Each);
-                     the_xml_Scene      : access xml.Element  renames the_visual_Scenes (Each);
+                     the_xml_Scene      : xml.Element_view renames the_visual_Scenes (Each);
 
                      the_xml_Id         : constant access xml.Attribute_t'Class := the_xml_Scene.Attribute ("id");
                      the_xml_Name       : constant access xml.Attribute_t'Class := the_xml_Scene.Attribute ("name");
@@ -917,7 +923,7 @@ is
 
                      child_Animation   : constant access xml.Element := the_Animations (Each).Child ("animation");
                      the_xml_Animation : constant access xml.Element := (if child_Animation = null then the_Animations (Each) else child_Animation);
-                     -- the_xml_Animation : access xml.Element renames the_Animations (Each); --.Child ("animation");
+                     -- the_xml_Animation : xml.Element_view renames the_Animations (Each); --.Child ("animation");
 
                      the_xml_Id   : constant access xml.Attribute_t'Class := the_xml_Animation.Attribute ("id");
                      the_xml_Name : constant access xml.Attribute_t'Class := the_xml_Animation.Attribute ("name");
@@ -956,7 +962,13 @@ is
 
       -- TODO
 
+      xml.free (the_xml_Tree);
       return the_Document;
+
+   exception
+      when others =>
+         xml.free (the_xml_Tree);
+         raise;
    end to_Document;
 
 
