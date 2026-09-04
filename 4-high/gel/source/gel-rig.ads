@@ -154,7 +154,11 @@ is
 
    procedure destroy (Self : in out Item);
    --
-   -- Frees the collada document the rig was built from.
+   -- Frees what the rig owns: its collada document and its animation channels.
+   -- The rig's sprites and joints belong to the world, which frees them, so
+   -- destroy a rig after its world, or its sprites stay in place.
+
+   procedure free (Self : in out View);
 
 
    --------------

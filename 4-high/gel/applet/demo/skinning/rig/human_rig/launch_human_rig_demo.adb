@@ -109,6 +109,8 @@ begin
       end loop;
 
       the_Applet.destroy;
+
+      the_Rig   .destroy;     -- After the world has freed its sprites.
    end;
 
 exception

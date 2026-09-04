@@ -100,4 +100,6 @@ begin
    end loop;
 
    the_Applet.destroy;
+
+   the_Rig   .destroy;     -- After the world has freed its sprites.
 end launch_box_rig_1_bone_Demo;

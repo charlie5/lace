@@ -116,6 +116,8 @@ begin
 
    the_Applet.destroy;
 
+   gel.Human.rid_Model;     -- The model document, now that no human uses it.
+
 exception
    when E : others =>
       put_Line (Exception_Information (E));

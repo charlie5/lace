@@ -39,7 +39,9 @@ is
 
 
 
-   model_Name : access String;
+   type model_Name_view is access String;
+
+   model_Name : model_Name_view;
 
 
    procedure use_Model (Named : in String)
@@ -279,6 +281,21 @@ is
 
    the_global_Document            : collada.Document.item;
    the_global_Document_is_defined : Boolean              := False;
+
+
+   procedure rid_Model
+   is
+      procedure deallocate is new ada.unchecked_Deallocation (String, model_Name_view);
+   begin
+      if the_global_Document_is_defined
+      then
+         the_global_Document.destroy;
+         the_global_Document_is_defined := False;
+      end if;
+
+      deallocate (model_Name);
+   end rid_Model;
+
 
    procedure define (Self : in out Item;   World         : access gel.World.item'Class;
                                            Model         : access openGL.Model.item'Class;

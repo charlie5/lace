@@ -37,6 +37,12 @@ is
 
 
    procedure use_Model (Named : in String);
+   --
+   -- Names the collada model every human is built from; it is loaded on the first define.
+
+   procedure rid_Model;
+   --
+   -- Frees the loaded model. Call it once every human is destroyed, at the end of the program.
 
 
 

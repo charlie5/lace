@@ -13,7 +13,8 @@ with
      collada.Library.animations,
 
      ada.Strings.unbounded,
-     ada.Strings.Maps;
+     ada.Strings.Maps,
+     ada.unchecked_Deallocation;
 
 package body gel.Rig
 is
@@ -961,9 +962,32 @@ is
 
    procedure destroy (Self : in out Item)
    is
+      procedure deallocate is new ada.unchecked_Deallocation (Transforms, Transforms_view);
    begin
+      for Each of Self.Channels
+      loop
+         deallocate (Each.Transforms);
+      end loop;
+
+      Self.Channels            .clear;
+      Self.animation_Transforms.clear;
+      Self.bone_pose_Transforms.clear;
+      Self.scene_Joints        .clear;
+      Self.collada_Joints      .clear;
+      Self.root_Joint := null;
+
       Self.Document.destroy;
    end destroy;
+
+
+
+   procedure free (Self : in out View)
+   is
+      procedure deallocate is new ada.unchecked_Deallocation (Item'Class, View);
+   begin
+      Self.destroy;
+      deallocate (Self);
+   end free;
 
 
 
