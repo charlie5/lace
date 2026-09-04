@@ -2,7 +2,6 @@ with
      physics.Object,
      physics.Shape,
      physics.Model,
-
      box2d_C,
      box2d_c.Pointers;
 
@@ -21,26 +20,24 @@ is
 
    use Math;
 
-
    overriding
-   procedure define (Self : access Item;   Shape       : in physics.Shape.view;
-                                           Mass        : in Real;
-                                           Friction    : in Real;
-                                           Restitution : in Real;
-                                           at_Site     : in Vector_3);
+   procedure define (Self : access Item;   Shape        : in physics.Shape.view;
+                                           Mass         : in Real;
+                                           Friction     : in Real;
+                                           Restitution  : in Real;
+                                           at_Site      : in Vector_3;
+                                           is_Kinematic : in Boolean := False);
 
-   function  new_Object (Shape       : in physics.Shape.view;
-                         Mass        : in Real;
-                         Friction    : in Real;
-                         Restitution : in Real;
-                         at_Site     : in Vector_3) return Object.view;
+   function  new_Object (Shape        : in physics.Shape.view;
+                         Mass         : in Real;
+                         Friction     : in Real;
+                         Restitution  : in Real;
+                         at_Site      : in Vector_3;
+                         is_Kinematic : in Boolean) return Object.view;
 
    procedure free (the_Object : in out physics.Object.view);
 
-
    function C                (Self : in     Item) return access box2d_C.Object;
-
-   procedure Shape_is        (Self : in out Item;   Now : in physics.Shape.view);
 
    overriding
    function  Model           (Self : in     Item)     return physics.Model.view;
@@ -58,17 +55,14 @@ private
 
    type Item is limited new physics.Object.item with
       record
-         -- C         : access box2d_C.Object;
-         C         : box2d_c.Pointers.Object_pointer;
-
+         C         :        box2d_c.Pointers.Object_pointer;
          Shape     :        physics.Shape.view;
          Model     :        physics.Model.view;
+         Scale     :        Vector_3 := [1.0, 1.0, 1.0];
          user_Data : access lace.Any.limited_item'Class;
-
-         Dynamics  : physics.Object.safe_Dynamics;
-         Site_z    : Real                        := 0.0;
+         Dynamics  :        physics.Object.safe_Dynamics;
+         Site_z    :        Real     := 0.0;
       end record;
-
 
    overriding
    procedure destruct       (Self : in out Item);
@@ -82,7 +76,7 @@ private
    procedure Scale_is       (Self : in out Item;   Now : in Vector_3);
 
    overriding
-   procedure activate       (Self : in out Item;   forceActivation : in Boolean := False);
+   procedure activate       (Self : in out Item;   force_Activation : in Boolean := False);
    overriding
    function  is_Active      (Self : in     Item)     return Boolean;
 
@@ -121,7 +115,6 @@ private
 
    overriding
    procedure Friction_is    (Self : in out Item;   Now : in Real);
-
    overriding
    procedure Restitution_is (Self : in out Item;   Now : in Real);
 
@@ -131,10 +124,8 @@ private
 
    overriding
    procedure apply_Torque         (Self : in out Item;   Torque : in Vector_3);
-
    overriding
    procedure apply_Torque_impulse (Self : in out Item;   Torque : in Vector_3);
-
    overriding
    procedure apply_Force          (Self : in out Item;   Force  : in Vector_3);
 
@@ -146,6 +137,5 @@ private
    procedure user_Data_is (Self : in out Item;   Now : access lace.Any.limited_item'Class);
    overriding
    function  user_Data    (Self : in     Item)  return access lace.Any.limited_item'Class;
-
 
 end box2d_Physics.Object;

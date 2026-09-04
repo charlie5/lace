@@ -20,11 +20,12 @@ is
    --- Forge
    --
 
-   procedure define (Self : access Item;   Shape       : in physics.Shape.view;
-                                           Mass        : in Real;
-                                           Friction    : in Real;
-                                           Restitution : in Real;
-                                           at_Site     : in Vector_3) is abstract;
+   procedure define (Self : access Item;   Shape        : in physics.Shape.view;
+                                           Mass         : in Real;
+                                           Friction     : in Real;
+                                           Restitution  : in Real;
+                                           at_Site      : in Vector_3;
+                                           is_Kinematic : in Boolean := False) is abstract;
 
    procedure destruct (Self : in out Item)   is abstract;
    procedure free     (Self : in out View);

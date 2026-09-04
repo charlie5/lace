@@ -1,7 +1,6 @@
 #ifndef C_BOX2D_OBJECT_H
 #define C_BOX2D_OBJECT_H
 
-
 #include "c_math.h"
 #include "box2d-shape.h"
 
@@ -14,10 +13,9 @@ extern "C"
                                               Real      Mass,
                                               Real      Friction,
                                               Real      Restitution,
-					                                    Shape*    the_Shape);
-
+					      Shape*    the_Shape,
+                                              int       is_Kinematic);
   void             b2d_free_Object           (Object*   Self);
-
 
   void             b2d_Object_Scale_is       (Object*   Self,   Vector_2*     Now);
 
@@ -26,11 +24,12 @@ extern "C"
   void*            b2d_Object_user_Data      (Object*   Self);
   void             b2d_Object_user_Data_is   (Object*   Self,   void*         Now);
 
-
   Real             b2d_Object_Mass           (Object*   Self);
   void             b2d_Object_Friction_is    (Object*   Self,   Real          Now);
   void             b2d_Object_Restitution_is (Object*   Self,   Real          Now);
 
+  int              b2d_Object_is_Active      (Object*   Self);
+  void             b2d_Object_activate       (Object*   Self);
 
   Vector_3         b2d_Object_Site           (Object*   Self);
   void             b2d_Object_Site_is        (Object*   Self,   Vector_3*     Now);
@@ -44,20 +43,18 @@ extern "C"
   Matrix_4x4       b2d_Object_Transform      (Object*   Self);
   void             b2d_Object_Transform_is   (Object*   Self,   Matrix_4x4*   Now);
 
-
   Vector_3         b2d_Object_Speed          (Object*   Self);
   void             b2d_Object_Speed_is       (Object*   Self,   Vector_3*     Now);
 
   Vector_3         b2d_Object_Gyre           (Object*   Self);
   void             b2d_Object_Gyre_is        (Object*   Self,   Vector_3*     Now);
 
-
   void             b2d_Object_apply_Force          (Object*   Self,   Vector_3*   Force);
   void             b2d_Object_apply_Torque         (Object*   Self,   Vector_3*   Torque);
   void             b2d_Object_apply_Torque_impulse (Object*   Self,   Vector_3*   Torque);
 
   void             b2d_dump (Object*   Self);
-} // extern "C"
 
+} // extern "C"
 
 #endif

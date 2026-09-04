@@ -1,11 +1,9 @@
 with
      bullet_c.Binding,
-
      c_math_c.Vector_2,
      c_math_c.Vector_3,
      c_math_c.Conversion,
      c_math_c.Triangle,
-
      ada.unchecked_Deallocation,
      interfaces.C;
 
@@ -26,7 +24,7 @@ is
    procedure define (Self : in out Item)
    is
    begin
-      raise Error with "Bullet shape not supported.";
+      raise physics.unsupported_Error with "Bullet shape not supported.";
    end define;
 
 
@@ -34,9 +32,15 @@ is
    overriding
    procedure destruct (Self : in out Item)
    is
+      use type bullet_c.Pointers.Shape_pointer;
    begin
-      null;
+      if Self.C /= null
+      then
+         b3d_free_Shape (Self.C);
+         Self.C := null;
+      end if;
    end destruct;
+
 
 
    -------
@@ -53,6 +57,7 @@ is
       Self.C := b3d_new_Box (c_half_Extents'unchecked_Access);
       return physics.Shape.view (Self);
    end new_box_Shape;
+
 
 
    -----------
@@ -72,6 +77,7 @@ is
    end new_capsule_Shape;
 
 
+
    --------
    --- Cone
    --
@@ -88,6 +94,7 @@ is
    end new_cone_Shape;
 
 
+
    ---------------
    --- convex_Hull
    --
@@ -99,15 +106,21 @@ is
       Self     : constant convex_Hull_view                                   := new convex_Hull;
       c_Points : array (1 .. Points'Length) of aliased c_math_c.Vector_3.item;
    begin
+      if Points'Length = 0
+      then
+         raise Constraint_Error with "A convex hull needs at least one point.";
+      end if;
+
       for i in c_Points'Range
       loop
-         c_Points (i) := +Points (i);
+         c_Points (i) := +Points (Points'First + i - 1);
       end loop;
 
       Self.C := b3d_new_convex_Hull (c_Points (1)'unchecked_Access,
                                      c_Points'Length);
       return physics.Shape.view (Self);
    end new_convex_hull_Shape;
+
 
 
    --------
@@ -125,7 +138,6 @@ is
       pragma pack (Triangles);
 
       c_Triangles : Triangles;
-
    begin
       for i in c_Points'Range
       loop
@@ -140,11 +152,12 @@ is
       end loop;
 
       Self.C := b3d_new_Mesh (Points         => c_Points (c_Points'First)'unchecked_Access,
-                              point_Count    => 0,
+                              point_Count    => C.int (Model.site_Count),
                               Triangles      => c_Triangles (c_Triangles'First)'unchecked_Access,
                               triangle_Count => C.int (Model.tri_Count));
       return physics.Shape.view (Self);
    end new_mesh_Shape;
+
 
 
    ------------
@@ -161,6 +174,7 @@ is
       Self.C := b3d_new_Cylinder (c_half_Extents'unchecked_Access);
       return physics.Shape.view (Self);
    end new_cylinder_Shape;
+
 
 
    ---------------
@@ -191,6 +205,7 @@ is
    end new_heightfield_Shape;
 
 
+
    ---------------
    --- multiSphere
    --
@@ -207,10 +222,15 @@ is
       c_Positions : array (1 .. Positions'Length) of aliased c_math_c.Vector_3.item;
       c_Radii     : array (1 .. Radii    'Length) of aliased c_math_c.Real;
    begin
+      if Positions'Length = 0
+      then
+         raise Constraint_Error with "A multisphere needs at least one sphere.";
+      end if;
+
       for i in c_Radii'Range
       loop
-         c_Positions (i) := +Positions (i);
-         c_Radii     (i) := +Radii     (i);
+         c_Positions (i) := +Positions (Positions'First + i - 1);
+         c_Radii     (i) := +Radii     (Radii    'First + i - 1);
       end loop;
 
       Self.C := b3d_new_multiSphere (c_Positions (1)'unchecked_Access,
@@ -218,6 +238,7 @@ is
                                      Radii'Length);
       return physics.Shape.view (Self);
    end new_multiSphere_Shape;
+
 
 
    ---------
@@ -237,6 +258,7 @@ is
    end new_plane_Shape;
 
 
+
    ----------
    --- Sphere
    --
@@ -252,6 +274,7 @@ is
    end new_sphere_Shape;
 
 
+
    --------------
    --- Attributes
    --
@@ -259,9 +282,11 @@ is
    overriding
    procedure Scale_is (Self : in out Item;   Now : in Vector_3)
    is
+      c_Now : aliased c_math_c.Vector_3.item := +Now;
    begin
-      null;
+      b3d_Shape_Scale_is (Self.C, c_Now'unchecked_Access);
    end Scale_is;
+
 
 
    --------

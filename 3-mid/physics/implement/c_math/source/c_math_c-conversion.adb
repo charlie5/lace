@@ -54,8 +54,8 @@ is
       exception
          when constraint_Error =>
             if Self (2) > 0.0
-            then   Result.x := c_math_c.Real'Last;
-            else   Result.x := c_math_c.Real'First;
+            then   Result.y := c_math_c.Real'Last;
+            else   Result.y := c_math_c.Real'First;
             end if;
       end;
 
@@ -94,8 +94,8 @@ is
       exception
          when constraint_Error =>
             if Self (2) > 0.0
-            then   Result.x := c_math_c.Real'Last;
-            else   Result.x := c_math_c.Real'First;
+            then   Result.y := c_math_c.Real'Last;
+            else   Result.y := c_math_c.Real'First;
             end if;
       end;
 
@@ -105,8 +105,8 @@ is
       exception
          when constraint_Error =>
             if Self (3) > 0.0
-            then   Result.x := c_math_c.Real'Last;
-            else   Result.x := c_math_c.Real'First;
+            then   Result.z := c_math_c.Real'Last;
+            else   Result.z := c_math_c.Real'First;
             end if;
       end;
 

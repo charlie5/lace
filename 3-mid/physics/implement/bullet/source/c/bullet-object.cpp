@@ -7,7 +7,7 @@
 /// C++ Support
 //
 
-class KinematicMotionState : public btMotionState 
+class KinematicMotionState : public btMotionState
 {
 public:
               KinematicMotionState (const btTransform &initialpos)       { mPos1 = initialpos; }
@@ -23,7 +23,6 @@ protected:
 
 
 
-
 ///////////
 /// Utility
 //
@@ -35,13 +34,41 @@ to_bullet (Object*   From)
 }
 
 
-
 Object*
 to_bt3 (btRigidBody*   From)
 {
   return (Object*) From;
 }
 
+
+static int
+is_Kinematic (btRigidBody*   Self)
+{
+  return   Self->getCollisionFlags()
+         & btCollisionObject::CF_KINEMATIC_OBJECT;
+}
+
+
+static void
+set_Transform (btRigidBody*   the_Body,   btTransform   trans)
+//
+// Moves a body, kinematic or dynamic, and wakes it.
+//
+{
+  if (is_Kinematic (the_Body))
+    {
+      KinematicMotionState*    the_Motion_State = (KinematicMotionState*) the_Body->getMotionState();
+
+      the_Body->setWorldTransform (trans);
+      the_Motion_State->setKinematicPos (trans);
+    }
+  else
+    {
+      the_Body->setCenterOfMassTransform (trans);     // Sets the world and the interpolation transforms.
+    }
+
+  the_Body->activate();
+}
 
 
 
@@ -51,17 +78,6 @@ to_bt3 (btRigidBody*   From)
 
 extern "C"
 {
-  
-
-int
-is_Kinematic (btRigidBody*   Self)
-{
-  return   Self->getCollisionFlags()
-         & btCollisionObject::CF_KINEMATIC_OBJECT;  
-}
-
-
-
 
 struct Object*
 b3d_new_Object (Real     Mass,
@@ -79,26 +95,33 @@ b3d_new_Object (Real     Mass,
   if (isDynamic)
     bt_Shape->calculateLocalInertia (mass, localInertia);
 
-
   KinematicMotionState*                      myMotionState = new KinematicMotionState (groundTransform);
   btRigidBody::btRigidBodyConstructionInfo   rbInfo              (mass, myMotionState, bt_Shape, localInertia);
   btRigidBody*                               body          = new btRigidBody (rbInfo);
 
-    
   if (is_Kinematic)
     {
       body->setCollisionFlags (  body->getCollisionFlags()
 			       | btCollisionObject::CF_KINEMATIC_OBJECT);
-
-      body->setActivationState (DISABLE_DEACTIVATION);    
+      body->setActivationState (DISABLE_DEACTIVATION);     // A kinematic body is moved by hand, so must never sleep.
     }
-  
-  if (isDynamic)
-    body->setActivationState (DISABLE_DEACTIVATION);    
 
   return (Object*) body;
 }
 
+
+
+void
+b3d_free_Object (Object*   Self)
+//
+// The body must already have been removed from its space.
+//
+{
+  btRigidBody*   the_Body = to_bullet (Self);
+
+  delete the_Body->getMotionState();
+  delete the_Body;
+}
 
 
 
@@ -108,9 +131,7 @@ b3d_Object_Shape          (Object*   Self)
   btRigidBody*   the_Body = to_bullet (Self);
 
   return (Shape*) the_Body->getCollisionShape ();
-
 }
-
 
 
 
@@ -135,7 +156,6 @@ b3d_Object_user_Data_is   (Object*   Self,
 
 
 
-
 Real
 b3d_Object_Mass (Object*   Self)
 {
@@ -151,7 +171,7 @@ b3d_Object_Mass (Object*   Self)
 
 
 void
-b3d_Object_Friction_is (Object*   Self,   
+b3d_Object_Friction_is (Object*   Self,
                         Real      Now)
 {
   btRigidBody*   the_Body = to_bullet (Self);
@@ -169,6 +189,49 @@ b3d_Object_Restitution_is    (Object*   Self,   Real   Now)
   the_Body->setRestitution (Now);
 }
 
+
+
+void
+b3d_Object_Scale_is (Object*   Self,   Vector_3*   Now)
+//
+// Scales the body's shape. The space must then update the body's bounds.
+//
+{
+  btRigidBody*   the_Body = to_bullet (Self);
+
+  the_Body->getCollisionShape()->setLocalScaling (btVector3 (Now->x, Now->y, Now->z));
+
+  if (the_Body->getInvMass() != 0.0)
+    {
+      btVector3   localInertia (0,0,0);
+      btScalar    mass = 1.0 / the_Body->getInvMass();
+
+      the_Body->getCollisionShape()->calculateLocalInertia (mass, localInertia);
+      the_Body->setMassProps (mass, localInertia);
+    }
+
+  the_Body->activate();
+}
+
+
+
+int
+b3d_Object_is_Active (Object*   Self)
+{
+  btRigidBody*   the_Body = to_bullet (Self);
+
+  return the_Body->isActive();
+}
+
+
+
+void
+b3d_Object_activate (Object*   Self,   int   force_Activation)
+{
+  btRigidBody*   the_Body = to_bullet (Self);
+
+  the_Body->activate (force_Activation != 0);
+}
 
 
 
@@ -194,19 +257,11 @@ void
 b3d_Object_Site_is (Object*   Self,   Vector_3*   Now)
 {
   btRigidBody*   the_Body = to_bullet (Self);
-  btTransform&   trans    = the_Body->getWorldTransform ();
-  
+  btTransform    trans    = the_Body->getWorldTransform ();
+
   trans.setOrigin (btVector3 (Now->x, Now->y, Now->z));
-  the_Body->activate();
-
-  if (is_Kinematic (the_Body))
-    {
-      KinematicMotionState*    the_Motion_State = (KinematicMotionState*) the_Body->getMotionState();
-
-      the_Motion_State->setKinematicPos (trans);
-    }
+  set_Transform (the_Body, trans);
 }
-
 
 
 
@@ -214,7 +269,6 @@ Matrix_3x3
 b3d_Object_Spin (Object*   Self)
 {
   btRigidBody*   the_Body = to_bullet (Self);
-  Vector_3       the_Site;
 
   btTransform&   trans    = the_Body->getWorldTransform ();
   btMatrix3x3    the_Spin = trans.getBasis();
@@ -231,24 +285,19 @@ b3d_Object_Spin (Object*   Self)
 }
 
 
+
 void
 b3d_Object_Spin_is (Object*   Self,   Matrix_3x3*   Now)
 {
   btRigidBody*   the_Body = to_bullet (Self);
-  btTransform&   trans    = the_Body->getWorldTransform();
+  btTransform    trans    = the_Body->getWorldTransform();
 
   // Transposed: bullet rotates column vectors, lace rotates row vectors.
   //
   trans.setBasis (btMatrix3x3 (Now->m00, Now->m10, Now->m20,
                                Now->m01, Now->m11, Now->m21,
                                Now->m02, Now->m12, Now->m22));
-
-  if (is_Kinematic (the_Body))
-    {
-      KinematicMotionState*    the_Motion_State = (KinematicMotionState*) the_Body->getMotionState();
-
-      the_Motion_State->setKinematicPos (trans);
-    }
+  set_Transform (the_Body, trans);
 }
 
 
@@ -271,25 +320,11 @@ void
 b3d_Object_Transform_is (Object*   Self,   Matrix_4x4*   Now)
 {
   btRigidBody*   the_Body      = to_bullet (Self);
-  
-  
-  if (is_Kinematic (the_Body))
-    {
-      btTransform              trans;
-      KinematicMotionState*    the_Motion_State = (KinematicMotionState*) the_Body->getMotionState();
+  btTransform    trans;
 
-      trans.setFromOpenGLMatrix (&Now->m00);
-      the_Motion_State->setKinematicPos (trans);
-    }
-  else
-    {
-      btTransform&   trans         = the_Body->getWorldTransform ();
-
-      trans.setFromOpenGLMatrix (&Now->m00);
-    }
+  trans.setFromOpenGLMatrix (&Now->m00);
+  set_Transform (the_Body, trans);
 }
-
-
 
 
 
@@ -298,6 +333,7 @@ b3d_Object_Speed (Object*   Self)
 {
   btRigidBody*   the_Body = to_bullet (Self);
   Vector_3       the_Speed;
+
   btVector3      bt_Speed = the_Body->getLinearVelocity ();
 
   the_Speed.x = bt_Speed.x();
@@ -315,8 +351,8 @@ b3d_Object_Speed_is (Object*   Self,   Vector_3*   Now)
   btRigidBody*   the_Body = to_bullet (Self);
 
   the_Body->setLinearVelocity (btVector3 (Now->x, Now->y, Now->z));
+  the_Body->activate();
 }
-
 
 
 
@@ -325,6 +361,7 @@ b3d_Object_Gyre (Object*   Self)
 {
   btRigidBody*   the_Body = to_bullet (Self);
   Vector_3       the_Gyre;
+
   btVector3      bt_Gyre  = the_Body->getAngularVelocity ();
 
   the_Gyre.x = bt_Gyre.x();
@@ -342,8 +379,8 @@ b3d_Object_Gyre_is (Object*   Self,   Vector_3*   Now)
   btRigidBody*   the_Body = to_bullet (Self);
 
   the_Body->setAngularVelocity (btVector3 (Now->x, Now->y, Now->z));
+  the_Body->activate();
 }
-
 
 
 
@@ -353,6 +390,7 @@ b3d_Object_apply_Torque (Object*   Self,   Vector_3*   Torque)
   btRigidBody*   the_Body = to_bullet (Self);
 
   the_Body->applyTorque (btVector3 (Torque->x, Torque->y, Torque->z));
+  the_Body->activate();
 }
 
 
@@ -363,16 +401,21 @@ b3d_Object_apply_Torque_impulse (Object*   Self,   Vector_3*   Torque)
   btRigidBody*   the_Body = to_bullet (Self);
 
   the_Body->applyTorqueImpulse (btVector3 (Torque->x, Torque->y, Torque->z));
+  the_Body->activate();
 }
 
 
 
 void
 b3d_Object_apply_Force (Object*   Self,   Vector_3*   Force)
+//
+// A force, as the interface says, not an impulse: it acts for the coming step only.
+//
 {
   btRigidBody*   the_Body = to_bullet (Self);
 
-  the_Body->applyCentralImpulse (btVector3 (Force->x, Force->y, Force->z));
+  the_Body->applyCentralForce (btVector3 (Force->x, Force->y, Force->z));
+  the_Body->activate();
 }
 
 

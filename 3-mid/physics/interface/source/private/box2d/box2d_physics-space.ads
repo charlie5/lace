@@ -97,7 +97,7 @@ private
    -- Shapes
 
    overriding
-   function new_Shape (Self : access Item;   Model : in physics.Model.view) return physics.Shape.view;
+   function new_Shape (Self : access Item;   from_Model : in physics.Model.view) return physics.Shape.view;
 
 
    -- 3D
@@ -156,7 +156,7 @@ private
                                                         pivot_Axis       : in Vector_3;
                                                         low_Limit,
                                                         high_Limit       : in Real;
-                                                        collide_Conected : in Boolean)    return physics.Joint.hinge.view;
+                                                        collide_Connected : in Boolean)    return physics.Joint.hinge.view;
    overriding
    function new_hinge_Joint      (Self : access Item;   Object_A,
                                                         Object_B         : in physics.Object.view;
@@ -164,7 +164,7 @@ private
                                                         Frame_B          : in Matrix_4x4;
                                                         low_Limit,
                                                         high_Limit       : in Real;
-                                                        collide_Conected : in Boolean)    return physics.Joint.hinge.view;
+                                                        collide_Connected : in Boolean)    return physics.Joint.hinge.view;
    overriding
    function new_hinge_Joint      (Self : access Item;   Object_A         : in physics.Object.view;
                                                         Frame_A          : in Matrix_4x4) return physics.Joint.hinge.view;
@@ -219,7 +219,7 @@ private
    overriding
    procedure rid           (Self : in out Item;   the_Joint    : in physics.Joint.view);
    overriding
-   procedure update_Bounds (Self : in out Item;   of_Obect     : in physics.Object.view);
+   procedure update_Bounds (Self : in out Item;   of_Object     : in physics.Object.view);
    overriding
    procedure set_Joint_local_Anchor (Self         : in out Item;
                                      the_Joint    : in     physics.Joint.view;

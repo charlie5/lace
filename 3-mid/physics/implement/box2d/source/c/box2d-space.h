@@ -1,17 +1,14 @@
 #ifndef C_BOX2D_SPACE_H
 #define C_BOX2D_SPACE_H
 
-
 #include "c_math.h"
 #include "box2d-object.h"
 #include "box2d-joint.h"
 
 
-
 extern "C"
 {
   struct Space;
-
 
   struct Space*      b2d_new_Space ();
   void               b2d_free_Space       (Space*   Self);
@@ -25,10 +22,8 @@ extern "C"
   void               b2d_Space_add_Joint  (Space*   Self,    Joint*      the_Joint);
   void               b2d_Space_rid_Joint  (Space*   Self,    Joint*      the_Joint);
 
-
   struct b2Joint;
   void*              b2d_b2Joint_user_Data (b2Joint*   the_Joint);
-
 
   struct joint_Cursor
   {
@@ -39,10 +34,10 @@ extern "C"
   void               b2d_Space_next_Joint    (joint_Cursor*   Cursor);
   b2Joint*           b2d_Space_joint_Element (joint_Cursor*   Cursor);
 
-
+  Vector_3           b2d_Space_Gravity    (Space*   Self);
   void               b2d_Space_Gravity_is (Space*   Self,    Vector_3*   Now);
-  void               b2d_Space_evolve     (Space*   Self,    float       By);
 
+  void               b2d_Space_evolve     (Space*   Self,    float       By);
 
 
   //  Ray Casting
@@ -58,24 +53,19 @@ extern "C"
   b2d_ray_Collision      b2d_Space_cast_Ray (Space*   Self,    Vector_3*   From,
                                                                Vector_3*   To);
 
-
   //  Point Casting
   //
   struct b2d_point_Collision
   {
       const Object*    near_Object;
-//      Real             hit_Fraction;
-//      Vector_3         Normal_world;
       Vector_3         Site_world;
   };
 
   b2d_point_Collision    b2d_Space_cast_Point (Space*   Self,    Vector_3*   Point);
 
 
-
   //  Collisions
   //
-
   struct b2d_Contact
   {
     Object*          Object_A;
@@ -88,6 +78,4 @@ extern "C"
 
 } // extern "C"
 
-
 #endif
-

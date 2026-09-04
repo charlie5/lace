@@ -1,33 +1,35 @@
 with
      bullet_c.Binding,
      bullet_c.ray_Collision,
-
+     bullet_c.point_Collision,
+     bullet_c.b3d_Contact,
      c_math_c.Vector_3,
      c_math_c.Conversion,
      c_math_c.Pointers,
-
      bullet_physics.Shape,
      bullet_physics.Joint,
-
+     float_Math.Algebra.linear.d3,
      Swig,
      lace.Any,
-     interfaces.C,
      ada.unchecked_Conversion,
      system.storage_Elements;
 
 
 package body bullet_Physics.Space
 is
-
    use
         bullet_c.Binding,
         bullet_c.Pointers,
-
         c_math_c.Conversion,
         Interfaces;
 
-   function to_Object_view is new ada.unchecked_Conversion (swig.void_ptr,
-                                                            physics.Object.view);
+   use type C.int;
+
+   type Any_limited_view is access all lace.Any.limited_item'Class;
+
+   function to_Any_view    is new ada.unchecked_Conversion (Swig.void_ptr, Any_limited_view);
+   function to_Object_view is new ada.unchecked_Conversion (Swig.void_ptr, physics.Object.view);
+
 
 
    ---------
@@ -53,16 +55,39 @@ is
    end destruct;
 
 
+
    ---------
    --- Shape
    --
 
    overriding
-   function new_Shape (Self : access Item;   Model : in physics.Model.view) return physics.Shape.view
+   function new_Shape (Self : access Item;   from_Model : in physics.Model.view) return physics.Shape.view
    is
+      use physics.Model;
+
+      Info : physics.Model.a_Shape renames from_Model.shape_Info;
    begin
-      raise Error with "TODO";
-      return null;
+      case Info.Kind
+      is
+         when Cube         => return Self.new_box_Shape         (Info.half_Extents);
+         when a_Sphere     => return Self.new_sphere_Shape      (Info.sphere_Radius);
+         when multi_Sphere => return Self.new_multisphere_Shape (Info.Sites.all,
+                                                                 Info.Radii.all);
+         when Cone         => return Self.new_cone_Shape        (Radius => from_Model.Scale (1) / 2.0,
+                                                                 Height => from_Model.Scale (2));
+         when a_Capsule    => return bullet_physics.Shape.new_capsule_Shape (Radii  => [Info.lower_Radius,
+                                                                                        Info.upper_Radius],
+                                                                             Height => Info.Height);
+         when Cylinder     => return Self.new_cylinder_Shape    (Info.half_Extents);
+         when Hull         => return Self.new_convex_hull_Shape (Info.Points.all);
+         when Mesh         => return Self.new_mesh_Shape        (Info.Model);
+         when Plane        => return Self.new_plane_Shape       (Info.plane_Normal,
+                                                                 Info.plane_Offset);
+         when Heightfield  => return Self.new_heightfield_Shape (Info.Heights.all,
+                                                                 from_Model.Scale);
+         when Circle
+            | Polygon      => raise physics.Space.unsupported_Shape with "2D shapes are not allowed in bullet physics.";
+      end case;
    end new_Shape;
 
 
@@ -71,9 +96,8 @@ is
    function new_sphere_Shape (Self : access Item;   Radius : in Real := 0.5) return physics.Shape.view
    is
       pragma unreferenced (Self);
-      the_Sphere : constant physics.Shape .view := bullet_physics.Shape.new_sphere_Shape (Radius);
    begin
-      return the_Sphere;
+      return bullet_physics.Shape.new_sphere_Shape (Radius);
    end new_sphere_Shape;
 
 
@@ -82,9 +106,8 @@ is
    function new_box_Shape (Self : access Item;   half_Extents : in Vector_3 := [0.5, 0.5, 0.5]) return physics.Shape.view
    is
       pragma Unreferenced (Self);
-      the_Box : constant physics.Shape.view := bullet_physics.Shape.new_box_Shape (half_Extents);
    begin
-      return the_Box;
+      return bullet_physics.Shape.new_box_Shape (half_Extents);
    end new_box_Shape;
 
 
@@ -94,10 +117,9 @@ is
                                                      Height : in Real) return physics.Shape.view
    is
       pragma unreferenced (Self);
-      the_Capsule : constant physics.Shape .view := bullet_physics.Shape.new_capsule_Shape (Radii  => [Radius, Radius],
-                                                                                            Height => Height);
    begin
-      return the_Capsule;
+      return bullet_physics.Shape.new_capsule_Shape (Radii  => [Radius, Radius],
+                                                     Height => Height);
    end new_capsule_Shape;
 
 
@@ -107,9 +129,8 @@ is
                                                   Height : in Real := 1.0) return physics.Shape.view
    is
       pragma unreferenced (Self);
-      the_Cone : constant physics.Shape.view := bullet_physics.Shape.new_cone_Shape (Radius, Height);
    begin
-      return the_Cone;
+      return bullet_physics.Shape.new_cone_Shape (Radius, Height);
    end new_cone_Shape;
 
 
@@ -118,9 +139,8 @@ is
    function new_cylinder_Shape (Self : access Item;   half_Extents : in Vector_3 := [0.5, 0.5, 0.5]) return physics.Shape.view
    is
       pragma unreferenced (Self);
-      the_Cylinder : constant physics.Shape.view := bullet_physics.Shape.new_cylinder_Shape (half_Extents);
    begin
-      return the_Cylinder;
+      return bullet_physics.Shape.new_cylinder_Shape (half_Extents);
    end new_cylinder_Shape;
 
 
@@ -128,6 +148,11 @@ is
    overriding
    function new_heightfield_Shape (Self : access Item;   Heightfield  : in out physics.Heightfield;
                                                          Scale        : in     Vector_3) return physics.Shape.view
+   --
+   -- Bullet keeps a pointer to the heights, so the caller's array must outlive the shape.
+   -- Bullet reads the heights with the second index varying fastest, so the array's
+   -- second dimension is its width.
+   --
    is
       pragma unreferenced (Self);
 
@@ -148,20 +173,18 @@ is
          return [Min, Max];
       end height_Extent;
 
-
-
       function convert is new ada.unchecked_Conversion (physics.Space.Real_view,
                                                         c_math_c.Pointers.Real_pointer);
 
-      the_height_Extent : constant Vector_2           := height_Extent (Heightfield);
-      the_Heightfield   : constant physics.Shape.view := bullet_physics.Shape.new_heightfield_Shape (Heightfield'Length (1),
-                                                                                                     Heightfield'Length (2),
-                                                                                                     convert (Heightfield (1, 1)'unchecked_Access),
-                                                                                                     the_height_Extent (1),
-                                                                                                     the_height_Extent (2),
-                                                                                                     Scale);
+      the_height_Extent : constant Vector_2 := height_Extent (Heightfield);
    begin
-      return the_Heightfield;
+      return bullet_physics.Shape.new_heightfield_Shape (Width      => Heightfield'Length (2),
+                                                         Depth      => Heightfield'Length (1),
+                                                         Heights    => convert (Heightfield (Heightfield'First (1),
+                                                                                             Heightfield'First (2))'unchecked_Access),
+                                                         min_Height => the_height_Extent (1),
+                                                         max_Height => the_height_Extent (2),
+                                                         Scale      => Scale);
    end new_heightfield_Shape;
 
 
@@ -171,9 +194,8 @@ is
                                                          Radii : in Vector) return physics.Shape.view
    is
       pragma unreferenced (Self);
-      the_multi_Sphere : constant physics.Shape.view := bullet_physics.Shape.new_multisphere_Shape (Sites, Radii);
    begin
-      return the_multi_Sphere;
+      return bullet_physics.Shape.new_multisphere_Shape (Sites, Radii);
    end new_multisphere_Shape;
 
 
@@ -183,9 +205,8 @@ is
                                                    Offset : in Real     :=  0.0) return physics.Shape .view
    is
       pragma unreferenced (Self);
-      the_Plane : constant physics.Shape.view := bullet_physics.Shape.new_plane_Shape (Normal, Offset);
    begin
-      return the_Plane;
+      return bullet_physics.Shape.new_plane_Shape (Normal, Offset);
    end new_plane_Shape;
 
 
@@ -194,9 +215,8 @@ is
    function new_convex_hull_Shape (Self : access Item;   Points : in physics.vector_3_array) return physics.Shape.view
    is
       pragma unreferenced (Self);
-      the_Hull : constant physics.Shape.view := bullet_physics.Shape.new_convex_hull_Shape (Points);
    begin
-      return the_Hull;
+      return bullet_physics.Shape.new_convex_hull_Shape (Points);
    end new_convex_hull_Shape;
 
 
@@ -205,10 +225,10 @@ is
    function new_mesh_Shape (Self : access Item;   Points : access physics.Geometry_3D.a_Model) return physics.Shape.view
    is
       pragma unreferenced (Self);
-      the_Mesh : constant physics.Shape.view := bullet_physics.Shape.new_mesh_Shape (Points);
    begin
-      return the_Mesh;
+      return bullet_physics.Shape.new_mesh_Shape (Points);
    end new_mesh_Shape;
+
 
 
    -- 2D
@@ -231,6 +251,7 @@ is
       raise physics.Space.unsupported_Shape with "Polygon shape not allowed in bullet physics.";
       return null;
    end new_polygon_Shape;
+
 
 
    -----------
@@ -256,15 +277,13 @@ is
                                                is_Kinematic : in Boolean) return physics.Object.view
    is
       pragma unreferenced (Self);
-      the_b3d_Object : constant bullet_Physics.Object.view := bullet_physics.Object.new_Object (Shape       => of_Shape,
-                                                                                                Mass        => of_Mass,
-                                                                                                Friction    => Friction,
-                                                                                                Restitution => Restitution,
-                                                                                                at_Site     => at_Site);
-      the_Object : constant physics.Object.view := physics.Object.view (the_b3d_Object);
-
    begin
-      return the_Object;
+      return physics.Object.view (bullet_physics.Object.new_Object (Shape        => of_Shape,
+                                                                    Mass         => of_Mass,
+                                                                    Friction     => Friction,
+                                                                    Restitution  => Restitution,
+                                                                    at_Site      => at_Site,
+                                                                    is_Kinematic => is_Kinematic));
    end new_Object;
 
 
@@ -273,9 +292,9 @@ is
    function object_Count (Self : in Item) return Natural
    is
    begin
-      raise Error with "TODO";
-      return 0;
+      return Natural (Self.object_Map.Length);
    end object_Count;
+
 
 
    ----------
@@ -292,9 +311,13 @@ is
                                                    high_Limit        : in Real;
                                                    collide_Connected : in Boolean) return physics.Joint.hinge.view
    is
+      pragma unreferenced (Self);
    begin
-      raise Error with "TODO";
-      return null;
+      return bullet_physics.Joint.new_hinge_Joint (Object_A,    Object_B,
+                                                   Anchor_in_A, Anchor_in_B,
+                                                   pivot_Axis,
+                                                   low_Limit,   high_Limit,
+                                                   collide_Connected);
    end new_hinge_Joint;
 
 
@@ -304,9 +327,8 @@ is
                                                    Frame_A  : in Matrix_4x4) return physics.Joint.hinge.view
    is
       pragma unreferenced (Self);
-      the_Joint : constant physics.Joint.hinge.view := bullet_physics.Joint.new_hinge_Joint (Object_A, Frame_A);
    begin
-      return the_Joint;
+      return bullet_physics.Joint.new_hinge_Joint (Object_A, Frame_A);
    end new_hinge_Joint;
 
 
@@ -321,10 +343,11 @@ is
                                                    collide_Connected : in Boolean) return physics.Joint.hinge.view
    is
       pragma unreferenced (Self);
-      the_Joint : constant physics.Joint.hinge.view := bullet_physics.Joint.new_hinge_Joint (Object_A, Object_B,
-                                                                                             Frame_A,  Frame_B);
    begin
-      return the_Joint;
+      return bullet_physics.Joint.new_hinge_Joint (Object_A,  Object_B,
+                                                   Frame_A,   Frame_B,
+                                                   low_Limit, high_Limit,
+                                                   collide_Connected);
    end new_hinge_Joint;
 
 
@@ -336,10 +359,9 @@ is
                                                   Frame_B  : in Matrix_4x4) return physics.Joint.DoF6.view
    is
       pragma Unreferenced (Self);
-      the_Joint : constant physics.Joint.DoF6.view := bullet_physics.Joint.new_DoF6_Joint (Object_A, Object_B,
-                                                                                           Frame_A,  Frame_B);
    begin
-      return the_Joint;
+      return bullet_physics.Joint.new_DoF6_Joint (Object_A, Object_B,
+                                                  Frame_A,  Frame_B);
    end new_DoF6_Joint;
 
 
@@ -351,10 +373,9 @@ is
                                                   Pivot_in_B : in Vector_3) return physics.Joint.ball.view
    is
       pragma unreferenced (Self);
-      the_Joint : constant physics.Joint.ball.view := standard.bullet_physics.Joint.new_ball_Joint (Object_A,    Object_B,
-                                                                                                    Pivot_in_A,  Pivot_in_B);
    begin
-      return the_Joint;
+      return bullet_physics.Joint.new_ball_Joint (Object_A,    Object_B,
+                                                  Pivot_in_A,  Pivot_in_B);
    end new_ball_Joint;
 
 
@@ -366,10 +387,9 @@ is
                                                     Frame_B  : in Matrix_4x4) return physics.Joint.slider.view
    is
       pragma unreferenced (Self);
-      the_Joint : constant physics.Joint.slider.view := bullet_physics.Joint.new_slider_Joint (Object_A, Object_B,
-                                                                                               Frame_A,  Frame_B);
    begin
-      return the_Joint;
+      return bullet_physics.Joint.new_slider_Joint (Object_A, Object_B,
+                                                    Frame_A,  Frame_B);
    end new_slider_Joint;
 
 
@@ -381,11 +401,11 @@ is
                                                         Frame_B  : in Matrix_4x4) return physics.Joint.cone_twist.view
    is
       pragma unreferenced (Self);
-      the_Joint : constant physics.Joint.cone_twist.view := bullet_physics.Joint.new_cone_twist_Joint (Object_A, Object_B,
-                                                                                                       Frame_A,  Frame_B);
    begin
-      return the_Joint;
+      return bullet_physics.Joint.new_cone_twist_Joint (Object_A, Object_B,
+                                                        Frame_A,  Frame_B);
    end new_cone_twist_Joint;
+
 
 
    --------------
@@ -393,12 +413,11 @@ is
    --
 
    overriding
-   procedure update_Bounds (Self : in out Item;   of_Obect : in physics.Object.view)
+   procedure update_Bounds (Self : in out Item;   of_Object : in physics.Object.view)
    is
-      the_c_Object : constant access bullet_c.Object := bullet_physics.Object.view (of_Obect).C;
-      pragma Unreferenced (the_c_Object);
+      the_c_Object : constant Object_pointer := bullet_physics.Object.view (of_Object).C;
    begin
-      raise Error with "TODO";
+      b3d_Space_update_Bounds (Self.C, the_c_Object);
    end update_Bounds;
 
 
@@ -406,9 +425,11 @@ is
    overriding
    procedure add (Self : in out Item;   Object : in physics.Object.view)
    is
-      the_c_Object : constant Object_pointer := bullet_physics.Object.view (Object).C;
+      the_Object   : constant bullet_physics.Object.view := bullet_physics.Object.view (Object);
+      the_c_Object : constant Object_pointer             := the_Object.C;
    begin
-      b3d_Space_add_Object (Self.C, the_c_Object);
+      Self.object_Map.insert (the_c_Object, the_Object);
+      b3d_Space_add_Object   (Self.C, the_c_Object);
    end add;
 
 
@@ -418,6 +439,8 @@ is
    is
       the_c_Object : constant Object_pointer := bullet_physics.Object.view (Object).C;
    begin
+      Self.object_Map.exclude (the_c_Object);     -- Else 'evolve' would update the dynamics
+      --                                             of an object which may since be freed.
       b3d_Space_rid_Object (Self.C, the_c_Object);
    end rid;
 
@@ -430,7 +453,10 @@ is
       c_To            : aliased  c_math_c.Vector_3.item      := +To;
       the_c_Collision : constant bullet_c.ray_Collision.item := b3d_Space_cast_Ray (Self.C, c_From'unchecked_Access,
                                                                                             c_To  'unchecked_Access);
-      the_Collision   :          physics.Space.ray_Collision;
+      the_Collision   :          physics.Space.ray_Collision := (near_Object  => null,
+                                                                 hit_Fraction => 1.0,
+                                                                 Normal_world => math.Origin_3D,
+                                                                 Site_world   => To);
    begin
       if the_c_Collision.near_Object /= null
       then
@@ -446,12 +472,19 @@ is
 
 
    overriding
-   function cast_Point (Self : access Item;   Point    : in Vector_3) return physics.Space.point_Collision
+   function cast_Point (Self : access Item;   Point : in Vector_3) return physics.Space.point_Collision
    is
-      Result : physics.Space.point_Collision;
+      c_Point         : aliased  c_math_c.Vector_3.item        := +Point;
+      the_c_Collision : constant bullet_c.point_Collision.item := b3d_Space_cast_Point (Self.C, c_Point'unchecked_Access);
+      the_Collision   :          physics.Space.point_Collision := (near_Object => null,
+                                                                   Site_world  => Point);
    begin
-      raise Program_Error with "TODO";
-      return Result;
+      if the_c_Collision.near_Object /= null
+      then
+         the_Collision.near_Object := to_Object_view (b3d_Object_user_Data (the_c_Collision.near_Object));
+      end if;
+
+      return the_Collision;
    end cast_Point;
 
 
@@ -486,8 +519,7 @@ is
    function Gravity (Self : in Item) return Vector_3
    is
    begin
-      raise Error with "TODO";
-      return [0.0, 0.0, 0.0];
+      return +b3d_Space_Gravity (Self.C);
    end Gravity;
 
 
@@ -505,9 +537,10 @@ is
    overriding
    procedure add (Self : in out Item;   Joint : in physics.Joint.view)
    is
-      the_c_Joint : constant Joint_pointer := bullet_physics.Joint.view (Joint).C;
+      the_Joint : constant bullet_physics.Joint.view := bullet_physics.Joint.view (Joint);
    begin
-      b3d_Space_add_Joint (Self.C, the_c_Joint);
+      b3d_Space_add_Joint (Self.C, the_Joint.C,
+                           collide_Connected => Boolean'Pos (the_Joint.collide_Connected));
    end add;
 
 
@@ -515,8 +548,9 @@ is
    overriding
    procedure rid (Self : in out Item;   Joint : in physics.Joint.view)
    is
+      the_c_Joint : constant Joint_pointer := bullet_physics.Joint.view (Joint).C;
    begin
-      raise Error with "TODO";
+      b3d_Space_rid_Joint (Self.C, the_c_Joint);
    end rid;
 
 
@@ -525,8 +559,7 @@ is
    function manifold_Count (Self : in Item) return Natural
    is
    begin
-      raise Error with "TODO";
-      return 0;
+      return Natural (b3d_space_contact_Count (Self.C));
    end manifold_Count;
 
 
@@ -534,14 +567,17 @@ is
    overriding
    function Manifold (Self : access Item;   Index : in Positive) return physics.space.a_Manifold
    is
-      type Any_limited_view is access all lace.Any.limited_item'Class;
-      pragma Unreferenced (Any_limited_view);
-
-      the_Manifold : constant physics.space.a_Manifold
-        := (Objects => [others => null],
-            Contact => (Site => [others => 0.0]));
+      the_Contact  : constant bullet_c.b3d_Contact.item := b3d_space_Contact (Self.C, C.int (Index) - 1);
+      the_Manifold :          physics.space.a_Manifold  := (Objects => [others => null],
+                                                            Contact => (Site => math.Origin_3D));
    begin
-      raise Error with "TODO";
+      if the_Contact.Object_A /= null
+      then
+         the_Manifold.Objects (1)  := physics.Object.view (to_Any_view (b3d_Object_user_Data (the_Contact.Object_A)));
+         the_Manifold.Objects (2)  := physics.Object.view (to_Any_view (b3d_Object_user_Data (the_Contact.Object_B)));
+         the_Manifold.Contact.Site := +the_Contact.Site;
+      end if;
+
       return the_Manifold;
    end Manifold;
 
@@ -551,10 +587,31 @@ is
    procedure set_Joint_local_Anchor (Self : in out Item;   the_Joint    : in physics.Joint.view;
                                                            is_Anchor_A  : in Boolean;
                                                            local_Anchor : in Vector_3)
+   --
+   -- Keeps the joint frame's orientation and moves its origin.
+   --
    is
+      pragma Unreferenced (Self);
+      use float_Math.Algebra.linear.d3;
    begin
-      raise Error with "TODO";
+      if is_Anchor_A
+      then
+         declare
+            Frame : Matrix_4x4 := the_Joint.Frame_A;
+         begin
+            set_Translation (Frame, local_Anchor);
+            the_Joint.Frame_A_is (Frame);
+         end;
+      else
+         declare
+            Frame : Matrix_4x4 := the_Joint.Frame_B;
+         begin
+            set_Translation (Frame, local_Anchor);
+            the_Joint.Frame_B_is (Frame);
+         end;
+      end if;
    end set_Joint_local_Anchor;
+
 
 
    -----------------
@@ -565,7 +622,7 @@ is
    procedure next (Cursor : in out joint_Cursor)
    is
    begin
-      raise Error with "TODO";
+      Cursor.Index := Cursor.Index + 1;
    end next;
 
 
@@ -574,8 +631,7 @@ is
    function has_Element (Cursor : in joint_Cursor) return Boolean
    is
    begin
-      raise Error with "TODO";
-      return False;
+      return Cursor.Index < Cursor.Count;
    end has_Element;
 
 
@@ -583,9 +639,9 @@ is
    overriding
    function Element (Cursor : in joint_Cursor) return physics.Joint.view
    is
+      the_c_Joint : constant Joint_pointer := b3d_Space_Joint (Cursor.C, Cursor.Index);
    begin
-      raise Error with "TODO";
-      return null;
+      return physics.Joint.view (to_Any_view (b3d_Joint_user_Data (the_c_Joint)));
    end Element;
 
 
@@ -594,8 +650,9 @@ is
    function first_Joint (Self : in Item) return physics.Space.joint_Cursor'Class
    is
    begin
-      raise Error with "TODO";
-      return joint_Cursor' (physics.Space.joint_Cursor with null record);
+      return joint_Cursor' (physics.Space.joint_Cursor with C     => Self.C,
+                                                            Index => 0,
+                                                            Count => b3d_Space_joint_Count (Self.C));
    end first_Joint;
 
 

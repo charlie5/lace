@@ -7,59 +7,64 @@
 
 extern "C"
 {
-
   struct Joint;
   struct Space;
 
+  // A Joint is a box2d joint definition until it is added to a space, which creates
+  // the live b2Joint and records it in the definition's user data. Attributes work
+  // on whichever exists.
+  //
+  // Degrees of freedom are numbered as in the physics interface: 1 .. 3 are the
+  // translations along X, Y and Z, 4 .. 6 the rotations about them. In two
+  // dimensions a revolute joint has the single rotation 6 (about Z) and a
+  // prismatic joint the single translation 1 (along its axis). A hinge has the
+  // single degree 1.
+  //
+  // Attributes which do not apply to a kind of joint return 0 (or false), and the
+  // setters return 0 to say so.
 
   /////////
   /// Forge
   //
 
-  Joint *b2d_new_hinge_Joint_with_local_anchors (Space *in_Space,
-                                                 Object *Object_A,
-                                                 Object *Object_B,
-                                                 Vector_3 *Anchor_in_A,
-                                                 Vector_3 *Anchor_in_B,
-                                                 float low_Limit,
-                                                 float high_Limit,
-                                                 bool collide_Connected);
-
+  Joint*     b2d_new_hinge_Joint_with_local_anchors (Space*      in_Space,
+                                                     Object*     Object_A,
+                                                     Object*     Object_B,
+                                                     Vector_3*   Anchor_in_A,
+                                                     Vector_3*   Anchor_in_B,
+                                                     float       low_Limit,
+                                                     float       high_Limit,
+                                                     bool        collide_Connected);
   Joint*     b2d_new_hinge_Joint         (Space*        in_Space,
-				                              	  Object*       Object_A,
+                                          Object*       Object_A,
                                           Object*       Object_B,
                                           Matrix_4x4*   Frame_A,
                                           Matrix_4x4*   Frame_B,
-					                                float         low_Limit,
-				                              	  float         high_Limit,
-					                                bool          collide_Connected);
-
-  void       b2d_free_hinge_Joint        (Joint*        Self);
-
+                                          float         low_Limit,
+                                          float         high_Limit,
+                                          bool          collide_Connected);
   Joint*     b2d_new_space_hinge_Joint   (Space*        in_Space,
                                           Object*       Object_A,
                                           Matrix_4x4*   Frame_A);
-
-
   Joint*     b2d_new_DoF6_Joint          (Object*       Object_A,
                                           Object*       Object_B,
                                           Matrix_4x4*   Frame_A,
                                           Matrix_4x4*   Frame_B);
-
   Joint*     b2d_new_cone_twist_Joint    (Object*       Object_A,
                                           Object*       Object_B,
                                           Matrix_4x4*   Frame_A,
                                           Matrix_4x4*   Frame_B);
-
   Joint*     b2d_new_slider_Joint        (Object*       Object_A,
                                           Object*       Object_B,
                                           Matrix_4x4*   Frame_A,
                                           Matrix_4x4*   Frame_B);
-
   Joint*     b2d_new_ball_Joint          (Object*       Object_A,
                                           Object*       Object_B,
                                           Vector_3*     Pivot_in_A,
                                           Vector_3*     Pivot_in_B);
+
+  void       b2d_free_Joint              (Joint*        Self);
+  void       b2d_free_hinge_Joint        (Joint*        Self);
 
 
   //////////////
@@ -67,25 +72,29 @@ extern "C"
   //
 
   void*             b2d_Joint_user_Data        (Joint*   Self);
-//  void              b2d_Joint_user_Data_is     (Joint*   Self,   void*         Now);
+  void              b2d_Joint_user_Data_is     (Joint*   Self,   void*         Now);
 
   Object*           b2d_Joint_Object_A         (Joint*   Self);
   Object*           b2d_Joint_Object_B         (Joint*   Self);
 
   Matrix_4x4        b2d_Joint_Frame_A          (Joint*   Self);
   Matrix_4x4        b2d_Joint_Frame_B          (Joint*   Self);
-
-  void              b2d_Joint_Frame_A_is       (Joint*   Self,   Matrix_4x4*   Now);
-  void              b2d_Joint_Frame_B_is       (Joint*   Self,   Matrix_4x4*   Now);
+  int               b2d_Joint_Frame_A_is       (Joint*   Self,   Matrix_4x4*   Now);
+  int               b2d_Joint_Frame_B_is       (Joint*   Self,   Matrix_4x4*   Now);
 
   void              b2d_Joint_set_local_Anchor (Joint*   Self,   bool          is_Anchor_A,
-						                                         Vector_3*     local_Anchor);
-
+                                                                 Vector_3*     local_Anchor);
 
   bool              b2d_Joint_is_Limited       (Joint*   Self,   int           DoF);
-  bool              b2d_Joint_Extent           (Joint*   Self,   int           DoF);
+  Real              b2d_Joint_Extent           (Joint*   Self,   int           DoF);
+  int               b2d_Joint_Velocity_is      (Joint*   Self,   int           DoF,
+                                                                 Real          Now);
 
-  void              b2d_Joint_Velocity_is      (Joint*   Self,   int           DoF,
+  Real              b2d_Joint_lower_Limit      (Joint*   Self,   int           DoF);
+  Real              b2d_Joint_upper_Limit      (Joint*   Self,   int           DoF);
+  int               b2d_Joint_lower_Limit_is   (Joint*   Self,   int           DoF,
+                                                                 Real          Now);
+  int               b2d_Joint_upper_Limit_is   (Joint*   Self,   int           DoF,
                                                                  Real          Now);
 
   Vector_3          b2d_Joint_reaction_Force   (Joint*   Self);
@@ -94,27 +103,20 @@ extern "C"
   bool              b2d_Joint_collide_Connected (Joint*   Self);
 
 
-
   /// Hinge
   //
 
   bool              b2d_Joint_hinge_limit_Enabled (Joint*   Self);
-  
   void              b2d_Joint_hinge_Limits_are (Joint*   Self,   Real          Low,
                                                                  Real          High);
-
   Vector_3          b2d_Joint_hinge_local_Anchor_on_A (Joint*   Self);
   Vector_3          b2d_Joint_hinge_local_Anchor_on_B (Joint*   Self);
-  
   Real              b2d_Joint_hinge_reference_Angle  (Joint*   Self);
   Real              b2d_Joint_hinge_Angle            (Joint*   Self);
   bool              b2d_Joint_hinge_motor_Enabled    (Joint*   Self);
   Real              b2d_Joint_hinge_motor_Speed      (Joint*   Self);
   Real              b2d_Joint_hinge_max_motor_Torque (Joint*   Self);
-  
-  
 
 } // extern "C"
-
 
 #endif

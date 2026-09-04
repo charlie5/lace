@@ -7,7 +7,6 @@ with
      bullet_c,
      bullet_c.Pointers,
      bullet_Physics.Object,
-
      physics.Shape,
      physics.Object,
      physics.Joint.ball,
@@ -15,7 +14,7 @@ with
      physics.Joint.hinge,
      physics.Joint.cone_twist,
      physics.Joint.DoF6,
-
+     interfaces.C,
      ada.Containers.hashed_Maps;
 
 
@@ -27,20 +26,21 @@ is
    type Item is new physics.Space.item with private;
    type View is access all Item'Class;
 
-
-   -- TODO: Place this in a nested Forge package.
    function to_Space return Item;
 
    overriding
    function manifold_Count (Self : in     Item) return Natural;
    overriding
    function Manifold       (Self : access Item;   Index : in Positive) return physics.space.a_Manifold;
+   overriding
+   function object_Count   (Self : in     Item) return Natural;
 
 
 
 private
 
    function Hash (the_C_Object : in bullet_c.Pointers.Object_pointer) return ada.Containers.Hash_type;
+
    use type bullet_c.Pointers.Object_pointer,
             bullet_Physics.Object.view;
 
@@ -49,7 +49,6 @@ private
                                                                       Hash            => Hash,
                                                                       equivalent_Keys => "=",
                                                                       "="             => "=");
-
    type Item is new physics.Space.item with
       record
          C          : bullet_c.Pointers.Space_pointer;
@@ -63,7 +62,12 @@ private
    --- Joint Cursor
    --
 
-   type joint_Cursor is new physics.Space.joint_Cursor with null record;
+   type joint_Cursor is new physics.Space.joint_Cursor with
+      record
+         C     : bullet_c.Pointers.Space_pointer;
+         Index : interfaces.C.int;          -- Of the next joint, from 0.
+         Count : interfaces.C.int;
+      end record;
 
    overriding
    procedure next        (Cursor : in out joint_Cursor);
@@ -88,7 +92,7 @@ private
    --
 
    overriding
-   function              new_Shape (Self : access Item;   Model        : in physics.Model.view)              return physics.Shape.view;
+   function              new_Shape (Self : access Item;   from_Model   : in physics.Model.view)              return physics.Shape.view;
    overriding
    function       new_sphere_Shape (Self : access Item;   Radius       : in Real := 0.5)                 return physics.Shape.view;
    overriding
@@ -131,8 +135,6 @@ private
                                                  Restitution  : in Real;
                                                  at_Site      : in Vector_3;
                                                  is_Kinematic : in Boolean) return physics.Object.view;
-   overriding
-   function  object_Count (Self : in     Item) return Natural;
 
 
    ---------
@@ -197,7 +199,6 @@ private
    overriding
    function  cast_Point (Self : access Item;   Point    : in Vector_3) return physics.Space.point_Collision;
 
-
    overriding
    procedure evolve     (Self : in out Item;   By       : in Duration);
 
@@ -212,14 +213,13 @@ private
    procedure rid        (Self : in out Item;   Joint    : in physics.Joint.view);
 
    overriding
-   procedure update_Bounds (Self     : in out Item;
-                            of_Obect : in     physics.Object.view);
+   procedure update_Bounds (Self      : in out Item;
+                            of_Object : in     physics.Object.view);
 
    overriding
    procedure set_Joint_local_Anchor (Self         : in out Item;
                                      the_Joint    : in     physics.Joint.view;
                                      is_Anchor_A  : in     Boolean;
                                      local_Anchor : in     Vector_3);
-
 
 end bullet_Physics.Space;

@@ -1,6 +1,5 @@
 with
-     physics.remote.Model,
-     physics.Shape;
+     physics.remote.Model;
 
 
 package physics.Model
@@ -65,7 +64,6 @@ is
    type Item is new physics.remote.Model.item with
       record
          shape_Info  : a_Shape;
-         Shape       : physics.Shape.view;
 
          Mass        : Real;
          Friction    : Real;

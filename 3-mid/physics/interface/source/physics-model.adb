@@ -23,7 +23,6 @@ is
          return new Item' (Id          => Id,
                            Scale       => Scale,
                            shape_Info  => shape_Info,
-                           Shape       => null,
                            Mass        => Mass,
                            Friction    => Friction,
                            Restitution => Restitution,

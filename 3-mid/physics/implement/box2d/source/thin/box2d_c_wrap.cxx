@@ -462,53 +462,6 @@ extern          "C"
 
   }
 
-  DllExport void SWIGSTDCALL Ada_b2d_shape_Scale_is (void *a_arg1,
-						     Vector_2 a_arg2)
-  {
-    Shape          *arg1 = (Shape *) 0;
-    Vector_2        arg2;
-    Vector_2       *argp2;
-
-    arg1 = (Shape *) a_arg1;
-
-    argp2 = (Vector_2 *) & a_arg2;
-
-    arg2 = *argp2;
-
-    b2d_shape_Scale_is (arg1, arg2);
-
-  }
-
-  DllExport void *SWIGSTDCALL Ada_b2d_new_Object (void *a_arg1,
-						  float a_arg2,
-						  float a_arg3,
-						  float a_arg4, void *a_arg5)
-  {
-    void           *jresult;
-    Vector_2       *arg1 = (Vector_2 *) 0;
-    Real            arg2;
-    Real            arg3;
-    Real            arg4;
-    Shape          *arg5 = (Shape *) 0;
-    Object         *result = 0;
-
-    arg1 = (Vector_2 *) a_arg1;
-
-    arg2 = (Real) a_arg2;
-
-    arg3 = (Real) a_arg3;
-
-    arg4 = (Real) a_arg4;
-
-    arg5 = (Shape *) a_arg5;
-
-    result = (Object *) b2d_new_Object (arg1, arg2, arg3, arg4, arg5);
-    jresult = (void *) result;
-
-    return jresult;
-
-  }
-
   DllExport void SWIGSTDCALL Ada_b2d_free_Object (void *a_arg1)
   {
     Object         *arg1 = (Object *) 0;

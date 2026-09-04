@@ -18,7 +18,6 @@ is
    type Item is limited new physics.Object.item with private;
    type View is access all Item'Class;
 
-
    use Math;
 
 
@@ -30,15 +29,16 @@ is
                          Mass         : in     Real;
                          Friction     : in     Real;
                          Restitution  : in     Real;
-                         at_Site      : in     Vector_3) return View;
-                         -- is_Kinematic : in     Boolean) return View;
+                         at_Site      : in     Vector_3;
+                         is_Kinematic : in     Boolean) return View;
 
    overriding
-   procedure define (Self : access Item;   Shape       : in physics.Shape.view;
-                                           Mass        : in Real;
-                                           Friction    : in Real;
-                                           Restitution : in Real;
-                                           at_Site     : in Vector_3);
+   procedure define (Self : access Item;   Shape        : in physics.Shape.view;
+                                           Mass         : in Real;
+                                           Friction     : in Real;
+                                           Restitution  : in Real;
+                                           at_Site      : in Vector_3;
+                                           is_Kinematic : in Boolean := False);
 
    procedure free   (the_Object : in out physics.Object.view);
 
@@ -68,10 +68,10 @@ private
          C         :        bullet_c.Pointers.Object_pointer;
          Shape     :        physics.Shape.view;
          Model     :        physics.Model.view;
+         Scale     :        Vector_3 := [1.0, 1.0, 1.0];
          Dynamics  :        physics.Object.safe_Dynamics;
          user_Data : access lace.Any.limited_item'Class;
       end record;
-
 
    overriding
    procedure destruct     (Self : in out Item);
@@ -85,7 +85,7 @@ private
    procedure Scale_is     (Self : in out Item;   Now : in Vector_3);
 
    overriding
-   procedure activate     (Self : in out Item;   forceActivation : in Boolean := False);
+   procedure activate     (Self : in out Item;   force_Activation : in Boolean := False);
    overriding
    function  is_Active    (Self : in     Item)     return Boolean;
 
@@ -124,7 +124,6 @@ private
 
    overriding
    procedure Friction_is  (Self : in out Item;   Now : in Real);
-
    overriding
    procedure Restitution_is (Self : in out Item;   Now : in Real);
 
@@ -147,6 +146,5 @@ private
    procedure user_Data_is (Self : in out Item;   Now : access lace.Any.limited_item'Class);
    overriding
    function  user_Data    (Self : in     Item)  return access lace.Any.limited_item'Class;
-
 
 end bullet_Physics.Object;

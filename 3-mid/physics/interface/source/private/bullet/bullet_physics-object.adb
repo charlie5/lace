@@ -1,73 +1,71 @@
 with
      bullet_c.Binding,
      bullet_physics.Shape,
-
      c_math_c.Conversion,
      c_math_c.Vector_3,
      c_math_c.Matrix_3x3,
      c_math_c.Matrix_4x4,
-
+     float_Math.Algebra.linear.d3,
      Swig,
      interfaces.C,
-
      ada.unchecked_Deallocation,
-     ada.Unchecked_Conversion,
-     ada.Text_IO;
+     ada.Unchecked_Conversion;
 
 
 package body bullet_Physics.Object
 is
    use
         bullet_c.Binding,
-        c_math_c.Conversion,
-        ada.Text_IO;
+        c_math_c.Conversion;
 
    type Any_limited_view is access all lace.Any.limited_item'Class;
+
 
 
    function new_Object (Shape        : in physics.Shape.view;
                         Mass         : in Real;
                         Friction     : in Real;
                         Restitution  : in Real;
-                        at_Site      : in Vector_3) return View
-                        -- is_Kinematic : in Boolean) return View
+                        at_Site      : in Vector_3;
+                        is_Kinematic : in Boolean) return View
    is
       Self : constant View := new Item;
    begin
-      Self.define (Shape       => Shape,
-                   Mass        => Mass,
-                   Friction    => Friction,
-                   Restitution => Restitution,
-                   at_Site     => at_Site);
+      Self.define (Shape        => Shape,
+                   Mass         => Mass,
+                   Friction     => Friction,
+                   Restitution  => Restitution,
+                   at_Site      => at_Site,
+                   is_Kinematic => is_Kinematic);
       return Self;
    end new_Object;
 
 
 
    overriding
-   procedure define (Self : access Item;   Shape       : in physics.Shape.view;
-                                           Mass        : in Real;
-                                           Friction    : in Real;
-                                           Restitution : in Real;
-                                           at_Site     : in Vector_3)
+   procedure define (Self : access Item;   Shape        : in physics.Shape.view;
+                                           Mass         : in Real;
+                                           Friction     : in Real;
+                                           Restitution  : in Real;
+                                           at_Site      : in Vector_3;
+                                           is_Kinematic : in Boolean := False)
    is
       use interfaces.C;
 
       function to_void_ptr is new ada.unchecked_Conversion (Any_limited_view, Swig.void_ptr);
-
    begin
       Self.C := b3d_new_Object (c_math_c.Real (Mass),
                                 bullet_physics.Shape.view (Shape).C,
-                                is_Kinematic => Boolean'Pos (False));
-                                -- Boolean'Pos (is_Kinematic));
+                                is_Kinematic => Boolean'Pos (is_Kinematic));
+      Self.Shape := Shape;
 
       b3d_Object_Friction_is    (Self.C, c_float (Friction));
       b3d_Object_Restitution_is (Self.C, c_float (Restitution));
       b3d_Object_user_Data_is   (Self => Self.C.all'Access,
                                  Now  => to_void_ptr (Self.all'Access));
-
       Self.user_Data_is (Self);
       Self.Site_is (at_Site);
+      Self.update_Dynamics;
    end define;
 
 
@@ -75,8 +73,13 @@ is
    overriding
    procedure destruct (Self : in out Item)
    is
+      use type bullet_c.Pointers.Object_pointer;
    begin
-      null;
+      if Self.C /= null
+      then
+         b3d_free_Object (Self.C);
+         Self.C := null;
+      end if;
    end destruct;
 
 
@@ -121,11 +124,8 @@ is
    overriding
    function Shape (Self : in Item) return physics.Shape.view
    is
-      c_Shape : constant bullet_c.Pointers.Shape_pointer := b3d_Object_Shape (Self.C);
-
-      function to_Any_view is new ada.unchecked_Conversion (Swig.void_ptr, Any_limited_view);
    begin
-      return physics.Shape.view (to_Any_view (b3d_Shape_user_Data (c_Shape)));
+      return Self.Shape;
    end Shape;
 
 
@@ -134,8 +134,7 @@ is
    function Scale (Self : in Item) return Vector_3
    is
    begin
-      raise Error with "TODO";
-      return math.Origin_3D;
+      return Self.Scale;
    end Scale;
 
 
@@ -143,9 +142,10 @@ is
    overriding
    procedure Scale_is (Self : in out Item;   Now : in Vector_3)
    is
+      c_Now : aliased c_math_c.Vector_3.item := +Now;
    begin
-      put_Line ("Scale_is not implemented for bullet_Physics.Object");
-      raise Error with "TODO";
+      Self.Scale := Now;
+      b3d_Object_Scale_is (Self.C, c_Now'unchecked_Access);
    end Scale_is;
 
 
@@ -172,18 +172,18 @@ is
    overriding
    function is_Active (Self : in Item) return Boolean
    is
+      use type interfaces.C.int;
    begin
-      return True;
+      return b3d_Object_is_Active (Self.C) /= 0;
    end is_Active;
 
 
 
    overriding
-   procedure activate (Self : in out Item;   forceActivation : in Boolean := False)
+   procedure activate (Self : in out Item;   force_Activation : in Boolean := False)
    is
-      pragma unreferenced (forceActivation);
    begin
-      null;
+      b3d_Object_activate (Self.C, Boolean'Pos (force_Activation));
    end activate;
 
 
@@ -220,19 +220,9 @@ is
    overriding
    function Spin (Self : in Item) return math.Matrix_3x3
    is
-      use type bullet_c.Pointers.Object_pointer;
+      the_Spin : constant c_math_c.Matrix_3x3.item := b3d_Object_Spin (Self.C);
    begin
-      if Self.C /= null
-      then
-         declare
-            the_Spin : constant c_math_c.Matrix_3x3.item := b3d_Object_Spin (Self.C);
-         begin
-            return +the_Spin;
-         end;
-
-      else
-         return Self.Dynamics.get_Spin;
-      end if;
+      return +the_Spin;
    end Spin;
 
 
@@ -240,28 +230,25 @@ is
    overriding
    procedure Spin_is (Self : in out Item;   Now : in Matrix_3x3)
    is
-      use type bullet_c.Pointers.Object_pointer;
+      c_Now : aliased c_math_c.Matrix_3x3.item := +Now;
    begin
-      Self.Dynamics.set_Spin (Now);
-
-      if Self.C /= null
-      then
-         declare
-            c_Now : aliased c_math_c.Matrix_3x3.item := +Now;
-         begin
-            b3d_Object_Spin_is (Self.C, c_Now'unchecked_Access);
-         end;
-      end if;
+      b3d_Object_Spin_is (Self.C, c_Now'unchecked_Access);
    end Spin_is;
 
 
 
    overriding
    function xy_Spin (Self : in Item) return Radians
+   --
+   -- The rotation about the Z axis: row 1 of the spin is the rotated X axis.
+   --
    is
+      use math.Functions;
+
+      the_Spin : constant Matrix_3x3 := Self.Spin;
    begin
-      raise Error with "TODO";
-      return 0.0;
+      return arcTan (Y => the_Spin (1, 2),
+                     X => the_Spin (1, 1));
    end xy_Spin;
 
 
@@ -269,8 +256,9 @@ is
    overriding
    procedure xy_Spin_is (Self : in out Item;   Now : in Radians)
    is
+      use float_Math.Algebra.linear.d3;
    begin
-      raise Error with "TODO";
+      Self.Spin_is (z_Rotation_from (Now));
    end xy_Spin_is;
 
 
@@ -352,6 +340,7 @@ is
    end Restitution_is;
 
 
+
    --- Forces
    --
 
@@ -382,6 +371,7 @@ is
    begin
       b3d_Object_apply_Force (Self.C, c_Force'unchecked_Access);
    end apply_Force;
+
 
 
    --- User data

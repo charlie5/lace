@@ -1,15 +1,13 @@
 with
      box2d_c.Binding,
      box2d_physics.Shape,
-
      c_math_c.Vector_2,
      c_math_c.Vector_3,
      c_math_c.Matrix_3x3,
      c_math_c.Matrix_4x4,
      c_math_c.Conversion,
-
      Swig,
-
+     interfaces.C,
      ada.unchecked_Deallocation,
      ada.Unchecked_Conversion;
 
@@ -25,26 +23,29 @@ is
    function to_void_ptr is new ada.unchecked_Conversion (Any_limited_view, Swig.void_ptr);
 
 
-   function new_Object (Shape       : in physics.Shape.view;
-                        Mass        : in Real;
-                        Friction    : in Real;
-                        Restitution : in Real;
-                        at_Site     : in Vector_3) return Object.view
+
+   function new_Object (Shape        : in physics.Shape.view;
+                        Mass         : in Real;
+                        Friction     : in Real;
+                        Restitution  : in Real;
+                        at_Site      : in Vector_3;
+                        is_Kinematic : in Boolean) return Object.view
    is
       Self : constant View := new Item;
    begin
-      Self.define (Shape, Mass, Friction, Restitution, at_Site);
+      Self.define (Shape, Mass, Friction, Restitution, at_Site, is_Kinematic);
       return Self;
    end new_Object;
 
 
 
    overriding
-   procedure define (Self : access Item;   Shape       : in physics.Shape.view;
-                                           Mass        : in Real;
-                                           Friction    : in Real;
-                                           Restitution : in Real;
-                                           at_Site     : in Vector_3)
+   procedure define (Self : access Item;   Shape        : in physics.Shape.view;
+                                           Mass         : in Real;
+                                           Friction     : in Real;
+                                           Restitution  : in Real;
+                                           at_Site      : in Vector_3;
+                                           is_Kinematic : in Boolean := False)
    is
       c_Site : aliased  c_math_c.Vector_2.item := (c_math_c.Real (at_Site (1)),
                                                    c_math_c.Real (at_Site (2)));
@@ -53,8 +54,10 @@ is
                                 c_math_c.Real (Mass),
                                 c_math_c.Real (Friction),
                                 c_math_c.Real (Restitution),
-                                box2d_physics.Shape.view (Shape).C);
+                                box2d_physics.Shape.view (Shape).C,
+                                is_Kinematic => Boolean'Pos (is_Kinematic));
       Self.Shape := Shape;
+
       b2d_Object_user_Data_is (Self.C,
                                to_void_ptr (Any_limited_view (Self)));
       Self.Site_is (at_Site);
@@ -66,8 +69,13 @@ is
    overriding
    procedure destruct (Self : in out Item)
    is
+      use type box2d_c.Pointers.Object_pointer;
    begin
-      b2d_free_Object (Self.C);
+      if Self.C /= null
+      then
+         b2d_free_Object (Self.C);
+         Self.C := null;
+      end if;
    end destruct;
 
 
@@ -118,20 +126,11 @@ is
 
 
 
-   procedure Shape_is (Self : in out Item;   Now : in physics.Shape.view)
-   is
-   begin
-      Self.Shape := Now;
-   end Shape_is;
-
-
-
    overriding
    function Scale (Self : in Item) return Vector_3
    is
    begin
-      raise Error with "TODO";
-      return math.Origin_3D;
+      return Self.Scale;
    end Scale;
 
 
@@ -142,7 +141,7 @@ is
       c_Now : aliased c_math_c.Vector_2.item := (c_math_c.Real (Now (1)),
                                                  c_math_c.Real (Now (2)));
    begin
-      Self.Shape.Scale_is (Now);
+      Self.Scale := Now;
       b2d_object_Scale_is (Self.C, c_Now'unchecked_Access);
    end Scale_is;
 
@@ -151,18 +150,19 @@ is
    overriding
    function is_Active (Self : in Item) return Boolean
    is
+      use type interfaces.C.int;
    begin
-      return True;     -- TODO: Finish this and 'activate' below.
+      return b2d_Object_is_Active (Self.C) /= 0;
    end is_Active;
 
 
 
    overriding
-   procedure activate (Self : in out Item;   forceActivation : in Boolean := False)
+   procedure activate (Self : in out Item;   force_Activation : in Boolean := False)
    is
-      pragma unreferenced (forceActivation);
+      pragma unreferenced (force_Activation);
    begin
-      null;
+      b2d_Object_activate (Self.C);
    end activate;
 
 
@@ -273,6 +273,7 @@ is
    is
       c_Now : aliased c_math_c.Matrix_4x4.item := +Now;
    begin
+      Self.Site_z := Now (4, 3);
       b2d_Object_Transform_is (Self.C, c_Now'unchecked_Access);
    end Transform_is;
 
@@ -335,6 +336,7 @@ is
    end Restitution_is;
 
 
+
    --- Forces
    --
 
@@ -365,6 +367,7 @@ is
    begin
       b2d_Object_apply_Force (Self.C, c_Force'unchecked_Access);
    end apply_Force;
+
 
 
    --- User Data

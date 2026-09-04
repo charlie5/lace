@@ -1,9 +1,7 @@
 with
      box2d_c.Binding,
-
      c_math_c.Vector_2,
      c_math_c.Conversion,
-
      ada.unchecked_Deallocation;
 
 
@@ -21,7 +19,7 @@ is
    procedure define (Self : in out Item)
    is
    begin
-      raise Error with "Shape not supported.";
+      raise physics.unsupported_Error with "Box2d shape not supported.";
    end define;
 
 
@@ -29,19 +27,29 @@ is
    overriding
    procedure destruct (Self : in out Item)
    is
+      use type box2d_c.Pointers.Shape_pointer;
    begin
-      b2d_free_Shape (Self.C);
+      if Self.C /= null
+      then
+         b2d_free_Shape (Self.C);
+         Self.C := null;
+      end if;
    end destruct;
 
 
 
    overriding
    procedure Scale_is (Self : in out Item;   Now : in Vector_3)
+   --
+   -- A box2d shape is scaled through its object, which knows the shape's
+   -- current scale; on its own a shape has nothing to scale from.
+   --
    is
+      pragma Unreferenced (Self, Now);
    begin
-      b2d_shape_Scale_is (Self.C, (c_math_c.Real (Now (1)),
-                                   c_math_c.Real (Now (2))));
+      null;
    end Scale_is;
+
 
 
    ---------
@@ -56,10 +64,7 @@ is
    function new_circle_Shape (Radius : in Real) return physics.Shape.view
    is
       Self : constant Circle_view := new Circle;
-      -- Self : constant access Circle := new Circle;
---        c_Radius : aliased constant c_math_c.Real := +Radius;
    begin
-      --        Self.C := b2d_new_Circle (c_Radius);
       Self.Radius := Radius;
       Self.define;
       return physics.Shape.view (Self);
@@ -81,19 +86,9 @@ is
 
    function new_polygon_Shape (Vertices : in physics.Space.polygon_Vertices) return physics.Shape.view
    is
-      -- P : Polygon (vertex_Count => Vertices'Length);
-      -- Self : constant Polygon_view := new Polygon' (P);
       Self : constant Polygon_view := new Polygon (vertex_Count => Vertices'Length);
---        c_Verts : array (1 .. Vertices'Length) of aliased c_math_c.Vector_2.item;
    begin
-         Self.Vertices := Vertices;
---        for i in c_Verts'Range
---        loop
---           c_Verts (i) := +Vertices (i);
---        end loop;
---
---        Self.C := b2d_new_Polygon (c_Verts (1)'unchecked_Access,
---                                   c_Verts'Length);
+      Self.Vertices := Vertices;
       Self.define;
       return physics.Shape.view (Self);
    end new_polygon_Shape;
@@ -115,6 +110,7 @@ is
    end define;
 
 
+
    -- 3D
    --
 
@@ -122,7 +118,7 @@ is
    is
       pragma unreferenced (half_Extents);
    begin
-      raise physics.unsupported_Error;
+      raise physics.unsupported_Error with "Box shape not allowed in box2d physics.";
       return null;
    end new_box_Shape;
 
@@ -132,7 +128,7 @@ is
                                Height : in Real) return physics.Shape.view
    is
    begin
-      raise physics.unsupported_Error;
+      raise physics.unsupported_Error with "Capsule shape not allowed in box2d physics.";
       return null;
    end new_capsule_Shape;
 
@@ -142,7 +138,7 @@ is
                             Height : in Real) return physics.Shape.view
    is
    begin
-      raise physics.unsupported_Error;
+      raise physics.unsupported_Error with "Cone shape not allowed in box2d physics.";
       return null;
    end new_cone_Shape;
 
@@ -151,7 +147,7 @@ is
    function new_convex_hull_Shape (Points : in physics.Vector_3_array) return physics.Shape.view
    is
    begin
-      raise physics.unsupported_Error;
+      raise physics.unsupported_Error with "Convex hull shape not allowed in box2d physics.";
       return null;
    end new_convex_hull_Shape;
 
@@ -160,7 +156,7 @@ is
    function new_cylinder_Shape (half_Extents : in Vector_3) return physics.Shape.view
    is
    begin
-      raise physics.unsupported_Error;
+      raise physics.unsupported_Error with "Cylinder shape not allowed in box2d physics.";
       return null;
    end new_cylinder_Shape;
 
@@ -174,7 +170,7 @@ is
                                    Scale       : in Vector_3) return physics.Shape.view
    is
    begin
-      raise physics.unsupported_Error;
+      raise physics.unsupported_Error with "Heightfield shape not allowed in box2d physics.";
       return null;
    end new_heightfield_Shape;
 
@@ -184,7 +180,7 @@ is
                                    Radii     : in Vector) return physics.Shape.view
    is
    begin
-      raise physics.unsupported_Error;
+      raise physics.unsupported_Error with "Multisphere shape not allowed in box2d physics.";
       return null;
    end new_multiSphere_Shape;
 
@@ -194,7 +190,7 @@ is
                              Offset : in Real) return physics.Shape.view
    is
    begin
-      raise physics.unsupported_Error;
+      raise physics.unsupported_Error with "Plane shape not allowed in box2d physics.";
       return null;
    end new_plane_Shape;
 
@@ -203,7 +199,7 @@ is
    function new_sphere_Shape (Radius : in math.Real) return physics.Shape.view
    is
    begin
-      raise physics.unsupported_Error;
+      raise physics.unsupported_Error with "Sphere shape not allowed in box2d physics.";
       return null;
    end new_sphere_Shape;
 

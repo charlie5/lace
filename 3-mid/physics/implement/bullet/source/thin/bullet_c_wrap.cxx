@@ -1098,80 +1098,6 @@ extern          "C"
 
   }
 
-  DllExport void SWIGSTDCALL Ada_b3d_Joint_6DoF_lower_Limit_is (void *jarg1,
-								int jarg2,
-								float jarg3)
-  {
-    Joint          *arg1 = (Joint *) 0;
-    int             arg2;
-    Real            arg3;
-
-    arg1 = (Joint *) jarg1;
-
-    arg2 = (int) jarg2;
-
-    arg3 = (Real) jarg3;
-
-    b3d_Joint_6DoF_lower_Limit_is (arg1, arg2, arg3);
-
-  }
-
-  DllExport void SWIGSTDCALL Ada_b3d_Joint_6DoF_upper_Limit_is (void *jarg1,
-								int jarg2,
-								float jarg3)
-  {
-    Joint          *arg1 = (Joint *) 0;
-    int             arg2;
-    Real            arg3;
-
-    arg1 = (Joint *) jarg1;
-
-    arg2 = (int) jarg2;
-
-    arg3 = (Real) jarg3;
-
-    b3d_Joint_6DoF_upper_Limit_is (arg1, arg2, arg3);
-
-  }
-
-  DllExport float SWIGSTDCALL Ada_b3d_Joint_6DoF_lower_Limit (void *jarg1,
-							      int jarg2)
-  {
-    float           jresult;
-    Joint          *arg1 = (Joint *) 0;
-    int             arg2;
-    Real            result;
-
-    arg1 = (Joint *) jarg1;
-
-    arg2 = (int) jarg2;
-
-    result = (Real) b3d_Joint_6DoF_lower_Limit (arg1, arg2);
-    jresult = result;
-
-    return jresult;
-
-  }
-
-  DllExport float SWIGSTDCALL Ada_b3d_Joint_6DoF_upper_Limit (void *jarg1,
-							      int jarg2)
-  {
-    float           jresult;
-    Joint          *arg1 = (Joint *) 0;
-    int             arg2;
-    Real            result;
-
-    arg1 = (Joint *) jarg1;
-
-    arg2 = (int) jarg2;
-
-    result = (Real) b3d_Joint_6DoF_upper_Limit (arg1, arg2);
-    jresult = result;
-
-    return jresult;
-
-  }
-
   DllExport void *SWIGSTDCALL Ada_b3d_new_Space ()
   {
     void           *jresult;
@@ -1219,20 +1145,6 @@ extern          "C"
     arg2 = (Object *) jarg2;
 
     b3d_Space_rid_Object (arg1, arg2);
-
-  }
-
-  DllExport void SWIGSTDCALL Ada_b3d_Space_add_Joint (void *jarg1,
-						      void *jarg2)
-  {
-    Space          *arg1 = (Space *) 0;
-    Joint          *arg2 = (Joint *) 0;
-
-    arg1 = (Space *) jarg1;
-
-    arg2 = (Joint *) jarg2;
-
-    b3d_Space_add_Joint (arg1, arg2);
 
   }
 

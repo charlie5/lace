@@ -60,7 +60,6 @@ is
          Site : Vector_3;
       end record;
 
-   type Contacts is array (Positive range 1 .. 4) of a_Contact;
 
 
    --- Manifolds
@@ -105,7 +104,9 @@ is
    --- Bounds
    --
 
-   procedure update_Bounds (Self : in out Item;   of_Obect : in Object.view)   is abstract;
+   procedure update_Bounds (Self : in out Item;   of_Object : in Object.view)   is abstract;
+   --
+   -- Tells the space that the object's shape has changed size.
 
 
    -----------

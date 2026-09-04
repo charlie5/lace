@@ -5,7 +5,6 @@ with
      physics.Joint.hinge,
      physics.Joint.ball,
      physics.Object,
-
      bullet_C.Pointers,
      lace.Any;
 
@@ -14,11 +13,17 @@ package bullet_Physics.Joint
 --
 -- Provides glue between a physics joint and a Bullet3D joint.
 --
+-- Degrees of freedom are numbered as in the physics interface: 1 .. 3 are the
+-- translations along X, Y and Z, 4 .. 6 the rotations about them. A hinge has the
+-- single degree 1. An operation which a kind of bullet joint cannot perform raises
+-- physics.unsupported_Error.
+--
 is
    type Item is abstract limited new physics.Joint.item with
       record
-         C         :        bullet_c.Pointers.Joint_pointer;
-         user_Data : access lace.Any.limited_item'Class;
+         C                 :        bullet_c.Pointers.Joint_pointer;
+         user_Data         : access lace.Any.limited_item'Class;
+         collide_Connected :        Boolean := False;
       end record;
 
    type View is access all Item'Class;
@@ -28,7 +33,8 @@ is
    --- Forge
    --
 
-   use Math;
+   use Math,
+       physics.Joint;
 
    function new_Dof6_Joint       (Object_A,   Object_B   : in physics.Object.view;
                                   Frame_A,    Frame_B    : in Matrix_4x4) return physics.Joint.DoF6.view;
@@ -43,7 +49,15 @@ is
                                   Frame_A,    Frame_B    : in Matrix_4x4) return physics.Joint.cone_twist.view;
 
    function new_hinge_Joint      (Object_A,   Object_B   : in physics.Object.view;
-                                  Frame_A,    Frame_B    : in Matrix_4x4) return physics.Joint.hinge.view;
+                                  Frame_A,    Frame_B    : in Matrix_4x4;
+                                  low_Limit,  high_Limit : in Real;
+                                  collide_Connected      : in Boolean) return physics.Joint.hinge.view;
+
+   function new_hinge_Joint      (Object_A,    Object_B    : in physics.Object.view;
+                                  Anchor_in_A, Anchor_in_B : in Vector_3;
+                                  pivot_Axis               : in Vector_3;
+                                  low_Limit,   high_Limit  : in Real;
+                                  collide_Connected        : in Boolean) return physics.Joint.hinge.view;
 
    function new_hinge_Joint      (Object_A               : in physics.Object.view;
                                   Frame_A                : in Matrix_4x4) return physics.Joint.hinge.view;
@@ -51,11 +65,40 @@ is
    procedure free (the_Joint : in out physics.Joint.view);
 
 
+   --------------
+   --- Attributes
+   --
 
-private
+   overriding
+   procedure destruct    (Self : in out Item);
 
-   use physics.Joint;
+   overriding
+   function  Object_A    (Self : in     Item) return physics.Object.view;
+   overriding
+   function  Object_B    (Self : in     Item) return physics.Object.view;
 
+   overriding
+   function  Frame_A     (Self : in     Item) return Matrix_4x4;
+   overriding
+   function  Frame_B     (Self : in     Item) return Matrix_4x4;
+
+   overriding
+   procedure Frame_A_is  (Self : in out Item;   Now : in Matrix_4x4);
+   overriding
+   procedure Frame_B_is  (Self : in out Item;   Now : in Matrix_4x4);
+
+   overriding
+   function  is_Limited  (Self : in     Item;   DoF : in Degree_of_freedom) return Boolean;
+
+   overriding
+   procedure Velocity_is (Self : in out Item;   Now : in Real;
+                                                DoF : in Degree_of_freedom);
+   overriding
+   function  Extent            (Self : in     Item;   DoF : in Degree_of_freedom) return Real;
+
+   overriding
+   procedure desired_Extent_is (Self : in out Item;   Now : in Real;
+                                                      DoF : in Degree_of_freedom);
    overriding
    function  reaction_Force  (Self : in     Item) return Vector_3;
    overriding
@@ -67,268 +110,41 @@ private
    function  user_Data       (Self : in     Item)  return access lace.Any.limited_item'Class;
 
    overriding
-   function collide_Connected (Self : in Item) return Boolean
-   is
-      (False);
+   function  collide_Connected (Self : in Item) return Boolean;
 
 
-   --------
-   --- DoF6
+   -- Limits, which the DoF6, slider, cone twist and ball interfaces declare alike.
    --
+   function  lower_Limit    (Self : in     Item;   DoF : in Degree_of_freedom) return Real;
+   function  upper_Limit    (Self : in     Item;   DoF : in Degree_of_freedom) return Real;
 
-   type DoF6 is new Item
-                and physics.Joint.DoF6.item with
-      record
-         null;
-      end record;
-
-   type DoF6_view is access DoF6;
-
-   overriding
-   procedure destruct    (Self : in out DoF6);
-
-   overriding
-   function  Object_A     (Self : in     DoF6)     return physics.Object.view;
-   overriding
-   function  Object_B     (Self : in     DoF6)     return physics.Object.view;
-
-   overriding
-   function  Frame_A      (Self : in     DoF6)     return Matrix_4x4;
-   overriding
-   function  Frame_B      (Self : in     DoF6)     return Matrix_4x4;
-
-   overriding
-   procedure Frame_A_is  (Self : in out DoF6;   Now : in Matrix_4x4);
-   overriding
-   procedure Frame_B_is  (Self : in out DoF6;   Now : in Matrix_4x4);
-
-   overriding
-   function  is_Limited  (Self : in     DoF6;   DoF : in Degree_of_freedom) return Boolean;
-
-   overriding
-   procedure Velocity_is (Self : in out DoF6;   Now : in Real;
-                                                DoF : in Degree_of_freedom);
-   overriding
-   function  Extent            (Self : in     DoF6;   DoF : in Degree_of_freedom) return Real;
-   overriding
-   procedure desired_Extent_is (Self : in out DoF6;   Now : in Real;
-                                                      DoF : in Degree_of_freedom);
-   overriding
-   function  lower_Limit    (Self : in     DoF6;   DoF : in Degree_of_freedom) return Real;
-   overriding
-   function  upper_Limit    (Self : in     DoF6;   DoF : in Degree_of_freedom) return Real;
-
-   overriding
-   procedure lower_Limit_is (Self : in out DoF6;   Now : in Real;
+   procedure lower_Limit_is (Self : in out Item;   Now : in Real;
                                                    DoF : in Degree_of_freedom);
-   overriding
-   procedure upper_Limit_is (Self : in out DoF6;   Now : in Real;
+   procedure upper_Limit_is (Self : in out Item;   Now : in Real;
                                                    DoF : in Degree_of_freedom);
 
 
-   ----------
-   --- Slider
-   --
 
-   type Slider is new Item
-                  and physics.Joint.Slider.item with
-      record
-         null;
-      end record;
+private
 
-   type Slider_view is access Slider;
+   type DoF6       is new Item and physics.Joint.DoF6      .item with null record;
+   type Slider     is new Item and physics.Joint.Slider    .item with null record;
+   type cone_Twist is new Item and physics.Joint.cone_Twist.item with null record;
+   type Ball       is new Item and physics.Joint.Ball      .item with null record;
 
-
-   overriding
-   procedure destruct    (Self : in out Slider);
-
-   overriding
-   function  Object_A    (Self : in     Slider) return physics.Object.view;
-   overriding
-   function  Object_B    (Self : in     Slider) return physics.Object.view;
-
-   overriding
-   function  Frame_A     (Self : in     Slider) return Matrix_4x4;
-   overriding
-   function  Frame_B     (Self : in     Slider) return Matrix_4x4;
-
-   overriding
-   procedure Frame_A_is  (Self : in out Slider;   Now : in Matrix_4x4);
-   overriding
-   procedure Frame_B_is  (Self : in out Slider;   Now : in Matrix_4x4);
-
-   overriding
-   function  is_Limited  (Self : in     Slider;   DoF : in Degree_of_freedom) return Boolean;
-   overriding
-   procedure Velocity_is (Self : in out Slider;   Now : in Real;
-                                                  DoF : in Degree_of_freedom);
-   overriding
-   function  Extent            (Self : in     Slider;   DoF : in Degree_of_freedom) return Real;
-   overriding
-   procedure desired_Extent_is (Self : in out Slider;   Now : in Real;
-                                                        DoF : in Degree_of_freedom);
-   overriding
-   function  lower_Limit    (Self : in     Slider;   DoF : in Degree_of_freedom) return Real;
-   overriding
-   function  upper_Limit    (Self : in     Slider;   DoF : in Degree_of_freedom) return Real;
-
-   overriding
-   procedure lower_Limit_is (Self : in out Slider;   Now : in Real;
-                                                     DoF : in Degree_of_freedom);
-   overriding
-   procedure upper_Limit_is (Self : in out Slider;   Now : in Real;
-                                                     DoF : in Degree_of_freedom);
-
-
-   --------------
-   --- cone_Twist
-   --
-
-   type cone_Twist is new Item
-                      and physics.Joint.cone_Twist.item with
-      record
-         null;
-      end record;
-
+   type DoF6_view       is access DoF6;
+   type Slider_view     is access Slider;
    type cone_Twist_view is access cone_Twist;
-
-
-   overriding
-   procedure destruct    (Self : in out cone_Twist);
-
-   overriding
-   function  Object_A    (Self : in     cone_Twist)     return physics.Object.view;
-   overriding
-   function  Object_B    (Self : in     cone_Twist)     return physics.Object.view;
-
-   overriding
-   function  Frame_A     (Self : in     cone_Twist)     return Matrix_4x4;
-   overriding
-   function  Frame_B     (Self : in     cone_Twist)     return Matrix_4x4;
-
-   overriding
-   procedure Frame_A_is  (Self : in out cone_Twist;   Now : in Matrix_4x4);
-   overriding
-   procedure Frame_B_is  (Self : in out cone_Twist;   Now : in Matrix_4x4);
-
-   overriding
-   function  is_Limited  (Self : in     cone_Twist;   DoF : in Degree_of_freedom)    return Boolean;
-   overriding
-   procedure Velocity_is (Self : in out cone_Twist;   Now : in Real;
-                                                      DoF : in Degree_of_freedom);
-   overriding
-   function  Extent            (Self : in     cone_Twist;   DoF : in Degree_of_freedom) return Real;
-   overriding
-   procedure desired_Extent_is (Self : in out cone_Twist;   Now : in Real;
-                                                            DoF : in Degree_of_freedom);
-   overriding
-   function  lower_Limit    (Self : in     cone_Twist;   DoF : in Degree_of_freedom) return Real;
-   overriding
-   function  upper_Limit    (Self : in     cone_Twist;   DoF : in Degree_of_freedom) return Real;
-
-   overriding
-   procedure lower_Limit_is (Self : in out cone_Twist;   Now : in Real;
-                                                         DoF : in Degree_of_freedom);
-   overriding
-   procedure upper_Limit_is (Self : in out cone_Twist;   Now : in Real;
-                                                         DoF : in Degree_of_freedom);
-
-
-   --------
-   --- Ball
-   --
-
-   type Ball is new Item
-                and physics.Joint.Ball.item with
-      record
-         null;
-      end record;
-
-   type Ball_view is access Ball;
-
-
-   overriding
-   procedure destruct   (Self : in out Ball);
-
-   overriding
-   function  Object_A   (Self : in     Ball) return physics.Object.view;
-   overriding
-   function  Object_B   (Self : in     Ball) return physics.Object.view;
-
-   overriding
-   function  Frame_A    (Self : in     Ball) return Matrix_4x4;
-   overriding
-   function  Frame_B    (Self : in     Ball) return Matrix_4x4;
-
-   overriding
-   procedure Frame_A_is (Self : in out Ball;   Now : in Matrix_4x4);
-   overriding
-   procedure Frame_B_is (Self : in out Ball;   Now : in Matrix_4x4);
-
-   overriding
-   function  is_Limited  (Self : in     Ball;   DoF : in Degree_of_freedom) return Boolean;
-   overriding
-   procedure Velocity_is (Self : in out Ball;   Now : in Real;
-                                                DoF : in Degree_of_freedom);
-   overriding
-   function  Extent            (Self : in     Ball;   DoF : in Degree_of_freedom) return Real;
-   overriding
-   procedure desired_Extent_is (Self : in out Ball;   Now : in Real;
-                                                      DoF : in Degree_of_freedom);
-   overriding
-   function  lower_Limit    (Self : in     Ball;   DoF : in Degree_of_freedom) return Real;
-   overriding
-   function  upper_Limit    (Self : in     Ball;   DoF : in Degree_of_freedom) return Real;
-
-   overriding
-   procedure lower_Limit_is (Self : in out Ball;   Now : in Real;
-                                                   DoF : in Degree_of_freedom);
-   overriding
-   procedure upper_Limit_is (Self : in out Ball;   Now : in Real;
-                                                   DoF : in Degree_of_freedom);
+   type Ball_view       is access Ball;
 
 
    ---------
    --- Hinge
    --
 
-   type Hinge is new Item
-                and physics.Joint.Hinge.item with
-      record
-         null;
-      end record;
-
+   type Hinge is new Item and physics.Joint.Hinge.item with null record;
    type Hinge_view is access Hinge;
 
-
-   overriding
-   procedure destruct    (Self : in out Hinge);
-
-   overriding
-   function  Object_A    (Self : in     Hinge)     return physics.Object.view;
-   overriding
-   function  Object_B    (Self : in     Hinge)     return physics.Object.view;
-
-   overriding
-   function  Frame_A     (Self : in     Hinge)     return Matrix_4x4;
-   overriding
-   function  Frame_B     (Self : in     Hinge)     return Matrix_4x4;
-
-   overriding
-   procedure Frame_A_is  (Self : in out Hinge;   Now : in Matrix_4x4);
-   overriding
-   procedure Frame_B_is  (Self : in out Hinge;   Now : in Matrix_4x4);
-
-   overriding
-   function  is_Limited  (Self : in     Hinge;   DoF : in Degree_of_freedom) return Boolean;
-   overriding
-   procedure Velocity_is (Self : in out Hinge;   Now : in Real;
-                                                 DoF : in Degree_of_freedom);
-   overriding
-   function  Extent            (Self : in     Hinge;   DoF : in Degree_of_freedom) return Real;
-   overriding
-   procedure desired_Extent_is (Self : in out Hinge;   Now : in Real;
-                                                       DoF : in Degree_of_freedom);
    overriding
    procedure Limits_are  (Self : in out Hinge;   Low, High        : in Real;
                                                  Softness         : in Real := 0.9;
@@ -340,36 +156,23 @@ private
    function  upper_Limit (Self : in     Hinge)   return Real;
 
    overriding
-   function  Angle       (Self : in     Hinge)   return Real;
+   function  limit_Enabled (Self : in Hinge) return Boolean;
 
    overriding
-   function reference_Angle (Self : in Hinge) return Radians
-   is (raise Program_Error);
+   function  reference_Angle (Self : in Hinge) return Radians;
+   overriding
+   function  Angle           (Self : in Hinge) return Real;
 
    overriding
-   function  local_Anchor_on_A (Self : in Hinge) return Vector_3
-   is (raise Program_Error);
+   function  local_Anchor_on_A (Self : in Hinge) return Vector_3;
+   overriding
+   function  local_Anchor_on_B (Self : in Hinge) return Vector_3;
 
    overriding
-   function  local_Anchor_on_B (Self : in Hinge) return Vector_3
-   is (raise Program_Error);
-
+   function motor_Enabled    (Self : in Hinge) return Boolean;
    overriding
-   function limit_Enabled (Self : in Hinge) return Boolean
-   is (raise Program_Error);
-
-
+   function motor_Speed      (Self : in Hinge) return Real;
    overriding
-   function motor_Enabled    (Self : in Hinge) return Boolean
-   is (raise Program_Error);
-
-   overriding
-   function motor_Speed      (Self : in Hinge) return Real
-   is (raise Program_Error);
-
-   overriding
-   function max_motor_Torque (Self : in Hinge) return Real
-   is (raise Program_Error);
-
+   function max_motor_Torque (Self : in Hinge) return Real;
 
 end bullet_Physics.Joint;
