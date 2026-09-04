@@ -461,7 +461,6 @@ is
    is
    begin
       null;     -- TODO
-      -- Self.physics_Engine.update_Bounds (of_Sprite.Solid);
    end update_Bounds;
 
 
@@ -473,7 +472,6 @@ is
    begin
       of_Sprite.Solid.Site_is (To);
 
-      --      Self.physics_Engine.update_Site (of_Sprite.Solid, To);
    end update_Site;
 
 
@@ -483,7 +481,6 @@ is
    is
    begin
       null;
-      -- Self.physics_Engine.set_Speed (of_Sprite.Solid, To);
    end set_Speed;
 
 
@@ -495,7 +492,6 @@ is
    begin
       of_Sprite.Solid.xy_Spin_is (To);
 
-      -- Self.physics_Engine.set_xy_Spin (of_Sprite.Solid, To);
    end set_xy_Spin;
 
 
@@ -505,11 +501,6 @@ is
    is
    begin
       null;
-      -- Self.physics_Engine.update_Scale (of_Sprite.Solid, To);
-
---        Self.physics_Engine.add (std_Physics.Engine.Command' (Kind   => scale_Object,
---                                                              Sprite => the_Command.Sprite.Solid,
---                                                              Scale  => the_Command.Scale));
    end update_Scale;
 
 
@@ -520,7 +511,6 @@ is
       pragma Unreferenced (Self);
    begin
       to_Sprite.apply_Force (Force);
-      -- Self.physics_Engine.apply_Force (to_Sprite.Solid, Force);
    end apply_Force;
 
 
@@ -801,9 +791,6 @@ is
    is
    begin
       null;     -- TODO
-      -- Self.physics_Engine.set_local_Anchor (for_Joint.Physics.all'Access,
-      --                                        to          => To,
-      --                                        is_Anchor_A => True);
 
 --        the_World.physics_Space.set_Joint_local_Anchor (the_Command.anchor_Joint.Physics.all'Access,
 --                                                        the_Command.is_Anchor_A,
@@ -824,9 +811,6 @@ is
    is
    begin
       null;     -- TODO
-      -- Self.physics_Engine.set_local_Anchor (for_Joint.Physics.all'Access,
-      --                                        To          => To,
-      --                                        is_Anchor_A => False);
 
 --        Self.Commands.add ((Kind         => set_Joint_local_Anchor,
 --                            Sprite       => null,
@@ -1040,8 +1024,6 @@ is
    is
    begin
       null;     -- TODO
-      -- Self.physics_Engine.rid (the_Joint.Physics.all'Access);
-
 --        Self.Commands.add ((kind   => rid_Joint,
 --                            sprite => null,
 --                            joint  => the_Joint));
@@ -1609,7 +1591,6 @@ end gel.World;
             -- for Each in 1 .. Count
             -- loop
             --     declare
-            --        use Physics.Engine;
                   -- the_Command : World.Command renames the_Commands (Each);
                -- begin
                   -- command_Count (the_Command.Kind) := command_Count (the_Command.Kind) + 1;
@@ -1617,9 +1598,6 @@ end gel.World;
                   -- case the_Command.Kind
                   -- is
 --                       when scale_Sprite =>
---                          the_World.physics_Engine.add (std_Physics.Engine.Command' (Kind   => scale_Object,
---                                                                                     Sprite => the_Command.Sprite.Solid,
---                                                                                     Scale  => the_Command.Scale));
 --                          the_Command.Sprite.Solid.activate;
 --                          the_Command.Sprite.Shape.Scale_is (the_Command.Scale);
 --                          the_Command.Sprite.Solid.Scale_is (the_Command.Scale);
@@ -1632,8 +1610,6 @@ end gel.World;
 
 
                      -- when update_Site =>
-                     --     the_World.physics_Engine.update_Site (the_Command.Sprite.Solid,
-                     --                                           the_Command.Site);
 --                          std_physics.Object.view (the_Command.Sprite.Solid).Site_is (the_Command.Site);
 
 
@@ -1665,7 +1641,6 @@ end gel.World;
                      --
                      --           if the_Sprite.physics_Model.is_Tangible
                      --           then
-                     --              the_World.physics_Engine.add (physics.Object.view (the_Sprite.Solid));
                      --           end if;
                      --
                      --           the_World.sprite_Count                     := the_World.sprite_Count + 1;
@@ -1703,7 +1678,6 @@ end gel.World;
                      --           then
                      --              if the_Sprite.physics_Model.is_Tangible
                      --              then
-                     --                 the_World.physics_Engine.rid (the_Sprite.Solid);
                      --              end if;
                      --
                      --              if the_sprite_Transforms.contains (the_Sprite) then
