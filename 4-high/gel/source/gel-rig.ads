@@ -39,6 +39,7 @@ is
    type motion_Mode is (Dynamics, Animation);
 
    procedure motion_Mode_is (Self : in out Item;   Now : in motion_Mode);
+   function  Mode           (Self : in     Item)     return motion_Mode;
 
 
    subtype bone_Id is ada.Strings.unbounded.unbounded_String;
@@ -206,13 +207,13 @@ is
 
    procedure set_rotation_Angle   (Self : in out Item'Class;   for_Joint : in scene_joint_Id;
                                                                Axis      : in Axis_Kind;
-                                                               To        : in Real);     -- TODO: Use Radians type (and below).
+                                                               To        : in Radians);
    procedure set_x_rotation_Angle (Self : in out Item'Class;   for_Joint : in scene_joint_Id;
-                                                               To        : in Real);
+                                                               To        : in Radians);
    procedure set_y_rotation_Angle (Self : in out Item'Class;   for_Joint : in scene_joint_Id;
-                                                               To        : in Real);
+                                                               To        : in Radians);
    procedure set_z_rotation_Angle (Self : in out Item'Class;   for_Joint : in scene_joint_Id;
-                                                               To        : in Real);
+                                                               To        : in Radians);
 
    procedure set_Location   (Self : in out Item'Class;   for_Joint : in scene_joint_Id;
                                                          To        : in Vector_3);
@@ -228,6 +229,10 @@ is
    procedure update_all_global_Transforms (Self : in out Item'Class);
 
    procedure animate         (Self : in out Item;   world_Age : in Duration);
+   --
+   -- Poses every animated joint for the world age, interpolating between the
+   -- keyframes on either side of it; every channel loops over its clip.
+
    procedure reset_Animation (Self : in out Item);
 
 
@@ -322,29 +327,23 @@ private
 
    -- animation_Channel
    --
+   -- One collada animation channel: keyframe times and values for one transform
+   -- of one joint. The target names it as '<node id>/<sid>[.<member>]'.
+   --
+   type channel_Kind is (full_Transform,                       -- A matrix per key.
+                         Location,                             -- A translation vector per key.
+                         location_X, location_Y, location_Z,   -- One component of a translation per key.
+                         Rotation);                            -- An angle in degrees per key.
+
    type animation_Channel is
       record
-         Target            : access collada.Library.visual_Scenes.Transform;
-         target_Joint      :        scene_joint_Id;
+         Kind         :        channel_Kind;
+         target_Joint :        scene_joint_Id;
+         Target       : access collada.Library.visual_Scenes.Transform;     -- The joint's transform the channel drives.
 
-         Times             : access collada.float_array;
-         Values            : access collada.float_array;
-
-         Cursor            :        Index := 0;       -- Current frame of the anmination.
-
-         initial_Angle     :        Real;             -- For angle interpolation during 'rotation' animation.
-         current_Angle     :        Real  := 0.0;     --
-         interp_Delta      :        Real  := 0.0;     --
-
-         initial_Site      :        Vector_3;         -- For location interpolation during 'translation' animation.
-         current_Site      :        Vector_3;         --
-         site_interp_Delta :        Vector_3;         --
-
-         initial_Transform      : Transform;         -- For matrix interpolation during 'full_transform' animation.
-         current_Transform      : Transform;         --
-         slerp_Time             : Real;              -- Slerp Time (T) value in range '0.0 .. 1.0'.     -- TODO: use 'unit_Interval' type.
-         Transforms             : Transforms_view;
-         Transform_interp_Delta : Real;              -- Rate at which the SLERP time parameter increases.
+         Times        : access collada.float_array;                         -- Keyframe times, in seconds.
+         Values       : access collada.float_array;                         -- Keyframe values, as many per key as the kind needs.
+         Transforms   :        Transforms_view;                             -- The values as rotation and translation, for a full transform.
       end record;
 
    subtype channel_Id is scene_joint_Id;
