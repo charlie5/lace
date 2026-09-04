@@ -643,3 +643,16 @@ up to 330 000 per frame with the camera just above the terrain) and traced
 with a probe shader. `no_Shine` is now 1.0e6: still no visible highlight, and
 safe to interpolate. Verified: zero black pixels in the same frames, terrain
 pixels otherwise identical.
+
+
+## 13. Camera projection setters had no effect (found 2026-09-05)
+
+`FoVy_is`, `Aspect_is`, `near_Plane_Distance_is` and `far_Plane_Distance_is`
+only stored their value. The projection transform was rebuilt in `define` and
+`Viewport_is` alone, so a change made after the camera was defined was
+ignored until the next viewport resize, and `to_World_Site` rebuilt a
+projection of its own from the stored values. A body-local
+`update_Projection` now rebuilds the transform, and `define`, `Viewport_is`
+and the four setters call it; `to_World_Site` uses the stored transform.
+Verified with a screenshot applet: setting the near plane to 3.0 clips the
+ground in front of the camera where before the image did not change.

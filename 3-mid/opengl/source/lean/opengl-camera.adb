@@ -11,6 +11,20 @@ is
         ada.Text_IO;
 
 
+   procedure update_Projection (Self : in out Item'Class)
+   --
+   -- Rebuilds the projection from the field of view, aspect and clipping distances.
+   --
+   is
+   begin
+      Self.projection_Transform := to_Perspective (FoVy   => Self.FoVy,
+                                                   Aspect => Self.Aspect,
+                                                   zNear  => Self.near_Plane_Distance,
+                                                   zFar   => Self. far_Plane_Distance);
+   end update_Projection;
+
+
+
    ---------
    --- Forge
    --
@@ -23,10 +37,7 @@ is
 
       Self.world_Transform      := Identity_4x4;
       Self. view_Transform      := Identity_4x4;
-      Self.projection_Transform := to_Perspective (FoVy   => Self.FoVy,
-                                                   Aspect => Self.Aspect,
-                                                   zNear  => Self.near_Plane_Distance,
-                                                   zFar   => Self. far_Plane_Distance);
+      update_Projection (Self);
       Self.Viewport             := (Min => [0, 0],
                                     Max => [0, 0]);
    end define;
@@ -46,17 +57,13 @@ is
 
    function to_World_Site (Self : in Item;   window_Site : in math.Vector_3) return math.Vector_3
    is
-      perspective_Transform : constant math.Matrix_4x4 := to_Perspective (FoVy   => Self.FoVy,
-                                                                          Aspect => Self.Aspect,
-                                                                          zNear  => Self.near_Plane_Distance,
-                                                                          zFar   => Self. far_Plane_Distance);
       Viewport              : constant Rectangle := Self.Viewport;
       Position_window_space : constant Vector_3  := [window_Site (1),
                                                      Real (Viewport.Max (2)) - window_Site (2),
                                                      window_Site (3)];
       Site_world_space      : constant Vector_3  := unProject (Position_window_space,
                                                                Model      => Self.view_Transform,
-                                                               Projection => perspective_Transform,
+                                                               Projection => Self.projection_Transform,
                                                                Viewport   => Viewport);
    begin
       return Site_world_space;
@@ -130,6 +137,7 @@ is
    is
    begin
       Self.FoVy := Now;
+      update_Projection (Self);
    end FoVy_is;
 
 
@@ -146,6 +154,7 @@ is
    is
    begin
       Self.Aspect := Now;
+      update_Projection (Self);
    end Aspect_is;
 
 
@@ -162,6 +171,7 @@ is
    is
    begin
       Self.near_Plane_Distance := Now;
+      update_Projection (Self);
    end near_Plane_Distance_is;
 
 
@@ -178,6 +188,7 @@ is
    is
    begin
       Self.far_Plane_Distance := Now;
+      update_Projection (Self);
    end far_Plane_Distance_is;
 
 
@@ -225,10 +236,7 @@ is
          half_FoV_max := arcTan (Self.aspect * Tan_of_half_FoV_max);     -- TODO: 'half_FoV_max' is not used after here. Why is it set ?
       end if;
 
-      Self.projection_Transform := to_Perspective (FoVy   => Self.FoVy,
-                                                   Aspect => Self.Aspect,
-                                                   zNear  => Self.near_Plane_Distance,
-                                                   zFar   => Self. far_Plane_Distance);
+      update_Projection (Self);
    end Viewport_is;
 
 
