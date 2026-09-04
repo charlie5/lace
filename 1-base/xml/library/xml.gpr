@@ -13,7 +13,7 @@ is
    package Binder   renames Lace_shared.Binder;
 
    package Linker is
-      for Linker_Options use ("-g", "-lexpat");
+      for Linker_Options use ("-lexpat");
    end Linker;
 
 end Xml;
