@@ -1,9 +1,8 @@
 with
      gel.Window.setup,
      gel.Applet.gui_world,
-     gel.Camera,
      gel.Sprite,
-     gel.Human_v1,
+     gel.Human,
      gel.Forge,
 
      ada.Calendar;
@@ -13,113 +12,49 @@ pragma Unreferenced (gel.Window.setup);
 
 procedure launch_human_Model_v1
 --
--- Drops an gel human model onto a simple box terrain.
---
+-- Animates the 'human-default' model, showing its bones rather than its skin.
 --
 is
    use ada.Calendar;
 
    the_Applet : constant gel.Applet.gui_World.view := gel.Forge.new_gui_Applet ("human Model", 1920, 1200);
-   the_Ground : constant gel.Sprite.view           := gel.Forge.new_box_Sprite (the_Applet.gui_World,
-                                                                                Mass => 0.0,
-                                                                                Size => [50.0, 1.0, 50.0]);
 
---     the_human_graphics_Model : aliased gel.graphics_Model.open_gl.view
---       := gel.graphics_Model.open_gl.forge.new_Model (scale   => (1.0, 1.0, 1.0),
---  --                                                    model   => gel.to_Asset ("assets/gel/model/gel-human.dae"),
---                                                     model   => gel.to_Asset ("assets/gel/collada/mh-human-dae.dae"),
---  --                                                    model   => gel.to_Asset ("assets/gel/collada/alfieri.dae"),
---                                                     texture => gel.null_Asset, -- gel.to_Asset ("assets/collada/gel-human-texture.tga"),
---                                                     Texture_is_lucid => False);
---     the_human_physics_Model : constant gel.physics_Model.view
---       := gel.physics_Model.Forge.new_physics_Model (shape_Info => (kind         => gel.physics_Model.Cube,
---                                                                    half_extents => 0.5 * (4.0, 1.0, 2.0)),
---                                                     mass       => 1.0);
---  --    the_human_physics_Model : constant gel.physics_Model.view
---  --      := gel.physics_Model.Forge.new_physics_Model (shape_Info => (kind          => gel.physics_Model.a_Sphere,
---  --                                                                   sphere_radius => 0.2),
---  --                                                    mass       => 0.5);
-   my_Human         : aliased gel.Human_v1.item;
-   use gel.Human_v1;
+   the_Ground : constant gel.Sprite.view := gel.Forge.new_box_Sprite (the_Applet.gui_World,
+                                                                      Mass => 0.0,
+                                                                      Size => [50.0, 1.0, 50.0]);
+   my_Human : aliased gel.Human.item;
 
-   frame_Period     : constant Duration         := 0.016_666_667;     -- ~ 1/60th of a second.
-   next_render_Time :          ada.calendar.Time;
+   frame_Period     : constant Duration := 0.016_666_667;     -- ~ 1/60th of a second.
+   next_render_Time :          ada.Calendar.Time;
 
 begin
-   gel.Human_v1.Mode_is (Skin);
-   gel.Human_v1.Mode_is (Bones);
-   -- gel.Human_v1.Mode_is (Skin_and_Bones);
-
-   the_Applet.gui_World.Gravity_is ([0.0, -0.0, 0.0]);
-   -- the_Applet.gui_World.Gravity_is ((0.0, -9.8, 0.0));
-   -- the_Applet.gui_World.Gravity_is ((0.0, -0.5, 0.0));
-
-   --  -- the_Applet.gui_Camera.Site_is ((0.0, 1.0, 5.0));    -- Position the camera
-   -- the_Applet.gui_Camera.Site_is ((0.0, -9.0, 5.0));    -- Position the camera
-   the_Applet.gui_Camera.Site_is ([0.0, -0.0, 5.0]);    -- Position the camera
-   the_Applet.enable_simple_Dolly (1);                  -- Enable user camera control via keyboards
+   the_Applet.gui_World.Gravity_is ([0.0, 0.0, 0.0]);
+   the_Applet.gui_Camera.Site_is ([0.0, 0.0, 5.0]);                             -- Position the camera.
+   the_Applet.enable_simple_Dolly (1);                                          -- Enable user camera control via keyboard.
    the_Applet.Dolly.Speed_is (0.1);
    the_Applet.enable_Mouse (detect_Motion => False);                            -- Enable mouse events.
 
---     gel.Human_v1.use_Model ("assets/mh-blender-no_bones.dae");
-   -- gel.Human_v1.use_Model ("assets/mh-blender-2.dae");
-   -- gel.Human_v1.use_Model ("assets/mh-blender-2-y_up.dae");
---     gel.Human_v1.use_Model ("assets/human-default.dae");
-   gel.Human_v1.use_Model ("assets/human-default-animated-01_01.dae");
-
---     gel.Human_v1.use_Model ("assets/human-new.dae");
---     gel.Human_v1.use_Model ("assets/human-default-1.dae");
-   --     gel.Human.use_Model ("assets/gel/collada/alfieri.dae");
-
    my_Human.define (the_Applet.gui_World,
-                    null, -- the_human_graphics_Model,
-                    null, -- the_human_physics_Model,
-                    Mass         => 1.0,
-                    is_Kinematic => False);
+                    Model   => "assets/human-default-animated-01_01.dae",
+                    Mass    => 1.0,
+                    Display => gel.Human.Bones);
+   my_Human.motion_Mode_is (gel.Human.Animation);
 
-   -- my_Human.base_Sprite.rotate (to_Spin => x_Rotation_from (to_Radians (0.0)));
---     my_Human.base_Sprite.move   ((0.0, 2.0, 0.0));
-   the_Applet.gui_World.add (my_Human.base_Sprite, and_Children => True);      -- Add the human
---     my_Human.base_Sprite.move ((0.0,  0.0,  0.0));                             --
+   the_Applet.gui_World.add (the_Ground);
+   the_Ground.Site_is ([0.0, -10.0, 0.0]);
 
-
---     my_Human.skin_Sprite.rotate (to_Spin =>  (x_Rotation_from (to_Radians (0.0))));
---     my_Human.skin_Sprite.move   ((0.0, 2.0, 0.0));
-   the_Applet.gui_World.add (my_Human.skin_Sprite);                                 -- Add human skin.
-
-
-   the_Applet.gui_World.add (the_Ground);                         -- Add the ground
-   the_Ground.Site_is ([0.0,  -10.0,  0.0]);                      --
-
-      my_Human.motion_Mode_is (gel.Human_v1.Animation);
-
---     my_Human.enable_Graphics;
---     my_Human.attach_program_Parameters_to_model_Faces;
-
-
-   next_render_Time := ada.Calendar.clock;
+   next_render_Time := ada.Calendar.Clock;
 
    while the_Applet.is_open
    loop
-      -- my_Human.base_Sprite.apply_Force ((0.0, 100.0, 0.0));
-      -- my_Human.Sprite (for_Bone => gel.human_Types_v1.upper_Arm_R).apply_Force ((0.0, 10000.0, 0.0));
-      -- gel.Human_v1.Sprite (my_Human, for_Bone => gel.human_Types_v1.upper_Arm_R).apply_Force ((0.0, 100.0, 0.0));
-
-      the_Applet.gui_World.evolve; -- (by => 1.0/60.0);      -- Evolve the world.
-      my_Human  .evolve (the_Applet.gui_World.Age);
-      the_Applet.freshen;                              -- Handle any new events and update the screen.
+      the_Applet.gui_World.evolve;                                              -- Evolve the world.
+      my_Human.evolve (the_Applet.gui_World.Age);                               -- Evolve the human.
+      the_Applet.freshen;                                                       -- Handle any new events and update the screen.
 
       next_render_Time := next_render_Time + frame_Period;
       delay until next_render_Time;
    end loop;
 
---     opengl.IO.stop_Capture;
-
    the_Applet.destroy;
-
-   gel.Human_v1.rid_Model;     -- The model document, now that no human uses it.
-
--- exception
---     when E : others =>
---        put_Line (Exception_Information (E));
+   my_Human  .destroy;     -- After the world has freed its sprites.
 end launch_human_Model_v1;
