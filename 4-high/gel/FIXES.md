@@ -315,3 +315,117 @@ builder's hard-coded gcc-15.1.1 `a-sttebu.ali` path now uses
   runs the whole reworked teardown — deregister, gate drain, world/applet
   destroy — prints "Client done.", stops the server through the new RCI
   call, and both partitions exit on their own.
+
+
+# Second pass: the rig and the humans (2026-09-05)
+
+A targeted review of `gel.Rig`, `gel.Human`, `gel.Human_v1`, their demos and
+the world's teardown, made after the math convention change and the
+physics, xml and collada fixes beneath them, found 2 HIGH, 8 MEDIUM and
+9 LOW defects. All are fixed here except the one under "Not changed".
+
+The decision that shapes the work: **`gel.Human` is now a configuration of
+`gel.Rig`** and `gel.Human_v1` and both `human_Types` packages are gone.
+The three copies of the keyframe machinery become one, in the rig; the
+human adds a display mode (skin, bones, or both), a `Site_is`/`Spin_is`,
+an `evolve` that animates and poses, and a ready-made table of MakeHuman
+joint limits. A human is defined from a collada file name and adds itself
+to the world. About 4 100 lines go.
+
+Severity: **HIGH** = wrong result, crash or memory unsafety on a path a
+demo exercises; **MEDIUM** = wrong result on a common path or a hazard one
+call away; **LOW** = latent, edge case or API trap.
+
+
+## 1. The rig
+
+- **M1** Animation was frame-rate dependent: the keyframe cursor advanced
+  by world age but the pose by a fixed increment per call. `animate` now
+  interpolates directly from the elapsed time, between the keys on either
+  side of it, so the pose is a function of the world's age alone; the
+  per-channel cursor, delta, current-value and slerp state are gone, and
+  every channel loops over its clip. (Before, matrix channels looped and
+  the others stopped at their last key.)
+- **M2** The rig could animate one model: `define` matched channel targets
+  against a hard-coded list of the human rig's bone names and raised on
+  anything else. Channels are now derived from the target,
+  `<node id>/<sid>[.<member>]`: the joint is the id, the transform is the
+  node's transform with that sid, and the member picks the kind (a matrix,
+  a translation, one component of it, or a rotation angle). Targets that
+  name nothing the rig models (materials, scale, nodes outside the
+  skeleton) are ignored; a channel with the wrong number of values, or
+  one that appears twice, raises `gel.Error`.
+- **M3** The rig keyed its maps by node id but recognised the root by
+  name. The id is used everywhere; and the skin's joint names, which are
+  the nodes' sids, are mapped to node ids when the joint slots are set, so
+  Blender exports whose bone ids differ from their sids and names load.
+- The root bone's transform was never written to the skin program: the
+  update loop walked the joint-offset map, which the root is not in. It
+  walks the joint slots now, and `joint_site_Offet` answers zero for the
+  root.
+- **L2** The shared start time was reset whenever one channel wrapped;
+  gone with M1.
+- **L3** A model without a skin controller or a visual scene raises
+  `gel.Error` naming the model instead of dereferencing null.
+- **L4** The skeleton root the document names is found by id among the
+  scene's nodes, rather than assumed to be the first child of the first
+  root.
+- **L1**, **L6** The dead procedures, the `to_Math` helper and the
+  in-loop renaming of `Index` are gone; the rotation setters take
+  `Radians`.
+- `Mode` returns the rig's motion mode.
+
+
+## 2. The humans
+
+- **H1** `gel.Human.define` divided the shared document's keyframe times
+  by five in place, so a second human animated 25 times faster. Gone with
+  the rewrite: a human's rig loads and owns its own document.
+- **H2** `gel.Human.destroy` freed the bone sprites' graphics models,
+  which the world owns and frees again, and freed the base sprite without
+  destroying it. `destroy` now destroys the rig, after the world.
+- **M4** `animate` and `evolve` were split and the demo called only the
+  half that does not pose the skin. `evolve (world_Age)` animates in
+  Animation mode and poses the skin.
+- **M5** The fixed channel table crashed on a model lacking a channel.
+  Channels come from the file now.
+- **M6** The skin's graphics model and texture were hard-coded regardless
+  of `use_Model`, and `define`'s `Model` and `physics_Model` parameters
+  were unused. `define` takes the model's file name.
+- **M7** `gel.Human_v1`, `gel.human_Types` and `gel.human_Types_v1` are
+  removed; the `human_model_v1` and `mh_animation` demos use `gel.Human`
+  with the display mode they had.
+- **M8** The per-frame prints in `Human_v1.evolve` went with it.
+- **L7**, **L8**, **L9** The name-to-enumeration conversions, the global
+  display mode, the no-op time loop and the unused declarations went with
+  it.
+
+
+## Not changed
+
+- **L5** `guessed_bone_Length` still measures to the first child for the
+  root and the last child for other joints; making it symmetric would
+  change the proportions of every shipped rig.
+- The rig still cancels the root joint's own motion, so a rig whose only
+  bone merely translates shows no animation; the base sprite is what
+  places a rig in the world.
+- `mh-human-dae.dae` carries no bone animation (its one channel targets a
+  shader), so the human model demo shows the model in its bind pose.
+
+
+## Verification
+
+- `build_all` builds warning-free; the three human demos compile against
+  the new `gel.Human`.
+- The one-bone box rig renders pixel-identical to the frame made before
+  these changes, and the animated one-bone box, which the old rig refused
+  ("target not handled"), now loads and runs.
+- The human rig demo's model (`human-animation-jump.dae`, desk profile)
+  animates; its frame at 120 frames is reproducible run to run, differs at
+  60 frames, and differs from the pre-change frame only in phase and in
+  the hips now following the animation.
+- The new `gel.Human` builds the MakeHuman model in all three display
+  modes and destroys cleanly after the world.
+- To build the desk profile, export `opengl_profile=desk` and touch
+  `3-mid/opengl/source/opengl.adb`: the profile is a subunit and gprbuild
+  does not notice the swap on its own.
