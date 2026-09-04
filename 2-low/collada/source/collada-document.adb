@@ -44,142 +44,87 @@ is
 
 
 
-   function to_int_Array (From : in String) return int_array
+   function is_Whitespace (C : in Character) return Boolean
+   is (C in ' ' | ada.Characters.latin_1.HT
+              | ada.Characters.latin_1.LF
+              | ada.Characters.latin_1.CR);
+
+
+   generic
+      type Element is private;
+      type Index   is range <>;
+      type Elements is array (Index range <>) of Element;
+
+      with function Value (Image : in String) return Element;
+
+   function to_Array (From : in String) return Elements;
+   --
+   -- Splits 'From' at runs of XML whitespace (space, tab, line feed and carriage
+   -- return) and converts each token with 'Value'.
+
+   function to_Array (From : in String) return Elements
    is
-      use ada.Strings.fixed;
+      Count : Natural := 0;
+      i     : Natural := From'First;
 
-      the_Array : int_array (1 .. 500_000);
-      Count     : math.Index              := 0;
+      procedure skip_Whitespace
+      is
+      begin
+         while i <= From'Last and then is_Whitespace (From (i))
+         loop
+            i := i + 1;
+         end loop;
+      end skip_Whitespace;
 
-      Start     : Natural := 1;
-      Cursor    : Natural := Index (From, " ");
+      procedure skip_Token
+      is
+      begin
+         while i <= From'Last and then not is_Whitespace (From (i))
+         loop
+            i := i + 1;
+         end loop;
+      end skip_Token;
 
    begin
-      if Cursor = 0
-      then
-         return [1 => Integer'Value (From)];
-      end if;
-
+      -- Count the tokens.
+      --
       loop
-         if         From (Start .. Cursor - 1) /= ""
-           and then From (Start .. Cursor - 1) /= "" & ada.Characters.latin_1.LF
-         then
-            Count             := Count + 1;
-            the_Array (Count) := Integer'Value (From (Start .. Cursor - 1));
-         end if;
+         skip_Whitespace;
+         exit when i > From'Last;
 
-         Start  := Cursor + 1;
-         Cursor := Index (From, " ", Start);
-
-         exit when Cursor = 0;
+         Count := Count + 1;
+         skip_Token;
       end loop;
 
-      if Start <= From'Last
-      then
-         Count             := Count + 1;
-         the_Array (Count) := Integer'Value (From (Start .. From'Last));
-      end if;
-
-      return the_Array (1 .. Count);
-   end to_int_Array;
-
-
-
-   function to_float_Array (From : in String) return float_array
-   is
-   begin
-      if From = ""
-      then
-         return float_array' (1 .. 0 => <>);
-      end if;
-
+      -- Convert them.
+      --
       declare
-         use ada.Strings.fixed;
-
-         the_Array : float_array (1 .. 500_000);
-         Count     : math.Index                := 0;
-
-         Start     : Integer    := 1;
-         Cursor    : Integer    := Index (From, " ");
-
+         Result : Elements (Index (1) .. Index (Count));
+         First  : Positive;
       begin
-         if Cursor = 0
-         then
-            return [1 => math.Real'Value (From)];
-         end if;
+         i := From'First;
 
+         for Each of Result
          loop
-            if         From (Start .. Cursor - 1) /= ""
-              and then From (Start .. Cursor - 1) /= "" & ada.Characters.latin_1.LF
-            then
-               Count             := Count + 1;
-               the_Array (Count) := math.Real'Value (From (Start .. Cursor - 1));
-            end if;
+            skip_Whitespace;
+            First := i;
+            skip_Token;
 
-            Start  := Cursor + 1;
-            Cursor := Index (From, " ", Start);
-
-            exit when Cursor = 0;
+            Each := Value (From (First .. i - 1));
          end loop;
 
-         if From (Start .. From'Last) /= ""
-         then
-            Count             := Count + 1;
-            the_Array (Count) := math.Real'Value (From (Start .. From'Last));
-         end if;
-
-         return the_Array (1 .. Count);
+         return Result;
       end;
-   end to_float_Array;
+   end to_Array;
 
 
 
-   function to_Text_array (From : in String) return Text_array
-   is
-   begin
-      if From = ""
-      then
-         return Text_array' (1 .. 0 => <>);
-      end if;
+   function to_Integer (Image : in String) return Integer   is (Integer  'Value (Image));
+   function to_Real    (Image : in String) return math.Real is (math.Real'Value (Image));
 
-      declare
-         use ada.Strings.fixed;
-
-         the_Array : Text_array (1 .. 40_000);
-         Count     : math.Index              := 0;
-
-         Start     : Integer    := 1;
-         Cursor    : Integer    := Index (From, " ");
-
-      begin
-         if Cursor = 0
-         then
-            return [1 => +From];
-         end if;
-
-         loop
-            if         From (Start .. Cursor - 1) /= ""
-              and then From (Start .. Cursor - 1) /= "" & ada.Characters.latin_1.LF
-            then
-               Count             := Count + 1;
-               the_Array (Count) := +From (Start .. Cursor - 1);
-            end if;
-
-            Start  := Cursor + 1;
-            Cursor := Index (From, " ", Start);
-
-            exit when Cursor = 0;
-         end loop;
-
-         if From (Start .. From'Last) /= ""
-         then
-            Count             := Count + 1;
-            the_Array (Count) := +From (Start .. From'Last);
-         end if;
-
-         return the_Array (1 .. Count);
-      end;
-   end to_Text_array;
+   function to_int_Array   is new to_Array (Integer,   math.Index, int_array,   to_Integer);
+   function to_float_Array is new to_Array (math.Real, math.Index, float_array, to_Real);
+   function to_Text_array  is new to_Array (Text,      Positive,   Text_array,  to_Text);
 
 
 
