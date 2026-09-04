@@ -23,8 +23,8 @@ begin
                 Width  => 1_000,
                 Height => 1_000);
 
-   Demo.Camera.Position_is ([0.0, 40.0, 0.0],
-                            x_Rotation_from (to_Radians (90.0)));
+   Demo.Camera.Position_is ([0.0, 40.0, 100.0],
+                            x_Rotation_from (to_Radians (00.0)));
 
    declare
       -- The models.
