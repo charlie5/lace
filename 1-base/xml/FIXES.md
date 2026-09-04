@@ -131,3 +131,14 @@ call away; **LOW** = latent, edge case or API trap.
   file, and an exception raised inside a handler.
 - The gel box rig, loaded through collada, renders pixel-identical with the
   previous and the new xml library.
+
+
+## Regression test
+
+`1-base/xml/applet/test/regression` (`test_xml_regression`), wired into
+`build_all`, covers the findings above: line breaks and entities in data,
+the document element's parent and attributes, whitespace-only data, `free`,
+the messages for an empty, malformed and missing file, the reader's
+handlers across chunks and an exception raised in one, and the writer's
+escaping, inline text, indentation, round trip and unbalanced-nesting
+errors.

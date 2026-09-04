@@ -241,3 +241,11 @@ the frame in flight before the worlds go.
 - There is still no physics test suite; the joint attribute paths that no
   demo exercises (limits, motors, extents, cursors, contacts) compile and
   run against real bullet and box2d objects but were not measured.
+
+
+## Regression test
+
+`4-high/gel/applet/test/render` (`test_gel_render`), wired into
+`build_all`, builds a world of a terrain and falling physics sprites, runs
+it, and destroys the applet at the end, which exercises the teardown fixed
+in gel.Applet above. It needs a display.

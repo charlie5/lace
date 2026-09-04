@@ -129,6 +129,12 @@ HelloWorld*
 test_dice
 test_regression
 1-base/lace/applet/test/regression/work/
+test_xml_regression
+1-base/xml/applet/test/regression/work/
+test_collada_regression
+2-low/collada/applet/test/regression/work/
+test_gel_render
+4-high/gel/applet/test/render/work/
 launch_hexagon_test
 launch_render_hex_grid
 

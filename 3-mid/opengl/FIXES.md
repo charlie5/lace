@@ -642,7 +642,9 @@ disappearing with the camera, and was reproduced (exact-black pixel counts of
 up to 330 000 per frame with the camera just above the terrain) and traced
 with a probe shader. `no_Shine` is now 1.0e6: still no visible highlight, and
 safe to interpolate. Verified: zero black pixels in the same frames, terrain
-pixels otherwise identical.
+pixels otherwise identical. `4-high/gel/applet/test/render`
+(`test_gel_render`) now sweeps a camera just above a lit terrain and fails
+on any exactly black pixel.
 
 
 ## 13. Camera projection setters had no effect (found 2026-09-05)

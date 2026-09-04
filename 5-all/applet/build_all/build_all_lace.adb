@@ -23,8 +23,10 @@ with
      launch_Outline,
      launch_Tree,
      launch_Write,
+     test_xml_Regression,
 
      launch_parse_Box,
+     test_collada_Regression,
 --       launch_learn_Linear,
 
      launch_Camera_Demo,
@@ -79,6 +81,7 @@ with
      launch_mixed_Shapes,
      launch_text_sprite_Demo,
      launch_add_rid,
+     test_gel_Render,
      launch_add_rid_sprite_Test,
      launch_Pong_Tute;
 
@@ -112,8 +115,10 @@ begin
    launch_Outline;
    launch_Tree;
    launch_Write;
+   test_xml_Regression;
 
    launch_parse_Box;
+   test_collada_Regression;
 --     launch_learn_Linear;
 
    launch_Camera_Demo;
@@ -168,6 +173,7 @@ begin
    launch_mixed_Shapes;
    launch_text_sprite_Demo;
    launch_add_rid;
+   test_gel_Render;
    launch_add_rid_sprite_Test;
    launch_Pong_Tute;
 

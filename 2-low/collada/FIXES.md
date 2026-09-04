@@ -136,3 +136,17 @@ hazard one call away; **LOW** = latent, edge case or API trap.
 - The `parse_box` demo runs silently and exits cleanly.
 - The gel box rig renders pixel-identical, run to run and against the
   render made before these fixes.
+
+
+## Regression test
+
+`2-low/collada/applet/test/regression` (`test_collada_regression`), wired
+into `build_all`, parses two checked-in Blender assets (a box with several
+scene roots and instanced geometry; a one-bone rig with a nested animation
+and a skin) against known array checksums, plus a generated document
+covering whitespace-split arrays, an IDREF joint array, dates with and
+without a zone, defaulted units and sids, nested animations, the
+column-vector transform composition and the instantiated scene, and it
+checks that the parser refuses a non-COLLADA root, a wrong array count, a
+geometry without a mesh, a `lookat`, a missing id and an `int_array`.
+Every document is destroyed.
