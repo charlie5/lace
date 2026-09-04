@@ -628,3 +628,18 @@ raised. It now lays out any number, five per row.
 - A screenshot of every demo model (via `openGL.Demo.Models`) shows the
   textured box textured on all faces, the colored sphere at its true radius,
   and both hexagon columns standing along Y.
+
+
+## 12. Black specks and patches on lit geometry at grazing angles (found 2026-09-05)
+
+`no_Shine`, the default vertex shine, was `Shine'Last` (`Real'Last`, 3.4e38).
+Shine is a per-vertex attribute, and perspective-correct interpolation of a
+value that large overflows: the weighted terms become infinities whose sum is
+NaN, so `pow (…, frag_Shine)` and the whole lit colour are NaN and the pixel
+is written black. It showed on the mixed-shapes terrain as dotted black lines
+along ridge crests and black patches near the camera, appearing and
+disappearing with the camera, and was reproduced (exact-black pixel counts of
+up to 330 000 per frame with the camera just above the terrain) and traced
+with a probe shader. `no_Shine` is now 1.0e6: still no visible highlight, and
+safe to interpolate. Verified: zero black pixels in the same frames, terrain
+pixels otherwise identical.

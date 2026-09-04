@@ -416,8 +416,8 @@ private
 
    -- Shine
    --
-   no_Shine      : constant Shine := Shine'Last;
-   default_Shine : constant Shine := no_Shine;
+   no_Shine      : constant Shine := 1.0e6;     -- Large enough to leave no highlight, small enough for a vertex
+   default_Shine : constant Shine := no_Shine;  -- attribute to interpolate: Real'Last overflowed to NaN and drew black.
 
 
 
