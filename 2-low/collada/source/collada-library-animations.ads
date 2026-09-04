@@ -3,9 +3,6 @@ package collada.Library.animations
 -- Models a collada 'animations' library, which is a collection of animations.
 --
 is
-   type Inputs_view    is access all Library.Inputs;
-   type int_Array_view is access all int_array;
-
 
    -----------
    --- Sampler
@@ -49,6 +46,8 @@ is
    function Inputs_of         (Self : in Animation) return access float_array;
    function Outputs_of        (Self : in Animation) return access float_array;
    function Interpolations_of (Self : in Animation) return access float_array;
+   --
+   -- Return null when the animation has no such data.
 
 
    ----------------
@@ -59,6 +58,8 @@ is
       record
          Contents : Animation_array_view;
       end record;
+
+   procedure destroy (Self : in out Item);
 
 
 end collada.Library.animations;

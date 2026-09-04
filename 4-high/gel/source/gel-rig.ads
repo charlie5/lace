@@ -13,6 +13,7 @@ with
 
 private
 with
+     collada.Document,
      collada.Library.visual_Scenes;
 
 
@@ -149,6 +150,11 @@ is
                                            Mass         : in Real                   := 0.0;
                                            is_Kinematic : in Boolean                := False;
                                            bone_Details : in bone_id_Map_of_details := bone_id_Maps_of_details.empty_Map);
+
+
+   procedure destroy (Self : in out Item);
+   --
+   -- Frees the collada document the rig was built from.
 
 
    --------------
@@ -350,6 +356,7 @@ private
    --
    type Item is tagged limited
       record
+         Document                : collada.Document.item;                   -- Owns the scene nodes and animations the rig refers to.
          Mode                    : motion_Mode := Dynamics;
 
          joint_Sprites           : bone_id_Map_of_sprite;                   -- Sprite to show location/rotation of joints (mainly for debugging).

@@ -5,6 +5,7 @@ package collada.Library
 is
    type Float_array_view is access Float_array;
    type  Text_array_view is access Text_array;
+   type   Int_array_view is access all Int_array;
 
 
    -----------
@@ -16,12 +17,24 @@ is
          Id       : Text;
          array_Id : Text;
 
-         Floats   : Float_array_view;
-         Texts    :  Text_array_view;
+         Floats   : Float_array_view;     -- From a 'float_array'.
+         Texts    :  Text_array_view;     -- From a 'Name_array' or an 'IDREF_array'.
       end record;
 
    type Sources      is array (Positive range <>) of Source;
    type Sources_view is access Sources;
+
+   null_Source : constant Source;
+
+   function Source_of (Self : in Sources_view;   Url : in String) return Source;
+   --
+   -- Returns the source whose id the URL ('#id') names, or null_Source.
+
+   procedure free (Self : in out Sources_view);
+   --
+   -- Frees the sources' arrays as well.
+
+   procedure free (Self : in out Int_array_view);
 
 
    ----------
@@ -60,18 +73,31 @@ is
          Offset   : Natural          := 0;
       end record;
 
-   type Inputs is array (Positive range <>) of Input_t;
+   type Inputs      is array (Positive range <>) of Input_t;
+   type Inputs_view is access all Inputs;
 
    null_Input : constant Input_t;
 
 
-   function find_in (Self : in Inputs;   the_Semantic : in library.Semantic) return Input_t;
+   function find_in   (Self : in Inputs;   the_Semantic : in library.Semantic) return Input_t;
+   --
+   -- Returns null_Input when no input has the semantic.
+
+   function Offset_of (Self : in Inputs;   the_Semantic : in library.Semantic) return Natural;
+   --
+   -- Raises Input_not_found when no input has the semantic.
+
+   procedure free (Self : in out Inputs_view);
+
+
+   Input_not_found : exception;
 
 
 
 private
 
-   null_Input : constant Input_t := (others => <>);
+   null_Input  : constant Input_t := (others => <>);
+   null_Source : constant Source  := (others => <>);
 
 
 end collada.Library;

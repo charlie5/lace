@@ -1,6 +1,6 @@
 package collada.Library.visual_scenes
 --
--- Models a collada 'visual_scenes' library, which contains node/joint hierachy info.
+-- Models a collada 'visual_scenes' library, which contains node/joint hierarchy info.
 --
 is
 
@@ -33,15 +33,18 @@ is
    type Transform_array is array (Positive range <>) of aliased Transform;
 
    function to_Matrix (Self : in Transform) return collada.Matrix_4x4;
+   --
+   -- A column vector matrix, as collada uses.
 
 
    --------
    --- Node
    --
 
-   type Node      is tagged private;
-   type Node_view is access all Node;
-   type Nodes     is array (Positive range <>) of Node_view;
+   type Node       is tagged private;
+   type Node_view  is access all Node;
+   type Nodes      is array (Positive range <>) of Node_view;
+   type Nodes_view is access all Nodes;
 
    function  Sid     (Self : in     Node) return Text;
    function  Id      (Self : in     Node) return Text;
@@ -51,9 +54,21 @@ is
    procedure Id_is   (Self : in out Node;   Now : in Text);
    procedure Name_is (Self : in out Node;   Now : in Text);
 
+   function  Instance    (Self : in     Node) return Text;
+   procedure Instance_is (Self : in out Node;   Now : in Text);
+   --
+   -- The id of the geometry or controller the node instances, or empty.
+
+   function  Skeleton    (Self : in     Node) return Text;
+   procedure Skeleton_is (Self : in out Node;   Now : in Text);
+   --
+   -- The id of the first skeleton root of an instanced controller, or empty.
+
    procedure add             (Self : in out Node;   the_Transform : in Transform);
    function  Transforms      (Self : in     Node)                              return Transform_array;
    function  fetch_Transform (Self : access Node;   transform_Sid : in String) return access Transform;
+   --
+   -- Returns null if the node has no transform with the sid.
 
    function  local_Transform (Self : in     Node) return Matrix_4x4;
    --
@@ -69,6 +84,9 @@ is
    function  Rotate_Y       (Self : in     Node) return Vector_4;
    function  Rotate_X       (Self : in     Node) return Vector_4;
    function  Scale          (Self : in     Node) return Vector_3;
+   --
+   -- Raise Transform_not_found when the node has no such transform. The rotations
+   -- accept the sids 'rotationX' (as Blender writes) and 'rotateX'.
 
    procedure set_x_rotation_Angle (Self : in out Node;   To : in math.Real);
    procedure set_y_rotation_Angle (Self : in out Node;   To : in math.Real);
@@ -86,9 +104,18 @@ is
 
    function  Children  (Self : in     Node)                        return Nodes;
    function  Child     (Self : in     Node;   Which : in Positive) return Node_view;
+   --
+   -- Returns null when the node has no such child.
+
    function  Child     (Self : in     Node;   Named : in String  ) return Node_view;
+   --
+   -- Searches the node's descendants, depth first, and returns null when none has the name.
 
    procedure add       (Self : in out Node;   the_Child : in Node_view);
+
+   procedure free      (Self : in out Node_view);
+   --
+   -- Frees the node and its descendants.
 
    Transform_not_found : exception;
 
@@ -102,7 +129,7 @@ is
          Id   : Text;
          Name : Text;
 
-         root_Node : Node_view;
+         root_Nodes : Nodes_view;     -- The scene's top-level nodes, in document order.
       end record;
 
    type visual_Scene_array      is array (Positive range <>) of visual_Scene;
@@ -116,21 +143,24 @@ is
    type Item is
       record
          Contents      : visual_Scene_array_view;
-         skeletal_Root : Text;
+         skeletal_Root : Text;                        -- The skeleton root of the first instanced controller, or empty.
       end record;
+
+   procedure destroy (Self : in out Item);
 
 
 
 private
 
    type Transform_array_view is access all Transform_array;
-   type Nodes_view           is access all Nodes;
 
    type Node is tagged
       record
-         Sid  : Text;
-         Id   : Text;
-         Name : Text;
+         Sid      : Text;
+         Id       : Text;
+         Name     : Text;
+         Instance : Text;
+         Skeleton : Text;
 
          Transforms : Transform_array_view;
 

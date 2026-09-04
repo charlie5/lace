@@ -46,22 +46,11 @@ is
    type    Matrix_4x4_array is array (Positive range <>) of Matrix_4x4;
 
 
-   Identity_4x4 : constant math.Matrix_4x4;
-
    function matrix_Count (From : in Float_array)                        return Natural;
    function get_Matrix   (From : in Float_array;   Which : in Positive) return Matrix_4x4;
 
 
    Error : exception;
-
-
-
-private
-
-   Identity_4x4 : constant math.Matrix_4x4 := [[1.0, 0.0, 0.0, 0.0],
-                                               [0.0, 1.0, 0.0, 0.0],
-                                               [0.0, 0.0, 1.0, 0.0],
-                                               [0.0, 0.0, 0.0, 1.0]];
 
 
 end Collada;

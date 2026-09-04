@@ -396,7 +396,7 @@ is
 
 --        the_root_Joint : visual_scenes.Node_view := the_Document.libraries.visual_Scenes.Contents (1).root_Node;
       the_root_Joint : constant visual_scenes.Node_view
-        := the_Document.libraries.visual_Scenes.Contents (1).root_Node.Child (1);
+        := the_Document.libraries.visual_Scenes.Contents (1).root_Nodes (1).Child (1);
 
 
       joint_Sites : array (scene_joint_Id) of math.Vector_3;

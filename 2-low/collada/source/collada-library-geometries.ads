@@ -3,11 +3,8 @@ package collada.Library.geometries
 -- Models a collada 'geometries' library, which is a collection of geometries.
 --
 is
-   type Inputs_view         is access library.Inputs;
-
-   type Int_array_view      is access Int_array;
    type Int_array_List      is array (Positive range <>) of Int_array_view;
-   type Int_array_List_view is access int_array_List;
+   type Int_array_List_view is access Int_array_List;
 
 
    ------------
@@ -36,7 +33,7 @@ is
          Material : Text;
 
          Inputs   : Inputs_view;
-         P_List   : int_array_List_view;
+         P_List   : Int_array_List_view;
 
          case Kind is
             when polyList =>
@@ -53,8 +50,8 @@ is
    function vertex_Offset_of (Self : in Primitive) return math.Index;
    function normal_Offset_of (Self : in Primitive) return math.Index;
    function  coord_Offset_of (Self : in Primitive) return math.Index;
-
-   no_coord_Offset : exception;
+   --
+   -- Raise Input_not_found when the primitive has no such input.
 
 
    --------
@@ -78,6 +75,8 @@ is
 
    function Coords_of    (Self          : in Mesh;
                           for_Primitive : in Primitive) return access float_array;
+   --
+   -- Return null when the mesh has no such data.
 
 
    ------------
@@ -103,6 +102,8 @@ is
       record
          Contents : Geometry_array_view;
       end record;
+
+   procedure destroy (Self : in out Item);
 
 
 end collada.Library.geometries;

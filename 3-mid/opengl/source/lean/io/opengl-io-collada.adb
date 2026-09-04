@@ -23,7 +23,7 @@ is
 
       which_Geometry    : constant := 1;     -- Select which gemometry, just for testing.
 
-      the_Document      : constant        std_Collada.Document.item := std_Collada.Document.to_Document (model_Path);
+      the_Document      :                 std_Collada.Document.item := std_Collada.Document.to_Document (model_Path);
 
       the_Mesh          : constant        geometries.Mesh           := the_Document.Libraries.Geometries.Contents (which_Geometry).Mesh;
       the_Primitive     : constant        geometries.Primitive      := the_Mesh.Primitives (1);
@@ -314,15 +314,22 @@ is
 
       declare
          used_Faces : constant IO.Faces_view := new IO.Faces' (the_Faces (1 .. face_Count));
+         the_Model  : constant IO.Model      := (Sites   => the_Sites,
+                                                 Coords  => the_Coords,
+                                                 Normals => the_Normals,
+                                                 Weights => the_Weights,
+                                                 Faces   => used_Faces);
       begin
          free (the_Faces);
+         the_Document.destroy;     -- The model has copied all it needs.
 
-         return (Sites   => the_Sites,
-                 Coords  => the_Coords,
-                 Normals => the_Normals,
-                 Weights => the_Weights,
-                 Faces   => used_Faces);
+         return the_Model;
       end;
+
+   exception
+      when others =>
+         the_Document.destroy;
+         raise;
    end to_Model;
 
 

@@ -5,6 +5,9 @@ with
 
 package body collada.Library.visual_scenes
 is
+   use type Text;
+
+
    -------------
    --- Transform
    --
@@ -66,6 +69,62 @@ is
    end Name;
 
 
+
+   procedure Sid_is (Self : in out Node;   Now : in Text)
+   is
+   begin
+      Self.Sid := Now;
+   end Sid_is;
+
+
+
+   procedure Id_is (Self : in out Node;   Now : in Text)
+   is
+   begin
+      Self.Id := Now;
+   end Id_is;
+
+
+
+   procedure Name_is (Self : in out Node;   Now : in Text)
+   is
+   begin
+      Self.Name := Now;
+   end Name_is;
+
+
+
+   function Instance (Self : in Node) return Text
+   is
+   begin
+      return Self.Instance;
+   end Instance;
+
+
+
+   procedure Instance_is (Self : in out Node;   Now : in Text)
+   is
+   begin
+      Self.Instance := Now;
+   end Instance_is;
+
+
+
+   function Skeleton (Self : in Node) return Text
+   is
+   begin
+      return Self.Skeleton;
+   end Skeleton;
+
+
+
+   procedure Skeleton_is (Self : in out Node;   Now : in Text)
+   is
+   begin
+      Self.Skeleton := Now;
+   end Skeleton_is;
+
+
    --------------
    --- Transforms
    --
@@ -73,6 +132,11 @@ is
    function Transforms (Self : in Node) return Transform_array
    is
    begin
+      if Self.Transforms = null
+      then
+         return [];
+      end if;
+
       return Self.Transforms.all;
    end Transforms;
 
@@ -80,15 +144,17 @@ is
 
    function fetch_Transform (Self : access Node;   transform_Sid : in String) return access Transform
    is
-      use type ada.Strings.unbounded.unbounded_String;
    begin
-      for i in Self.Transforms'Range
-      loop
-         if Self.Transforms (i).Sid = transform_Sid
-         then
-            return Self.Transforms (i)'Access;
-         end if;
-      end loop;
+      if Self.Transforms /= null
+      then
+         for i in Self.Transforms'Range
+         loop
+            if Self.Transforms (i).Sid = transform_Sid
+            then
+               return Self.Transforms (i)'Access;
+            end if;
+         end loop;
+      end if;
 
       return null;
    end fetch_Transform;
@@ -115,26 +181,19 @@ is
 
    function local_Transform (Self : in Node) return Matrix_4x4
    is
+      use Math;
+
+      the_Result : Matrix_4x4 := math.Identity_4x4;
    begin
-      if Self.Transforms = null
+      if Self.Transforms /= null
       then
-         return Identity_4x4;
+         for Each of Self.Transforms.all
+         loop
+            the_Result := the_Result * to_Matrix (Each);
+         end loop;
       end if;
 
-      declare
-         use Math;
-
-         all_Transforms : Transform_array renames Self.Transforms.all;
-         the_Result     : Matrix_4x4      :=      math.Identity_4x4;
-
-      begin
-         for i in all_Transforms'Range
-         loop
-            the_Result := the_Result * to_Matrix (all_Transforms (i));
-         end loop;
-
-         return the_Result;
-      end;
+      return the_Result;
    end local_Transform;
 
 
@@ -156,16 +215,18 @@ is
    function find_Transform (Self : in Node;   of_Kind : in transform_Kind;
                                               Sid     : in String) return Positive
    is
-      use type Text;
    begin
-      for i in Self.Transforms'Range
-      loop
-         if         Self.Transforms (i).Kind = of_Kind
-           and then Self.Transforms (i).Sid  = Sid
-         then
-            return i;
-         end if;
-      end loop;
+      if Self.Transforms /= null
+      then
+         for i in Self.Transforms'Range
+         loop
+            if         Self.Transforms (i).Kind = of_Kind
+              and then Self.Transforms (i).Sid  = Sid
+            then
+               return i;
+            end if;
+         end loop;
+      end if;
 
       raise Transform_not_found with   "No "
                                      & transform_Kind'Image (of_Kind)
@@ -176,238 +237,173 @@ is
 
 
 
-   function fetch_Transform (Self : in Node;   of_Kind : in transform_Kind;
-                                               Sid     : in String) return Transform
-   is
-   begin
-      return Self.Transforms (find_Transform (Self, of_Kind, Sid));
-   end fetch_Transform;
-
-
-
    function find_Transform (Self : in Node;   of_Kind : in transform_Kind) return Positive
    is
    begin
-      for i in Self.Transforms'Range
-      loop
-         if Self.Transforms (i).Kind = of_Kind
-         then
-            return i;
-         end if;
-      end loop;
+      if Self.Transforms /= null
+      then
+         for i in Self.Transforms'Range
+         loop
+            if Self.Transforms (i).Kind = of_Kind
+            then
+               return i;
+            end if;
+         end loop;
+      end if;
 
       raise Transform_not_found with "No " & of_Kind'Image & " transform found";
    end find_Transform;
 
 
 
-   function fetch_Transform (Self : in Node;   of_Kind : in transform_Kind) return Transform
+   function find_Rotation (Self : in Node;   Axis : in Character) return Positive
+   --
+   -- Blender writes the rotation sids as 'rotationX', other exporters as 'rotateX'.
+   --
    is
    begin
-      return Self.Transforms (find_Transform (Self, of_Kind));
-   end fetch_Transform;
+      if Self.Transforms /= null
+      then
+         for i in Self.Transforms'Range
+         loop
+            if         Self.Transforms (i).Kind = Rotate
+              and then (   Self.Transforms (i).Sid = "rotation" & Axis
+                        or Self.Transforms (i).Sid = "rotate"   & Axis)
+            then
+               return i;
+            end if;
+         end loop;
+      end if;
+
+      raise Transform_not_found with "No rotation about " & Axis & " found";
+   end find_Rotation;
 
 
 
    function full_Transform (Self : in Node) return Matrix_4x4
    is
-      the_Transform : constant Transform := fetch_Transform (Self, full_Transform);
    begin
-      return the_Transform.Matrix;
+      return Self.Transforms (find_Transform (Self, full_Transform)).Matrix;
    end full_Transform;
 
 
 
    function Translation (Self : in Node) return Vector_3
    is
-      the_Translation : constant Transform := fetch_Transform (Self, Translate);
    begin
-      return the_Translation.Vector;
+      return Self.Transforms (find_Transform (Self, Translate)).Vector;
    end Translation;
+
+
+
+   function Rotation (Self : in Node;   Axis : in Character) return Vector_4
+   is
+      use Math;
+
+      the_Rotation : Transform renames Self.Transforms (find_Rotation (Self, Axis));
+   begin
+      return Vector_4 (the_Rotation.Axis & the_Rotation.Angle);
+   end Rotation;
+
+
+
+   function Rotate_X (Self : in Node) return Vector_4
+   is
+   begin
+      return Rotation (Self, 'X');
+   end Rotate_X;
+
+
+
+   function Rotate_Y (Self : in Node) return Vector_4
+   is
+   begin
+      return Rotation (Self, 'Y');
+   end Rotate_Y;
 
 
 
    function Rotate_Z (Self : in Node) return Vector_4
    is
-      use Math;
-
-      the_Rotation : Transform;
    begin
-      the_Rotation := fetch_Transform (Self, Rotate, "rotationZ");
-
-      return Vector_4 (the_Rotation.Axis & the_Rotation.Angle);
-
-   exception
-      when Transform_not_found =>
-         the_Rotation := fetch_Transform (Self, Rotate, "rotateZ");
-
-         return Vector_4 (the_Rotation.Axis & the_Rotation.Angle);
+      return Rotation (Self, 'Z');
    end Rotate_Z;
 
 
 
-   procedure set_Location (Self : in out Node;   To : in math.Vector_3)
+   function Scale (Self : in Node) return Vector_3
    is
-      Id : constant Positive := find_Transform (Self, Translate, "location");
    begin
-      Self.Transforms (Id).Vector := To;
-   end set_Location;
-
-
-
-   procedure set_Location_x (Self : in out Node;   To : in math.Real)
-   is
-      Id : constant Positive := find_Transform (Self, Translate, "location");
-   begin
-      Self.Transforms (Id).Vector (1) := To;
-   end set_Location_x;
-
-
-
-   procedure set_Location_y (Self : in out Node;   To : in math.Real)
-   is
-      Id : constant Positive := find_Transform (Self, Translate, "location");
-   begin
-      Self.Transforms (Id).Vector (2) := To;
-   end set_Location_y;
-
-
-
-   procedure set_Location_z (Self : in out Node;   To : in math.Real)
-   is
-      Id : constant Positive := find_Transform (Self, Translate, "location");
-   begin
-      Self.Transforms (Id).Vector (3) := To;
-   end set_Location_z;
-
-
-
-   procedure set_Transform (Self : in out Node;   To : in math.Matrix_4x4)
-   is
-      Id : constant Positive := find_Transform (Self, full_Transform, "transform");
-   begin
-      Self.Transforms (Id).Matrix := To;
-   end set_Transform;
+      return Self.Transforms (find_Transform (Self, Scale, "scale")).Scale;
+   end Scale;
 
 
 
    procedure set_x_rotation_Angle (Self : in out Node;   To : in math.Real)
    is
-      Id : Positive;
    begin
-      Id                         := find_Transform (Self, Rotate, "rotationX");
-      Self.Transforms (Id).Angle := To;
-
-   exception
-      when Transform_not_found =>
-         Id                         := find_Transform (Self, Rotate, "rotateX");
-         Self.Transforms (Id).Angle := To;
+      Self.Transforms (find_Rotation (Self, 'X')).Angle := To;
    end set_x_rotation_Angle;
 
 
 
    procedure set_y_rotation_Angle (Self : in out Node;   To : in math.Real)
    is
-      Id : Positive;
    begin
-      Id                         := find_Transform (Self, Rotate, "rotationY");
-      Self.Transforms (Id).Angle := To;
-
-   exception
-      when Transform_not_found =>
-         Id                         := find_Transform (Self, Rotate, "rotateY");
-         Self.Transforms (Id).Angle := To;
+      Self.Transforms (find_Rotation (Self, 'Y')).Angle := To;
    end set_y_rotation_Angle;
 
 
 
    procedure set_z_rotation_Angle (Self : in out Node;   To : in math.Real)
    is
-      Id : Positive;
    begin
-      Id                         := find_Transform (Self, Rotate, "rotationZ");
-      Self.Transforms (Id).Angle := To;
-
-   exception
-      when Transform_not_found =>
-         Id                         := find_Transform (Self, Rotate, "rotateZ");
-         Self.Transforms (Id).Angle := To;
+      Self.Transforms (find_Rotation (Self, 'Z')).Angle := To;
    end set_z_rotation_Angle;
 
 
 
-   function Rotate_Y (Self : in Node) return Vector_4
-   is
-      use Math;
-
-      the_Rotation : Transform;
-   begin
-      the_Rotation := fetch_Transform (Self, Rotate, "rotationY");
-
-      return Vector_4 (the_Rotation.Axis & the_Rotation.Angle);
-
-   exception
-      when Transform_not_found =>
-         the_Rotation := fetch_Transform (Self, Rotate, "rotateY");
-
-         return Vector_4 (the_Rotation.Axis & the_Rotation.Angle);
-   end Rotate_Y;
-
-
-
-   function Rotate_X (Self : in Node) return Vector_4
-   is
-      use Math;
-
-      the_Rotation : Transform;
-   begin
-      the_Rotation := fetch_Transform (Self, Rotate, "rotationX");
-
-      return Vector_4 (the_Rotation.Axis & the_Rotation.Angle);
-
-   exception
-      when Transform_not_found =>
-         the_Rotation := fetch_Transform (Self, Rotate, "rotateX");
-
-         return Vector_4 (the_Rotation.Axis & the_Rotation.Angle);
-   end Rotate_X;
-
-
-
-   function Scale (Self : in Node) return Vector_3
-   is
-      the_Translation : constant Transform := fetch_Transform (Self, Scale, "scale");
-   begin
-      return the_Translation.Scale;
-   end Scale;
-
-
-
-   procedure Sid_is (Self : in out Node;   Now : in Text)
+   procedure set_Location (Self : in out Node;   To : in math.Vector_3)
    is
    begin
-      Self.Sid := Now;
-   end Sid_is;
+      Self.Transforms (find_Transform (Self, Translate, "location")).Vector := To;
+   end set_Location;
 
 
 
-   procedure Id_is (Self : in out Node;   Now : in Text)
+   procedure set_Location_x (Self : in out Node;   To : in math.Real)
    is
    begin
-      Self.Id := Now;
-   end Id_is;
+      Self.Transforms (find_Transform (Self, Translate, "location")).Vector (1) := To;
+   end set_Location_x;
 
 
 
-   procedure Name_is (Self : in out Node;   Now : in Text)
+   procedure set_Location_y (Self : in out Node;   To : in math.Real)
    is
    begin
-      Self.Name := Now;
-   end Name_is;
+      Self.Transforms (find_Transform (Self, Translate, "location")).Vector (2) := To;
+   end set_Location_y;
 
 
-   ------------
-   --- Hierachy
+
+   procedure set_Location_z (Self : in out Node;   To : in math.Real)
+   is
+   begin
+      Self.Transforms (find_Transform (Self, Translate, "location")).Vector (3) := To;
+   end set_Location_z;
+
+
+
+   procedure set_Transform (Self : in out Node;   To : in math.Matrix_4x4)
+   is
+   begin
+      Self.Transforms (find_Transform (Self, full_Transform, "transform")).Matrix := To;
+   end set_Transform;
+
+
+   -------------
+   --- Hierarchy
    --
 
    function Parent (Self : in Node) return Node_view
@@ -431,7 +427,7 @@ is
    begin
       if Self.Children = null
       then
-         return Nodes' (1 .. 0 => <>);  -- No Nodes.
+         return [];
       end if;
 
       return Self.Children.all;
@@ -442,9 +438,10 @@ is
    function Child (Self : in Node;   Which : in Positive) return Node_view
    is
    begin
-      if Self.Children = null
+      if   Self.Children = null
+        or else Which > Self.Children'Length
       then
-         raise constraint_Error with "No children found.";
+         return null;
       end if;
 
       return Self.Children (Which);
@@ -454,54 +451,104 @@ is
 
    function Child (Self : in Node;   Named : in String) return Node_view
    is
-      use ada.Strings.unbounded;
    begin
-      if Self.Children = null
+      if Self.Children /= null
       then
-         raise constraint_Error with "Child not found.";
+         for Each of Self.Children.all
+         loop
+            if Each.Name = Named
+            then
+               return Each;
+            end if;
+
+            declare
+               the_Descendant : constant Node_view := Each.Child (Named);     -- Recurse.
+            begin
+               if the_Descendant /= null
+               then
+                  return the_Descendant;
+               end if;
+            end;
+         end loop;
       end if;
 
-      declare
-         the_Children : constant Nodes_view := Self.Children;
-      begin
-         for i in the_Children'Range
-         loop
-            if the_Children (i).Name = Named
-            then
-               return the_Children (i);
-
-            else
-               begin
-                  return the_Children (i).Child (named => Named);
-
-               exception
-                  when constraint_Error => null;
-               end;
-            end if;
-         end loop;
-      end;
-
-      raise constraint_Error with "Child not found.";
+      return null;
    end Child;
 
 
 
    procedure add (Self : in out Node;   the_Child : in Node_view)
    is
+      procedure deallocate is new ada.unchecked_Deallocation (Nodes, Nodes_view);
+
+      Old : Nodes_view := Self.Children;
    begin
-      if Self.Children = null
+      if Old = null
       then
          Self.Children := new Nodes' (1 => the_Child);
       else
-         declare
-            old_Children : Nodes_view := Self.Children;
-            procedure deallocate is new ada.Unchecked_Deallocation (Nodes, Nodes_view);
-         begin
-            Self.Children := new Nodes' (old_Children.all & the_Child);
-            deallocate (old_Children);
-         end;
+         Self.Children := new Nodes' (Old.all & the_Child);
+         deallocate (Old);
       end if;
    end add;
+
+
+
+   procedure free (Self : in out Node_view)
+   is
+      procedure deallocate is new ada.unchecked_Deallocation (Node,            Node_view);
+      procedure deallocate is new ada.unchecked_Deallocation (Nodes,           Nodes_view);
+      procedure deallocate is new ada.unchecked_Deallocation (Transform_array, Transform_array_view);
+   begin
+      if Self = null
+      then
+         return;
+      end if;
+
+      if Self.Children /= null
+      then
+         for Each of Self.Children.all
+         loop
+            free (Each);
+         end loop;
+
+         deallocate (Self.Children);
+      end if;
+
+      deallocate (Self.Transforms);
+      deallocate (Self);
+   end free;
+
+
+   ----------------
+   --- Library Item
+   --
+
+   procedure destroy (Self : in out Item)
+   is
+      procedure deallocate is new ada.unchecked_Deallocation (Nodes,              Nodes_view);
+      procedure deallocate is new ada.unchecked_Deallocation (visual_Scene_array, visual_Scene_array_view);
+   begin
+      if Self.Contents = null
+      then
+         return;
+      end if;
+
+      for Each of Self.Contents.all
+      loop
+         if Each.root_Nodes /= null
+         then
+            for the_Root of Each.root_Nodes.all
+            loop
+               free (the_Root);
+            end loop;
+
+            deallocate (Each.root_Nodes);
+         end if;
+      end loop;
+
+      deallocate (Self.Contents);
+   end destroy;
 
 
 end collada.Library.visual_scenes;

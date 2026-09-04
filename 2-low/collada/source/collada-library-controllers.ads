@@ -3,9 +3,6 @@ package collada.Library.controllers
 -- Models a collada 'controllers' library, which is a collection of controllers.
 --
 is
-   type Inputs_view    is access all Library.Inputs;
-   type int_Array_view is access all int_array;
-
 
    ----------
    --- Joints
@@ -26,12 +23,14 @@ is
          Count   : Natural;
          Inputs  : Inputs_view;
 
-         v_Count : int_Array_view;
-         v       : int_Array_view;
+         v_Count : Int_array_view;
+         v       : Int_array_view;
       end record;
 
    function  joint_Offset_of (Self : in vertex_Weights) return math.Index;
    function weight_Offset_of (Self : in vertex_Weights) return math.Index;
+   --
+   -- Raise Input_not_found when the weights have no such input.
 
 
    --------
@@ -48,9 +47,14 @@ is
       end record;
 
    function Weights_of           (Self : in Skin) return access float_array;
+   --
+   -- Returns null when the skin has no weights.
+
    function bind_shape_Matrix_of (Self : in Skin) return Matrix_4x4;
    function bind_Poses_of        (Self : in Skin) return Matrix_4x4_array;
    function joint_Names_of       (Self : in Skin) return Text_array;
+   --
+   -- Raises collada.Error when the skin's joints have no name array.
 
 
    --------------
@@ -76,6 +80,8 @@ is
       record
          Contents : Controller_array_view;
       end record;
+
+   procedure destroy (Self : in out Item);
 
 
 end collada.Library.controllers;

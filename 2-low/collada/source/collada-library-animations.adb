@@ -1,38 +1,13 @@
+with
+     ada.unchecked_Deallocation;
+
+
 package body collada.Library.animations
 is
-   -----------
-   --- Utility
-   --
-
-   function "+" (From : in ada.Strings.unbounded.unbounded_String) return String
-     renames ada.Strings.unbounded.to_String;
-
 
    -------------
    --- Animation
    --
-
-   function Source_of  (Self        : in Animation;
-                        source_Name : in String) return Source
-   is
-      use ada.Strings.unbounded;
-   begin
-      for i in Self.Sources'Range
-      loop
-         if Self.Sources (i).Id = source_Name (source_Name'First + 1 .. source_Name'Last)
-         then
-            return Self.Sources (i);
-         end if;
-      end loop;
-
-      declare
-         null_Source : Source;
-      begin
-         return null_Source;
-      end;
-   end Source_of;
-
-
 
    function find_Inputs_of (Self : in Animation;   for_Semantic : in Semantic) return access float_array
    is
@@ -43,11 +18,7 @@ is
          return null;
       end if;
 
-      declare
-         the_Source : constant Source := Source_of (Self, +the_Input.Source);
-      begin
-         return the_Source.Floats;
-      end;
+      return Source_of (Self.Sources, to_String (the_Input.Source)).Floats;
    end find_Inputs_of;
 
 
@@ -73,6 +44,29 @@ is
    begin
       return find_Inputs_of (Self, for_Semantic => Interpolation);
    end Interpolations_of;
+
+
+   ----------------
+   --- Library Item
+   --
+
+   procedure destroy (Self : in out Item)
+   is
+      procedure deallocate is new ada.unchecked_Deallocation (Animation_array, Animation_array_view);
+   begin
+      if Self.Contents = null
+      then
+         return;
+      end if;
+
+      for Each of Self.Contents.all
+      loop
+         free (Each.Sources);
+         free (Each.Sampler.Inputs);
+      end loop;
+
+      deallocate (Self.Contents);
+   end destroy;
 
 
 end collada.Library.animations;

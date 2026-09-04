@@ -8,7 +8,6 @@ with
      opengl.Program .lit.colored_textured_skinned,
      opengl.Geometry.lit_colored_textured_skinned,
 
-     collada.Document,
      collada.Library,
      collada.Library.controllers,
      collada.Library.animations,
@@ -344,9 +343,9 @@ is
       begin
          if the_Document.Libraries.visual_Scenes.skeletal_Root = ""
          then
-            return the_Document.Libraries.visual_Scenes.Contents (1).root_Node;
+            return the_Document.Libraries.visual_Scenes.Contents (1).root_Nodes (1);
          else
-            return the_Document.Libraries.visual_Scenes.Contents (1).root_Node.Child (1);
+            return the_Document.Libraries.visual_Scenes.Contents (1).root_Nodes (1).Child (1);
          end if;
       end get_root_Joint;
 
@@ -955,7 +954,16 @@ is
 
       end;
 
+      Self.Document := the_Document;
    end define;
+
+
+
+   procedure destroy (Self : in out Item)
+   is
+   begin
+      Self.Document.destroy;
+   end destroy;
 
 
 

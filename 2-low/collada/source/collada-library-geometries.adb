@@ -1,13 +1,9 @@
+with
+     ada.unchecked_Deallocation;
+
+
 package body collada.Library.geometries
 is
-
-   -----------
-   --- Utility
-   --
-
-   function "+" (From : in ada.Strings.unbounded.unbounded_String) return String
-     renames ada.Strings.unbounded.to_String;
-
 
    -------------
    --- Primitive
@@ -15,32 +11,24 @@ is
 
    function vertex_Offset_of (Self : in Primitive) return math.Index
    is
-      the_Input : constant Input_t := find_in (Self.Inputs.all, Vertex);
    begin
-      return math.Index (the_Input.Offset);
+      return math.Index (Offset_of (Self.Inputs.all, Vertex));
    end vertex_Offset_of;
 
 
 
    function normal_Offset_of (Self : in Primitive) return math.Index
    is
-      the_Input : constant Input_t := find_in (Self.Inputs.all, Normal);
    begin
-      return math.Index (the_Input.Offset);
+      return math.Index (Offset_of (Self.Inputs.all, Normal));
    end normal_Offset_of;
 
 
 
    function coord_Offset_of (Self : in Primitive) return math.Index
    is
-      the_Input : constant Input_t := find_in (Self.Inputs.all, TexCoord);
    begin
-      if the_Input = null_Input
-      then
-         raise no_coord_Offset;
-      end if;
-
-      return math.Index (the_Input.Offset);
+      return math.Index (Offset_of (Self.Inputs.all, TexCoord));
    end coord_Offset_of;
 
 
@@ -48,24 +36,11 @@ is
    --- Mesh
    --
 
-   function Source_of  (Self        : in Mesh;
-                        source_Name : in String) return Source
+   function Source_of (Self        : in Mesh;
+                       source_Name : in String) return Source
    is
-      use ada.Strings.unbounded;
    begin
-      for i in Self.Sources'Range
-      loop
-         if Self.Sources (i).Id = source_Name (source_Name'First + 1 .. source_Name'Last)
-         then
-            return Self.Sources (i);
-         end if;
-      end loop;
-
-      declare
-         null_Source : Source;
-      begin
-         return null_Source;
-      end;
+      return Source_of (Self.Sources, source_Name);
    end Source_of;
 
 
@@ -79,11 +54,7 @@ is
          return null;
       end if;
 
-      declare
-         the_Source : constant Source := Source_of (Self, +the_Input.Source);
-      begin
-         return the_Source.Floats;
-      end;
+      return Source_of (Self, to_String (the_Input.Source)).Floats;
    end Positions_of;
 
 
@@ -91,20 +62,14 @@ is
    function Normals_of (Self          : in Mesh;
                         for_Primitive : in Primitive) return access float_array
    is
-      the_Primitive : Primitive   renames for_Primitive;
-      the_Input     : constant Input_t := find_in (the_Primitive.Inputs.all, Normal);
-
+      the_Input : constant Input_t := find_in (for_Primitive.Inputs.all, Normal);
    begin
       if the_Input = null_Input
       then
          return null;
       end if;
 
-      declare
-         the_Source : constant Source := Source_of (Self, +the_Input.Source);
-      begin
-         return the_Source.Floats;
-      end;
+      return Source_of (Self, to_String (the_Input.Source)).Floats;
    end Normals_of;
 
 
@@ -112,21 +77,65 @@ is
    function Coords_of (Self          : in Mesh;
                        for_Primitive : in Primitive) return access float_array
    is
-      the_Primitive : Primitive   renames for_Primitive;
-      the_Input     : constant Input_t := find_in (the_Primitive.Inputs.all, TexCoord);
-
+      the_Input : constant Input_t := find_in (for_Primitive.Inputs.all, TexCoord);
    begin
       if the_Input = null_Input
       then
          return null;
       end if;
 
-      declare
-         the_Source : constant Source := Source_of (Self, +the_Input.Source);
-      begin
-         return the_Source.Floats;
-      end;
+      return Source_of (Self, to_String (the_Input.Source)).Floats;
    end Coords_of;
+
+
+   ----------------
+   --- Library Item
+   --
+
+   procedure destroy (Self : in out Item)
+   is
+      procedure deallocate is new ada.unchecked_Deallocation (Geometry_array,  Geometry_array_view);
+      procedure deallocate is new ada.unchecked_Deallocation (Primitives,      Primitives_view);
+      procedure deallocate is new ada.unchecked_Deallocation (Int_array_List,  Int_array_List_view);
+   begin
+      if Self.Contents = null
+      then
+         return;
+      end if;
+
+      for Each of Self.Contents.all
+      loop
+         free (Each.Mesh.Sources);
+         free (Each.Mesh.Vertices.Inputs);
+
+         if Each.Mesh.Primitives /= null
+         then
+            for the_Primitive of Each.Mesh.Primitives.all
+            loop
+               free (the_Primitive.Inputs);
+
+               if the_Primitive.P_List /= null
+               then
+                  for the_List of the_Primitive.P_List.all
+                  loop
+                     free (the_List);
+                  end loop;
+
+                  deallocate (the_Primitive.P_List);
+               end if;
+
+               if the_Primitive.Kind = polyList
+               then
+                  free (the_Primitive.vCount);
+               end if;
+            end loop;
+
+            deallocate (Each.Mesh.Primitives);
+         end if;
+      end loop;
+
+      deallocate (Self.Contents);
+   end destroy;
 
 
 end collada.Library.geometries;
