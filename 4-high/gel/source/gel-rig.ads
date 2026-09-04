@@ -190,6 +190,8 @@ is
    function  joint_site_Offets (Self : in Item'Class) return joint_Id_Map_of_bone_site_offset;
 
    procedure assume_Pose     (Self : in out Item);
+   --
+   -- Places every bone sprite in the bind pose, at the rig's site and spin.
    procedure enable_Graphics (Self : in out Item);
    procedure evolve          (Self : in out Item'Class;   world_Age : in Duration);
 
@@ -394,7 +396,8 @@ private
          Channels                : channel_id_Map_of_animation_Channel;
          start_Time              : Duration                           := 0.0;
 
-         overall_Site            : Vector_3 := [0.0, 0.0, 0.0];
+         overall_Site            : Vector_3   := [0.0, 0.0, 0.0];     -- Where the rig is placed in the world, and how it is turned:
+         overall_Spin            : Matrix_3x3 := Identity_3x3;         -- the pose is defined about the origin, and 'assume_Pose' applies these.
 
          Model                   :         openGL.Model.view;
          program_Parameters      : aliased skin_program_Parameters;

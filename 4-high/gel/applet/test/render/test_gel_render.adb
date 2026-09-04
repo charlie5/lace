@@ -3,9 +3,11 @@ with
      gel.Applet.gui_world,
      gel.Forge,
      gel.Sprite,
+     gel.Rig,
 
      physics.Model,
 
+     openGL.Model.any,
      openGL.Model.box.colored,
      openGL.Model.sphere.lit_textured,
      openGL.Model.terrain,
@@ -24,10 +26,13 @@ pragma unreferenced (gel.Window.sdl);
 
 procedure test_gel_Render
 --
--- Regression tests for rendering defects recorded in the opengl and physics FIXES.md:
--- lit terrain seen from just above it must show no black specks (a NaN in the
--- lighting once drew them), and an applet with a world of physics sprites must
--- destroy cleanly (the renderer once drew visuals that were already freed).
+-- Regression tests for rendering defects recorded in the opengl, physics and gel
+-- FIXES.md: lit terrain seen from just above it must show no black specks (a NaN
+-- in the lighting once drew them); an animated rig must load a Blender export
+-- whose bone ids differ from their names, animate without its base moving (a
+-- dynamic base once sank and jittered) and be destroyed after its world; and an
+-- applet with a world of physics sprites must destroy cleanly (the renderer once
+-- drew visuals that were already freed).
 --
 -- Needs a display.
 --
@@ -351,9 +356,46 @@ begin
    end;
 
 
-   --- Teardown.
+   --- An animated rig: the one-bone Blender box, whose bone's id and name differ and
+   --- whose animation the rig once refused as "not handled".
    --
-   the_Applet.destroy;
+   declare
+      use gel.Rig,
+          gel.linear_Algebra_3D;
+
+      the_Rig       : aliased gel.Rig.item;
+      the_rig_Model : constant openGL.Model.any.view
+        := openGL.Model.any.new_Model (Model            => openGL.to_Asset ("../../demo/skinning/rig/box_rig-1_bone/box_1_bone-animated.dae"),
+                                       Texture          => openGL.null_Asset,
+                                       texture_Details  => texture_Set.to_Set ([1 => openGL.to_Asset ("assets/gel/Face1.bmp")]),
+                                       Texture_is_lucid => False);
+      Home  : constant math.Vector_3 := [0.0, 50.0, 0.0];
+      Drift :          math.Real     := 0.0;
+   begin
+      the_Rig.define (the_Applet.gui_World, the_rig_Model.all'Access, Mass => 0.0, Mode => Animation);
+      the_Rig.Site_is (Home);
+      the_Applet.gui_World.add (the_Rig.base_Sprite, and_Children => True);
+      the_Rig.enable_Graphics;
+      the_Rig.assume_Pose;
+      check (True, "rig: a Blender export with a bone whose id differs from its name loads and animates");
+
+      for Frame in 1 .. 100
+      loop
+         the_Applet.gui_World.evolve;
+         the_Rig.evolve (world_Age => the_Applet.gui_World.Age);
+         the_Rig.assume_Pose;
+         the_Applet.freshen;
+
+         Drift := math.Real'Max (Drift, Distance (the_Rig.base_Sprite.Site, Home));
+      end loop;
+
+      check (Drift < 1.0e-4, "rig: an animated rig's base stays where it was put  (drift" & Drift'Image & ")");
+
+      the_Applet.destroy;
+      the_Rig.destroy;
+      check (True, "rig: destroyed after its world");
+   end;
+
    check (True, "applet: a world of physics sprites destroys cleanly");
 
 

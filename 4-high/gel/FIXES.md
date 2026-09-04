@@ -384,6 +384,14 @@ call away; **LOW** = latent, edge case or API trap.
   `define` now takes the motion mode, builds an Animation rig from
   kinematic bodies, and gives the skin sprite the requested mass; the
   demos say `Mode => Animation` at definition.
+- `assume_Pose` put the root at the origin, so a rig's `Site_is` and
+  `Spin_is` were undone on the next frame; it now places the bind pose at
+  the rig's site and spin. That made the `-90°` spin the rig demos had
+  always asked for, and never got, take effect and turn the figure over,
+  so the demos no longer ask for it.
+- `test_gel_render` now loads the animated one-bone Blender box, whose
+  bone id and name differ, runs it as an Animation rig for a hundred
+  frames, requires its base not to move, and destroys it after the world.
 
 
 ## 2. The humans

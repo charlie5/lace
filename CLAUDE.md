@@ -22,6 +22,8 @@ source $LACE/lace-gpr_paths.sh   # prepends every component's library dir to GPR
 
 An additional scenario variable is defined in `0-floor/lace_shared/lace_shared.gpr`, which every project imports: `Lace_Build_Mode` (`debug`* | `fast` | `profile` | `small`). Pass with `-X`, e.g. `gprbuild -P foo.gpr -XLace_Build_Mode=fast`.
 
+Models with more than 65535 vertices (the human rigs) need `opengl_profile=desk`. The profile is a subunit of `openGL` (`3-mid/opengl/source/profile/*/opengl-profile.adb`), and gprbuild does not notice the variable changing on its own: after changing `opengl_profile`, touch `3-mid/opengl/source/opengl.adb` (or build with `-f`) so the subunit is recompiled. The profiles share the object directory, so change back the same way.
+
 ## Build and test commands
 
 There is no unified test runner. Every demo/test is a standalone applet: a directory with its own `.gpr` whose executable is written into that same directory.

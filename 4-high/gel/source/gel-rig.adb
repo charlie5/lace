@@ -894,6 +894,7 @@ is
    is
    begin
       Self.base_Sprite.rotate (to_Spin => Now);
+      Self.overall_Spin := Now;
    end Spin_is;
 
 
@@ -1067,14 +1068,16 @@ is
    is
       use bone_id_Maps_of_transform;
 
-      the_Bone : gel.Sprite.view;
-      Cursor   : bone_id_Maps_of_transform.Cursor := Self.bone_pose_Transforms.First;
+      Placement : constant Matrix_4x4 := to_transform_Matrix (Rotation    => Self.overall_Spin,
+                                                              Translation => Self.overall_Site);
+      the_Bone  : gel.Sprite.view;
+      Cursor    : bone_id_Maps_of_transform.Cursor := Self.bone_pose_Transforms.First;
 
    begin
       while has_Element (Cursor)
       loop
          the_Bone := Self.bone_Sprites (Key (Cursor));
-         the_Bone.Transform_is (Element (Cursor));
+         the_Bone.Transform_is (Element (Cursor) * Placement);     -- The pose is about the origin; then the rig's placement.
 
          next (Cursor);
       end loop;
