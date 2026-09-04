@@ -15,7 +15,6 @@ is
    use
         gel.Sprite,
         linear_Algebra,
-        linear_Algebra_3D,
         lace.Event.utility,
         lace.Event;
 
