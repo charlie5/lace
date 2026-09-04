@@ -25,7 +25,9 @@ is
             when a_Capsule =>
                lower_Radius,
                upper_Radius  :        Real;
-               Height        :        Real;
+               Height        :        Real;     -- The length of the cylinder between the two cap centres,
+               --                                  as for the openGL capsule model; the whole capsule is
+               --                                  Height + 2 * Radius long.
 
             when Heightfield =>
                Heights       :        Heightfield_view;

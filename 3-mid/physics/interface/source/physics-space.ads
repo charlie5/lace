@@ -141,6 +141,10 @@ is
    function       new_sphere_Shape (Self : access Item;   Radius       : in     Real     :=  0.5)            return Shape.view   is abstract;
    function      new_capsule_Shape (Self : access Item;   Radius       : in     Real     :=  0.5;
                                                           Height       : in     Real)                        return Shape.view   is abstract;
+   --
+   -- Height is the length of the cylinder between the two cap centres, as for the
+   -- openGL capsule model; the whole capsule is Height + 2 * Radius long.
+
    function         new_cone_Shape (Self : access Item;   Radius       : in     Real     :=  0.5;
                                                           Height       : in     Real     :=  1.0)            return Shape.view   is abstract;
    function     new_cylinder_Shape (Self : access Item;   half_Extents : in     Vector_3 := [0.5, 0.5, 0.5]) return Shape.view   is abstract;

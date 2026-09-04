@@ -236,7 +236,7 @@ begin
            := physics.Model.forge.new_physics_Model (shape_Info => (Kind         => physics.Model.a_Capsule,
                                                                     lower_Radius => 0.5,
                                                                     upper_Radius => 0.5,
-                                                                    Height       => 1.0),
+                                                                    Height       => 2.0),     -- The same cylinder length as the graphics model.
                                                      Mass       => 1.0);
          the_Capsule : constant gel.Sprite.view
            := gel.Sprite.forge.new_Sprite (Name           => "demo.Capsule",
