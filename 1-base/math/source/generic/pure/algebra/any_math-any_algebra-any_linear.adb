@@ -27,11 +27,16 @@ is
    is
       use Vectors;
 
-      inverse_Norm : constant Real := 1.0 / abs Self;
+      Norm : constant Real := abs Self;
    begin
+      if Norm = 0.0
+      then
+         return;     -- A zero vector has no direction; leave it unchanged.
+      end if;
+
       for Each in Self'Range
       loop
-         Self (Each) := Self (Each) * inverse_Norm;
+         Self (Each) := Self (Each) / Norm;
       end loop;
    end normalise;
 
@@ -49,36 +54,44 @@ is
 
    procedure normalise (Self : in out Vector_2)
    is
-      inverse_Norm : constant Real := 1.0 / abs Self;
    begin
-      Self := Self * inverse_Norm;
+      Self := Normalised (Self);
    end normalise;
 
 
 
    function Normalised (Self : in Vector_2) return Vector_2
    is
-      inverse_Norm : constant Real := 1.0 / abs Self;
+      Norm : constant Real := abs Self;
    begin
-      return Self * inverse_Norm;
+      if Norm = 0.0
+      then
+         return Self;     -- A zero vector has no direction; return it unchanged.
+      end if;
+
+      return Self * (1.0 / Norm);
    end Normalised;
 
 
 
    procedure normalise (Self : in out Vector_3)
    is
-      inverse_Norm : constant Real := 1.0 / abs Self;
    begin
-      Self := Self * inverse_Norm;
+      Self := Normalised (Self);
    end normalise;
 
 
 
    function Normalised (Self : in Vector_3) return Vector_3
    is
-      inverse_Norm : constant Real := 1.0 / abs Self;
+      Norm : constant Real := abs Self;
    begin
-      return Self * inverse_Norm;
+      if Norm = 0.0
+      then
+         return Self;     -- A zero vector has no direction; return it unchanged.
+      end if;
+
+      return Self * (1.0 / Norm);
    end Normalised;
 
 
@@ -182,46 +195,35 @@ is
 
    function Image (Self : in Matrix) return String
    is
-      Image : String (1 .. 1024 * 1024);         -- Handles one megabyte image, excess is truncated.
-      Count : standard.Natural         := 0;
-
-      procedure add (Text : in String)
+      function row_Image (Row : in Index) return String
       is
-      begin
-         Image (Count + 1 .. Count + Text'Length) := Text;
-         Count                                    := Count + Text'Length;
-      end add;
-
-   begin
-      add ("(");
-
-      for Row in Self'Range (1)
-      loop
-         add ([1 => ada.Characters.latin_1.LF]);
-
-         if Row /= Self'First (1)
-         then
-            add (", ");
-         end if;
-
-         for Col in Self'Range (2)
-         loop
-            if Col /= Self'First (2)
+         function column_Image (Col : in Index) return String
+         is
+         begin
+            if Col > Self'Last (2)
             then
-               add (", ");
+               return "";
             end if;
 
-            add (Real'Image (Self (Row, Col)));
-         end loop;
-      end loop;
+            return   (if Col = Self'First (2) then "" else ", ")
+                   & Real'Image (Self (Row, Col))
+                   & column_Image (Col + 1);
+         end column_Image;
 
-      add (")");
+      begin
+         if Row > Self'Last (1)
+         then
+            return "";
+         end if;
 
-      return Image (1 .. Count);
+         return   [1 => ada.Characters.latin_1.LF]
+                & (if Row = Self'First (1) then "" else ", ")
+                & column_Image (Self'First (2))
+                & row_Image    (Row + 1);
+      end row_Image;
 
-   exception
-      when others =>
-         return Image (1 .. Count);
+   begin
+      return "(" & row_Image (Self'First (1)) & ")";
    end Image;
 
 
@@ -309,7 +311,7 @@ is
          end;
 
       else
-         Result.R     := L;
+         Result.R     := 1.0;     -- No axis: the identity rotation.
          Result.V (1) := 0.0;
          Result.V (2) := 0.0;
          Result.V (3) := 0.0;
@@ -339,7 +341,7 @@ is
          end;
 
       else
-         Result.R := L;
+         Result.R := 1.0;         -- No axis: the identity rotation.
          Result.V := [0.0, 0.0, 0.0];
       end if;
 
@@ -487,9 +489,9 @@ is
          Result.R := 0.5 * S;
 
          S            := 0.5 * (1.0 / S);
-         Result.V (1) := (Self (3, 2)  -  Self (2, 3)) * S;
-         Result.V (2) := (Self (1, 3)  -  Self (3, 1)) * S;
-         Result.V (3) := (Self (2, 1)  -  Self (1, 2)) * S;
+         Result.V (1) := (Self (2, 3)  -  Self (3, 2)) * S;
+         Result.V (2) := (Self (3, 1)  -  Self (1, 3)) * S;
+         Result.V (3) := (Self (1, 2)  -  Self (2, 1)) * S;
 
          return Result;
       end if;
@@ -506,7 +508,7 @@ is
             S            := 0.5 * (1.0 / S);
             Result.V (2) := (Self (1, 2) + Self (2, 1)) * S;
             Result.V (3) := (Self (3, 1) + Self (1, 3)) * S;
-            Result.R     := (Self (3, 2) - Self (2, 3)) * S;
+            Result.R     := (Self (2, 3) - Self (3, 2)) * S;
 
             return Result;
          end case_1_Result;
@@ -522,7 +524,7 @@ is
             S            := 0.5 * (1.0 / S);
             Result.V (3) := (Self (2, 3) + Self (3, 2)) * S;
             Result.V (1) := (Self (1, 2) + Self (2, 1)) * S;
-            Result.R     := (Self (1, 3) - Self (3, 1)) * S;
+            Result.R     := (Self (3, 1) - Self (1, 3)) * S;
 
             return Result;
          end case_2_Result;
@@ -538,7 +540,7 @@ is
             S            := 0.5 * (1.0 / S);
             Result.V (1) := (Self (3, 1) + Self (1, 3)) * S;
             Result.V (2) := (Self (2, 3) + Self (3, 2)) * S;
-            Result.R     := (Self (2, 1) - Self (1, 2)) * S;
+            Result.R     := (Self (1, 2) - Self (2, 1)) * S;
 
             return Result;
          end case_3_Result;

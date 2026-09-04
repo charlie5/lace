@@ -9,8 +9,8 @@ is
                            m21, m22 : in Real) return Matrix_2x2
    is
    begin
-      return (1 => (m11, m12),
-              2 => (m21, m22));
+      return [1 => [m11, m21],     -- Transposed: the cache builds column-vector
+              2 => [m12, m22]];    -- matrices, lace uses the row-vector convention.
    end to_Matrix_2x2;
 
 

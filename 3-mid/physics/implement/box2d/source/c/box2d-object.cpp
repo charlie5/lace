@@ -219,7 +219,7 @@ void
 b2d_Object_Spin_is (Object*       Self,
                     Matrix_3x3*   Now)
 {
-  float   Angle = atan2 (Now->m10, Now->m00);
+  float   Angle = atan2 (Now->m01, Now->m00);     // Row vector convention: row 1 is the rotated x axis.
 
   if (Self->body)
     {

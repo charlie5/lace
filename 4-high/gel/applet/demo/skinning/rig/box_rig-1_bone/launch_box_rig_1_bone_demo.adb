@@ -46,7 +46,7 @@ is
 
 begin
    the_Applet.gui_Camera.Site_is ([0.0, -10.0, 1.0]);                        -- Position the camera.
-   the_Applet.gui_Camera.Spin_is (x_Rotation_from (to_Radians (-90.0)));     -- Rotate   the camera.
+   the_Applet.gui_Camera.Spin_is (x_Rotation_from (to_Radians (90.0)));      -- Rotate   the camera.
 
    the_Applet.enable_simple_Dolly (1);                                       -- Enable user camera control via keyboards
    the_Applet.Dolly.Speed_is (0.05);

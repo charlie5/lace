@@ -18,7 +18,8 @@ with
 
 package body gel.Rig
 is
-   use linear_Algebra_3D;
+   use linear_Algebra,
+       linear_Algebra_3D;
 
 
    -----------
@@ -203,7 +204,7 @@ is
             Site := Site + Self.overall_Site;
 
             Rotation := Inverse (get_Rotation (the_global_Transform));
-            Rotation := Self.base_Sprite.Spin * Rotation;
+            Rotation := Rotation * Self.base_Sprite.Spin;
 
             Self.bone_Sprites (the_bone_Id).all.Site_is (Site);
 

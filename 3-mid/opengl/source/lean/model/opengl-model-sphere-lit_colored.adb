@@ -102,7 +102,7 @@ is
             a := 0.0;
             b := b + lat_Spacing;
 
-            the_Site            := the_Site * z_Rotation_from (lat_Spacing);
+            the_Site            := the_Site * z_Rotation_from (-lat_Spacing);      -- Walk the meridian toward +x ...
             latitude_line_First := the_Site;                   -- Store initial latitude lines 1st point.
 
             vert_Id             := vert_Id + 1;
@@ -118,7 +118,7 @@ is
                a := a + long_Spacing;
 
                if long_Id /= long_Count
-               then   the_Site := the_Site * y_Rotation_from (-long_Spacing);
+               then   the_Site := the_Site * y_Rotation_from (long_Spacing);      -- ... and the ring toward -z, so the strips face outward.
                else   the_Site := latitude_line_First;         -- Restore the_Vertex back to initial latitude lines 1st point.
                end if;
 

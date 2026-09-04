@@ -17,6 +17,7 @@ with
 package body gel.World.client
 is
    use
+        linear_Algebra,
         linear_Algebra_3D,
         lace.Event.utility;
 

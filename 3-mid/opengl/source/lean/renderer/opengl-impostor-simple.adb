@@ -37,10 +37,9 @@ is
    begin
       -- Look directly at target so it will be rendered in the centre of the viewport.
       --
-      Self.current_Camera_look_at_Rotation := get_Rotation (look_at (the_Camera.Site,
-                                                                     get_Translation (Self.Target.Transform),
-                                                                     -- get_Translation (Self.Target.model_Transform),
-                                                                     [0.0, 1.0, 0.0]));
+      Self.current_Camera_look_at_Rotation := inverse_Rotation (get_Rotation (look_at (the_Camera.Site,
+                                                                                       get_Translation (Self.Target.Transform),
+                                                                                       [0.0, 1.0, 0.0])));
       Self.current_pixel_Region := Self.get_pixel_Region (camera_Spin                 => Self.current_Camera_look_at_Rotation,
                                                           camera_Site                 => the_Camera.Site,
                                                           camera_projection_Transform => the_Camera.projection_Transform,

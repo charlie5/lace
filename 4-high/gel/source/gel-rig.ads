@@ -302,7 +302,7 @@ private
    --
    type Transform is
       record
-         Rotation    : Quaternion := linear_Algebra_3D.to_Quaternion (linear_Algebra_3D.x_Rotation_from (0.0));
+         Rotation    : Quaternion := (R => 1.0,  V => [0.0, 0.0, 0.0]);     -- The identity rotation.
          Translation : Vector_3   := [0.0, 0.0, 0.0];
       end record;
 

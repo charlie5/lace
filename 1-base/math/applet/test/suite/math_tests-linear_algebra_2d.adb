@@ -1,6 +1,7 @@
 with
      Ahven,
-     float_Math.Algebra.linear.d2;
+     float_Math.Algebra.linear.d2,
+     float_Math.fast_Rotation;
 
 
 package body math_Tests.linear_Algebra_2d
@@ -132,6 +133,43 @@ is
 
 
 
+   procedure inverse_transform_Test
+   is
+      use float_Math.Algebra.linear.d2;
+
+      Transform : constant Transform_2d := to_Transform_2d (rotation    => to_Radians (90.0),
+                                                            translation => [1.0, 2.0]);
+      From      : constant Vector_2     := [3.0, 4.0];
+      Moved     : constant Vector_2     := From * Transform;
+      Tolerance : constant              := 0.000_01;
+      Back      :          Vector_2;
+   begin
+      Back := inverse_Transform (Transform, Moved);
+      assert (abs (Back (1) - From (1)) <= Tolerance and abs (Back (2) - From (2)) <= Tolerance,
+              Image (Back, 16) & "  inverse_Transform failed !");
+
+      Back := Moved * Invert (Transform);
+      assert (abs (Back (1) - From (1)) <= Tolerance and abs (Back (2) - From (2)) <= Tolerance,
+              Image (Back, 16) & "  Invert failed !");
+   end inverse_transform_Test;
+
+
+
+   procedure fast_rotation_Test
+   is
+      use float_Math.Algebra.linear.d2;
+
+      Tolerance : constant          := 0.001;                        -- The cache quantises the angle.
+      Fast      : constant Vector_2 := [1.0, 0.0] * float_Math.fast_Rotation.to_Rotation (to_Radians (90.0)).all;
+      Exact     : constant Vector_2 := [1.0, 0.0] * to_rotation_Matrix (to_Radians (90.0));
+   begin
+      assert (        abs (Fast (1) - Exact (1)) <= Tolerance
+              and abs (Fast (2) - Exact (2)) <= Tolerance,
+              Image (Fast, 16) & "  fast rotation disagrees with to_rotation_Matrix !");
+   end fast_rotation_Test;
+
+
+
    overriding
    procedure initialize (T : in out Test)
    is
@@ -141,6 +179,8 @@ is
       Framework.add_test_Routine (T, translation_Matrix_Test'Access, "translation_Matrix_Test");
       Framework.add_test_Routine (T,    rotation_Matrix_Test'Access,    "rotation_Matrix_Test");
       Framework.add_test_Routine (T,          transform_Test'Access,          "transform_Test");
+      Framework.add_test_Routine (T,  inverse_transform_Test'Access,  "inverse_transform_Test");
+      Framework.add_test_Routine (T,      fast_rotation_Test'Access,      "fast_rotation_Test");
    end initialize;
 
 

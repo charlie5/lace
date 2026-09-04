@@ -44,11 +44,11 @@ is
    is
       use linear_Algebra_3D;
 
-      pivot_in_A : constant Vector_3   := Inverse (Sprite_A.Spin) * (pivot_Anchor - Sprite_A.Site);
-      pivot_in_B : constant Vector_3   := Inverse (Sprite_B.Spin) * (pivot_Anchor - Sprite_B.Site);
+      pivot_in_A : constant Vector_3   := (pivot_Anchor - Sprite_A.Site) * Inverse (Sprite_A.Spin);
+      pivot_in_B : constant Vector_3   := (pivot_Anchor - Sprite_B.Site) * Inverse (Sprite_B.Spin);
 
-      axis_in_A  : constant Matrix_3x3 := Sprite_A.Spin * pivot_Axis;
-      axis_in_B  : constant Matrix_3x3 := Sprite_B.Spin * pivot_Axis;
+      axis_in_A  : constant Matrix_3x3 := pivot_Axis * Sprite_A.Spin;
+      axis_in_B  : constant Matrix_3x3 := pivot_Axis * Sprite_B.Spin;
 
       Frame_A    : constant Matrix_4x4 := to_transform_Matrix (axis_in_A, pivot_in_A);
       Frame_B    : constant Matrix_4x4 := to_transform_Matrix (axis_in_B, pivot_in_B);

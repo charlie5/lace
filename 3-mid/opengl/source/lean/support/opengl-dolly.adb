@@ -52,20 +52,20 @@ is
 
                -- Orbital motion.
                --
-            when 'A'    =>    Self.Camera.Site_is (Self.Camera.Site * y_Rotation_from (to_Radians (-5.0)));
-                              Self.Camera.Spin_is (Self.Camera.Spin * y_Rotation_from (to_Radians (-5.0)));
-            when 'S'    =>    Self.Camera.Site_is (Self.Camera.Site * y_Rotation_from (to_Radians ( 5.0)));
+            when 'A'    =>    Self.Camera.Site_is (Self.Camera.Site * y_Rotation_from (to_Radians ( 5.0)));
                               Self.Camera.Spin_is (Self.Camera.Spin * y_Rotation_from (to_Radians ( 5.0)));
+            when 'S'    =>    Self.Camera.Site_is (Self.Camera.Site * y_Rotation_from (to_Radians (-5.0)));
+                              Self.Camera.Spin_is (Self.Camera.Spin * y_Rotation_from (to_Radians (-5.0)));
 
-            when 'E'    =>    Self.Camera.Site_is (Self.Camera.Site * x_Rotation_from (to_Radians (-5.0)));
-                              Self.Camera.Spin_is (Self.Camera.Spin * x_Rotation_from (to_Radians (-5.0)));
-            when 'D'    =>    Self.Camera.Site_is (Self.Camera.Site * x_Rotation_from (to_Radians ( 5.0)));
+            when 'E'    =>    Self.Camera.Site_is (Self.Camera.Site * x_Rotation_from (to_Radians ( 5.0)));
                               Self.Camera.Spin_is (Self.Camera.Spin * x_Rotation_from (to_Radians ( 5.0)));
+            when 'D'    =>    Self.Camera.Site_is (Self.Camera.Site * x_Rotation_from (to_Radians (-5.0)));
+                              Self.Camera.Spin_is (Self.Camera.Spin * x_Rotation_from (to_Radians (-5.0)));
 
-            when 'W'    =>    Self.Camera.Site_is (Self.Camera.Site * z_Rotation_from (to_Radians (-5.0)));
-                              Self.Camera.Spin_is (Self.Camera.Spin * z_Rotation_from (to_Radians (-5.0)));
-            when 'Z'    =>    Self.Camera.Site_is (Self.Camera.Site * z_Rotation_from (to_Radians ( 5.0)));
+            when 'W'    =>    Self.Camera.Site_is (Self.Camera.Site * z_Rotation_from (to_Radians ( 5.0)));
                               Self.Camera.Spin_is (Self.Camera.Spin * z_Rotation_from (to_Radians ( 5.0)));
+            when 'Z'    =>    Self.Camera.Site_is (Self.Camera.Site * z_Rotation_from (to_Radians (-5.0)));
+                              Self.Camera.Spin_is (Self.Camera.Spin * z_Rotation_from (to_Radians (-5.0)));
 
             when others =>   null;
          end case;

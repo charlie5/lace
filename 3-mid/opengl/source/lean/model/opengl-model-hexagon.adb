@@ -14,7 +14,7 @@ is
       for i in the_Sites'Range
       loop
          the_Sites (i) := the_Site;
-         the_Site      := Rotation * the_Site;
+         the_Site      := the_Site * Rotation;
       end loop;
 
       return the_Sites;

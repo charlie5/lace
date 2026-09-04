@@ -614,7 +614,7 @@ is
 
    procedure rotate (Self : in out Item;   to_Spin : in Matrix_3x3)
    is
-      the_spin_Delta : constant Matrix_3x3 := to_Spin * Inverse (Self.Spin);   -- The rotation matrix describing the amount by which Self has rotated.
+      the_spin_Delta : constant Matrix_3x3 := Inverse (Self.Spin) * to_Spin;   -- The rotation matrix describing the amount by which Self has rotated.
 
       procedure spin_Children (the_Sprite : in Sprite.item'Class)
       is
@@ -631,10 +631,10 @@ is
             for i in 1 .. Integer (the_Sprite.child_Joints.Length)
             loop
                child_Sprite    := the_Sprite.child_Joints.Element (i).Sprite_B;
-               the_site_Offset := the_spin_Delta * (child_Sprite.Site - Self.Site);
+               the_site_Offset := (child_Sprite.Site - Self.Site) * the_spin_Delta;
 
-               child_Sprite.Site_is (Self.Site      + the_site_Offset);
-               child_Sprite.Spin_is (the_spin_Delta * child_Sprite.Spin);
+               child_Sprite.Site_is (Self.Site        + the_site_Offset);
+               child_Sprite.Spin_is (child_Sprite.Spin * the_spin_Delta);
 
                spin_Children (child_Sprite.all);     -- Recurse.
             end loop;
@@ -821,7 +821,7 @@ is
          Self.Interpolation.get (new_Site,
                                  new_Spin);
          Self.Site_is (new_Site);
-         Self.Spin_is (Transpose (to_Matrix (new_Spin)));
+         Self.Spin_is (to_Matrix (new_Spin));
       end;
    end interpolate_Motion;
 

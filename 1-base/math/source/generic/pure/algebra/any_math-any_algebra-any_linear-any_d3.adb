@@ -11,14 +11,10 @@ is
 
       Vector_1  : constant Vector_3 := Normalised (Point_1 - Point_2);
       Vector_2  : constant Vector_3 := Normalised (Point_3 - Point_2);
-      cos_Theta : constant Real     := Vector_1 * Vector_2;
+      cos_Theta :          Real     := Vector_1 * Vector_2;
    begin
-      if cos_Theta >= 1.0
-      then
-         return ada.Numerics.Pi;
-      else
-         return arcCos (cos_Theta);
-      end if;
+      clamp (cos_Theta, -1.0, 1.0);   -- Rounding can push the cosine just outside the domain of arcCos.
+      return arcCos (cos_Theta);
    end Angle;
 
 
@@ -185,8 +181,8 @@ is
       A : Radians renames Angle;
    begin
       return [[1.0,      0.0,      0.0],
-              [0.0,  Cos (A), -Sin (A)],
-              [0.0,  Sin (A),  Cos (A)]];
+              [0.0,  Cos (A),  Sin (A)],
+              [0.0, -Sin (A),  Cos (A)]];
    end x_Rotation_from;
 
 
@@ -197,9 +193,9 @@ is
 
       A : Radians renames Angle;
    begin
-      return [[ Cos (A),  0.0,  Sin (A)],
-              [     0.0,  1.0,      0.0],
-              [-Sin (A),  0.0,  Cos (A)]];
+      return [[Cos (A),  0.0, -Sin (A)],
+              [    0.0,  1.0,      0.0],
+              [Sin (A),  0.0,  Cos (A)]];
    end y_Rotation_from;
 
 
@@ -210,9 +206,9 @@ is
 
       A : Radians renames Angle;
    begin
-      return [[Cos (A),  -Sin (A),  0.0],
-              [Sin (A),   Cos (A),  0.0],
-              [    0.0,       0.0,  1.0]];
+      return [[ Cos (A),  Sin (A),  0.0],
+              [-Sin (A),  Cos (A),  0.0],
+              [     0.0,      0.0,  1.0]];
    end z_Rotation_from;
 
 
@@ -246,20 +242,8 @@ is
 
    function to_Rotation (Angles : in Euler) return Matrix_3x3
    is
-      use Functions;
-
-      A  : constant Real := Cos (Angles (1));
-      B  : constant Real := Sin (Angles (1));
-      C  : constant Real := Cos (Angles (2));
-      D  : constant Real := Sin (Angles (2));
-      E  : constant Real := Cos (Angles (3));
-      F  : constant Real := Sin (Angles (3));
-      AD : constant Real := A * D;
-      BD : constant Real := B * D;
    begin
-      return [[ C  * E,          -C  * F,           D    ],
-              [ BD * E + A * F,  -BD * F + A * E,  -B * C],
-              [-AD * E + B * F,   AD * F + B * E,   A * C]];
+      return xyz_Rotation (Vector_3 (Angles));
    end to_Rotation;
 
 
@@ -321,16 +305,16 @@ is
 
    function Look_at (Eye, Center, Up : in Vector_3) return Matrix_4x4
    is
-      Forward   : constant Vector_3 := Normalised ([Center (1) - Eye (1),
-                                                    Center (2) - Eye (2),
-                                                    Center (3) - Eye (3)]);
-      Side      : constant Vector_3 := Forward * Up;
-      new_Up    : constant Vector_3 := Side * Forward;
+      Forward  : constant Vector_3   := Normalised (Center - Eye);
+      Side     : constant Vector_3   := Normalised (Forward * Up);
+      new_Up   : constant Vector_3   := Side * Forward;
+
+      Rotation : constant Matrix_3x3 := [[Side (1),  new_Up (1),  -Forward (1)],     -- The camera axes as columns, so
+                                         [Side (2),  new_Up (2),  -Forward (2)],     -- 'Site * Rotation' expresses a world
+                                         [Side (3),  new_Up (3),  -Forward (3)]];    -- site in the camera's frame.
    begin
-      return  [[    Side (1),      Side (2),      Side (3),  0.0],
-               [  new_Up (1),    new_Up (2),    new_Up (3),  0.0],
-               [-Forward (1),  -Forward (2),  -Forward (3),  0.0],
-               [    -Eye (1),      -Eye (2),      -Eye (3),  1.0]];
+      return to_transform_Matrix (Rotation,
+                                  Translation => -(Eye * Rotation));
    end Look_at;
 
 
@@ -347,20 +331,10 @@ is
 
 
 
-   function "*" (Left : in Transform_3d;   Right : in Vector_3) return Vector_3
-   is
-   begin
-      return [Row (Left.Rotation, 1) * Right  +  Left.Translation (1),
-              Row (Left.Rotation, 2) * Right  +  Left.Translation (2),
-              Row (Left.Rotation, 3) * Right  +  Left.Translation (3)];
-   end "*";
-
-
-
    function "*" (Left : in Vector_3;   Right : in Transform_3d) return Vector_3
    is
    begin
-      return Right * Left;
+      return Left * Right.Rotation  +  Right.Translation;
    end "*";
 
 
@@ -369,8 +343,7 @@ is
    is
    begin
       return (Rotation    => Left.Rotation * Right.Rotation,
-              Translation => Left          * Right.Translation);
-
+              Translation => Left.Translation * Right.Rotation  +  Right.Translation);
    end "*";
 
 
@@ -390,17 +363,16 @@ is
    is
       Rotation : constant Matrix_3x3 := Transpose (Transform.Rotation);
    begin
-      return (Translation => Rotation * (-Transform.Translation),
-              Rotation    => Rotation);
+      return (Rotation    => Rotation,
+              Translation => -(Transform.Translation * Rotation));
    end Invert;
 
 
 
    function inverse_Transform (Transform : in Transform_3d;   Vector : in Vector_3) return Vector_3
    is
-      V : constant Vector_3 := Vector - Transform.Translation;
    begin
-      return Transpose (Transform.Rotation) * V;
+      return (Vector - Transform.Translation) * Transpose (Transform.Rotation);
    end inverse_Transform;
 
 
@@ -408,166 +380,10 @@ is
    --- Quaternions
    --
 
-   function to_Quaternion (Matrix : in Matrix_3x3) return Quaternion
-   is
-      use Functions;
-
-      TR     : constant Real      := Matrix (1, 1)  +  Matrix (2, 2)  +  Matrix (3, 3);
-      S      :          Real;
-      Result :          Quaternion;
-
-   begin
-      if TR >= 0.0
-      then
-         S        := SqRt (TR + 1.0);
-         Result.R := 0.5 * S;
-
-         S            := 0.5 * (1.0 / S);
-         Result.V (1) := (Matrix (3, 2)  -  Matrix (2, 3)) * S;
-         Result.V (2) := (Matrix (1, 3)  -  Matrix (3, 1)) * S;
-         Result.V (3) := (Matrix (2, 1)  -  Matrix (1, 2)) * S;
-
-         return Result;
-      end if;
-
-      -- Otherwise, find the largest diagonal element and apply the appropriate case.
-      --
-      declare
-         function case_1_Result return Quaternion
-         is
-         begin
-            S            := SqRt (Matrix (1, 1)  -  (Matrix (2, 2)  +  Matrix (3, 3))  +  1.0);
-            Result.V (1) := 0.5 * S;
-
-            S            := 0.5 * (1.0 / S);
-            Result.V (2) := (Matrix (1, 2) + Matrix (2, 1)) * S;
-            Result.V (3) := (Matrix (3, 1) + Matrix (1, 3)) * S;
-            Result.R     := (Matrix (3, 2) - Matrix (2, 3)) * S;
-
-            return Result;
-         end case_1_Result;
-
-
-
-         function case_2_Result return Quaternion
-         is
-         begin
-            S            := SqRt (Matrix (2, 2)  -  (Matrix (3, 3)  +  Matrix (1, 1))  +  1.0);
-            Result.V (2) := 0.5 * S;
-
-            S            := 0.5 * (1.0 / S);
-            Result.V (3) := (Matrix (2, 3) + Matrix (3, 2)) * S;
-            Result.V (1) := (Matrix (1, 2) + Matrix (2, 1)) * S;
-            Result.R     := (Matrix (1, 3) - Matrix (3, 1)) * S;
-
-            return Result;
-         end case_2_Result;
-
-
-
-         function case_3_Result return Quaternion
-         is
-         begin
-            S            := SqRt (Matrix (3, 3)  -  (Matrix (1, 1) + Matrix (2, 2))  +  1.0);
-            Result.V (3) := 0.5 * S;
-
-            S            := 0.5 * (1.0 / S);
-            Result.V (1) := (Matrix (3, 1) + Matrix (1, 3)) * S;
-            Result.V (2) := (Matrix (2, 3) + Matrix (3, 2)) * S;
-            Result.R     := (Matrix (2, 1) - Matrix (1, 2)) * S;
-
-            return Result;
-         end case_3_Result;
-
-         pragma inline (case_1_Result);
-         pragma inline (case_2_Result);
-         pragma inline (case_3_Result);
-
-      begin
-         if Matrix (2, 2) > Matrix (1, 1)
-         then
-            if Matrix (3, 3) > Matrix (2, 2)
-            then
-               return case_3_Result;
-            end if;
-
-            return case_2_Result;
-         end if;
-
-         if Matrix (3, 3) > Matrix (1, 1)
-         then
-            return case_3_Result;
-         end if;
-
-         return case_1_Result;
-      end;
-   end to_Quaternion;
-
-
-
    procedure set_from_Matrix_3x3 (Quat : out Quaternion;   Matrix : in Matrix_3x3)
    is
-      use Functions;
-
-      S  :          Real;
-      TR : constant Real :=   1.0 + Matrix (1, 1)
-                            + Matrix (2, 2)
-                            + Matrix (3, 3);
    begin
-      if TR > 1.0e-9
-      then
-         S          := SqRt (TR);
-         Quat.R     := 0.5 * S;
-         S          := 0.5 / S;
-         Quat.V (1) := (Matrix (2, 3) - Matrix (3, 2)) * S;
-         Quat.V (2) := (Matrix (3, 1) - Matrix (1, 3)) * S;
-         Quat.V (3) := (Matrix (1, 2) - Matrix (2, 1)) * S;
-
-      else
-         declare
-            I : Index := 0;
-         begin
-            if Matrix (2, 2) > Matrix (1, 1)
-            then
-               I := 1;
-            end if;
-
-            if Matrix (3, 3) > Matrix (I, I)
-            then
-               I := 2;
-            end if;
-
-            case I
-            is
-               when 0 =>
-                  S          := SqRt ((Matrix (1, 1) - (Matrix (2, 2) + Matrix (3, 3))) + 1.0);
-                  Quat.V (1) := 0.5 * S;
-                  S          := 0.5 / S;
-                  Quat.V (2) := (Matrix (2, 1) + Matrix (1, 2)) * S;
-                  Quat.V (3) := (Matrix (1, 3) + Matrix (3, 1)) * S;
-                  Quat.R     := (Matrix (2, 3) - Matrix (3, 2)) * S;
-
-               when 1 =>
-                  S          := SqRt ((Matrix (2, 2) - (Matrix (3, 3) + Matrix (1, 1))) + 1.0);
-                  Quat.V (2) := 0.5 * S;
-                  S          := 0.5 / S;
-                  Quat.V (3) := (Matrix (3, 2) + Matrix (2, 3)) * S;
-                  Quat.V (1) := (Matrix (2, 1) + Matrix (1, 2)) * S;
-                  Quat.R     := (Matrix (3, 1) - Matrix (1, 3)) * S;
-
-               when 2 =>
-                  S          := SqRt ((Matrix (3, 3) - (Matrix (1, 1) + Matrix (2, 2))) + 1.0);
-                  Quat.V (3) := 0.5 * S;
-                  S          := 0.5 / S;
-                  Quat.V (1) := (Matrix (1, 3) + Matrix (3, 1)) * S;
-                  Quat.V (2) := (Matrix (3, 2) + Matrix (2, 3)) * S;
-                  Quat.R     := (Matrix (1, 2) - Matrix (2, 1)) * S;
-
-               when others =>
-                  raise program_Error;
-            end case;
-         end;
-      end if;
+      Quat := to_Quaternion (Matrix);
    end set_from_Matrix_3x3;
 
 
@@ -581,15 +397,15 @@ is
       qq4 : constant Real := 2.0  *  Quat.V (3)  *  Quat.V (3);
    begin
       Result (1, 1) := 1.0 - qq3 - qq4;
-      Result (1, 2) := 2.0 * (Quat.V (1) * Quat.V (2) - Quat.R * Quat.V (3));
-      Result (1, 3) := 2.0 * (Quat.V (1) * Quat.V (3) + Quat.R * Quat.V (2));
+      Result (1, 2) := 2.0 * (Quat.V (1) * Quat.V (2) + Quat.R * Quat.V (3));
+      Result (1, 3) := 2.0 * (Quat.V (1) * Quat.V (3) - Quat.R * Quat.V (2));
 
-      Result (2, 1) := 2.0 * (Quat.V (1) * Quat.V (2) + Quat.R * Quat.V (3));
+      Result (2, 1) := 2.0 * (Quat.V (1) * Quat.V (2) - Quat.R * Quat.V (3));
       Result (2, 2) := 1.0 - qq2 - qq4;
-      Result (2, 3) := 2.0 * (Quat.V (2) * Quat.V (3) - Quat.R * Quat.V (1));
+      Result (2, 3) := 2.0 * (Quat.V (2) * Quat.V (3) + Quat.R * Quat.V (1));
 
-      Result (3, 1) := 2.0 * (Quat.V (1) * Quat.V (3) - Quat.R * Quat.V (2));
-      Result (3, 2) := 2.0 * (Quat.V (2) * Quat.V (3) + Quat.R * Quat.V (1));
+      Result (3, 1) := 2.0 * (Quat.V (1) * Quat.V (3) + Quat.R * Quat.V (2));
+      Result (3, 2) := 2.0 * (Quat.V (2) * Quat.V (3) - Quat.R * Quat.V (1));
       Result (3, 3) := 1.0 - qq2 - qq3;
 
       return Result;
@@ -638,20 +454,6 @@ is
 
 
 
-   function "*" (Left, Right : in Quaternion) return Quaternion
-   is
-   begin
-      return (V => [Left.R * Right.V (1)  +  Left.V (1) * Right.R  +  Left.V (2) * Right.V (3)  -  Left.V (3) * Right.V (2),
-                    Left.R * Right.V (2)  +  Left.V (2) * Right.R  +  Left.V (3) * Right.V (1)  -  Left.V (1) * Right.V (3),
-                    Left.R * Right.V (3)  +  Left.V (3) * Right.R  +  Left.V (1) * Right.V (2)  -  Left.V (2) * Right.V (1)],
-              R =>   Left.R     * Right.R
-                   - Left.V (1) * Right.V (1)
-                   - Left.V (2) * Right.V (2)
-                   - Left.V (3) * Right.V (3));
-   end "*";
-
-
-
    function Invert (Quat : in Quaternion) return Quaternion
    is
    begin
@@ -664,14 +466,15 @@ is
    is
       use Functions;
 
-      Q : Quaternion := Quat;
+      cos_half_Angle : Real := Quat.R;
    begin
-      if Q.R > 1.0
+      if abs cos_half_Angle > 1.0
       then
-         normalise (Q);   -- If R > 1.0, arCos and SqRt will produce errors, this cant happen if quaternion is normalised.
+         cos_half_Angle := cos_half_Angle / Norm (Quat);   -- Not a unit quaternion.
       end if;
 
-      return 2.0 * arcCos (Q.R);
+      clamp (cos_half_Angle, -1.0, 1.0);                   -- Keep rounding within the domain of arcCos.
+      return 2.0 * arcCos (cos_half_Angle);
    end Angle;
 
 
@@ -687,10 +490,10 @@ is
    function "*" (Left : in Quaternion;   Right : in Vector_3) return Quaternion
    is
    begin
-      return ( Left.R     * Right (1)  +  Left.V (2) * Right (3)  -  Left.V (3) * Right (2),
-              [Left.R     * Right (2)  +  Left.V (3) * Right (1)  -  Left.V (1) * Right (3),
-               Left.R     * Right (3)  +  Left.V (1) * Right (2)  -  Left.V (2) * Right (1),
-              -Left.V (1) * Right (1)  -  Left.V (2) * Right (2)  -  Left.V (3) * Right (3)]);
+      return (R => -Left.V (1) * Right (1)  -  Left.V (2) * Right (2)  -  Left.V (3) * Right (3),
+              V => [Left.R     * Right (1)  +  Left.V (2) * Right (3)  -  Left.V (3) * Right (2),
+                    Left.R     * Right (2)  +  Left.V (3) * Right (1)  -  Left.V (1) * Right (3),
+                    Left.R     * Right (3)  +  Left.V (1) * Right (2)  -  Left.V (2) * Right (1)]);
    end "*";
 
 
@@ -731,8 +534,14 @@ is
 
    function Versor (Quat : in Quaternion) return Quaternion
    is
+      the_Norm : constant Real := Norm (Quat);
    begin
-      return Quat / Norm (Quat);
+      if the_Norm = 0.0
+      then
+         raise Constraint_Error with "Versor of a zero quaternion";
+      end if;
+
+      return Quat / the_Norm;
    end Versor;
 
 
@@ -814,32 +623,15 @@ is
 
    function max_Axis (Vector : in Vector_4) return Integer
    is
-      max_Index : Integer := -1;
-      max_Val   : Real    := -1.0e30;
+      max_Index : Integer := 1;
    begin
-      if Vector (1) > max_Val
-      then
-         max_Index := 1;
-         max_Val   := Vector (1);
-      end if;
-
-      if Vector (2) > max_Val
-      then
-         max_Index := 2;
-         max_Val   := Vector (2);
-      end if;
-
-      if Vector (3) > max_Val
-      then
-         max_Index := 3;
-         max_Val   := Vector (3);
-      end if;
-
-      if Vector (4) > max_Val
-      then
-         max_Index := 4;
-         max_Val   := Vector (4);
-      end if;
+      for i in 2 .. 4
+      loop
+         if Vector (i) > Vector (max_Index)
+         then
+            max_Index := i;
+         end if;
+      end loop;
 
       return max_Index;
    end max_Axis;
@@ -870,8 +662,8 @@ is
    begin
       -- Map x and y from window coordinates.
       --
-      window_Position (1) := (window_Position (1) - Real (Viewport.Min (1))) / Real (Viewport.Max (1));
-      window_Position (2) := (window_Position (2) - Real (Viewport.Min (2))) / Real (Viewport.Max (2));
+      window_Position (1) := (window_Position (1) - Real (Viewport.Min (1))) / Real (Viewport.Max (1) - Viewport.Min (1));
+      window_Position (2) := (window_Position (2) - Real (Viewport.Min (2))) / Real (Viewport.Max (2) - Viewport.Min (2));
 
       window_Position (1) := window_Position (1) * 2.0 - 1.0;     -- Map to range -1.0 .. 1.0.
       window_Position (2) := window_Position (2) * 2.0 - 1.0;

@@ -196,17 +196,16 @@ is
    is
       inverse_Rotation : constant Matrix_2x2 := Transpose (Transform.Rotation);
    begin
-      return (Translation => inverse_Rotation * (-Transform.Translation),
-              Rotation    => inverse_Rotation);
+      return (Rotation    => inverse_Rotation,
+              Translation => -(Transform.Translation * inverse_Rotation));
    end Invert;
 
 
 
    function inverse_Transform (Transform : in Transform_2d;   Vector : in Vector_2) return Vector_2
    is
-      V : constant Vector_2 := Vector - Transform.Translation;
    begin
-      return Transpose (Transform.Rotation) * V;
+      return (Vector - Transform.Translation) * Transpose (Transform.Rotation);
    end inverse_Transform;
 
 

@@ -88,40 +88,40 @@ is
 
       if Self.Orbit (Left)
       then
-         update_Site (initial_Site * y_Rotation_from (orbit_Factor * Speed));
-         update_Spin (initial_Spin * y_Rotation_from (orbit_Factor * Speed));
+         update_Site (initial_Site * y_Rotation_from (-orbit_Factor * Speed));
+         update_Spin (initial_Spin * y_Rotation_from (-orbit_Factor * Speed));
       end if;
 
       if Self.Orbit (Right)
       then
-         update_Site (initial_Site * y_Rotation_from (-orbit_Factor * Speed));
-         update_Spin (initial_Spin * y_Rotation_from (-orbit_Factor * Speed));
+         update_Site (initial_Site * y_Rotation_from (orbit_Factor * Speed));
+         update_Spin (initial_Spin * y_Rotation_from (orbit_Factor * Speed));
       end if;
 
 
       if Self.Orbit (Forward)
       then
-         update_Site (initial_Site * x_Rotation_from (-orbit_Factor * Speed));
-         update_Spin (initial_Spin * x_Rotation_from (-orbit_Factor * Speed));
+         update_Site (initial_Site * x_Rotation_from (orbit_Factor * Speed));
+         update_Spin (initial_Spin * x_Rotation_from (orbit_Factor * Speed));
       end if;
 
       if Self.Orbit (Backward)
       then
-         update_Site (initial_Site * x_Rotation_from (orbit_Factor * Speed));
-         update_Spin (initial_Spin * x_Rotation_from (orbit_Factor * Speed));
+         update_Site (initial_Site * x_Rotation_from (-orbit_Factor * Speed));
+         update_Spin (initial_Spin * x_Rotation_from (-orbit_Factor * Speed));
       end if;
 
 
       if Self.Orbit (Up)
       then
-         update_Site (initial_Site * z_Rotation_from (-orbit_Factor * Speed));
-         update_Spin (initial_Spin * z_Rotation_from (-orbit_Factor * Speed));
+         update_Site (initial_Site * z_Rotation_from (orbit_Factor * Speed));
+         update_Spin (initial_Spin * z_Rotation_from (orbit_Factor * Speed));
       end if;
 
       if Self.Orbit (Down)
       then
-         update_Site (initial_Site * z_Rotation_from (orbit_Factor * Speed));
-         update_Spin (initial_Spin * z_Rotation_from (orbit_Factor * Speed));
+         update_Site (initial_Site * z_Rotation_from (-orbit_Factor * Speed));
+         update_Spin (initial_Spin * z_Rotation_from (-orbit_Factor * Speed));
       end if;
 
 

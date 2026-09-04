@@ -223,9 +223,11 @@ b3d_Object_Spin (Object*   Self)
   btVector3&     R2       = the_Spin [1];
   btVector3&     R3       = the_Spin [2];
 
-  return Matrix_3x3 (R1 [0],  R1 [1],  R1 [2],
-                     R2 [0],  R2 [1],  R2 [2],
-                     R3 [0],  R3 [1],  R3 [2]);
+  // Transposed: bullet rotates column vectors, lace rotates row vectors.
+  //
+  return Matrix_3x3 (R1 [0],  R2 [0],  R3 [0],
+                     R1 [1],  R2 [1],  R3 [1],
+                     R1 [2],  R2 [2],  R3 [2]);
 }
 
 
@@ -235,9 +237,11 @@ b3d_Object_Spin_is (Object*   Self,   Matrix_3x3*   Now)
   btRigidBody*   the_Body = to_bullet (Self);
   btTransform&   trans    = the_Body->getWorldTransform();
 
-  trans.setBasis (btMatrix3x3 (Now->m00, Now->m01, Now->m02,
-                               Now->m10, Now->m11, Now->m12,
-                               Now->m20, Now->m21, Now->m22));
+  // Transposed: bullet rotates column vectors, lace rotates row vectors.
+  //
+  trans.setBasis (btMatrix3x3 (Now->m00, Now->m10, Now->m20,
+                               Now->m01, Now->m11, Now->m21,
+                               Now->m02, Now->m12, Now->m22));
 
   if (is_Kinematic (the_Body))
     {

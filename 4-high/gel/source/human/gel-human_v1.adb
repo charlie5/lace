@@ -25,6 +25,7 @@ package body gel.Human_v1
 is
    use
         ada.Text_IO,
+        gel.linear_Algebra,
         gel.linear_Algebra_3D;
 
    package std_Physics renames standard.Physics;

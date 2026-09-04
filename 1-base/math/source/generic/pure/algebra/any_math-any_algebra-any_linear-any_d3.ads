@@ -28,8 +28,8 @@ is
    --- Matrix_3x3
    --
 
-   z_Up_to_y_Up : constant Matrix_3x3;    -- Provides a rotation which may be multiplied
-   y_Up_to_z_Up : constant Matrix_3x3;    -- by a vector to change co-ordinate systems.
+   z_Up_to_y_Up : constant Matrix_3x3;    -- Rotations which change a site's co-ordinate
+   y_Up_to_z_Up : constant Matrix_3x3;    -- system:  Site * z_Up_to_y_Up.
 
 
    function  to_Matrix         (Row_1,
@@ -45,6 +45,11 @@ is
 
    -------------
    --- Rotations
+   --
+   -- Every rotation matrix uses the row-vector convention: a site is rotated with
+   -- 'Site * Rotation', and 'Rotation_1 * Rotation_2' applies Rotation_1 first.
+   -- The angles are positive counter-clockwise when looking down the axis toward
+   -- the origin (right-handed).
    --
 
    function x_Rotation_from (Angle : in Radians)  return Matrix_3x3;
@@ -81,9 +86,9 @@ is
 
    function to_Rotation (Angles : in Euler) return Matrix_3x3;
    --
-   -- The euler angles are used to produce a rotation matrix. The euler
-   -- angles are applied in ZYX order. That is, a vector is first rotated
-   -- about X, then Y and then Z.
+   -- The euler angles are used to produce a rotation matrix. A site is
+   -- first rotated about X, then Y and then Z, i.e. the result is
+   -- xyz_Rotation (Angles).
 
 
    -----------
@@ -93,6 +98,10 @@ is
    function Look_at (Eye,
                      Center,
                      Up     : in Vector_3) return Matrix_4x4;
+   --
+   -- Returns the view transform of a camera at Eye looking at Center, which maps
+   -- world sites to camera sites ('Site * Look_at (...)'). The camera's own
+   -- orientation is 'inverse_Rotation (get_Rotation (Look_at (...)))'.
 
    function to_Viewport_Transform (Origin,
                                    Extent : in Vector_2) return Matrix_4x4;
@@ -110,10 +119,14 @@ is
    function to_Translation_Matrix (Translation : in Vector_3)       return Matrix_4x4;
    function to_Transform          (Matrix      : in Matrix_4x4)     return Transform_3d;
 
-   function "*" (Left : in Transform_3d;   Right : in Vector_3)     return Vector_3;
    function "*" (Left : in Vector_3;       Right : in Transform_3d) return Vector_3;
+   --
+   -- Rotates then translates, as does 'Left * to_transform_Matrix (Right)'.
 
    function "*" (Left : in Transform_3d;   Right : in Transform_3d) return Transform_3d;
+   --
+   -- Applies Left first, then Right.
+
    function "*" (Left : in Vector_3;       Right : in Matrix_4x4)   return Vector_3;
 
    function Invert            (Transform : in Transform_3d)                         return Transform_3d;
@@ -125,9 +138,13 @@ is
    --
 
    procedure set_from_Matrix_3x3 (Quat :    out Quaternion;   Matrix : in Matrix_3x3);
+   --
+   -- The same as the parent's to_Quaternion (Matrix).
 
-   function  to_Quaternion (Matrix : in Matrix_3x3) return Quaternion;
-   function  to_Matrix     (Quat   : in Quaternion) return Matrix_3x3;
+   function  to_Matrix (Quat : in Quaternion) return Matrix_3x3;
+   --
+   -- Converts a unit quaternion to a row-vector convention rotation matrix, the
+   -- inverse of the parent's to_Quaternion (Matrix).
 
    function  Norm     (Quat : in Quaternion) return Real;
    function  Versor   (Quat : in Quaternion) return Quaternion;               -- Produces the unit quaternion of Quat.
@@ -138,8 +155,7 @@ is
    function  Angle    (Quat : in Quaternion) return Radians;
    function  Axis     (Quat : in Quaternion) return Vector_3;
 
-   function  "*"      (Left, Right : in Quaternion) return Real;              -- Dot   product.
-   function  "*"      (Left, Right : in Quaternion) return Quaternion;        -- Cross product.
+   function  "*"      (Left, Right : in Quaternion) return Real;              -- Dot product. (The parent provides the quaternion product.)
 
    function  "+"      (Left, Right : in Quaternion) return Quaternion;
    function  "-"      (Left, Right : in Quaternion) return Quaternion;
@@ -226,12 +242,12 @@ is
 private
 
    z_Up_to_y_Up : constant Matrix_3x3 := [[1.0,  0.0,  0.0],
-                                          [0.0,  0.0,  1.0],
-                                          [0.0, -1.0,  0.0]];
-
-   y_Up_to_z_Up : constant Matrix_3x3 := [[1.0,  0.0,  0.0],
                                           [0.0,  0.0, -1.0],
                                           [0.0,  1.0,  0.0]];
+
+   y_Up_to_z_Up : constant Matrix_3x3 := [[1.0,  0.0,  0.0],
+                                          [0.0,  0.0,  1.0],
+                                          [0.0, -1.0,  0.0]];
    pragma inline ("+");
    pragma inline ("-");
    pragma inline ("*");
