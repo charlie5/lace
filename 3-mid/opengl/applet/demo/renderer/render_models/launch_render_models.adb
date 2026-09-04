@@ -34,7 +34,7 @@ begin
 --        the_Light.Site_is ((000.0, 5_000.0, 000.0));
 
       the_Light.Color_is (White);
---        the_Light.ambient_Coefficient_is (0.91);
+      the_Light.ambient_Coefficient_is (0.1);
 
       Demo.Renderer.set (the_Light);
    end;
