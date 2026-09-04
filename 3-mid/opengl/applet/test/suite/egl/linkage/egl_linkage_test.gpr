@@ -1,6 +1,5 @@
 with
      "opengl",
-     "swig",
      "lace_shared";
 
 project Egl_linkage_Test

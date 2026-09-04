@@ -1,6 +1,5 @@
 with
      "c_math_thin_cxx",
-     "swig",
      "math",
      "lace_shared";
 

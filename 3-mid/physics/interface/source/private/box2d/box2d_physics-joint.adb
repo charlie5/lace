@@ -136,7 +136,7 @@ is
                                                         c_Anchor_in_B'unchecked_Access,
                                                         c_math_c.Real (low_Limit),
                                                         c_math_c.Real (high_Limit),
-                                                        Boolean'Pos (collide_Connected));
+                                                        swig.bool (collide_Connected));
       return physics.Joint.hinge.view (Self);
    end new_hinge_Joint;
 
@@ -174,7 +174,7 @@ is
                                      c_Frame_B'unchecked_Access,
                                      c_math_c.Real (low_Limit),
                                      c_math_c.Real (high_Limit),
-                                     Boolean'Pos (collide_Connected));
+                                     swig.bool (collide_Connected));
       return physics.Joint.hinge.view (Self);
    end new_hinge_Joint;
 
@@ -293,9 +293,8 @@ is
    overriding
    function is_Limited (Self : in Item;   DoF : in Degree_of_freedom) return Boolean
    is
-      use type Swig.bool;
    begin
-      return b2d_Joint_is_Limited (Self.C, C.int (DoF)) /= 0;
+      return Boolean (b2d_Joint_is_Limited (Self.C, C.int (DoF)));
    end is_Limited;
 
 
@@ -369,9 +368,8 @@ is
    overriding
    function collide_Connected (Self : in Item) return Boolean
    is
-      use type Swig.bool;
    begin
-      return b2d_Joint_collide_Connected (Self.C) /= 0;
+      return Boolean (b2d_Joint_collide_Connected (Self.C));
    end collide_Connected;
 
 
@@ -458,9 +456,8 @@ is
    overriding
    function limit_Enabled (Self : in Hinge) return Boolean
    is
-      use type Swig.bool;
    begin
-      return b2d_Joint_hinge_limit_Enabled (Self.C) /= 0;
+      return Boolean (b2d_Joint_hinge_limit_Enabled (Self.C));
    end limit_Enabled;
 
 
@@ -504,9 +501,8 @@ is
    overriding
    function motor_Enabled (Self : in Hinge) return Boolean
    is
-      use type Swig.bool;
    begin
-      return b2d_Joint_hinge_motor_Enabled (Self.C) /= 0;
+      return Boolean (b2d_Joint_hinge_motor_Enabled (Self.C));
    end motor_Enabled;
 
 

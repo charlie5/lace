@@ -587,7 +587,7 @@ is
       c_Anchor    : aliased  c_math_c.Vector_3.item := +local_Anchor;
    begin
       b2d_Joint_set_local_Anchor (the_c_Joint,
-                                  Boolean'Pos (is_Anchor_A),
+                                  swig.bool (is_Anchor_A),
                                   c_Anchor'unchecked_Access);
    end set_Joint_local_Anchor;
 

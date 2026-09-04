@@ -1,6 +1,5 @@
 with
      eGL.Binding,
-     Swig,
      interfaces.C.Strings,
      System;
 
@@ -23,7 +22,7 @@ is
    an_EGLcontext : EGLcontext;
 
    a_chars_ptr   : interfaces.C.strings.chars_ptr;
-   a_void_ptr    : swig.void_ptr;
+   a_void_ptr    : System.Address;
 
    an_EGLdisplay_pointer : access EGLdisplay;
 

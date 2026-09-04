@@ -289,9 +289,8 @@ is
    overriding
    function is_Limited (Self : in Item;   DoF : in Degree_of_freedom) return Boolean
    is
-      use type Swig.bool;
    begin
-      return b3d_Joint_is_Limited (Self.C, C.int (DoF)) /= 0;
+      return Boolean (b3d_Joint_is_Limited (Self.C, C.int (DoF)));
    end is_Limited;
 
 
@@ -512,9 +511,8 @@ is
    overriding
    function motor_Enabled (Self : in Hinge) return Boolean
    is
-      use type Swig.bool;
    begin
-      return b3d_Joint_hinge_motor_Enabled (Self.C) /= 0;
+      return Boolean (b3d_Joint_hinge_motor_Enabled (Self.C));
    end motor_Enabled;
 
 
