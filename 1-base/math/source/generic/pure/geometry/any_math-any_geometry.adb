@@ -14,29 +14,28 @@ is
 
    function Image (Self : in Triangles) return String
    is
-      Result : String (1 .. 1024);
-      Last   : standard.Natural  := 0;
+      Ellipsis : constant String := " ...";
+      Result   :          String (1 .. 1024);
+      Last     :          standard.Natural := 0;
    begin
       for Each in Self'Range
       loop
          declare
             Id_Image : constant String := Image (Self (Each));
          begin
+            if Last + Id_Image'Length > Result'Last - Ellipsis'Length
+            then
+               Result (Last + 1 .. Last + Ellipsis'Length) := Ellipsis;    -- Out of room, so truncate.
+               Last                                        := Last + Ellipsis'Length;
+               exit;
+            end if;
+
             Result (Last + 1 .. Last + Id_Image'Length) := Id_Image;
             Last                                        := Last + Id_Image'Length;
          end;
       end loop;
 
       return Result (1 .. Last);
-
-   exception
-      when constraint_Error =>
-         declare
-            Ellipsis : constant String := " ...";
-         begin
-            Result (Result'Last - ellipsis'Length + 1 .. Result'Last) := ellipsis;
-            return Result (1 .. Last);
-         end;
    end Image;
 
 
@@ -44,6 +43,11 @@ is
    function Image (Self : in Model) return String
    is
    begin
+      if Self.Triangles = null
+      then
+         return "(no triangles)";
+      end if;
+
       return Self.Triangles.Image;
    end Image;
 

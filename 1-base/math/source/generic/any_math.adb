@@ -207,6 +207,11 @@ is
    function Average (Self : in Vector) return Real
    is
    begin
+      if Self'Length = 0
+      then
+         raise Constraint_Error with "Average of an empty vector";
+      end if;
+
       return Sum (Self) / Real (Self'Length);
    end Average;
 
@@ -214,8 +219,15 @@ is
 
    function Max (Self : in Vector) return Real
    is
-      Max : Real := Self (Self'First);
+      Max : Real;
    begin
+      if Self'Length = 0
+      then
+         raise Constraint_Error with "Max of an empty vector";
+      end if;
+
+      Max := Self (Self'First);
+
       for i in Self'First + 1 .. Self'Last
       loop
          Max := Real'Max (Max, Self (i));
@@ -228,8 +240,15 @@ is
 
    function Min (Self : in Vector) return Real
    is
-      Min : Real := Self (Self'First);
+      Min : Real;
    begin
+      if Self'Length = 0
+      then
+         raise Constraint_Error with "Min of an empty vector";
+      end if;
+
+      Min := Self (Self'First);
+
       for i in Self'First + 1 .. Self'Last
       loop
          Min := Real'Min (Min, Self (i));
@@ -447,36 +466,21 @@ is
    --
    function Image (Self : in Vector;   Precision : in Natural := 5) return String
    is
-      the_Image : String (1 .. 1 * 1024 * 1024);   -- Handles one megabyte string, excess is truncated.
-      Count     : standard.Natural             := 0;
-
-      procedure add (Text : in String)
+      function element_Images (From : in Integer) return String
       is
       begin
-         the_Image (Count + 1 .. Count + Text'Length) := Text;
-         Count                                        := Count + Text'Length;
-      end add;
-
-   begin
-      add ("(");
-
-      for Each in Self'Range
-      loop
-         if Each /= Self'First
+         if From > Self'Last
          then
-            add (", ");
+            return "";
          end if;
 
-         add (Image (Self (Each),
-                     Precision));
-      end loop;
+         return   (if From = Self'First then "" else ", ")
+                & Image (Self (From), Precision)
+                & element_Images (From + 1);
+      end element_Images;
 
-      add (")");
-      return the_Image (1 .. Count);
-
-   exception
-      when others =>
-         return the_Image (1 .. Count);
+   begin
+      return "(" & element_Images (Self'First) & ")";
    end Image;
 
 
@@ -608,13 +612,6 @@ is
       return [Left (1) - Right (1),
               Left (2) - Right (2),
               Left (3) - Right (3)];
-
-   exception
-      when constraint_Error =>
-         raise constraint_Error with   "any_math ""-"" (Left, Right : Vector_3) => "
-                                     & Image (Left)
-                                     & "   "
-                                     & Image (Right);
    end "-";
 
 
@@ -677,30 +674,32 @@ is
 
    function Image (Self : in Matrix) return String
    is
-      Image : String (1 .. 1024);
-      Last  : Natural           := 0;
+      function row_Images (Row : in Integer) return String
+      is
+         function element_Images (Col : in Integer) return String
+         is
+         begin
+            if Col > Self'Last (2)
+            then
+               return "";
+            end if;
+
+            return " " & Real'Image (Self (Row, Col)) & element_Images (Col + 1);
+         end element_Images;
+
+      begin
+         if Row > Self'Last (1)
+         then
+            return "";
+         end if;
+
+         return   element_Images (Self'First (2))
+                & ada.Characters.Latin_1.LF
+                & row_Images (Row + 1);
+      end row_Images;
+
    begin
-      for Row in Self'Range (1)
-      loop
-         for Col in Self'Range (2)
-         loop
-            declare
-               Element : constant String := Real'Image (Self (Row, Col));
-            begin
-               Last         := Last + 1;
-               Image (Last) := ' ';
-               Last         := Last + 1;
-               Image (Last .. Last + Element'Length - 1)
-                            := Element;
-               Last         := Last + Element'Length - 1;
-            end;
-         end loop;
-
-         Last         := Last + 1;
-         Image (Last) := ada.Characters.Latin_1.LF;
-      end loop;
-
-      return Image (1 .. Last);
+      return row_Images (Self'First (1));
    end Image;
 
 

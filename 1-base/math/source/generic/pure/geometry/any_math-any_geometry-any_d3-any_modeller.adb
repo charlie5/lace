@@ -72,6 +72,8 @@ is
       new_Triangle_rotated_2 : constant index_Triangle := [vertex_2_Index, vertex_3_Index, vertex_1_Index];
 
    begin
+      Self.bounding_sphere_Radius := Real'First;     -- New vertices invalidate the cached radius.
+
       if        new_Triangle (1) = new_Triangle (2)
         or else new_Triangle (1) = new_Triangle (3)
         or else new_Triangle (2) = new_Triangle (3)
@@ -98,6 +100,8 @@ is
       Self.Triangles.clear;
       Self.Vertices .clear;
       Self.Index_Map.clear;
+
+      Self.bounding_sphere_Radius := Real'First;
    end clear;
 
 
@@ -112,29 +116,34 @@ is
 
    function Model (Self : in Item) return a_Model
    is
-      Result : a_Model := (Site_Count => Integer (Self.Vertices.Length),
-                           Tri_Count  => Integer (Self.Triangles.Length),
-                           Sites      => <>,
-                           Triangles  => <>);
    begin
-      for i in 1 .. Index (Result.site_Count)
-      loop
-         Result.Sites (i) := Self.Vertices.Element (i);
-      end loop;
+      if Self.Triangles.is_Empty
+      then
+         raise Constraint_Error with "Model of an empty modeller";
+      end if;
 
-      declare
-         use Index_Triangle_Sets;
-
-         Cursor : Index_Triangle_Sets.Cursor := Self.Triangles.First;
-      begin
-         for i in 1 .. Result.Tri_Count
+      return Result : a_Model := (Site_Count => Integer (Self.Vertices.Length),
+                                  Tri_Count  => Integer (Self.Triangles.Length),
+                                  Sites      => <>,
+                                  Triangles  => <>)
+      do
+         for i in 1 .. Index (Result.site_Count)
          loop
-            Result.Triangles (i) := Element (Cursor);
-            next (Cursor);
+            Result.Sites (i) := Self.Vertices.Element (i);
          end loop;
-      end;
 
-      return Result;
+         declare
+            use Index_Triangle_Sets;
+
+            Cursor : Index_Triangle_Sets.Cursor := Self.Triangles.First;
+         begin
+            for i in 1 .. Result.Tri_Count
+            loop
+               Result.Triangles (i) := Element (Cursor);
+               next (Cursor);
+            end loop;
+         end;
+      end return;
    end Model;
 
 

@@ -151,18 +151,9 @@ is
 
 private
 
-   type Line_Format is (anchored_Gradient, two_Points);
-
-   type Line (Kind : Line_Format := Line_Format'First) is
+   type Line is
       record
-         case Kind is
-            when anchored_Gradient =>
-               Anchor   : Site;
-               Gradient : Real;
-
-            when two_Points =>
-               Sites    : any_d2.Sites (1 .. 2);
-         end case;
+         Sites : any_d2.Sites (1 .. 2);
       end record;
 
 

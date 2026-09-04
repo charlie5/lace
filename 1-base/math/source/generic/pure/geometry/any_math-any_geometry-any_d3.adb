@@ -9,10 +9,18 @@ is
    is
       use Functions;
 
-      inverse_Magnitude : constant Real := 1.0 / SqRt (  the_Plane (1) * the_Plane (1)
-                                                       + the_Plane (2) * the_Plane (2)
-                                                       + the_Plane (3) * the_Plane (3));
+      Magnitude         : constant Real := SqRt (  the_Plane (1) * the_Plane (1)
+                                                 + the_Plane (2) * the_Plane (2)
+                                                 + the_Plane (3) * the_Plane (3));
+      inverse_Magnitude :          Real;
    begin
+      if Magnitude = 0.0
+      then
+         return;     -- No normal; leave the plane unchanged.
+      end if;
+
+      inverse_Magnitude := 1.0 / Magnitude;
+
       the_Plane (1) := the_Plane (1) * inverse_Magnitude;
       the_Plane (2) := the_Plane (2) * inverse_Magnitude;
       the_Plane (3) := the_Plane (3) * inverse_Magnitude;
@@ -26,10 +34,6 @@ is
    begin
       return   "(Site_Count =>" & Integer'Image (the_Model.Site_Count) & ","
              & " Tri_Count =>"  & Integer'Image (the_Model. Tri_Count) & ")";
-
-   exception
-      when others =>
-         return "<TODO>";
    end Image;
 
 

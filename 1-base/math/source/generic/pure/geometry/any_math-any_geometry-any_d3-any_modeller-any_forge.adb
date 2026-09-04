@@ -1,5 +1,6 @@
 with
      ada.Text_IO,
+     ada.IO_Exceptions,
      ada.Strings.unbounded,
      ada.Strings.Maps;
 
@@ -9,18 +10,37 @@ is
 
    function to_Box_Model (half_Extents : in Vector_3 := [0.5, 0.5, 0.5]) return a_Model
    is
-      pragma Unreferenced (half_Extents);
       Modeller : any_Modeller.item;
+
+      X : constant Real := half_Extents (1);
+      Y : constant Real := half_Extents (2);
+      Z : constant Real := half_Extents (3);
+
+      -- The eight corners; counter-clockwise when seen from outside gives outward facing triangles.
+      --
+      P0 : constant Site := [-X, -Y, -Z];
+      P1 : constant Site := [ X, -Y, -Z];
+      P2 : constant Site := [ X,  Y, -Z];
+      P3 : constant Site := [-X,  Y, -Z];
+      P4 : constant Site := [-X, -Y,  Z];
+      P5 : constant Site := [ X, -Y,  Z];
+      P6 : constant Site := [ X,  Y,  Z];
+      P7 : constant Site := [-X,  Y,  Z];
+
+      procedure add_Face (A, B, C, D : in Site)
+      is
+      begin
+         Modeller.add_Triangle (A, B, C);
+         Modeller.add_Triangle (A, C, D);
+      end add_Face;
+
    begin
-      Modeller.add_Triangle ([0.0, 0.0, 0.0],
-                             [1.0, 0.0, 0.0],
-                             [1.0, 1.0, 0.0]);
-
-      Modeller.add_Triangle ([1.0, 1.0, 0.0],
-                             [0.0, 1.0, 0.0],
-                             [0.0, 0.0, 0.0]);
-
-      -- TODO: Add the rest.
+      add_Face (P4, P5, P6, P7);     -- Front  (+Z).
+      add_Face (P1, P0, P3, P2);     -- Back   (-Z).
+      add_Face (P5, P1, P2, P6);     -- Right  (+X).
+      add_Face (P0, P4, P7, P3);     -- Left   (-X).
+      add_Face (P3, P7, P6, P2);     -- Top    (+Y).
+      add_Face (P0, P1, P5, P4);     -- Bottom (-Y).
 
       return Modeller.Model;
    end to_Box_Model;
@@ -359,19 +379,33 @@ is
       end loop;
 
       declare
-         text_Length : constant Natural  := Length (the_Text);
-         First       :          Positive := 1;
+         First : Positive := 1;
+
+         use
+              ada.Strings,
+              ada.Strings.Maps;
+
+         real_Set : constant Character_Set :=    to_Set (Span => (Low  => '0',
+                                                                  High => '9'))
+                                              or to_Set ('-' & '.');
+
+         function more_Tokens return Boolean
+         is
+            Token_First : Positive;
+            Token_Last  : Natural;
+         begin
+            find_Token (the_Text, Set   => real_Set,
+                                  From  => First,
+                                  Test  => Inside,
+                                  First => Token_First,
+                                  Last  => Token_Last);
+            return Token_Last /= 0;
+         end more_Tokens;
+
 
          function get_Real return Real
          is
-            use
-                 ada.Strings,
-                 ada.Strings.Maps;
-
-            real_Set : constant Character_Set :=    to_Set (Span => (Low  => '0',
-                                                                     High => '9'))
-                                                 or to_Set ('-' & '.');
-            Last   : Positive;
+            Last   : Natural;
             Result : Real;
          begin
             find_Token (the_Text, Set   => real_Set,
@@ -379,6 +413,10 @@ is
                                   Test  => Inside,
                                   First => First,
                                   Last  => Last);
+            if Last = 0
+            then
+               raise ada.IO_Exceptions.Data_Error with "'" & model_Filename & "' ends mid-vertex";
+            end if;
 
             Result := Real'Value (Slice (the_Text,
                                          Low  => First,
@@ -395,10 +433,10 @@ is
          Distance  : Real;
          Scale     : constant Real := 10.0;     -- TODO: Add a 'Scale' parameter.
 
-         the_Model : polar_Model;
-
+         the_Model : polar_Model := [others => [others => (Id   => no_Id,
+                                                           Site => [0.0, 0.0, 0.0])]];
       begin
-         while First < text_Length
+         while more_Tokens
          loop
             Value := Integer (get_Real);
             exit when Value = 360;
@@ -421,8 +459,12 @@ is
    function mesh_Model_from (Model : in polar_Model) return a_Model
    is
       the_raw_Model  : polar_Model := Model;
-      the_mesh_Model : a_Model (site_Count => 2522,
-                                tri_Count  => 73 * (16 * 4 + 6));
+      longitude_Count : constant := 360 / 5;              -- 5 degree steps (0 .. 355).
+      latitude_Count  : constant := 180 / 5 - 1;          -- 5 degree steps between the poles (-85 .. 85).
+      strip_Triangles : constant := 2 + 2 * (latitude_Count - 1);
+
+      the_mesh_Model : a_Model (site_Count => 2 + longitude_Count * latitude_Count,
+                                tri_Count  =>     longitude_Count * strip_Triangles);
 
       the_longitude  : Longitude := 0;
       the_latitude   : Latitude;
@@ -516,34 +558,6 @@ is
 
          exit when        the_Longitude = 355;
          the_Longitude := the_Longitude + 5;
-      end loop;
-
-      the_mesh_Model.Triangles (the_Triangle) := [1 => the_North_Pole,
-                                                  2 => the_raw_Model (5) (-85).Id,
-                                                  3 => the_raw_Model (0) (-85).Id];
-      the_Triangle := the_Triangle + 1;
-
-      the_mesh_Model.Triangles (the_Triangle) := [1 => the_South_Pole,
-                                                  2 => the_raw_Model (0) (85).Id,
-                                                  3 => the_raw_Model (5) (85).Id];
-      the_Triangle := the_Triangle + 1;
-
-
-      the_latitude := -85;
-      loop
-         the_mesh_Model.Triangles (the_Triangle) := [1 => the_raw_Model (0) (the_Latitude    ).Id,
-                                                     2 => the_raw_Model (5) (the_Latitude    ).Id,
-                                                     3 => the_raw_Model (0) (the_Latitude + 5).Id];
-         the_Triangle := the_Triangle + 1;
-
-         the_mesh_Model.Triangles (the_Triangle) := [1 => the_raw_Model (0) (the_Latitude + 5).Id,
-                                                     2 => the_raw_Model (5) (the_Latitude    ).Id,
-                                                     3 => the_raw_Model (5) (the_Latitude + 5).Id];
-         the_Triangle := the_Triangle + 1;
-
-
-         the_Latitude := the_Latitude + 5;
-         exit when       the_Latitude = 85;
       end loop;
 
       return the_mesh_Model;

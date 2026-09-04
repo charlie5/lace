@@ -2,7 +2,9 @@ with ahven.Text_Runner,
      ahven.Framework,
      math_Tests.linear_Algebra_2d,
      math_Tests.linear_Algebra_3d,
-     math_Tests.Geometry_2d;
+     math_Tests.Geometry_2d,
+     math_Tests.Geometry_3d,
+     math_Tests.Random;
 
 
 procedure launch_math_Testsuite
@@ -14,6 +16,8 @@ begin
    S.add_Test (new math_Tests.linear_Algebra_2d.Test);
    S.add_Test (new math_Tests.linear_Algebra_3d.Test);
    S.add_Test (new math_Tests.Geometry_2d      .Test);
+   S.add_Test (new math_Tests.Geometry_3d      .Test);
+   S.add_Test (new math_Tests.Random           .Test);
 
    ahven.text_Runner.run           (S);
    ahven.Framework  .release_Suite (S);

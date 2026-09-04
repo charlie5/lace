@@ -73,9 +73,8 @@ is
    is
       use Functions;
    begin
-      return (Kind     => anchored_Gradient,
-              Anchor   => Anchor,
-              Gradient => Tan (Angle));   -- TODO: What about infinite gradient ? ie 90 and 270 degrees ?
+      return (Sites => [Anchor,                                           -- Stored as two points rather than a gradient,
+                        Anchor + Site' [Cos (Angle), Sin (Angle)]]);      -- so that vertical lines are representable.
    end to_Line;
 
 
@@ -84,8 +83,7 @@ is
                      Site_2 : in Site) return Line
    is
    begin
-      return (Kind  => two_Points,
-              Sites => [Site_1,
+      return (Sites => [Site_1,
                         Site_2]);
    end to_Line;
 
@@ -93,18 +91,20 @@ is
 
    function X_of (Self : in Line;   Y : in Real) return Real
    is
+      Anchor : Site renames Self.Sites (1);
    begin
-      return   (Y - Self.Anchor (2))  /  Self.Gradient
-             + Self.Anchor (1);
+      return   (Y - Anchor (2))  /  Gradient (Self)
+             + Anchor (1);
    end X_of;
 
 
 
    function Y_of (Self : in Line;   X : in Real) return Real
    is
+      Anchor : Site renames Self.Sites (1);
    begin
-      return   Self.Gradient * (X - Self.Anchor (1))
-             + Self.Anchor (2);
+      return   Gradient (Self) * (X - Anchor (1))
+             + Anchor (2);
    end Y_of;
 
 
@@ -115,7 +115,7 @@ is
    begin
       if Run = 0.0
       then
-         return Real'Last;
+         return Real'Last;     -- Vertical.
       else
          return   (Self.Sites (2) (2) - Self.Sites (1) (2))
                 / Run;
@@ -338,13 +338,18 @@ is
       c     : constant Real := Distance (Self.Vertices (at_Vertex),
                                          prior_Vertex  (Self, to_Vertex => at_Vertex));
 
-      cos_A : constant Real := (b**2 + c**2 - a**2) / (2.0 * b * c);
+      cos_A :          Real;
 
    begin
-      if    cos_A < -1.0 then   return to_Radians (180.0);
-      elsif cos_A >  1.0 then   return 0.0;
-      else                      return arcCos (cos_A);
+      if b = 0.0 or else c = 0.0
+      then
+         return 0.0;     -- Degenerate: the vertex coincides with a neighbour.
       end if;
+
+      cos_A := (b**2 + c**2 - a**2) / (2.0 * b * c);
+      clamp (cos_A, -1.0, 1.0);
+
+      return arcCos (cos_A);
    end Angle;
 
 
@@ -430,17 +435,19 @@ is
 
    function is_Clockwise (Self : in Polygon) return Boolean
    is
-      i : constant Site := Self.Vertices (1);
-      j : constant Site := Self.Vertices (1);
-      k : constant Site := Self.Vertices (1);
-
-      z : Real :=   (j (1) - i (1))
-                  * (k (2) - j (2));
+      twice_signed_Area : Real := 0.0;
    begin
-      z := z -   (j (2) - i (2))
-               * (k (1) - j (1));
+      for i in 1 .. Self.Vertex_Count
+      loop
+         declare
+            P : Site renames Self.Vertices (i);
+            Q : constant Site := next_Vertex (Self, i);
+         begin
+            twice_signed_Area := twice_signed_Area  +  P (1) * Q (2)  -  Q (1) * P (2);
+         end;
+      end loop;
 
-      return z < 0.0;
+      return twice_signed_Area < 0.0;
    end is_Clockwise;
 
 
@@ -571,9 +578,21 @@ is
 
    function Image (Self : in Polygon) return String
    is
-      pragma Unreferenced (Self);
+      function vertex_Images (From : in Positive) return String
+      is
+      begin
+         if From > Self.Vertex_Count
+         then
+            return "";
+         end if;
+
+         return   (if From = 1 then "" else ", ")
+                & Image (Self.Vertices (From))
+                & vertex_Images (From + 1);
+      end vertex_Images;
+
    begin
-      return "Polygon image (TODO)";
+      return "(" & vertex_Images (1) & ")";
    end Image;
 
 

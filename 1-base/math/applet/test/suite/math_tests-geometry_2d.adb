@@ -227,6 +227,63 @@ is
 
 
 
+   procedure polygon_is_clockwise_Test
+   is
+      use float_Math.Geometry.d2;
+
+      the_Poly : Polygon := (vertex_Count => 4,
+                             vertices     => [[-1.0, -1.0],
+                                              [ 1.0, -1.0],
+                                              [ 1.0,  1.0],
+                                              [-1.0,  1.0]]);
+   begin
+      assert (not is_Clockwise (the_Poly),
+              "T1 => " & Image (the_Poly) & " should be counter-clockwise ... failed !");
+
+      the_Poly.Vertices := [[-1.0, -1.0],
+                            [-1.0,  1.0],
+                            [ 1.0,  1.0],
+                            [ 1.0, -1.0]];
+
+      assert (is_Clockwise (the_Poly),
+              "T2 => " & Image (the_Poly) & " should be clockwise ... failed !");
+   end polygon_is_clockwise_Test;
+
+
+
+   procedure line_Test
+   is
+      use float_Math.Geometry.d2;
+
+      Diagonal : constant Line := to_Line ([1.0, 1.0],  to_Radians (45.0));
+      Steep    : constant Line := to_Line ([0.0, 0.0], [2.0, 4.0]);
+      Vertical : constant Line := to_Line ([1.0, 0.0],  to_Radians (90.0));
+   begin
+      assert (almost_Equal (Y_of (Diagonal, X => 2.0),  2.0),   "Y_of (anchored line) failed !");
+      assert (almost_Equal (X_of (Diagonal, Y => 3.0),  3.0),   "X_of (anchored line) failed !");
+
+      assert (almost_Equal (Gradient (Steep),           2.0),   "Gradient (two point line) failed !");
+      assert (almost_Equal (X_of (Steep, Y => 4.0),     2.0),   "X_of (two point line) failed !");
+      assert (almost_Equal (Y_of (Steep, X => 1.0),     2.0),   "Y_of (two point line) failed !");
+
+      assert (almost_Equal (X_of (Vertical, Y => 5.0),  1.0),   "X_of (vertical line) failed !");
+   end line_Test;
+
+
+
+   procedure degenerate_triangle_Angle_Test
+   is
+      use float_Math.Geometry.d2;
+
+      the_Tri : constant Triangle := (vertices => [[0.0, 0.0],
+                                                   [0.0, 0.0],
+                                                   [1.0, 1.0]]);
+   begin
+      assert (Angle (the_Tri, at_Vertex => 1) = 0.0,   "degenerate triangle angle should be 0 ... failed !");
+   end degenerate_triangle_Angle_Test;
+
+
+
    overriding
    procedure initialize (T : in out Test)
    is
@@ -238,6 +295,9 @@ is
       Framework.add_test_Routine (T, hexagon_Measures_Test 'Access, "Hexagon measures Test");
       Framework.add_test_Routine (T, hexagon_Vertices_Test 'Access, "Hexagon vertices Test");
       Framework.add_test_Routine (T, hexagon_Grid_Test     'Access, "Hexagon grid Test");
+      Framework.add_test_Routine (T, polygon_is_clockwise_Test'Access, "Polygon is clockwise Test");
+      Framework.add_test_Routine (T, line_Test                'Access, "Line Test");
+      Framework.add_test_Routine (T, degenerate_triangle_Angle_Test'Access, "Degenerate triangle angle Test");
    end initialize;
 
 
