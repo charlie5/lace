@@ -90,7 +90,7 @@ is
                                               from_Subject  => my_Connection.Subject,
                                               for_Response  => my_Connection.Response,
                                               to_event_Kind => Event.Kind (+my_Connection.event_Kind),
-                                              subject_Name  => my_Connection.Subject.Name);
+                                              subject_Name  => +my_Connection.subject_Name);     -- As given: fetching it from a dead
             end if;
 
             connector_Pool.add (Myself);        -- Return the connector to the safe pool.
