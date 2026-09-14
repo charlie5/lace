@@ -165,15 +165,15 @@ is
    --- Safe Responses
    --
 
+   procedure free is new ada.unchecked_Deallocation (event_response_Map,
+                                                     event_response_Map_view);
+
    protected
    body safe_Responses
    is
       procedure destroy
       is
          use subject_Maps_of_event_responses;
-
-         procedure free is new ada.unchecked_Deallocation (event_response_Map,
-                                                           event_response_Map_view);
 
          Cursor  : subject_Maps_of_event_responses.Cursor := my_Responses.First;
          the_Map : event_response_Map_view;
@@ -215,9 +215,17 @@ is
                      from_Subject  : in     Event.subject_Name;
                      subject_Freed :    out Boolean)
       is
+         the_Map : event_response_Map_view := my_Responses.Element (from_Subject);
       begin
-         my_Responses.Element (from_Subject).delete (to_Kind);
-         subject_Freed := my_Responses.Element (from_Subject).is_Empty;
+         the_Map.delete (to_Kind);
+         subject_Freed := the_Map.is_Empty;
+
+         if subject_Freed
+         then     -- The subject's last response is gone, so rid the map allocated for it
+                  -- in 'add', else every subject ever ridded is kept for the observer's life.
+            my_Responses.delete (from_Subject);
+            free (the_Map);
+         end if;
       end rid;
 
 
