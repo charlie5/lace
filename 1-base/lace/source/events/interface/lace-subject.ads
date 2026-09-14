@@ -56,6 +56,11 @@ is
    procedure deregister (Self : in out Item;   the_Observer : in Observer.view;
                                                of_Kind      : in Event.Kind) is abstract;
 
+   procedure deregister (Self : in out Item;   the_Observer : in Observer.view) is abstract;
+   --
+   -- Rids the observer of every kind, and of any delivery pending or in flight to it.
+   -- For an observer leaving altogether, or found dead.
+
    function  Observers      (Self : in Item;   of_Kind      : in Event.Kind) return Observer_views is abstract;
    function  observer_Count (Self : in Item)                                 return Natural        is abstract;
 

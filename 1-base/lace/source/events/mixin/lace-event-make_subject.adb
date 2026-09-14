@@ -33,6 +33,50 @@ is
    end destroy;
 
 
+   overriding
+   procedure deregister (Self : in out Item;   the_Observer : in Observer.view)
+   is
+      was_Registered : Boolean;
+   begin
+      Self.safe_Observers.rid_all (the_Observer, was_Registered);
+
+      if not was_Registered
+      then
+         return;
+      end if;
+
+      -- As in the deregistration of one kind: no delivery may reach the observer once it
+      -- is gone. A delegator burying an observer whose delivery failed calls this too,
+      -- and 'retire' returns at once to the delegator of its own emitter or sender.
+      --
+      if Self.Emitter /= null
+      then
+         Self.Emitter.retire (the_Observer);
+      end if;
+
+      if Self.Sender /= null
+      then
+         Self.Sender.retire (the_Observer);
+      end if;
+
+      begin
+         Self.sequence_Id_Map.rid (the_Observer.Name);
+
+      exception
+         when system.RPC.communication_Error
+            | storage_Error =>
+            null;   -- The observer is dead, so its name cannot be fetched. Its stale sequence entry is harmless.
+      end;
+
+      if Subject.Logger /= null
+      then
+         Subject.Logger.log_disconnection (the_Observer,
+                                           Self'unchecked_Access,
+                                           Event.Kind (String' ("*")));
+      end if;
+   end deregister;
+
+
    --------------
    --- Attributes
    --
@@ -393,6 +437,31 @@ is
             end;
          end loop;
       end rid;
+
+
+
+      procedure rid_all (the_Observer   : in     Observer.view;
+                         was_Registered :    out Boolean)
+      is
+         use event_Observer_Vectors;
+      begin
+         was_Registered := False;
+
+         for each_of_the_event_Observers of the_Observers
+         loop
+            declare
+               the_event_Observers : event_Observer_Vector renames each_of_the_event_Observers.all;
+               Index               : extended_Index         := the_event_Observers.find_Index (the_Observer);
+            begin
+               while Index /= no_Index
+               loop
+                  the_event_Observers.delete (Index);
+                  was_Registered := True;
+                  Index := the_event_Observers.find_Index (the_Observer);
+               end loop;
+            end;
+         end loop;
+      end rid_all;
 
 
 

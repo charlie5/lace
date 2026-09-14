@@ -61,6 +61,8 @@ is
    overriding
    procedure deregister (Self : in out Item;   the_Observer : in Observer.view;
                                                of_Kind      : in Event.Kind);
+   overriding
+   procedure deregister (Self : in out Item;   the_Observer : in Observer.view);
 
 
    --- Emit
@@ -130,6 +132,11 @@ private
       procedure rid (the_Observer     : in     Observer.view;
                      of_Kind          : in     Event.Kind;
                      still_Registered :    out Boolean);
+
+      procedure rid_all (the_Observer   : in     Observer.view;
+                         was_Registered :    out Boolean);
+      --
+      -- Rids the observer of every kind.
 
       function  fetch_Observers (of_Kind : in Event.Kind) return Subject.Observer_views;
       function  observer_Count return Natural;

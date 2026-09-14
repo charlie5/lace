@@ -2,7 +2,8 @@ with
      lace.event_Courier,
 
      ada.Text_IO,
-     ada.Exceptions;
+     ada.Exceptions,
+     ada.Task_Identification;
 
 
 package body lace.event_Sender
@@ -73,6 +74,7 @@ is
 
 
          reopen_Channels   (Channels, the_Reports);
+         bury_Channels     (Channels, the_Reports, the_Subject);
          retire_Channels   (Channels, the_Retirements.all);
          dispatch_Channels (Channels,
                             from_Subject  => the_subject_Name.Element,
@@ -176,11 +178,14 @@ is
 
    procedure retire (Self : in out Item;   the_Observer : in lace.Observer.view)
    is
+      use ada.Task_Identification;
+
       is_Retired : Boolean;
    begin
-      if Self.Delegator'Terminated
+      if Self.Delegator'Terminated                            -- Nothing delivers any more.
+        or else current_Task = Self.Delegator'Identity        -- The delegator is burying a dead observer, and has dropped its channel itself.
       then
-         return;     -- Nothing delivers any more.
+         return;
       end if;
 
       Self.Retirements.request (the_Observer);

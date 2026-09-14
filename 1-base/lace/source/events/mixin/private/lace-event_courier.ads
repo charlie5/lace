@@ -85,8 +85,15 @@ is
       procedure add   (the_Observer  : in     lace.Observer.view);
       procedure fetch (the_Observers :    out observer_Vector);
 
+      procedure add_Death   (the_Observer  : in     lace.Observer.view);
+      procedure fetch_Deaths (the_Observers :    out observer_Vector);
+      --
+      -- Observers whose delivery failed for want of communication: they are dead, and
+      -- the delegator buries them.
+
    private
       Completed : observer_Vector;
+      Died      : observer_Vector;
    end safe_Reports;
 
    type safe_Reports_view is access all safe_Reports;
@@ -119,6 +126,7 @@ is
          Busy     : Boolean := False;
          Pending  : pending_Vector;
          Retiring : Boolean := False;     -- The observer is deregistering: no further delivery may reach it.
+         Dead     : Boolean := False;     -- A delivery to the observer failed: nor may one reach it, and no one awaits its retirement.
       end record;
 
    package channel_Vectors is new ada.Containers.Vectors (Positive, Channel);
@@ -140,7 +148,15 @@ is
                               Retirements : in out Event.Containers.safe_Retirements);
    --
    -- Drops the pending deliveries of each observer requested retired, and once no
-   -- delivery to it is in flight rids its channel and reports it retired.
+   -- delivery to it is in flight rids its channel and reports it retired. Rids the
+   -- channels of the dead likewise, unreported.
+
+   procedure bury_Channels (Channels : in out channel_Vector;
+                            Reports  : in out safe_Reports;
+                            Subject  : in     lace.Subject.view);
+   --
+   -- Drops the pending deliveries of each observer reported dead, marks its channel
+   -- for ridding, and deregisters it from the subject altogether.
 
    procedure dispatch_Channels (Channels      : in out channel_Vector;
                                 from_Subject  : in     String;

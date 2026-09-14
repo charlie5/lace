@@ -16,6 +16,8 @@ is
    task
    body Courier
    is
+      use type ada.Exceptions.Exception_Id;
+
       Myself       : Courier_view;
       Event        : lace.Event.Containers.event_Holder;
       the_Observer : lace.Observer.view;
@@ -74,6 +76,12 @@ is
             when E : others =>
                if the_Reports /= null
                then
+                  if ada.Exceptions.exception_Identity (E) = system.RPC.communication_Error'Identity
+                    or else ada.Exceptions.exception_Identity (E) = storage_Error'Identity
+                  then
+                     the_Reports.add_Death (the_Observer);               -- The observer is dead: the delegator buries it.
+                  end if;
+
                   the_Reports.add (the_Observer);                        -- Reopen the observer's channel and return the courier
                   the_Pool   .add (Myself);                              -- to the safe pool before logging, which may itself fail.
                end if;
@@ -171,6 +179,23 @@ is
          Completed.clear;
       end fetch;
 
+
+
+      procedure add_Death (the_Observer : in lace.Observer.view)
+      is
+      begin
+         Died.append (the_Observer);
+      end add_Death;
+
+
+
+      procedure fetch_Deaths (the_Observers : out observer_Vector)
+      is
+      begin
+         the_Observers := Died;
+         Died.clear;
+      end fetch_Deaths;
+
    end safe_Reports;
 
 
@@ -192,7 +217,8 @@ is
       Channels.append (Channel' (Observer => for_Observer,
                                  Busy     => False,
                                  Pending  => pending_Vectors.empty_Vector,
-                                 Retiring => False));
+                                 Retiring => False,
+                                 Dead     => False));
       return Positive (Channels.Length);
    end channel_Index;
 
@@ -255,10 +281,14 @@ is
       begin
          while i <= Natural (Channels.Length)
          loop
-            if         Channels (i).Retiring
+            if         (Channels (i).Retiring or Channels (i).Dead)
               and then not Channels (i).Busy
             then
-               Retirements.retired (Channels (i).Observer);
+               if Channels (i).Retiring
+               then
+                  Retirements.retired (Channels (i).Observer);
+               end if;
+
                Channels.delete (i);
             else
                i := i + 1;
@@ -266,6 +296,39 @@ is
          end loop;
       end;
    end retire_Channels;
+
+
+
+   procedure bury_Channels (Channels : in out channel_Vector;
+                            Reports  : in out safe_Reports;
+                            Subject  : in     lace.Subject.view)
+   is
+      the_Dead : observer_Vector;
+   begin
+      Reports.fetch_Deaths (the_Dead);
+
+      for each_Observer of the_Dead
+      loop
+         declare
+            Index : constant Positive := channel_Index (Channels, each_Observer);
+         begin
+            Channels (Index).Pending.clear;
+            Channels (Index).Dead := True;
+         end;
+
+         begin
+            Subject.deregister (each_Observer);
+
+         exception
+            when E : others =>
+               ada.Text_IO.new_Line;
+               ada.Text_IO.put_Line (ada.Exceptions.exception_Information (E));
+               ada.Text_IO.put_Line ("Error detected in '" & delegator_Name & "' burying a dead observer.");
+               ada.Text_IO.put_Line ("Continuing.");
+               ada.Text_IO.new_Line (2);
+         end;
+      end loop;
+   end bury_Channels;
 
 
 
