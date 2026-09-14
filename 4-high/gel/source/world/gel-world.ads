@@ -456,6 +456,12 @@ private
       procedure rid (the_Sprite : in Sprite.view);
 
       function  fetch       (Id : in sprite_Id) return Sprite.view;
+      function  find        (Id : in sprite_Id) return Sprite.view;
+      --
+      -- Null when the sprite is absent, where 'fetch' raises: for the paths which expect
+      -- misses, since a raise taken under the lock (with its traceback) holds up every
+      -- task sharing the map.
+
       function  Contains    (Id : in sprite_Id) return Boolean;
       function  fetch_all                       return id_Maps_of_sprite.Map;
       function  fetch_Views                     return Sprite.Views;

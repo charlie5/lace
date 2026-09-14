@@ -537,7 +537,7 @@ is
       use type remote.World.sequence_Id;
 
       Admitted : Boolean;
-      the_Id   : gel.sprite_Id;
+      Unknown  : Natural := 0;
 
    begin
       Self.seq_Id.enter (Admitted);
@@ -569,26 +569,27 @@ is
 
          for i in Now'Range
          loop
+            declare
+               use remote.World;
+
+               the_Sprite : constant Sprite.view := Self.the_Sprites.Map.find (Now (i).Id);
             begin
-               the_Id := Now (i).Id;
-
-               declare
-                  use remote.World;
-
-                  the_Sprite : constant Sprite.view := Self.the_Sprites.Map.fetch (the_Id);
-                  new_Site   : constant Vector_3    := refined (Now (i).Site);
-                  new_Spin   : constant Quaternion  := refined (Now (i).Spin);
-
-               begin
-                  the_Sprite.desired_Dynamics_are (Site => new_Site,
-                                                   Spin => new_Spin);
-               end;
-
-            exception
-               when constraint_Error =>
-                  log ("Warning: Received motion updates for unknown sprite" & the_Id'Image & ".");
+               if the_Sprite = null
+               then     -- Not mirrored yet, or ridden. A miss must cost no exception: its
+                        -- traceback, taken under the sprite map's lock by every RPC task
+                        -- delivering an update, starved the registration of a large world.
+                  Unknown := Unknown + 1;
+               else
+                  the_Sprite.desired_Dynamics_are (Site => refined (Now (i).Site),
+                                                   Spin => refined (Now (i).Spin));
+               end if;
             end;
          end loop;
+
+         if Unknown > 0
+         then
+            log ("Warning: Received motion updates for" & Unknown'Image & " unknown sprites.");
+         end if;
 
          Self.seq_Id.leave;
 

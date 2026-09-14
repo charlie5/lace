@@ -1396,6 +1396,21 @@ is
 
 
 
+      function find (Id : in sprite_Id) return Sprite.view
+      is
+         use id_Maps_of_sprite;
+         Cursor : constant id_Maps_of_sprite.Cursor := Map.find (Id);
+      begin
+         if has_Element (Cursor)
+         then
+            return Element (Cursor);
+         else
+            return null;
+         end if;
+      end find;
+
+
+
       function Contains (Id : in sprite_Id) return Boolean
       is
       begin
