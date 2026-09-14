@@ -204,6 +204,7 @@ is
            physics.Shape;
 
       procedure deallocate is new ada.unchecked_Deallocation (Sprite.item'Class, Sprite.view);
+      procedure deallocate is new ada.unchecked_Deallocation (any_user_Data'Class, any_user_Data_view);
 
    begin
       -- The child joints are already gone: 'destroy' detached every child, and each
@@ -217,6 +218,10 @@ is
       free (Self.Shape);
       free (Self.Solid);
 
+      -- The user data is freed here, and not when the sprite is destroyed, because the
+      -- sprite is reachable until now and anything reaching it may read the data.
+      --
+      deallocate (Self.user_Data);
       deallocate (Self);
    end free;
 

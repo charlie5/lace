@@ -154,6 +154,9 @@ is
 
    function  user_Data             (Self : in     Item) return any_user_Data_view;
    procedure user_Data_is (Self : in out Item;   Now :      in any_user_Data_view);
+   --
+   -- The sprite owns its user data: 'free' frees it along with the sprite, so it must be
+   -- heap allocated. To keep it, or to free it earlier, detach it first with a null.
 
 
    ------------
