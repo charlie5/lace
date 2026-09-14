@@ -191,7 +191,8 @@ is
 
       Channels.append (Channel' (Observer => for_Observer,
                                  Busy     => False,
-                                 Pending  => pending_Vectors.empty_Vector));
+                                 Pending  => pending_Vectors.empty_Vector,
+                                 Retiring => False));
       return Positive (Channels.Length);
    end channel_Index;
 
@@ -229,6 +230,42 @@ is
          end;
       end loop;
    end reopen_Channels;
+
+
+
+   procedure retire_Channels (Channels    : in out channel_Vector;
+                              Retirements : in out Event.Containers.safe_Retirements)
+   is
+      Requested : observer_Vector;
+   begin
+      Retirements.fetch (Requested);
+
+      for each_Observer of Requested
+      loop
+         declare
+            Index : constant Positive := channel_Index (Channels, each_Observer);
+         begin
+            Channels (Index).Pending.clear;
+            Channels (Index).Retiring := True;
+         end;
+      end loop;
+
+      declare
+         i : Positive := 1;
+      begin
+         while i <= Natural (Channels.Length)
+         loop
+            if         Channels (i).Retiring
+              and then not Channels (i).Busy
+            then
+               Retirements.retired (Channels (i).Observer);
+               Channels.delete (i);
+            else
+               i := i + 1;
+            end if;
+         end loop;
+      end;
+   end retire_Channels;
 
 
 

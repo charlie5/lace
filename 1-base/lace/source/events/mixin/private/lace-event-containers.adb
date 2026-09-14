@@ -65,4 +65,53 @@ is
    end safe_sequence_Id_Map;
 
 
+   ---------------------
+   --- Safe retirements.
+   --
+
+   protected
+   body safe_Retirements
+   is
+
+      procedure request (the_Observer : in lace.Observer.view)
+      is
+      begin
+         Requested.append (the_Observer);
+      end request;
+
+
+
+      procedure fetch (the_Observers : out observer_Vector)
+      is
+      begin
+         the_Observers := Requested;
+         Requested.clear;
+      end fetch;
+
+
+
+      procedure retired (the_Observer : in lace.Observer.view)
+      is
+      begin
+         Completed.append (the_Observer);
+      end retired;
+
+
+
+      procedure check (the_Observer : in     lace.Observer.view;
+                       is_Retired   :    out Boolean)
+      is
+         Index : constant observer_Vectors.extended_Index := Completed.find_Index (the_Observer);
+      begin
+         is_Retired := Index /= observer_Vectors.no_Index;
+
+         if is_Retired
+         then
+            Completed.delete (Index);
+         end if;
+      end check;
+
+   end safe_Retirements;
+
+
 end lace.Event.Containers;

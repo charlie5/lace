@@ -33,9 +33,8 @@ is
    subtype string_Holder  is     string_Holders.Holder;
 
 
-   package observer_Vectors is new ada.Containers.Vectors (Positive,
-                                                           lace.Observer.view);
-   subtype observer_Vector  is     observer_Vectors.Vector;
+   package observer_Vectors renames Event.Containers.observer_Vectors;
+   subtype observer_Vector  is      Event.Containers.observer_Vector;
 
 
    package pending_Vectors is new ada.Containers.Vectors (Positive,
@@ -119,6 +118,7 @@ is
          Observer : lace.Observer.view;
          Busy     : Boolean := False;
          Pending  : pending_Vector;
+         Retiring : Boolean := False;     -- The observer is deregistering: no further delivery may reach it.
       end record;
 
    package channel_Vectors is new ada.Containers.Vectors (Positive, Channel);
@@ -135,6 +135,12 @@ is
                               Reports  : in out safe_Reports);
    --
    -- Reopens the channels of completed deliveries.
+
+   procedure retire_Channels (Channels    : in out channel_Vector;
+                              Retirements : in out Event.Containers.safe_Retirements);
+   --
+   -- Drops the pending deliveries of each observer requested retired, and once no
+   -- delivery to it is in flight rids its channel and reports it retired.
 
    procedure dispatch_Channels (Channels      : in out channel_Vector;
                                 from_Subject  : in     String;

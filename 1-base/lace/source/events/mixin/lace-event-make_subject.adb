@@ -107,6 +107,20 @@ is
 
       if not still_Registered
       then
+         -- No delivery may reach the observer once it is deregistered, so drop those
+         -- pending and await any in flight before its sequence entry goes: a courier
+         -- takes the sequence id as it delivers.
+         --
+         if Self.Emitter /= null
+         then
+            Self.Emitter.retire (the_Observer);
+         end if;
+
+         if Self.Sender /= null
+         then
+            Self.Sender.retire (the_Observer);
+         end if;
+
          begin
             Self.sequence_Id_Map.rid (the_Observer.Name);
 

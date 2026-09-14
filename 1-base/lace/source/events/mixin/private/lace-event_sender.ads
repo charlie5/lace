@@ -29,6 +29,11 @@ is
    procedure add     (Self : in out Item;   new_Event    : in lace.Event.item'Class;
                                             for_Observer : in lace.Observer.view);
 
+   procedure retire  (Self : in out Item;   the_Observer : in lace.Observer.view);
+   --
+   -- Drops the observer's pending deliveries and awaits any in flight, so that no
+   -- delivery reaches it after this returns. Called by a subject deregistering it.
+
 
 
 private
@@ -70,6 +75,9 @@ private
    type safe_send_Details_view is access all safe_send_Details;
 
 
+   type safe_Retirements_view is access all lace.Event.Containers.safe_Retirements;
+
+
    -------------------
    --- Send delegator.
    --
@@ -78,7 +86,8 @@ private
    type send_Delegator
    is
       entry start (Subject      : in lace.Subject.view;
-                   send_Details : in safe_send_Details_view);
+                   send_Details : in safe_send_Details_view;
+                   Retirements  : in safe_Retirements_view);
       entry stop;
    end send_Delegator;
 
@@ -90,6 +99,7 @@ private
    type Item is tagged limited
       record
          send_Details : aliased safe_send_Details;
+         Retirements  : aliased lace.Event.Containers.safe_Retirements;
          Delegator    :         send_Delegator;
       end record;
 

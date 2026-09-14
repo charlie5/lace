@@ -28,16 +28,19 @@ is
 
       the_send_Details :         safe_send_Details_view;
       new_send_Details :         send_Details_Vector;
+      the_Retirements  :         safe_Retirements_view;
       Done             :         Boolean       := False;
 
       Channels         :         channel_Vector;
 
    begin
       accept start (Subject      : in lace.Subject.view;
-                    send_Details : in safe_send_Details_view)
+                    send_Details : in safe_send_Details_view;
+                    Retirements  : in safe_Retirements_view)
       do
          the_Subject      := Subject;
          the_send_Details := send_Details;
+         the_Retirements  := Retirements;
 
          the_subject_Name.replace_Element (Subject.Name);
       end start;
@@ -70,6 +73,7 @@ is
 
 
          reopen_Channels   (Channels, the_Reports);
+         retire_Channels   (Channels, the_Retirements.all);
          dispatch_Channels (Channels,
                             from_Subject  => the_subject_Name.Element,
                             Subject       => the_Subject,
@@ -140,7 +144,8 @@ is
    is
    begin
       Self.Delegator.start (Subject      => Subject,
-                            send_Details => Self.send_Details'unchecked_Access);
+                            send_Details => Self.send_Details'unchecked_Access,
+                            Retirements  => Self.Retirements 'unchecked_Access);
    end define;
 
 
@@ -166,6 +171,29 @@ is
       Self.send_Details.add (send_Details' (Event    => to_Holder (new_Event),
                                             Observer => for_Observer));
    end add;
+
+
+
+   procedure retire (Self : in out Item;   the_Observer : in lace.Observer.view)
+   is
+      is_Retired : Boolean;
+   begin
+      if Self.Delegator'Terminated
+      then
+         return;     -- Nothing delivers any more.
+      end if;
+
+      Self.Retirements.request (the_Observer);
+
+      loop
+         Self.Retirements.check (the_Observer, is_Retired);
+
+         exit when is_Retired
+           or else Self.Delegator'Terminated;
+
+         delay 0.001;
+      end loop;
+   end retire;
 
 
 end lace.event_Sender;

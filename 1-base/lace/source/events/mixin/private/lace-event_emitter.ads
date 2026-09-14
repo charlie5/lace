@@ -1,9 +1,11 @@
 with
-     lace.Event;
+     lace.Event,
+     lace.Observer;
 
 private
 with
      lace.Subject,
+     lace.Event.Containers,
      ada.Containers.indefinite_Vectors;
 
 
@@ -26,6 +28,11 @@ is
    --
 
    procedure add     (Self : in out Item;   new_Event : in lace.Event.item'Class);
+
+   procedure retire  (Self : in out Item;   the_Observer : in lace.Observer.view);
+   --
+   -- Drops the observer's pending deliveries and awaits any in flight, so that no
+   -- delivery reaches it after this returns. Called by a subject deregistering it.
 
 
 
@@ -61,6 +68,9 @@ private
    type safe_Events_view is access all safe_Events;
 
 
+   type safe_Retirements_view is access all lace.Event.Containers.safe_Retirements;
+
+
    -------------------
    --- Emit delegator.
    --
@@ -68,8 +78,9 @@ private
    task
    type emit_Delegator
    is
-      entry start (Subject : in lace.Subject.view;
-                   Events  : in safe_Events_view);
+      entry start (Subject     : in lace.Subject.view;
+                   Events      : in safe_Events_view;
+                   Retirements : in safe_Retirements_view);
       entry stop;
    end emit_Delegator;
 
@@ -80,8 +91,9 @@ private
 
    type Item is tagged limited
       record
-         Events    : aliased safe_Events;
-         Delegator :         emit_Delegator;
+         Events      : aliased safe_Events;
+         Retirements : aliased lace.Event.Containers.safe_Retirements;
+         Delegator   :         emit_Delegator;
       end record;
 
 
