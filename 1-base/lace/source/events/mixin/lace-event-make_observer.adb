@@ -215,9 +215,20 @@ is
                      from_Subject  : in     Event.subject_Name;
                      subject_Freed :    out Boolean)
       is
-         the_Map : event_response_Map_view := my_Responses.Element (from_Subject);
+         use subject_Maps_of_event_responses;
+
+         Cursor  : constant subject_Maps_of_event_responses.Cursor := my_Responses.find (from_Subject);
+         the_Map :          event_response_Map_view;
       begin
-         the_Map.delete (to_Kind);
+         if not has_Element (Cursor)
+         then     -- No response was ever added for the subject: a mirrored sprite ridden
+                  -- before the client had connected to it, say. Nothing to rid.
+            subject_Freed := False;
+            return;
+         end if;
+
+         the_Map := Element (Cursor);
+         the_Map.exclude (to_Kind);
          subject_Freed := the_Map.is_Empty;
 
          if subject_Freed
