@@ -1,5 +1,54 @@
+with
+     ada.unchecked_Deallocation;
+
+
 package body openGL.texture_Set
 is
+   procedure free is new ada.unchecked_Deallocation (Animation, Animation_view);
+
+
+   --------------------
+   --- Animation holder
+   --
+
+   overriding
+   procedure Adjust (Self : in out animation_Holder)
+   is
+   begin
+      if Self.View /= null
+      then
+         Self.View := new Animation' (Self.View.all);
+      end if;
+   end Adjust;
+
+
+
+   overriding
+   procedure Finalize (Self : in out animation_Holder)
+   is
+   begin
+      free (Self.View);
+   end Finalize;
+
+
+
+   procedure write (Stream : not null access ada.Streams.Root_Stream_Type'Class;
+                    Item   : in              animation_Holder)
+   is
+   begin
+      Animation_view'write (Stream, Item.View);
+   end write;
+
+
+
+   procedure read (Stream : not null access ada.Streams.Root_Stream_Type'Class;
+                   Item   : out             animation_Holder)
+   is
+   begin
+      Animation_view'read (Stream, Item.View);
+   end read;
+
+
 
    -------------
    --- Animation
@@ -26,19 +75,21 @@ is
       Now : constant ada.Calendar.Time := Clock;
 
    begin
-      if Now >= Self.Animation.next_frame_Time
+      if Now >= Self.Animation.View.next_frame_Time
       then
          declare
-            next_frame_Id : constant frame_Id := (if Self.Animation.Current < Self.Animation.frame_Count then Self.Animation.Current + 1
-                                                                                                         else 1);
-            old_Frame     :          Frame renames Self.Animation.Frames (Self.Animation.Current);
-            new_Frame     :          Frame renames Self.Animation.Frames (next_frame_Id);
+            the_Animation : Animation renames Self.Animation.View.all;
+
+            next_frame_Id : constant frame_Id := (if the_Animation.Current < the_Animation.frame_Count then the_Animation.Current + 1
+                                                                                                       else 1);
+            old_Frame     :          Frame renames the_Animation.Frames (the_Animation.Current);
+            new_Frame     :          Frame renames the_Animation.Frames (next_frame_Id);
          begin
             Self.Details (detail_Count (old_Frame.texture_Id)).texture_Apply := False;
             Self.Details (detail_Count (new_Frame.texture_Id)).texture_Apply := True;
 
-            Self.Animation.Current         := next_frame_Id;
-            Self.Animation.next_frame_Time := Now + Self.Animation.frame_Duration;
+            the_Animation.Current         := next_frame_Id;
+            the_Animation.next_frame_Time := Now + the_Animation.frame_Duration;
          end;
       end if;
    end animate;
@@ -71,7 +122,7 @@ is
          end if;
       end loop;
 
-      Result.Animation := Animation;
+      Result.Animation.View := Animation;     -- Now the set's own.
 
       return Result;
    end to_Set;

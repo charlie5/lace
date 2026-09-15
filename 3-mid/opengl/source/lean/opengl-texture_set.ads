@@ -1,8 +1,8 @@
 with
      openGL.Texture,
-     ada.Calendar;
+     ada.Calendar,
+     ada.Finalization;
 
-private
 with
      ada.Streams;
 
@@ -79,6 +79,27 @@ is
    type Animation_view is access all Animation;
 
 
+   type animation_Holder is new ada.Finalization.Controlled with
+      record
+         View : Animation_view;
+      end record;
+   --
+   -- Owns the animation: a copy of the holder copies the animation, and a holder going
+   -- out of scope frees it, so every set (and every model, including one cloned for a
+   -- mirror) has an animation of its own.
+
+   overriding procedure Adjust   (Self : in out animation_Holder);
+   overriding procedure Finalize (Self : in out animation_Holder);
+
+   procedure write (Stream : not null access ada.Streams.Root_Stream_type'Class;
+                    Item   : in              animation_Holder);
+   procedure read  (Stream : not null access ada.Streams.Root_Stream_type'Class;
+                    Item   : out             animation_Holder);
+
+   for animation_Holder'write use write;
+   for animation_Holder'read  use read;
+
+
    type Detail is
       record
          Object         : texture.Object := texture.null_Object;
@@ -97,7 +118,7 @@ is
    type Item (Count : detail_Count := 1) is
       record
          Details    : Detail_array (1 .. Count);
-         Animation  : Animation_view;
+         Animation  : animation_Holder;     -- Its own: see 'animation_Holder'.
       end record;
 
    null_Set : constant Item;

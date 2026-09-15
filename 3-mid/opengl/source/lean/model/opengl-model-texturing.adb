@@ -113,7 +113,7 @@ is
       is
          -- use type texture_Set.Animation_view;
       begin
-         if Self.texture_Details.Animation = null
+         if Self.texture_Set.Animation.View = null
          then
             return;
          end if;
@@ -136,16 +136,8 @@ is
 
       procedure texture_Details_is (Self : in out textured_Item;   Now : in openGL.texture_Set.item)
       is
-         procedure free is new ada.unchecked_Deallocation (Animation, Animation_view);
       begin
-         free (Self.texture_Set.Animation);
-
-         Self.texture_Set := Now;
-
-         if Now.Animation /= null
-         then
-            Self.texture_Set.Animation := new texture_Set.Animation' (Now.Animation.all);
-         end if;
+         Self.texture_Set := Now;     -- The set's animation holder copies the animation, and frees the old.
       end texture_Details_is;
 
 
