@@ -416,6 +416,10 @@ is
             --
             if not the_Sprite.is_Destroyed
             then
+               -- The models the sprite owned go with it, on the mirror as on the server.
+               --
+               the_Sprite.owns_Graphics_is (the_Event.rids_graphics_Model);
+               the_Sprite.owns_Physics_is  (the_Event.rids_physics_Model);
                the_Sprite.destroy (and_Children => True);
             end if;
          end;

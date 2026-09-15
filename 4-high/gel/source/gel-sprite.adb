@@ -260,8 +260,8 @@ is
                            and_Spin       : in     Matrix_3x3              := Identity_3x3;
                            graphics_Model : access openGL. Model.item'Class;
                            physics_Model  : access physics.Model.item'Class;
-                           owns_Graphics  : in     Boolean                 := True;
-                           owns_Physics   : in     Boolean                 := True;
+                           owns_Graphics  : in     Boolean                 := False;
+                           owns_Physics   : in     Boolean                 := False;
                            is_Kinematic   : in     Boolean                 := False;
                            user_Data      : in     any_user_Data_view      := null) return View
       is
@@ -421,6 +421,30 @@ is
    begin
       return Self.owns_Graphics;
    end owns_Graphics;
+
+
+
+   procedure owns_Graphics_is (Self : in out Item;   Now : in Boolean)
+   is
+   begin
+      Self.owns_Graphics := Now;
+   end owns_Graphics_is;
+
+
+
+   function owns_Physics (Self : in Item) return Boolean
+   is
+   begin
+      return Self.owns_Physics;
+   end owns_Physics;
+
+
+
+   procedure owns_Physics_is (Self : in out Item;   Now : in Boolean)
+   is
+   begin
+      Self.owns_Physics := Now;
+   end owns_Physics_is;
 
 
 

@@ -667,6 +667,43 @@ is
       --
       -- The set filled during the previous pass. The set filled during this pass
       -- waits: a sprite is never freed during the pass which destroyed it.
+
+
+      procedure free_with_owned_Models (the_Sprite : in out gel.Sprite.view)
+      --
+      -- A model the sprite owns has no other user: it leaves the registry and is freed
+      -- with the sprite, through the renderer where there is one, which disposes of the
+      -- GL resources safely.
+      is
+         use type openGL .Model.view,
+                  physics.Model.view;
+
+         the_graphics_Model : openGL .Model.view := (if the_Sprite.owns_Graphics then the_Sprite.graphics_Model
+                                                                                 else null);
+         the_physics_Model  : physics.Model.view := (if the_Sprite.owns_Physics  then physics.Model.view (the_Sprite.physics_Model)
+                                                                                 else null);
+      begin
+         gel.Sprite.free (the_Sprite);
+
+         if the_graphics_Model /= null
+         then
+            Self.graphics_Models.exclude (the_graphics_Model.Id);
+
+            if Self.Renderer /= null
+            then
+               Self.Renderer.free (the_graphics_Model);
+            else
+               openGL.Model.free (the_graphics_Model);
+            end if;
+         end if;
+
+         if the_physics_Model /= null
+         then
+            Self.physics_Models.exclude (the_physics_Model.Id);
+            physics.Model.free (the_physics_Model);
+         end if;
+      end free_with_owned_Models;
+
    begin
       for i in 1 .. prior_Set.Count
       loop
@@ -676,7 +713,7 @@ is
             if Self.Renderer = null
               or else long_Integer (Self.Renderer.drawn_Frames) >= Each.Frame + 2
             then
-               gel.Sprite.free (Each.Sprite);
+               free_with_owned_Models (Each.Sprite);
             else
                -- The render engine may still hold its visual: carry it over, keeping
                -- its stamp, and try again next pass.
@@ -919,7 +956,9 @@ is
          declare
             the_Event : gel.Events.rid_sprite_Event;
          begin
-            the_Event.Id := Single.Id;
+            the_Event.Id                  := Single.Id;
+            the_Event.rids_graphics_Model := Single.owns_Graphics;
+            the_Event.rids_physics_Model  := Single.owns_Physics;
             Self.emit (the_Event);
          end;
       end rid_single_Sprite;

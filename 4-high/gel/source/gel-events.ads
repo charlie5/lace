@@ -55,7 +55,9 @@ is
 
    type rid_sprite_Event is new lace.Event.item with
       record
-         Id : gel.sprite_Id;
+         Id                 : gel.sprite_Id;
+         rids_graphics_Model,
+         rids_physics_Model : Boolean := False;     -- The sprite owned the model: a mirror frees its copy with its sprite too.
       end record;
 
 

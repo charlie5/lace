@@ -96,8 +96,8 @@ is
                            and_Spin       : in     Matrix_3x3              := Identity_3x3;
                            graphics_Model : access openGL. Model.item'Class;
                            physics_Model  : access physics.Model.item'Class;
-                           owns_Graphics  : in     Boolean                 := True;
-                           owns_Physics   : in     Boolean                 := True;
+                           owns_Graphics  : in     Boolean                 := False;     -- See 'owns_Graphics' below: a model
+                           owns_Physics   : in     Boolean                 := False;     -- is shared unless the caller says not.
                            is_Kinematic   : in     Boolean                 := False;
                            user_Data      : in     any_user_Data_view      := null) return View;
    end Forge;
@@ -117,6 +117,12 @@ is
    function  graphics_Model        (Self : in     Item)     return openGL.Model.view;
    procedure graphics_Model_is     (Self : in out Item;   Now : in openGL.Model.view);
    function  owns_Graphics         (Self : in     Item)     return Boolean;
+   procedure owns_Graphics_is      (Self : in out Item;   Now : in Boolean);
+   function  owns_Physics          (Self : in     Item)     return Boolean;
+   procedure owns_Physics_is       (Self : in out Item;   Now : in Boolean);
+   --
+   -- A sprite owning a model is the model's sole user: the world rids the model of its
+   -- registry and frees it along with the sprite. A shared model is owned by no sprite.
 
    function  physics_Model         (Self : in     Item)     return access physics.Model.item'Class;
    procedure physics_Model_is      (Self : in out Item;   Now : in physics.Model.view);
