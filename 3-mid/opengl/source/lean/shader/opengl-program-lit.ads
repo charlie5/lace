@@ -42,6 +42,11 @@ private
    -- first use ~ 'set_Uniforms' runs on the GL thread, after linking. A light's
    -- locations are filled when a light with its index first appears.
    --
+   -- The cache also keeps what the program holds of the values which are the same for
+   -- every geometry drawn in a frame (the camera site, the specular color, the lights):
+   -- a GL program keeps its uniforms between draws, so these go up again only when they
+   -- change ~ once a frame per program, where each geometry cost seven uniforms a light.
+   --
    type light_uniform_Set is
       record
          Site                : Variable.uniform.vec4;
@@ -66,6 +71,12 @@ private
 
          Lights                 : light_uniform_Sets;
          lights_Filled          : Natural := 0;
+
+         frame_Uploaded         : Boolean := False;     -- The program holds the frame values below.
+         uploaded_camera_Site   : Vector_3;
+         uploaded_specular      : Color;
+         uploaded_light_Count   : Natural := 0;
+         uploaded_Lights        : Light.items (1 .. 50);
       end record;
 
    type lit_uniform_Cache_view is access lit_uniform_Cache;

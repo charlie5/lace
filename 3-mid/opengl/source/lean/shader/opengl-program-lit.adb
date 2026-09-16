@@ -59,6 +59,8 @@ is
            openGL.Conversions,
            linear_Algebra_3d;
 
+      use type Light.items;
+
       Cache : lit_uniform_Cache renames Self.lit_Cache.all;
    begin
       if not Cache.Filled
@@ -99,37 +101,52 @@ is
 
       openGL.Program.item (Self).set_Uniforms;
 
-      Cache.camera_Site           .Value_is (Self.camera_Site);
       Cache.model_Transform       .Value_is (Self.model_Transform);
       Cache.inverse_model_Rotation.Value_is (Inverse (get_Rotation (Self.model_Transform)));
 
-      -- Lights.
+      -- The camera site, the specular color and the lights are the same for every
+      -- geometry drawn in a frame, and the program keeps its uniforms between draws, so
+      -- they go up only when they differ from what it holds: once a frame per program.
       --
-      Cache.light_Count   .Value_is (Self.light_Count);
-      Cache.specular_Color.Value_is (to_Vector_3 (Self.specular_Color));
+      if   not Cache.frame_Uploaded
+        or else Self.camera_Site    /= Cache.uploaded_camera_Site
+        or else Self.specular_Color /= Cache.uploaded_specular
+        or else Self.light_Count    /= Cache.uploaded_light_Count
+        or else Self.Lights (1 .. Self.light_Count) /= Cache.uploaded_Lights (1 .. Self.light_Count)
+      then
+         Cache.camera_Site   .Value_is (Self.camera_Site);
+         Cache.light_Count   .Value_is (Self.light_Count);
+         Cache.specular_Color.Value_is (to_Vector_3 (Self.specular_Color));
 
-      for i in 1 .. Self.light_Count
-      loop
-         declare
-            use Light;
+         for i in 1 .. Self.light_Count
+         loop
+            declare
+               use Light;
 
-            Light    : openGL.Light.item renames Self.Lights (i);
-            Uniforms : light_uniform_Set renames Cache.Lights (i);
-         begin
-            case Light.Kind
-            is
-            when Diffuse =>   Uniforms.Site.Value_is (Vector_4 (Light.Site & 1.0));
-            when Direct  =>   Uniforms.Site.Value_is (Vector_4 (Light.Site & 0.0));    -- '0.0' tells shader that this light is 'direct'.
-            end case;
+               Light    : openGL.Light.item renames Self.Lights (i);
+               Uniforms : light_uniform_Set renames Cache.Lights (i);
+            begin
+               case Light.Kind
+               is
+               when Diffuse =>   Uniforms.Site.Value_is (Vector_4 (Light.Site & 1.0));
+               when Direct  =>   Uniforms.Site.Value_is (Vector_4 (Light.Site & 0.0));    -- '0.0' tells shader that this light is 'direct'.
+               end case;
 
-            Uniforms.Color              .Value_is (to_Vector_3 (Light.Color));
-            Uniforms.Strength           .Value_is (Real        (Light.Strength));
-            Uniforms.Attenuation        .Value_is (             Light.Attenuation);
-            Uniforms.ambient_Coefficient.Value_is (             Light.ambient_Coefficient);
-            Uniforms.cone_Angle         .Value_is (Real        (Light.cone_Angle));
-            Uniforms.cone_Direction     .Value_is (             Light.cone_Direction);
-         end;
-      end loop;
+               Uniforms.Color              .Value_is (to_Vector_3 (Light.Color));
+               Uniforms.Strength           .Value_is (Real        (Light.Strength));
+               Uniforms.Attenuation        .Value_is (             Light.Attenuation);
+               Uniforms.ambient_Coefficient.Value_is (             Light.ambient_Coefficient);
+               Uniforms.cone_Angle         .Value_is (Real        (Light.cone_Angle));
+               Uniforms.cone_Direction     .Value_is (             Light.cone_Direction);
+            end;
+         end loop;
+
+         Cache.frame_Uploaded                          := True;
+         Cache.uploaded_camera_Site                    := Self.camera_Site;
+         Cache.uploaded_specular                       := Self.specular_Color;
+         Cache.uploaded_light_Count                    := Self.light_Count;
+         Cache.uploaded_Lights (1 .. Self.light_Count) := Self.Lights (1 .. Self.light_Count);
+      end if;
    end set_Uniforms;
 
 
