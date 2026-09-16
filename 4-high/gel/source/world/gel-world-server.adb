@@ -139,6 +139,35 @@ is
 
 
 
+      procedure note_Dead (the_Observer : in lace.Observer.view)
+      is
+      begin
+         dead_Mirrors.append (the_Observer);     -- 'evolve' prunes these; see 'prune_Dead'.
+      end note_Dead;
+
+
+
+      procedure prune_Dead
+      is
+         use type lace.Observer.view;
+      begin
+         for each_dead_Observer of dead_Mirrors
+         loop
+            for i in Clients.first_Index .. Clients.last_Index
+            loop
+               if Clients.Element (i).Observer = each_dead_Observer
+               then
+                  Clients.delete (i);
+                  exit;
+               end if;
+            end loop;
+         end loop;
+
+         dead_Mirrors.clear;
+      end prune_Dead;
+
+
+
       procedure begin_Round (Now : out client_Vector)
       is
       begin
@@ -174,6 +203,8 @@ is
    is
    begin
       gel.World.item (Self).evolve;     -- Evolve the base class.
+
+      Self.Clients.prune_Dead;     -- Drop any mirror the emitter has buried, before this step's update round.
 
       -- Update dynamics in client worlds.
       --
@@ -336,6 +367,23 @@ is
       pragma unreferenced (Mirror_as_observer);     -- The observer given at registration is on record.
    begin
       disconnect (Self.all, the_Mirror);
+   end deregister;
+
+
+
+   overriding
+   procedure deregister (Self : in out Item;   the_Observer : in lace.Observer.view)
+   is
+   begin
+      -- The emitter buries a dead observer here on a failed delivery, from its own courier
+      -- task. When that observer is a mirror's, note it so 'evolve' drops the mirror on its
+      -- next step ~ each update to a gone client is a failed connection the async call
+      -- swallows. Only a note is taken here, never a client-list edit under a round barrier:
+      -- 'evolve' owns the list, so the courier can never block waiting on a round to end.
+      --
+      Self.Clients.note_Dead (the_Observer);
+
+      gel.World.item (Self).deregister (the_Observer);     -- The base does the actual observer removal.
    end deregister;
 
 

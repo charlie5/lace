@@ -415,9 +415,27 @@ is
                      of_Kind          : in     Event.Kind;
                      still_Registered :    out Boolean)
       is
-         the_event_Observers : event_Observer_Vector renames the_Observers.Element (of_Kind).all;
+         use event_Observer_Vectors,
+             event_kind_Maps_of_event_observers;
+
+         Cursor : constant event_kind_Maps_of_event_observers.Cursor := the_Observers.find (of_Kind);
       begin
-         the_event_Observers.delete (the_event_Observers.find_Index (the_Observer));
+         -- Remove the observer from this kind, tolerating its absence: the emitter buries a
+         -- dead observer from every kind on a failed delivery ('rid_all'), so a later
+         -- deregister by kind of that same observer must find nothing to do, not raise.
+         --
+         if has_Element (Cursor)
+         then
+            declare
+               the_event_Observers : event_Observer_Vector renames Element (Cursor).all;
+               Index               : constant extended_Index := the_event_Observers.find_Index (the_Observer);
+            begin
+               if Index /= no_Index
+               then
+                  the_event_Observers.delete (Index);
+               end if;
+            end;
+         end if;
 
          still_Registered := False;
 
