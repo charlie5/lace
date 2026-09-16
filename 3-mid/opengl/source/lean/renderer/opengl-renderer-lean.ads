@@ -119,6 +119,10 @@ is
 
 
    procedure render       (Self : in out Item;   to_Surface : in Surface.view := null);
+   --
+   -- Asks the engine for a frame of the visuals queued so far, without waiting for it: a
+   -- request made while the engine is busy is skipped, and the visuals go into its next frame.
+
    procedure add_Font     (Self : in out Item;   font_Id    : in Font.font_Id);
    procedure Screenshot   (Self : in out Item;   Filename   : in String;
                                                  with_Alpha : in Boolean      := False);

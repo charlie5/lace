@@ -475,7 +475,18 @@ is
    is
       pragma unreferenced (to_Surface);
    begin
-      Self.Engine.render;
+      -- Ask for a frame only when the engine is ready for one. While it is drawing, or
+      -- waiting on the swap for vsync, the request is skipped rather than waited for, so
+      -- the caller's loop keeps its own rate: with vsync the wait was most of a frame, and
+      -- the client sat behind it at 47-59 evolves a second instead of 60. The visuals
+      -- queued meanwhile are drawn at the next request the engine accepts, since each
+      -- camera's queue holds the latest only.
+      --
+      select
+         Self.Engine.render;
+      else
+         null;
+      end select;
    end render;
 
 
@@ -962,18 +973,17 @@ is
                current_Map.Insert (our_Camera, the_camera_Updates);
          end;
 
-         declare
-            First : constant Integer := the_camera_Updates.visuals_Last + 1;
-            Last  : constant Integer := the_camera_Updates.visuals_Last + the_Visuals'Length;
-         begin
-            if Last > the_camera_Updates.Visuals'Last
-            then
-               raise buffer_Overflow with "More than" & Integer'Image (max_Visuals) & " visuals queued for a camera.";
-            end if;
+         -- The latest visuals for the camera replace any queued before them: a request
+         -- the engine was too busy to take is not owed a frame, and the frame it takes
+         -- next must draw each visual once.
+         --
+         if the_Visuals'Length > the_camera_Updates.Visuals'Length
+         then
+            raise buffer_Overflow with "More than" & Integer'Image (max_Visuals) & " visuals queued for a camera.";
+         end if;
 
-            the_camera_Updates.Visuals (First .. Last) := the_Visuals;
-            the_camera_Updates.visuals_Last            := Last;
-         end;
+         the_camera_Updates.Visuals (1 .. the_Visuals'Length) := the_Visuals;
+         the_camera_Updates.visuals_Last                      := the_Visuals'Length;
       end add;
 
 
