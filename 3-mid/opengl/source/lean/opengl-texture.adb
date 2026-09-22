@@ -184,6 +184,17 @@ is
 
 
 
+   function min_Filter (use_Mipmaps : in Boolean) return GLint
+   --
+   -- A texture drawn smaller than its image is sampled from its mipmaps, each frame
+   -- alike. Sampled from the image alone, a fine pattern such as brickwork aliases,
+   -- and crawls or flickers whenever the camera moves.
+   is
+      (if use_Mipmaps then GL_LINEAR_MIPMAP_LINEAR
+                      else GL_LINEAR);
+
+
+
    procedure set_Image (Self : in out Object;   To          : in Image;
                                                 use_Mipmaps : in Boolean := True)
    is
@@ -217,7 +228,7 @@ is
       glTexParameteri (GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);            Errors.log;
 
       glTexParameteri (GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);        Errors.log;
-      glTexParameteri (GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);        Errors.log;
+      glTexParameteri (GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, min_Filter (use_Mipmaps));   Errors.log;
 
       glTexImage2D (GL_TEXTURE_2D,
                     0,
@@ -260,7 +271,7 @@ is
       glTexParameteri (GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);     Errors.log;
 
       glTexParameteri (GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);        Errors.log;
-      glTexParameteri (GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);        Errors.log;
+      glTexParameteri (GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, min_Filter (use_Mipmaps));   Errors.log;
 
       glTexImage2D (GL_TEXTURE_2D,
                     0,
