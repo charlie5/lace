@@ -360,6 +360,21 @@ is
 
 
 
+   procedure drop_Mirrors (Self : in out Item)
+   is
+      Pairs : client_Vector;
+   begin
+      Self.Clients.begin_Round (Pairs);     -- A copy of the list, as an update round takes one.
+      Self.Clients.end_Round;
+
+      for Each of Pairs
+      loop
+         disconnect (Self, Each.Mirror);
+      end loop;
+   end drop_Mirrors;
+
+
+
    overriding
    procedure deregister (Self : access Item;   the_Mirror         : in remote.World.view;
                                                Mirror_as_observer : in lace.Observer.view)

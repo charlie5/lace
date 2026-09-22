@@ -60,6 +60,13 @@ is
    overriding
    procedure evolve     (Self : in out Item);
 
+   procedure drop_Mirrors (Self : in out Item);
+   --
+   -- Disconnects every mirror, so nothing the world does from here on is delivered to a
+   -- client. For a server closing down: told to shut down, each client frees its mirror
+   -- while the world's own destroy would still be sending it the rid of every sprite, and
+   -- a delivery to a mirror a client has freed faults in the emitter's courier task.
+
 
 
 private
