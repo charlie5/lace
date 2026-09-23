@@ -396,6 +396,7 @@ private
          Site    : site_Interpolation;
          Spin    : spin_Interpolation;
          Percent : unit_Percentage;
+         Seeded  : Boolean := False;   -- Whether a first desired dynamics has been set: see 'set'.
       end record;
 
 
@@ -413,7 +414,8 @@ private
                                                        V => [0.0, 1.0, 0.0]),
                                            Desired => (R =>  0.0,
                                                        V => [0.0, 1.0, 0.0])),
-                               Percent => 0.0);
+                               Percent => 0.0,
+                               Seeded  => False);
    end safe_Interpolation;
 
 

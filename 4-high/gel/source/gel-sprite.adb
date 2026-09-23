@@ -785,10 +785,21 @@ is
                      desired_Spin : in Quaternion)
       is
       begin
-         Safe.Site.initial := Safe.Site.desired;
-         Safe.Site.desired := desired_Site;
+         -- The first dynamics set are where the sprite is, not where it is going: seeded
+         -- from the origin, every mirrored sprite swept in from there over the first
+         -- steps, and whatever looked out from one mid-sweep saw from the wrong place.
+         --
+         if Safe.Seeded
+         then
+            Safe.Site.initial := Safe.Site.desired;
+            Safe.Spin.initial := Safe.Spin.desired;
+         else
+            Safe.Site.initial := desired_Site;
+            Safe.Spin.initial := desired_Spin;
+            Safe.Seeded       := True;
+         end if;
 
-         Safe.Spin.initial := Safe.Spin.desired;
+         Safe.Site.desired := desired_Site;
          Safe.Spin.desired := desired_Spin;
 
          Safe.Percent      := 0.0;
