@@ -708,13 +708,29 @@ is
 
                if opaque_Geometries /= null
                then
-                  for i in opaque_Geometries'Range
-                  loop
-                     opaque_Count                           := opaque_Count + 1;
-                     Self.all_opaque_Couples (opaque_Count) := (Visual   => the_Visual,
-                                                            Geometry => opaque_Geometries (i),
-                                                            Depth    => 0.0);
-                  end loop;
+                  if the_Visual.Fade > 0.0
+                  then
+                     -- A fading visual must blend, whatever its geometry: the shaders scale
+                     -- both colour and alpha by the fade, so drawn in the opaque pass, where
+                     -- blending is off, it would only darken to black. It joins the lucid
+                     -- pass, depth sorted and blended, until its fade is done.
+                     --
+                     for i in opaque_Geometries'Range
+                     loop
+                        lucid_Count                          := lucid_Count + 1;
+                        Self.all_lucid_Couples (lucid_Count) := (Visual   => the_Visual,
+                                                                 Geometry => opaque_Geometries (i),
+                                                                 Depth    => the_Depth);
+                     end loop;
+                  else
+                     for i in opaque_Geometries'Range
+                     loop
+                        opaque_Count                           := opaque_Count + 1;
+                        Self.all_opaque_Couples (opaque_Count) := (Visual   => the_Visual,
+                                                                   Geometry => opaque_Geometries (i),
+                                                                   Depth    => 0.0);
+                     end loop;
+                  end if;
                end if;
 
                if lucid_Geometries /= null
