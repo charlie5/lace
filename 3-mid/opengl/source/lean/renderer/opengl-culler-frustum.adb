@@ -112,11 +112,19 @@ is
                apparent_Size := Real'Last;
             end if;
 
+            -- A model's bounds are known only once its geometry is built, and it is
+            -- built only when drawn: a visual with no bounds yet is let through, so
+            -- that it is. Culled on a bounds ball of zero, a model whose site started
+            -- out of view was never built, and so never seen until its site came into
+            -- view ~ the terrain, sited at the origin, was missing until the player
+            -- came near it.
+            --
             if         apparent_Size > the_vanish_point_size_Min
-              and then is_visible_for_Plane (Left)
-              and then is_visible_for_Plane (Right)
-              and then is_visible_for_Plane (High)
-              and then is_visible_for_Plane (Low)
+              and then (   the_Size = 0.0
+                        or else (         is_visible_for_Plane (Left)
+                                 and then is_visible_for_Plane (Right)
+                                 and then is_visible_for_Plane (High)
+                                 and then is_visible_for_Plane (Low)))
             then
                Last                   := Last + 1;
                visible_Objects (Last) := the_Object;
