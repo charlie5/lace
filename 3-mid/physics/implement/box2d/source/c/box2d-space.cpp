@@ -3,6 +3,9 @@
 #include <box2d/box2d.h>
 #include "box2d-object-private.h"
 #include <stdio.h>
+#include <mutex>
+#include <unordered_map>
+#include <vector>
 
 
 
@@ -302,15 +305,73 @@ b2d_Space_add_Object (Space*    Self,
 
 
 
+//////////
+/// Joints
+//
+
+static std::unordered_map<b2Joint*, b2JointDef*>   the_Definitions;
+static std::mutex                                  the_Definitions_Lock;
+//
+// The definition each live joint was created from. Box2D destroys a body's joints
+// along with the body, so the definition of a joint which went that way must be
+// found from the joint and told, or a later rid of the joint would destroy it twice,
+// through the vtable of a freed joint.
+
+
+static void
+forget_Joint (b2Joint*   Live)
+//
+// Puts the definition back the way it was before its joint was added, so it may be
+// added again or freed, and forgets the joint, which must still be live.
+//
+{
+  std::lock_guard<std::mutex>   Lock (the_Definitions_Lock);
+
+  auto   Found = the_Definitions.find (Live);
+
+  if (Found == the_Definitions.end())
+    return;
+
+  b2JointDef*   the_Joint_Def = Found->second;
+  Object*       Object_A      = (Object*) Live->GetBodyA()->GetUserData().pointer;
+  Object*       Object_B      = (Object*) Live->GetBodyB()->GetUserData().pointer;
+
+  the_Joint_Def->userData.pointer = 0;
+  the_Joint_Def->bodyA            = (b2Body*) Object_A;
+  the_Joint_Def->bodyB            = (b2Body*) Object_B;     // Null for the ground body of a space hinge.
+
+  the_Definitions.erase (Found);
+}
+
+
+
 void
 b2d_Space_rid_Object (Space*    Self,
                       Object*   the_Object)
+//
+// Destroys the body, and first tells the definitions of the joints Box2D destroys
+// along with it, so a later rid of one of them finds it gone. The ground body of a
+// space hinge goes after its joint.
+//
 {
   if (the_Object->body == 0)
     return;
 
+  std::vector<b2Body*>   Grounds;
+
+  for (b2JointEdge* Edge = the_Object->body->GetJointList();   Edge;   Edge = Edge->next)
+    {
+      if (Edge->other->GetUserData().pointer == 0)
+        Grounds.push_back (Edge->other);
+
+      forget_Joint (Edge->joint);
+    }
+
   to_World (Self)->DestroyBody (the_Object->body);
   the_Object->body = 0;
+
+  for (b2Body* Ground : Grounds)
+    to_World (Self)->DestroyBody (Ground);
 }
 
 
@@ -351,6 +412,9 @@ b2d_Space_add_Joint (Space*   Self,
   b2Joint*           Live = the_World->CreateJoint (jointDef);
 
   jointDef->userData.pointer = (uintptr_t) Live;
+
+  std::lock_guard<std::mutex>   Lock (the_Definitions_Lock);
+  the_Definitions [Live] = jointDef;
 }
 
 
@@ -369,23 +433,14 @@ b2d_Space_rid_Joint (Space*   Self,    Joint*   the_Joint)
   if (Live == 0)
     return;
 
-  b2Body*            body_A        = Live->GetBodyA();
   b2Body*            body_B        = Live->GetBodyB();
-  Object*            Object_A      = (Object*) body_A->GetUserData().pointer;
-  Object*            Object_B      = (Object*) body_B->GetUserData().pointer;
+  bool               ground_B      = body_B->GetUserData().pointer == 0;     // The ground body of a space hinge.
 
+  forget_Joint (Live);
   the_World->DestroyJoint (Live);
-  the_Joint_Def->userData.pointer = 0;
 
-  the_Joint_Def->bodyA = (b2Body*) Object_A;
-
-  if (Object_B == 0)                                  // The ground body of a space hinge.
-    {
-      the_World->DestroyBody (body_B);
-      the_Joint_Def->bodyB = 0;
-    }
-  else
-    the_Joint_Def->bodyB = (b2Body*) Object_B;
+  if (ground_B)
+    the_World->DestroyBody (body_B);
 }
 
 

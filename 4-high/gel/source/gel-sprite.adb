@@ -958,7 +958,17 @@ is
    procedure attach (Self : access Item;   the_Child : in Sprite.view;
                                            the_Joint : in gel.Joint.view)
    is
+      use type gel.Joint.view;
    begin
+      -- A sprite has one parent. A second attachment would overwrite the child's link
+      -- to its first joint while the first parent still held it, and the joint would
+      -- then be destroyed twice, through a freed body, when the sprites went.
+      --
+      if the_Child.parent_Joint /= null
+      then
+         raise Error with "Sprite" & the_Child.Id'Image & " already has a parent.";
+      end if;
+
       log (  "Attaching "
            & the_Child.Id'Image
            & " to "
