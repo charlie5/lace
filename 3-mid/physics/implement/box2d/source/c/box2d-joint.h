@@ -116,6 +116,9 @@ extern "C"
   bool              b2d_Joint_hinge_motor_Enabled    (Joint*   Self);
   Real              b2d_Joint_hinge_motor_Speed      (Joint*   Self);
   Real              b2d_Joint_hinge_max_motor_Torque (Joint*   Self);
+  void              b2d_Joint_hinge_Motor_is         (Joint*   Self,   bool          Enabled,
+                                                                       Real          Speed,
+                                                                       Real          max_Torque);
 
 } // extern "C"
 

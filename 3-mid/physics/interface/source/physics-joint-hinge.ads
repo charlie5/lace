@@ -35,5 +35,12 @@ is
    function motor_Speed      (Self : in Item) return Real    is abstract;
    function max_motor_Torque (Self : in Item) return Real    is abstract;
 
+   procedure Motor_is (Self       : in out Item;   Enabled    : in Boolean;
+                                                   Speed      : in Real;
+                                                   max_Torque : in Real) is null;
+   --
+   -- Drives the hinge at the speed, with up to the torque, or lets it swing free.
+   -- An engine without a hinge motor ignores it.
+
 
 end physics.Joint.hinge;

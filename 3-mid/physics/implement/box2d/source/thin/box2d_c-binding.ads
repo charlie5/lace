@@ -249,6 +249,11 @@ is
 
    function b2d_Joint_hinge_max_motor_Torque (Self : in box2d_c.Pointers.Joint_pointer) return c_math_c.Real;
 
+   procedure b2d_Joint_hinge_Motor_is (Self       : in box2d_c.Pointers.Joint_pointer;
+                                       Enabled    : in swig.bool;
+                                       Speed      : in c_math_c.Real;
+                                       max_Torque : in c_math_c.Real);
+
    function b2d_new_Space return box2d_c.Pointers.Space_pointer;
 
    procedure b2d_free_Space (Self : in box2d_c.Pointers.Space_pointer);
@@ -375,6 +380,7 @@ private
    pragma import (C, b2d_Joint_hinge_motor_Enabled,          "Ada_b2d_Joint_hinge_motor_Enabled");
    pragma import (C, b2d_Joint_hinge_motor_Speed,            "Ada_b2d_Joint_hinge_motor_Speed");
    pragma import (C, b2d_Joint_hinge_max_motor_Torque,       "Ada_b2d_Joint_hinge_max_motor_Torque");
+   pragma import (C, b2d_Joint_hinge_Motor_is,               "Ada_b2d_Joint_hinge_Motor_is");
    pragma import (C, b2d_new_Space,                          "Ada_b2d_new_Space");
    pragma import (C, b2d_free_Space,                         "Ada_b2d_free_Space");
    pragma import (C, b2d_Space_add_Object,                   "Ada_b2d_Space_add_Object");

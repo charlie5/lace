@@ -524,4 +524,17 @@ is
    end max_motor_Torque;
 
 
+
+   overriding
+   procedure Motor_is (Self       : in out Hinge;   Enabled    : in Boolean;
+                                                    Speed      : in Real;
+                                                    max_Torque : in Real)
+   is
+   begin
+      b2d_Joint_hinge_Motor_is (Self.C, swig.bool (Enabled),
+                                        c_math_c.Real (Speed),
+                                        c_math_c.Real (max_Torque));
+   end Motor_is;
+
+
 end box2d_Physics.Joint;

@@ -285,6 +285,16 @@ is
    end max_motor_Torque;
 
 
+
+   procedure Motor_is (Self       : in out Item;   Enabled    : in Boolean;
+                                                   Speed      : in Real;
+                                                   max_Torque : in Real)
+   is
+   begin
+      Self.Physics.Motor_is (Enabled, Speed, max_Torque);
+   end Motor_is;
+
+
    ----------------
    --- Joint Limits
    --

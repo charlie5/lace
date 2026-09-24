@@ -141,6 +141,13 @@ is
    function motor_Speed      (Self : in Item) return Real;
    function max_motor_Torque (Self : in Item) return Real;
 
+   procedure Motor_is (Self       : in out Item;   Enabled    : in Boolean;
+                                                   Speed      : in Real;
+                                                   max_Torque : in Real);
+   --
+   -- Drives the hinge at the speed (radians per second, anticlockwise positive) with
+   -- up to the torque, or lets it swing free.
+
 
 
 private

@@ -181,4 +181,9 @@ private
    overriding
    function max_motor_Torque (Self : in Hinge) return Real;
 
+   overriding
+   procedure Motor_is (Self       : in out Hinge;   Enabled    : in Boolean;
+                                                    Speed      : in Real;
+                                                    max_Torque : in Real);
+
 end box2d_Physics.Joint;

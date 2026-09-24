@@ -768,4 +768,36 @@ b2d_Joint_hinge_max_motor_Torque (Joint*   Self)
 }
 
 
+
+void
+b2d_Joint_hinge_Motor_is (Joint*   Self,   bool   Enabled,
+                                           Real   Speed,
+                                           Real   max_Torque)
+//
+// Drives the hinge at the speed with up to the torque, or lets it swing free.
+//
+{
+  b2Joint*   Live = live_Joint (Self);
+
+  if (!is_Revolute (Self))   return;
+
+  if (Live)
+    {
+      b2RevoluteJoint*   the_Hinge = (b2RevoluteJoint*) Live;
+
+      the_Hinge->SetMotorSpeed     (Speed);
+      the_Hinge->SetMaxMotorTorque (max_Torque);
+      the_Hinge->EnableMotor       (Enabled);
+    }
+  else
+    {
+      b2RevoluteJointDef*   Def = (b2RevoluteJointDef*) Self;
+
+      Def->motorSpeed     = Speed;
+      Def->maxMotorTorque = max_Torque;
+      Def->enableMotor    = Enabled;
+    }
+}
+
+
 } // extern "C"
