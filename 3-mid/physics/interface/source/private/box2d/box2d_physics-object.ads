@@ -114,6 +114,9 @@ private
    procedure Gyre_is        (Self : in out Item;   Now : in Vector_3);
 
    overriding
+   procedure fixed_Rotation_is (Self : in out Item;   Now : in Boolean);
+
+   overriding
    procedure Friction_is    (Self : in out Item;   Now : in Real);
    overriding
    procedure Restitution_is (Self : in out Item;   Now : in Real);

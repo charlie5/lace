@@ -320,6 +320,15 @@ is
 
 
    overriding
+   procedure fixed_Rotation_is (Self : in out Item;   Now : in Boolean)
+   is
+   begin
+      b2d_Object_fixed_Rotation_is (Self.C, swig.bool (Now));
+   end fixed_Rotation_is;
+
+
+
+   overriding
    procedure Friction_is (Self : in out Item;   Now : in Real)
    is
    begin

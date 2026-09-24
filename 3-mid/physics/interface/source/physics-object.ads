@@ -96,6 +96,12 @@ is
 
    function  is_Active       (Self : in     Item)     return Boolean       is abstract;
 
+   procedure fixed_Rotation_is (Self : in out Item;   Now : in Boolean)   is null;
+   --
+   -- With 'Now', the body never turns: a contact off its centre pushes it but does not
+   -- spin it, as suits a character driven along its own facing. Its spin can still be
+   -- set. An engine without the notion ignores this.
+
    procedure Friction_is     (Self : in out Item;   Now : in Real)         is abstract;
    procedure Restitution_is  (Self : in out Item;   Now : in Real)         is abstract;
 

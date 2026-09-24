@@ -229,6 +229,11 @@ is
    --
    -- Set Self and all children to given value.
 
+   procedure fixed_Rotation_is (Self : in out Item;   Now : in Boolean);
+   --
+   -- With 'Now', the sprite's body never turns of itself: a contact off its centre
+   -- pushes it but does not spin it. Its spin can still be set.
+
 
    --- Forces
    --

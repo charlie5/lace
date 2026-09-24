@@ -49,6 +49,8 @@ extern "C"
   Vector_3         b2d_Object_Gyre           (Object*   Self);
   void             b2d_Object_Gyre_is        (Object*   Self,   Vector_3*     Now);
 
+  void             b2d_Object_fixed_Rotation_is (Object*   Self,   bool   Now);
+
   void             b2d_Object_apply_Force          (Object*   Self,   Vector_3*   Force);
   void             b2d_Object_apply_Torque         (Object*   Self,   Vector_3*   Torque);
   void             b2d_Object_apply_Torque_impulse (Object*   Self,   Vector_3*   Torque);

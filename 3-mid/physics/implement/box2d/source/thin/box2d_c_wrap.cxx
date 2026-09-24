@@ -743,6 +743,19 @@ extern          "C"
 
   }
 
+  DllExport void SWIGSTDCALL Ada_b2d_Object_fixed_Rotation_is (void *a_arg1,
+                                                               unsigned int a_arg2)
+  {
+    Object         *arg1 = (Object *) 0;
+    bool            arg2;
+
+    arg1 = (Object *) a_arg1;
+
+    arg2 = a_arg2 ? true : false;
+
+    b2d_Object_fixed_Rotation_is (arg1, arg2);
+  }
+
   DllExport void SWIGSTDCALL Ada_b2d_Object_Gyre_is (void *a_arg1,
 						     void *a_arg2)
   {

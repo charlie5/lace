@@ -121,6 +121,9 @@ is
    procedure b2d_Object_Gyre_is (Self : in box2d_c.Pointers.Object_pointer;
                                  Now  : in c_math_c.Vector_3.Pointer);
 
+   procedure b2d_Object_fixed_Rotation_is (Self : in box2d_c.Pointers.Object_pointer;
+                                           Now  : in swig.bool);
+
    procedure b2d_Object_apply_Force (Self  : in box2d_c.Pointers.Object_pointer;
                                      Force : in c_math_c.Vector_3.Pointer);
 
@@ -330,6 +333,7 @@ private
    pragma import (C, b2d_Object_Speed_is,                    "Ada_b2d_Object_Speed_is");
    pragma import (C, b2d_Object_Gyre,                        "Ada_b2d_Object_Gyre");
    pragma import (C, b2d_Object_Gyre_is,                     "Ada_b2d_Object_Gyre_is");
+   pragma import (C, b2d_Object_fixed_Rotation_is,           "Ada_b2d_Object_fixed_Rotation_is");
    pragma import (C, b2d_Object_apply_Force,                 "Ada_b2d_Object_apply_Force");
    pragma import (C, b2d_Object_apply_Torque,                "Ada_b2d_Object_apply_Torque");
    pragma import (C, b2d_Object_apply_Torque_impulse,        "Ada_b2d_Object_apply_Torque_impulse");

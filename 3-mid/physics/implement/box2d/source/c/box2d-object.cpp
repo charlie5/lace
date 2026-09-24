@@ -421,6 +421,23 @@ b2d_Object_Gyre_is (Object*     Self,
 
 
 void
+b2d_Object_fixed_Rotation_is (Object*   Self,
+                              bool      Now)
+{
+  if (Self->body)
+    {
+      Self->body->SetFixedRotation (Now);
+      Self->body->SetAwake (true);
+    }
+  else
+    {
+      Self->bodyDef.fixedRotation = Now;
+    }
+}
+
+
+
+void
 b2d_Object_apply_Torque (Object*     Self,
                          Vector_3*   Torque)
 {

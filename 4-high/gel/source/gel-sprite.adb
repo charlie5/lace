@@ -728,6 +728,14 @@ is
 
 
 
+   procedure fixed_Rotation_is (Self : in out Item;   Now : in Boolean)
+   is
+   begin
+      Self.Solid.fixed_Rotation_is (Now);
+   end fixed_Rotation_is;
+
+
+
    procedure set_Gyre (Self : in out Item;   to_Gyre : in Vector_3)
    is
       child_Sprite : Sprite.view;
