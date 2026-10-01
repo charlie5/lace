@@ -1350,6 +1350,19 @@ extern          "C"
     b2d_Joint_hinge_Motor_is (arg1, arg2, arg3, arg4);
   }
 
+  DllExport void SWIGSTDCALL Ada_b2d_Joint_hinge_reference_Angle_is (void *a_arg1,
+								     float a_arg2)
+  {
+    Joint          *arg1 = (Joint *) 0;
+    Real            arg2;
+
+    arg1 = (Joint *) a_arg1;
+
+    arg2 = (Real) a_arg2;
+
+    b2d_Joint_hinge_reference_Angle_is (arg1, arg2);
+  }
+
   DllExport Vector_3 SWIGSTDCALL Ada_b2d_Joint_hinge_local_Anchor_on_A (void
 									*a_arg1)
   {

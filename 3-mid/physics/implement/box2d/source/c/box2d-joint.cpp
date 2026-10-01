@@ -800,4 +800,21 @@ b2d_Joint_hinge_Motor_is (Joint*   Self,   bool   Enabled,
 }
 
 
+void
+b2d_Joint_hinge_reference_Angle_is (Joint*   Self,   Real   Now)
+//
+// Sets the turn at which the hinge reads zero, which fixes where its limits lie.
+// Box2D keeps it in the joint's definition and reads it when the joint goes live;
+// a live joint offers no way to change it, so this does nothing once the joint is
+// in a space, and a caller which must set it does so before adding the joint.
+//
+{
+  if (!is_Revolute (Self))   return;
+  if (live_Joint (Self))     return;
+
+  ((b2RevoluteJointDef*) Self)->referenceAngle = Now;
+}
+
+
+
 } // extern "C"

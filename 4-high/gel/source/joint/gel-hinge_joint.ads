@@ -73,6 +73,12 @@ is
 
    function  reference_Angle (Self : in Item) return Radians;
 
+   procedure reference_Angle_is (Self : in out Item;   Now : in Radians);
+   --
+   -- Sets the turn at which the hinge reads zero, which is where its limits are
+   -- measured from. Box2D fixes it when the joint is made, so a hinge restored from a
+   -- store sets it before the joint joins a space; afterwards it does nothing.
+
    function  Angle      (Self : in     Item) return Real;
 
    overriding

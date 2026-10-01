@@ -241,6 +241,9 @@ is
 
    function b2d_Joint_hinge_reference_Angle (Self : in box2d_c.Pointers.Joint_pointer) return c_math_c.Real;
 
+   procedure b2d_Joint_hinge_reference_Angle_is (Self : in box2d_c.Pointers.Joint_pointer;
+                                                 Now  : in c_math_c.Real);
+
    function b2d_Joint_hinge_Angle (Self : in box2d_c.Pointers.Joint_pointer) return c_math_c.Real;
 
    function b2d_Joint_hinge_motor_Enabled (Self : in box2d_c.Pointers.Joint_pointer) return swig.bool;
@@ -376,6 +379,7 @@ private
    pragma import (C, b2d_Joint_hinge_local_Anchor_on_A,      "Ada_b2d_Joint_hinge_local_Anchor_on_A");
    pragma import (C, b2d_Joint_hinge_local_Anchor_on_B,      "Ada_b2d_Joint_hinge_local_Anchor_on_B");
    pragma import (C, b2d_Joint_hinge_reference_Angle,        "Ada_b2d_Joint_hinge_reference_Angle");
+   pragma import (C, b2d_Joint_hinge_reference_Angle_is,     "Ada_b2d_Joint_hinge_reference_Angle_is");
    pragma import (C, b2d_Joint_hinge_Angle,                  "Ada_b2d_Joint_hinge_Angle");
    pragma import (C, b2d_Joint_hinge_motor_Enabled,          "Ada_b2d_Joint_hinge_motor_Enabled");
    pragma import (C, b2d_Joint_hinge_motor_Speed,            "Ada_b2d_Joint_hinge_motor_Speed");

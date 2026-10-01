@@ -23,6 +23,13 @@ is
    function  reference_Angle (Self : in     Item) return Radians                     is abstract;
    function  Angle           (Self : in     Item) return Real                        is abstract;
 
+   procedure reference_Angle_is (Self : in out Item;   Now : in Radians) is null;
+   --
+   -- Sets the turn at which the hinge reads zero, which is where its limits are
+   -- measured from. An engine which fixes it when the joint is made ignores this once
+   -- the joint is live, so a caller restoring a saved hinge sets it before the joint
+   -- joins a space. An engine without the notion ignores it altogether.
+
    function  local_Anchor_on_A (Self : in Item) return Vector_3                      is abstract;
    function  local_Anchor_on_B (Self : in Item) return Vector_3                      is abstract;
 

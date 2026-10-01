@@ -472,6 +472,15 @@ is
 
 
    overriding
+   procedure reference_Angle_is (Self : in out Hinge;   Now : in Radians)
+   is
+   begin
+      b2d_Joint_hinge_reference_Angle_is (Self.C, c_math_c.Real (Now));
+   end reference_Angle_is;
+
+
+
+   overriding
    function Angle (Self : in Hinge) return Real
    is
    begin

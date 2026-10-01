@@ -112,6 +112,7 @@ extern "C"
   Vector_3          b2d_Joint_hinge_local_Anchor_on_A (Joint*   Self);
   Vector_3          b2d_Joint_hinge_local_Anchor_on_B (Joint*   Self);
   Real              b2d_Joint_hinge_reference_Angle  (Joint*   Self);
+  void              b2d_Joint_hinge_reference_Angle_is (Joint*   Self,   Real   Now);
   Real              b2d_Joint_hinge_Angle            (Joint*   Self);
   bool              b2d_Joint_hinge_motor_Enabled    (Joint*   Self);
   Real              b2d_Joint_hinge_motor_Speed      (Joint*   Self);

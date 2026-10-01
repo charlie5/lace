@@ -165,7 +165,9 @@ private
    function  limit_Enabled (Self : in Hinge) return Boolean;
 
    overriding
-   function  reference_Angle (Self : in Hinge) return Radians;
+   function  reference_Angle    (Self : in     Hinge) return Radians;
+   overriding
+   procedure reference_Angle_is (Self : in out Hinge;   Now : in Radians);
    overriding
    function  Angle           (Self : in Hinge) return Real;
 

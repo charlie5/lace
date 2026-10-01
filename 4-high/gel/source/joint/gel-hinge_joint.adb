@@ -198,6 +198,14 @@ is
 
 
 
+   procedure reference_Angle_is (Self : in out Item;   Now : in Radians)
+   is
+   begin
+      Self.Physics.reference_Angle_is (Now);
+   end reference_Angle_is;
+
+
+
    function limit_Enabled (Self : in Item) return Boolean
    is
    begin
