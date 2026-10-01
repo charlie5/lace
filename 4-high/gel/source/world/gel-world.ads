@@ -524,6 +524,65 @@ private
    -- completed. Till then it is carried over from pass to pass.
 
 
+   -------------------
+   --- Safe model maps
+   --
+   -- The model registries are read and written concurrently, as the sprite map is: the
+   -- main loop adds a model with each new sprite and frees one with each sprite which
+   -- owned it, while a mirroring client, or a PolyORB task serving 'graphics_Models',
+   -- walks the whole registry. Walking a hashed map while another task inserts into it
+   -- reads a table being rehashed under the cursor, and the nonsense that comes back
+   -- lands anywhere: importing a building of 1,333 objects in one start raised a
+   -- tampering Program_Error out of the insert on one run and an assertion on the next,
+   -- both from tamper counts which nothing in the program ever sets. So a reader takes
+   -- a copy and walks that at its leisure, while every change goes through the lock.
+   --
+
+   protected
+   type safe_id_Map_of_graphics_model
+   is
+      procedure add      (the_Model : in     openGL.Model.view;
+                          Added     :    out Boolean);
+      --
+      -- 'Added' is False when a model of that id is registered already, when the caller
+      -- must not announce it anew. The announcing is left to the caller, since an emit
+      -- taken under the lock would hold up every task sharing the registry.
+
+      procedure rid      (Id : in gel.graphics_model_Id);
+      procedure clear;
+
+      function  Model    (Id : in gel.graphics_model_Id) return openGL.Model.view;
+      --
+      -- Null when no model of that id is registered.
+
+      function  Contains (Id : in gel.graphics_model_Id) return Boolean;
+      function  fetch                                    return id_Maps_of_graphics_model.Map;
+      --
+      -- The whole registry, copied: what a reader walks, in place of the live map.
+
+   private
+      Map : id_Maps_of_graphics_model.Map;
+   end safe_id_Map_of_graphics_model;
+
+
+   protected
+   type safe_id_Map_of_physics_model
+   is
+      procedure add      (the_Model : in     physics.Model.view;
+                          Added     :    out Boolean);
+
+      procedure rid      (Id : in physics.model_Id);
+      procedure clear;
+
+      function  Model    (Id : in physics.model_Id) return physics.Model.view;
+      function  Contains (Id : in physics.model_Id) return Boolean;
+      function  fetch                               return id_Maps_of_physics_model.Map;
+
+   private
+      Map : id_Maps_of_physics_model.Map;
+   end safe_id_Map_of_physics_model;
+
+
    ---------------
    --- safe_Joints
    --
@@ -568,8 +627,8 @@ private
 
          -- Models
          --
-         graphics_Models : aliased id_Maps_of_graphics_model.Map;
-         physics_Models  : aliased id_Maps_of_physics_model .Map;
+         graphics_Models : aliased safe_id_Map_of_graphics_model;
+         physics_Models  : aliased safe_id_Map_of_physics_model;
 
          -- Ids
          --

@@ -78,8 +78,9 @@ is
       declare
          use id_Maps_of_graphics_model;
 
-         Cursor    : id_Maps_of_graphics_model.Cursor := Self.graphics_Models.First;
-         the_Model : openGL.Model.view;
+         the_Models : constant id_Maps_of_graphics_model.Map    := Self.graphics_Models.fetch;
+         Cursor     :          id_Maps_of_graphics_model.Cursor := the_Models.First;
+         the_Model  :          openGL.Model.view;
       begin
          while has_Element (Cursor)
          loop
@@ -101,8 +102,9 @@ is
       declare
          use id_Maps_of_physics_model;
 
-         Cursor    : id_Maps_of_physics_model.Cursor := Self.physics_Models.First;
-         the_Model : physics.Model.view;
+         the_Models : constant id_Maps_of_physics_model.Map    := Self.physics_Models.fetch;
+         Cursor     :          id_Maps_of_physics_model.Cursor := the_Models.First;
+         the_Model  :          physics.Model.view;
       begin
          while has_Element (Cursor)
          loop
@@ -425,7 +427,7 @@ is
    function local_graphics_Models (Self : in Item) return id_Maps_of_graphics_model.Map
    is
    begin
-      return Self.graphics_Models;
+      return Self.graphics_Models.fetch;
    end local_graphics_Models;
 
 
@@ -433,7 +435,7 @@ is
    function local_physics_Models (Self : in Item) return id_Maps_of_physics_model.Map
    is
    begin
-      return Self.physics_Models;
+      return Self.physics_Models.fetch;
    end local_physics_Models;
 
 
@@ -687,7 +689,7 @@ is
 
          if the_graphics_Model /= null
          then
-            Self.graphics_Models.exclude (the_graphics_Model.Id);
+            Self.graphics_Models.rid (the_graphics_Model.Id);
 
             if Self.Renderer /= null
             then
@@ -699,7 +701,7 @@ is
 
          if the_physics_Model /= null
          then
-            Self.physics_Models.exclude (the_physics_Model.Id);
+            Self.physics_Models.rid (the_physics_Model.Id);
             physics.Model.free (the_physics_Model);
          end if;
       end free_with_owned_Models;
@@ -1002,22 +1004,27 @@ is
          the_Model.Id_is (Self.last_used_model_Id);
       end if;
 
-      if not Self.graphics_Models.contains (the_Model.Id)
-      then
-         Self.graphics_Models.insert (the_Model.Id, the_Model);
+      declare
+         Added : Boolean;
+      begin
+         Self.graphics_Models.add (the_Model, Added);
 
-         -- Emit a new model event.
-         --
+         if Added
+         then
+            -- Emit a new model event, outside the registry's lock: an emit taken
+            -- under it would block every other task sharing the registry.
+            --
 
-         -- log ("gel.World.add ~ emit new graphics model event");
+            -- log ("gel.World.add ~ emit new graphics model event");
 
-         declare
-            the_Event : remote.World.new_graphics_model_Event;
-         begin
-            the_Event.Model := the_Model;
-            Self.emit (the_Event);
-         end;
-      end if;
+            declare
+               the_Event : remote.World.new_graphics_model_Event;
+            begin
+               the_Event.Model := the_Model;
+               Self.emit (the_Event);
+            end;
+         end if;
+      end;
    end add;
 
 
@@ -1031,21 +1038,25 @@ is
          the_Model.Id_is (Self.last_used_physics_model_Id);
       end if;
 
-      if not Self.physics_Models.contains (the_Model.Id)
-      then
-         Self.physics_Models.insert (the_Model.Id, the_Model);
+      declare
+         Added : Boolean;
+      begin
+         Self.physics_Models.add (the_Model, Added);
 
-         -- Emit a new model event.
-         --
-         -- log ("gel.World.add ~ emit new physics model event");
+         if Added
+         then
+            -- Emit a new model event, outside the registry's lock.
+            --
+            -- log ("gel.World.add ~ emit new physics model event");
 
-         declare
-            the_Event : remote.World.new_physics_model_Event;
-         begin
-            the_Event.Model := the_Model;
-            Self.emit (the_Event);
-         end;
-      end if;
+            declare
+               the_Event : remote.World.new_physics_model_Event;
+            begin
+               the_Event.Model := the_Model;
+               Self.emit (the_Event);
+            end;
+         end if;
+      end;
    end add;
 
 
@@ -1217,8 +1228,9 @@ is
    is
       use id_Maps_of_graphics_model;
 
-      the_Models  : remote.World.id_Map_of_graphics_model;
-      Cursor      : id_Maps_of_graphics_model.Cursor     := Self.graphics_Models.First;
+      the_Models   :          remote.World.id_Map_of_graphics_model;
+      local_Models : constant id_Maps_of_graphics_model.Map    := Self.graphics_Models.fetch;
+      Cursor       :          id_Maps_of_graphics_model.Cursor := local_Models.First;
    begin
       while has_Element (Cursor)
       loop
@@ -1237,8 +1249,9 @@ is
    is
       use id_Maps_of_physics_model;
 
-      the_Models  : remote.World.id_Map_of_physics_model;
-      Cursor      : id_Maps_of_physics_model.Cursor     := Self.physics_Models.First;
+      the_Models   :          remote.World.id_Map_of_physics_model;
+      local_Models : constant id_Maps_of_physics_model.Map    := Self.physics_Models.fetch;
+      Cursor       :          id_Maps_of_physics_model.Cursor := local_Models.First;
    begin
       while has_Element (Cursor)
       loop
@@ -1389,6 +1402,146 @@ is
       Self.last_used_model_Id         := graphics_model_Id (Before - 1);
       Self.last_used_physics_model_Id := physics .model_Id (Before - 1);
    end reserve_Ids;
+
+
+   -------------------
+   --- Safe model maps
+   --
+
+   protected
+   body safe_id_Map_of_graphics_model
+   is
+      procedure add (the_Model : in     openGL.Model.view;
+                     Added     :    out Boolean)
+      is
+      begin
+         if Map.Contains (the_Model.Id)
+         then
+            Added := False;
+         else
+            Map.insert (the_Model.Id,
+                        the_Model);
+            Added := True;
+         end if;
+      end add;
+
+
+
+      procedure rid (Id : in gel.graphics_model_Id)
+      is
+      begin
+         Map.exclude (Id);
+      end rid;
+
+
+
+      procedure clear
+      is
+      begin
+         Map.clear;
+      end clear;
+
+
+
+      function Model (Id : in gel.graphics_model_Id) return openGL.Model.view
+      is
+         use id_Maps_of_graphics_model;
+         Cursor : constant id_Maps_of_graphics_model.Cursor := Map.find (Id);
+      begin
+         if has_Element (Cursor)
+         then
+            return Element (Cursor);
+         else
+            return null;
+         end if;
+      end Model;
+
+
+
+      function Contains (Id : in gel.graphics_model_Id) return Boolean
+      is
+      begin
+         return Map.Contains (Id);
+      end Contains;
+
+
+
+      function fetch return id_Maps_of_graphics_model.Map
+      is
+      begin
+         return Map;
+      end fetch;
+
+   end safe_id_Map_of_graphics_model;
+
+
+
+   protected
+   body safe_id_Map_of_physics_model
+   is
+      procedure add (the_Model : in     physics.Model.view;
+                     Added     :    out Boolean)
+      is
+      begin
+         if Map.Contains (the_Model.Id)
+         then
+            Added := False;
+         else
+            Map.insert (the_Model.Id,
+                        the_Model);
+            Added := True;
+         end if;
+      end add;
+
+
+
+      procedure rid (Id : in physics.model_Id)
+      is
+      begin
+         Map.exclude (Id);
+      end rid;
+
+
+
+      procedure clear
+      is
+      begin
+         Map.clear;
+      end clear;
+
+
+
+      function Model (Id : in physics.model_Id) return physics.Model.view
+      is
+         use id_Maps_of_physics_model;
+         Cursor : constant id_Maps_of_physics_model.Cursor := Map.find (Id);
+      begin
+         if has_Element (Cursor)
+         then
+            return Element (Cursor);
+         else
+            return null;
+         end if;
+      end Model;
+
+
+
+      function Contains (Id : in physics.model_Id) return Boolean
+      is
+      begin
+         return Map.Contains (Id);
+      end Contains;
+
+
+
+      function fetch return id_Maps_of_physics_model.Map
+      is
+      begin
+         return Map;
+      end fetch;
+
+   end safe_id_Map_of_physics_model;
+
 
 
    ------------------

@@ -285,8 +285,8 @@ is
       record
          World           :        gel.World.view;
          mirrored_World  :        remote.World.view;
-         graphics_Models : access id_Maps_of_graphics_model.Map;
-         physics_Models  : access id_Maps_of_physics_model .Map;
+         graphics_Models : access safe_id_Map_of_graphics_model;
+         physics_Models  : access safe_id_Map_of_physics_model;
       end record;
 
    type my_new_sprite_Response_view is access all my_new_sprite_Response;
@@ -303,14 +303,14 @@ is
       log ("gel.world.client.my_new_Sprite.respond");
 
       declare
-         use id_Maps_of_graphics_model,
-             id_Maps_of_physics_model;
+         use type openGL .Model.view,
+                  physics.Model.view;
 
          the_Event : constant gel.Events.new_sprite_Event := gel.events.new_sprite_Event (to_Event);
          the_Pair  :          remote.World.sprite_model_Pair renames the_Event.Pair;
 
-         graphics_Cursor : id_Maps_of_graphics_model.Cursor;
-         physics_Cursor  : id_Maps_of_physics_model .Cursor;
+         the_graphics_Model : openGL .Model.view;
+         the_physics_Model  : physics.Model.view;
 
       begin
          if Self.World.sprite_Exists (the_Pair.sprite_Id)
@@ -320,11 +320,11 @@ is
             return;
          end if;
 
-         graphics_Cursor := Self.graphics_Models.find (the_Pair.graphics_model_Id);
-         physics_Cursor  := Self. physics_Models.find (the_Pair. physics_model_Id);
+         the_graphics_Model := Self.graphics_Models.Model (the_Pair.graphics_model_Id);
+         the_physics_Model  := Self. physics_Models.Model (the_Pair. physics_model_Id);
 
-         if not (        has_Element (graphics_Cursor)
-                 and then has_Element ( physics_Cursor))
+         if the_graphics_Model = null
+           or else the_physics_Model = null
          then     -- A model is not here yet ~ its event is still in flight, or was
                   -- emitted before this client registered. Recover by fetching the
                   -- server's models directly.
@@ -332,11 +332,11 @@ is
                             Self.mirrored_World.graphics_Models,
                             Self.mirrored_World. physics_Models);
 
-            graphics_Cursor := Self.graphics_Models.find (the_Pair.graphics_model_Id);
-            physics_Cursor  := Self. physics_Models.find (the_Pair. physics_model_Id);
+            the_graphics_Model := Self.graphics_Models.Model (the_Pair.graphics_model_Id);
+            the_physics_Model  := Self. physics_Models.Model (the_Pair. physics_model_Id);
 
-            if not (        has_Element (graphics_Cursor)
-                    and then has_Element ( physics_Cursor))
+            if the_graphics_Model = null
+              or else the_physics_Model = null
             then
                log ("Error: Sprite" & the_Pair.sprite_Id'Image
                     & " arrived with models unknown even to the server ~ the sprite is dropped.");
@@ -347,8 +347,8 @@ is
          declare
             the_Sprite : constant gel.Sprite.view
               := to_Sprite (the_Pair,
-                            Element (graphics_Cursor),
-                            Element ( physics_Cursor),
+                            the_graphics_Model,
+                            the_physics_Model,
                             Self.World);
          begin
             log ("*** gel.world.client.my_new_sprite_Response.add sprite ~ " & the_Sprite.Name'Image);
@@ -519,8 +519,8 @@ is
                if not Self.sprite_Exists (the_Snapshot.Sprites (i).sprite_Id)
                then
                   the_Sprite := to_Sprite (the_Snapshot.Sprites (i),
-                                           Self.graphics_Models.Element (the_Snapshot.Sprites (i).graphics_model_Id),
-                                           Self. physics_Models.Element (the_Snapshot.Sprites (i). physics_model_Id),
+                                           Self.graphics_Models.Model (the_Snapshot.Sprites (i).graphics_model_Id),
+                                           Self. physics_Models.Model (the_Snapshot.Sprites (i). physics_model_Id),
                                            gel.World.view (Self));
                   Self.add (the_Sprite);
                end if;
