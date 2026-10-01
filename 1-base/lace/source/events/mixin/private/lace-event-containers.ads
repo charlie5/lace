@@ -13,7 +13,7 @@ package lace.Event.Containers
 --
 is
    pragma remote_Types;
-   pragma suppress (container_Checks);     -- Suppress expensive tamper checks.
+   -- pragma suppress (container_Checks);     -- Suppress expensive tamper checks.
 
 
    -----------------
