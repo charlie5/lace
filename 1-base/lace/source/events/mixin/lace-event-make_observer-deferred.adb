@@ -1,6 +1,7 @@
 with
      lace.Event.Logger,
      lace.Event.utility,
+     ada.Strings.unbounded,
      ada.unchecked_Deallocation;
 
 
@@ -146,7 +147,15 @@ is
                subject_Name : String_view  := the_subject_Events (i).Subject;
                the_Events   : event_Vector := the_subject_Events (i).Events;
             begin
-               if Self.Responses.contains (subject_Name.all)
+               if the_Events.is_Empty
+               then
+                  -- The subject once sent an event, and its entry stays, empty, after
+                  -- each drain: nothing to answer, and nothing to warn of when its
+                  -- responses have since been ridden, as a sprite's are once it goes.
+                  --
+                  null;
+
+               elsif Self.Responses.contains (subject_Name.all)
                then
                   Self.sequence_Id_Map.add (subject_Name.all);
 
@@ -157,11 +166,40 @@ is
 
                else
                   declare
+                     use Event.utility;
+
+                     function Pending return String
+                     --
+                     -- The events waiting, each by its name and sequence number, for the message.
+                     is
+                        Result : ada.Strings.unbounded.unbounded_String;
+                     begin
+                        for Each of the_Events
+                        loop
+                           ada.Strings.unbounded.append (Result,   " " & Name_of (Each.Event.Element)
+                                                                 & " #" & Each.Sequence'Image);
+                        end loop;
+
+                        return ada.Strings.unbounded.to_String (Result);
+                     end Pending;
+
+                     function Expected return String
+                     --
+                     -- The sequence number expected next from the subject, if any is kept.
+                     is
+                     begin
+                        return Self.sequence_Id_Map.Element (subject_Name.all)'Image;
+                     exception
+                        when constraint_Error =>
+                           return " none";
+                     end Expected;
+
                      Message : constant String :=   "*** Warning *** ~ "
                                                   & my_Name
                                                   & " has no responses for events from "
                                                   & subject_Name.all
-                                                  & ".";
+                                                  & ":" & Pending & "."
+                                                  & " Expected sequence #" & Expected & ".";
                   begin
                      if Observer.Logger /= null
                      then
