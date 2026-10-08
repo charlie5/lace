@@ -447,6 +447,11 @@ is
       -- The responses are allocated per world, so a client may mirror several
       -- server worlds without one world's responses being re-aimed at another.
       --
+      -- A world mirrored before, left and mirrored again, finds its responses still
+      -- held under its name, the observer keeping them by subject, and adding them
+      -- again raised: so each is ridden first, by its kind and the world's name, and
+      -- the earlier set is left to the heap, four small objects a return.
+      --
       graphics_Response : constant new_graphics_model_Response_view := new new_graphics_model_Response;
       physics_Response  : constant new_physics_model_Response_view  := new new_physics_model_Response;
       new_Response      : constant my_new_sprite_Response_view      := new my_new_sprite_Response;
@@ -457,6 +462,9 @@ is
       --
       graphics_Response.World := Self.all'Access;
 
+      Self.rid (the_Response => lace.Response.view (graphics_Response),
+                to_Kind      => to_Kind (remote.World.new_graphics_model_Event'Tag),
+                from_Subject => of_World.Name);
       Self.add (the_Response => lace.Response.view (graphics_Response),
                 to_Kind      => to_Kind (remote.World.new_graphics_model_Event'Tag),
                 from_Subject => of_World.Name);
@@ -465,6 +473,9 @@ is
       --
       physics_Response.World := Self.all'Access;
 
+      Self.rid (lace.Response.view (physics_Response),
+                to_Kind (remote.World.new_physics_model_Event'Tag),
+                from_Subject => of_World.Name);
       Self.add (lace.Response.view (physics_Response),
                 to_Kind (remote.World.new_physics_model_Event'Tag),
                 from_Subject => of_World.Name);
@@ -476,6 +487,9 @@ is
       new_Response.graphics_Models := Self.graphics_Models'Access;
       new_Response.physics_Models  := Self. physics_Models'Access;
 
+      Self.rid (lace.Response.view (new_Response),
+                to_Kind (gel.Events.new_sprite_Event'Tag),
+                from_Subject => of_World.Name);
       Self.add (lace.Response.view (new_Response),
                 to_Kind (gel.Events.new_sprite_Event'Tag),
                 from_Subject => of_World.Name);
@@ -484,6 +498,9 @@ is
       --
       rid_Response.World := Self.all'Access;
 
+      Self.rid (lace.Response.view (rid_Response),
+                to_Kind (gel.Events.rid_sprite_Event'Tag),
+                from_Subject => of_World.Name);
       Self.add (lace.Response.view (rid_Response),
                 to_Kind (gel.Events.rid_sprite_Event'Tag),
                 from_Subject => of_World.Name);
