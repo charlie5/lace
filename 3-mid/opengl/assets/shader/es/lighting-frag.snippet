@@ -81,10 +81,16 @@ apply_Light (light   Light,
 
     
     // Specular.
-    //    
+    //
+    // A material with no shine, 'openGL.no_Shine' (a million), gets none: any finite
+    // shine leaves the full highlight at the exact mirror point, a bright dot a few
+    // pixels wide on a flat surface wherever the light's reflection falls, which on a
+    // ground seen from above rode with the camera. The light's strength scales the
+    // highlight, as it scales the diffuse, else a faint moon glinted as bright as the sun.
+    //
     float   specular_Coefficient = 0.0;
 
-    if (diffuse_Coefficient > 0.0)
+    if (diffuse_Coefficient > 0.0  &&  frag_Shine < 1.0e5)
     {
         specular_Coefficient = pow (max (0.0,                                             // Using '0.0' can produce wierd results when
                                          dot (Surface_to_Camera,                          // light shines directly on a flat surface.
@@ -93,7 +99,7 @@ apply_Light (light   Light,
                                     frag_Shine);
     }
 
-    vec3   Specular = specular_Coefficient * specular_Color * Light.Color;
+    vec3   Specular = specular_Coefficient * specular_Color * Light.Color * Light.Strength;
 
 
     // Linear color (before gamma correction).
