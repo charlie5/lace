@@ -69,5 +69,6 @@ Typical Cases
 
 
    - For a multi task application, care must be taken to ensure that response actions are task safe.
-   - Using the 'deferred' method may simplify (or eliminate) concurrency protection issues.   (tbd: add examples)
+   - Using the 'deferred' method may simplify (or eliminate) concurrency protection issues.
+     For an example, see 'applet/demo/event/simple/deferred', and the deferred cases in 'applet/test/regression'.
 
