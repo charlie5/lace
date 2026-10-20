@@ -277,7 +277,7 @@ is
    begin
       if deltaZ = 0.0 or else Sine = 0.0 or else Aspect = 0.0
       then
-         raise Constraint_Error;   -- tbd: 'mesa' simnply returns here ... ?
+         raise Constraint_Error with "to_Perspective: degenerate FoVy, Aspect or zNear/zFar.";
       end if;
 
       Cotangent := cos (Rads) / Sine;
@@ -674,7 +674,9 @@ is
       if world_Position (4) = 0.0
       then
          world_Position (4) := Real'Epsilon;
-         -- raise Constraint_Error with "unProject: world_Position (4) = 0.0";     -- TODO: Find out why this happens.
+         --
+         -- A window point on the far plane un-projects to the plane at infinity, where w is zero.
+         -- Picking rays legitimately ask for the far plane, so the point is clamped, not rejected.
       end if;
 
       world_Position (1) := world_Position (1) / world_Position (4);
