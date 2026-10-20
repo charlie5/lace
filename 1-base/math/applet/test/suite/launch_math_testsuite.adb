@@ -4,6 +4,7 @@ with ahven.Text_Runner,
      math_Tests.linear_Algebra_3d,
      math_Tests.Geometry_2d,
      math_Tests.Geometry_3d,
+     math_Tests.Trigonometry,
      math_Tests.Random;
 
 
@@ -17,6 +18,7 @@ begin
    S.add_Test (new math_Tests.linear_Algebra_3d.Test);
    S.add_Test (new math_Tests.Geometry_2d      .Test);
    S.add_Test (new math_Tests.Geometry_3d      .Test);
+   S.add_Test (new math_Tests.Trigonometry     .Test);
    S.add_Test (new math_Tests.Random           .Test);
 
    ahven.text_Runner.run           (S);
