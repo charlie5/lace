@@ -985,9 +985,15 @@ is
             when Animation =>
                declare
                   the_Transform : Matrix_4x4;
+
+                  root_Pose : constant Transform_3d
+                    := to_Transform (Self.joint_pose_Transforms (Self.root_Joint.Id));
+                  --
+                  -- A pose transform is affine, so its inverse follows from the linear part
+                  -- and the translation, rather than from decomposing all sixteen entries.
                begin
                   set_Rotation    (the_Transform,  x_Rotation_from (to_Radians (0.0)));
-                  set_Translation (the_Transform, -get_Translation (Inverse (Self.joint_pose_Transforms (Self.root_Joint.Id))));
+                  set_Translation (the_Transform, -(Invert (root_Pose).Translation));
 
                   return the_Transform;
                end;
@@ -996,7 +1002,11 @@ is
 
 
       root_Transform     : constant Matrix_4x4 := get_root_Transform;
-      inv_root_Transform : constant Matrix_4x4 := Inverse (root_Transform);
+      inv_root_Transform : constant Matrix_4x4
+        := to_transform_Matrix (Invert (to_Transform (root_Transform)));
+      --
+      -- The root transform is affine, whichever mode built it, so its inverse follows from
+      -- the linear part and the translation.
 
 
       function joint_Transform_for (the_collada_Joint : in controller_joint_Id) return Matrix_4x4
@@ -1127,9 +1137,14 @@ is
 
 
    function joint_bind_Matrix (Self : in Item;   for_Bone : in bone_Id) return Matrix_4x4
+   --
+   -- A bind matrix is affine, so its inverse follows from the linear part and the translation.
+   -- A collada bind matrix may carry scale, which is why 'Invert' inverts the linear part
+   -- rather than transposing it.
+   --
    is
    begin
-      return Inverse (Self.joint_inv_bind_Matrix (for_Bone));
+      return to_transform_Matrix (Invert (to_Transform (Self.joint_inv_bind_Matrix (for_Bone))));
    end joint_bind_Matrix;
 
 
