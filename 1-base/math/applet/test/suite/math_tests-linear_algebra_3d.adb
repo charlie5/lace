@@ -326,6 +326,207 @@ is
 
 
 
+   --------------------
+   --- Matrix arithmetic
+   --
+   -- 'any_Math' writes these out rather than inheriting them from the generic array
+   -- operations, so the tests below pin the orientation and the index order.
+   --
+
+   function worst_Difference (Left, Right : in Matrix_3x3) return Real
+   is
+      Worst : Real := 0.0;
+   begin
+      for Row in 1 .. 3
+      loop
+         for Col in 1 .. 3
+         loop
+            Worst := Real'Max (Worst, abs (Left (Row, Col) - Right (Row, Col)));
+         end loop;
+      end loop;
+
+      return Worst;
+   end worst_Difference;
+
+
+   function worst_Difference (Left, Right : in Matrix_4x4) return Real
+   is
+      Worst : Real := 0.0;
+   begin
+      for Row in 1 .. 4
+      loop
+         for Col in 1 .. 4
+         loop
+            Worst := Real'Max (Worst, abs (Left (Row, Col) - Right (Row, Col)));
+         end loop;
+      end loop;
+
+      return Worst;
+   end worst_Difference;
+
+
+   function worst_Difference (Left, Right : in Vector_3) return Real
+   is (Real'Max (abs (Left (1) - Right (1)),
+                 Real'Max (abs (Left (2) - Right (2)),
+                           abs (Left (3) - Right (3)))));
+
+
+   A_3x3 : constant Matrix_3x3 := [[ 0.3, -0.7,  1.1],
+                                   [ 0.5, -0.2,  0.9],
+                                   [ 0.4, -1.3,  1.7]];
+   B_3x3 : constant Matrix_3x3 := [[ 0.1, -0.6,  0.8],
+                                   [ 1.2,  0.7, -0.4],
+                                   [-0.9,  0.2,  0.6]];
+   C_3x3 : constant Matrix_3x3 := [[ 1.4,  0.3, -0.5],
+                                   [ 0.8, -1.1,  0.2],
+                                   [-0.3,  0.6,  0.9]];
+   V_3   : constant Vector_3   := [0.3, -0.7, 1.1];
+
+   A_4x4 : constant Matrix_4x4 := [[ 0.3, -0.7,  1.1,  0.2],
+                                   [ 0.5, -0.2,  0.9, -0.4],
+                                   [ 0.4, -1.3,  1.7,  0.6],
+                                   [-0.8,  0.1,  0.5,  1.0]];
+
+
+   procedure matrix_3x3_product_Test
+   --
+   -- Identity, associativity, and that a vector times a matrix is the row-vector product.
+   --
+   is
+      written_out : constant Vector_3
+        := [V_3 (1) * A_3x3 (1, 1) + V_3 (2) * A_3x3 (2, 1) + V_3 (3) * A_3x3 (3, 1),
+            V_3 (1) * A_3x3 (1, 2) + V_3 (2) * A_3x3 (2, 2) + V_3 (3) * A_3x3 (3, 2),
+            V_3 (1) * A_3x3 (1, 3) + V_3 (2) * A_3x3 (2, 3) + V_3 (3) * A_3x3 (3, 3)];
+   begin
+      assert (A_3x3 * Identity_3x3 = A_3x3,
+              "a 3x3 times the identity should be itself ... failed !");
+
+      assert (Identity_3x3 * A_3x3 = A_3x3,
+              "the identity times a 3x3 should be itself ... failed !");
+
+      assert (worst_Difference ((A_3x3 * B_3x3) * C_3x3, A_3x3 * (B_3x3 * C_3x3)) <= 0.000_1,
+              "the 3x3 matrix product should be associative ... failed !");
+
+      assert (worst_Difference (V_3 * (A_3x3 * B_3x3), (V_3 * A_3x3) * B_3x3) <= 0.000_1,
+              "a vector through a 3x3 product should match it through each in turn ... failed !");
+
+      assert (worst_Difference (V_3 * A_3x3, written_out) <= 0.000_001,
+              "a vector times a 3x3 should be the row-vector product ... failed !");
+
+      assert (worst_Difference (V_3 * Identity_3x3, V_3) <= 0.000_001,
+              "a vector times the identity should be itself ... failed !");
+   end matrix_3x3_product_Test;
+
+
+
+   procedure matrix_3x3_transpose_Test
+   is
+   begin
+      assert (Transpose (Transpose (A_3x3)) = A_3x3,
+              "transposing a 3x3 twice should give it back ... failed !");
+
+      for Row in 1 .. 3
+      loop
+         for Col in 1 .. 3
+         loop
+            assert (Transpose (A_3x3) (Row, Col) = A_3x3 (Col, Row),
+                    "a transposed 3x3 entry should be the one across the diagonal ... failed !");
+         end loop;
+      end loop;
+
+      assert (   worst_Difference (Transpose (A_3x3 * B_3x3),
+                                   Transpose (B_3x3) * Transpose (A_3x3))
+              <= 0.000_1,
+              "transposing a 3x3 product should reverse the order ... failed !");
+   end matrix_3x3_transpose_Test;
+
+
+
+   procedure matrix_4x4_transpose_Test
+   is
+   begin
+      assert (Transpose (Transpose (A_4x4)) = A_4x4,
+              "transposing a 4x4 twice should give it back ... failed !");
+
+      for Row in 1 .. 4
+      loop
+         for Col in 1 .. 4
+         loop
+            assert (Transpose (A_4x4) (Row, Col) = A_4x4 (Col, Row),
+                    "a transposed 4x4 entry should be the one across the diagonal ... failed !");
+         end loop;
+      end loop;
+
+      assert (   worst_Difference (Transpose (A_4x4 * A_4x4),
+                                   Transpose (A_4x4) * Transpose (A_4x4))
+              <= 0.000_1,
+              "transposing a 4x4 product should reverse the order ... failed !");
+   end matrix_4x4_transpose_Test;
+
+
+
+   procedure matrix_3x3_inverse_Test
+   --
+   -- The closed form, which replaced the decomposition inherited from the generic arrays.
+   --
+   is
+      Singular : constant Matrix_3x3 := [[1.0, 2.0, 3.0],
+                                         [2.0, 4.0, 6.0],     -- Twice the first row.
+                                         [1.0, 0.0, 1.0]];
+      Raised   : Boolean    := False;
+      Answered : Matrix_3x3 := Identity_3x3;
+   begin
+      assert (worst_Difference (A_3x3 * Inverse (A_3x3), Identity_3x3) <= 0.000_1,
+              "a 3x3 times its inverse should be the identity ... failed !");
+
+      assert (worst_Difference (Inverse (Inverse (A_3x3)), A_3x3) <= 0.000_1,
+              "inverting a 3x3 twice should give it back ... failed !");
+
+      assert (worst_Difference (Inverse (Identity_3x3), Identity_3x3) <= 0.000_001,
+              "the identity's inverse should be the identity ... failed !");
+
+      begin
+         Answered := Inverse (Singular);
+      exception
+         when Constraint_Error =>
+            Raised := True;
+      end;
+
+      assert (Raised,
+              "inverting a singular 3x3 should raise Constraint_Error, but it answered"
+              & Answered (1, 1)'Image & " ... failed !");
+   end matrix_3x3_inverse_Test;
+
+
+
+   procedure transform_3d_invert_Test
+   --
+   -- 'Invert' inverts the linear part rather than transposing it, so a transform carrying
+   -- scale or shear is undone correctly. Transposing answers something which is not the
+   -- inverse at all: it was out by as much as a thousand before this was put right.
+   --
+   is
+      use float_Math.Algebra.linear.d3;
+
+      T : constant Transform_3d := (Rotation    => [[2.0, 0.4, 0.0],      -- Scale and shear.
+                                                    [0.0, 0.5, 0.3],
+                                                    [0.2, 0.0, 1.5]],
+                                    Translation => [3.0, -4.0, 5.0]);
+   begin
+      assert (worst_Difference ((V_3 * T) * Invert (T), V_3) <= 0.000_1,
+              "Invert should undo a transform carrying scale and shear ... failed !");
+
+      assert (worst_Difference (inverse_Transform (T, V_3 * T), V_3) <= 0.000_1,
+              "inverse_Transform should undo a transform carrying scale and shear ... failed !");
+
+      assert (   worst_Difference (to_transform_Matrix (Invert (T)),
+                                   Inverse (to_transform_Matrix (T)))
+              <= 0.000_1,
+              "the affine inverse should agree with the general 4x4 inverse ... failed !");
+   end transform_3d_invert_Test;
+
+
+
    overriding
    procedure initialize (T : in out Test)
    is
@@ -342,6 +543,11 @@ is
       Framework.add_test_Routine (T,                    angle_Test'Access,                    "angle_Test");
       Framework.add_test_Routine (T, quaternion_Vector_product_Test'Access, "quaternion_Vector_product_Test");
       Framework.add_test_Routine (T,                  look_at_Test'Access,                  "look_at_Test");
+      Framework.add_test_Routine (T,       matrix_3x3_product_Test'Access,       "matrix_3x3_product_Test");
+      Framework.add_test_Routine (T,     matrix_3x3_transpose_Test'Access,     "matrix_3x3_transpose_Test");
+      Framework.add_test_Routine (T,     matrix_4x4_transpose_Test'Access,     "matrix_4x4_transpose_Test");
+      Framework.add_test_Routine (T,       matrix_3x3_inverse_Test'Access,       "matrix_3x3_inverse_Test");
+      Framework.add_test_Routine (T,      transform_3d_invert_Test'Access,      "transform_3d_invert_Test");
    end initialize;
 
 
