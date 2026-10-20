@@ -27,7 +27,8 @@ is
    type Triangle  is array (Positive range 1 .. 3) of Positive;
    type Triangles is array (Positive range <>)     of Triangle;
 
-   function polar_Model_from (Model_Filename : in String)      return polar_Model;
+   function polar_Model_from (Model_Filename : in String;
+                              Scale          : in Real := 10.0) return polar_Model;
    function  mesh_Model_from (Model          : in polar_Model) return a_Model;
 
 

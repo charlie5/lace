@@ -359,7 +359,8 @@ is
 
 
 
-   function polar_Model_from (model_Filename : in String) return polar_Model     -- TODO: Handle different file formats.
+   function polar_Model_from (model_Filename : in String;
+                              Scale          : in Real := 10.0) return polar_Model     -- TODO: Handle different file formats.
    is
       use
            Functions,
@@ -431,7 +432,6 @@ is
          Long      : Longitude;
          Value     : Integer;
          Distance  : Real;
-         Scale     : constant Real := 10.0;     -- TODO: Add a 'Scale' parameter.
 
          the_Model : polar_Model := [others => [others => (Id   => no_Id,
                                                            Site => [0.0, 0.0, 0.0])]];
