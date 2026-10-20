@@ -215,8 +215,16 @@ is
    overriding
    function Transpose (Self : in Matrix_2x2) return Matrix_2x2;
 
+   overriding
+   function Inverse   (Self : in Matrix_2x2) return Matrix_2x2;
+   --
+   -- Raises Constraint_Error when the matrix is singular.
+
    function "*" (Left : in Vector_2;     Right : in Matrix_2x2) return Vector_2;
    function "*" (Left : in Matrix_2x2;   Right : in Vector_2)   return Vector_2;
+
+   overriding
+   function "*" (Left : in Matrix_2x2;   Right : in Matrix_2x2) return Matrix_2x2;
 
    function Row (Self : in Matrix_2x2;   row_Id : in Index)     return Vector_2;
    function Col (Self : in Matrix_2x2;   col_Id : in Index)     return Vector_2;
@@ -229,8 +237,16 @@ is
    overriding
    function Transpose (Self : in Matrix_3x3) return Matrix_3x3;
 
+   overriding
+   function Inverse   (Self : in Matrix_3x3) return Matrix_3x3;
+   --
+   -- Raises Constraint_Error when the matrix is singular.
+
    function "*" (Left : in Vector_3;     Right : in Matrix_3x3) return Vector_3;
    function "*" (Left : in Matrix_3x3;   Right : in Vector_3)   return Vector_3;
+
+   overriding
+   function "*" (Left : in Matrix_3x3;   Right : in Matrix_3x3) return Matrix_3x3;
 
    function Row (Self : in Matrix_3x3;   row_Id : in Index)     return Vector_3;
    function Col (Self : in Matrix_3x3;   col_Id : in Index)     return Vector_3;

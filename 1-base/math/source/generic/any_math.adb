@@ -711,8 +711,33 @@ is
    function Transpose (Self : in Matrix_2x2) return Matrix_2x2
    is
    begin
-      return Matrix_2x2 (Vectors.Transpose (Matrix (Self)));
+      return [[Self (1, 1), Self (2, 1)],
+              [Self (1, 2), Self (2, 2)]];
    end Transpose;
+
+
+
+   overriding
+   function Inverse (Self : in Matrix_2x2) return Matrix_2x2
+   --
+   -- The adjugate divided by the determinant, written out, as for 'Matrix_3x3'. This overrides
+   -- the one inherited from 'Vectors', which decomposes the matrix for an order of two.
+   --
+   -- For a 2x2 the adjugate is simply the diagonal swapped and the other two negated.
+   --
+   is
+      A : Matrix_2x2 renames Self;
+
+      Determinant : constant Real := a (1, 1) * a (2, 2)  -  a (1, 2) * a (2, 1);
+   begin
+      if Determinant = 0.0
+      then
+         raise Constraint_Error with "Inverse: the matrix is singular.";
+      end if;
+
+      return [[ a (2, 2) / Determinant,   -a (1, 2) / Determinant],
+              [-a (2, 1) / Determinant,    a (1, 1) / Determinant]];
+   end Inverse;
 
 
 
@@ -736,10 +761,23 @@ is
 
    function "*" (Left : in Vector_2;   Right : in Matrix_2x2) return Vector_2
    is
-      use Vectors;
+      A : Matrix_2x2 renames Right;
+      B : Vector_2   renames Left;
    begin
-      return Vector_2 (  Vector (Left)
-                       * Matrix (Right));
+      return [(a(1,1)*b(1) + a(2,1)*b(2)),
+              (a(1,2)*b(1) + a(2,2)*b(2))];
+   end "*";
+
+
+
+   overriding
+   function "*" (Left : in Matrix_2x2;   Right : in Matrix_2x2) return Matrix_2x2
+   is
+      A : Matrix_2x2 renames Left;
+      B : Matrix_2x2 renames Right;
+   begin
+      return [[a(1,1)*b(1,1) + a(1,2)*b(2,1),   a(1,1)*b(1,2) + a(1,2)*b(2,2)],
+              [a(2,1)*b(1,1) + a(2,2)*b(2,1),   a(2,1)*b(1,2) + a(2,2)*b(2,2)]];
    end "*";
 
 
@@ -751,8 +789,57 @@ is
    function Transpose (Self : in Matrix_3x3) return Matrix_3x3
    is
    begin
-      return Matrix_3x3 (Vectors.Transpose (Matrix (Self)));
+      return [[Self (1, 1), Self (2, 1), Self (3, 1)],
+              [Self (1, 2), Self (2, 2), Self (3, 2)],
+              [Self (1, 3), Self (2, 3), Self (3, 3)]];
    end Transpose;
+
+
+
+   overriding
+   function Inverse (Self : in Matrix_3x3) return Matrix_3x3
+   --
+   -- The adjugate divided by the determinant, written out. This overrides the one inherited
+   -- from 'Vectors', which decomposes the matrix and so costs some eighty times as much for an
+   -- order of three.
+   --
+   -- The inherited one pivots and this does not, so a matrix whose rows differ wildly in scale
+   -- is served less well here. Neither is any use at that: in single precision the inherited
+   -- one already answers such a matrix with a residual of tens.
+   --
+   is
+      A : Matrix_3x3 renames Self;
+
+      --- The signed cofactors. The first column of them also gives the determinant.
+      --
+      c11 : constant Real := a (2, 2) * a (3, 3)  -  a (2, 3) * a (3, 2);
+      c12 : constant Real := a (2, 3) * a (3, 1)  -  a (2, 1) * a (3, 3);
+      c13 : constant Real := a (2, 1) * a (3, 2)  -  a (2, 2) * a (3, 1);
+
+      c21 : constant Real := a (1, 3) * a (3, 2)  -  a (1, 2) * a (3, 3);
+      c22 : constant Real := a (1, 1) * a (3, 3)  -  a (1, 3) * a (3, 1);
+      c23 : constant Real := a (1, 2) * a (3, 1)  -  a (1, 1) * a (3, 2);
+
+      c31 : constant Real := a (1, 2) * a (2, 3)  -  a (1, 3) * a (2, 2);
+      c32 : constant Real := a (1, 3) * a (2, 1)  -  a (1, 1) * a (2, 3);
+      c33 : constant Real := a (1, 1) * a (2, 2)  -  a (1, 2) * a (2, 1);
+
+      Determinant : constant Real :=   a (1, 1) * c11
+                                     + a (1, 2) * c12
+                                     + a (1, 3) * c13;
+   begin
+      if Determinant = 0.0
+      then
+         raise Constraint_Error with "Inverse: the matrix is singular.";
+      end if;
+
+      -- The adjugate is the transpose of the cofactors, so a row here reads down a column
+      -- of them.
+      --
+      return [[c11 / Determinant,   c21 / Determinant,   c31 / Determinant],
+              [c12 / Determinant,   c22 / Determinant,   c32 / Determinant],
+              [c13 / Determinant,   c23 / Determinant,   c33 / Determinant]];
+   end Inverse;
 
 
 
@@ -779,6 +866,19 @@ is
    end "*";
 
 
+
+   overriding
+   function "*" (Left : in Matrix_3x3;   Right : in Matrix_3x3) return Matrix_3x3
+   is
+      A : Matrix_3x3 renames Left;
+      B : Matrix_3x3 renames Right;
+   begin
+      return [[a(1,1)*b(1,1) + a(1,2)*b(2,1) + a(1,3)*b(3,1),   a(1,1)*b(1,2) + a(1,2)*b(2,2) + a(1,3)*b(3,2),   a(1,1)*b(1,3) + a(1,2)*b(2,3) + a(1,3)*b(3,3)],
+              [a(2,1)*b(1,1) + a(2,2)*b(2,1) + a(2,3)*b(3,1),   a(2,1)*b(1,2) + a(2,2)*b(2,2) + a(2,3)*b(3,2),   a(2,1)*b(1,3) + a(2,2)*b(2,3) + a(2,3)*b(3,3)],
+              [a(3,1)*b(1,1) + a(3,2)*b(2,1) + a(3,3)*b(3,1),   a(3,1)*b(1,2) + a(3,2)*b(2,2) + a(3,3)*b(3,2),   a(3,1)*b(1,3) + a(3,2)*b(2,3) + a(3,3)*b(3,3)]];
+   end "*";
+
+
    --------------
    --- Matrix_4x4
    --
@@ -787,7 +887,10 @@ is
    function Transpose (Self : in Matrix_4x4) return Matrix_4x4
    is
    begin
-      return Matrix_4x4 (Vectors.Transpose (Matrix (Self)));
+      return [[Self (1, 1), Self (2, 1), Self (3, 1), Self (4, 1)],
+              [Self (1, 2), Self (2, 2), Self (3, 2), Self (4, 2)],
+              [Self (1, 3), Self (2, 3), Self (3, 3), Self (4, 3)],
+              [Self (1, 4), Self (2, 4), Self (3, 4), Self (4, 4)]];
    end Transpose;
 
 
