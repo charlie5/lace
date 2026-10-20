@@ -21,7 +21,7 @@ is
                                              to_Matrix_2x2              => to_Matrix_2x2,
                                              slot_Count                 => 10_000);
 
-   function to_Rotation (Angle : in Real) return access constant Matrix_2x2
+   function to_Rotation (Angle : in Real) return Matrix_2x2
    is
    begin
       return the_Cache.to_Rotation (Angle);
