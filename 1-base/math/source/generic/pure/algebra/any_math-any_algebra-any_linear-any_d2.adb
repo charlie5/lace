@@ -193,8 +193,12 @@ is
 
 
    function Invert (Transform : in Transform_2d) return Transform_2d
+   --
+   -- The linear part is inverted, not transposed, as for 'Transform_3d'. Transposing serves a
+   -- pure rotation and nothing else.
+   --
    is
-      inverse_Rotation : constant Matrix_2x2 := Transpose (Transform.Rotation);
+      inverse_Rotation : constant Matrix_2x2 := Inverse (Transform.Rotation);
    begin
       return (Rotation    => inverse_Rotation,
               Translation => -(Transform.Translation * inverse_Rotation));
@@ -205,7 +209,7 @@ is
    function inverse_Transform (Transform : in Transform_2d;   Vector : in Vector_2) return Vector_2
    is
    begin
-      return (Vector - Transform.Translation) * Transpose (Transform.Rotation);
+      return (Vector - Transform.Translation) * Inverse (Transform.Rotation);
    end inverse_Transform;
 
 

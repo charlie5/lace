@@ -360,19 +360,27 @@ is
 
 
    function Invert (Transform : in Transform_3d) return Transform_3d
+   --
+   -- The linear part is inverted, not transposed. Transposing serves a pure rotation and
+   -- nothing else: given any scale or shear it answers a matrix which is not the inverse at
+   -- all, and silently. Inverting a 3x3 costs little more now that it is written out.
+   --
    is
-      Rotation : constant Matrix_3x3 := Transpose (Transform.Rotation);
+      inverse_Rotation : constant Matrix_3x3 := Inverse (Transform.Rotation);
    begin
-      return (Rotation    => Rotation,
-              Translation => -(Transform.Translation * Rotation));
+      return (Rotation    => inverse_Rotation,
+              Translation => -(Transform.Translation * inverse_Rotation));
    end Invert;
 
 
 
    function inverse_Transform (Transform : in Transform_3d;   Vector : in Vector_3) return Vector_3
+   --
+   -- Inverted rather than transposed, for the reason given on 'Invert' above.
+   --
    is
    begin
-      return (Vector - Transform.Translation) * Transpose (Transform.Rotation);
+      return (Vector - Transform.Translation) * Inverse (Transform.Rotation);
    end inverse_Transform;
 
 
