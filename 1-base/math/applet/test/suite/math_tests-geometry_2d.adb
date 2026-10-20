@@ -99,7 +99,23 @@ is
       assert (Area (the_Tri) >= 0.0,
               "T4 =>  & Image (the_Tri) &  area should be positive ... failed !");
 
-      -- tbd: Add tests for degenerate triangles.
+      the_Tri := (vertices => [[1.0, 1.0],
+                               [1.0, 1.0],
+                               [1.0, 1.0]]);
+      assert (Area (the_Tri) = 0.0,
+              "T5 => coincident vertices, area should be zero ... failed !");
+
+      the_Tri := (vertices => [[0.0, 0.0],
+                               [1.0, 0.0],
+                               [1.0, 0.0]]);
+      assert (Area (the_Tri) = 0.0,
+              "T6 => two coincident vertices, area should be zero ... failed !");
+
+      the_Tri := (vertices => [[0.0, 0.0],
+                               [1.0, 0.0],
+                               [2.0, 0.0]]);
+      assert (Area (the_Tri) = 0.0,
+              "T7 => collinear vertices, area should be zero ... failed !");
    end triangle_Area_Test;
 
 

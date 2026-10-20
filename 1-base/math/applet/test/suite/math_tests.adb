@@ -103,7 +103,7 @@ is
       begin
          assert (Image (the_Real,  0) = " 1",           "Image (a) ... failed ! ... '" & Image (the_Real,  0) & "'");
          assert (Image (the_Real,  1) = " 1.1",         "Image (b) ... failed ! ... '" & Image (the_Real,  1) & "'");
-         assert (Image (the_Real,  8) = " 1.11111116",  "Image (c) ... failed ! ... '" & Image (the_Real,  8) & "'");   -- tbd: why end in '6' ?
+         assert (Image (the_Real,  8) = " 1.11111116",  "Image (c) ... failed ! ... '" & Image (the_Real,  8) & "'");   -- The trailing '16' is the nearest Float to 1.111_111_11.
       end;
 
    end real_Test;
