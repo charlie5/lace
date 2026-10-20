@@ -76,7 +76,7 @@ is
 
    function  Conjugate    (Self : in     Quaternion) return Quaternion;
    --
-   -- (TODO: only for unit quaternions.)
+   -- The conjugate equals the inverse only for a unit quaternion.
 
    function  euler_Angles (Self : in     Quaternion) return Vector_3;
 

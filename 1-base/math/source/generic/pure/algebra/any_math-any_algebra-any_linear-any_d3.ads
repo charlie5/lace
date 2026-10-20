@@ -149,7 +149,11 @@ is
    function  Norm     (Quat : in Quaternion) return Real;
    function  Versor   (Quat : in Quaternion) return Quaternion;               -- Produces the unit quaternion of Quat.
 
-   function  Farthest (Quat : in Quaternion;   qd : in Quaternion) return Quaternion;   -- TODO: Document this.
+   function  Farthest (Quat : in Quaternion;   qd : in Quaternion) return Quaternion;
+   --
+   -- Returns whichever of qd or -qd, which both denote the same rotation,
+   -- lies farther from Quat.
+
    function  Invert   (Quat : in Quaternion)                       return Quaternion;
 
    function  Angle    (Quat : in Quaternion) return Radians;
