@@ -85,7 +85,7 @@ is
       the_Command : unsafe.Command := Forge.to_Command (command_Line);
 
    begin
-      return Output_of (run (the_Command, +Input));
+      return Output_of (run (the_Command, +Input, Raise_Error => True));
 
    exception
       when E : command_Error =>
