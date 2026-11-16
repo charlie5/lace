@@ -30,6 +30,14 @@ is
    --- Forge
    --
 
+   procedure mirrored_World_is_gone (Self : in out Item)
+   is
+   begin
+      Self.mirrored_World := null;
+   end mirrored_World_is_gone;
+
+
+
    overriding
    procedure destroy (Self : in out Item)
    is

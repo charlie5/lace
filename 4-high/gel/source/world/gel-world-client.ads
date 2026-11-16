@@ -52,6 +52,13 @@ is
 
    procedure is_a_Mirror (Self : access Item'Class;   of_World : in remote.World.view);
 
+   procedure mirrored_World_is_gone (Self : in out Item);
+   --
+   -- The world mirrored has been destroyed, or its server is dead: 'destroy' then asks
+   -- nothing of it. A server which destroys its world and then tells its clients it has
+   -- shut down was asked by each, as its mirror was destroyed in turn, to deregister the
+   -- mirror from a world no longer there, and the call was run on freed memory.
+
    overriding
    procedure motion_Updates_are (Self : in Item;   seq_Id : in remote.World.sequence_Id;
                                                    Now    : in remote.World.motion_Updates);
