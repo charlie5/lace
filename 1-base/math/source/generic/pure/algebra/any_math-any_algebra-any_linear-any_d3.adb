@@ -45,9 +45,19 @@ is
 
 
    function Distance (From, To : in Vector_3) return Real
+   --
+   -- Taken as the root of the squares' sum, directly: 'abs' of the difference is the array
+   -- package's norm, which scales by exponents against an overflow no site's coordinates
+   -- come near, and cost several times as much where distances are taken by the thousand
+   -- each frame (a tenth of a game server's busiest task, 2026-11-17).
    is
+      use Functions;
+
+      dX : constant Real := From (1) - To (1);
+      dY : constant Real := From (2) - To (2);
+      dZ : constant Real := From (3) - To (3);
    begin
-      return abs (From - To);
+      return Sqrt (dX * dX  +  dY * dY  +  dZ * dZ);
    end Distance;
 
 

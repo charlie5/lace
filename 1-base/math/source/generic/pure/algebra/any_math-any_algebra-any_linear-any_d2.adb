@@ -32,9 +32,15 @@ is
 
 
    function Distance (From, To : in Vector_2) return Real
+   --
+   -- Taken as the root of the squares' sum, directly: see the 3d 'Distance'.
    is
+      use Functions;
+
+      dX : constant Real := From (1) - To (1);
+      dY : constant Real := From (2) - To (2);
    begin
-      return abs (From - To);
+      return Sqrt (dX * dX  +  dY * dY);
    end Distance;
 
 
