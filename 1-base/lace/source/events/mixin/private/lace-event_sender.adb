@@ -87,7 +87,24 @@ is
                    and then the_send_Details.is_Empty
                    and then all_Channels_are_idle (Channels);
 
-         delay 0.001;
+         -- With nothing under way the delegator waits for the next event, a fiftieth of a
+         -- second at most, in which a stop or a retirement asked for meanwhile is seen:
+         -- it slept a millisecond and looked again, a thousand times a second for each
+         -- subject with an emitter, and a server's dozen idle delegators cost it more than
+         -- the task which stepped its busiest world (2026-11-17). With a delivery under
+         -- way it looks each millisecond as before, for the courier's report.
+         --
+         if         all_Channels_are_idle (Channels)
+           and then not Done
+         then
+            select
+               the_send_Details.await;
+            or
+               delay 0.02;
+            end select;
+         else
+            delay 0.001;
+         end if;
       end loop;
 
       drain (the_Pool, courier_Count);
@@ -126,6 +143,15 @@ is
          all_send_Details := all_the_send_Details;
          all_the_send_Details.clear;
       end get;
+
+
+
+      entry await
+        when not all_the_send_Details.is_Empty
+      is
+      begin
+         null;
+      end await;
 
 
 

@@ -58,6 +58,10 @@ private
    is
       procedure add (new_Event  : in     lace.Event.item'Class);
       procedure get (the_Events :    out event_Vector);
+      entry     await;
+      --
+      -- Waits until there is something to get: an idle delegator waits here, not in a
+      -- delay of a millisecond taken a thousand times a second.
 
       function is_Empty return Boolean;
 

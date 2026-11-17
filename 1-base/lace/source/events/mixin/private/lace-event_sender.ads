@@ -65,6 +65,10 @@ private
    is
       procedure add (new_send_Details : in     send_Details);
       procedure get (all_send_Details :    out send_Details_Vector);
+      entry     await;
+      --
+      -- Waits until there is something to get: an idle delegator waits here, not in a
+      -- delay of a millisecond taken a thousand times a second.
 
       function  is_Empty return Boolean;
 
