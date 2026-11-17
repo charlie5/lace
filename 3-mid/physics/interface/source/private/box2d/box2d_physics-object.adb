@@ -56,7 +56,8 @@ is
                                 c_math_c.Real (Restitution),
                                 box2d_physics.Shape.view (Shape).C,
                                 is_Kinematic => Boolean'Pos (is_Kinematic));
-      Self.Shape := Shape;
+      Self.Shape    := Shape;
+      Self.can_Move := Mass > 0.0 or else is_Kinematic;     -- As the C side takes it: no mass and not kinematic is static.
 
       b2d_Object_user_Data_is (Self.C,
                                to_void_ptr (Any_limited_view (Self)));
@@ -177,6 +178,29 @@ is
 
 
 
+   function can_Move (Self : in Item) return Boolean
+   is
+   begin
+      return Self.can_Move;
+   end can_Move;
+
+
+
+   procedure update_Dynamics_if_moved (Self : in out Item)
+   is
+      Active : constant Boolean := Self.is_Active;
+   begin
+      if        Active
+        or else Self.was_Active
+      then
+         Self.update_Dynamics;
+      end if;
+
+      Self.was_Active := Active;
+   end update_Dynamics_if_moved;
+
+
+
    overriding
    function get_Dynamics (Self : in Item) return Matrix_4x4
    is
@@ -213,6 +237,7 @@ is
    begin
       Self.Site_z := Now (3);
       b2d_Object_Site_is (Self.C, c_Now'unchecked_Access);
+      Self.update_Dynamics;     -- Set here, since 'evolve' no longer brings a body at rest up to date.
    end Site_is;
 
 
@@ -233,6 +258,7 @@ is
       c_Now : aliased c_math_c.Matrix_3x3.item := +Now;
    begin
       b2d_Object_Spin_is (Self.C, c_Now'unchecked_Access);
+      Self.update_Dynamics;
    end Spin_is;
 
 
@@ -253,6 +279,7 @@ is
       c_Now : constant c_math_c.Real := +Now;
    begin
       b2d_Object_xy_Spin_is (Self.C, c_Now);
+      Self.update_Dynamics;
    end xy_Spin_is;
 
 
@@ -275,6 +302,7 @@ is
    begin
       Self.Site_z := Now (4, 3);
       b2d_Object_Transform_is (Self.C, c_Now'unchecked_Access);
+      Self.update_Dynamics;
    end Transform_is;
 
 

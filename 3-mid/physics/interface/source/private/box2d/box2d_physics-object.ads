@@ -49,6 +49,18 @@ is
    overriding
    function     get_Dynamics (Self : in     Item) return Matrix_4x4;
 
+   function  can_Move        (Self : in     Item)     return Boolean;
+   --
+   -- Whether the physics may move the object: it has mass, or is kinematic. One which
+   -- cannot is static, and its dynamics change only when its site or spin is set.
+
+   procedure update_Dynamics_if_moved (Self : in out Item);
+   --
+   -- Brings the dynamics up to date where the physics may have moved the object in the
+   -- step just taken: it is awake, or was at the step before, so that the step in which
+   -- it comes to rest is not missed. For the space's 'evolve', which asks this of each
+   -- object which can move. A sleeping body, and a static one, is where it was.
+
 
 
 private
@@ -62,6 +74,8 @@ private
          user_Data : access lace.Any.limited_item'Class;
          Dynamics  :        physics.Object.safe_Dynamics;
          Site_z    :        Real     := 0.0;
+         can_Move   :       Boolean  := True;
+         was_Active :       Boolean  := True;     -- Whether it was awake at the last step.
       end record;
 
    overriding

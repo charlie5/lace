@@ -419,7 +419,13 @@ is
       the_c_Object     : constant Object_pointer            := the_box2d_Object.C;
    begin
       Self.object_Map.insert (the_C_Object, the_box2d_Object);
-      b2d_Space_add_Object   (Self.C, the_c_Object);
+
+      if the_box2d_Object.can_Move
+      then
+         Self.Movers.append (the_box2d_Object);
+      end if;
+
+      b2d_Space_add_Object (Self.C, the_c_Object);
    end add;
 
 
@@ -431,6 +437,17 @@ is
    begin
       Self.object_Map.exclude (the_c_Object);     -- Else 'evolve' would update the dynamics
       --                                             of an object which may since be freed.
+
+      for i in 1 .. Natural (Self.Movers.Length)     -- Likewise: the last takes its place.
+      loop
+         if Self.Movers (i) = box2d_physics.Object.view (the_Object)
+         then
+            Self.Movers (i) := Self.Movers.last_Element;
+            Self.Movers.delete_Last;
+            exit;
+         end if;
+      end loop;
+
       b2d_Space_rid_Object (Self.C, the_c_Object);
    end rid;
 
@@ -482,22 +499,17 @@ is
    begin
       b2d_Space_evolve (Self.C, C.C_float (By));
 
-      -- Update each objects dynamics.
+      -- Update the dynamics of each object the step may have moved. Every object of the
+      -- space was brought up to date at every step, static ones and sleeping ones with the
+      -- rest, by a walk of the whole object map: on a world of nine thousand objects, most
+      -- of them walls, that walk was a quarter of a server's work (2026-11-17). A static
+      -- object's dynamics are set when its site or spin is, and a sleeping one's were set at
+      -- the step it came to rest.
       --
-      declare
-         use c_Object_Maps_of_Object;
-
-         Cursor     : c_Object_Maps_of_Object.Cursor := Self.object_Map.First;
-         the_Object : box2d_Physics.Object.view;
-      begin
-         while has_Element (Cursor)
-         loop
-            the_Object := Element (Cursor);
-            the_Object.update_Dynamics;
-
-            next (Cursor);
-         end loop;
-      end;
+      for the_Object of Self.Movers
+      loop
+         the_Object.update_Dynamics_if_moved;
+      end loop;
    end evolve;
 
 

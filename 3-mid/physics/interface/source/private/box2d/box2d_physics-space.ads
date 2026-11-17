@@ -16,7 +16,8 @@ with
      physics.Joint.cone_twist,
      physics.Joint.DoF6,
 
-     ada.Containers.hashed_Maps;
+     ada.Containers.hashed_Maps,
+     ada.Containers.Vectors;
 
 
 package box2d_Physics.Space
@@ -58,10 +59,13 @@ private
                                                                       Hash            => Hash,
                                                                       equivalent_Keys => "=",
                                                                       "="             => "=");
+   package object_Vectors is new ada.Containers.Vectors (Positive, box2d_Physics.Object.view);
+
    type Item is new physics.Space.item with
       record
          C          : box2d_c.Pointers.Space_pointer;
          object_Map : c_Object_Maps_of_Object.Map;
+         Movers     : object_Vectors.Vector;     -- The objects the physics may move: see 'evolve'.
       end record;
 
    use Math;
