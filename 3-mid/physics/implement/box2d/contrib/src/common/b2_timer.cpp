@@ -66,7 +66,12 @@ float b2Timer::GetMilliseconds() const
 	return ms;
 }
 
-#elif defined(__linux__) || defined (__APPLE__)
+// lace: the timers read the clock only where B2_PROFILE_TIMERS is defined. 'b2Island::Solve' makes
+// a timer and reads it three times for every island of every step, an island being each body which
+// moves alone, to fill a 'b2Profile' which nothing in lace asks for: on a game server's world that
+// was thousands of 'gettimeofday' calls a step, a fifteenth of its busiest task (2026-11-17).
+//
+#elif (defined(__linux__) || defined (__APPLE__)) && defined(B2_PROFILE_TIMERS)
 
 #include <sys/time.h>
 
